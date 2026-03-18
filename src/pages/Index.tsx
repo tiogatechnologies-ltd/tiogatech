@@ -1,16 +1,34 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import Hero from "@/components/Hero";
+import ProblemSection from "@/components/ProblemSection";
+import SolutionSection from "@/components/SolutionSection";
+import OfferSection from "@/components/OfferSection";
+import HowItWorks from "@/components/HowItWorks";
+import TargetUsers from "@/components/TargetUsers";
+import TrustSection from "@/components/TrustSection";
+import FinalCTA from "@/components/FinalCTA";
+import Footer from "@/components/Footer";
+import StickyCTA from "@/components/StickyCTA";
+import LeadForm from "@/components/LeadForm";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [formOpen, setFormOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen pb-16">
+      <Hero onApply={() => setFormOpen(true)} />
+      <ProblemSection />
+      <SolutionSection />
+      <OfferSection />
+      <HowItWorks />
+      <TargetUsers />
+      <TrustSection />
+      <FinalCTA onApply={() => setFormOpen(true)} />
+      <Footer />
+      <StickyCTA onApply={() => setFormOpen(true)} />
+      <LeadForm open={formOpen} onClose={() => setFormOpen(false)} />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
