@@ -15,14 +15,20 @@ const Index = () => {
   const [formOpen, setFormOpen] = useState(false);
 
   return (
-    <div className="min-h-screen pb-16">
+    <div className="min-h-screen scroll-smooth pb-16">
       <Hero onApply={() => setFormOpen(true)} />
       <ProblemSection />
-      <SolutionSection />
-      <OfferSection />
-      <HowItWorks />
+      <div id="solutions">
+        <SolutionSection />
+        <OfferSection />
+      </div>
+      <div id="how-it-works">
+        <HowItWorks />
+      </div>
       <TargetUsers />
-      <TrustSection />
+      <div id="trust">
+        <TrustSection />
+      </div>
       <FinalCTA onApply={() => setFormOpen(true)} />
       <Footer />
       <StickyCTA onApply={() => setFormOpen(true)} />

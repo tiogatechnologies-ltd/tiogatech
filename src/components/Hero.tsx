@@ -5,16 +5,23 @@ interface HeroProps {
   onApply: () => void;
 }
 
+const navLinks = [
+  { label: "Solutions", href: "#solutions" },
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "Why Us", href: "#trust" },
+];
+
 const Hero = ({ onApply }: HeroProps) => {
   const whatsappUrl = "https://wa.me/2348000000000";
 
+  const scrollTo = (href: string) => {
+    const el = document.querySelector(href);
+    el?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      <img
-        src={heroBg}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+    <section id="hero" className="relative min-h-[90vh] flex items-center overflow-hidden">
+      <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0" style={{ background: "var(--hero-gradient)" }} />
 
       {/* Nav */}
@@ -22,6 +29,17 @@ const Hero = ({ onApply }: HeroProps) => {
         <span className="font-display text-xl font-bold text-primary-foreground tracking-tight">
           Tioga<span className="text-accent">.</span>
         </span>
+        <nav className="hidden sm:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <button
+              key={link.href}
+              onClick={() => scrollTo(link.href)}
+              className="text-sm font-medium text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+            >
+              {link.label}
+            </button>
+          ))}
+        </nav>
         <a
           href={whatsappUrl}
           target="_blank"
