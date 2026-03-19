@@ -89,6 +89,13 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
       });
       if (error) throw error;
       setSubmitted(true);
+      // Navigate to catalog after a brief delay
+      setTimeout(() => {
+        onClose();
+        navigate("/catalog", {
+          state: { products, budget, fullName: fullName.trim() },
+        });
+      }, 2000);
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
       console.error(err);
