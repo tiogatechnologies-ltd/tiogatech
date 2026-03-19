@@ -32,6 +32,7 @@ const isSolarRelated = (products: ProductInterest[]) =>
   products.some((p) => ["solar", "panels", "batteries", "full_solar"].includes(p));
 
 const LeadForm = ({ open, onClose }: LeadFormProps) => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"left" | "right">("left");
   const [submitted, setSubmitted] = useState(false);
