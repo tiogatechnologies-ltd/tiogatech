@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { X, ArrowRight, ArrowLeft, CheckCircle2, MessageCircle } from "lucide-react";
+import { X, ArrowRight, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -35,10 +35,8 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"left" | "right">("left");
-  const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Form data
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -70,11 +68,28 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
   const currentStepKey = steps[step];
   const progress = ((step + 1) / totalSteps) * 100;
 
+  const handleReset = () => {
+    setStep(0);
+    setFullName("");
+    setPhone("");
+    setEmail("");
+    setLocation("");
+    setProducts([]);
+    setElectricity("");
+    setGoal("");
+    setAppliances([]);
+    setBudget("");
+    setTimeline("");
+    setNotes("");
+    setConsent(false);
+  };
+
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
+      const trimmedName = fullName.trim();
       const { error } = await supabase.from("leads").insert({
-        full_name: fullName.trim(),
+        full_name: trimmedName,
         phone: phone.trim(),
         email: email.trim() || null,
         location: location.trim(),
@@ -87,15 +102,14 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
         notes: notes.trim() || null,
         consent,
       });
+
       if (error) throw error;
-      setSubmitted(true);
-      // Navigate to catalog after a brief delay
-      setTimeout(() => {
-        onClose();
-        navigate("/catalog", {
-          state: { products, budget, fullName: fullName.trim() },
-        });
-      }, 2000);
+
+      handleReset();
+      onClose();
+      navigate("/catalog", {
+        state: { products, budget, fullName: trimmedName },
+      });
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
       console.error(err);
@@ -147,24 +161,6 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
     }
   };
 
-  const handleReset = () => {
-    setStep(0);
-    setSubmitted(false);
-    setFullName("");
-    setPhone("");
-    setEmail("");
-    setLocation("");
-    setProducts([]);
-    setElectricity("");
-    setGoal("");
-    setAppliances([]);
-    setBudget("");
-    setTimeline("");
-    setNotes("");
-    setConsent(false);
-    onClose();
-  };
-
   const animClass = direction === "left" ? "animate-slide-left" : "animate-slide-right";
 
   const inputClass =
@@ -177,39 +173,9 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
         : "border-border text-foreground hover:border-primary/30"
     }`;
 
-  if (submitted) {
-    return (
-      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/40 backdrop-blur-sm px-4">
-        <div className="bg-card rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center space-y-5 animate-slide-up">
-          <CheckCircle2 size={56} className="text-primary mx-auto" />
-          <h2 className="text-2xl font-display font-bold text-card-foreground">Application Received 🎉</h2>
-          <p className="text-muted-foreground text-sm">We'll review your needs and get back to you shortly.</p>
-          <div className="flex flex-col gap-3 pt-2">
-            <a
-              href="https://wa.me/2348178000023"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
-            >
-              <MessageCircle size={16} />
-              Chat on WhatsApp
-            </a>
-            <button
-              onClick={handleReset}
-              className="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3 text-sm font-medium text-muted-foreground hover:bg-muted transition-all"
-            >
-              Back to Home
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-foreground/40 backdrop-blur-sm px-0 sm:px-4">
       <div className="bg-card rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
             Step {step + 1} of {totalSteps}
@@ -219,7 +185,6 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
           </button>
         </div>
 
-        {/* Progress */}
         <div className="mx-6 h-1 rounded-full bg-muted overflow-hidden">
           <div
             className="h-full bg-primary rounded-full transition-all duration-300"
@@ -227,7 +192,6 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
           />
         </div>
 
-        {/* Content */}
         <div key={currentStepKey} className={`px-6 py-6 space-y-5 ${animClass}`}>
           {currentStepKey === "info" && (
             <>
@@ -355,16 +319,13 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
                     onChange={(e) => setConsent(e.target.checked)}
                     className="mt-0.5 h-5 w-5 rounded border-border text-primary focus:ring-primary/30 accent-primary"
                   />
-                  <span className="text-sm text-foreground">
-                    ✅ I agree to be contacted about my enquiry
-                  </span>
+                  <span className="text-sm text-foreground">✅ I agree to be contacted about my enquiry</span>
                 </label>
               </div>
             </>
           )}
         </div>
 
-        {/* Navigation */}
         <div className="px-6 pb-6 flex gap-3">
           {step > 0 && (
             <button
