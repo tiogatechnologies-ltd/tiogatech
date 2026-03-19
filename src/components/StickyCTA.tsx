@@ -14,7 +14,7 @@ const StickyCTA = ({ onApply }: StickyCTAProps) => (
         Apply Now
       </button>
       <a
-        href="https://wa.me/2348000000000"
+        href="https://wa.me/2348178000023"
         target="_blank"
         rel="noopener noreferrer"
         className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg border border-primary px-6 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition-all"

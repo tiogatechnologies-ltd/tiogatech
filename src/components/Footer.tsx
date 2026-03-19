@@ -11,7 +11,7 @@ const Footer = () => (
           <p className="mt-2 text-sm max-w-xs">Solar power, smart home automation, and security solutions across Nigeria.</p>
         </div>
         <div className="space-y-3 text-sm">
-          <div className="flex items-center gap-2"><Phone size={14} /> +234 800 000 0000</div>
+          <div className="flex items-center gap-2"><Phone size={14} /> +234 817 800 0023</div>
           <div className="flex items-center gap-2"><Mail size={14} /> hello@tiogatech.com</div>
           <div className="flex items-center gap-2"><MapPin size={14} /> Lagos, Nigeria</div>
         </div>

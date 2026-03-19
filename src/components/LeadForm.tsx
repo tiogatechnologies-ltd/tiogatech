@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, ArrowRight, ArrowLeft, CheckCircle2, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ const isSolarRelated = (products: ProductInterest[]) =>
   products.some((p) => ["solar", "panels", "batteries", "full_solar"].includes(p));
 
 const LeadForm = ({ open, onClose }: LeadFormProps) => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"left" | "right">("left");
   const [submitted, setSubmitted] = useState(false);
@@ -87,6 +89,13 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
       });
       if (error) throw error;
       setSubmitted(true);
+      // Navigate to catalog after a brief delay
+      setTimeout(() => {
+        onClose();
+        navigate("/catalog", {
+          state: { products, budget, fullName: fullName.trim() },
+        });
+      }, 2000);
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
       console.error(err);
@@ -177,7 +186,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
           <p className="text-muted-foreground text-sm">We'll review your needs and get back to you shortly.</p>
           <div className="flex flex-col gap-3 pt-2">
             <a
-              href="https://wa.me/2348000000000"
+              href="https://wa.me/2348178000023"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
