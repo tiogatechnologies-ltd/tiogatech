@@ -25,9 +25,8 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <div className="rounded-2xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
-      {/* Placeholder image */}
-      <div className="h-36 bg-muted flex items-center justify-center">
-        <span className="text-3xl font-display font-bold text-muted-foreground/30">{product.name}</span>
+      <div className="h-36 bg-muted flex items-center justify-center px-4 text-center">
+        <span className="text-2xl font-display font-bold text-muted-foreground/40">{product.name}</span>
       </div>
 
       <div className="p-4 flex-1 flex flex-col gap-3">
@@ -37,6 +36,8 @@ const ProductCard = ({ product }: { product: Product }) => {
             {tierLabels[product.tier]}
           </span>
         </div>
+
+        <p className="text-xs leading-relaxed text-muted-foreground">{product.description}</p>
 
         <span className="text-xs font-medium text-primary">Best for: {product.bestFor}</span>
 
@@ -54,7 +55,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           </button>
         )}
 
-        {product.price && <p className="text-xs font-semibold text-accent">{product.price}</p>}
+        <p className="text-xs font-semibold text-accent">{product.price ?? "Price on request"}</p>
 
         <a
           href={`${WHATSAPP}?text=${waMsg}`}
