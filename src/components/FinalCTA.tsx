@@ -23,7 +23,7 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
             Apply Now
           </button>
           <a
-            href="https://wa.me/2348000000000"
+            href="https://wa.me/2348178000023"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-secondary-foreground/30 px-8 py-3.5 text-sm font-medium text-secondary-foreground hover:bg-secondary-foreground/10 transition-all"

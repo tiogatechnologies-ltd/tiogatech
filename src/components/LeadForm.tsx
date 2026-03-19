@@ -177,7 +177,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
           <p className="text-muted-foreground text-sm">We'll review your needs and get back to you shortly.</p>
           <div className="flex flex-col gap-3 pt-2">
             <a
-              href="https://wa.me/2348000000000"
+              href="https://wa.me/2348178000023"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"

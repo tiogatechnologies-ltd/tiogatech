@@ -12,7 +12,7 @@ const navLinks = [
 ];
 
 const Hero = ({ onApply }: HeroProps) => {
-  const whatsappUrl = "https://wa.me/2348000000000";
+  const whatsappUrl = "https://wa.me/2348178000023";
 
   const scrollTo = (href: string) => {
     const el = document.querySelector(href);
