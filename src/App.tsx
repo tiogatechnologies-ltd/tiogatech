@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard.tsx";
 import AdminProducts from "./pages/AdminProducts.tsx";
 import AdminLeads from "./pages/AdminLeads.tsx";
 import AdminSettings from "./pages/AdminSettings.tsx";
+import AdminSetup from "./pages/AdminSetup.tsx";
 
 const queryClient = new QueryClient();
 
