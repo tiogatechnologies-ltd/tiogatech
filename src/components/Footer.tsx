@@ -12,8 +12,8 @@ const Footer = () => (
         </div>
         <div className="space-y-3 text-sm">
           <div className="flex items-center gap-2"><Phone size={14} /> +234 817 800 0023</div>
-          <div className="flex items-center gap-2"><Mail size={14} /> hello@tiogatech.com</div>
-          <div className="flex items-center gap-2"><MapPin size={14} /> Lagos, Nigeria</div>
+          <div className="flex items-center gap-2"><Mail size={14} /> sales@tiogatechnologies.com</div>
+          <div className="flex items-center gap-2"><MapPin size={14} /> Ikeja, Lagos, Nigeria</div>
         </div>
       </div>
       <div className="mt-10 pt-6 border-t border-secondary-foreground/10 text-xs text-center">
