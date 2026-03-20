@@ -1,13 +1,27 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Index from "./pages/Index.tsx";
 import Catalog from "./pages/Catalog.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import AdminLogin from "./pages/AdminLogin.tsx";
+import AdminDashboard from "./pages/AdminDashboard.tsx";
+import AdminProducts from "./pages/AdminProducts.tsx";
+import AdminLeads from "./pages/AdminLeads.tsx";
+import AdminSettings from "./pages/AdminSettings.tsx";
+import AdminSetup from "./pages/AdminSetup.tsx";
 
 const queryClient = new QueryClient();
+
+const ProtectedAdmin = ({ children }: { children: React.ReactNode }) => {
+  const { user, isAdmin, loading } = useAuth();
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="animate-pulse text-muted-foreground">Loading...</div></div>;
+  if (!user || !isAdmin) return <Navigate to="/admin/login" replace />;
+  return <>{children}</>;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -15,12 +29,19 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/catalog" element={<Catalog />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/setup" element={<AdminSetup />} />
+            <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />
+            <Route path="/admin/products" element={<ProtectedAdmin><AdminProducts /></ProtectedAdmin>} />
+            <Route path="/admin/leads" element={<ProtectedAdmin><AdminLeads /></ProtectedAdmin>} />
+            <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
