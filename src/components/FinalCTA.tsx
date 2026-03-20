@@ -20,7 +20,7 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
             onClick={onApply}
             className="inline-flex items-center justify-center rounded-lg bg-accent px-8 py-3.5 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.98] transition-all shadow-lg"
           >
-            Apply Now
+            Get Started
           </button>
           <a
             href="https://wa.me/2348178000023"
