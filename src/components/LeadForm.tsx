@@ -65,7 +65,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
     setSubmitting(true);
     try {
       const products = mapCategoryToProducts(data.category, data);
-      const { error } = await supabase.from("leads").insert({
+      const leadPayload = {
         full_name: data.fullName.trim(),
         phone: data.phone.trim(),
         email: data.email.trim() || null,
@@ -78,8 +78,12 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
         timeline: null,
         notes: data.notes.trim() || null,
         consent: data.consent,
-      });
+      };
+      const { error } = await supabase.from("leads").insert(leadPayload);
       if (error) throw error;
+
+      // Send notification email (fire & forget)
+      supabase.functions.invoke("notify-new-lead", { body: leadPayload }).catch(console.error);
 
       const fullName = data.fullName.trim();
       const budget = data.budget;

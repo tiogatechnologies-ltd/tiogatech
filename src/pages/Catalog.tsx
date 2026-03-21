@@ -15,6 +15,7 @@ interface Product {
   best_for: string;
   price: string | null;
   tier: string;
+  image_url: string | null;
 }
 
 const tierColors: Record<string, string> = {
@@ -43,8 +44,12 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <div className="rounded-2xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
-      <div className="h-28 sm:h-36 bg-muted flex items-center justify-center px-3 text-center">
-        <span className="text-lg sm:text-2xl font-display font-bold text-muted-foreground/40">{product.name}</span>
+      <div className="h-28 sm:h-36 bg-muted flex items-center justify-center px-3 text-center overflow-hidden">
+        {product.image_url ? (
+          <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+        ) : (
+          <span className="text-lg sm:text-2xl font-display font-bold text-muted-foreground/40">{product.name}</span>
+        )}
       </div>
 
       <div className="p-3 sm:p-4 flex-1 flex flex-col gap-2 sm:gap-3">
@@ -112,7 +117,7 @@ const Catalog = () => {
 
       const { data } = await supabase
         .from("products")
-        .select("id, name, category, series, description, features, best_for, price, tier")
+        .select("id, name, category, series, description, features, best_for, price, tier, image_url")
         .in("category", cats)
         .eq("is_active", true)
         .order("sort_order");
