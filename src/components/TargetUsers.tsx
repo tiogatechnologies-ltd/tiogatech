@@ -2,10 +2,10 @@ import { Home, Building2, GraduationCap, Briefcase } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const users = [
-  { icon: Home, label: "Homes" },
-  { icon: Building2, label: "Businesses" },
-  { icon: GraduationCap, label: "Schools" },
-  { icon: Briefcase, label: "Offices" },
+  { icon: Home, label: "Homes", desc: "Apartments, bungalows, duplexes — enjoy uninterrupted power and smart living." },
+  { icon: Building2, label: "Businesses", desc: "Shops, warehouses, restaurants — cut energy costs and protect your assets." },
+  { icon: GraduationCap, label: "Schools", desc: "Keep classrooms powered, secure campuses, and reduce running costs." },
+  { icon: Briefcase, label: "Offices", desc: "Stay productive with reliable power, smart controls, and modern security." },
 ];
 
 const TargetUsers = () => {
@@ -15,7 +15,10 @@ const TargetUsers = () => {
     <section className="section-padding bg-background">
       <div ref={ref} className="section-container text-center">
         <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-2">Who We Serve</p>
-        <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-12">Built for every space</h2>
+        <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">Built for every space</h2>
+        <p className="text-muted-foreground mb-12 max-w-2xl mx-auto">
+          Whether it's a single room or a multi-story building, we have a solution that fits.
+        </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {users.map((u, i) => (
             <div
@@ -27,6 +30,7 @@ const TargetUsers = () => {
                 <u.icon size={26} className="text-primary" />
               </div>
               <span className="font-display font-semibold text-foreground">{u.label}</span>
+              <p className="text-muted-foreground text-xs leading-relaxed">{u.desc}</p>
             </div>
           ))}
         </div>

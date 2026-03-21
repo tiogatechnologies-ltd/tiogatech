@@ -3,9 +3,11 @@ import Hero from "@/components/Hero";
 import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
 import OfferSection from "@/components/OfferSection";
+import StatsSection from "@/components/StatsSection";
 import HowItWorks from "@/components/HowItWorks";
 import TargetUsers from "@/components/TargetUsers";
 import TrustSection from "@/components/TrustSection";
+import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import StickyCTA from "@/components/StickyCTA";
@@ -22,6 +24,7 @@ const Index = () => {
         <SolutionSection />
         <OfferSection />
       </div>
+      <StatsSection />
       <div id="how-it-works">
         <HowItWorks />
       </div>
@@ -29,6 +32,7 @@ const Index = () => {
       <div id="trust">
         <TrustSection />
       </div>
+      <FAQSection />
       <FinalCTA onApply={() => setFormOpen(true)} />
       <Footer />
       <StickyCTA onApply={() => setFormOpen(true)} />
