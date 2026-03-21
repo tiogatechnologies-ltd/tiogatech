@@ -117,7 +117,7 @@ const Catalog = () => {
 
       const { data } = await supabase
         .from("products")
-        .select("id, name, category, series, description, features, best_for, price, tier")
+        .select("id, name, category, series, description, features, best_for, price, tier, image_url")
         .in("category", cats)
         .eq("is_active", true)
         .order("sort_order");
