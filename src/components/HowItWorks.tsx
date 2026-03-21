@@ -1,10 +1,27 @@
-import { MessageSquare, ClipboardCheck, Wrench } from "lucide-react";
+import { MessageSquare, ClipboardCheck, Wrench, Headphones } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const steps = [
-  { icon: MessageSquare, title: "Tell us what you need", desc: "Answer a few quick questions about your power and security needs." },
-  { icon: ClipboardCheck, title: "Get a custom recommendation", desc: "We design a solution tailored to your budget and property." },
-  { icon: Wrench, title: "Installation & setup", desc: "Professional installation with ongoing support included." },
+  {
+    icon: MessageSquare,
+    title: "Tell us what you need",
+    desc: "Answer a few quick questions about your power usage, automation goals, or security needs. It takes under 2 minutes — no technical knowledge required.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Get a custom recommendation",
+    desc: "Our team designs a solution tailored to your property, budget, and lifestyle. You'll see exactly what you're getting and what it costs — no surprises.",
+  },
+  {
+    icon: Wrench,
+    title: "Professional installation",
+    desc: "Our certified technicians handle everything — from wiring and panel mounting to smart device setup and testing. We don't leave until it's perfect.",
+  },
+  {
+    icon: Headphones,
+    title: "Ongoing support",
+    desc: "We don't disappear after installation. You get dedicated support, system monitoring, and maintenance to keep everything running smoothly for years.",
+  },
 ];
 
 const HowItWorks = () => {
@@ -14,10 +31,13 @@ const HowItWorks = () => {
     <section className="section-padding bg-muted">
       <div ref={ref} className="section-container">
         <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-2">How It Works</p>
-        <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-12">
-          Three simple steps
+        <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">
+          From inquiry to installation in 4 simple steps
         </h2>
-        <div className="grid sm:grid-cols-3 gap-8">
+        <p className="text-muted-foreground mb-12 max-w-2xl">
+          We've made the process as smooth as possible. No jargon, no runaround — just results.
+        </p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((s, i) => (
             <div
               key={s.title}
