@@ -15,6 +15,7 @@ interface Product {
   best_for: string;
   price: string | null;
   tier: string;
+  image_url: string | null;
 }
 
 const tierColors: Record<string, string> = {
