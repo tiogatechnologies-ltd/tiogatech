@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      form_questions: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          is_active: boolean
+          options: Json | null
+          question_text: string
+          question_type: string
+          sort_order: number
+          step_key: string
+          subtitle: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          options?: Json | null
+          question_text: string
+          question_type?: string
+          sort_order?: number
+          step_key: string
+          subtitle?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          options?: Json | null
+          question_text?: string
+          question_type?: string
+          sort_order?: number
+          step_key?: string
+          subtitle?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      landing_content: {
+        Row: {
+          content: Json
+          id: string
+          section_key: string
+          updated_at: string
+        }
+        Insert: {
+          content?: Json
+          id?: string
+          section_key: string
+          updated_at?: string
+        }
+        Update: {
+          content?: Json
+          id?: string
+          section_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           appliances: string[] | null
@@ -29,6 +92,7 @@ export type Database = {
           notes: string | null
           phone: string
           products: string[]
+          status: string
           timeline: string | null
         }
         Insert: {
@@ -45,6 +109,7 @@ export type Database = {
           notes?: string | null
           phone: string
           products?: string[]
+          status?: string
           timeline?: string | null
         }
         Update: {
@@ -61,6 +126,7 @@ export type Database = {
           notes?: string | null
           phone?: string
           products?: string[]
+          status?: string
           timeline?: string | null
         }
         Relationships: []
@@ -79,6 +145,8 @@ export type Database = {
           price: string | null
           series: string | null
           sort_order: number
+          specifications: Json | null
+          tags: string[] | null
           tier: string
           updated_at: string
         }
@@ -95,6 +163,8 @@ export type Database = {
           price?: string | null
           series?: string | null
           sort_order?: number
+          specifications?: Json | null
+          tags?: string[] | null
           tier?: string
           updated_at?: string
         }
@@ -111,6 +181,8 @@ export type Database = {
           price?: string | null
           series?: string | null
           sort_order?: number
+          specifications?: Json | null
+          tags?: string[] | null
           tier?: string
           updated_at?: string
         }
