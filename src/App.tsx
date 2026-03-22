@@ -13,6 +13,9 @@ import AdminProducts from "./pages/AdminProducts.tsx";
 import AdminLeads from "./pages/AdminLeads.tsx";
 import AdminSettings from "./pages/AdminSettings.tsx";
 import AdminSetup from "./pages/AdminSetup.tsx";
+import AdminFormQuestions from "./pages/AdminFormQuestions.tsx";
+import AdminLandingPage from "./pages/AdminLandingPage.tsx";
+import AdminEmail from "./pages/AdminEmail.tsx";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +41,9 @@ const App = () => (
             <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />
             <Route path="/admin/products" element={<ProtectedAdmin><AdminProducts /></ProtectedAdmin>} />
             <Route path="/admin/leads" element={<ProtectedAdmin><AdminLeads /></ProtectedAdmin>} />
+            <Route path="/admin/forms" element={<ProtectedAdmin><AdminFormQuestions /></ProtectedAdmin>} />
+            <Route path="/admin/landing" element={<ProtectedAdmin><AdminLandingPage /></ProtectedAdmin>} />
+            <Route path="/admin/email" element={<ProtectedAdmin><AdminEmail /></ProtectedAdmin>} />
             <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
