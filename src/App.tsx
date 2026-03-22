@@ -13,6 +13,9 @@ import AdminProducts from "./pages/AdminProducts.tsx";
 import AdminLeads from "./pages/AdminLeads.tsx";
 import AdminSettings from "./pages/AdminSettings.tsx";
 import AdminSetup from "./pages/AdminSetup.tsx";
+import AdminFormQuestions from "./pages/AdminFormQuestions.tsx";
+import AdminLandingPage from "./pages/AdminLandingPage.tsx";
+import AdminEmail from "./pages/AdminEmail.tsx";
 
 const queryClient = new QueryClient();
 
