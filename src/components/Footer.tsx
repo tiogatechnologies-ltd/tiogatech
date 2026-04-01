@@ -1,13 +1,12 @@
 import { Phone, Mail, MapPin } from "lucide-react";
+import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 
 const Footer = () => (
   <footer className="py-12 bg-secondary text-secondary-foreground/70 border-t border-secondary-foreground/10">
     <div className="section-container">
       <div className="flex flex-col sm:flex-row justify-between gap-8">
         <div>
-          <span className="font-display text-xl font-bold text-secondary-foreground tracking-tight">
-            Tioga<span className="text-accent">.</span>
-          </span>
+          <img src={tiogaLogoDark} alt="Tioga Technologies" className="h-10 w-auto" />
           <p className="mt-2 text-sm max-w-xs">Solar power, smart home automation, and security solutions across Nigeria.</p>
         </div>
         <div className="space-y-3 text-sm">

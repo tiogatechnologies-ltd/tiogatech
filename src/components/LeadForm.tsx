@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { X, ArrowRight, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -87,9 +88,15 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
 
       const fullName = data.fullName.trim();
       const budget = data.budget;
+      const totalWatts = data.totalWatts;
+      const selectedAppliances = data.selectedAppliances.map(a => ({
+        name: a.name,
+        quantity: a.quantity,
+        avgWatts: a.info.avgWatts,
+      }));
       handleReset();
       onClose();
-      navigate("/catalog", { state: { products, budget, fullName } });
+      navigate("/catalog", { state: { products, budget, fullName, totalWatts, selectedAppliances } });
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
       console.error(err);
@@ -146,16 +153,56 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
 
     // Common steps
     if (currentStepKey === "budget") {
+      const wattsWarning = data.category === "solar" && data.totalWatts > 0;
+      const getMinPrice = (w: number) => {
+        if (w <= 1000) return 1125200;
+        if (w <= 1500) return 1519500;
+        if (w <= 2500) return 2216000;
+        if (w <= 3500) return 4024000;
+        if (w <= 5000) return 4775940;
+        if (w <= 7500) return 7253000;
+        if (w <= 10000) return 10828800;
+        return 20808000;
+      };
+      const minNeeded = wattsWarning ? getMinPrice(data.totalWatts) : 0;
+      const getBudgetMax = (b: string) => {
+        if (b === "Below ₦500k") return 500000;
+        if (b === "₦500k – ₦1M") return 1000000;
+        if (b === "₦1M – ₦3M") return 3000000;
+        return Infinity;
+      };
+
       return (
         <div className="space-y-5">
           <h3 className="text-xl font-display font-bold text-card-foreground">What's your budget?</h3>
+          {wattsWarning && (
+            <p className="text-xs text-muted-foreground">Based on your appliances ({data.totalWatts.toLocaleString()}W), packages start from ₦{(minNeeded / 1000000).toFixed(1)}M</p>
+          )}
           <div className="space-y-2">
-            {budgetOptions.map((o) => (
-              <button key={o} onClick={() => update({ budget: o })} className={`w-full ${selectBtnClass(data.budget === o)}`}>
-                {o}
-              </button>
-            ))}
+            {budgetOptions.map((o) => {
+              const budgetMax = getBudgetMax(o);
+              const tooLow = wattsWarning && budgetMax < minNeeded;
+              return (
+                <div key={o}>
+                  <button
+                    onClick={() => update({ budget: o })}
+                    className={`w-full ${selectBtnClass(data.budget === o)} ${tooLow ? "opacity-60" : ""}`}
+                  >
+                    {o}
+                    {tooLow && <span className="text-[10px] ml-2 text-destructive">⚠️ May not cover your needs</span>}
+                  </button>
+                </div>
+              );
+            })}
           </div>
+          {data.budget && wattsWarning && getBudgetMax(data.budget) < minNeeded && (
+            <div className="flex items-start gap-2 rounded-xl bg-destructive/10 border border-destructive/20 p-3">
+              <AlertTriangle size={14} className="text-destructive shrink-0 mt-0.5" />
+              <p className="text-xs text-destructive">
+                Your selected appliances may require a higher budget. You can still proceed — we'll recommend the closest option within your range.
+              </p>
+            </div>
+          )}
         </div>
       );
     }
