@@ -1,3 +1,5 @@
+import type { SelectedAppliance } from "@/data/applianceWatts";
+
 export type FlowCategory = "solar" | "automation" | "security";
 
 export interface LeadFormData {
@@ -13,6 +15,8 @@ export interface LeadFormData {
 
   // Solar
   solarAppliances: string[];
+  selectedAppliances: SelectedAppliance[];
+  totalWatts: number;
   usageDuration: string;
   heavyAppliances: string;
   heavyAppliancesDetail: string;
@@ -42,6 +46,8 @@ export const initialFormData: LeadFormData = {
   consent: false,
   notes: "",
   solarAppliances: [],
+  selectedAppliances: [],
+  totalWatts: 0,
   usageDuration: "",
   heavyAppliances: "",
   heavyAppliancesDetail: "",
