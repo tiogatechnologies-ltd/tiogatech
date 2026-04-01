@@ -87,9 +87,15 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
 
       const fullName = data.fullName.trim();
       const budget = data.budget;
+      const totalWatts = data.totalWatts;
+      const selectedAppliances = data.selectedAppliances.map(a => ({
+        name: a.name,
+        quantity: a.quantity,
+        avgWatts: a.info.avgWatts,
+      }));
       handleReset();
       onClose();
-      navigate("/catalog", { state: { products, budget, fullName } });
+      navigate("/catalog", { state: { products, budget, fullName, totalWatts, selectedAppliances } });
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
       console.error(err);
