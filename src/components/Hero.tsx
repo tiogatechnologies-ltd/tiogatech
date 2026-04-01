@@ -1,5 +1,6 @@
 import { MessageCircle, ShieldCheck } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
+import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 
 interface HeroProps {
   onApply: () => void;
@@ -26,8 +27,7 @@ const Hero = ({ onApply }: HeroProps) => {
 
       {/* Nav */}
       <div className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-4 sm:px-8 py-5">
-        <span className="font-display text-xl font-bold text-primary-foreground tracking-tight">
-          Tioga<span className="text-accent">.</span>
+        <img src={tiogaLogoLight} alt="Tioga Technologies" className="h-8 sm:h-10 w-auto" />
         </span>
         <nav className="hidden sm:flex items-center gap-6">
           {navLinks.map((link) => (
