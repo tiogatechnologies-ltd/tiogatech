@@ -1,9 +1,10 @@
 import type { LeadFormData } from "./types";
-import { StepUI, selectBtnClass, inputClass } from "./StepUI";
+import { StepUI, selectBtnClass } from "./StepUI";
 import WattsCalculator from "./WattsCalculator";
+import AddressInput from "./AddressInput";
 import { calculateTotalWatts, type SelectedAppliance } from "@/data/applianceWatts";
 
-const durations = ["3–5 hours", "6–10 hours", "10–24 hours"];
+const durations = ["3 to 5 hours", "6 to 10 hours", "10 to 24 hours"];
 const systemTypes = ["Full Off-Grid (no reliance on NEPA)", "Backup System (only when light goes off)", "Not sure (recommend for me)"];
 const propertyTypes = ["Apartment", "Bungalow", "Duplex", "Office / Shop"];
 
@@ -26,7 +27,7 @@ export function renderSolarStep(stepKey: string, data: LeadFormData, update: (d:
             update({
               selectedAppliances: appliances,
               totalWatts: totals.avg,
-              solarAppliances: appliances.map(a => `${a.name} ×${a.quantity}`),
+              solarAppliances: appliances.map(a => `${a.name} x${a.quantity}`),
             });
           }}
           budget={data.budget}
@@ -71,7 +72,7 @@ export function renderSolarStep(stepKey: string, data: LeadFormData, update: (d:
     case "solar_location":
       return (
         <StepUI title="Where will installation take place?">
-          <input className={inputClass} placeholder="e.g. Ikeja, Lagos" value={data.location} onChange={(e) => update({ location: e.target.value })} />
+          <AddressInput value={data.location} onChange={(location) => update({ location })} />
         </StepUI>
       );
     default:

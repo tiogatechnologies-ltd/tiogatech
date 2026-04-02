@@ -5,7 +5,7 @@ import { useLandingContent } from "@/hooks/useLandingContent";
 const defaultSteps = [
   { title: "Tell us what you need", desc: "Answer a few quick questions about your power usage, automation goals, or security needs." },
   { title: "Get a custom recommendation", desc: "Our team designs a solution tailored to your property, budget, and lifestyle." },
-  { title: "Professional installation", desc: "Our certified technicians handle everything — from wiring and panel mounting to smart device setup." },
+  { title: "Professional installation", desc: "Our certified technicians handle everything, from wiring and panel mounting to smart device setup." },
   { title: "Ongoing support", desc: "Dedicated support, system monitoring, and maintenance to keep everything running smoothly." },
 ];
 

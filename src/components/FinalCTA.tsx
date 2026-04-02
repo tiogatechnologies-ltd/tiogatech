@@ -13,7 +13,7 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
           <span className="text-accent">smarter living?</span>
         </h2>
         <p className="text-secondary-foreground/70 text-lg leading-relaxed">
-          Join 100+ homes and businesses already enjoying reliable solar power, smart automation, and modern security. Get a personalized recommendation in under 2 minutes — completely free, no obligations.
+          Join 100+ homes and businesses already enjoying reliable solar power, smart automation, and modern security. Get a personalized recommendation in under 2 minutes, completely free, no obligations.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           <button

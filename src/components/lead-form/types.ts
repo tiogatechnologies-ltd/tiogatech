@@ -63,4 +63,4 @@ export const initialFormData: LeadFormData = {
   cctvCoverage: [],
 };
 
-export const budgetOptions = ["Below ₦500k", "₦500k – ₦1M", "₦1M – ₦3M", "₦3M+"];
+export const budgetOptions = ["Below ₦500k", "₦500k to ₦1M", "₦1M to ₦3M", "₦3M+"];

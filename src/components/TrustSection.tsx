@@ -22,7 +22,7 @@ const TrustSection = () => {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-2">Why Tioga</p>
           <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">You're in safe hands</h2>
-          <p className="text-muted-foreground">We're not just selling products — we're building long-term relationships.</p>
+          <p className="text-muted-foreground">We're not just selling products. We're building long-term relationships.</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
           {items.map((r: any, i: number) => {

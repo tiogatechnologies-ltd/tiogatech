@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { LeadFormData, initialFormData, budgetOptions, FlowCategory } from "./lead-form/types";
 import { inputClass, selectBtnClass } from "./lead-form/StepUI";
+import AddressInput from "./lead-form/AddressInput";
 import CategorySelect from "./lead-form/CategorySelect";
 import { solarStepKeys, renderSolarStep, canProceedSolar } from "./lead-form/SolarFlow";
 import { automationStepKeys, renderAutomationStep, canProceedAutomation } from "./lead-form/AutomationFlow";
@@ -43,7 +44,7 @@ function mapCategoryToProducts(cat: FlowCategory, data: LeadFormData): string[] 
 const LeadForm = ({ open, onClose }: LeadFormProps) => {
   const navigate = useNavigate();
   const [data, setData] = useState<LeadFormData>({ ...initialFormData });
-  const [step, setStep] = useState(-1); // -1 = category select
+  const [step, setStep] = useState(-1);
   const [direction, setDirection] = useState<"left" | "right">("left");
   const [submitting, setSubmitting] = useState(false);
 
@@ -83,20 +84,33 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
       const { error } = await supabase.from("leads").insert(leadPayload);
       if (error) throw error;
 
-      // Send notification email (fire & forget)
       supabase.functions.invoke("notify-new-lead", { body: leadPayload }).catch(console.error);
 
       const fullName = data.fullName.trim();
       const budget = data.budget;
       const totalWatts = data.totalWatts;
+      const category = data.category;
       const selectedAppliances = data.selectedAppliances.map(a => ({
         name: a.name,
         quantity: a.quantity,
         avgWatts: a.info.avgWatts,
       }));
+      // Collect category-specific context for AI
+      const formContext = {
+        category,
+        systemType: data.systemType,
+        propertyType: data.propertyType || data.automationPropertyType || data.securityPropertyType,
+        usageDuration: data.usageDuration,
+        automateWhat: data.automateWhat,
+        controlPreference: data.controlPreference,
+        automationScale: data.automationScale,
+        securityNeeds: data.securityNeeds,
+        accessType: data.accessType,
+        cctvCoverage: data.cctvCoverage,
+      };
       handleReset();
       onClose();
-      navigate("/catalog", { state: { products, budget, fullName, totalWatts, selectedAppliances } });
+      navigate("/catalog", { state: { products, budget, fullName, totalWatts, selectedAppliances, formContext } });
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
       console.error(err);
@@ -109,12 +123,10 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
     if (!currentStepKey) return false;
     if (!data.category) return false;
 
-    // Common steps
     if (currentStepKey === "budget") return !!data.budget;
     if (currentStepKey === "contact") return !!(data.fullName.trim() && data.phone.trim());
     if (currentStepKey === "final") return data.consent;
 
-    // Category-specific
     switch (data.category) {
       case "solar": return canProceedSolar(currentStepKey, data);
       case "automation": return canProceedAutomation(currentStepKey, data);
@@ -151,7 +163,6 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
   const renderCurrentStep = () => {
     if (!currentStepKey || !data.category) return null;
 
-    // Common steps
     if (currentStepKey === "budget") {
       const wattsWarning = data.category === "solar" && data.totalWatts > 0;
       const getMinPrice = (w: number) => {
@@ -167,8 +178,8 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
       const minNeeded = wattsWarning ? getMinPrice(data.totalWatts) : 0;
       const getBudgetMax = (b: string) => {
         if (b === "Below ₦500k") return 500000;
-        if (b === "₦500k – ₦1M") return 1000000;
-        if (b === "₦1M – ₦3M") return 3000000;
+        if (b === "₦500k to ₦1M") return 1000000;
+        if (b === "₦1M to ₦3M") return 3000000;
         return Infinity;
       };
 
@@ -189,7 +200,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
                     className={`w-full ${selectBtnClass(data.budget === o)} ${tooLow ? "opacity-60" : ""}`}
                   >
                     {o}
-                    {tooLow && <span className="text-[10px] ml-2 text-destructive">⚠️ May not cover your needs</span>}
+                    {tooLow && <span className="text-[10px] ml-2 text-destructive">May not cover your needs</span>}
                   </button>
                 </div>
               );
@@ -199,7 +210,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
             <div className="flex items-start gap-2 rounded-xl bg-destructive/10 border border-destructive/20 p-3">
               <AlertTriangle size={14} className="text-destructive shrink-0 mt-0.5" />
               <p className="text-xs text-destructive">
-                Your selected appliances may require a higher budget. You can still proceed — we'll recommend the closest option within your range.
+                Your selected appliances may require a higher budget. You can still proceed and we will recommend the closest option within your range.
               </p>
             </div>
           )}
@@ -225,10 +236,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
               <input className={inputClass} placeholder="email@example.com" type="email" value={data.email} onChange={(e) => update({ email: e.target.value })} />
             </div>
             {data.category !== "solar" && (
-              <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">Location *</label>
-                <input className={inputClass} placeholder="e.g. Ikeja, Lagos" value={data.location} onChange={(e) => update({ location: e.target.value })} />
-              </div>
+              <AddressInput value={data.location} onChange={(location) => update({ location })} />
             )}
           </div>
         </div>
@@ -257,14 +265,13 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
                 onChange={(e) => update({ consent: e.target.checked })}
                 className="mt-0.5 h-5 w-5 rounded border-border text-primary focus:ring-primary/30 accent-primary"
               />
-              <span className="text-sm text-foreground">✅ I agree to be contacted about my enquiry</span>
+              <span className="text-sm text-foreground">I agree to be contacted about my enquiry</span>
             </label>
           </div>
         </div>
       );
     }
 
-    // Category-specific
     switch (data.category) {
       case "solar": return renderSolarStep(currentStepKey, data, update);
       case "automation": return renderAutomationStep(currentStepKey, data, update);
@@ -277,7 +284,6 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-foreground/40 backdrop-blur-sm px-0 sm:px-4">
       <div className="bg-card rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
             {step >= 0 ? `Step ${step + 1} of ${totalSteps}` : "Get Started"}
@@ -287,14 +293,12 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
           </button>
         </div>
 
-        {/* Progress */}
         {step >= 0 && (
           <div className="mx-6 h-1 rounded-full bg-muted overflow-hidden">
             <div className="h-full bg-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
           </div>
         )}
 
-        {/* Content */}
         <div key={step} className={`px-6 py-6 ${step >= 0 ? animClass : ""}`}>
           {step === -1 ? (
             <CategorySelect onSelect={selectCategory} />
@@ -303,7 +307,6 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
           )}
         </div>
 
-        {/* Navigation */}
         {step >= 0 && (
           <div className="px-6 pb-6 flex gap-3">
             <button
