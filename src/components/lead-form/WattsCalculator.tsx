@@ -55,12 +55,10 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
   const totals = calculateTotalWatts(selectedAppliances);
   const recommended = recommendedInverterSize(totals.avg);
 
-  // Search results
   const searchResults = searchQuery.trim()
     ? applianceDatabase.filter(a => a.name.toLowerCase().includes(searchQuery.toLowerCase()))
     : [];
 
-  // Popular items not yet selected
   const popularItems = popularAppliances
     .map(name => applianceDatabase.find(a => a.name === name)!)
     .filter(Boolean);
@@ -68,7 +66,7 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
   const displayItems = showAll ? applianceDatabase : popularItems;
 
   return (
-    <StepUI title="What appliances do you want to power?" subtitle="Add items and quantities — we'll calculate the watts">
+    <StepUI title="What appliances do you want to power?" subtitle="Add items and quantities and we will calculate the watts">
       {/* Search */}
       <div className="relative">
         <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -99,7 +97,7 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
               className="w-full text-left px-3 py-2 text-sm hover:bg-muted flex items-center justify-between transition-colors"
             >
               <span>{a.icon} {a.name}</span>
-              <span className="text-xs text-muted-foreground">{a.minWatts}–{a.maxWatts}W</span>
+              <span className="text-xs text-muted-foreground">{a.minWatts} to {a.maxWatts}W</span>
             </button>
           ))}
         </div>
@@ -119,7 +117,7 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
                   : "border-border text-foreground hover:border-primary/30"
               }`}
             >
-              {a.icon} {a.name} {selected ? `×${selected.quantity}` : ""}
+              {a.icon} {a.name} {selected ? `x${selected.quantity}` : ""}
             </button>
           );
         })}
@@ -144,7 +142,7 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
                 <span className="text-sm flex-1">
                   {a.info.icon} {a.name}
                   <span className="text-xs text-muted-foreground ml-1">
-                    ({a.info.minWatts}–{a.info.maxWatts}W each)
+                    ({a.info.minWatts} to {a.info.maxWatts}W each)
                   </span>
                 </span>
                 <div className="flex items-center gap-1.5">
@@ -184,7 +182,7 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div>
               <span className="text-muted-foreground">Estimated range:</span>
-              <p className="font-bold text-foreground">{totals.min.toLocaleString()}W – {totals.max.toLocaleString()}W</p>
+              <p className="font-bold text-foreground">{totals.min.toLocaleString()}W to {totals.max.toLocaleString()}W</p>
             </div>
             <div>
               <span className="text-muted-foreground">Recommended inverter:</span>
@@ -201,7 +199,6 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
 };
 
 function BudgetWarning({ totalAvgWatts, budget }: { totalAvgWatts: number; budget: string }) {
-  // Rough price mapping based on wattage
   const estimatedMinPrice = getMinPriceForWatts(totalAvgWatts);
   const budgetMax = getBudgetMaxNum(budget);
 
@@ -233,9 +230,9 @@ function getMinPriceForWatts(avgWatts: number): number {
 function getBudgetMaxNum(budget: string): number | null {
   switch (budget) {
     case "Below ₦500k": return 500000;
-    case "₦500k – ₦1M": return 1000000;
-    case "₦1M – ₦3M": return 3000000;
-    case "₦3M+": return null; // No limit
+    case "₦500k to ₦1M": return 1000000;
+    case "₦1M to ₦3M": return 3000000;
+    case "₦3M+": return null;
     default: return null;
   }
 }

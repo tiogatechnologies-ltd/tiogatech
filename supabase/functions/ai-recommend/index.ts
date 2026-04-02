@@ -9,44 +9,107 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { appliances, totalWatts, budget, systemType, propertyType, usageDuration } = await req.json();
+    const body = await req.json();
+    const { category, appliances, totalWatts, budget, systemType, propertyType, usageDuration, formContext } = body;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    const prompt = `You are a solar energy expert for Tioga Technologies in Nigeria. Based on the customer's needs, recommend the best solar package.
+    let prompt = "";
+    const effectiveCategory = category || formContext?.category || "solar";
+
+    if (effectiveCategory === "solar") {
+      prompt = `You are a solar energy expert for Tioga Technologies in Nigeria. Based on the customer's needs, recommend the best solar package.
 
 Customer details:
-- Appliances: ${JSON.stringify(appliances)}
-- Estimated total watts: ${totalWatts}W
-- Budget: ${budget}
-- System preference: ${systemType || "Not specified"}
-- Property type: ${propertyType || "Not specified"}  
-- Usage hours: ${usageDuration || "Not specified"}
+- Appliances: ${JSON.stringify(appliances || [])}
+- Estimated total watts: ${totalWatts || 0}W
+- Budget: ${budget || "Not specified"}
+- System preference: ${systemType || formContext?.systemType || "Not specified"}
+- Property type: ${propertyType || formContext?.propertyType || "Not specified"}  
+- Usage hours: ${usageDuration || formContext?.usageDuration || "Not specified"}
 
 Available packages (with prices in Naira):
 LITHIUM BATTERY PACKAGES:
-1. 3.5KVA - ₦4,024,000 (3500W, 5kWh battery) - Powers: 30 Bulbs, 6 Fans, 5 TVs, 5 Laptops, 2 Freezers
-2. 5KVA - ₦5,349,300 (5000W, 7.2kWh battery) - Powers: 30 Bulbs, 6 Fans, 5 TVs, 5 Laptops, 2 Freezers
-3. 7.5KVA - ₦7,339,200 (7500W, 10kWh battery) - Powers: 36 Bulbs, 7 Fans, 5 TVs, 5 Laptops, 2 Freezers, 1HP AC
-4. 10KVA - ₦10,828,800 (10000W, 15kWh battery) - Powers: 40 Bulbs, 8 Fans, 6 TVs, 6 Laptops, 2 Freezers, 1HP AC
-5. 10KVA 3-Phase - ₦12,185,800 (10000W, 17kWh) - Powers: 80 Bulbs, 12 Fans, 10 TVs, 10 Laptops, 4 Freezers, 3x 1HP AC
-6. 10KVA 3-Phase 20kWh - ₦13,052,600 - Same capacity, more storage
-7. 20KVA - ₦20,808,000 (20000W, 30kWh) - Powers: 100 Bulbs, 15 Fans, 15 TVs, 15 Laptops, 5 Freezers, 4x 1HP AC
-8. 30KVA - ₦40,508,800 (30000W, 70kWh) - Industrial grade
+1. 3.5KVA - ₦4,024,000 (3500W, 5kWh battery)
+2. 5KVA - ₦5,349,300 (5000W, 7.2kWh battery)
+3. 7.5KVA - ₦7,339,200 (7500W, 10kWh battery)
+4. 10KVA - ₦10,828,800 (10000W, 15kWh battery)
+5. 10KVA 3-Phase - ₦12,185,800 (10000W, 17kWh)
+6. 10KVA 3-Phase 20kWh - ₦13,052,600
+7. 20KVA - ₦20,808,000 (20000W, 30kWh)
+8. 30KVA - ₦40,508,800 (30000W, 70kWh)
 
-GEL BATTERY PACKAGES (more affordable):
-9. 1KVA - ₦1,125,200 (1000W) - Powers: 9 Bulbs, 2 Fans, 2 TVs, 2 Laptops
-10. 1.5KVA - ₦1,519,500 (1500W) - Powers: 14 Bulbs, 3 Fans, 3 TVs, 3 Laptops
-11. 2.5KVA - ₦2,216,000 (2500W) - Powers: 18 Bulbs, 4 Fans, 3 TVs, 3 Laptops
-12. 5KVA Gel - ₦4,775,940 (5000W) - Powers: 30 Bulbs, 6 Fans, 5 TVs, 5 Laptops, 1 Freezer
-13. 7.5KVA Gel - ₦7,253,000 (7500W) - Powers: 36 Bulbs, 7 Fans, 5 TVs, 5 Laptops, 2 Freezers, 1HP AC
-14. 10KVA Gel - ₦11,284,000 (10000W) - Powers: 40 Bulbs, 8 Fans, 6 TVs, 6 Laptops, 2 Freezers, 2x 1HP AC
+GEL BATTERY PACKAGES:
+9. 1KVA - ₦1,125,200 (1000W)
+10. 1.5KVA - ₦1,519,500 (1500W)
+11. 2.5KVA - ₦2,216,000 (2500W)
+12. 5KVA Gel - ₦4,775,940 (5000W)
+13. 7.5KVA Gel - ₦7,253,000 (7500W)
+14. 10KVA Gel - ₦11,284,000 (10000W)`;
+    } else if (effectiveCategory === "automation") {
+      const ctx = formContext || {};
+      prompt = `You are a smart home automation expert for Tioga Technologies in Nigeria. Recommend the best automation products.
+
+Customer details:
+- What they want to automate: ${JSON.stringify(ctx.automateWhat || [])}
+- Control preference: ${ctx.controlPreference || "Not specified"}
+- Property type: ${ctx.propertyType || "Not specified"}
+- Scale: ${ctx.automationScale || "Not specified"}
+- Budget: ${budget || "Not specified"}
+
+Available products:
+1. 8 Gang WiFi Smart Switch - Multi-circuit remote control
+2. 1 Gang WiFi Smart Switch - Single switch with timer
+3. Granite Display Smart Switch - Premium touch display with scene control and energy monitoring`;
+    } else if (effectiveCategory === "security") {
+      const ctx = formContext || {};
+      prompt = `You are a security systems expert for Tioga Technologies in Nigeria. Recommend the best security products.
+
+Customer details:
+- Security needs: ${JSON.stringify(ctx.securityNeeds || [])}
+- Property type: ${ctx.propertyType || "Not specified"}
+- Access type preferences: ${JSON.stringify(ctx.accessType || [])}
+- CCTV coverage needed: ${JSON.stringify(ctx.cctvCoverage || [])}
+- Budget: ${budget || "Not specified"}
+
+Available Smart Lock Products:
+ELITE SERIES (Premium):
+1. Model K209 - Facial recognition, palm-vein, video intercom
+2. Model S7 - Israeli edition, IP66 waterproof, facial recognition
+
+APEX SERIES (Mid-tier):
+3. Model D20 - Facial recognition, WiFi app control
+4. Model H11 - Facial recognition, video intercom
+5. Model C11 - Facial recognition, integrated doorbell
+
+PRO SERIES (Affordable):
+6. SL02 - Slim profile, built-in camera, staff attendance
+7. TF5 - Remote access, BLE app control
+8. N22 - WiFi control, 100 fingerprints
+9. N14 - Business-friendly, time attendance
+
+BASE SERIES (Entry):
+10. V80 - Compact, mobile app control
+11. G290 - Fingerprint + card + mechanical key
+12. KT14 - Portable biometric, IP67 waterproof
+
+HOTEL MANAGEMENT SUITE:
+13. Smart Hotel Ecosystem - Centralized guest access, digital keys
+
+Available CCTV Products:
+- Indoor Camera - 1080p, night vision, two-way audio
+- Outdoor Camera - Weatherproof IP66, motion alerts
+- Dome Camera - 360 coverage, vandal-proof
+- Bullet Camera - Long range IR, 30m night vision`;
+    }
+
+    prompt += `
 
 Respond with a JSON object (no markdown):
 {
-  "recommendedPackage": "name of the best package",
+  "recommendedPackage": "name of the best product/package",
   "reason": "2-3 sentence explanation why this is the best fit",
-  "totalWattsNeeded": number,
+  "totalWattsNeeded": ${totalWatts || 0},
   "budgetFit": "within_budget" | "slightly_over" | "over_budget",
   "tip": "one helpful tip for the customer",
   "alternativePackage": "name of a backup option if budget is tight"
@@ -65,7 +128,7 @@ Respond with a JSON object (no markdown):
           type: "function",
           function: {
             name: "recommend_package",
-            description: "Recommend the best solar package for the customer",
+            description: "Recommend the best product/package for the customer",
             parameters: {
               type: "object",
               properties: {
@@ -76,7 +139,7 @@ Respond with a JSON object (no markdown):
                 tip: { type: "string" },
                 alternativePackage: { type: "string" },
               },
-              required: ["recommendedPackage", "reason", "totalWattsNeeded", "budgetFit", "tip"],
+              required: ["recommendedPackage", "reason", "budgetFit", "tip"],
             },
           },
         }],
@@ -87,6 +150,18 @@ Respond with a JSON object (no markdown):
     if (!response.ok) {
       const errText = await response.text();
       console.error("AI error:", response.status, errText);
+      if (response.status === 429) {
+        return new Response(JSON.stringify({ error: "Rate limited, please try again later." }), {
+          status: 429,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (response.status === 402) {
+        return new Response(JSON.stringify({ error: "AI credits exhausted." }), {
+          status: 402,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
       return new Response(JSON.stringify({ error: "AI service error" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -100,12 +175,11 @@ Respond with a JSON object (no markdown):
     if (toolCall?.function?.arguments) {
       recommendation = JSON.parse(toolCall.function.arguments);
     } else {
-      // Fallback: try parsing content as JSON
       const content = result.choices?.[0]?.message?.content || "{}";
       try {
         recommendation = JSON.parse(content.replace(/```json\n?|\n?```/g, ""));
       } catch {
-        recommendation = { recommendedPackage: "5KVA Solar Package", reason: "A versatile choice for most homes.", totalWattsNeeded: totalWatts, budgetFit: "within_budget", tip: "Consider LED bulbs to reduce power consumption." };
+        recommendation = { recommendedPackage: "Contact us for a custom recommendation", reason: "We'd love to help you find the perfect solution.", budgetFit: "within_budget", tip: "Reach out on WhatsApp for the fastest response." };
       }
     }
 

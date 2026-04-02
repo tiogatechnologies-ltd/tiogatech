@@ -3,8 +3,8 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
 const defaultProblems = [
-  { title: "Unreliable Electricity", desc: "Nigeria averages just 4–6 hours of grid power daily. Constant blackouts disrupt your work, spoil food, and leave families in the dark — costing you time and money every single day." },
-  { title: "Skyrocketing Fuel Costs", desc: "Generator fuel prices keep climbing. Many homes and businesses spend ₦50,000–₦200,000+ monthly on diesel and petrol just to keep the lights on." },
+  { title: "Unreliable Electricity", desc: "Nigeria averages just 4 to 6 hours of grid power daily. Constant blackouts disrupt your work, spoil food, and leave families in the dark, costing you time and money every single day." },
+  { title: "Skyrocketing Fuel Costs", desc: "Generator fuel prices keep climbing. Many homes and businesses spend ₦50,000 to ₦200,000+ monthly on diesel and petrol just to keep the lights on." },
   { title: "Outdated Security", desc: "Traditional locks and basic CCTV won't stop modern threats. Without smart monitoring, remote access, and real-time alerts, your property stays vulnerable." },
   { title: "Wasted Productivity", desc: "Every power outage means lost revenue for businesses, interrupted lessons for schools, and frustration at home." },
 ];
@@ -16,7 +16,7 @@ const ProblemSection = () => {
   const { content } = useLandingContent("problems");
 
   const heading = content?.heading || "Sound familiar?";
-  const subtitle = content?.subtitle || "Millions of Nigerians deal with these challenges daily. If any of these hit close to home, you're not alone — and there's a better way.";
+  const subtitle = content?.subtitle || "Millions of Nigerians deal with these challenges daily. If any of these hit close to home, you're not alone and there's a better way.";
   const items = content?.items || defaultProblems;
 
   return (

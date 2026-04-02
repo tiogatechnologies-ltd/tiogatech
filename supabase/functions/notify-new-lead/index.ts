@@ -40,7 +40,7 @@ serve(async (req) => {
   <div style="background: #ffffff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 12px 12px;">
     ${body.recipient_name ? `<p style="font-size: 14px; color: #333;">Hi ${body.recipient_name},</p>` : ""}
     <div style="font-size: 14px; color: #333; line-height: 1.6; white-space: pre-wrap;">${body.message}</div>
-    <p style="margin-top: 24px; font-size: 13px; color: #999;">— Tioga Technologies</p>
+    <p style="margin-top: 24px; font-size: 13px; color: #999;">Tioga Technologies</p>
   </div>
 </div>`.trim();
     } else {

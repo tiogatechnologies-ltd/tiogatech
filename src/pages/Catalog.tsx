@@ -43,7 +43,7 @@ const tierLabels: Record<string, string> = {
 };
 
 function getTierOrder(budget?: string): string[] {
-  if (budget === "₦3M+" || budget === "₦1M – ₦3M") return ["premium", "mid", "affordable", "entry"];
+  if (budget === "₦3M+" || budget === "₦1M to ₦3M") return ["premium", "mid", "affordable", "entry"];
   if (budget === "Below ₦500k") return ["entry", "affordable", "mid", "premium"];
   return ["mid", "premium", "affordable", "entry"];
 }
@@ -81,7 +81,6 @@ const ProductCard = ({ product, isRecommended }: { product: Product; isRecommend
 
         <span className="text-xs font-medium text-primary">Best for: {product.best_for}</span>
 
-        {/* Specifications */}
         {product.specifications && Object.keys(product.specifications).length > 0 && (
           <div className="grid grid-cols-2 gap-1 text-[10px]">
             {Object.entries(product.specifications).slice(0, expanded ? undefined : 2).map(([key, val]) => (
@@ -131,12 +130,25 @@ const Catalog = () => {
     fullName?: string;
     totalWatts?: number;
     selectedAppliances?: { name: string; quantity: number; avgWatts: number }[];
+    formContext?: {
+      category?: string;
+      systemType?: string;
+      propertyType?: string;
+      usageDuration?: string;
+      automateWhat?: string[];
+      controlPreference?: string;
+      automationScale?: string;
+      securityNeeds?: string[];
+      accessType?: string[];
+      cctvCoverage?: string[];
+    };
   } | null;
   const interests = state?.products ?? [];
   const budget = state?.budget;
   const userName = state?.fullName;
   const totalWatts = state?.totalWatts;
   const selectedAppliances = state?.selectedAppliances;
+  const formContext = state?.formContext;
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -169,19 +181,21 @@ const Catalog = () => {
     fetchProducts();
   }, []);
 
-  // Get AI recommendation for solar users
+  // Get AI recommendation for ALL categories
   useEffect(() => {
-    if (!totalWatts || !selectedAppliances?.length) return;
+    if (!formContext?.category && !totalWatts) return;
     setAiLoading(true);
     supabase.functions
       .invoke("ai-recommend", {
         body: {
+          category: formContext?.category,
           appliances: selectedAppliances,
           totalWatts,
           budget,
-          systemType: null,
-          propertyType: null,
-          usageDuration: null,
+          systemType: formContext?.systemType,
+          propertyType: formContext?.propertyType,
+          usageDuration: formContext?.usageDuration,
+          formContext,
         },
       })
       .then(({ data, error }) => {
@@ -189,7 +203,7 @@ const Catalog = () => {
       })
       .catch(console.error)
       .finally(() => setAiLoading(false));
-  }, [totalWatts]);
+  }, [formContext?.category, totalWatts]);
 
   // Group by series
   const grouped: Record<string, Product[]> = {};
@@ -199,8 +213,12 @@ const Catalog = () => {
     grouped[key].push(p);
   }
 
-  const isRecommended = (product: Product) =>
-    aiRec?.recommendedPackage && product.name.toLowerCase().includes(aiRec.recommendedPackage.toLowerCase().split(" ")[0]);
+  const isRecommended = (product: Product) => {
+    if (!aiRec?.recommendedPackage) return false;
+    const recLower = aiRec.recommendedPackage.toLowerCase();
+    const nameLower = product.name.toLowerCase();
+    return nameLower.includes(recLower.split(" ")[0]) || recLower.includes(nameLower.split(" ")[0]);
+  };
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -244,12 +262,12 @@ const Catalog = () => {
                 <p className="text-sm text-muted-foreground">{aiRec.reason}</p>
                 {aiRec.tip && (
                   <p className="text-xs bg-accent/10 border border-accent/20 rounded-lg px-3 py-2 text-accent-foreground">
-                    💡 <strong>Pro tip:</strong> {aiRec.tip}
+                    <strong>Pro tip:</strong> {aiRec.tip}
                   </p>
                 )}
                 {aiRec.budgetFit === "over_budget" && aiRec.alternativePackage && (
                   <p className="text-xs text-muted-foreground">
-                    💰 Budget-friendly alternative: <strong>{aiRec.alternativePackage}</strong>
+                    Budget-friendly alternative: <strong>{aiRec.alternativePackage}</strong>
                   </p>
                 )}
               </div>

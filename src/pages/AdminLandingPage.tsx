@@ -34,7 +34,7 @@ const defaultContent: Record<string, any> = {
     ],
   },
   solution: {
-    heading: "Stable power, smart automation, and security — all in one system.",
+    heading: "Stable power, smart automation, and security, all in one system.",
     description: "Tioga combines solar energy, intelligent home automation, and modern security into a seamless experience.",
   },
   offers: {

@@ -3,8 +3,8 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
 const defaultUsers = [
-  { label: "Homes", desc: "Apartments, bungalows, duplexes — enjoy uninterrupted power and smart living." },
-  { label: "Businesses", desc: "Shops, warehouses, restaurants — cut energy costs and protect your assets." },
+  { label: "Homes", desc: "Apartments, bungalows, duplexes: enjoy uninterrupted power and smart living." },
+  { label: "Businesses", desc: "Shops, warehouses, restaurants: cut energy costs and protect your assets." },
   { label: "Schools", desc: "Keep classrooms powered, secure campuses, and reduce running costs." },
   { label: "Offices", desc: "Stay productive with reliable power, smart controls, and modern security." },
 ];
