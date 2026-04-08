@@ -1,9 +1,19 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
 
 const WHATSAPP = "https://wa.me/2348178000023";
+const PRODUCTS_PER_PAGE = 15;
 
 interface Product {
   id: string;
@@ -47,6 +57,24 @@ function getTierOrder(budget?: string): string[] {
   if (budget === "Below ₦500k") return ["entry", "affordable", "mid", "premium"];
   return ["mid", "premium", "affordable", "entry"];
 }
+
+// Map form interests to DB categories
+const CATEGORY_MAP: Record<string, string> = {
+  solar: "solar",
+  panels: "solar",
+  batteries: "solar",
+  full_solar: "solar",
+  smartlocks: "smart_locks",
+  smarthome: "smarthome",
+  cctv: "cctv",
+};
+
+const CATEGORY_LABELS: Record<string, string> = {
+  solar: "Solar Products",
+  smart_locks: "Smart Locks",
+  smarthome: "Smart Home",
+  cctv: "CCTV & Security",
+};
 
 const ProductCard = ({ product, isRecommended }: { product: Product; isRecommended?: boolean }) => {
   const [expanded, setExpanded] = useState(false);
@@ -150,39 +178,51 @@ const Catalog = () => {
   const selectedAppliances = state?.selectedAppliances;
   const formContext = state?.formContext;
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [aiRec, setAiRec] = useState<AIRecommendation | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeSeries, setActiveSeries] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Determine the primary category from form
+  const primaryCategory = useMemo(() => {
+    if (formContext?.category) return formContext.category;
+    if (interests.length > 0) {
+      const mapped = CATEGORY_MAP[interests[0]];
+      if (mapped) return mapped === "solar" ? "solar" : mapped === "smart_locks" ? "security" : mapped;
+    }
+    return null;
+  }, [formContext?.category, interests]);
+
+  // Map interests to DB categories
+  const targetCategories = useMemo(() => {
+    if (interests.length > 0) {
+      return [...new Set(interests.map((i) => CATEGORY_MAP[i] || i))];
+    }
+    return ["solar", "smart_locks", "smarthome", "cctv"];
+  }, [interests]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const cats = interests.length > 0
-        ? [...new Set(interests.map((i) => {
-            if (["solar", "panels", "batteries", "full_solar"].includes(i)) return "solar";
-            if (i === "smartlocks") return "smart_locks";
-            return i;
-          }))]
-        : ["solar", "smart_locks", "smarthome", "cctv"];
-
       const { data } = await supabase
         .from("products")
         .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications")
-        .in("category", cats)
+        .in("category", targetCategories)
         .eq("is_active", true)
         .order("sort_order");
 
       let results = (data as Product[]) ?? [];
       const tierOrder = getTierOrder(budget);
       results.sort((a, b) => tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier));
-      setProducts(results);
+      setAllProducts(results);
       setLoading(false);
     };
     fetchProducts();
   }, []);
 
-  // Get AI recommendation for ALL categories
+  // AI recommendation
   useEffect(() => {
     if (!formContext?.category && !totalWatts) return;
     setAiLoading(true);
@@ -206,19 +246,79 @@ const Catalog = () => {
       .finally(() => setAiLoading(false));
   }, [formContext?.category, totalWatts]);
 
-  // Group by series
-  const grouped: Record<string, Product[]> = {};
-  for (const p of products) {
-    const key = p.series || p.category;
-    if (!grouped[key]) grouped[key] = [];
-    grouped[key].push(p);
-  }
-
+  // Check if product matches AI recommendation
   const isRecommended = (product: Product) => {
     if (!aiRec?.recommendedPackage) return false;
     const recLower = aiRec.recommendedPackage.toLowerCase();
     const nameLower = product.name.toLowerCase();
-    return nameLower.includes(recLower.split(" ")[0]) || recLower.includes(nameLower.split(" ")[0]);
+    // Check for meaningful word overlap
+    const recWords = recLower.split(/[\s,]+/).filter(w => w.length > 2);
+    const nameWords = nameLower.split(/[\s,]+/).filter(w => w.length > 2);
+    const matchCount = recWords.filter(rw => nameWords.some(nw => nw.includes(rw) || rw.includes(nw))).length;
+    return matchCount >= 2 || nameLower.includes(recLower) || recLower.includes(nameLower);
+  };
+
+  // Available categories from loaded products
+  const availableCategories = useMemo(() => {
+    const cats = [...new Set(allProducts.map(p => p.category))];
+    return cats;
+  }, [allProducts]);
+
+  // Filter products
+  const filteredProducts = useMemo(() => {
+    let filtered = allProducts;
+    if (activeCategory) {
+      filtered = filtered.filter(p => p.category === activeCategory);
+    }
+    if (activeSeries) {
+      filtered = filtered.filter(p => (p.series || p.category) === activeSeries);
+    }
+    // Sort: recommended first
+    if (aiRec) {
+      filtered.sort((a, b) => {
+        const aRec = isRecommended(a) ? -1 : 0;
+        const bRec = isRecommended(b) ? -1 : 0;
+        return aRec - bRec;
+      });
+    }
+    return filtered;
+  }, [allProducts, activeCategory, activeSeries, aiRec]);
+
+  // Series within active category
+  const availableSeries = useMemo(() => {
+    const source = activeCategory ? allProducts.filter(p => p.category === activeCategory) : allProducts;
+    const seriesMap: Record<string, number> = {};
+    for (const p of source) {
+      const key = p.series || p.category;
+      seriesMap[key] = (seriesMap[key] || 0) + 1;
+    }
+    return Object.entries(seriesMap).sort(([a], [b]) => a.localeCompare(b));
+  }, [allProducts, activeCategory]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE,
+    currentPage * PRODUCTS_PER_PAGE
+  );
+
+  // Reset page on filter change
+  useEffect(() => { setCurrentPage(1); }, [activeCategory, activeSeries]);
+
+  const getPageNumbers = () => {
+    const pages: (number | "ellipsis")[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push("ellipsis");
+      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+        pages.push(i);
+      }
+      if (currentPage < totalPages - 2) pages.push("ellipsis");
+      pages.push(totalPages);
+    }
+    return pages;
   };
 
   return (
@@ -277,25 +377,48 @@ const Catalog = () => {
         </div>
       )}
 
-      <div className="section-container py-6 sm:py-10 space-y-8 sm:space-y-12">
-        {/* Series filter */}
-        {!loading && Object.keys(grouped).length > 3 && (
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setActiveFilter(null)}
-              className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${!activeFilter ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-            >
-              All ({products.length})
-            </button>
-            {Object.entries(grouped).map(([series, prods]) => (
+      <div className="section-container py-6 sm:py-10 space-y-6">
+        {/* Category tabs */}
+        {!loading && availableCategories.length > 1 && (
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-2">
               <button
-                key={series}
-                onClick={() => setActiveFilter(activeFilter === series ? null : series)}
-                className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${activeFilter === series ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                onClick={() => { setActiveCategory(null); setActiveSeries(null); }}
+                className={`text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${!activeCategory ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
               >
-                {series} ({prods.length})
+                All ({allProducts.length})
               </button>
-            ))}
+              {availableCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => { setActiveCategory(activeCategory === cat ? null : cat); setActiveSeries(null); }}
+                  className={`text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${activeCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                >
+                  {CATEGORY_LABELS[cat] || cat} ({allProducts.filter(p => p.category === cat).length})
+                </button>
+              ))}
+            </div>
+
+            {/* Series sub-filter */}
+            {availableSeries.length > 3 && (
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  onClick={() => setActiveSeries(null)}
+                  className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${!activeSeries ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                >
+                  All Series
+                </button>
+                {availableSeries.map(([series, count]) => (
+                  <button
+                    key={series}
+                    onClick={() => setActiveSeries(activeSeries === series ? null : series)}
+                    className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${activeSeries === series ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                  >
+                    {series} ({count})
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -305,20 +428,55 @@ const Catalog = () => {
           </div>
         ) : (
           <>
-            {Object.entries(grouped)
-              .filter(([series]) => !activeFilter || series === activeFilter)
-              .map(([series, prods]) => (
-              <section key={series} className="space-y-4">
-                <h2 className="text-base sm:text-lg font-display font-bold text-foreground">{series}</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                  {prods.map((p) => (
-                    <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} />
-                  ))}
-                </div>
-              </section>
-            ))}
+            {/* Product count */}
+            <p className="text-xs text-muted-foreground">
+              Showing {((currentPage - 1) * PRODUCTS_PER_PAGE) + 1} to {Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length)} of {filteredProducts.length} products
+            </p>
 
-            {products.length === 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+              {paginatedProducts.map((p) => (
+                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <Pagination className="mt-8">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                  {getPageNumbers().map((page, i) =>
+                    page === "ellipsis" ? (
+                      <PaginationItem key={`e-${i}`}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    ) : (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          isActive={currentPage === page}
+                          onClick={() => setCurrentPage(page as number)}
+                          className="cursor-pointer"
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    )
+                  )}
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            )}
+
+            {filteredProducts.length === 0 && (
               <div className="text-center py-20 space-y-4">
                 <p className="text-muted-foreground">No products matched your selection.</p>
                 <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
