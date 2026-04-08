@@ -154,6 +154,7 @@ const Catalog = () => {
   const [loading, setLoading] = useState(true);
   const [aiRec, setAiRec] = useState<AIRecommendation | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -277,13 +278,36 @@ const Catalog = () => {
       )}
 
       <div className="section-container py-6 sm:py-10 space-y-8 sm:space-y-12">
+        {/* Series filter */}
+        {!loading && Object.keys(grouped).length > 3 && (
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setActiveFilter(null)}
+              className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${!activeFilter ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+            >
+              All ({products.length})
+            </button>
+            {Object.entries(grouped).map(([series, prods]) => (
+              <button
+                key={series}
+                onClick={() => setActiveFilter(activeFilter === series ? null : series)}
+                className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${activeFilter === series ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+              >
+                {series} ({prods.length})
+              </button>
+            ))}
+          </div>
+        )}
+
         {loading ? (
           <div className="text-center py-20">
             <div className="animate-pulse text-muted-foreground">Loading recommendations...</div>
           </div>
         ) : (
           <>
-            {Object.entries(grouped).map(([series, prods]) => (
+            {Object.entries(grouped)
+              .filter(([series]) => !activeFilter || series === activeFilter)
+              .map(([series, prods]) => (
               <section key={series} className="space-y-4">
                 <h2 className="text-base sm:text-lg font-display font-bold text-foreground">{series}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">

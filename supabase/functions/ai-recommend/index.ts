@@ -18,7 +18,7 @@ serve(async (req) => {
     const effectiveCategory = category || formContext?.category || "solar";
 
     if (effectiveCategory === "solar") {
-      prompt = `You are a solar energy expert for Tioga Technologies in Nigeria. Based on the customer's needs, recommend the best solar package.
+      prompt = `You are a solar energy expert for Tioga Technologies in Nigeria. Based on the customer's needs, recommend the best solar products.
 
 Customer details:
 - Appliances: ${JSON.stringify(appliances || [])}
@@ -28,24 +28,98 @@ Customer details:
 - Property type: ${propertyType || formContext?.propertyType || "Not specified"}  
 - Usage hours: ${usageDuration || formContext?.usageDuration || "Not specified"}
 
-Available packages (with prices in Naira):
-LITHIUM BATTERY PACKAGES:
-1. 3.5KVA - ₦4,024,000 (3500W, 5kWh battery)
-2. 5KVA - ₦5,349,300 (5000W, 7.2kWh battery)
-3. 7.5KVA - ₦7,339,200 (7500W, 10kWh battery)
-4. 10KVA - ₦10,828,800 (10000W, 15kWh battery)
-5. 10KVA 3-Phase - ₦12,185,800 (10000W, 17kWh)
-6. 10KVA 3-Phase 20kWh - ₦13,052,600
-7. 20KVA - ₦20,808,000 (20000W, 30kWh)
-8. 30KVA - ₦40,508,800 (30000W, 70kWh)
+Available INVERTERS (Selling Prices in Naira):
 
-GEL BATTERY PACKAGES:
-9. 1KVA - ₦1,125,200 (1000W)
-10. 1.5KVA - ₦1,519,500 (1500W)
-11. 2.5KVA - ₦2,216,000 (2500W)
-12. 5KVA Gel - ₦4,775,940 (5000W)
-13. 7.5KVA Gel - ₦7,253,000 (7500W)
-14. 10KVA Gel - ₦11,284,000 (10000W)`;
+GETA INVERTERS:
+- Geta 1.5K: 1.5KW single phase - ₦299,000
+- Geta 3.6K: 3.6KW single phase - ₦357,500
+
+SNA INVERTERS:
+- SNA5000 WPV: 5KW single phase - ₦702,000
+- SNA6000 WPV: 6KW single phase - ₦715,000
+- SNA-EU 12000: 12KW single phase - ₦1,885,000
+- SNA2 EU LT 12K: 12KW single phase - ₦1,469,000
+
+GEN EU INVERTERS:
+- GEN EU 8K: 8KW single phase hybrid - ₦2,275,000
+- GEN EU 10K: 10KW single phase hybrid - ₦2,649,400
+
+THREE PHASE INVERTERS:
+- Trip-HB-EU 20K: 20KW three phase hybrid - ₦3,120,000
+- Trip-HB-EU 25K: 25KW three phase hybrid - ₦3,679,000
+- TRIP2-HB-EU 30K: 30KW three phase hybrid - ₦3,185,000
+- Trip2-LB-3P 10K/12K/15K/20K: 10-20KW three phase - ₦2,883,400 to ₦3,016,000
+
+SRNE INVERTERS:
+- HF1215S60-108: 1.5KW 12V - ₦345,800
+- HF2430S60-108: 3KW 24V - ₦426,400
+- HF2430S80-H: 3.3KW 24V - ₦486,200
+- HF4850S80-H: 5KW 48V - ₦566,800
+- HFP4850S80-145: 5KW 48V parallel - ₦561,600
+- HFP4850S80-H: 5KW 48V 500V - ₦595,400
+- AFP4850S100-H: 5KW 48V hybrid - ₦595,400
+- ASP48100S200-H: 10KW 48V - ₦1,563,900
+- ASP48120S200-H: 12KW 48V - ₦1,664,000
+- ASP48120SH3: 12KW 3phase - ₦1,717,300
+- ASF48120SH3: 12KW 3phase promo - ₦1,478,100
+- HESP4860S100-H: 6KW 48V IP66 - ₦1,375,400
+- HESP48120SH3: 12KW 3phase IP65 - ₦3,148,600
+- HESP48200SH3: 20KW IP65 - ₦5,209,100
+- HYP4850S100-H: 5KW 48V parallel - ₦631,800
+- HYP4860S100-H: 6KW 48V parallel - ₦799,500
+
+BREAD INVERTERS:
+- BIS1500-12L: 1.5KW 12V - ₦240,500
+- BIS3500-24S: 3.5KW 24V - ₦344,500
+- BIS6200-48l: 6.2KW 48V - ₦520,000
+- BIS11000-48L: 11KW 48V - ₦975,000
+- BIS11000-48L PRO: 11KW 48V Pro - ₦1,105,000
+
+ALPSOLAR INVERTERS:
+- Pulse S3: 6KW 48V IP66 - ₦845,000
+- Pulse S2: 11KW 48V IP66 - ₦1,235,000
+- ROSA Series G2: 11KW 48V 3MPPT - ₦702,000
+
+Available BATTERIES:
+- TAICO 5.12KWH (TKPW-5500) - ₦845,000
+- TAICO 10.24KWH (TKPW-10000) - ₦1,950,000
+- TAICO 15.36KWH (TKRB-1500) - ₦3,250,000
+- TAICO 20.48KWH (TKRB-2000) - ₦3,770,000
+- TAICO 20.48KWH (TKRB-2028) - ₦4,680,000
+- EOS 2.56KWH 12V - ₦548,600
+- EOS 2.56KWH 24V - ₦548,601
+- EOS 5.12KWH (EOC05B) - ₦1,324,700
+- EOS 5.12KWH Pro - ₦1,584,700
+- EOS 7.16KWH 24V - ₦1,752,400
+- EOS 10.24KWH - ₦3,331,900
+- Bread 5.12KWH - ₦1,105,000
+- Bread 7.17KWH Wall Mount - ₦1,430,000
+- Bread 4.80KWH 48V Wall Mount - ₦1,300,000
+- Bread 5.12KWH Wall Mount - ₦1,300,000
+- Bread 9.6KWH Rack - ₦2,145,000
+- Bread 10.24KWH Wall Mount - ₦2,405,000
+- Bread 13.44KWH Wall Mount - ₦2,600,000
+- Bread 15.67KWH Wall Mount - ₦2,795,000
+- PylonTech Li-5 5.12KWH - ₦1,300,000
+- PylonTech Li-7.5 7.5KWH - ₦1,485,900
+- PylonTech PGEM 5.12KWH - ₦1,365,000
+- PylonTech PGEM PRO 14.3KWH - ₦3,295,500
+- PylonTech PGEM MAX 16KWH - ₦3,409,900
+- PylonTech PSHIELD MAX 16KWH IP65 - ₦4,342,000
+
+SOLAR PANELS:
+- 200W Mono - ₦45,500
+- 280W Mono - ₦71,500
+- 440-455W Mono - ₦123,500
+- 460-465W Mono - ₦123,500
+- 470-475W Mono - ₦124,800
+- 480-485W Mono - ₦127,400
+- 490-495W Mono - ₦130,000
+- 500-505W Mono - ₦130,000
+- 510-515W Mono - ₦136,500
+- 550-585W Mono - ₦137,800
+
+Recommend the best COMBINATION of inverter + battery + panels based on the customer's wattage needs and budget. Be specific with product names and prices.`;
     } else if (effectiveCategory === "automation") {
       const ctx = formContext || {};
       prompt = `You are a smart home automation expert for Tioga Technologies in Nigeria. Recommend the best automation products.
