@@ -154,6 +154,7 @@ const Catalog = () => {
   const [loading, setLoading] = useState(true);
   const [aiRec, setAiRec] = useState<AIRecommendation | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
