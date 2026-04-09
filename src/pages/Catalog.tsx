@@ -212,7 +212,7 @@ const Catalog = () => {
     const fetchProducts = async () => {
       const { data } = await supabase
         .from("products")
-        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications")
+        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications, tags")
         .in("category", targetCategories)
         .eq("is_active", true)
         .order("sort_order");
@@ -278,12 +278,12 @@ const Catalog = () => {
     if (activeSeries) {
       filtered = filtered.filter(p => (p.series || p.category) === activeSeries);
     }
-    // Sort: recommended first
-    if (aiRec) {
+    // Sort: recommended first, ordered by pick number
+    if (aiRec?.recommendedProducts?.length) {
       filtered.sort((a, b) => {
-        const aRec = isRecommended(a) ? -1 : 0;
-        const bRec = isRecommended(b) ? -1 : 0;
-        return aRec - bRec;
+        const aP = getPickNumber(a) || 999;
+        const bP = getPickNumber(b) || 999;
+        return aP - bP;
       });
     }
     return filtered;
@@ -364,16 +364,22 @@ const Catalog = () => {
               </div>
             ) : aiRec ? (
               <div className="space-y-2">
-                <p className="text-sm font-semibold text-primary">Best match: {aiRec.recommendedPackage}</p>
+                {aiRec.recommendedCombo && (
+                  <p className="text-sm font-semibold text-primary">Recommended package: {aiRec.recommendedCombo}</p>
+                )}
+                {aiRec.recommendedProducts?.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {aiRec.recommendedProducts.map((name, i) => (
+                      <span key={i} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
+                        #{i + 1} {name}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <p className="text-sm text-muted-foreground">{aiRec.reason}</p>
                 {aiRec.tip && (
                   <p className="text-xs bg-accent/10 border border-accent/20 rounded-lg px-3 py-2 text-accent-foreground">
                     <strong>Pro tip:</strong> {aiRec.tip}
-                  </p>
-                )}
-                {aiRec.budgetFit === "over_budget" && aiRec.alternativePackage && (
-                  <p className="text-xs text-muted-foreground">
-                    Budget-friendly alternative: <strong>{aiRec.alternativePackage}</strong>
                   </p>
                 )}
               </div>
