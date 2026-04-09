@@ -30,11 +30,13 @@ interface Product {
 }
 
 interface AIRecommendation {
-  recommendedPackage: string;
+  recommendedProducts: string[];
+  recommendedCombo?: string;
   reason: string;
-  totalWattsNeeded: number;
   budgetFit: string;
   tip: string;
+  // legacy
+  recommendedPackage?: string;
   alternativePackage?: string;
 }
 

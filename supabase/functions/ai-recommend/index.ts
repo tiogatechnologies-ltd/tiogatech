@@ -5,189 +5,157 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const SOLAR_PRODUCTS = `
+COMBO PACKAGES (recommend these first when they fit):
+- "Starter Home Solar Kit" - BIS3500 + 5.12KWH battery + 4x500W panels (~₦1.5M) - for small apartments
+- "Standard Home Solar Kit" - SNA5000 + TAICO 5.12KWH + 6x500W panels (~₦2.5M) - for medium homes
+- "Premium Home Solar Kit" - GEN EU 8K + TAICO 10.24KWH + 8x550W panels (~₦5.5M) - for large homes with AC
+- "Full Duplex Solar Kit" - GEN EU 10K + TAICO 20.48KWH + 12x550W panels (~₦8.5M) - for duplexes
+- "Commercial Solar Kit" - Three Phase 20K + 2x TAICO 20.48KWH + 20x550W panels (~₦15M+) - for businesses
+
+INVERTERS:
+- "Geta 1.5K" 1.5KW - ₦299,000
+- "Geta 3.6K" 3.6KW - ₦357,500
+- "SNA5000 WPV" 5KW - ₦702,000
+- "SNA6000 WPV" 6KW - ₦715,000
+- "SNA-EU 12000" 12KW - ₦1,885,000
+- "SNA2 EU LT 12K" 12KW - ₦1,469,000
+- "GEN EU 8K" 8KW hybrid - ₦2,275,000
+- "GEN EU 10K" 10KW hybrid - ₦2,649,400
+- "Trip-HB-EU 20K" 20KW 3phase - ₦3,120,000
+- "Trip-HB-EU 25K" 25KW 3phase - ₦3,679,000
+- "TRIP2-HB-EU 30K" 30KW 3phase - ₦3,185,000
+- "BIS1500-12L" 1.5KW - ₦240,500
+- "BIS3500-24S" 3.5KW - ₦344,500
+- "BIS6200-48l" 6.2KW - ₦520,000
+- "BIS11000-48L  48V Hybrid Inverter" 11KW - ₦975,000
+- "HF1215S60-108" 1.5KW SRNE - ₦345,800
+- "HF2430S60-108" 3KW SRNE - ₦426,400
+- "HF4850S80-H PV input 500V" 5KW SRNE - ₦566,800
+- "ASP48100S200-H" 10KW SRNE - ₦1,563,900
+- "ASP48120S200-H" 12KW SRNE - ₦1,664,000
+- "PULSE S3 Off-Grid Hybrid Inverter" 6KW - ₦845,000
+- "PULSE S2 Off-Grid Hybrid Inverter" 11KW - ₦1,235,000
+- "ROSA Series G2 Single Phase Hybrid Inverter" 11KW - ₦702,000
+
+BATTERIES:
+- "TKPW-5500" TAICO 5.12KWH - ₦845,000
+- "TKPW-10000" TAICO 10.24KWH - ₦1,950,000
+- "TKRB-1500" TAICO 15.36KWH - ₦3,250,000
+- "TKRB-2000" TAICO 20.48KWH - ₦3,770,000
+- "TKRB-2028" TAICO 20.48KWH - ₦4,680,000
+- "EOC05B" EOS 5.12KWH - ₦1,324,700
+- "EOS10B" EOS 10.24KWH - ₦3,331,900
+- "PGEM" PylonTech 5.12KWH - ₦1,365,000
+- "PGEM PRO" PylonTech 14.3KWH - ₦3,295,500
+- "PGEM MAX" PylonTech 16KWH - ₦3,409,900
+
+SOLAR PANELS:
+- "200W Mono Solar Panel" - ₦45,500
+- "280W Mono Solar Panel  (Promotion)" - ₦71,500
+- "440-455W Monocrystalline (half-cut or PERC cells)" - ₦123,500
+- "490-495W Monocrystalline (half-cut or PERC cells)" - ₦130,000
+- "550-585W Monocrystalline (half-cut or PERC cells)" - ₦137,800
+`;
+
+const SECURITY_PRODUCTS = `
+COMBO PACKAGES (recommend these first when they fit):
+- "Home Security Starter" - SL02 lock + 2x indoor cameras (~₦250k) - for apartments
+- "Full Home Security" - D20 Apex lock + 2x outdoor + 1x dome camera (~₦500k) - for houses
+- "Business Security Suite" - 2x K209 Elite locks + 4x bullet cameras + DVR (~₦1M+) - for businesses
+
+SMART LOCKS:
+Elite Series:
+- "Model K209" - Facial recognition, palm-vein, video intercom
+- "Model S7" - IP66 waterproof, facial recognition
+Apex Series:
+- "Model D20" - Facial recognition, WiFi app
+- "Model H11" - Facial recognition, video intercom
+- "Model C11" - Facial recognition, doorbell
+Pro Series:
+- "SL02" - Built-in camera, staff attendance
+- "TF5" - Remote access, BLE app
+- "N22" - WiFi, 100 fingerprints
+- "N14" - Business, time attendance
+Base Series:
+- "V80" - Compact, mobile app
+- "G290" - Fingerprint + card + key
+- "KT14" - Portable biometric, IP67
+
+CCTV:
+- "Indoor Camera" - 1080p, night vision
+- "Outdoor Camera" - IP66 weatherproof
+- "Dome Camera" - 360, vandal-proof
+- "Bullet Camera" - 30m IR night vision
+`;
+
+const SMARTHOME_PRODUCTS = `
+COMBO PACKAGES (recommend these first when they fit):
+- "Smart Starter Kit" - 4x 1 Gang switches + 1x Granite Display (~₦150k) - for beginners
+- "Smart Home Complete" - 8 Gang + 4x 1 Gang + Granite Display + TF5 lock (~₦350k) - full automation
+
+SWITCHES:
+- "8 Gang WiFi Smart Switch" - Multi-circuit remote control
+- "1 Gang WiFi Smart Switch" - Single switch with timer
+- "Granite Display Smart Switch" - Premium touch display, scene control, energy monitoring
+`;
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     const body = await req.json();
-    const { category, appliances, totalWatts, budget, systemType, propertyType, usageDuration, formContext } = body;
+    const { category, appliances, totalWatts, budget, formContext } = body;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    let prompt = "";
     const effectiveCategory = category || formContext?.category || "solar";
 
-    if (effectiveCategory === "solar") {
-      prompt = `You are a solar energy expert for Tioga Technologies in Nigeria. Based on the customer's needs, recommend the best solar products.
+    let catalogSection = SOLAR_PRODUCTS;
+    let expertRole = "solar energy expert";
+    let customerDetails = "";
 
-Customer details:
+    if (effectiveCategory === "solar") {
+      const ctx = formContext || {};
+      customerDetails = `
 - Appliances: ${JSON.stringify(appliances || [])}
 - Estimated total watts: ${totalWatts || 0}W
 - Budget: ${budget || "Not specified"}
-- System preference: ${systemType || formContext?.systemType || "Not specified"}
-- Property type: ${propertyType || formContext?.propertyType || "Not specified"}  
-- Usage hours: ${usageDuration || formContext?.usageDuration || "Not specified"}
-
-Available INVERTERS (Selling Prices in Naira):
-
-GETA INVERTERS:
-- Geta 1.5K: 1.5KW single phase - ₦299,000
-- Geta 3.6K: 3.6KW single phase - ₦357,500
-
-SNA INVERTERS:
-- SNA5000 WPV: 5KW single phase - ₦702,000
-- SNA6000 WPV: 6KW single phase - ₦715,000
-- SNA-EU 12000: 12KW single phase - ₦1,885,000
-- SNA2 EU LT 12K: 12KW single phase - ₦1,469,000
-
-GEN EU INVERTERS:
-- GEN EU 8K: 8KW single phase hybrid - ₦2,275,000
-- GEN EU 10K: 10KW single phase hybrid - ₦2,649,400
-
-THREE PHASE INVERTERS:
-- Trip-HB-EU 20K: 20KW three phase hybrid - ₦3,120,000
-- Trip-HB-EU 25K: 25KW three phase hybrid - ₦3,679,000
-- TRIP2-HB-EU 30K: 30KW three phase hybrid - ₦3,185,000
-- Trip2-LB-3P 10K/12K/15K/20K: 10-20KW three phase - ₦2,883,400 to ₦3,016,000
-
-SRNE INVERTERS:
-- HF1215S60-108: 1.5KW 12V - ₦345,800
-- HF2430S60-108: 3KW 24V - ₦426,400
-- HF2430S80-H: 3.3KW 24V - ₦486,200
-- HF4850S80-H: 5KW 48V - ₦566,800
-- HFP4850S80-145: 5KW 48V parallel - ₦561,600
-- HFP4850S80-H: 5KW 48V 500V - ₦595,400
-- AFP4850S100-H: 5KW 48V hybrid - ₦595,400
-- ASP48100S200-H: 10KW 48V - ₦1,563,900
-- ASP48120S200-H: 12KW 48V - ₦1,664,000
-- ASP48120SH3: 12KW 3phase - ₦1,717,300
-- ASF48120SH3: 12KW 3phase promo - ₦1,478,100
-- HESP4860S100-H: 6KW 48V IP66 - ₦1,375,400
-- HESP48120SH3: 12KW 3phase IP65 - ₦3,148,600
-- HESP48200SH3: 20KW IP65 - ₦5,209,100
-- HYP4850S100-H: 5KW 48V parallel - ₦631,800
-- HYP4860S100-H: 6KW 48V parallel - ₦799,500
-
-BREAD INVERTERS:
-- BIS1500-12L: 1.5KW 12V - ₦240,500
-- BIS3500-24S: 3.5KW 24V - ₦344,500
-- BIS6200-48l: 6.2KW 48V - ₦520,000
-- BIS11000-48L: 11KW 48V - ₦975,000
-- BIS11000-48L PRO: 11KW 48V Pro - ₦1,105,000
-
-ALPSOLAR INVERTERS:
-- Pulse S3: 6KW 48V IP66 - ₦845,000
-- Pulse S2: 11KW 48V IP66 - ₦1,235,000
-- ROSA Series G2: 11KW 48V 3MPPT - ₦702,000
-
-Available BATTERIES:
-- TAICO 5.12KWH (TKPW-5500) - ₦845,000
-- TAICO 10.24KWH (TKPW-10000) - ₦1,950,000
-- TAICO 15.36KWH (TKRB-1500) - ₦3,250,000
-- TAICO 20.48KWH (TKRB-2000) - ₦3,770,000
-- TAICO 20.48KWH (TKRB-2028) - ₦4,680,000
-- EOS 2.56KWH 12V - ₦548,600
-- EOS 2.56KWH 24V - ₦548,601
-- EOS 5.12KWH (EOC05B) - ₦1,324,700
-- EOS 5.12KWH Pro - ₦1,584,700
-- EOS 7.16KWH 24V - ₦1,752,400
-- EOS 10.24KWH - ₦3,331,900
-- Bread 5.12KWH - ₦1,105,000
-- Bread 7.17KWH Wall Mount - ₦1,430,000
-- Bread 4.80KWH 48V Wall Mount - ₦1,300,000
-- Bread 5.12KWH Wall Mount - ₦1,300,000
-- Bread 9.6KWH Rack - ₦2,145,000
-- Bread 10.24KWH Wall Mount - ₦2,405,000
-- Bread 13.44KWH Wall Mount - ₦2,600,000
-- Bread 15.67KWH Wall Mount - ₦2,795,000
-- PylonTech Li-5 5.12KWH - ₦1,300,000
-- PylonTech Li-7.5 7.5KWH - ₦1,485,900
-- PylonTech PGEM 5.12KWH - ₦1,365,000
-- PylonTech PGEM PRO 14.3KWH - ₦3,295,500
-- PylonTech PGEM MAX 16KWH - ₦3,409,900
-- PylonTech PSHIELD MAX 16KWH IP65 - ₦4,342,000
-
-SOLAR PANELS:
-- 200W Mono - ₦45,500
-- 280W Mono - ₦71,500
-- 440-455W Mono - ₦123,500
-- 460-465W Mono - ₦123,500
-- 470-475W Mono - ₦124,800
-- 480-485W Mono - ₦127,400
-- 490-495W Mono - ₦130,000
-- 500-505W Mono - ₦130,000
-- 510-515W Mono - ₦136,500
-- 550-585W Mono - ₦137,800
-
-Recommend the best COMBINATION of inverter + battery + panels based on the customer's wattage needs and budget. Be specific with product names and prices.`;
+- System preference: ${ctx.systemType || "Not specified"}
+- Property type: ${ctx.propertyType || "Not specified"}
+- Usage hours: ${ctx.usageDuration || "Not specified"}`;
     } else if (effectiveCategory === "automation") {
+      catalogSection = SMARTHOME_PRODUCTS;
+      expertRole = "smart home automation expert";
       const ctx = formContext || {};
-      prompt = `You are a smart home automation expert for Tioga Technologies in Nigeria. Recommend the best automation products.
-
-Customer details:
+      customerDetails = `
 - What they want to automate: ${JSON.stringify(ctx.automateWhat || [])}
 - Control preference: ${ctx.controlPreference || "Not specified"}
 - Property type: ${ctx.propertyType || "Not specified"}
 - Scale: ${ctx.automationScale || "Not specified"}
-- Budget: ${budget || "Not specified"}
-
-Available products:
-1. 8 Gang WiFi Smart Switch - Multi-circuit remote control
-2. 1 Gang WiFi Smart Switch - Single switch with timer
-3. Granite Display Smart Switch - Premium touch display with scene control and energy monitoring`;
+- Budget: ${budget || "Not specified"}`;
     } else if (effectiveCategory === "security") {
+      catalogSection = SECURITY_PRODUCTS;
+      expertRole = "security systems expert";
       const ctx = formContext || {};
-      prompt = `You are a security systems expert for Tioga Technologies in Nigeria. Recommend the best security products.
-
-Customer details:
+      customerDetails = `
 - Security needs: ${JSON.stringify(ctx.securityNeeds || [])}
 - Property type: ${ctx.propertyType || "Not specified"}
 - Access type preferences: ${JSON.stringify(ctx.accessType || [])}
-- CCTV coverage needed: ${JSON.stringify(ctx.cctvCoverage || [])}
-- Budget: ${budget || "Not specified"}
-
-Available Smart Lock Products:
-ELITE SERIES (Premium):
-1. Model K209 - Facial recognition, palm-vein, video intercom
-2. Model S7 - Israeli edition, IP66 waterproof, facial recognition
-
-APEX SERIES (Mid-tier):
-3. Model D20 - Facial recognition, WiFi app control
-4. Model H11 - Facial recognition, video intercom
-5. Model C11 - Facial recognition, integrated doorbell
-
-PRO SERIES (Affordable):
-6. SL02 - Slim profile, built-in camera, staff attendance
-7. TF5 - Remote access, BLE app control
-8. N22 - WiFi control, 100 fingerprints
-9. N14 - Business-friendly, time attendance
-
-BASE SERIES (Entry):
-10. V80 - Compact, mobile app control
-11. G290 - Fingerprint + card + mechanical key
-12. KT14 - Portable biometric, IP67 waterproof
-
-HOTEL MANAGEMENT SUITE:
-13. Smart Hotel Ecosystem - Centralized guest access, digital keys
-
-Available CCTV Products:
-- Indoor Camera - 1080p, night vision, two-way audio
-- Outdoor Camera - Weatherproof IP66, motion alerts
-- Dome Camera - 360 coverage, vandal-proof
-- Bullet Camera - Long range IR, 30m night vision`;
+- CCTV coverage: ${JSON.stringify(ctx.cctvCoverage || [])}
+- Budget: ${budget || "Not specified"}`;
     }
 
-    prompt += `
+    const prompt = `You are a ${expertRole} for Tioga Technologies in Nigeria.
 
-Respond with a JSON object (no markdown):
-{
-  "recommendedPackage": "name of the best product/package",
-  "reason": "2-3 sentence explanation why this is the best fit",
-  "totalWattsNeeded": ${totalWatts || 0},
-  "budgetFit": "within_budget" | "slightly_over" | "over_budget",
-  "tip": "one helpful tip for the customer",
-  "alternativePackage": "name of a backup option if budget is tight"
-}`;
+CRITICAL: You MUST return product names EXACTLY as they appear in quotes below. Do NOT modify, shorten, or rephrase product names.
+
+Customer details:${customerDetails}
+
+Available products:
+${catalogSection}
+
+Based on the customer's needs and budget, recommend the TOP 3-5 products that best match. If a combo package fits, recommend it first. Then recommend individual components that complement it.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -201,43 +169,39 @@ Respond with a JSON object (no markdown):
         tools: [{
           type: "function",
           function: {
-            name: "recommend_package",
-            description: "Recommend the best product/package for the customer",
+            name: "recommend_products",
+            description: "Return ranked product recommendations using EXACT product names from the catalog",
             parameters: {
               type: "object",
               properties: {
-                recommendedPackage: { type: "string" },
-                reason: { type: "string" },
-                totalWattsNeeded: { type: "number" },
+                recommendedProducts: {
+                  type: "array",
+                  items: { type: "string" },
+                  description: "Array of 3-5 exact product names from the catalog, ranked by fit. Use the exact names in quotes from the product list.",
+                },
+                recommendedCombo: {
+                  type: "string",
+                  description: "The exact name of a combo package if one fits well, e.g. 'Standard Home Solar Kit'",
+                },
+                reason: { type: "string", description: "2-3 sentence explanation of why these products are the best fit" },
                 budgetFit: { type: "string", enum: ["within_budget", "slightly_over", "over_budget"] },
-                tip: { type: "string" },
-                alternativePackage: { type: "string" },
+                tip: { type: "string", description: "One helpful pro tip for the customer" },
               },
-              required: ["recommendedPackage", "reason", "budgetFit", "tip"],
+              required: ["recommendedProducts", "reason", "budgetFit", "tip"],
             },
           },
         }],
-        tool_choice: { type: "function", function: { name: "recommend_package" } },
+        tool_choice: { type: "function", function: { name: "recommend_products" } },
       }),
     });
 
     if (!response.ok) {
       const errText = await response.text();
       console.error("AI error:", response.status, errText);
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limited, please try again later." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      return new Response(JSON.stringify({ error: "AI service error" }), {
-        status: 500,
+      const status = response.status === 429 ? 429 : response.status === 402 ? 402 : 500;
+      const msg = status === 429 ? "Rate limited, please try again later." : status === 402 ? "AI credits exhausted." : "AI service error";
+      return new Response(JSON.stringify({ error: msg }), {
+        status,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -253,7 +217,20 @@ Respond with a JSON object (no markdown):
       try {
         recommendation = JSON.parse(content.replace(/```json\n?|\n?```/g, ""));
       } catch {
-        recommendation = { recommendedPackage: "Contact us for a custom recommendation", reason: "We'd love to help you find the perfect solution.", budgetFit: "within_budget", tip: "Reach out on WhatsApp for the fastest response." };
+        recommendation = {
+          recommendedProducts: [],
+          reason: "We'd love to help you find the perfect solution.",
+          budgetFit: "within_budget",
+          tip: "Reach out on WhatsApp for the fastest response.",
+        };
+      }
+    }
+
+    // Ensure backwards compatibility
+    if (!recommendation.recommendedProducts) {
+      recommendation.recommendedProducts = [];
+      if (recommendation.recommendedPackage) {
+        recommendation.recommendedProducts.push(recommendation.recommendedPackage);
       }
     }
 
