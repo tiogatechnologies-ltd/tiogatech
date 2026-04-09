@@ -27,6 +27,7 @@ interface Product {
   tier: string;
   image_url: string | null;
   specifications: Record<string, string> | null;
+  tags: string[] | null;
 }
 
 interface AIRecommendation {
