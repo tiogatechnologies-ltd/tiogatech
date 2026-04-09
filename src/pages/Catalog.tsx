@@ -446,7 +446,7 @@ const Catalog = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
               {paginatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} />
+                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} pickNumber={getPickNumber(p)} />
               ))}
             </div>
 
