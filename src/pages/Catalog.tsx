@@ -27,14 +27,17 @@ interface Product {
   tier: string;
   image_url: string | null;
   specifications: Record<string, string> | null;
+  tags: string[] | null;
 }
 
 interface AIRecommendation {
-  recommendedPackage: string;
+  recommendedProducts: string[];
+  recommendedCombo?: string;
   reason: string;
-  totalWattsNeeded: number;
   budgetFit: string;
   tip: string;
+  // legacy
+  recommendedPackage?: string;
   alternativePackage?: string;
 }
 
@@ -76,9 +79,10 @@ const CATEGORY_LABELS: Record<string, string> = {
   cctv: "CCTV & Security",
 };
 
-const ProductCard = ({ product, isRecommended }: { product: Product; isRecommended?: boolean }) => {
+const ProductCard = ({ product, isRecommended, pickNumber }: { product: Product; isRecommended?: boolean; pickNumber?: number }) => {
   const [expanded, setExpanded] = useState(false);
   const waMsg = encodeURIComponent(`Hi, I'm interested in the ${product.name}${product.price ? ` (${product.price})` : ""}`);
+  const isCombo = product.tags?.includes("combo") || product.series?.includes("Combo");
 
   return (
     <div className={`rounded-2xl border shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col ${
@@ -86,7 +90,7 @@ const ProductCard = ({ product, isRecommended }: { product: Product; isRecommend
     } bg-card`}>
       {isRecommended && (
         <div className="bg-primary text-primary-foreground text-xs font-bold text-center py-1 flex items-center justify-center gap-1">
-          <Sparkles size={12} /> AI Recommended for You
+          <Sparkles size={12} /> {isCombo ? "Recommended Package" : pickNumber ? `AI Pick #${pickNumber}` : "AI Recommended"}
         </div>
       )}
       <div className="h-28 sm:h-36 bg-muted flex items-center justify-center px-3 text-center overflow-hidden">
@@ -208,7 +212,7 @@ const Catalog = () => {
     const fetchProducts = async () => {
       const { data } = await supabase
         .from("products")
-        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications")
+        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications, tags")
         .in("category", targetCategories)
         .eq("is_active", true)
         .order("sort_order");
@@ -246,16 +250,17 @@ const Catalog = () => {
       .finally(() => setAiLoading(false));
   }, [formContext?.category, totalWatts]);
 
-  // Check if product matches AI recommendation
+  // Check if product matches AI recommendation - exact name match
+  const getPickNumber = (product: Product): number => {
+    if (!aiRec?.recommendedProducts?.length) return 0;
+    const idx = aiRec.recommendedProducts.findIndex(
+      (rp) => rp.toLowerCase().trim() === product.name.toLowerCase().trim()
+    );
+    return idx >= 0 ? idx + 1 : 0;
+  };
+
   const isRecommended = (product: Product) => {
-    if (!aiRec?.recommendedPackage) return false;
-    const recLower = aiRec.recommendedPackage.toLowerCase();
-    const nameLower = product.name.toLowerCase();
-    // Check for meaningful word overlap
-    const recWords = recLower.split(/[\s,]+/).filter(w => w.length > 2);
-    const nameWords = nameLower.split(/[\s,]+/).filter(w => w.length > 2);
-    const matchCount = recWords.filter(rw => nameWords.some(nw => nw.includes(rw) || rw.includes(nw))).length;
-    return matchCount >= 2 || nameLower.includes(recLower) || recLower.includes(nameLower);
+    return getPickNumber(product) > 0;
   };
 
   // Available categories from loaded products
@@ -273,12 +278,12 @@ const Catalog = () => {
     if (activeSeries) {
       filtered = filtered.filter(p => (p.series || p.category) === activeSeries);
     }
-    // Sort: recommended first
-    if (aiRec) {
+    // Sort: recommended first, ordered by pick number
+    if (aiRec?.recommendedProducts?.length) {
       filtered.sort((a, b) => {
-        const aRec = isRecommended(a) ? -1 : 0;
-        const bRec = isRecommended(b) ? -1 : 0;
-        return aRec - bRec;
+        const aP = getPickNumber(a) || 999;
+        const bP = getPickNumber(b) || 999;
+        return aP - bP;
       });
     }
     return filtered;
@@ -359,16 +364,22 @@ const Catalog = () => {
               </div>
             ) : aiRec ? (
               <div className="space-y-2">
-                <p className="text-sm font-semibold text-primary">Best match: {aiRec.recommendedPackage}</p>
+                {aiRec.recommendedCombo && (
+                  <p className="text-sm font-semibold text-primary">Recommended package: {aiRec.recommendedCombo}</p>
+                )}
+                {aiRec.recommendedProducts?.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {aiRec.recommendedProducts.map((name, i) => (
+                      <span key={i} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
+                        #{i + 1} {name}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <p className="text-sm text-muted-foreground">{aiRec.reason}</p>
                 {aiRec.tip && (
                   <p className="text-xs bg-accent/10 border border-accent/20 rounded-lg px-3 py-2 text-accent-foreground">
                     <strong>Pro tip:</strong> {aiRec.tip}
-                  </p>
-                )}
-                {aiRec.budgetFit === "over_budget" && aiRec.alternativePackage && (
-                  <p className="text-xs text-muted-foreground">
-                    Budget-friendly alternative: <strong>{aiRec.alternativePackage}</strong>
                   </p>
                 )}
               </div>
@@ -435,7 +446,7 @@ const Catalog = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
               {paginatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} />
+                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} pickNumber={getPickNumber(p)} />
               ))}
             </div>
 
