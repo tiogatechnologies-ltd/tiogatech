@@ -77,6 +77,41 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_activities: {
+        Row: {
+          action_type: string
+          created_at: string
+          created_by: string
+          id: string
+          lead_id: string
+          note: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          created_by: string
+          id?: string
+          lead_id: string
+          note?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          lead_id?: string
+          note?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           appliances: string[] | null
@@ -92,6 +127,7 @@ export type Database = {
           notes: string | null
           phone: string
           products: string[]
+          source: string
           status: string
           timeline: string | null
         }
@@ -109,6 +145,7 @@ export type Database = {
           notes?: string | null
           phone: string
           products?: string[]
+          source?: string
           status?: string
           timeline?: string | null
         }
@@ -126,10 +163,76 @@ export type Database = {
           notes?: string | null
           phone?: string
           products?: string[]
+          source?: string
           status?: string
           timeline?: string | null
         }
         Relationships: []
+      }
+      page_views: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string
+          device_type: string | null
+          id: string
+          page_path: string
+          referrer: string | null
+          session_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          page_path: string
+          referrer?: string | null
+          session_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          page_path?: string
+          referrer?: string | null
+          session_id?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      product_clicks: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_clicks_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {
