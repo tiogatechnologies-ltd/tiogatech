@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { usePageTracker } from "@/hooks/usePageTracker";
 import Index from "./pages/Index.tsx";
 import Catalog from "./pages/Catalog.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -27,6 +28,11 @@ const ProtectedAdmin = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const PageTracker = () => {
+  usePageTracker();
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -34,6 +40,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <PageTracker />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/catalog" element={<Catalog />} />

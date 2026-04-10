@@ -24,31 +24,40 @@ const AdminDashboard = () => {
   const [recentLeads, setRecentLeads] = useState<RecentLead[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchData = async () => {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+
+    const [leadsRes, productsRes, recentRes, todayRes, latestRes] = await Promise.all([
+      supabase.from("leads").select("id", { count: "exact", head: true }),
+      supabase.from("products").select("id", { count: "exact", head: true }),
+      supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", weekAgo.toISOString()),
+      supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", today.toISOString()),
+      supabase.from("leads").select("id, full_name, phone, products, budget, created_at").order("created_at", { ascending: false }).limit(5),
+    ]);
+
+    setStats({
+      totalLeads: leadsRes.count ?? 0,
+      totalProducts: productsRes.count ?? 0,
+      recentLeads: recentRes.count ?? 0,
+      todayLeads: todayRes.count ?? 0,
+    });
+    setRecentLeads((latestRes.data as RecentLead[]) ?? []);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-
-      const [leadsRes, productsRes, recentRes, todayRes, latestRes] = await Promise.all([
-        supabase.from("leads").select("id", { count: "exact", head: true }),
-        supabase.from("products").select("id", { count: "exact", head: true }),
-        supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", weekAgo.toISOString()),
-        supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", today.toISOString()),
-        supabase.from("leads").select("id, full_name, phone, products, budget, created_at").order("created_at", { ascending: false }).limit(5),
-      ]);
-
-      setStats({
-        totalLeads: leadsRes.count ?? 0,
-        totalProducts: productsRes.count ?? 0,
-        recentLeads: recentRes.count ?? 0,
-        todayLeads: todayRes.count ?? 0,
-      });
-      setRecentLeads((latestRes.data as RecentLead[]) ?? []);
-      setLoading(false);
-    };
     fetchData();
+
+    // Realtime: auto-refresh on new leads
+    const channel = supabase
+      .channel("dashboard-leads")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "leads" }, () => {
+        fetchData();
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const statCards = [
@@ -66,9 +75,8 @@ const AdminDashboard = () => {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Stats grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {statCards.map((s) => (
+            {statCards.map(s => (
               <div key={s.label} className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-medium text-muted-foreground">{s.label}</span>
@@ -79,7 +87,6 @@ const AdminDashboard = () => {
             ))}
           </div>
 
-          {/* Recent leads */}
           <div className="rounded-2xl border border-border bg-card">
             <div className="px-5 py-4 border-b border-border">
               <h2 className="font-display font-bold text-card-foreground">Recent Leads</h2>
@@ -96,21 +103,19 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentLeads.map((lead) => (
+                  {recentLeads.map(lead => (
                     <tr key={lead.id} className="border-b border-border/50 hover:bg-muted/30">
                       <td className="px-5 py-3 font-medium text-card-foreground">{lead.full_name}</td>
                       <td className="px-5 py-3 text-muted-foreground hidden sm:table-cell">{lead.phone}</td>
                       <td className="px-5 py-3 hidden md:table-cell">
                         <div className="flex flex-wrap gap-1">
-                          {lead.products.slice(0, 2).map((p) => (
+                          {lead.products.slice(0, 2).map(p => (
                             <span key={p} className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">{p}</span>
                           ))}
                         </div>
                       </td>
                       <td className="px-5 py-3 text-muted-foreground">{lead.budget ?? "—"}</td>
-                      <td className="px-5 py-3 text-muted-foreground hidden sm:table-cell">
-                        {new Date(lead.created_at).toLocaleDateString()}
-                      </td>
+                      <td className="px-5 py-3 text-muted-foreground hidden sm:table-cell">{new Date(lead.created_at).toLocaleDateString()}</td>
                     </tr>
                   ))}
                   {recentLeads.length === 0 && (

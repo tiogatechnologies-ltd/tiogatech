@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Save } from "lucide-react";
+import { Save, Bell } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
 
@@ -13,6 +13,12 @@ interface SiteSettings {
   whatsapp: string;
 }
 
+interface NotificationPrefs {
+  notify_email: string;
+  notify_on_new_lead: boolean;
+  notify_on_conversion: boolean;
+}
+
 const defaultSettings: SiteSettings = {
   hero_title: "Reliable Power. Smarter Living.",
   hero_subtitle: "Solar, smart home, and security solutions for homes and businesses across Nigeria.",
@@ -22,16 +28,29 @@ const defaultSettings: SiteSettings = {
   whatsapp: "+2348178000023",
 };
 
+const defaultNotifPrefs: NotificationPrefs = {
+  notify_email: "sales@tiogatechnologies.com",
+  notify_on_new_lead: true,
+  notify_on_conversion: true,
+};
+
 const AdminSettings = () => {
   const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
+  const [notifPrefs, setNotifPrefs] = useState<NotificationPrefs>(defaultNotifPrefs);
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchSettings = async () => {
-      const { data } = await supabase.from("site_settings").select("*").eq("key", "general").single();
-      if (data?.value) {
-        setSettings({ ...defaultSettings, ...(data.value as Record<string, string>) });
+      const [generalRes, notifRes] = await Promise.all([
+        supabase.from("site_settings").select("*").eq("key", "general").single(),
+        supabase.from("site_settings").select("*").eq("key", "notification_preferences").single(),
+      ]);
+      if (generalRes.data?.value) {
+        setSettings({ ...defaultSettings, ...(generalRes.data.value as Record<string, string>) });
+      }
+      if (notifRes.data?.value) {
+        setNotifPrefs({ ...defaultNotifPrefs, ...(notifRes.data.value as unknown as NotificationPrefs) });
       }
       setLoaded(true);
     };
@@ -40,13 +59,13 @@ const AdminSettings = () => {
 
   const handleSave = async () => {
     setSaving(true);
-    const { error } = await supabase.from("site_settings").upsert({
-      key: "general",
-      value: settings as unknown as Record<string, string>,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: "key" });
+    const now = new Date().toISOString();
+    const [r1, r2] = await Promise.all([
+      supabase.from("site_settings").upsert({ key: "general", value: settings as unknown as Record<string, string>, updated_at: now }, { onConflict: "key" }),
+      supabase.from("site_settings").upsert({ key: "notification_preferences", value: notifPrefs as unknown as Record<string, string>, updated_at: now }, { onConflict: "key" }),
+    ]);
 
-    if (error) {
+    if (r1.error || r2.error) {
       toast.error("Failed to save settings");
     } else {
       toast.success("Settings saved");
@@ -67,11 +86,11 @@ const AdminSettings = () => {
           <h2 className="font-display font-bold text-card-foreground">Hero Section</h2>
           <div>
             <label className="text-xs font-medium text-muted-foreground mb-1 block">Title</label>
-            <input className={inputClass} value={settings.hero_title} onChange={(e) => setSettings({ ...settings, hero_title: e.target.value })} />
+            <input className={inputClass} value={settings.hero_title} onChange={e => setSettings({ ...settings, hero_title: e.target.value })} />
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground mb-1 block">Subtitle</label>
-            <textarea className={`${inputClass} min-h-[60px] resize-none`} value={settings.hero_subtitle} onChange={(e) => setSettings({ ...settings, hero_subtitle: e.target.value })} />
+            <textarea className={`${inputClass} min-h-[60px] resize-none`} value={settings.hero_subtitle} onChange={e => setSettings({ ...settings, hero_subtitle: e.target.value })} />
           </div>
         </div>
 
@@ -79,27 +98,47 @@ const AdminSettings = () => {
           <h2 className="font-display font-bold text-card-foreground">Contact Information</h2>
           <div>
             <label className="text-xs font-medium text-muted-foreground mb-1 block">Phone</label>
-            <input className={inputClass} value={settings.phone} onChange={(e) => setSettings({ ...settings, phone: e.target.value })} />
+            <input className={inputClass} value={settings.phone} onChange={e => setSettings({ ...settings, phone: e.target.value })} />
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground mb-1 block">Email</label>
-            <input className={inputClass} value={settings.email} onChange={(e) => setSettings({ ...settings, email: e.target.value })} />
+            <input className={inputClass} value={settings.email} onChange={e => setSettings({ ...settings, email: e.target.value })} />
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground mb-1 block">Address</label>
-            <input className={inputClass} value={settings.address} onChange={(e) => setSettings({ ...settings, address: e.target.value })} />
+            <input className={inputClass} value={settings.address} onChange={e => setSettings({ ...settings, address: e.target.value })} />
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground mb-1 block">WhatsApp Number (with country code)</label>
-            <input className={inputClass} value={settings.whatsapp} onChange={(e) => setSettings({ ...settings, whatsapp: e.target.value })} />
+            <input className={inputClass} value={settings.whatsapp} onChange={e => setSettings({ ...settings, whatsapp: e.target.value })} />
           </div>
         </div>
 
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all disabled:opacity-40"
-        >
+        <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 space-y-5">
+          <h2 className="font-display font-bold text-card-foreground flex items-center gap-2"><Bell size={18} /> Notification Preferences</h2>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block">Notification Email</label>
+            <input className={inputClass} value={notifPrefs.notify_email} onChange={e => setNotifPrefs({ ...notifPrefs, notify_email: e.target.value })} placeholder="email@example.com" />
+            <p className="text-[10px] text-muted-foreground mt-1">Email address that receives lead notifications</p>
+          </div>
+          <div className="space-y-3">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" checked={notifPrefs.notify_on_new_lead}
+                onChange={e => setNotifPrefs({ ...notifPrefs, notify_on_new_lead: e.target.checked })}
+                className="rounded border-border" />
+              <span className="text-sm text-card-foreground">Notify on new lead</span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" checked={notifPrefs.notify_on_conversion}
+                onChange={e => setNotifPrefs({ ...notifPrefs, notify_on_conversion: e.target.checked })}
+                className="rounded border-border" />
+              <span className="text-sm text-card-foreground">Notify on conversion</span>
+            </label>
+          </div>
+        </div>
+
+        <button onClick={handleSave} disabled={saving}
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all disabled:opacity-40">
           <Save size={16} />
           {saving ? "Saving..." : "Save Settings"}
         </button>
