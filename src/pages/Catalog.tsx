@@ -1,7 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2 } from "lucide-react";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+
+const trackProductClick = (productId: string) => {
+  const sessionId = sessionStorage.getItem("_tid_session") || "unknown";
+  supabase.from("product_clicks").insert({ product_id: productId, session_id: sessionId }).then(() => {});
+};
 import {
   Pagination,
   PaginationContent,
