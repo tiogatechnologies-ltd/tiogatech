@@ -1,69 +1,121 @@
 
 
-## Plan: Improve AI Recommendations Accuracy and Add Combo Packages
+## Plan: Real-Time Visitor Tracking, AI Accuracy Fix, and Missing Features
 
-### Problem Analysis
-The AI recommendation is inaccurate because:
-1. It returns a single `recommendedPackage` string that must fuzzy-match product names in the DB, which often fails
-2. The AI prompt lists products with different names than what's in the database (e.g., prompt says "Geta 1.5K" but DB has "Geta 1.5K" -- some match, many don't)
-3. It recommends one item instead of a curated set of the best-matching products
+### 1. Real-Time Visitor Tracking
 
-### Phase 1: Create Combo/Bundle Packages (Database)
+**New table: `page_views`**
+```sql
+CREATE TABLE page_views (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id text NOT NULL,
+  page_path text NOT NULL,
+  referrer text,
+  user_agent text,
+  device_type text, -- mobile, tablet, desktop
+  country text,
+  city text,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+-- RLS: anyone can insert, admins can read
+```
 
-Insert pre-configured combo packages into the `products` table with a new series name per category:
+**New edge function: `track-pageview`** - receives page path, session ID, user agent; parses device type from UA string; inserts into `page_views`.
 
-**Solar Combos** (series: "Solar Combo Packages"):
-- Starter Home Solar Kit: Bread BIS3500 + Bread 5.12KWH battery + 4x 500W panels (~₦1.5M)
-- Standard Home Solar Kit: SNA5000 + TAICO 5.12KWH + 6x 500W panels (~₦2.3M)
-- Premium Home Solar Kit: GEN EU 8K + TAICO 10.24KWH + 8x 550W panels (~₦5.2M)
-- Full Duplex Solar Kit: GEN EU 10K + TAICO 20.48KWH + 12x 550W panels (~₦8M)
-- Commercial Solar Kit: Three Phase 20K + 2x TAICO 20.48KWH + 20x 550W panels (~₦14M+)
+**Frontend tracker**: A lightweight `usePageTracker()` hook in `src/hooks/usePageTracker.ts` that:
+- Generates a session ID (stored in sessionStorage)
+- Fires on every route change via `useLocation()`
+- Calls the edge function with path, referrer, and user agent
+- Placed in `App.tsx` inside `<BrowserRouter>`
 
-**Security Combos** (series: "Security Combo Packages"):
-- Home Security Starter: 1x Pro Series lock + 2x indoor cameras (~₦200k)
-- Full Home Security: 1x Apex lock + 2x outdoor cameras + 1x dome camera (~₦500k)
-- Business Security Suite: 2x Elite locks + 4x bullet cameras + DVR system (~₦1M+)
+**Analytics dashboard update** (`AdminAnalytics.tsx`): Add a new "Site Traffic" section showing:
+- Total page views, unique sessions, pages per session
+- Traffic by page (bar chart)
+- Device breakdown (pie chart)
+- Real-time visitor count (sessions in last 5 min)
+- Traffic trend over time (line chart)
 
-**Smart Home Combos** (series: "Smart Home Combo Packages"):
-- Smart Starter: 4x 1 Gang Smart Switches + 1x Granite Display
-- Smart Home Complete: 8 Gang switch + 4x 1 Gang switches + Granite Display + Pro Series lock
+---
 
-### Phase 2: Fix AI Recommendation Engine (Edge Function)
+### 2. Fix AI Recommendation Accuracy
 
-Rewrite the `ai-recommend` edge function to return **multiple ranked product names** that exactly match database entries:
+The AI prompt has product names that don't match the database. Key mismatches found:
+- Prompt: `"550-585W Monocrystalline (half-cut or PERC cells)"` vs DB: `"550-585WMonocrystalline"` (no space)
+- Prompt lists only 5 panels; DB has 15 panels
+- Prompt is missing many inverters (SRNE series has 20 models, prompt lists ~6)
+- Prompt missing many batteries (Bread has 9, EOS has 7, PylonTech has 11)
 
-- Change the tool schema to return `recommendedProducts` (array of 3-5 exact product names from the catalog) instead of a single `recommendedPackage` string
-- Add explicit instructions to the AI: "You MUST use the exact product names listed above. Return the top 3-5 products ranked by fit."
-- Include combo packages in the prompt so the AI can recommend bundles
-- Add a `recommendedCombo` field for when a bundle fits best
+**Fix**: Rewrite the AI edge function to dynamically fetch product names from the database at request time instead of using a hardcoded catalog string. This guarantees 100% name matching and stays in sync when products are added/removed via admin.
 
-### Phase 3: Update Catalog Matching Logic (Catalog.tsx)
+```
+// Pseudocode
+const { data: products } = await supabaseAdmin.from('products')
+  .select('name, category, series, price, description, best_for')
+  .eq('is_active', true)
+  .in('category', relevantCategories);
 
-- Update the `isRecommended()` function to check against the new `recommendedProducts` array (exact match by name)
-- Show combo packages prominently at the top when the AI recommends one
-- Show individual recommended products with numbered badges ("Pick #1", "Pick #2")
-- Display a "Recommended Setup" card that shows the full combo breakdown (inverter + battery + panels) with total price
+// Build catalog string from live DB data
+const catalogString = products.map(p => `- "${p.name}" ${p.series} - ${p.price || 'Contact for price'}`).join('\n');
+```
 
-### Technical Details
+Also add a validation step: after AI returns recommendations, verify each name exists in the fetched product list and remove any that don't match.
 
-**Edge function changes** (`supabase/functions/ai-recommend/index.ts`):
-- Tool schema adds `recommendedProducts: { type: "array", items: { type: "string" } }` and `recommendedCombo: { type: "string" }`
-- Prompt explicitly lists combo packages with exact names
-- System message emphasizes: "Only return product names exactly as listed"
+---
 
-**Catalog changes** (`src/pages/Catalog.tsx`):
-- `AIRecommendation` interface adds `recommendedProducts: string[]` and `recommendedCombo?: string`
-- `isRecommended()` does exact name matching against the array
-- Combo packages highlighted with a special "Complete Package" badge
-- Recommended products sorted to top in order of AI ranking
+### 3. Missing Features Identified
 
-**Database inserts**: ~12 new combo products across solar, security, and smart home categories
+**A. Lead follow-up notes/activity log**
+- New table `lead_activities` (lead_id, action_type, note, created_by, created_at)
+- Admin can log calls, emails, follow-ups per lead
+- Shows timeline in lead detail modal
 
-### Files to modify
-- `supabase/functions/ai-recommend/index.ts` - Rewrite prompts and tool schema
-- `src/pages/Catalog.tsx` - Update recommendation display and matching
+**B. Product inquiry tracking**
+- Track which products users click "Order via WhatsApp" on in the catalog
+- New table `product_clicks` (product_id, session_id, created_at)
+- Shows "Most Inquired Products" in analytics
 
-### Files unchanged
-- Form components (no changes needed)
-- Admin dashboard (combos appear as regular products)
+**C. Admin notification preferences**
+- In Settings, let admin configure notification email recipients
+- Store in `site_settings` with key `notification_preferences`
+
+**D. Lead source tracking**
+- Add `source` column to `leads` table (values: "website_form", "whatsapp", "referral", "manual")
+- Admin can manually add leads with source attribution
+- Show source breakdown in analytics
+
+**E. Export/download for analytics**
+- CSV export button on the analytics page for all chart data
+- PDF report generation option
+
+**F. Dashboard real-time updates**
+- Enable Supabase realtime on `leads` and `page_views` tables
+- Dashboard auto-refreshes when new leads come in
+
+---
+
+### Files to Create
+- `src/hooks/usePageTracker.ts` - page view tracking hook
+- `supabase/functions/track-pageview/index.ts` - edge function for tracking
+
+### Files to Modify
+- `supabase/functions/ai-recommend/index.ts` - dynamic product fetching from DB
+- `src/pages/AdminAnalytics.tsx` - add traffic section, product clicks
+- `src/App.tsx` - add page tracker
+- `src/pages/Catalog.tsx` - track product clicks
+- `src/pages/AdminLeads.tsx` - add activity log UI
+- `src/pages/AdminSettings.tsx` - add notification preferences
+- `src/pages/AdminDashboard.tsx` - add realtime updates
+
+### Database Changes
+- New table: `page_views`
+- New table: `lead_activities`
+- New table: `product_clicks`
+- Add column: `leads.source` (text, default 'website_form')
+- Enable realtime on `leads`, `page_views`
+
+### Technical Notes
+- The `track-pageview` edge function uses `verify_jwt = false` since anonymous visitors need to be tracked
+- Page tracker uses `navigator.sendBeacon` for reliability on page unload
+- AI recommendation engine creates a Supabase admin client using `SUPABASE_SERVICE_ROLE_KEY` (already in secrets) to fetch products server-side
+- Product click tracking is fire-and-forget to not block UI
 
