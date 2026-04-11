@@ -54,9 +54,15 @@ const AdminLeads = () => {
   const [addingActivity, setAddingActivity] = useState(false);
 
   const fetchLeads = async () => {
-    const { data } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
-    setLeads((data as Lead[]) ?? []);
-    setLoading(false);
+    try {
+      const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
+      if (error) console.error("Failed to fetch leads:", error);
+      setLeads((data as Lead[]) ?? []);
+    } catch (err) {
+      console.error("Leads fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchLeads(); }, []);

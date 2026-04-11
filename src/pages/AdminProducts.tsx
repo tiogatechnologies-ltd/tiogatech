@@ -48,9 +48,18 @@ const AdminProducts = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchProducts = async () => {
-    const { data } = await supabase.from("products").select("*").order("sort_order");
-    setProducts((data as Product[]) ?? []);
-    setLoading(false);
+    try {
+      const { data, error } = await supabase.from("products").select("*").order("sort_order");
+      if (error) {
+        console.error("Failed to fetch products:", error);
+        toast.error("Failed to load products");
+      }
+      setProducts((data as Product[]) ?? []);
+    } catch (err) {
+      console.error("Products fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchProducts(); }, []);

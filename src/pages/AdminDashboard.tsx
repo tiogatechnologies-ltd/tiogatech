@@ -25,25 +25,30 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    const today = new Date(); today.setHours(0, 0, 0, 0);
-    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    try {
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
 
-    const [leadsRes, productsRes, recentRes, todayRes, latestRes] = await Promise.all([
-      supabase.from("leads").select("id", { count: "exact", head: true }),
-      supabase.from("products").select("id", { count: "exact", head: true }),
-      supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", weekAgo.toISOString()),
-      supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", today.toISOString()),
-      supabase.from("leads").select("id, full_name, phone, products, budget, created_at").order("created_at", { ascending: false }).limit(5),
-    ]);
+      const [leadsRes, productsRes, recentRes, todayRes, latestRes] = await Promise.all([
+        supabase.from("leads").select("id", { count: "exact", head: true }),
+        supabase.from("products").select("id", { count: "exact", head: true }),
+        supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", weekAgo.toISOString()),
+        supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", today.toISOString()),
+        supabase.from("leads").select("id, full_name, phone, products, budget, created_at").order("created_at", { ascending: false }).limit(5),
+      ]);
 
-    setStats({
-      totalLeads: leadsRes.count ?? 0,
-      totalProducts: productsRes.count ?? 0,
-      recentLeads: recentRes.count ?? 0,
-      todayLeads: todayRes.count ?? 0,
-    });
-    setRecentLeads((latestRes.data as RecentLead[]) ?? []);
-    setLoading(false);
+      setStats({
+        totalLeads: leadsRes.count ?? 0,
+        totalProducts: productsRes.count ?? 0,
+        recentLeads: recentRes.count ?? 0,
+        todayLeads: todayRes.count ?? 0,
+      });
+      setRecentLeads((latestRes.data as RecentLead[]) ?? []);
+    } catch (err) {
+      console.error("Dashboard fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
