@@ -3,10 +3,10 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
 const defaultUsers = [
-  { label: "Homes", desc: "Apartments, bungalows, duplexes: enjoy uninterrupted power and smart living." },
-  { label: "Businesses", desc: "Shops, warehouses, restaurants: cut energy costs and protect your assets." },
-  { label: "Schools", desc: "Keep classrooms powered, secure campuses, and reduce running costs." },
-  { label: "Offices", desc: "Stay productive with reliable power, smart controls, and modern security." },
+  { label: "Homes", desc: "Apartments, bungalows, and duplexes enjoying uninterrupted power and smart living." },
+  { label: "Businesses", desc: "Shops, warehouses, and restaurants cutting energy costs and protecting assets." },
+  { label: "Schools", desc: "Powered classrooms, secure campuses, and lower running costs." },
+  { label: "Offices", desc: "Reliable power, smart controls, and modern security for productive teams." },
 ];
 
 const icons = [Home, Building2, GraduationCap, Briefcase];
@@ -17,21 +17,27 @@ const TargetUsers = () => {
   const items = content?.items || defaultUsers;
 
   return (
-    <section className="section-padding bg-background">
-      <div ref={ref} className="section-container text-center">
-        <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-2">Who We Serve</p>
-        <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">Built for every space</h2>
-        <p className="text-muted-foreground mb-12 max-w-2xl mx-auto">Whether it's a single room or a multi-story building, we have a solution that fits.</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <section className="relative py-24 bg-muted overflow-hidden">
+      <div ref={ref} className="relative section-container">
+        <div className={`max-w-2xl mx-auto text-center mb-14 ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">Who We Serve</p>
+          <h2 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4 tracking-tight leading-[1.05]">Built for every space</h2>
+          <p className="text-muted-foreground text-lg leading-relaxed">From a single room to a multi-story building, we have a solution that fits.</p>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {items.map((u: any, i: number) => {
             const Icon = icons[i % icons.length];
             return (
-              <div key={i} className={`glass-card rounded-2xl p-6 flex flex-col items-center gap-3 hover:shadow-[var(--shadow-elevated)] transition-shadow ${isVisible ? "animate-slide-up" : "opacity-0"}`} style={{ animationDelay: `${i * 80}ms` }}>
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <Icon size={26} className="text-primary" />
+              <div
+                key={i}
+                className={`group rounded-3xl bg-card border border-border p-6 sm:p-8 text-center hover:border-primary/40 hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                  <Icon size={28} className="text-primary" />
                 </div>
-                <span className="font-display font-semibold text-foreground">{u.label}</span>
-                <p className="text-muted-foreground text-xs leading-relaxed">{u.desc}</p>
+                <span className="block font-display font-semibold text-foreground text-lg mb-2">{u.label}</span>
+                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{u.desc}</p>
               </div>
             );
           })}
