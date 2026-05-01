@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight, Sparkles } from "lucide-react";
+import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight, Cpu } from "lucide-react";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 
@@ -72,16 +72,6 @@ const Hero = ({ onApply }: HeroProps) => {
         <div className="absolute -bottom-40 left-1/3 w-[450px] h-[450px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
       </div>
 
-      {/* Subtle grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.07] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(hsl(var(--primary-foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary-foreground)) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          maskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
-        }}
-      />
 
       {/* Nav */}
       <div className="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-4 sm:px-8 py-5">
@@ -140,7 +130,9 @@ const Hero = ({ onApply }: HeroProps) => {
                 <span className="relative z-10 bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">
                   smart future
                 </span>
-                <Sparkles className="absolute -top-4 -right-8 text-accent w-7 h-7 animate-float-slow" />
+                <span className="absolute -top-3 -right-10 inline-flex items-center justify-center w-9 h-9 rounded-xl bg-accent/15 border border-accent/30 backdrop-blur-md animate-float-slow">
+                  <Cpu className="text-accent w-5 h-5" />
+                </span>
               </span>
               <br />
               with the sun.
@@ -257,20 +249,30 @@ const Hero = ({ onApply }: HeroProps) => {
         </div>
       </div>
 
-      {/* Bottom logo marquee */}
-      <div className="absolute bottom-0 inset-x-0 z-10 border-t border-primary-foreground/10 bg-secondary/40 backdrop-blur-md py-4">
-        <div className="flex items-center gap-8 overflow-hidden">
-          <span className="text-xs uppercase tracking-widest text-primary-foreground/50 pl-6 whitespace-nowrap">Powered by industry leaders</span>
-          <div className="flex gap-12 animate-marquee whitespace-nowrap">
-            {[...Array(2)].map((_, i) => (
-              <div key={i} className="flex gap-12 items-center">
-                {["SRNE", "PylonTech", "EOS", "Bread", "Hikvision", "Tuya", "Victron"].map((b) => (
-                  <span key={b} className="text-primary-foreground/60 font-display font-semibold text-lg tracking-tight">
-                    {b}
-                  </span>
-                ))}
-              </div>
-            ))}
+      {/* Bottom brand strip — label sits above marquee so it's never covered */}
+      <div className="absolute bottom-0 inset-x-0 z-10 border-t border-primary-foreground/10 bg-secondary/50 backdrop-blur-md py-4">
+        <div className="section-container">
+          <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-primary-foreground/50 text-center mb-3">
+            Trusted brands we install
+          </p>
+          <div
+            className="relative overflow-hidden"
+            style={{
+              maskImage: "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
+              WebkitMaskImage: "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
+            }}
+          >
+            <div className="flex gap-14 animate-marquee whitespace-nowrap w-max">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="flex gap-14 items-center">
+                  {["SRNE", "AlpSolarr", "Itel", "Hikvision", "Tuya"].map((b) => (
+                    <span key={b} className="text-primary-foreground/70 font-display font-semibold text-base sm:text-lg tracking-tight">
+                      {b}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
