@@ -349,6 +349,24 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
             </button>
           </div>
         )}
+
+        <div className="px-6 pb-6 -mt-2">
+          <div className="flex items-center gap-3 my-3">
+            <div className="flex-1 h-px bg-border" />
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">or</span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+          <a
+            href={buildWhatsAppUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackConversion("whatsapp_click", { source: "lead_form", category: data.category })}
+            className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/5 px-6 py-3 text-sm font-semibold text-primary hover:bg-primary/10 active:scale-[0.98] transition-all"
+          >
+            <MessageCircle size={16} />
+            Prefer to chat? Continue on WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   );
