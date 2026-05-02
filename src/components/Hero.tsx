@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight, Cpu } from "lucide-react";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
+import { trackConversion } from "@/lib/tracking";
 
 interface HeroProps {
   onApply: () => void;
