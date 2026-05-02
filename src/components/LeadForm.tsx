@@ -101,6 +101,12 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
       const { error } = await supabase.from("leads").insert(leadPayload);
       if (error) throw error;
 
+      trackConversion("lead_submitted", {
+        category: data.category,
+        budget: data.budget,
+        products,
+      });
+
       supabase.functions.invoke("notify-new-lead", { body: leadPayload }).catch(console.error);
 
       const fullName = data.fullName.trim();
