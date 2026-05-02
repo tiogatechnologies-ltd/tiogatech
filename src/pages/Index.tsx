@@ -10,15 +10,21 @@ import TrustSection from "@/components/TrustSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
-import StickyCTA from "@/components/StickyCTA";
 import LeadForm from "@/components/LeadForm";
+import { trackConversion } from "@/lib/tracking";
 
 const Index = () => {
   const [formOpen, setFormOpen] = useState(false);
 
+  const openForm = (source: string) => {
+    trackConversion("cta_click", { source });
+    trackConversion("lead_form_opened", { source });
+    setFormOpen(true);
+  };
+
   return (
-    <div className="min-h-screen scroll-smooth pb-16">
-      <Hero onApply={() => setFormOpen(true)} />
+    <div className="min-h-screen scroll-smooth">
+      <Hero onApply={() => openForm("hero")} />
       <ProblemSection />
       <div id="solutions">
         <SolutionSection />
@@ -33,9 +39,8 @@ const Index = () => {
         <TrustSection />
       </div>
       <FAQSection />
-      <FinalCTA onApply={() => setFormOpen(true)} />
+      <FinalCTA onApply={() => openForm("final_cta")} />
       <Footer />
-      <StickyCTA onApply={() => setFormOpen(true)} />
       <LeadForm open={formOpen} onClose={() => setFormOpen(false)} />
     </div>
   );
