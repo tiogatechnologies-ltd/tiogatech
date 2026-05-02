@@ -92,6 +92,7 @@ const Hero = ({ onApply }: HeroProps) => {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackConversion("whatsapp_click", { source: "header" })}
           className="flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/5 backdrop-blur-md px-4 py-2 text-primary-foreground/90 hover:bg-primary-foreground/15 transition-all text-sm font-medium"
         >
           <MessageCircle size={16} />
@@ -161,6 +162,7 @@ const Hero = ({ onApply }: HeroProps) => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackConversion("whatsapp_click", { source: "hero" })}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 backdrop-blur-md px-8 py-4 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 active:scale-[0.97] transition-all"
               >
                 <MessageCircle size={16} />

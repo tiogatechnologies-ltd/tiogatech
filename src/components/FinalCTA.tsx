@@ -1,4 +1,5 @@
 import { MessageCircle, ArrowRight, Sun, Cpu, ShieldCheck } from "lucide-react";
+import { trackConversion } from "@/lib/tracking";
 
 interface FinalCTAProps {
   onApply: () => void;
@@ -35,13 +36,14 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
               onClick={onApply}
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-2xl shadow-accent/30 hover:shadow-accent/50"
             >
-              Get Started
+              Get My Personalized Quote
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <a
               href="https://wa.me/2348178000023"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackConversion("whatsapp_click", { source: "final_cta" })}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-secondary-foreground/30 bg-secondary-foreground/5 backdrop-blur-md px-8 py-4 text-sm font-medium text-secondary-foreground hover:bg-secondary-foreground/15 active:scale-[0.97] transition-all"
             >
               <MessageCircle size={16} />
