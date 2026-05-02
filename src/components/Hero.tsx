@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight, Cpu } from "lucide-react";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
+import { trackConversion } from "@/lib/tracking";
 
 interface HeroProps {
   onApply: () => void;
@@ -91,6 +92,7 @@ const Hero = ({ onApply }: HeroProps) => {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackConversion("whatsapp_click", { source: "header" })}
           className="flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/5 backdrop-blur-md px-4 py-2 text-primary-foreground/90 hover:bg-primary-foreground/15 transition-all text-sm font-medium"
         >
           <MessageCircle size={16} />
@@ -153,13 +155,14 @@ const Hero = ({ onApply }: HeroProps) => {
                 onClick={onApply}
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-2xl shadow-accent/30 hover:shadow-accent/50"
               >
-                Get a Free Quote
+                Get My Personalized Quote
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </button>
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackConversion("whatsapp_click", { source: "hero" })}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 backdrop-blur-md px-8 py-4 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 active:scale-[0.97] transition-all"
               >
                 <MessageCircle size={16} />
@@ -175,7 +178,7 @@ const Hero = ({ onApply }: HeroProps) => {
               {[
                 { v: "250+", l: "Installations" },
                 { v: "24/7", l: "Monitoring" },
-                { v: "5★", l: "Customer Rating" },
+                { v: "12mo", l: "Warranty" },
               ].map((s) => (
                 <div key={s.l} className="flex items-baseline gap-2">
                   <span className="text-2xl font-display font-bold text-primary-foreground">{s.v}</span>

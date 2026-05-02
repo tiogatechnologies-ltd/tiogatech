@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { AlertTriangle, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { X, ArrowRight, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { trackConversion } from "@/lib/tracking";
 import { LeadFormData, initialFormData, budgetOptions, FlowCategory } from "./lead-form/types";
 import { inputClass, selectBtnClass } from "./lead-form/StepUI";
 import AddressInput from "./lead-form/AddressInput";
@@ -48,9 +49,25 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
   const [direction, setDirection] = useState<"left" | "right">("left");
   const [submitting, setSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (open) trackConversion("lead_form_started", {});
+  }, [open]);
+
   if (!open) return null;
 
   const update = (partial: Partial<LeadFormData>) => setData((d) => ({ ...d, ...partial }));
+
+  const buildWhatsAppUrl = () => {
+    const lines = [
+      "Hi Tioga! I'd like a personalized recommendation.",
+      data.category ? `• Interested in: ${data.category}` : "",
+      data.fullName ? `• Name: ${data.fullName}` : "",
+      data.location ? `• Location: ${data.location}` : "",
+      data.budget ? `• Budget: ${data.budget}` : "",
+      data.totalWatts ? `• Estimated load: ${data.totalWatts}W` : "",
+    ].filter(Boolean).join("\n");
+    return `https://wa.me/2348178000023?text=${encodeURIComponent(lines)}`;
+  };
 
   const steps = data.category ? getCategorySteps(data.category, data) : [];
   const totalSteps = steps.length;
@@ -83,6 +100,12 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
       };
       const { error } = await supabase.from("leads").insert(leadPayload);
       if (error) throw error;
+
+      trackConversion("lead_submitted", {
+        category: data.category,
+        budget: data.budget,
+        products,
+      });
 
       supabase.functions.invoke("notify-new-lead", { body: leadPayload }).catch(console.error);
 
@@ -326,6 +349,24 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
             </button>
           </div>
         )}
+
+        <div className="px-6 pb-6 -mt-2">
+          <div className="flex items-center gap-3 my-3">
+            <div className="flex-1 h-px bg-border" />
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">or</span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+          <a
+            href={buildWhatsAppUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackConversion("whatsapp_click", { source: "lead_form", category: data.category })}
+            className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/5 px-6 py-3 text-sm font-semibold text-primary hover:bg-primary/10 active:scale-[0.98] transition-all"
+          >
+            <MessageCircle size={16} />
+            Prefer to chat? Continue on WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   );
