@@ -98,13 +98,11 @@ const ProductCard = ({ product, isRecommended, pickNumber }: { product: Product;
           <Sparkles size={12} /> {isCombo ? "Recommended Package" : pickNumber ? `AI Pick #${pickNumber}` : "AI Recommended"}
         </div>
       )}
-      <div className="h-28 sm:h-36 bg-muted flex items-center justify-center px-3 text-center overflow-hidden">
-        {product.image_url ? (
+      {product.image_url && (
+        <div className="h-28 sm:h-36 bg-muted flex items-center justify-center px-3 text-center overflow-hidden">
           <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
-        ) : (
-          <span className="text-lg sm:text-2xl font-display font-bold text-muted-foreground/40">{product.name}</span>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="p-3 sm:p-4 flex-1 flex flex-col gap-2 sm:gap-3">
         <div className="flex items-start justify-between gap-2">
