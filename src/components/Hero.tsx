@@ -153,7 +153,7 @@ const Hero = ({ onApply }: HeroProps) => {
                 onClick={onApply}
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-2xl shadow-accent/30 hover:shadow-accent/50"
               >
-                Get a Free Quote
+                Get My Personalized Quote
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </button>
               <a
@@ -175,7 +175,7 @@ const Hero = ({ onApply }: HeroProps) => {
               {[
                 { v: "250+", l: "Installations" },
                 { v: "24/7", l: "Monitoring" },
-                { v: "5★", l: "Customer Rating" },
+                { v: "12mo", l: "Warranty" },
               ].map((s) => (
                 <div key={s.l} className="flex items-baseline gap-2">
                   <span className="text-2xl font-display font-bold text-primary-foreground">{s.v}</span>
