@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { AlertTriangle, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { X, ArrowRight, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { trackConversion } from "@/lib/tracking";
 import { LeadFormData, initialFormData, budgetOptions, FlowCategory } from "./lead-form/types";
 import { inputClass, selectBtnClass } from "./lead-form/StepUI";
 import AddressInput from "./lead-form/AddressInput";
@@ -48,9 +49,25 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
   const [direction, setDirection] = useState<"left" | "right">("left");
   const [submitting, setSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (open) trackConversion("lead_form_started", {});
+  }, [open]);
+
   if (!open) return null;
 
   const update = (partial: Partial<LeadFormData>) => setData((d) => ({ ...d, ...partial }));
+
+  const buildWhatsAppUrl = () => {
+    const lines = [
+      "Hi Tioga! I'd like a personalized recommendation.",
+      data.category ? `• Interested in: ${data.category}` : "",
+      data.fullName ? `• Name: ${data.fullName}` : "",
+      data.location ? `• Location: ${data.location}` : "",
+      data.budget ? `• Budget: ${data.budget}` : "",
+      data.totalWatts ? `• Estimated load: ${data.totalWatts}W` : "",
+    ].filter(Boolean).join("\n");
+    return `https://wa.me/2348178000023?text=${encodeURIComponent(lines)}`;
+  };
 
   const steps = data.category ? getCategorySteps(data.category, data) : [];
   const totalSteps = steps.length;
