@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      conversions: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          page_path: string | null
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          page_path?: string | null
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          page_path?: string | null
+          session_id?: string
+        }
+        Relationships: []
+      }
       form_questions: {
         Row: {
           category: string
