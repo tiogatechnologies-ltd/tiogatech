@@ -14,6 +14,33 @@ const navLinks = [
   { label: "Why Us", href: "#trust" },
 ];
 
+const Typewriter = ({ words }: { words: string[] }) => {
+  const [index, setIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = words[index];
+    if (!deleting && text === current) {
+      const t = setTimeout(() => setDeleting(true), 1400);
+      return () => clearTimeout(t);
+    }
+    if (deleting && text === "") {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % words.length);
+      return;
+    }
+    const t = setTimeout(() => {
+      setText((prev) =>
+        deleting ? current.slice(0, prev.length - 1) : current.slice(0, prev.length + 1)
+      );
+    }, deleting ? 40 : 75);
+    return () => clearTimeout(t);
+  }, [text, deleting, index, words]);
+
+  return <span>{text || "\u00A0"}</span>;
+};
+
 const Hero = ({ onApply }: HeroProps) => {
   const whatsappUrl = "https://wa.me/2348178000023";
   const [scrollY, setScrollY] = useState(0);
@@ -112,7 +139,7 @@ const Hero = ({ onApply }: HeroProps) => {
           {/* Left — copy */}
           <div className="lg:col-span-7 space-y-7">
             <div
-              className={`inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 px-4 py-1.5 text-sm text-primary-foreground/90 ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              className={`inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 px-3 py-1.5 text-[11px] sm:text-sm text-primary-foreground/90 ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.1s" }}
             >
               <span className="relative flex h-2 w-2">
@@ -120,31 +147,43 @@ const Hero = ({ onApply }: HeroProps) => {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
               </span>
               <ShieldCheck size={14} />
-              Trusted by 100+ Nigerian homes & businesses
+              <span>Trusted by 100+ Nigerian homes & businesses</span>
             </div>
 
             <h1
-              className={`text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-display font-bold text-primary-foreground leading-[0.95] tracking-tight ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              className={`text-[2.25rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold text-primary-foreground leading-[1.05] tracking-tight ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.25s" }}
             >
-              Power your{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10 bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">
-                  smart future
+              <span className="block">Powering Nigerian</span>
+              <span className="block">homes with</span>
+              <span className="relative inline-flex items-center mt-1 sm:mt-2 min-h-[1.15em]">
+                <span className="bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">
+                  <Typewriter
+                    words={[
+                      "solar energy.",
+                      "smart automation.",
+                      "smart locks.",
+                      "smart lighting.",
+                      "security cameras.",
+                      "intelligent living.",
+                    ]}
+                  />
                 </span>
-                <span className="absolute -top-3 -right-10 inline-flex items-center justify-center w-9 h-9 rounded-xl bg-accent/15 border border-accent/30 backdrop-blur-md animate-float-slow">
+                <span
+                  aria-hidden
+                  className="ml-1 inline-block w-[3px] sm:w-1 h-[0.85em] bg-accent rounded-sm animate-caret-blink align-middle"
+                />
+                <span className="hidden sm:inline-flex absolute -top-3 -right-12 items-center justify-center w-9 h-9 rounded-xl bg-accent/15 border border-accent/30 backdrop-blur-md animate-float-slow">
                   <Cpu className="text-accent w-5 h-5" />
                 </span>
               </span>
-              <br />
-              with the sun.
             </h1>
 
             <p
-              className={`text-lg sm:text-xl text-primary-foreground/75 max-w-xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              className={`text-base sm:text-lg lg:text-xl text-primary-foreground/75 max-w-xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.4s" }}
             >
-              Solar, smart automation, and security — engineered into one seamless system for homes and businesses across Nigeria.
+              Solar, smart automation, and security, engineered into one seamless system for homes and businesses across Nigeria.
             </p>
 
             <div
@@ -178,7 +217,7 @@ const Hero = ({ onApply }: HeroProps) => {
               {[
                 { v: "250+", l: "Installations" },
                 { v: "24/7", l: "Monitoring" },
-                { v: "12mo", l: "Warranty" },
+                { v: "2yrs", l: "Warranty" },
               ].map((s) => (
                 <div key={s.l} className="flex items-baseline gap-2">
                   <span className="text-2xl font-display font-bold text-primary-foreground">{s.v}</span>
