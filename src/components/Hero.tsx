@@ -190,7 +190,7 @@ const Hero = ({ onApply }: HeroProps) => {
               {[
                 { v: "250+", l: "Installations" },
                 { v: "24/7", l: "Monitoring" },
-                { v: "12mo", l: "Warranty" },
+                { v: "2yrs", l: "Warranty" },
               ].map((s) => (
                 <div key={s.l} className="flex items-baseline gap-2">
                   <span className="text-2xl font-display font-bold text-primary-foreground">{s.v}</span>
