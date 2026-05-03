@@ -14,6 +14,33 @@ const navLinks = [
   { label: "Why Us", href: "#trust" },
 ];
 
+const Typewriter = ({ words }: { words: string[] }) => {
+  const [index, setIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = words[index];
+    if (!deleting && text === current) {
+      const t = setTimeout(() => setDeleting(true), 1400);
+      return () => clearTimeout(t);
+    }
+    if (deleting && text === "") {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % words.length);
+      return;
+    }
+    const t = setTimeout(() => {
+      setText((prev) =>
+        deleting ? current.slice(0, prev.length - 1) : current.slice(0, prev.length + 1)
+      );
+    }, deleting ? 40 : 75);
+    return () => clearTimeout(t);
+  }, [text, deleting, index, words]);
+
+  return <span>{text || "\u00A0"}</span>;
+};
+
 const Hero = ({ onApply }: HeroProps) => {
   const whatsappUrl = "https://wa.me/2348178000023";
   const [scrollY, setScrollY] = useState(0);
