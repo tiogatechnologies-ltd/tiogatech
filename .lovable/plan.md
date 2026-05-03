@@ -1,121 +1,75 @@
+## Goals
 
+1. Make the hero text smaller and more premium on mobile.
+2. Replace the static "Power your smart future with the sun" headline with a rotating typewriter line that cycles through what Tioga covers.
+3. Change the "12mo Warranty" stat to "2yrs Warranty".
+4. Stop showing a broken/empty image placeholder (with the product name as alt text) for products without a real picture.
 
-## Plan: Real-Time Visitor Tracking, AI Accuracy Fix, and Missing Features
+## 1. Hero typography on mobile (`src/components/Hero.tsx`)
 
-### 1. Real-Time Visitor Tracking
+Current headline classes: `text-5xl sm:text-6xl lg:text-7xl xl:text-8xl` — far too large at 390–414px.
 
-**New table: `page_views`**
-```sql
-CREATE TABLE page_views (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  session_id text NOT NULL,
-  page_path text NOT NULL,
-  referrer text,
-  user_agent text,
-  device_type text, -- mobile, tablet, desktop
-  country text,
-  city text,
-  created_at timestamptz NOT NULL DEFAULT now()
-);
--- RLS: anyone can insert, admins can read
+Update to a more refined mobile-first scale:
+- Headline: `text-[2.25rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl`
+- Sub-headline paragraph: `text-base sm:text-lg lg:text-xl`
+- Trust pill: shrink padding + `text-[11px] sm:text-sm`, allow wrapping
+- CTA buttons: `px-6 py-3 text-sm` on mobile, full-width stacked
+- Stat strip numbers: `text-xl sm:text-2xl`
+- Tighten section vertical padding on mobile (`pt-24 pb-16 sm:pt-28 sm:pb-20`)
+
+## 2. Rotating typewriter headline
+
+Replace the fixed two-line headline with one cohesive line:
+
+> **Powering Nigerian homes with** *[rotating word]*
+
+Rotating phrases (typewriter: type → hold → delete → next):
+- `solar energy.`
+- `smart automation.`
+- `smart locks.`
+- `smart lighting.`
+- `security cameras.`
+- `intelligent living.`
+
+Implementation:
+- Inline `Typewriter` component inside `Hero.tsx` (no new deps).
+- Uses `useState` + `useEffect` with `setTimeout`. Typing speed ~70ms, deleting ~40ms, hold ~1400ms.
+- Word renders inside a gradient span (keep current `from-accent via-accent to-yellow-300 bg-clip-text`).
+- Trailing blinking caret (`|`) using a small CSS animation already-available pattern (add a `caret-blink` keyframe to `tailwind.config.ts`, 1s steps).
+- Min-height reserved on the rotating span to prevent layout jump on mobile.
+- The decorative floating `Cpu` chip badge moves to sit beside the gradient word but is hidden on mobile (`hidden sm:inline-flex`) so it doesn't clutter small screens.
+
+## 3. Warranty stat
+
+In `Hero.tsx` stat strip, change:
+```
+{ v: "12mo", l: "Warranty" }
+```
+to:
+```
+{ v: "2yrs", l: "Warranty" }
 ```
 
-**New edge function: `track-pageview`** - receives page path, session ID, user agent; parses device type from UA string; inserts into `page_views`.
+## 4. Product image placeholder fix (`src/pages/Catalog.tsx`)
 
-**Frontend tracker**: A lightweight `usePageTracker()` hook in `src/hooks/usePageTracker.ts` that:
-- Generates a session ID (stored in sessionStorage)
-- Fires on every route change via `useLocation()`
-- Calls the edge function with path, referrer, and user agent
-- Placed in `App.tsx` inside `<BrowserRouter>`
+Two issues:
+- Some products have an `image_url` value that is empty string, whitespace, or broken — so the `<img>` renders, fails, and the alt text (product name) is what the user sees inside the grey box.
+- The grey container itself appears even when image fails.
 
-**Analytics dashboard update** (`AdminAnalytics.tsx`): Add a new "Site Traffic" section showing:
-- Total page views, unique sessions, pages per session
-- Traffic by page (bar chart)
-- Device breakdown (pie chart)
-- Real-time visitor count (sessions in last 5 min)
-- Traffic trend over time (line chart)
+Fix:
+- Treat empty/whitespace `image_url` as missing: `const hasImage = !!product.image_url?.trim();`
+- Add `onError` handler to the `<img>` that sets local state `imgFailed = true`, which hides the entire image container.
+- Render image alt as empty string (`alt=""`) so a broken image never shows the product name as fallback text. Product name is already shown as the card title below.
+- Apply the same logic anywhere else products are rendered with images (verify only `Catalog.tsx` renders product cards — confirmed by search).
 
----
+## Technical notes
 
-### 2. Fix AI Recommendation Accuracy
+- All changes are client-side only, no DB or edge-function changes.
+- Add one keyframe `caret-blink` to `tailwind.config.ts` and matching `animation` entry.
+- No new packages.
 
-The AI prompt has product names that don't match the database. Key mismatches found:
-- Prompt: `"550-585W Monocrystalline (half-cut or PERC cells)"` vs DB: `"550-585WMonocrystalline"` (no space)
-- Prompt lists only 5 panels; DB has 15 panels
-- Prompt is missing many inverters (SRNE series has 20 models, prompt lists ~6)
-- Prompt missing many batteries (Bread has 9, EOS has 7, PylonTech has 11)
+## Files to change
 
-**Fix**: Rewrite the AI edge function to dynamically fetch product names from the database at request time instead of using a hardcoded catalog string. This guarantees 100% name matching and stays in sync when products are added/removed via admin.
-
-```
-// Pseudocode
-const { data: products } = await supabaseAdmin.from('products')
-  .select('name, category, series, price, description, best_for')
-  .eq('is_active', true)
-  .in('category', relevantCategories);
-
-// Build catalog string from live DB data
-const catalogString = products.map(p => `- "${p.name}" ${p.series} - ${p.price || 'Contact for price'}`).join('\n');
-```
-
-Also add a validation step: after AI returns recommendations, verify each name exists in the fetched product list and remove any that don't match.
-
----
-
-### 3. Missing Features Identified
-
-**A. Lead follow-up notes/activity log**
-- New table `lead_activities` (lead_id, action_type, note, created_by, created_at)
-- Admin can log calls, emails, follow-ups per lead
-- Shows timeline in lead detail modal
-
-**B. Product inquiry tracking**
-- Track which products users click "Order via WhatsApp" on in the catalog
-- New table `product_clicks` (product_id, session_id, created_at)
-- Shows "Most Inquired Products" in analytics
-
-**C. Admin notification preferences**
-- In Settings, let admin configure notification email recipients
-- Store in `site_settings` with key `notification_preferences`
-
-**D. Lead source tracking**
-- Add `source` column to `leads` table (values: "website_form", "whatsapp", "referral", "manual")
-- Admin can manually add leads with source attribution
-- Show source breakdown in analytics
-
-**E. Export/download for analytics**
-- CSV export button on the analytics page for all chart data
-- PDF report generation option
-
-**F. Dashboard real-time updates**
-- Enable Supabase realtime on `leads` and `page_views` tables
-- Dashboard auto-refreshes when new leads come in
-
----
-
-### Files to Create
-- `src/hooks/usePageTracker.ts` - page view tracking hook
-- `supabase/functions/track-pageview/index.ts` - edge function for tracking
-
-### Files to Modify
-- `supabase/functions/ai-recommend/index.ts` - dynamic product fetching from DB
-- `src/pages/AdminAnalytics.tsx` - add traffic section, product clicks
-- `src/App.tsx` - add page tracker
-- `src/pages/Catalog.tsx` - track product clicks
-- `src/pages/AdminLeads.tsx` - add activity log UI
-- `src/pages/AdminSettings.tsx` - add notification preferences
-- `src/pages/AdminDashboard.tsx` - add realtime updates
-
-### Database Changes
-- New table: `page_views`
-- New table: `lead_activities`
-- New table: `product_clicks`
-- Add column: `leads.source` (text, default 'website_form')
-- Enable realtime on `leads`, `page_views`
-
-### Technical Notes
-- The `track-pageview` edge function uses `verify_jwt = false` since anonymous visitors need to be tracked
-- Page tracker uses `navigator.sendBeacon` for reliability on page unload
-- AI recommendation engine creates a Supabase admin client using `SUPABASE_SERVICE_ROLE_KEY` (already in secrets) to fetch products server-side
-- Product click tracking is fire-and-forget to not block UI
-
+- `src/components/Hero.tsx` — mobile type scale, rotating typewriter headline, warranty label
+- `src/pages/Catalog.tsx` — robust empty/broken image handling, empty alt
+- `tailwind.config.ts` — add `caret-blink` keyframe + animation

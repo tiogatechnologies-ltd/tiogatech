@@ -109,6 +109,10 @@ export default {
           "0%": { transform: "scale(0.9)", opacity: "0.6" },
           "100%": { transform: "scale(2)", opacity: "0" },
         },
+        "caret-blink": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
