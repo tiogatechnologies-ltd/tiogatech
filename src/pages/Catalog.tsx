@@ -86,8 +86,10 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const ProductCard = ({ product, isRecommended, pickNumber }: { product: Product; isRecommended?: boolean; pickNumber?: number }) => {
   const [expanded, setExpanded] = useState(false);
+  const [imgFailed, setImgFailed] = useState(false);
   const waMsg = encodeURIComponent(`Hi, I'm interested in the ${product.name}${product.price ? ` (${product.price})` : ""}`);
   const isCombo = product.tags?.includes("combo") || product.series?.includes("Combo");
+  const hasImage = !!product.image_url?.trim() && !imgFailed;
 
   return (
     <div className={`rounded-2xl border shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col ${
@@ -98,9 +100,14 @@ const ProductCard = ({ product, isRecommended, pickNumber }: { product: Product;
           <Sparkles size={12} /> {isCombo ? "Recommended Package" : pickNumber ? `AI Pick #${pickNumber}` : "AI Recommended"}
         </div>
       )}
-      {product.image_url && (
-        <div className="h-28 sm:h-36 bg-muted flex items-center justify-center px-3 text-center overflow-hidden">
-          <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+      {hasImage && (
+        <div className="h-28 sm:h-36 bg-muted overflow-hidden">
+          <img
+            src={product.image_url!}
+            alt=""
+            onError={() => setImgFailed(true)}
+            className="w-full h-full object-cover"
+          />
         </div>
       )}
 
