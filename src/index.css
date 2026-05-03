@@ -135,4 +135,23 @@ html {
       transform: translateX(0);
     }
   }
+
+  /* iOS-spring transitions for interactive elements */
+  .ios-ease { transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  .hover-lift {
+    @apply transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-xl;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-up { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .animate-blob, .animate-float-slow, .animate-float-slower, .animate-marquee, .animate-caret-blink { animation: none !important; }
+  }
 }

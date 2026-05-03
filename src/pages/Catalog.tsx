@@ -84,15 +84,22 @@ const CATEGORY_LABELS: Record<string, string> = {
   cctv: "CCTV & Security",
 };
 
-const ProductCard = ({ product, isRecommended, pickNumber }: { product: Product; isRecommended?: boolean; pickNumber?: number }) => {
+const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product: Product; isRecommended?: boolean; pickNumber?: number; gallery?: string[] }) => {
   const [expanded, setExpanded] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(0);
   const waMsg = encodeURIComponent(`Hi, I'm interested in the ${product.name}${product.price ? ` (${product.price})` : ""}`);
   const isCombo = product.tags?.includes("combo") || product.series?.includes("Combo");
-  const hasImage = !!product.image_url?.trim() && !imgFailed;
+
+  // Build a clean image list: prefer gallery, else fall back to product.image_url
+  const allImages = (gallery && gallery.length ? gallery : [product.image_url ?? ""])
+    .map((u) => (u ?? "").trim())
+    .filter(Boolean);
+  const hasImage = allImages.length > 0 && !imgFailed;
+  const safeIdx = Math.min(activeIdx, allImages.length - 1);
 
   return (
-    <div className={`rounded-2xl border shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col ${
+    <div className={`rounded-2xl border shadow-sm hover:shadow-md transition-all duration-500 ios-ease overflow-hidden flex flex-col ${
       isRecommended ? "border-primary ring-2 ring-primary/20" : "border-border"
     } bg-card`}>
       {isRecommended && (
@@ -101,13 +108,45 @@ const ProductCard = ({ product, isRecommended, pickNumber }: { product: Product;
         </div>
       )}
       {hasImage && (
-        <div className="h-28 sm:h-36 bg-muted overflow-hidden">
+        <div className="relative h-28 sm:h-36 bg-muted overflow-hidden group">
           <img
-            src={product.image_url!}
+            key={allImages[safeIdx]}
+            src={allImages[safeIdx]}
             alt=""
             onError={() => setImgFailed(true)}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-opacity duration-500 ios-ease"
           />
+          {allImages.length > 1 && (
+            <>
+              <button
+                type="button"
+                aria-label="Previous image"
+                onClick={(e) => { e.stopPropagation(); setActiveIdx((i) => (i - 1 + allImages.length) % allImages.length); }}
+                className="absolute left-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-card/80 hover:bg-card text-foreground shadow-md opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                aria-label="Next image"
+                onClick={(e) => { e.stopPropagation(); setActiveIdx((i) => (i + 1) % allImages.length); }}
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-card/80 hover:bg-card text-foreground shadow-md opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+              >
+                ›
+              </button>
+              <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1">
+                {allImages.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    aria-label={`Go to image ${i + 1}`}
+                    onClick={(e) => { e.stopPropagation(); setActiveIdx(i); }}
+                    className={`h-1.5 rounded-full transition-all ${i === safeIdx ? "w-4 bg-primary-foreground" : "w-1.5 bg-primary-foreground/50"}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
 
@@ -219,6 +258,8 @@ const Catalog = () => {
     return ["solar", "smart_locks", "smarthome", "cctv"];
   }, [interests]);
 
+  const [galleryByProduct, setGalleryByProduct] = useState<Record<string, string[]>>({});
+
   useEffect(() => {
     const fetchProducts = async () => {
       const { data } = await supabase
@@ -233,6 +274,23 @@ const Catalog = () => {
       results.sort((a, b) => tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier));
       setAllProducts(results);
       setLoading(false);
+
+      // Fetch gallery images for these products
+      if (results.length) {
+        const ids = results.map((p) => p.id);
+        const { data: imgs } = await (supabase as any)
+          .from("product_images")
+          .select("product_id, url, sort_order, is_primary")
+          .in("product_id", ids)
+          .order("is_primary", { ascending: false })
+          .order("sort_order", { ascending: true });
+        const map: Record<string, string[]> = {};
+        ((imgs as any[]) ?? []).forEach((row) => {
+          if (!map[row.product_id]) map[row.product_id] = [];
+          map[row.product_id].push(row.url);
+        });
+        setGalleryByProduct(map);
+      }
     };
     fetchProducts();
   }, []);
@@ -457,7 +515,7 @@ const Catalog = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
               {paginatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} pickNumber={getPickNumber(p)} />
+                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} pickNumber={getPickNumber(p)} gallery={galleryByProduct[p.id]} />
               ))}
             </div>
 
