@@ -219,6 +219,8 @@ const Catalog = () => {
     return ["solar", "smart_locks", "smarthome", "cctv"];
   }, [interests]);
 
+  const [galleryByProduct, setGalleryByProduct] = useState<Record<string, string[]>>({});
+
   useEffect(() => {
     const fetchProducts = async () => {
       const { data } = await supabase
@@ -233,6 +235,23 @@ const Catalog = () => {
       results.sort((a, b) => tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier));
       setAllProducts(results);
       setLoading(false);
+
+      // Fetch gallery images for these products
+      if (results.length) {
+        const ids = results.map((p) => p.id);
+        const { data: imgs } = await (supabase as any)
+          .from("product_images")
+          .select("product_id, url, sort_order, is_primary")
+          .in("product_id", ids)
+          .order("is_primary", { ascending: false })
+          .order("sort_order", { ascending: true });
+        const map: Record<string, string[]> = {};
+        ((imgs as any[]) ?? []).forEach((row) => {
+          if (!map[row.product_id]) map[row.product_id] = [];
+          map[row.product_id].push(row.url);
+        });
+        setGalleryByProduct(map);
+      }
     };
     fetchProducts();
   }, []);
