@@ -129,7 +129,7 @@ const Hero = ({ onApply }: HeroProps) => {
 
       {/* Main content with parallax */}
       <div
-        className="relative z-10 section-container w-full pt-28 pb-20"
+        className="relative z-10 section-container w-full pt-24 pb-24 sm:pt-28 sm:pb-20"
         style={{
           transform: `translate3d(0, ${-parallaxFg}px, 0)`,
           opacity: heroOpacity,
@@ -137,7 +137,7 @@ const Hero = ({ onApply }: HeroProps) => {
       >
         <div className="grid lg:grid-cols-12 gap-10 items-center">
           {/* Left — copy */}
-          <div className="lg:col-span-7 space-y-7">
+          <div className="lg:col-span-7 space-y-5 sm:space-y-7">
             <div
               className={`inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 px-3 py-1.5 text-[11px] sm:text-sm text-primary-foreground/90 ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.1s" }}
@@ -151,7 +151,7 @@ const Hero = ({ onApply }: HeroProps) => {
             </div>
 
             <h1
-              className={`text-[2.25rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold text-primary-foreground leading-[1.05] tracking-tight ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              className={`text-[1.75rem] xs:text-[2rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-primary-foreground leading-[1.08] tracking-[-0.02em] ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.25s" }}
             >
               <span className="block">Powering Nigerian</span>
