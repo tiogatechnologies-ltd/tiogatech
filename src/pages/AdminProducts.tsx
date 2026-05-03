@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Plus, Pencil, Trash2, X, Upload, Image as ImageIcon, Search, Tag, Settings2 } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
+import ProductGalleryManager from "@/components/admin/ProductGalleryManager";
 import { toast } from "sonner";
 
 interface Product {
@@ -333,6 +334,12 @@ const AdminProducts = () => {
                 )}
                 <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
               </div>
+
+              {editing && (
+                <div className="rounded-xl border border-border bg-muted/20 p-3">
+                  <ProductGalleryManager productId={editing.id} />
+                </div>
+              )}
 
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">Name *</label>
