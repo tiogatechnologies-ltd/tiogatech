@@ -125,6 +125,7 @@ export default {
         "scale-in": "scale-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards",
         "marquee": "marquee 30s linear infinite",
         "pulse-ring": "pulse-ring 2.5s cubic-bezier(0.22, 1, 0.36, 1) infinite",
+        "caret-blink": "caret-blink 1s steps(2) infinite",
       },
     },
   },
