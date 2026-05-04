@@ -61,13 +61,35 @@ const ProductGalleryManager = ({ productId }: Props) => {
 
   const handleFiles = async (files: FileList | null) => {
     if (!files || !files.length) return;
+    const remaining = MAX_IMAGES - images.length;
+    if (remaining <= 0) {
+      toast.error(`Max ${MAX_IMAGES} images per product`);
+      return;
+    }
+    const toProcess = Array.from(files).slice(0, remaining);
+    if (files.length > remaining) {
+      toast.warning(`Only the first ${remaining} of ${files.length} files will be uploaded (max ${MAX_IMAGES} total).`);
+    }
     setUploading(true);
     try {
       let order = images.length;
-      for (const file of Array.from(files)) {
-        if (!file.type.startsWith("image/")) continue;
-        if (file.size > 5 * 1024 * 1024) {
-          toast.error(`${file.name} is over 5MB`);
+      for (const file of toProcess) {
+        if (!ALLOWED_TYPES.includes(file.type)) {
+          toast.error(`${file.name}: only JPG, PNG, or WebP allowed`);
+          continue;
+        }
+        if (file.size > MAX_FILE_MB * 1024 * 1024) {
+          toast.error(`${file.name} is over ${MAX_FILE_MB}MB`);
+          continue;
+        }
+        try {
+          const { width, height } = await checkDimensions(file);
+          if (width < MIN_DIMENSION || height < MIN_DIMENSION) {
+            toast.error(`${file.name}: image must be at least ${MIN_DIMENSION}×${MIN_DIMENSION}px`);
+            continue;
+          }
+        } catch {
+          toast.error(`${file.name}: could not read image`);
           continue;
         }
         const ext = file.name.split(".").pop();
