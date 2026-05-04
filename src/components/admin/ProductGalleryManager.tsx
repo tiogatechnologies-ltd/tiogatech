@@ -248,8 +248,10 @@ const ProductGalleryManager = ({ productId }: Props) => {
           ))}
         </div>
       )}
-      <p className="text-[11px] text-muted-foreground mt-2">
+      <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">
         First image (or "Primary") is shown on cards. Customers can swipe through the rest.
+        <br />
+        Up to {MAX_IMAGES} images · JPG/PNG/WebP · max {MAX_FILE_MB}MB · min {MIN_DIMENSION}×{MIN_DIMENSION}px.
       </p>
     </div>
   );
