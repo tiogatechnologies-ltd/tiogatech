@@ -161,21 +161,21 @@ const ProductGalleryManager = ({ productId }: Props) => {
     <div>
       <div className="flex items-center justify-between mb-2">
         <label className="text-xs font-medium text-muted-foreground">
-          Gallery ({images.length})
+          Gallery ({images.length}/{MAX_IMAGES})
         </label>
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          disabled={uploading}
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:brightness-110"
+          disabled={uploading || images.length >= MAX_IMAGES}
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <ImagePlus size={14} />
-          {uploading ? "Uploading..." : "Add images"}
+          {uploading ? "Uploading..." : images.length >= MAX_IMAGES ? "Limit reached" : "Add images"}
         </button>
         <input
           ref={fileRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           multiple
           className="hidden"
           onChange={(e) => handleFiles(e.target.files)}
