@@ -309,8 +309,8 @@ const AdminProducts = () => {
 
       {/* Edit/Create modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/40 backdrop-blur-sm px-4">
-          <div className="bg-card rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-foreground/40 backdrop-blur-sm sm:px-4">
+          <div className="bg-card rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] sm:max-h-[85vh] overflow-y-auto">
             <div className="flex items-center justify-between px-6 pt-6 pb-2">
               <h3 className="font-display font-bold text-card-foreground text-lg">{editing ? "Edit Product" : "Add Product"}</h3>
               <button onClick={closeForm} className="p-1 rounded-lg hover:bg-muted"><X size={18} className="text-muted-foreground" /></button>
