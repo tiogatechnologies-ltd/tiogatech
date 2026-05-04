@@ -16,6 +16,26 @@ interface Props {
   productId: string;
 }
 
+const MAX_IMAGES = 8;
+const MAX_FILE_MB = 5;
+const MIN_DIMENSION = 400; // px
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+const checkDimensions = (file: File): Promise<{ width: number; height: number }> =>
+  new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve({ width: img.width, height: img.height });
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Invalid image"));
+    };
+    img.src = url;
+  });
+
 const ProductGalleryManager = ({ productId }: Props) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [uploading, setUploading] = useState(false);
