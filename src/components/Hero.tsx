@@ -187,24 +187,24 @@ const Hero = ({ onApply }: HeroProps) => {
             </p>
 
             <div
-              className={`flex flex-col sm:flex-row gap-3 pt-2 ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              className={`flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-2 ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.55s" }}
             >
               <button
                 onClick={onApply}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-2xl shadow-accent/30 hover:shadow-accent/50"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 sm:px-8 py-3 sm:py-4 text-[13px] sm:text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-2xl shadow-accent/30 hover:shadow-accent/50"
               >
                 Get My Personalized Quote
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </button>
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackConversion("whatsapp_click", { source: "hero" })}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 backdrop-blur-md px-8 py-4 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 active:scale-[0.97] transition-all"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 backdrop-blur-md px-5 sm:px-8 py-3 sm:py-4 text-[13px] sm:text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 active:scale-[0.97] transition-all"
               >
-                <MessageCircle size={16} />
+                <MessageCircle size={14} />
                 Chat on WhatsApp
               </a>
             </div>

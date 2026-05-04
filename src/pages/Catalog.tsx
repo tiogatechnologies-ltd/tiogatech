@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2 } from "lucide-react";
+import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2, Expand } from "lucide-react";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import ImageLightbox from "@/components/ImageLightbox";
 
 const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("_tid_session") || "unknown";
@@ -88,6 +89,8 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
   const [expanded, setExpanded] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [lightbox, setLightbox] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
   const waMsg = encodeURIComponent(`Hi, I'm interested in the ${product.name}${product.price ? ` (${product.price})` : ""}`);
   const isCombo = product.tags?.includes("combo") || product.series?.includes("Combo");
 
@@ -96,7 +99,18 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
     .map((u) => (u ?? "").trim())
     .filter(Boolean);
   const hasImage = allImages.length > 0 && !imgFailed;
-  const safeIdx = Math.min(activeIdx, allImages.length - 1);
+  const safeIdx = Math.min(activeIdx, Math.max(0, allImages.length - 1));
+
+  const onTouchStart = (e: React.TouchEvent) => setTouchStart(e.touches[0].clientX);
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart == null || allImages.length < 2) return;
+    const dx = e.changedTouches[0].clientX - touchStart;
+    if (Math.abs(dx) > 40) {
+      if (dx < 0) setActiveIdx((i) => (i + 1) % allImages.length);
+      else setActiveIdx((i) => (i - 1 + allImages.length) % allImages.length);
+    }
+    setTouchStart(null);
+  };
 
   return (
     <div className={`rounded-2xl border shadow-sm hover:shadow-md transition-all duration-500 ios-ease overflow-hidden flex flex-col ${
@@ -108,21 +122,30 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
         </div>
       )}
       {hasImage && (
-        <div className="relative h-28 sm:h-36 bg-muted overflow-hidden group">
+        <div
+          className="relative h-32 sm:h-40 bg-muted overflow-hidden group cursor-zoom-in select-none"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          onClick={() => setLightbox(true)}
+        >
           <img
             key={allImages[safeIdx]}
             src={allImages[safeIdx]}
             alt=""
             onError={() => setImgFailed(true)}
+            draggable={false}
             className="w-full h-full object-cover transition-opacity duration-500 ios-ease"
           />
+          <span className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-card/80 backdrop-blur text-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <Expand size={13} />
+          </span>
           {allImages.length > 1 && (
             <>
               <button
                 type="button"
                 aria-label="Previous image"
                 onClick={(e) => { e.stopPropagation(); setActiveIdx((i) => (i - 1 + allImages.length) % allImages.length); }}
-                className="absolute left-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-card/80 hover:bg-card text-foreground shadow-md opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                className="absolute left-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-card/85 hover:bg-card text-foreground shadow-md flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
               >
                 ‹
               </button>
@@ -130,24 +153,27 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
                 type="button"
                 aria-label="Next image"
                 onClick={(e) => { e.stopPropagation(); setActiveIdx((i) => (i + 1) % allImages.length); }}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-card/80 hover:bg-card text-foreground shadow-md opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-card/85 hover:bg-card text-foreground shadow-md flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
               >
                 ›
               </button>
-              <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1">
+              <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1 px-2 py-1 rounded-full bg-foreground/40 backdrop-blur-sm">
                 {allImages.map((_, i) => (
                   <button
                     key={i}
                     type="button"
                     aria-label={`Go to image ${i + 1}`}
                     onClick={(e) => { e.stopPropagation(); setActiveIdx(i); }}
-                    className={`h-1.5 rounded-full transition-all ${i === safeIdx ? "w-4 bg-primary-foreground" : "w-1.5 bg-primary-foreground/50"}`}
+                    className={`h-1.5 rounded-full transition-all ${i === safeIdx ? "w-4 bg-white" : "w-1.5 bg-white/60"}`}
                   />
                 ))}
               </div>
             </>
           )}
         </div>
+      )}
+      {lightbox && hasImage && (
+        <ImageLightbox images={allImages} startIndex={safeIdx} onClose={() => setLightbox(false)} alt={product.name} />
       )}
 
       <div className="p-3 sm:p-4 flex-1 flex flex-col gap-2 sm:gap-3">

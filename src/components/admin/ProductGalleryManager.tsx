@@ -16,6 +16,26 @@ interface Props {
   productId: string;
 }
 
+const MAX_IMAGES = 8;
+const MAX_FILE_MB = 5;
+const MIN_DIMENSION = 400; // px
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+const checkDimensions = (file: File): Promise<{ width: number; height: number }> =>
+  new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve({ width: img.width, height: img.height });
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Invalid image"));
+    };
+    img.src = url;
+  });
+
 const ProductGalleryManager = ({ productId }: Props) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -41,13 +61,35 @@ const ProductGalleryManager = ({ productId }: Props) => {
 
   const handleFiles = async (files: FileList | null) => {
     if (!files || !files.length) return;
+    const remaining = MAX_IMAGES - images.length;
+    if (remaining <= 0) {
+      toast.error(`Max ${MAX_IMAGES} images per product`);
+      return;
+    }
+    const toProcess = Array.from(files).slice(0, remaining);
+    if (files.length > remaining) {
+      toast.warning(`Only the first ${remaining} of ${files.length} files will be uploaded (max ${MAX_IMAGES} total).`);
+    }
     setUploading(true);
     try {
       let order = images.length;
-      for (const file of Array.from(files)) {
-        if (!file.type.startsWith("image/")) continue;
-        if (file.size > 5 * 1024 * 1024) {
-          toast.error(`${file.name} is over 5MB`);
+      for (const file of toProcess) {
+        if (!ALLOWED_TYPES.includes(file.type)) {
+          toast.error(`${file.name}: only JPG, PNG, or WebP allowed`);
+          continue;
+        }
+        if (file.size > MAX_FILE_MB * 1024 * 1024) {
+          toast.error(`${file.name} is over ${MAX_FILE_MB}MB`);
+          continue;
+        }
+        try {
+          const { width, height } = await checkDimensions(file);
+          if (width < MIN_DIMENSION || height < MIN_DIMENSION) {
+            toast.error(`${file.name}: image must be at least ${MIN_DIMENSION}×${MIN_DIMENSION}px`);
+            continue;
+          }
+        } catch {
+          toast.error(`${file.name}: could not read image`);
           continue;
         }
         const ext = file.name.split(".").pop();
@@ -119,21 +161,21 @@ const ProductGalleryManager = ({ productId }: Props) => {
     <div>
       <div className="flex items-center justify-between mb-2">
         <label className="text-xs font-medium text-muted-foreground">
-          Gallery ({images.length})
+          Gallery ({images.length}/{MAX_IMAGES})
         </label>
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          disabled={uploading}
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:brightness-110"
+          disabled={uploading || images.length >= MAX_IMAGES}
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <ImagePlus size={14} />
-          {uploading ? "Uploading..." : "Add images"}
+          {uploading ? "Uploading..." : images.length >= MAX_IMAGES ? "Limit reached" : "Add images"}
         </button>
         <input
           ref={fileRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           multiple
           className="hidden"
           onChange={(e) => handleFiles(e.target.files)}
@@ -206,8 +248,10 @@ const ProductGalleryManager = ({ productId }: Props) => {
           ))}
         </div>
       )}
-      <p className="text-[11px] text-muted-foreground mt-2">
+      <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">
         First image (or "Primary") is shown on cards. Customers can swipe through the rest.
+        <br />
+        Up to {MAX_IMAGES} images · JPG/PNG/WebP · max {MAX_FILE_MB}MB · min {MIN_DIMENSION}×{MIN_DIMENSION}px.
       </p>
     </div>
   );
