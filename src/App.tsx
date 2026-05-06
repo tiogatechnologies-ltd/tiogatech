@@ -18,6 +18,12 @@ import AdminFormQuestions from "./pages/AdminFormQuestions.tsx";
 import AdminLandingPage from "./pages/AdminLandingPage.tsx";
 import AdminEmail from "./pages/AdminEmail.tsx";
 import AdminAnalytics from "./pages/AdminAnalytics.tsx";
+import About from "./pages/About.tsx";
+import LumiVoltAI from "./pages/LumiVoltAI.tsx";
+import Finance from "./pages/Finance.tsx";
+import Contact from "./pages/Contact.tsx";
+import Privacy from "./pages/Privacy.tsx";
+import Terms from "./pages/Terms.tsx";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +49,12 @@ const App = () => (
           <PageTracker />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/lumivolt-ai" element={<LumiVoltAI />} />
+            <Route path="/finance" element={<Finance />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/setup" element={<AdminSetup />} />
