@@ -16,7 +16,8 @@ export type ConversionEvent =
   | "lead_submitted"
   | "whatsapp_click"
   | "catalog_view"
-  | "product_click";
+  | "product_click"
+  | "contact_submitted";
 
 /** Fire-and-forget conversion tracking. Never blocks UI. */
 export function trackConversion(
