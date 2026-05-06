@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight, Cpu } from "lucide-react";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
@@ -9,9 +10,11 @@ interface HeroProps {
 }
 
 const navLinks = [
-  { label: "Solutions", href: "#solutions" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Why Us", href: "#trust" },
+  { label: "About", to: "/about" },
+  { label: "Products", to: "/catalog" },
+  { label: "LumiVolt AI", to: "/lumivolt-ai" },
+  { label: "Finance", to: "/finance" },
+  { label: "Contact", to: "/contact" },
 ];
 
 const Typewriter = ({ words }: { words: string[] }) => {
@@ -106,13 +109,13 @@ const Hero = ({ onApply }: HeroProps) => {
         <img src={tiogaLogoLight} alt="Tioga Technologies" className="h-8 sm:h-10 w-auto" />
         <nav className="hidden md:flex items-center gap-1 rounded-full border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-md px-2 py-1.5">
           {navLinks.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => scrollTo(link.href)}
+            <Link
+              key={link.to}
+              to={link.to}
               className="text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all px-4 py-1.5 rounded-full"
             >
               {link.label}
-            </button>
+            </Link>
           ))}
         </nav>
         <a
