@@ -1,22 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight, Cpu } from "lucide-react";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
-import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { trackConversion } from "@/lib/tracking";
 
 interface HeroProps {
   onApply: () => void;
 }
-
-const navLinks = [
-  { label: "About", to: "/about" },
-  { label: "Solutions", to: "/solutions" },
-  { label: "Products", to: "/catalog" },
-  { label: "LumiVolt AI", to: "/lumivolt-ai" },
-  { label: "Finance", to: "/finance" },
-  { label: "Contact", to: "/contact" },
-];
 
 const Typewriter = ({ words }: { words: string[] }) => {
   const [index, setIndex] = useState(0);
@@ -102,33 +91,6 @@ const Hero = ({ onApply }: HeroProps) => {
         <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-primary/30 blur-3xl animate-blob" />
         <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full bg-accent/20 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
         <div className="absolute -bottom-40 left-1/3 w-[450px] h-[450px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
-      </div>
-
-
-      {/* Nav */}
-      <div className="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-4 sm:px-8 py-5">
-        <img src={tiogaLogoLight} alt="Tioga Technologies" className="h-8 sm:h-10 w-auto" />
-        <nav className="hidden md:flex items-center gap-1 rounded-full border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-md px-2 py-1.5">
-          {navLinks.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all px-4 py-1.5 rounded-full"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => trackConversion("whatsapp_click", { source: "header" })}
-          className="flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/5 backdrop-blur-md px-4 py-2 text-primary-foreground/90 hover:bg-primary-foreground/15 transition-all text-sm font-medium"
-        >
-          <MessageCircle size={16} />
-          <span className="hidden sm:inline">WhatsApp</span>
-        </a>
       </div>
 
       {/* Main content with parallax */}
