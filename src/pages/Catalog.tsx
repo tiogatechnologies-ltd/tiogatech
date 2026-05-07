@@ -3,6 +3,8 @@ import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import ImageLightbox from "@/components/ImageLightbox";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("_tid_session") || "unknown";
@@ -423,6 +425,7 @@ const Catalog = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
+      <SiteHeader />
       <div className="bg-secondary text-secondary-foreground">
         <div className="section-container py-6 sm:py-8 space-y-3">
           <button onClick={() => navigate("/")} className="inline-flex items-center gap-1 text-sm text-secondary-foreground/60 hover:text-secondary-foreground transition-colors">
