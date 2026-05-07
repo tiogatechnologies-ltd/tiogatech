@@ -104,33 +104,6 @@ const Hero = ({ onApply }: HeroProps) => {
         <div className="absolute -bottom-40 left-1/3 w-[450px] h-[450px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
       </div>
 
-
-      {/* Nav */}
-      <div className="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-4 sm:px-8 py-5">
-        <img src={tiogaLogoLight} alt="Tioga Technologies" className="h-8 sm:h-10 w-auto" />
-        <nav className="hidden md:flex items-center gap-1 rounded-full border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-md px-2 py-1.5">
-          {navLinks.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all px-4 py-1.5 rounded-full"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => trackConversion("whatsapp_click", { source: "header" })}
-          className="flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/5 backdrop-blur-md px-4 py-2 text-primary-foreground/90 hover:bg-primary-foreground/15 transition-all text-sm font-medium"
-        >
-          <MessageCircle size={16} />
-          <span className="hidden sm:inline">WhatsApp</span>
-        </a>
-      </div>
-
       {/* Main content with parallax */}
       <div
         className="relative z-10 section-container w-full pt-24 pb-24 sm:pt-28 sm:pb-20"

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Hero from "@/components/Hero";
+import SiteHeader from "@/components/SiteHeader";
 import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
 import OfferSection from "@/components/OfferSection";
@@ -24,6 +25,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen scroll-smooth">
+      <SiteHeader />
       <Hero onApply={() => openForm("hero")} />
       <ProblemSection />
       <div id="solutions">
