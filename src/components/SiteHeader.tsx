@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 const links = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
+  { label: "Solutions", to: "/solutions" },
   { label: "Products", to: "/catalog" },
   { label: "LumiVolt AI", to: "/lumivolt-ai" },
   { label: "Finance", to: "/finance" },

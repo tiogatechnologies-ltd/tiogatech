@@ -4,6 +4,7 @@ import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 
 const company = [
   { label: "About", to: "/about" },
+  { label: "Solutions", to: "/solutions" },
   { label: "Products", to: "/catalog" },
   { label: "LumiVolt AI", to: "/lumivolt-ai" },
   { label: "Finance", to: "/finance" },
