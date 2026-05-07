@@ -8,27 +8,46 @@ interface PageHeroProps {
 }
 
 const PageHero = ({ eyebrow, title, subtitle, children }: PageHeroProps) => (
-  <section className="relative overflow-hidden bg-gradient-to-b from-muted/60 via-background to-background border-b border-border">
-    {/* decorative blobs */}
+  <section className="relative overflow-hidden bg-secondary -mt-[64px] sm:-mt-[72px] pt-[64px] sm:pt-[72px]">
+    {/* Cinematic gradient overlay matching landing hero */}
+    <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary/85 to-primary/40" />
+    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+
+    {/* Animated gradient orbs */}
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute -top-32 -left-20 w-[400px] h-[400px] rounded-full bg-primary/10 blur-3xl" />
-      <div className="absolute -bottom-32 -right-20 w-[400px] h-[400px] rounded-full bg-accent/10 blur-3xl" />
+      <div className="absolute -top-32 -left-32 w-[460px] h-[460px] rounded-full bg-primary/30 blur-3xl animate-blob" />
+      <div className="absolute top-1/3 -right-40 w-[520px] h-[520px] rounded-full bg-accent/20 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
+      <div className="absolute -bottom-40 left-1/3 w-[420px] h-[420px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
     </div>
-    <div className="relative section-container py-16 sm:py-20 lg:py-24 text-center">
+
+    <div className="relative section-container py-20 sm:py-24 lg:py-28 text-center">
       {eyebrow && (
-        <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">
+        <p className="text-[11px] sm:text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4 animate-fade-up">
           {eyebrow}
         </p>
       )}
-      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-foreground tracking-tight leading-[1.1] max-w-3xl mx-auto">
+      <h1
+        className="text-[2rem] sm:text-5xl lg:text-6xl font-display font-bold text-primary-foreground tracking-[-0.02em] leading-[1.08] max-w-3xl mx-auto animate-fade-up"
+        style={{ animationDelay: "0.1s" }}
+      >
         {title}
       </h1>
       {subtitle && (
-        <p className="mt-5 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+        <p
+          className="mt-5 text-base sm:text-lg text-primary-foreground/75 max-w-2xl mx-auto leading-relaxed animate-fade-up"
+          style={{ animationDelay: "0.2s" }}
+        >
           {subtitle}
         </p>
       )}
-      {children && <div className="mt-8 flex flex-wrap items-center justify-center gap-3">{children}</div>}
+      {children && (
+        <div
+          className="mt-8 flex flex-wrap items-center justify-center gap-3 animate-fade-up"
+          style={{ animationDelay: "0.3s" }}
+        >
+          {children}
+        </div>
+      )}
     </div>
   </section>
 );
