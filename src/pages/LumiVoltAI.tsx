@@ -1,6 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
+import heroSolar from "@/assets/feature-solar-panel.jpg";
 import { Plus, Calculator, Sparkles, CheckCircle2, BarChart3, Wallet, Globe, Lightbulb, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -33,6 +34,8 @@ const LumiVoltAI = () => (
       eyebrow="LumiVolt AI"
       title="Your AI-powered solar advisor"
       subtitle="Tell us what you power and we'll size the perfect solar system for your home or business in seconds."
+      backgroundImage={heroSolar}
+      backgroundAlt="Rooftop solar panels under bright sun"
     >
       <Link
         to="/contact"

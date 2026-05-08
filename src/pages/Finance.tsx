@@ -1,6 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
+import heroFinance from "@/assets/feature-smart-app.jpg";
 import { MessageCircle, FileText, CreditCard, Wrench, Home, ShieldCheck, Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -32,7 +33,9 @@ const Finance = () => (
     <PageHero
       eyebrow="Finance"
       title="Flexible payment plans that work for you"
-      subtitle="Start your energy journey with just 30% down. Spread the rest over 3, 6, or 12 months — zero hidden fees."
+      subtitle="Start your energy journey with just 30% down. Spread the rest over 3, 6, or 12 months with zero hidden fees."
+      backgroundImage={heroFinance}
+      backgroundAlt="Smart home control app on phone"
     />
 
     <section className="section-padding">

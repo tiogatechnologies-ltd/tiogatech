@@ -234,6 +234,18 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
 const Catalog = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Gate: products are only accessible after completing the personalized quote form
+  useEffect(() => {
+    const unlocked = sessionStorage.getItem("_tid_catalog_unlocked") === "1";
+    const hasState = !!location.state;
+    if (!unlocked && !hasState) {
+      navigate("/", { replace: true });
+    } else if (hasState) {
+      sessionStorage.setItem("_tid_catalog_unlocked", "1");
+    }
+  }, [location.state, navigate]);
+
   const state = location.state as {
     products?: string[];
     budget?: string;

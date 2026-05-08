@@ -1,6 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
+import heroSmartHome from "@/assets/hero-smart-home.jpg";
 import { Target, Eye, Wifi, Cpu, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -29,6 +30,8 @@ const About = () => (
       eyebrow="About"
       title="Building Africa's clean energy future"
       subtitle="Tioga Technologies is an IoT infrastructure and embedded systems company developing intelligent renewable energy solutions for homes, businesses, and communities."
+      backgroundImage={heroSmartHome}
+      backgroundAlt="Modern smart home with rooftop solar at golden hour"
     />
 
     <section className="section-padding">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
+import heroBg from "@/assets/hero-bg.jpg";
 import { Mail, MessageCircle, MapPin, Clock, Send, Loader2, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
@@ -46,6 +47,8 @@ const Contact = () => {
         eyebrow="Contact"
         title="Let's start your project"
         subtitle="Tell us about your space and what you'd like to power. Our team will get back to you within one business day."
+        backgroundImage={heroBg}
+        backgroundAlt="Tioga Technologies workspace"
       />
 
       <section className="section-padding">

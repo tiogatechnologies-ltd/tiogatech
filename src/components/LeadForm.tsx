@@ -131,6 +131,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
         accessType: data.accessType,
         cctvCoverage: data.cctvCoverage,
       };
+      sessionStorage.setItem("_tid_catalog_unlocked", "1");
       handleReset();
       onClose();
       navigate("/catalog", { state: { products, budget, fullName, totalWatts, selectedAppliances, formContext } });
