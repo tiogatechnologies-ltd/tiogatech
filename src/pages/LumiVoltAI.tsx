@@ -34,6 +34,8 @@ const LumiVoltAI = () => (
       eyebrow="LumiVolt AI"
       title="Your AI-powered solar advisor"
       subtitle="Tell us what you power and we'll size the perfect solar system for your home or business in seconds."
+      backgroundImage={heroSolar}
+      backgroundAlt="Rooftop solar panels under bright sun"
     >
       <Link
         to="/contact"
