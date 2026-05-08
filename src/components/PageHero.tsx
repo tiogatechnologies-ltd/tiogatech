@@ -5,13 +5,26 @@ interface PageHeroProps {
   title: ReactNode;
   subtitle?: ReactNode;
   children?: ReactNode;
+  backgroundImage?: string;
+  backgroundAlt?: string;
 }
 
-const PageHero = ({ eyebrow, title, subtitle, children }: PageHeroProps) => (
+const PageHero = ({ eyebrow, title, subtitle, children, backgroundImage, backgroundAlt }: PageHeroProps) => (
   <section className="relative overflow-hidden bg-secondary -mt-[64px] sm:-mt-[72px] pt-[64px] sm:pt-[72px]">
+    {/* Background image (stock) — same treatment as landing hero */}
+    {backgroundImage && (
+      <div className="absolute inset-0">
+        <img
+          src={backgroundImage}
+          alt={backgroundAlt ?? ""}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+    )}
+
     {/* Cinematic gradient overlay matching landing hero */}
-    <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary/85 to-primary/40" />
-    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+    <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/75 to-primary/55" />
+    <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />
 
     {/* Animated gradient orbs */}
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -20,7 +33,7 @@ const PageHero = ({ eyebrow, title, subtitle, children }: PageHeroProps) => (
       <div className="absolute -bottom-40 left-1/3 w-[420px] h-[420px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
     </div>
 
-    <div className="relative section-container py-20 sm:py-24 lg:py-28 text-center">
+    <div className="relative section-container py-24 sm:py-28 lg:py-32 text-center">
       {eyebrow && (
         <p className="text-[11px] sm:text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4 animate-fade-up">
           {eyebrow}
@@ -34,7 +47,7 @@ const PageHero = ({ eyebrow, title, subtitle, children }: PageHeroProps) => (
       </h1>
       {subtitle && (
         <p
-          className="mt-5 text-base sm:text-lg text-primary-foreground/75 max-w-2xl mx-auto leading-relaxed animate-fade-up"
+          className="mt-5 text-base sm:text-lg text-primary-foreground/80 max-w-2xl mx-auto leading-relaxed animate-fade-up"
           style={{ animationDelay: "0.2s" }}
         >
           {subtitle}
