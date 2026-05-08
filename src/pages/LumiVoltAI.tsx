@@ -1,6 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
+import heroSolar from "@/assets/feature-solar-panel.jpg";
 import { Plus, Calculator, Sparkles, CheckCircle2, BarChart3, Wallet, Globe, Lightbulb, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
