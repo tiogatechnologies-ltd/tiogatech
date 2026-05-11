@@ -25,8 +25,8 @@ const productHubs = [
     icon: Layers,
   },
   {
-    name: "LumiVolt AI",
-    tag: "AI sizing assistant",
+    name: "VoltAi",
+    tag: "By LumiVolt",
     desc: "Try the watts calculator and get an AI-powered system recommendation.",
     to: "/lumivolt-ai",
     icon: Cpu,
