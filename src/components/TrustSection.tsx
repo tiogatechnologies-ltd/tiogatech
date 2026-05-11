@@ -1,6 +1,7 @@
 import { Award, Users, Banknote, Clock } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 
 const defaultReasons = [
   { title: "Certified Products Only", desc: "Brands like Deye, Growatt, Tuya." },
