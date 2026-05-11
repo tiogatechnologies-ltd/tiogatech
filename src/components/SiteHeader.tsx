@@ -91,21 +91,7 @@ const SiteHeader = () => {
             Home
           </NavLink>
 
-          {/* Products mega-menu */}
-          <div className="group relative">
-            <button
-              type="button"
-              className={cn(
-                "px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors inline-flex items-center gap-1",
-                onDark
-                  ? "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
-                  : "text-foreground/70 hover:text-foreground",
-              )}
-            >
-              Products <ChevronDown size={14} className="opacity-70" />
-            </button>
-            <MegaMenu onDark={onDark} />
-          </div>
+
 
           {links.slice(1).map((l) => (
             <NavLink
@@ -174,27 +160,7 @@ const SiteHeader = () => {
               Home
             </NavLink>
 
-            {/* Mobile Products accordion */}
-            <button
-              type="button"
-              onClick={() => setProductsOpen((v) => !v)}
-              className="flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium text-foreground/80 hover:bg-muted"
-            >
-              Products
-              <ChevronDown size={16} className={cn("transition-transform", productsOpen && "rotate-180")} />
-            </button>
-            {productsOpen && (
-              <div className="ml-3 pl-3 border-l border-border flex flex-col gap-0.5 mb-1">
-                <Link to="/solutions#solar" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">LumiVolt — Residential Solar</Link>
-                <Link to="/lumivolt-ai" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">VoltAi — Smart Automation</Link>
-                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Smart Lock</Link>
-                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">CCTV</Link>
-                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Smart Lights</Link>
-                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Solar Inverter</Link>
-                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Solar Panels</Link>
-                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Batteries</Link>
-              </div>
-            )}
+
 
             {links.slice(1).map((l) => (
               <NavLink
