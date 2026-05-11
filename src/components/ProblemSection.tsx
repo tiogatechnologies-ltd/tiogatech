@@ -87,18 +87,28 @@ const ProblemSection = () => {
                   </div>
                   {/* Back */}
                   <div
-                    className="absolute inset-0 rounded-2xl p-6 bg-midnight text-primary-foreground border border-gold/30 shadow-2xl flex flex-col"
+                    className="absolute inset-0 rounded-2xl overflow-hidden border border-gold/30 shadow-2xl"
                     style={{
                       backfaceVisibility: "hidden",
                       WebkitBackfaceVisibility: "hidden",
                       transform: "rotateY(180deg)",
                     }}
                   >
-                    <p className="text-[10px] uppercase tracking-[0.22em] text-gold/80 mb-3">Tioga Solution</p>
-                    <p className="text-gold font-display text-lg font-bold leading-snug">{solution}</p>
-                    <span className="mt-auto inline-flex items-center gap-1.5 text-xs text-primary-foreground/70">
-                      Learn more <ArrowRight size={12} />
-                    </span>
+                    <img
+                      src={backImages[i % backImages.length]}
+                      alt=""
+                      aria-hidden
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-midnight/95 via-midnight/85 to-midnight/70" />
+                    <div className="relative h-full p-6 flex flex-col text-primary-foreground">
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-gold/90 mb-3">Tioga Solution</p>
+                      <p className="text-gold font-display text-lg font-bold leading-snug drop-shadow">{solution}</p>
+                      <span className="mt-auto inline-flex items-center gap-1.5 text-xs text-primary-foreground/85">
+                        Learn more <ArrowRight size={12} />
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
