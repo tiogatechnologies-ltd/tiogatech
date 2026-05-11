@@ -8,7 +8,8 @@ const company = [
   { label: "About", to: "/about" },
   { label: "Career", to: "/career" },
   { label: "Contact", to: "/contact" },
-  { label: "LumiVolt AI", to: "/lumivolt-ai" },
+  { label: "LumiVolt", to: "/lumivolt-ai" },
+  { label: "VoltAi", to: "/lumivolt-ai" },
 ];
 
 const solutions = [
