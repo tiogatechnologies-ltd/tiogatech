@@ -91,6 +91,13 @@ html {
   .section-padding {
     @apply py-16 sm:py-20 lg:py-24;
   }
+
+  /* Prevent descender clipping on animated headings */
+  .no-clip {
+    overflow: visible;
+    padding-block: 0.18em;
+    line-height: 1.12;
+  }
 }
 
 @layer utilities {
