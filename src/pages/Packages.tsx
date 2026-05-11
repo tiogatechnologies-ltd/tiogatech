@@ -5,6 +5,11 @@ import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap } from "lucide
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import featureSolar from "@/assets/feature-solar-panel.jpg";
+import featureApp from "@/assets/feature-smart-app.jpg";
+import featureSecurity from "@/assets/feature-security.jpg";
+import bgSolarField from "@/assets/bg-solar-field.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 
 const packages = [
   {
