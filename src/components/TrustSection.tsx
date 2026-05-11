@@ -29,11 +29,23 @@ const TrustSection = () => {
           {items.map((r: any, i: number) => {
             const Icon = icons[i % icons.length];
             return (
-              <div key={i} className="flex items-start gap-4 rounded-2xl border border-border bg-card p-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+              <div
+                key={i}
+                className="relative flex items-start gap-4 rounded-2xl border border-border bg-card p-6 overflow-hidden hover-lift"
+              >
+                {/* Subtle tech-mesh accent */}
+                <div
+                  className="absolute inset-0 opacity-[0.06] pointer-events-none"
+                  style={{
+                    backgroundImage: `url(${bgTechMesh})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
+                <div className="relative w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <Icon size={22} className="text-primary" />
                 </div>
-                <div>
+                <div className="relative">
                   <h3 className="font-display font-semibold text-foreground mb-1">{r.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{r.desc}</p>
                 </div>
