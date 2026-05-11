@@ -1,7 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import heroFinance from "@/assets/feature-smart-app.jpg";
+import heroFinance from "@/assets/feature-tablet-monitor.jpg";
 import { MessageCircle, FileText, CreditCard, Wrench, Home, ShieldCheck, Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 

@@ -1,22 +1,8 @@
 import { Link } from "react-router-dom";
-import { Package, Store, Cpu, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight, Home } from "lucide-react";
+import { Package, Store, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const productHubs = [
-  {
-    name: "LumiVolt",
-    tag: "Residential · Solar",
-    desc: "Our residential sub-brand for solar, batteries and whole-home energy.",
-    to: "/lumivolt",
-    icon: Home,
-  },
-  {
-    name: "VoltAi",
-    tag: "Smart Automation",
-    desc: "Our smart automation sub-brand: locks, lights, cameras and scenes.",
-    to: "/voltai",
-    icon: Cpu,
-  },
   {
     name: "Packages",
     tag: "Curated bundles",

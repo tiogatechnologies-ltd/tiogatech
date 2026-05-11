@@ -1,9 +1,9 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import heroSmartHome from "@/assets/hero-smart-home.jpg";
-import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
-import bgSolarField from "@/assets/bg-solar-field.jpg";
+import heroSmartHome from "@/assets/bg-about-hero.jpg";
+import bgTechMesh from "@/assets/bg-topo-lines.jpg";
+import bgSolarField from "@/assets/bg-solar-aerial.jpg";
 import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 import bgTeam from "@/assets/bg-team.jpg";
 import { Target, Eye, Wifi, Cpu, Zap, ArrowRight } from "lucide-react";
