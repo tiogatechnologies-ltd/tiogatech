@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import ImageLightbox from "@/components/ImageLightbox";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 
 const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("_tid_session") || "unknown";
