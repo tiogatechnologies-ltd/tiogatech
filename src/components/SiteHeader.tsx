@@ -183,7 +183,7 @@ const SiteHeader = () => {
             </div>
           </div>
 
-          {secondaryLinks.map((l) => (
+          {[...brandLinks, ...secondaryLinks].map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
