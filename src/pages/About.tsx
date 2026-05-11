@@ -2,6 +2,10 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgSolarField from "@/assets/bg-solar-field.jpg";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
+import bgTeam from "@/assets/bg-team.jpg";
 import { Target, Eye, Wifi, Cpu, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -10,16 +14,19 @@ const pillars = [
     icon: Wifi,
     title: "IoT Infrastructure",
     desc: "Robust, scalable IoT infrastructure connecting renewable energy systems with real-time monitoring, data collection, and intelligent decision-making capabilities.",
+    bg: bgTechMesh,
   },
   {
     icon: Cpu,
     title: "Embedded Systems",
     desc: "Custom embedded systems for energy management. Monitoring devices, control systems, and intelligent sensors optimized for reliability in diverse environments.",
+    bg: bgLagosNight,
   },
   {
     icon: Zap,
     title: "Energy Platforms",
     desc: "Next-generation platforms managing renewable resources, optimizing distribution, predicting demand, and ensuring reliable power supply across Africa.",
+    bg: bgSolarField,
   },
 ];
 
