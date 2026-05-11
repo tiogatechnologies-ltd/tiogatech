@@ -1,23 +1,32 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, MessageCircle } from "lucide-react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, MessageCircle, Sparkles, ChevronDown } from "lucide-react";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { cn } from "@/lib/utils";
+import MegaMenu from "@/components/MegaMenu";
 
 const links = [
   { label: "Home", to: "/" },
+  { label: "Packages", to: "/packages" },
+  { label: "Store", to: "/catalog" },
+  { label: "How It Works", to: "/#how-it-works" },
+  { label: "Career", to: "/career" },
   { label: "About", to: "/about" },
-  { label: "Solutions", to: "/solutions" },
-  { label: "LumiVolt AI", to: "/lumivolt-ai" },
-  { label: "Finance", to: "/finance" },
   { label: "Contact", to: "/contact" },
 ];
+
+// Open the lead form anywhere on the site by dispatching this event.
+export const openLeadForm = (source = "ai_badge") => {
+  window.dispatchEvent(new CustomEvent("tioga:open-lead-form", { detail: { source } }));
+};
 
 const SiteHeader = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -28,8 +37,15 @@ const SiteHeader = () => {
 
   useEffect(() => setOpen(false), [location.pathname]);
 
-  // Transparent over the dark hero at top; solid light when scrolled.
   const onDark = !scrolled && !open;
+
+  const handleAiClick = () => {
+    if (location.pathname !== "/") {
+      navigate("/?lead=1");
+    } else {
+      openLeadForm("ai_badge");
+    }
+  };
 
   return (
     <header
@@ -37,7 +53,7 @@ const SiteHeader = () => {
         "fixed top-0 z-40 w-full transition-all duration-300",
         onDark
           ? "bg-transparent border-b border-transparent"
-          : "bg-background/90 backdrop-blur-md border-b border-border shadow-sm",
+          : "bg-background/85 backdrop-blur-xl border-b border-border shadow-sm",
       )}
     >
       <div className="section-container flex items-center justify-between py-3 sm:py-4">
@@ -51,20 +67,54 @@ const SiteHeader = () => {
 
         <nav
           className={cn(
-            "hidden lg:flex items-center gap-1 rounded-full px-2 py-1.5 transition-colors",
+            "hidden lg:flex items-center gap-0.5 rounded-full px-2 py-1.5 transition-colors",
             onDark
               ? "border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-md"
               : "",
           )}
         >
-          {links.map((l) => (
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              cn(
+                "px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors",
+                onDark
+                  ? isActive
+                    ? "bg-primary-foreground/15 text-primary-foreground"
+                    : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : isActive
+                    ? "text-primary"
+                    : "text-foreground/70 hover:text-foreground",
+              )
+            }
+          >
+            Home
+          </NavLink>
+
+          {/* Products mega-menu */}
+          <div className="group relative">
+            <button
+              type="button"
+              className={cn(
+                "px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors inline-flex items-center gap-1",
+                onDark
+                  ? "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : "text-foreground/70 hover:text-foreground",
+              )}
+            >
+              Products <ChevronDown size={14} className="opacity-70" />
+            </button>
+            <MegaMenu onDark={onDark} />
+          </div>
+
+          {links.slice(1).map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
-              end={l.to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "px-4 py-1.5 text-sm font-medium rounded-full transition-colors",
+                  "px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors",
                   onDark
                     ? isActive
                       ? "bg-primary-foreground/15 text-primary-foreground"
@@ -81,6 +131,20 @@ const SiteHeader = () => {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* AI Recommendation badge */}
+          <button
+            type="button"
+            onClick={handleAiClick}
+            className={cn(
+              "hidden md:inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider transition-all",
+              "bg-gold/15 text-gold border border-gold/40 animate-ai-glow hover:bg-gold/25",
+            )}
+            aria-label="Open AI recommendation"
+          >
+            <Sparkles size={12} className="fill-gold" />
+            AI Recommend
+          </button>
+
           <Link
             to="/contact"
             className={cn(
@@ -108,28 +172,64 @@ const SiteHeader = () => {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-border bg-background animate-fade-up">
+        <div className="lg:hidden border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
           <nav className="section-container py-4 flex flex-col gap-1">
-            {links.map((l) => (
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                cn("px-3 py-3 rounded-lg text-sm font-medium",
+                  isActive ? "bg-primary/10 text-primary" : "text-foreground/80 hover:bg-muted")
+              }
+            >
+              Home
+            </NavLink>
+
+            {/* Mobile Products accordion */}
+            <button
+              type="button"
+              onClick={() => setProductsOpen((v) => !v)}
+              className="flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium text-foreground/80 hover:bg-muted"
+            >
+              Products
+              <ChevronDown size={16} className={cn("transition-transform", productsOpen && "rotate-180")} />
+            </button>
+            {productsOpen && (
+              <div className="ml-3 pl-3 border-l border-border flex flex-col gap-0.5 mb-1">
+                <Link to="/solutions#solar" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">LumiVolt — Residential Solar</Link>
+                <Link to="/lumivolt-ai" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">VoltAi — Smart Automation</Link>
+                <Link to="/catalog?cat=smart-lock" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Smart Lock</Link>
+                <Link to="/catalog?cat=cctv" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">CCTV</Link>
+                <Link to="/catalog?cat=smart-lights" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Smart Lights</Link>
+                <Link to="/catalog?cat=inverter" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Solar Inverter</Link>
+                <Link to="/catalog?cat=panels" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Solar Panels</Link>
+                <Link to="/catalog?cat=battery" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Batteries</Link>
+              </div>
+            )}
+
+            {links.slice(1).map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
-                end={l.to === "/"}
                 className={({ isActive }) =>
-                  cn(
-                    "px-3 py-3 rounded-lg text-sm font-medium",
-                    isActive
-                      ? "bg-primary/10 text-primary"
-                      : "text-foreground/80 hover:bg-muted",
-                  )
+                  cn("px-3 py-3 rounded-lg text-sm font-medium",
+                    isActive ? "bg-primary/10 text-primary" : "text-foreground/80 hover:bg-muted")
                 }
               >
                 {l.label}
               </NavLink>
             ))}
+
+            <button
+              type="button"
+              onClick={handleAiClick}
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 bg-gold/15 px-5 py-3 text-sm font-semibold text-foreground"
+            >
+              <Sparkles size={14} className="text-gold" /> AI Recommend
+            </button>
             <Link
               to="/contact"
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
               Get Started
             </Link>

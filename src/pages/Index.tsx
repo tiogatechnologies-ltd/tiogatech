@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Hero from "@/components/Hero";
 import SiteHeader from "@/components/SiteHeader";
 import ProblemSection from "@/components/ProblemSection";
@@ -16,12 +17,34 @@ import { trackConversion } from "@/lib/tracking";
 
 const Index = () => {
   const [formOpen, setFormOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const openForm = (source: string) => {
     trackConversion("cta_click", { source });
     trackConversion("lead_form_opened", { source });
     setFormOpen(true);
   };
+
+  // Listen for AI badge clicks from anywhere in the app
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail || {};
+      openForm(detail.source || "ai_badge");
+    };
+    window.addEventListener("tioga:open-lead-form", handler);
+    return () => window.removeEventListener("tioga:open-lead-form", handler);
+  }, []);
+
+  // Auto-open when navigated with ?lead=1
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("lead") === "1") {
+      openForm("ai_badge_redirect");
+      params.delete("lead");
+      navigate({ pathname: "/", search: params.toString() }, { replace: true });
+    }
+  }, [location.search, navigate]);
 
   return (
     <div className="min-h-screen scroll-smooth">

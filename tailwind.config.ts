@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Poppins", "sans-serif"],
+        display: ["Plus Jakarta Sans", "Poppins", "sans-serif"],
         body: ["Inter", "sans-serif"],
       },
       colors: {
@@ -43,6 +43,8 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        midnight: "hsl(var(--midnight))",
+        gold: "hsl(var(--solar-gold))",
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -113,6 +115,10 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0" },
         },
+        "ai-glow": {
+          "0%, 100%": { boxShadow: "0 0 0 0 hsla(51,100%,50%,0.6), 0 0 12px 2px hsla(51,100%,50%,0.35)" },
+          "50%": { boxShadow: "0 0 0 6px hsla(51,100%,50%,0), 0 0 22px 6px hsla(51,100%,50%,0.55)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -126,6 +132,7 @@ export default {
         "marquee": "marquee 30s linear infinite",
         "pulse-ring": "pulse-ring 2.5s cubic-bezier(0.22, 1, 0.36, 1) infinite",
         "caret-blink": "caret-blink 1s steps(2) infinite",
+        "ai-glow": "ai-glow 2.4s ease-in-out infinite",
       },
     },
   },

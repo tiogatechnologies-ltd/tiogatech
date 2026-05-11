@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight, Cpu } from "lucide-react";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
 import { trackConversion } from "@/lib/tracking";
+import LetterStagger from "@/components/LetterStagger";
 
 interface HeroProps {
   onApply: () => void;
@@ -117,11 +118,10 @@ const Hero = ({ onApply }: HeroProps) => {
             </div>
 
             <h1
-              className={`text-[1.75rem] xs:text-[2rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-primary-foreground leading-[1.08] tracking-[-0.02em] ${mounted ? "animate-fade-up" : "opacity-0"}`}
-              style={{ animationDelay: "0.25s" }}
+              className={`text-[1.75rem] xs:text-[2rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-primary-foreground leading-[1.08] tracking-[-0.02em] no-clip ${mounted ? "" : "opacity-0"}`}
             >
-              <span className="block">Powering Nigerian</span>
-              <span className="block">homes with</span>
+              <LetterStagger as="div" text="Powering Nigerian" delayMs={250} />
+              <LetterStagger as="div" text="homes with" delayMs={900} />
               <span className="relative inline-flex items-center mt-1 sm:mt-2 min-h-[1.15em]">
                 <span className="bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">
                   <Typewriter
@@ -206,7 +206,7 @@ const Hero = ({ onApply }: HeroProps) => {
                 </div>
                 <div>
                   <p className="text-xs text-primary-foreground/60 uppercase tracking-wider">Solar Output</p>
-                  <p className="text-lg font-display font-bold text-primary-foreground">5.2 kW</p>
+                  <p className="text-lg font-display font-bold text-primary-foreground">5.2 kWp</p>
                 </div>
               </div>
               <div className="h-1.5 bg-primary-foreground/10 rounded-full overflow-hidden">

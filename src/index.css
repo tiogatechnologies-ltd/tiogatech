@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 html {
   scroll-behavior: smooth;
@@ -22,14 +22,18 @@ html {
     --primary: 152 85% 30%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 60% 15%;
+    /* Midnight navy — deep brand surface */
+    --secondary: 215 64% 11%;
     --secondary-foreground: 0 0% 100%;
+    --midnight: 215 64% 11%;
 
     --muted: 210 20% 95%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 43 100% 48%;
-    --accent-foreground: 220 26% 14%;
+    /* Solar gold — CTA accent */
+    --accent: 51 100% 50%;
+    --accent-foreground: 215 64% 11%;
+    --solar-gold: 51 100% 50%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -41,7 +45,7 @@ html {
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --hero-gradient: linear-gradient(135deg, hsla(152, 85%, 30%, 0.85), hsla(210, 60%, 15%, 0.95));
+    --hero-gradient: linear-gradient(135deg, hsla(152, 85%, 30%, 0.7), hsla(215, 64%, 11%, 0.95));
     --glass-bg: hsla(0, 0%, 100%, 0.7);
     --glass-border: hsla(0, 0%, 100%, 0.2);
     --shadow-card: 0 4px 24px -4px hsla(210, 60%, 15%, 0.08);
@@ -86,6 +90,13 @@ html {
 
   .section-padding {
     @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  /* Prevent descender clipping on animated headings */
+  .no-clip {
+    overflow: visible;
+    padding-block: 0.18em;
+    line-height: 1.12;
   }
 }
 

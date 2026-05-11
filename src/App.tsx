@@ -25,6 +25,8 @@ import Contact from "./pages/Contact.tsx";
 import Solutions from "./pages/Solutions.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
+import Packages from "./pages/Packages.tsx";
+import Career from "./pages/Career.tsx";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +57,8 @@ const App = () => (
             <Route path="/lumivolt-ai" element={<LumiVoltAI />} />
             <Route path="/finance" element={<Finance />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/packages" element={<Packages />} />
+            <Route path="/career" element={<Career />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/catalog" element={<Catalog />} />
