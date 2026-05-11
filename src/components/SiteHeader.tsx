@@ -23,7 +23,7 @@ export const openLeadForm = (source = "ai_badge") => {
 const SiteHeader = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [productsOpen, setProductsOpen] = useState(false);
+  
   const location = useLocation();
   const navigate = useNavigate();
 
