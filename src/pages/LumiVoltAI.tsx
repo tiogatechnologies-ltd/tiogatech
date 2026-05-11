@@ -34,9 +34,12 @@ const youGet = [
   "Personalized tips for your setup",
 ];
 
-const LumiVoltAI = () => (
+const LumiVoltAI = () => {
+  const [appliances, setAppliances] = useState<SelectedAppliance[]>([]);
+  return (
   <div className="min-h-screen flex flex-col">
     <SiteHeader />
+
     <PageHero
       eyebrow="LumiVolt AI"
       title="Your AI-powered solar advisor"
