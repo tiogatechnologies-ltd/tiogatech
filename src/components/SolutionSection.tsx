@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import featureSolar from "@/assets/feature-solar-panel.jpg";
@@ -12,13 +13,15 @@ const features = [
     desc: "High-efficiency panels, lithium batteries, and inverters sized to your exact load.",
     img: featureSolar,
     accent: "from-amber-400/30 to-yellow-300/10",
+    to: "/catalog",
   },
   {
     icon: Smartphone,
     title: "Smart Automation",
-    desc: "Control lights, climate, and energy from one app — anywhere in the world.",
+    desc: "Control lights, climate, and energy from one app, anywhere in the world.",
     img: featureApp,
     accent: "from-primary/40 to-primary/10",
+    to: "/catalog",
   },
   {
     icon: ShieldCheck,
@@ -26,6 +29,7 @@ const features = [
     desc: "AI cameras, smart locks, and 24/7 monitoring that keep your property safe.",
     img: featureSecurity,
     accent: "from-blue-500/30 to-blue-400/10",
+    to: "/catalog",
   },
 ];
 
