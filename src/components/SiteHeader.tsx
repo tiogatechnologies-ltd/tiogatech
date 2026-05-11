@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, MessageCircle, Sparkles, ChevronDown } from "lucide-react";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
@@ -33,6 +33,11 @@ const SiteHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [productsDesktopOpen, setProductsDesktopOpen] = useState(false);
+  const productsWrapRef = useRef<HTMLDivElement>(null);
+  const productsBtnRef = useRef<HTMLButtonElement>(null);
+  const closeTimer = useRef<number | null>(null);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
@@ -40,7 +45,41 @@ const SiteHeader = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    setOpen(false);
+    setProductsDesktopOpen(false);
+  }, [location.pathname]);
+
+  // Close desktop dropdown on outside click + Escape
+  useEffect(() => {
+    if (!productsDesktopOpen) return;
+    const onDocClick = (e: MouseEvent) => {
+      if (!productsWrapRef.current?.contains(e.target as Node)) {
+        setProductsDesktopOpen(false);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setProductsDesktopOpen(false);
+        productsBtnRef.current?.focus();
+      }
+    };
+    document.addEventListener("mousedown", onDocClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [productsDesktopOpen]);
+
+  const openProducts = () => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    setProductsDesktopOpen(true);
+  };
+  const scheduleCloseProducts = () => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => setProductsDesktopOpen(false), 140);
+  };
 
   const onDark = !scrolled && !open;
 
@@ -100,20 +139,44 @@ const SiteHeader = () => {
 
 
           {/* Merged Products mega-menu */}
-          <div className="group relative">
+          <div
+            ref={productsWrapRef}
+            className="relative"
+            onMouseEnter={openProducts}
+            onMouseLeave={scheduleCloseProducts}
+          >
             <button
+              ref={productsBtnRef}
               type="button"
+              onClick={() => setProductsDesktopOpen((v) => !v)}
+              onFocus={openProducts}
               className={cn(
                 "px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors inline-flex items-center gap-1",
                 onDark
-                  ? "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
-                  : "text-foreground/70 hover:text-foreground",
+                  ? productsDesktopOpen
+                    ? "bg-primary-foreground/15 text-primary-foreground"
+                    : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : productsDesktopOpen
+                    ? "text-primary"
+                    : "text-foreground/70 hover:text-foreground",
               )}
-              aria-haspopup="true"
+              aria-haspopup="menu"
+              aria-expanded={productsDesktopOpen}
+              aria-controls="products-mega-menu"
             >
-              Products <ChevronDown size={14} className="opacity-70" />
+              Products{" "}
+              <ChevronDown
+                size={14}
+                className={cn("opacity-70 transition-transform", productsDesktopOpen && "rotate-180")}
+              />
             </button>
-            <MegaMenu onDark={onDark} />
+            <div id="products-mega-menu">
+              <MegaMenu
+                onDark={onDark}
+                open={productsDesktopOpen}
+                onClose={() => setProductsDesktopOpen(false)}
+              />
+            </div>
           </div>
 
           {secondaryLinks.map((l) => (
