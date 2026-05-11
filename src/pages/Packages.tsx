@@ -1,14 +1,14 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap } from "lucide-react";
+import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap, Lock, Camera, Lightbulb, BatteryCharging } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import featureSolar from "@/assets/feature-solar-panel.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import featureSecurity from "@/assets/feature-security.jpg";
 import bgSolarField from "@/assets/bg-solar-field.jpg";
-
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 
 const packages = [
@@ -156,7 +156,51 @@ const Packages = () => (
       </div>
     </section>
 
-    <section className="section-padding bg-muted">
+    {/* Browse by category */}
+    <section id="categories" className="section-padding bg-muted/40 scroll-mt-24">
+      <div className="section-container">
+        <div className="text-center mb-10">
+          <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Products</p>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+            Browse by category
+          </h2>
+          <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
+            Explore the gear we install. Tap any category to get an AI-tailored shortlist for your home or business.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { label: "Smart Locks", desc: "Keyless, app + fingerprint access.", icon: Lock, bg: featureApp },
+            { label: "CCTV & Security", desc: "HD cameras, night vision, cloud + NVR.", icon: Camera, bg: featureSecurity },
+            { label: "Smart Lights", desc: "Tunable scenes, voice and app control.", icon: Lightbulb, bg: bgLagosNight },
+            { label: "Solar Inverters", desc: "Hybrid, off-grid and grid-tie.", icon: Zap, bg: bgTechMesh },
+            { label: "Solar Panels", desc: "Mono and bifacial high-efficiency arrays.", icon: Sun, bg: featureSolar },
+            { label: "Batteries", desc: "Lithium storage sized for Nigerian loads.", icon: BatteryCharging, bg: bgSolarField },
+          ].map((c) => (
+            <button
+              key={c.label}
+              type="button"
+              onClick={() => openLeadForm(`category_${c.label}`)}
+              className="group relative overflow-hidden rounded-2xl border border-border text-left h-44 hover-lift"
+            >
+              <img src={c.bg} alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/65 to-midnight/30" />
+              <div className="relative h-full p-5 flex flex-col justify-end text-primary-foreground">
+                <div className="flex items-center gap-2.5 mb-1.5">
+                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-gold text-midnight shadow">
+                    <c.icon size={16} />
+                  </span>
+                  <h3 className="font-display font-bold text-lg no-clip">{c.label}</h3>
+                </div>
+                <p className="text-sm text-primary-foreground/80">{c.desc}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section className="section-padding">
       <div className="section-container">
         <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 text-center shadow-[var(--shadow-card)]">
           <Zap className="text-gold mx-auto mb-3" size={28} />
