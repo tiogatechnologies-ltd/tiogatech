@@ -40,9 +40,43 @@ const TrustSection = () => {
             );
           })}
         </div>
+
+        {/* Brand carousel — grayscale -> full color on hover */}
+        <div className="mt-16">
+          <p className="text-center text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-6">
+            Powered by industry-leading brands
+          </p>
+          <div
+            className="relative overflow-hidden"
+            style={{
+              maskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)",
+              WebkitMaskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)",
+            }}
+          >
+            <div className="flex gap-12 animate-marquee whitespace-nowrap w-max">
+              {[...Array(2)].map((_, dup) => (
+                <div key={dup} className="flex gap-12 items-center">
+                  {[
+                    "TUYA", "AlpSolarr", "ITEL", "SRNE", "Hikvision", "Tiandy",
+                    "Dahua", "HDL", "Lux Power", "Bread", "Tiaco", "Fireman",
+                    "LifeSmart", "Dawnice",
+                  ].map((b) => (
+                    <span
+                      key={`${dup}-${b}`}
+                      className="font-display font-bold text-lg sm:text-xl tracking-tight text-foreground/35 grayscale hover:grayscale-0 hover:text-foreground transition-all duration-300"
+                    >
+                      {b}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
 };
 
 export default TrustSection;
+
