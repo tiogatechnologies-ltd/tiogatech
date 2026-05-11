@@ -3,6 +3,11 @@ import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import { Sun, Home, ShieldCheck, Lightbulb, Lock, Camera, Wifi, Zap, ArrowRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
+import featureSolar from "@/assets/feature-solar-panel.jpg";
+import featureApp from "@/assets/feature-smart-app.jpg";
+import featureSecurity from "@/assets/feature-security.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 
 const solutions = [
   {
