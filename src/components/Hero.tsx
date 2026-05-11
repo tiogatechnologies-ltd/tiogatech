@@ -118,11 +118,10 @@ const Hero = ({ onApply }: HeroProps) => {
             </div>
 
             <h1
-              className={`text-[1.75rem] xs:text-[2rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-primary-foreground leading-[1.08] tracking-[-0.02em] ${mounted ? "animate-fade-up" : "opacity-0"}`}
-              style={{ animationDelay: "0.25s" }}
+              className={`text-[1.75rem] xs:text-[2rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-primary-foreground leading-[1.08] tracking-[-0.02em] no-clip ${mounted ? "" : "opacity-0"}`}
             >
-              <span className="block">Powering Nigerian</span>
-              <span className="block">homes with</span>
+              <LetterStagger as="div" text="Powering Nigerian" delayMs={250} />
+              <LetterStagger as="div" text="homes with" delayMs={900} />
               <span className="relative inline-flex items-center mt-1 sm:mt-2 min-h-[1.15em]">
                 <span className="bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">
                   <Typewriter
