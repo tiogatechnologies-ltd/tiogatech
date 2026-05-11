@@ -7,7 +7,7 @@ import featureSolar from "@/assets/feature-solar-panel.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import featureSecurity from "@/assets/feature-security.jpg";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
-import bgLagosNight from "@/assets/bg-lagos-night.jpg";
+import bgDashboard from "@/assets/bg-dashboard.jpg";
 
 const solutions = [
   {
@@ -65,6 +65,8 @@ const Solutions = () => (
       eyebrow="Solutions"
       title="One company. Solar, smart home and security."
       subtitle="Tioga Technologies builds and installs the full stack of intelligent home and business infrastructure across Nigeria."
+      backgroundImage={bgDashboard}
+      backgroundAlt="Smart home dashboard with solar and security data"
     >
       <Link
         to="/contact"

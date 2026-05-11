@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, MessageCircle, Sparkles } from "lucide-react";
+import { Menu, X, MessageCircle, Sparkles, ChevronDown } from "lucide-react";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { cn } from "@/lib/utils";
+import MegaMenu from "@/components/MegaMenu";
 
-const links = [
-  { label: "Home", to: "/" },
-  { label: "Packages", to: "/packages" },
-  { label: "Store", to: "/catalog" },
-  { label: "LumiVolt AI", to: "/lumivolt-ai" },
+// Secondary links shown after the merged Products mega-menu.
+const secondaryLinks = [
   { label: "Career", to: "/career" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
+];
+
+const productSubLinks = [
+  { label: "Packages", to: "/packages" },
+  { label: "Store", to: "/catalog" },
+  { label: "Solutions", to: "/solutions" },
+  { label: "LumiVolt AI", to: "/lumivolt-ai" },
 ];
 
 // Open the lead form anywhere on the site by dispatching this event.
@@ -23,7 +28,8 @@ export const openLeadForm = (source = "ai_badge") => {
 const SiteHeader = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  
+  const [productsOpen, setProductsOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -93,7 +99,24 @@ const SiteHeader = () => {
 
 
 
-          {links.slice(1).map((l) => (
+          {/* Merged Products mega-menu */}
+          <div className="group relative">
+            <button
+              type="button"
+              className={cn(
+                "px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors inline-flex items-center gap-1",
+                onDark
+                  ? "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : "text-foreground/70 hover:text-foreground",
+              )}
+              aria-haspopup="true"
+            >
+              Products <ChevronDown size={14} className="opacity-70" />
+            </button>
+            <MegaMenu onDark={onDark} />
+          </div>
+
+          {secondaryLinks.map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
@@ -162,7 +185,27 @@ const SiteHeader = () => {
 
 
 
-            {links.slice(1).map((l) => (
+            {/* Mobile Products accordion */}
+            <button
+              type="button"
+              onClick={() => setProductsOpen((v) => !v)}
+              className="flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium text-foreground/80 hover:bg-muted"
+              aria-expanded={productsOpen}
+            >
+              Products
+              <ChevronDown size={16} className={cn("transition-transform", productsOpen && "rotate-180")} />
+            </button>
+            {productsOpen && (
+              <div className="ml-3 pl-3 border-l border-border flex flex-col gap-0.5 mb-1">
+                {productSubLinks.map((l) => (
+                  <Link key={l.to} to={l.to} className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">
+                    {l.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {secondaryLinks.map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}

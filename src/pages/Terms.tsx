@@ -1,7 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import bgLagosNight from "@/assets/bg-lagos-night.jpg";
+import bgOffice from "@/assets/bg-office.jpg";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-8">
@@ -17,8 +17,8 @@ const Terms = () => (
       eyebrow="Legal"
       title="Terms of Service"
       subtitle="The terms governing your use of Tioga Technologies' website and services."
-      backgroundImage={bgLagosNight}
-      backgroundAlt="Lagos skyline at night"
+      backgroundImage={bgOffice}
+      backgroundAlt="Modern Lagos office at dusk"
     />
     <section className="section-padding">
       <div className="section-container max-w-3xl">

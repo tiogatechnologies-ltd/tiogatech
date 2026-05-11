@@ -10,6 +10,7 @@ import featureSecurity from "@/assets/feature-security.jpg";
 import bgSolarField from "@/assets/bg-solar-field.jpg";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 import bgLagosNight from "@/assets/bg-lagos-night.jpg";
+import bgBundle from "@/assets/bg-bundle.jpg";
 
 const packages = [
   {
@@ -81,8 +82,8 @@ const Packages = () => (
       eyebrow="Packages"
       title="Curated bundles. No guesswork."
       subtitle="Hand-picked combinations of solar, smart and security gear for the most common Nigerian homes and businesses. Every package is installable next week."
-      backgroundImage={featureSolar}
-      backgroundAlt="Curated solar and smart home packages"
+      backgroundImage={bgBundle}
+      backgroundAlt="Curated solar and smart home product bundles"
     >
       <button
         onClick={() => openLeadForm("packages_hero")}
