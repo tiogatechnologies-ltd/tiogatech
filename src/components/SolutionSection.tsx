@@ -70,6 +70,11 @@ const SolutionSection = () => {
                 <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
                   <f.icon size={20} className="text-primary" />
                 </div>
+                {/* Sliding "Learn More" overlay */}
+                <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out bg-midnight/85 backdrop-blur-sm py-3 px-5 flex items-center justify-between text-primary-foreground">
+                  <span className="text-sm font-semibold">Learn More</span>
+                  <ArrowUpRight size={16} className="text-gold" />
+                </div>
               </div>
 
               {/* Content */}
