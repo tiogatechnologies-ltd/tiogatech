@@ -237,13 +237,21 @@ const ComingSoonStore = () => {
     <div className="min-h-screen flex flex-col bg-secondary">
       <SiteHeader />
       <section className="relative flex-1 flex items-center justify-center overflow-hidden -mt-[64px] sm:-mt-[72px] pt-[64px] sm:pt-[72px]">
+        {/* Stock background image */}
+        <img
+          src={bgLagosNight}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-secondary/70 to-secondary/95" />
         {/* Animated gradient orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-primary/30 blur-3xl animate-blob" />
           <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full bg-accent/25 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
           <div className="absolute -bottom-40 left-1/3 w-[450px] h-[450px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
         </div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,hsl(var(--secondary))_75%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,hsl(var(--secondary))_85%)]" />
 
         <div className="relative section-container py-20 sm:py-28 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-gold/15 border border-gold/40 px-4 py-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-gold animate-fade-up">
