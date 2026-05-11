@@ -8,7 +8,8 @@ const company = [
   { label: "About", to: "/about" },
   { label: "Career", to: "/career" },
   { label: "Contact", to: "/contact" },
-  { label: "LumiVolt AI", to: "/lumivolt-ai" },
+  { label: "LumiVolt", to: "/lumivolt-ai" },
+  { label: "VoltAi", to: "/lumivolt-ai" },
 ];
 
 const solutions = [
@@ -139,9 +140,6 @@ const SiteFooter = () => {
         <div className="mt-12 pt-6 border-t border-primary-foreground/10 flex flex-col sm:flex-row gap-3 sm:gap-0 justify-between items-start sm:items-center">
           <p className="text-xs text-primary-foreground/55">
             © {new Date().getFullYear()} Tioga Technologies. All rights reserved.
-          </p>
-          <p className="text-xs text-primary-foreground/55">
-            Made in Lagos. Powering Nigeria.
           </p>
         </div>
       </div>

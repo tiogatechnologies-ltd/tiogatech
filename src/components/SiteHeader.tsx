@@ -17,7 +17,7 @@ const productSubLinks = [
   { label: "Packages", to: "/packages" },
   { label: "Store", to: "/catalog" },
   { label: "Solutions", to: "/solutions" },
-  { label: "LumiVolt AI", to: "/lumivolt-ai" },
+  { label: "VoltAi", to: "/lumivolt-ai" },
 ];
 
 // Open the lead form anywhere on the site by dispatching this event.
