@@ -256,33 +256,6 @@ const Hero = ({ onApply }: HeroProps) => {
         </div>
       </div>
 
-      {/* Bottom brand strip — label sits above marquee so it's never covered */}
-      <div className="absolute bottom-0 inset-x-0 z-10 border-t border-primary-foreground/10 bg-secondary/50 backdrop-blur-md py-4">
-        <div className="section-container">
-          <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-primary-foreground/50 text-center mb-3">
-            Trusted brands we install
-          </p>
-          <div
-            className="relative overflow-hidden"
-            style={{
-              maskImage: "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
-              WebkitMaskImage: "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
-            }}
-          >
-            <div className="flex gap-14 animate-marquee whitespace-nowrap w-max">
-              {[...Array(2)].map((_, i) => (
-                <div key={i} className="flex gap-14 items-center">
-                  {["SRNE", "AlpSolarr", "Itel", "Hikvision", "Tuya"].map((b) => (
-                    <span key={b} className="text-primary-foreground/70 font-display font-semibold text-base sm:text-lg tracking-tight">
-                      {b}
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
   );
 };
