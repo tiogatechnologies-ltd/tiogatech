@@ -206,7 +206,7 @@ const Hero = ({ onApply }: HeroProps) => {
                 </div>
                 <div>
                   <p className="text-xs text-primary-foreground/60 uppercase tracking-wider">Solar Output</p>
-                  <p className="text-lg font-display font-bold text-primary-foreground">5.2 kW</p>
+                  <p className="text-lg font-display font-bold text-primary-foreground">5.2 kWp</p>
                 </div>
               </div>
               <div className="h-1.5 bg-primary-foreground/10 rounded-full overflow-hidden">
