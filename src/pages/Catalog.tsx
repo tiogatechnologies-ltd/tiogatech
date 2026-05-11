@@ -231,20 +231,95 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
   );
 };
 
+const ComingSoonStore = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="min-h-screen flex flex-col bg-secondary">
+      <SiteHeader />
+      <section className="relative flex-1 flex items-center justify-center overflow-hidden -mt-[64px] sm:-mt-[72px] pt-[64px] sm:pt-[72px]">
+        {/* Animated gradient orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-primary/30 blur-3xl animate-blob" />
+          <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full bg-accent/25 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
+          <div className="absolute -bottom-40 left-1/3 w-[450px] h-[450px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,hsl(var(--secondary))_75%)]" />
+
+        <div className="relative section-container py-20 sm:py-28 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gold/15 border border-gold/40 px-4 py-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-gold animate-fade-up">
+            <Sparkles size={13} className="fill-gold" /> Coming Soon
+          </div>
+          <h1 className="mt-6 text-4xl sm:text-6xl lg:text-7xl font-display font-bold text-primary-foreground tracking-[-0.02em] leading-[1.05] no-clip max-w-3xl mx-auto animate-fade-up" style={{ animationDelay: "0.1s" }}>
+            The Tioga <span className="bg-gradient-to-r from-accent via-yellow-300 to-accent bg-clip-text text-transparent">Online Store</span> is launching soon.
+          </h1>
+          <p className="mt-5 text-base sm:text-lg text-primary-foreground/75 max-w-xl mx-auto animate-fade-up" style={{ animationDelay: "0.2s" }}>
+            We're putting the finishing touches on a curated catalog of solar, smart home, and security gear, complete with one-tap WhatsApp ordering.
+          </p>
+          <p className="mt-3 text-sm text-primary-foreground/60 max-w-xl mx-auto animate-fade-up" style={{ animationDelay: "0.25s" }}>
+            In the meantime, get an instant AI-tailored recommendation for your space.
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 animate-fade-up" style={{ animationDelay: "0.3s" }}>
+            <button
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent("tioga:open-lead-form", { detail: { source: "store_coming_soon" } }));
+                navigate("/?lead=1");
+              }}
+              className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3.5 text-sm font-bold text-midnight hover:brightness-110 active:scale-[0.97] transition-all shadow-xl shadow-gold/40"
+            >
+              <Sparkles size={15} className="fill-midnight" /> Get AI Recommendation
+            </button>
+            <a
+              href={WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/25 bg-primary-foreground/5 backdrop-blur-md px-6 py-3.5 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+            >
+              <MessageCircle size={15} /> Chat on WhatsApp
+            </a>
+          </div>
+
+          {/* Preview tiles */}
+          <div className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto animate-fade-up" style={{ animationDelay: "0.4s" }}>
+            {[
+              { label: "Solar Kits", emoji: "☀️" },
+              { label: "Smart Locks", emoji: "🔒" },
+              { label: "CCTV", emoji: "📷" },
+              { label: "Smart Lights", emoji: "💡" },
+            ].map((t) => (
+              <div key={t.label} className="rounded-2xl border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-md p-4 text-center">
+                <div className="text-2xl mb-1.5">{t.emoji}</div>
+                <p className="text-xs sm:text-sm font-semibold text-primary-foreground">{t.label}</p>
+                <p className="text-[10px] uppercase tracking-widest text-primary-foreground/50 mt-1">Soon</p>
+              </div>
+            ))}
+          </div>
+
+          <Link to="/" className="mt-10 inline-flex items-center gap-1.5 text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors animate-fade-up" style={{ animationDelay: "0.5s" }}>
+            <ArrowLeft size={14} /> Back to Home
+          </Link>
+        </div>
+      </section>
+      <SiteFooter />
+    </div>
+  );
+};
+
 const Catalog = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Gate: products are only accessible after completing the personalized quote form
+  // Gate: products are only accessible after completing the personalized quote form.
+  // Without form state or unlock flag, show the Coming Soon screen.
+  const unlocked = typeof window !== "undefined" && sessionStorage.getItem("_tid_catalog_unlocked") === "1";
+  const hasState = !!location.state;
+  const showComingSoon = !unlocked && !hasState;
+
   useEffect(() => {
-    const unlocked = sessionStorage.getItem("_tid_catalog_unlocked") === "1";
-    const hasState = !!location.state;
-    if (!unlocked && !hasState) {
-      navigate("/", { replace: true });
-    } else if (hasState) {
-      sessionStorage.setItem("_tid_catalog_unlocked", "1");
-    }
-  }, [location.state, navigate]);
+    if (hasState) sessionStorage.setItem("_tid_catalog_unlocked", "1");
+  }, [hasState]);
+
+  if (showComingSoon) return <ComingSoonStore />;
 
   const state = location.state as {
     products?: string[];
