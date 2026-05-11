@@ -1,7 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail } from "lucide-react";
+import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail, Sparkles, Wrench, Sun, Cpu, Quote, Compass, ShieldCheck } from "lucide-react";
 import bgTeam from "@/assets/bg-team.jpg";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 import bgSolarField from "@/assets/bg-solar-field.jpg";
@@ -88,6 +88,108 @@ const Career = () => (
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Values */}
+    <section className="section-padding bg-muted">
+      <div className="section-container">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">How we work</p>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+            The values that hold the team together
+          </h2>
+          <p className="mt-3 text-muted-foreground">No politics. No vanity work. Just craft and care.</p>
+        </div>
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {[
+            { icon: ShieldCheck, title: "Reliability first", desc: "We over-engineer for Nigerian conditions. If it can't survive a brownout, it doesn't ship." },
+            { icon: Compass, title: "Customer obsession", desc: "Every system is somebody's home or business. We act like it." },
+            { icon: Sparkles, title: "Bias for craft", desc: "Clean cabling, neat installs, well-named code. The boring details matter." },
+            { icon: Heart, title: "People over titles", desc: "Best idea wins. Junior engineers ship to production from week one." },
+          ].map((v) => (
+            <div key={v.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                <v.icon className="text-primary" size={18} />
+              </div>
+              <h3 className="font-display font-bold text-foreground mb-1.5 text-lg no-clip">{v.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Teams we hire */}
+    <section className="section-padding">
+      <div className="section-container">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Teams we hire</p>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+            Where you might fit
+          </h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {[
+            { icon: Sun, title: "Solar Engineering", desc: "Sizing, design and commissioning of inverter and battery systems." },
+            { icon: Wrench, title: "Field Installation", desc: "Hands-on installers and electricians who take pride in clean work." },
+            { icon: Cpu, title: "Embedded & IoT", desc: "Firmware, telemetry, and hardware integration for energy hardware." },
+            { icon: Users, title: "Sales & Operations", desc: "Customer success, logistics and project coordination across Nigeria." },
+          ].map((t) => (
+            <div key={t.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
+              <div className="w-10 h-10 rounded-xl bg-gold/15 flex items-center justify-center mb-3">
+                <t.icon className="text-gold" size={18} />
+              </div>
+              <h3 className="font-display font-bold text-foreground mb-1.5 text-lg no-clip">{t.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Life at Tioga */}
+    <section className="section-padding">
+      <div className="section-container">
+        <div className="relative rounded-3xl overflow-hidden border border-border min-h-[320px] sm:min-h-[400px]">
+          <img src={bgTeam} alt="Tioga Technologies team in Lagos" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-midnight via-midnight/85 to-midnight/40" />
+          <div className="relative h-full p-8 sm:p-12 lg:p-16 flex flex-col justify-center max-w-xl text-primary-foreground">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-gold mb-3 font-bold">Life at Tioga</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold leading-tight no-clip mb-4">
+              A small team. Real work. Real ownership.
+            </h2>
+            <p className="text-primary-foreground/85 leading-relaxed mb-6">
+              We work out of Ikeja, Lagos. Mornings are quiet. Afternoons are field visits, code reviews, and hands-on builds. We celebrate every install that goes live, and we pay people what they are worth.
+            </p>
+            <div className="grid grid-cols-2 gap-4 max-w-md">
+              <div>
+                <p className="text-3xl font-display font-bold text-gold">7+</p>
+                <p className="text-xs text-primary-foreground/70 uppercase tracking-wider">Years operating</p>
+              </div>
+              <div>
+                <p className="text-3xl font-display font-bold text-gold">100%</p>
+                <p className="text-xs text-primary-foreground/70 uppercase tracking-wider">Naira salaries</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Testimonial */}
+    <section className="section-padding bg-muted">
+      <div className="section-container max-w-3xl">
+        <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 shadow-[var(--shadow-card)] text-center">
+          <Quote className="text-primary mx-auto mb-4" size={32} />
+          <p className="text-lg sm:text-xl text-foreground font-display leading-relaxed mb-6">
+            "I joined as a junior installer. Within a year I was leading commissioning visits and learning embedded systems on the side. The team actually invests in you."
+          </p>
+          <div className="text-sm">
+            <p className="font-semibold text-foreground">Tunde A.</p>
+            <p className="text-muted-foreground">Solar Lead Installer</p>
+          </div>
         </div>
       </div>
     </section>

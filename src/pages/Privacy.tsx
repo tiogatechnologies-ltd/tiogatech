@@ -1,10 +1,11 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-8">
-    <h2 className="text-xl font-display font-bold text-foreground mb-3">{title}</h2>
+    <h2 className="text-xl font-display font-bold text-foreground mb-3 no-clip">{title}</h2>
     <div className="space-y-3 text-muted-foreground leading-relaxed text-sm sm:text-base">{children}</div>
   </div>
 );
@@ -16,6 +17,8 @@ const Privacy = () => (
       eyebrow="Legal"
       title="Privacy Policy"
       subtitle="How Tioga Technologies collects, uses, and protects your information."
+      backgroundImage={bgTechMesh}
+      backgroundAlt="Abstract technology mesh"
     />
     <section className="section-padding">
       <div className="section-container max-w-3xl">
