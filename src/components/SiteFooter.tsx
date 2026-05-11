@@ -140,9 +140,6 @@ const SiteFooter = () => {
           <p className="text-xs text-primary-foreground/55">
             © {new Date().getFullYear()} Tioga Technologies. All rights reserved.
           </p>
-          <p className="text-xs text-primary-foreground/55">
-            Made in Lagos. Powering Nigeria.
-          </p>
         </div>
       </div>
     </footer>
