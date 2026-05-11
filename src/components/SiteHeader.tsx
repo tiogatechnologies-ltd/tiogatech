@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, MessageCircle, Sparkles, ChevronDown } from "lucide-react";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
