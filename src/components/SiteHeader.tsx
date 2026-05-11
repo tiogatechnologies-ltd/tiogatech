@@ -6,6 +6,12 @@ import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { cn } from "@/lib/utils";
 import MegaMenu from "@/components/MegaMenu";
 
+// Standalone sub-brand links shown next to Products.
+const brandLinks = [
+  { label: "LumiVolt", to: "/lumivolt" },
+  { label: "VoltAi", to: "/voltai" },
+];
+
 // Secondary links shown after the merged Products mega-menu.
 const secondaryLinks = [
   { label: "Career", to: "/career" },
@@ -14,8 +20,6 @@ const secondaryLinks = [
 ];
 
 const productSubLinks = [
-  { label: "LumiVolt — Residential", to: "/lumivolt" },
-  { label: "VoltAi — Smart Automation", to: "/voltai" },
   { label: "Packages", to: "/packages" },
   { label: "Store", to: "/catalog" },
 ];
