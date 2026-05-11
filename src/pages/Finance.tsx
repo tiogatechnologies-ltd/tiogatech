@@ -137,13 +137,13 @@ const Finance = () => (
         <p className="text-muted-foreground max-w-xl mx-auto mb-7">Start with a free consultation and see how affordable clean energy can be.</p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
-            to="/contact"
+            to="/?lead=1"
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
           >
             Get a Free Quote <ArrowRight size={16} />
           </Link>
           <Link
-            to="/lumivolt-ai"
+            to="/lumivolt"
             className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted active:scale-[0.97] transition-all"
           >
             Calculate Your Needs

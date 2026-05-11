@@ -54,7 +54,7 @@ const LumiVolt = () => {
         backgroundAlt="Modern Nigerian home with rooftop solar at golden hour"
       >
         <Link
-          to="/contact"
+          to="/?lead=1"
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
         >
           Get a Solar Quote <ArrowRight size={16} />
@@ -175,10 +175,10 @@ const LumiVolt = () => {
               ))}
             </ul>
             <Link
-              to="/contact"
+              to="/?lead=1"
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
             >
-              Talk to a LumiVolt Engineer <ArrowRight size={16} />
+              Get My LumiVolt Design <ArrowRight size={16} />
             </Link>
           </div>
           <p className="mt-6 text-center text-sm text-muted-foreground">
