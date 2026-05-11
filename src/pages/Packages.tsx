@@ -4,12 +4,12 @@ import PageHero from "@/components/PageHero";
 import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap, Lock, Camera, Lightbulb, BatteryCharging } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
-import featureSolar from "@/assets/feature-solar-panel.jpg";
-import featureApp from "@/assets/feature-smart-app.jpg";
-import featureSecurity from "@/assets/feature-security.jpg";
-import bgSolarField from "@/assets/bg-solar-field.jpg";
-import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
-import bgLagosNight from "@/assets/bg-lagos-night.jpg";
+import featureSolar from "@/assets/feature-solar-roof.jpg";
+import featureApp from "@/assets/feature-control-panel.jpg";
+import featureSecurity from "@/assets/feature-smart-lock.jpg";
+import bgSolarField from "@/assets/bg-rooftop-install.jpg";
+import bgTechMesh from "@/assets/bg-gold-bokeh.jpg";
+import bgLagosNight from "@/assets/bg-lagos-traffic.jpg";
 import bgBundle from "@/assets/bg-bundle.jpg";
 
 const packages = [

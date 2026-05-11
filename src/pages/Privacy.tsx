@@ -1,7 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgTechMesh from "@/assets/bg-circuit.jpg";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-8">
