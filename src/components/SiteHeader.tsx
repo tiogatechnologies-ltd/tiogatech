@@ -213,16 +213,10 @@ const SiteHeader = () => {
             <button
               type="button"
               onClick={handleAiClick}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 bg-gold/15 px-5 py-3 text-sm font-semibold text-foreground"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-bold text-midnight shadow-md shadow-gold/40"
             >
-              <Sparkles size={14} className="text-gold" /> AI Recommend
+              <Sparkles size={14} className="fill-midnight" /> AI Recommend
             </button>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-            >
-              Get Started
-            </Link>
             <a
               href="https://wa.me/2348178000023"
               target="_blank"
