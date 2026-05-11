@@ -2,13 +2,17 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroSolar from "@/assets/feature-solar-panel.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgSolarField from "@/assets/bg-solar-field.jpg";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
+import featureApp from "@/assets/feature-smart-app.jpg";
 import { Plus, Calculator, Sparkles, CheckCircle2, BarChart3, Wallet, Globe, Lightbulb, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const steps = [
-  { n: 1, icon: Plus, title: "Add Your Appliances", desc: "List the devices you use daily with their wattage and usage hours." },
-  { n: 2, icon: Calculator, title: "Calculate Energy", desc: "We compute your total daily and monthly energy consumption instantly." },
-  { n: 3, icon: Sparkles, title: "Get AI Recommendation", desc: "Our AI analyzes your profile and recommends the optimal solar setup." },
+  { n: 1, icon: Plus, title: "Add Your Appliances", desc: "List the devices you use daily with their wattage and usage hours.", bg: featureApp },
+  { n: 2, icon: Calculator, title: "Calculate Energy", desc: "We compute your total daily and monthly energy consumption instantly.", bg: bgTechMesh },
+  { n: 3, icon: Sparkles, title: "Get AI Recommendation", desc: "Our AI analyzes your profile and recommends the optimal solar setup.", bg: bgSolarField },
 ];
 
 const benefits = [
@@ -53,15 +57,19 @@ const LumiVoltAI = () => (
         </div>
         <div className="grid gap-8 sm:grid-cols-3">
           {steps.map((s) => (
-            <div key={s.n} className="text-center">
-              <div className="relative mx-auto w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                <s.icon className="text-primary" size={26} />
-                <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
-                  {s.n}
-                </span>
+            <div key={s.n} className="group relative rounded-2xl overflow-hidden border border-border min-h-[260px] hover-lift">
+              <img src={s.bg} alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/75 to-midnight/40" />
+              <div className="relative h-full p-6 flex flex-col justify-end text-primary-foreground">
+                <div className="relative w-14 h-14 rounded-2xl bg-gold text-midnight flex items-center justify-center shadow-lg mb-4">
+                  <s.icon size={24} />
+                  <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-midnight text-gold text-xs font-bold flex items-center justify-center border border-gold/40">
+                    {s.n}
+                  </span>
+                </div>
+                <h3 className="font-display font-bold text-lg mb-1.5 no-clip">{s.title}</h3>
+                <p className="text-sm text-primary-foreground/80 leading-relaxed">{s.desc}</p>
               </div>
-              <h3 className="font-display font-bold text-foreground mb-2">{s.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">{s.desc}</p>
             </div>
           ))}
         </div>

@@ -8,7 +8,7 @@ import MegaMenu from "@/components/MegaMenu";
 
 const links = [
   { label: "Home", to: "/" },
-  { label: "Packages", to: "/packages" },
+  { label: "Products & Packages", to: "/packages" },
   { label: "Store", to: "/catalog" },
   { label: "How It Works", to: "/#how-it-works" },
   { label: "Career", to: "/career" },
@@ -188,12 +188,12 @@ const SiteHeader = () => {
               <div className="ml-3 pl-3 border-l border-border flex flex-col gap-0.5 mb-1">
                 <Link to="/solutions#solar" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">LumiVolt — Residential Solar</Link>
                 <Link to="/lumivolt-ai" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">VoltAi — Smart Automation</Link>
-                <Link to="/catalog?cat=smart-lock" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Smart Lock</Link>
-                <Link to="/catalog?cat=cctv" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">CCTV</Link>
-                <Link to="/catalog?cat=smart-lights" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Smart Lights</Link>
-                <Link to="/catalog?cat=inverter" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Solar Inverter</Link>
-                <Link to="/catalog?cat=panels" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Solar Panels</Link>
-                <Link to="/catalog?cat=battery" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Batteries</Link>
+                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Smart Lock</Link>
+                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">CCTV</Link>
+                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Smart Lights</Link>
+                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Solar Inverter</Link>
+                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Solar Panels</Link>
+                <Link to="/packages#categories" className="px-3 py-2 text-sm text-foreground/75 hover:text-primary">Batteries</Link>
               </div>
             )}
 

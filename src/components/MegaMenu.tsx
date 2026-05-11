@@ -20,12 +20,12 @@ const subBrands = [
 ];
 
 const products = [
-  { label: "Smart Lock", to: "/catalog?cat=smart-lock", icon: Lock },
-  { label: "CCTV", to: "/catalog?cat=cctv", icon: Camera },
-  { label: "Smart Lights", to: "/catalog?cat=smart-lights", icon: Lightbulb },
-  { label: "Solar Inverter", to: "/catalog?cat=inverter", icon: Zap },
-  { label: "Solar Panels", to: "/catalog?cat=panels", icon: Sun },
-  { label: "Batteries", to: "/catalog?cat=battery", icon: BatteryCharging },
+  { label: "Smart Lock", to: "/packages#categories", icon: Lock },
+  { label: "CCTV", to: "/packages#categories", icon: Camera },
+  { label: "Smart Lights", to: "/packages#categories", icon: Lightbulb },
+  { label: "Solar Inverter", to: "/packages#categories", icon: Zap },
+  { label: "Solar Panels", to: "/packages#categories", icon: Sun },
+  { label: "Batteries", to: "/packages#categories", icon: BatteryCharging },
 ];
 
 interface MegaMenuProps {
