@@ -14,10 +14,11 @@ const secondaryLinks = [
 ];
 
 const productSubLinks = [
+  { label: "LumiVolt — Residential", to: "/lumivolt" },
+  { label: "VoltAi — Smart Automation", to: "/voltai" },
   { label: "Packages", to: "/packages" },
   { label: "Store", to: "/catalog" },
   { label: "Solutions", to: "/solutions" },
-  { label: "VoltAi", to: "/lumivolt-ai" },
 ];
 
 // Open the lead form anywhere on the site by dispatching this event.

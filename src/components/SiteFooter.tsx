@@ -8,8 +8,8 @@ const company = [
   { label: "About", to: "/about" },
   { label: "Career", to: "/career" },
   { label: "Contact", to: "/contact" },
-  { label: "LumiVolt", to: "/lumivolt-ai" },
-  { label: "VoltAi", to: "/lumivolt-ai" },
+  { label: "LumiVolt — Residential", to: "/lumivolt" },
+  { label: "VoltAi — Smart Automation", to: "/voltai" },
 ];
 
 const solutions = [
