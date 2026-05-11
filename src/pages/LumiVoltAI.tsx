@@ -2,13 +2,17 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroSolar from "@/assets/feature-solar-panel.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgSolarField from "@/assets/bg-solar-field.jpg";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
+import featureApp from "@/assets/feature-smart-app.jpg";
 import { Plus, Calculator, Sparkles, CheckCircle2, BarChart3, Wallet, Globe, Lightbulb, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const steps = [
-  { n: 1, icon: Plus, title: "Add Your Appliances", desc: "List the devices you use daily with their wattage and usage hours." },
-  { n: 2, icon: Calculator, title: "Calculate Energy", desc: "We compute your total daily and monthly energy consumption instantly." },
-  { n: 3, icon: Sparkles, title: "Get AI Recommendation", desc: "Our AI analyzes your profile and recommends the optimal solar setup." },
+  { n: 1, icon: Plus, title: "Add Your Appliances", desc: "List the devices you use daily with their wattage and usage hours.", bg: featureApp },
+  { n: 2, icon: Calculator, title: "Calculate Energy", desc: "We compute your total daily and monthly energy consumption instantly.", bg: bgTechMesh },
+  { n: 3, icon: Sparkles, title: "Get AI Recommendation", desc: "Our AI analyzes your profile and recommends the optimal solar setup.", bg: bgSolarField },
 ];
 
 const benefits = [
