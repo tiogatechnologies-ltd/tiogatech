@@ -2,6 +2,12 @@ import { useState } from "react";
 import { Zap, Fuel, ShieldAlert, TrendingDown, ArrowRight } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import bgSolarField from "@/assets/bg-solar-field.jpg";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgTeam from "@/assets/bg-team.jpg";
+
+const backImages = [bgSolarField, bgLagosNight, bgTechMesh, bgTeam];
 
 const defaultProblems = [
   {
