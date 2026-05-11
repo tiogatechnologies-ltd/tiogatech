@@ -186,8 +186,8 @@ const Hero = ({ onApply }: HeroProps) => {
                 { v: "2yrs", l: "Warranty" },
               ].map((s) => (
                 <div key={s.l} className="flex items-baseline gap-2">
-                  <span className="text-2xl font-display font-bold text-primary-foreground">{s.v}</span>
-                  <span className="text-xs uppercase tracking-wider text-primary-foreground/60">{s.l}</span>
+                  <span className="text-xl font-display font-bold text-primary-foreground">{s.v}</span>
+                  <span className="text-[11px] uppercase tracking-wider text-primary-foreground/60">{s.l}</span>
                 </div>
               ))}
             </div>
