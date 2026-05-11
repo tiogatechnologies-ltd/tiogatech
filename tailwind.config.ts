@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Poppins", "sans-serif"],
+        display: ["Plus Jakarta Sans", "Poppins", "sans-serif"],
         body: ["Inter", "sans-serif"],
       },
       colors: {
