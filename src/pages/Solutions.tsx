@@ -21,7 +21,7 @@ const solutions = [
       "2-year workmanship warranty",
       "Real-time performance monitoring",
     ],
-    accent: "from-accent/15 to-accent/5",
+    image: featureSolar,
   },
   {
     icon: Home,
@@ -34,7 +34,7 @@ const solutions = [
       "Voice assistant integration",
       "Energy-aware automation",
     ],
-    accent: "from-primary/15 to-primary/5",
+    image: featureApp,
   },
   {
     icon: ShieldCheck,
@@ -47,7 +47,7 @@ const solutions = [
       "Cloud and on-device recording",
       "Smart doorbells and intercoms",
     ],
-    accent: "from-secondary/20 to-secondary/5",
+    image: featureSecurity,
   },
 ];
 
