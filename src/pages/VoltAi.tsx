@@ -44,7 +44,7 @@ const VoltAi = () => {
         backgroundAlt="Hand interacting with futuristic smart home control interface"
       >
         <Link
-          to="/contact"
+          to="/?lead=1"
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
         >
           Automate My Home <ArrowRight size={16} />
@@ -145,7 +145,7 @@ const VoltAi = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
-                to="/contact"
+                to="/?lead=1"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
               >
                 Get a Quote <ArrowRight size={16} />

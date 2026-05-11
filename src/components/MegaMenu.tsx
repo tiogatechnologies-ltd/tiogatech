@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Package, Store, Cpu, Layers, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight, Home } from "lucide-react";
+import { Package, Store, Cpu, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const productHubs = [
@@ -30,13 +30,6 @@ const productHubs = [
     desc: "Individual devices, panels, locks, cameras and more. Order on WhatsApp.",
     to: "/catalog",
     icon: Store,
-  },
-  {
-    name: "Solutions",
-    tag: "Full systems",
-    desc: "End to end designs for solar, smart home and security at any scale.",
-    to: "/solutions",
-    icon: Layers,
   },
 ];
 

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import featureSolar from "@/assets/feature-solar-panel.jpg";
@@ -12,13 +13,15 @@ const features = [
     desc: "High-efficiency panels, lithium batteries, and inverters sized to your exact load.",
     img: featureSolar,
     accent: "from-amber-400/30 to-yellow-300/10",
+    to: "/catalog",
   },
   {
     icon: Smartphone,
     title: "Smart Automation",
-    desc: "Control lights, climate, and energy from one app — anywhere in the world.",
+    desc: "Control lights, climate, and energy from one app, anywhere in the world.",
     img: featureApp,
     accent: "from-primary/40 to-primary/10",
+    to: "/catalog",
   },
   {
     icon: ShieldCheck,
@@ -26,6 +29,7 @@ const features = [
     desc: "AI cameras, smart locks, and 24/7 monitoring that keep your property safe.",
     img: featureSecurity,
     accent: "from-blue-500/30 to-blue-400/10",
+    to: "/catalog",
   },
 ];
 
@@ -52,9 +56,10 @@ const SolutionSection = () => {
 
         <div className="grid md:grid-cols-3 gap-6">
           {features.map((f, i) => (
-            <div
+            <Link
+              to={f.to}
               key={f.title}
-              className={`group relative rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+              className={`group relative block rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
               {/* Image */}
@@ -85,7 +90,7 @@ const SolutionSection = () => {
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

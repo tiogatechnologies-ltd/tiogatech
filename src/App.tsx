@@ -24,7 +24,7 @@ import LumiVolt from "./pages/LumiVolt.tsx";
 import VoltAi from "./pages/VoltAi.tsx";
 import Finance from "./pages/Finance.tsx";
 import Contact from "./pages/Contact.tsx";
-import Solutions from "./pages/Solutions.tsx";
+
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
 import Packages from "./pages/Packages.tsx";
@@ -56,7 +56,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
-            <Route path="/solutions" element={<Solutions />} />
+            <Route path="/solutions" element={<Navigate to="/lumivolt" replace />} />
             <Route path="/lumivolt" element={<LumiVolt />} />
             <Route path="/voltai" element={<VoltAi />} />
             <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
