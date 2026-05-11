@@ -139,6 +139,7 @@ const LumiVoltAI = () => {
 
     <SiteFooter />
   </div>
-);
+  );
+};
 
 export default LumiVoltAI;
