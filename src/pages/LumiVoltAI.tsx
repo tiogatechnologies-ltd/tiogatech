@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -8,6 +9,8 @@ import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import { Plus, Calculator, Sparkles, CheckCircle2, BarChart3, Wallet, Globe, Lightbulb, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import WattsCalculator from "@/components/lead-form/WattsCalculator";
+import type { SelectedAppliance } from "@/data/applianceWatts";
 
 const steps = [
   { n: 1, icon: Plus, title: "Add Your Appliances", desc: "List the devices you use daily with their wattage and usage hours.", bg: featureApp },
