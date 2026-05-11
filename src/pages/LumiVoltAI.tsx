@@ -130,12 +130,12 @@ const LumiVoltAI = () => {
           <WattsCalculator selectedAppliances={appliances} onChange={setAppliances} />
           <div className="mt-6 pt-6 border-t border-border text-center">
             <p className="text-sm text-muted-foreground mb-3">Ready for a personalized solar recommendation?</p>
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent("tioga:open-lead-form", { detail: { source: "lumi_calc" } }))}
+            <Link
+              to="/?lead=1"
               className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-bold text-midnight hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-gold/30"
             >
               <Sparkles size={15} /> Get AI Recommendation <ArrowRight size={16} />
-            </button>
+            </Link>
           </div>
         </div>
       </div>
