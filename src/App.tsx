@@ -57,6 +57,8 @@ const App = () => (
             <Route path="/lumivolt-ai" element={<LumiVoltAI />} />
             <Route path="/finance" element={<Finance />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/packages" element={<Packages />} />
+            <Route path="/career" element={<Career />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/catalog" element={<Catalog />} />
