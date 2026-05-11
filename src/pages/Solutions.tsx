@@ -85,25 +85,25 @@ const Solutions = () => (
         {solutions.map((s, i) => (
           <div
             key={s.title}
-            className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-[var(--shadow-card)] hover-lift overflow-hidden relative"
+            className="rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden relative grid md:grid-cols-12"
           >
-            <div className={`absolute -top-20 -right-20 w-64 h-64 rounded-full bg-gradient-to-br ${s.accent} blur-3xl pointer-events-none`} />
-            <div className="relative grid gap-6 md:grid-cols-12 items-center">
-              <div className="md:col-span-2 flex md:justify-center">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <s.icon className="text-primary" size={26} />
-                </div>
+            {/* Image side */}
+            <div className={`relative h-48 md:h-auto md:col-span-5 ${i % 2 === 1 ? "md:order-2" : ""}`}>
+              <img src={s.image} alt={s.eyebrow} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-midnight/85 via-midnight/30 to-transparent" />
+              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-gold/90 text-midnight px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] shadow">
+                <s.icon size={12} /> {s.eyebrow}
               </div>
-              <div className="md:col-span-6">
-                <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-2">
-                  {s.eyebrow}
-                </p>
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-3">
+            </div>
+            {/* Content side */}
+            <div className="md:col-span-7 p-6 sm:p-10 grid gap-5 md:grid-cols-7 items-center">
+              <div className="md:col-span-4">
+                <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-3 no-clip">
                   {s.title}
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">{s.desc}</p>
               </div>
-              <ul className="md:col-span-4 grid gap-2.5">
+              <ul className="md:col-span-3 grid gap-2.5">
                 {s.points.map((p) => (
                   <li key={p} className="flex items-start gap-2 text-sm text-foreground">
                     <Check className="text-primary mt-0.5 shrink-0" size={16} />
