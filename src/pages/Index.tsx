@@ -11,7 +11,7 @@ import TargetUsers from "@/components/TargetUsers";
 import TrustSection from "@/components/TrustSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
-import Footer from "@/components/Footer";
+import SiteFooter from "@/components/SiteFooter";
 import LeadForm from "@/components/LeadForm";
 import { trackConversion } from "@/lib/tracking";
 
@@ -65,7 +65,7 @@ const Index = () => {
       </div>
       <FAQSection />
       <FinalCTA onApply={() => openForm("final_cta")} />
-      <Footer />
+      <SiteFooter />
       <LeadForm open={formOpen} onClose={() => setFormOpen(false)} />
     </div>
   );
