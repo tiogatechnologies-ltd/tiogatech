@@ -2,23 +2,29 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail } from "lucide-react";
-import heroSmartHome from "@/assets/hero-smart-home.jpg";
+import bgTeam from "@/assets/bg-team.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgSolarField from "@/assets/bg-solar-field.jpg";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 
 const reasons = [
   {
     icon: Rocket,
     title: "Build the future of African energy",
     desc: "Every system you ship cuts diesel use and keeps a Nigerian home or business running.",
+    bg: bgSolarField,
   },
   {
     icon: GraduationCap,
     title: "Learn from senior engineers",
     desc: "Hands-on mentorship across solar, embedded systems, IoT and AI integration.",
+    bg: bgTechMesh,
   },
   {
     icon: Heart,
     title: "Be respected and well paid",
     desc: "Competitive Naira compensation, real ownership, and tools that don't slow you down.",
+    bg: bgLagosNight,
   },
 ];
 
