@@ -139,20 +139,44 @@ const SiteHeader = () => {
 
 
           {/* Merged Products mega-menu */}
-          <div className="group relative">
+          <div
+            ref={productsWrapRef}
+            className="relative"
+            onMouseEnter={openProducts}
+            onMouseLeave={scheduleCloseProducts}
+          >
             <button
+              ref={productsBtnRef}
               type="button"
+              onClick={() => setProductsDesktopOpen((v) => !v)}
+              onFocus={openProducts}
               className={cn(
                 "px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors inline-flex items-center gap-1",
                 onDark
-                  ? "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
-                  : "text-foreground/70 hover:text-foreground",
+                  ? productsDesktopOpen
+                    ? "bg-primary-foreground/15 text-primary-foreground"
+                    : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : productsDesktopOpen
+                    ? "text-primary"
+                    : "text-foreground/70 hover:text-foreground",
               )}
-              aria-haspopup="true"
+              aria-haspopup="menu"
+              aria-expanded={productsDesktopOpen}
+              aria-controls="products-mega-menu"
             >
-              Products <ChevronDown size={14} className="opacity-70" />
+              Products{" "}
+              <ChevronDown
+                size={14}
+                className={cn("opacity-70 transition-transform", productsDesktopOpen && "rotate-180")}
+              />
             </button>
-            <MegaMenu onDark={onDark} />
+            <div id="products-mega-menu">
+              <MegaMenu
+                onDark={onDark}
+                open={productsDesktopOpen}
+                onClose={() => setProductsDesktopOpen(false)}
+              />
+            </div>
           </div>
 
           {secondaryLinks.map((l) => (
