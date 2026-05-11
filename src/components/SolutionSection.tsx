@@ -56,9 +56,10 @@ const SolutionSection = () => {
 
         <div className="grid md:grid-cols-3 gap-6">
           {features.map((f, i) => (
-            <div
+            <Link
+              to={f.to}
               key={f.title}
-              className={`group relative rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+              className={`group relative block rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
               {/* Image */}
@@ -89,7 +90,7 @@ const SolutionSection = () => {
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
