@@ -66,12 +66,26 @@ const Career = () => (
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {reasons.map((r) => (
-            <div key={r.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
-              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                <r.icon className="text-primary" size={20} />
+            <div
+              key={r.title}
+              className="group relative rounded-2xl overflow-hidden hover-lift min-h-[260px] flex"
+            >
+              <img
+                src={r.bg}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              {/* High-contrast overlay so text remains very visible */}
+              <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/85 to-midnight/40" />
+              <div className="relative z-10 p-6 flex flex-col justify-end text-primary-foreground">
+                <div className="w-11 h-11 rounded-xl bg-gold/95 flex items-center justify-center mb-3 shadow-lg">
+                  <r.icon className="text-midnight" size={20} />
+                </div>
+                <h3 className="font-display font-bold text-primary-foreground mb-1.5 text-lg no-clip">{r.title}</h3>
+                <p className="text-sm text-primary-foreground/85 leading-relaxed">{r.desc}</p>
               </div>
-              <h3 className="font-display font-bold text-foreground mb-1.5 text-lg">{r.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
             </div>
           ))}
         </div>
