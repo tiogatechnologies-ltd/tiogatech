@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight, Cpu } from "lucide-react";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
 import { trackConversion } from "@/lib/tracking";
+import LetterStagger from "@/components/LetterStagger";
 
 interface HeroProps {
   onApply: () => void;
