@@ -118,29 +118,28 @@ const Hero = ({ onApply }: HeroProps) => {
             </div>
 
             <h1
-              className={`text-[1.75rem] xs:text-[2rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-primary-foreground leading-[1.08] tracking-[-0.02em] no-clip ${mounted ? "" : "opacity-0"}`}
+              className={`text-[1.85rem] xs:text-[2.1rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-primary-foreground leading-[1.1] tracking-[-0.02em] no-clip ${mounted ? "" : "opacity-0"}`}
             >
-              <LetterStagger as="div" text="Powering Nigerian" delayMs={250} />
-              <LetterStagger as="div" text="homes with" delayMs={900} />
-              <span className="relative inline-flex items-center mt-1 sm:mt-2 min-h-[1.15em]">
-                <span className="bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">
-                  <Typewriter
-                    words={[
-                      "solar energy.",
-                      "smart automation.",
-                      "smart locks.",
-                      "smart lighting.",
-                      "security cameras.",
-                      "intelligent living.",
-                    ]}
+              <LetterStagger as="span" className="block" text="Powering Nigerian homes" delayMs={250} />
+              <span className="block mt-1 sm:mt-2">
+                <LetterStagger as="span" text="with " delayMs={900} />
+                <span className="relative inline-block align-baseline min-w-[6ch]">
+                  <span className="bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">
+                    <Typewriter
+                      words={[
+                        "solar energy.",
+                        "smart automation.",
+                        "smart locks.",
+                        "smart lighting.",
+                        "security cameras.",
+                        "intelligent living.",
+                      ]}
+                    />
+                  </span>
+                  <span
+                    aria-hidden
+                    className="ml-1 inline-block w-[3px] sm:w-1 h-[0.85em] bg-accent rounded-sm animate-caret-blink align-middle"
                   />
-                </span>
-                <span
-                  aria-hidden
-                  className="ml-1 inline-block w-[3px] sm:w-1 h-[0.85em] bg-accent rounded-sm animate-caret-blink align-middle"
-                />
-                <span className="hidden sm:inline-flex absolute -top-3 -right-12 items-center justify-center w-9 h-9 rounded-xl bg-accent/15 border border-accent/30 backdrop-blur-md animate-float-slow">
-                  <Cpu className="text-accent w-5 h-5" />
                 </span>
               </span>
             </h1>
