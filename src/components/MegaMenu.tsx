@@ -1,8 +1,22 @@
 import { Link } from "react-router-dom";
-import { Package, Store, Cpu, Layers, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight } from "lucide-react";
+import { Package, Store, Cpu, Layers, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const productHubs = [
+  {
+    name: "LumiVolt",
+    tag: "Residential · Solar",
+    desc: "Our residential sub-brand for solar, batteries and whole-home energy.",
+    to: "/lumivolt",
+    icon: Home,
+  },
+  {
+    name: "VoltAi",
+    tag: "Smart Automation",
+    desc: "Our smart automation sub-brand: locks, lights, cameras and scenes.",
+    to: "/voltai",
+    icon: Cpu,
+  },
   {
     name: "Packages",
     tag: "Curated bundles",
@@ -23,13 +37,6 @@ const productHubs = [
     desc: "End to end designs for solar, smart home and security at any scale.",
     to: "/solutions",
     icon: Layers,
-  },
-  {
-    name: "VoltAi",
-    tag: "By LumiVolt",
-    desc: "Try the watts calculator and get an AI-powered system recommendation.",
-    to: "/lumivolt-ai",
-    icon: Cpu,
   },
 ];
 
@@ -66,7 +73,7 @@ export const MegaMenu = ({ onDark, open, onClose }: MegaMenuProps) => {
     >
       <div className="grid grid-cols-5 gap-5">
         <div className="col-span-3 space-y-2">
-          <p className="text-[10px] uppercase tracking-[0.22em] opacity-60 mb-1">Where to start</p>
+          <p className="text-[10px] uppercase tracking-[0.22em] opacity-60 mb-1">Sub-brands & where to start</p>
           <div className="grid grid-cols-2 gap-2">
             {productHubs.map((b) => {
               const Icon = b.icon;

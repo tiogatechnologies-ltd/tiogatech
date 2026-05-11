@@ -20,7 +20,8 @@ import AdminLandingPage from "./pages/AdminLandingPage.tsx";
 import AdminEmail from "./pages/AdminEmail.tsx";
 import AdminAnalytics from "./pages/AdminAnalytics.tsx";
 import About from "./pages/About.tsx";
-import LumiVoltAI from "./pages/LumiVoltAI.tsx";
+import LumiVolt from "./pages/LumiVolt.tsx";
+import VoltAi from "./pages/VoltAi.tsx";
 import Finance from "./pages/Finance.tsx";
 import Contact from "./pages/Contact.tsx";
 import Solutions from "./pages/Solutions.tsx";
@@ -56,7 +57,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/solutions" element={<Solutions />} />
-            <Route path="/lumivolt-ai" element={<LumiVoltAI />} />
+            <Route path="/lumivolt" element={<LumiVolt />} />
+            <Route path="/voltai" element={<VoltAi />} />
+            <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
             <Route path="/finance" element={<Finance />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/packages" element={<Packages />} />
