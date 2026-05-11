@@ -39,7 +39,7 @@ const Career = () => (
       eyebrow="Careers"
       title="Build with the team powering Nigeria."
       subtitle="We're a small, deeply technical team in Lagos. We hire engineers, installers and operators who care about craft and about the people we serve."
-      backgroundImage={heroSmartHome}
+      backgroundImage={bgTeam}
       backgroundAlt="Tioga Technologies team and installations"
     >
       <a
