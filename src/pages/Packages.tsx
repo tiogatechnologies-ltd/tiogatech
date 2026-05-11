@@ -25,7 +25,7 @@ const packages = [
       "Powers fans, TV, lights, fridge",
       "Installation + 2-year warranty",
     ],
-    accent: "from-accent/20 to-accent/5",
+    bg: bgSolarField,
   },
   {
     icon: Home,
@@ -40,7 +40,7 @@ const packages = [
       "Scenes for morning, away, night",
       "Tuya / HDL ecosystem",
     ],
-    accent: "from-primary/20 to-primary/5",
+    bg: featureApp,
   },
   {
     icon: ShieldCheck,
@@ -55,7 +55,7 @@ const packages = [
       "Cloud + 1TB on-device storage",
       "Night-vision tuned for Nigeria",
     ],
-    accent: "from-secondary/20 to-secondary/5",
+    bg: featureSecurity,
   },
   {
     icon: Sparkles,
@@ -70,7 +70,7 @@ const packages = [
       "8-channel CCTV + smart locks",
       "Single dashboard, single team",
     ],
-    accent: "from-gold/25 to-primary/10",
+    bg: bgLagosNight,
   },
 ];
 
