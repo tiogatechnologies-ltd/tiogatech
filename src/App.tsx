@@ -25,6 +25,8 @@ import Contact from "./pages/Contact.tsx";
 import Solutions from "./pages/Solutions.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
+import Packages from "./pages/Packages.tsx";
+import Career from "./pages/Career.tsx";
 
 const queryClient = new QueryClient();
 
