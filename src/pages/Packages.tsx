@@ -5,6 +5,11 @@ import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap } from "lucide
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import featureSolar from "@/assets/feature-solar-panel.jpg";
+import featureApp from "@/assets/feature-smart-app.jpg";
+import featureSecurity from "@/assets/feature-security.jpg";
+import bgSolarField from "@/assets/bg-solar-field.jpg";
+
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 
 const packages = [
   {
@@ -20,7 +25,7 @@ const packages = [
       "Powers fans, TV, lights, fridge",
       "Installation + 2-year warranty",
     ],
-    accent: "from-accent/20 to-accent/5",
+    bg: bgSolarField,
   },
   {
     icon: Home,
@@ -35,7 +40,7 @@ const packages = [
       "Scenes for morning, away, night",
       "Tuya / HDL ecosystem",
     ],
-    accent: "from-primary/20 to-primary/5",
+    bg: featureApp,
   },
   {
     icon: ShieldCheck,
@@ -50,7 +55,7 @@ const packages = [
       "Cloud + 1TB on-device storage",
       "Night-vision tuned for Nigeria",
     ],
-    accent: "from-secondary/20 to-secondary/5",
+    bg: featureSecurity,
   },
   {
     icon: Sparkles,
@@ -65,7 +70,7 @@ const packages = [
       "8-channel CCTV + smart locks",
       "Single dashboard, single team",
     ],
-    accent: "from-gold/25 to-primary/10",
+    bg: bgLagosNight,
   },
 ];
 
@@ -98,24 +103,40 @@ const Packages = () => (
         {packages.map((p) => (
           <div
             key={p.name}
-            className="relative rounded-3xl border border-border bg-card p-7 sm:p-8 shadow-[var(--shadow-card)] hover-lift overflow-hidden"
+            className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
           >
-            <div className={`absolute -top-20 -right-20 w-64 h-64 rounded-full bg-gradient-to-br ${p.accent} blur-3xl pointer-events-none`} />
-            <div className="relative">
-              <div className="flex items-start justify-between mb-5">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <p.icon className="text-primary" size={22} />
+            {/* Image header */}
+            <div className="relative h-44 overflow-hidden">
+              <img
+                src={p.bg}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/55 to-midnight/20" />
+              <div className="absolute inset-0 flex items-end justify-between p-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-2xl bg-gold/95 flex items-center justify-center shadow-lg">
+                    <p.icon className="text-midnight" size={20} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/75">{p.tagline}</p>
+                    <h3 className="text-xl font-display font-bold text-primary-foreground no-clip leading-tight">{p.name}</h3>
+                  </div>
                 </div>
-                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-gold bg-gold/10 border border-gold/30 px-2.5 py-1 rounded-full">
+                <span className="text-[10px] uppercase tracking-[0.18em] font-bold text-midnight bg-gold px-2.5 py-1 rounded-full shadow">
                   {p.badge}
                 </span>
               </div>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">{p.tagline}</p>
-              <h3 className="text-2xl font-display font-bold text-foreground mb-2 no-clip">{p.name}</h3>
-              <p className="text-sm text-muted-foreground mb-5">
-                Starting from <span className="text-foreground font-bold">{p.priceFrom}</span>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 sm:p-7 flex flex-col flex-1">
+              <p className="text-sm text-muted-foreground mb-4">
+                Starting from <span className="text-foreground font-bold text-base">{p.priceFrom}</span>
               </p>
-              <ul className="space-y-2.5 mb-6">
+              <ul className="space-y-2.5 mb-6 flex-1">
                 {p.points.map((pt) => (
                   <li key={pt} className="flex items-start gap-2 text-sm text-foreground">
                     <Check className="text-primary mt-0.5 shrink-0" size={16} />

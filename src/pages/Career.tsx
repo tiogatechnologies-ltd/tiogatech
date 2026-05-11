@@ -2,23 +2,29 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail } from "lucide-react";
-import heroSmartHome from "@/assets/hero-smart-home.jpg";
+import bgTeam from "@/assets/bg-team.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import bgSolarField from "@/assets/bg-solar-field.jpg";
+import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 
 const reasons = [
   {
     icon: Rocket,
     title: "Build the future of African energy",
     desc: "Every system you ship cuts diesel use and keeps a Nigerian home or business running.",
+    bg: bgSolarField,
   },
   {
     icon: GraduationCap,
     title: "Learn from senior engineers",
     desc: "Hands-on mentorship across solar, embedded systems, IoT and AI integration.",
+    bg: bgTechMesh,
   },
   {
     icon: Heart,
     title: "Be respected and well paid",
     desc: "Competitive Naira compensation, real ownership, and tools that don't slow you down.",
+    bg: bgLagosNight,
   },
 ];
 
@@ -33,7 +39,7 @@ const Career = () => (
       eyebrow="Careers"
       title="Build with the team powering Nigeria."
       subtitle="We're a small, deeply technical team in Lagos. We hire engineers, installers and operators who care about craft and about the people we serve."
-      backgroundImage={heroSmartHome}
+      backgroundImage={bgTeam}
       backgroundAlt="Tioga Technologies team and installations"
     >
       <a
@@ -60,12 +66,26 @@ const Career = () => (
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {reasons.map((r) => (
-            <div key={r.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
-              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                <r.icon className="text-primary" size={20} />
+            <div
+              key={r.title}
+              className="group relative rounded-2xl overflow-hidden hover-lift min-h-[260px] flex"
+            >
+              <img
+                src={r.bg}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              {/* High-contrast overlay so text remains very visible */}
+              <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/85 to-midnight/40" />
+              <div className="relative z-10 p-6 flex flex-col justify-end text-primary-foreground">
+                <div className="w-11 h-11 rounded-xl bg-gold/95 flex items-center justify-center mb-3 shadow-lg">
+                  <r.icon className="text-midnight" size={20} />
+                </div>
+                <h3 className="font-display font-bold text-primary-foreground mb-1.5 text-lg no-clip">{r.title}</h3>
+                <p className="text-sm text-primary-foreground/85 leading-relaxed">{r.desc}</p>
               </div>
-              <h3 className="font-display font-bold text-foreground mb-1.5 text-lg">{r.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
             </div>
           ))}
         </div>

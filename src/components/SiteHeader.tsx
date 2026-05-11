@@ -131,31 +131,21 @@ const SiteHeader = () => {
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* AI Recommendation badge */}
+          {/* AI Recommendation badge — always high-contrast */}
           <button
             type="button"
             onClick={handleAiClick}
             className={cn(
-              "hidden md:inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider transition-all",
-              "bg-gold/15 text-gold border border-gold/40 animate-ai-glow hover:bg-gold/25",
+              "inline-flex items-center gap-1.5 rounded-full px-3 sm:px-4 py-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97] animate-ai-glow",
+              "bg-gold text-midnight border-2 border-gold hover:brightness-110 shadow-lg shadow-gold/40",
             )}
             aria-label="Open AI recommendation"
           >
-            <Sparkles size={12} className="fill-gold" />
-            AI Recommend
+            <Sparkles size={13} className="fill-midnight" />
+            <span className="hidden xs:inline sm:inline">AI Recommend</span>
+            <span className="xs:hidden sm:hidden">AI</span>
           </button>
 
-          <Link
-            to="/contact"
-            className={cn(
-              "hidden sm:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition-all active:scale-[0.97] shadow-md",
-              onDark
-                ? "bg-accent text-accent-foreground hover:brightness-110 shadow-accent/30"
-                : "bg-primary text-primary-foreground hover:brightness-110 shadow-primary/20",
-            )}
-          >
-            Get Started
-          </Link>
           <button
             onClick={() => setOpen(!open)}
             className={cn(
@@ -223,16 +213,10 @@ const SiteHeader = () => {
             <button
               type="button"
               onClick={handleAiClick}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 bg-gold/15 px-5 py-3 text-sm font-semibold text-foreground"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-bold text-midnight shadow-md shadow-gold/40"
             >
-              <Sparkles size={14} className="text-gold" /> AI Recommend
+              <Sparkles size={14} className="fill-midnight" /> AI Recommend
             </button>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-            >
-              Get Started
-            </Link>
             <a
               href="https://wa.me/2348178000023"
               target="_blank"
