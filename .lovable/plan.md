@@ -1,75 +1,80 @@
-## Goals
+# Tioga Technologies 2.0 — Phased Build Plan
 
-1. Make the hero text smaller and more premium on mobile.
-2. Replace the static "Power your smart future with the sun" headline with a rotating typewriter line that cycles through what Tioga covers.
-3. Change the "12mo Warranty" stat to "2yrs Warranty".
-4. Stop showing a broken/empty image placeholder (with the product name as alt text) for products without a real picture.
+Existing green primary stays. We layer in **Midnight Navy (#0A192F)** as a new deep surface and keep **Solar Gold (#FFD700)** as the CTA accent (already close to current accent). Green remains the eco/success token.
 
-## 1. Hero typography on mobile (`src/components/Hero.tsx`)
+---
 
-Current headline classes: `text-5xl sm:text-6xl lg:text-7xl xl:text-8xl` — far too large at 390–414px.
+## Phase 1 — Design tokens + Header / Mega-Menu
 
-Update to a more refined mobile-first scale:
-- Headline: `text-[2.25rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl`
-- Sub-headline paragraph: `text-base sm:text-lg lg:text-xl`
-- Trust pill: shrink padding + `text-[11px] sm:text-sm`, allow wrapping
-- CTA buttons: `px-6 py-3 text-sm` on mobile, full-width stacked
-- Stat strip numbers: `text-xl sm:text-2xl`
-- Tighten section vertical padding on mobile (`pt-24 pb-16 sm:pt-28 sm:pb-20`)
+**Tokens (`src/index.css`, `tailwind.config.ts`)**
+- Add `--midnight: 215 64% 11%` (#0A192F) and `--solar-gold: 51 100% 50%` (#FFD700).
+- Bump `--secondary` to midnight navy so existing dark surfaces (footer, hero overlays) gain depth.
+- Tighten accent gold to #FFD700.
+- Add Plus Jakarta Sans alongside Poppins/Inter (fallback chain only — no font swap on body).
+- Add a `.no-clip` utility (`overflow: visible; padding-block: 0.15em`) for animated headings to prevent descender clipping.
 
-## 2. Rotating typewriter headline
+**Header (`SiteHeader.tsx`)**
+- Frosted glass on scroll already present; deepen to `bg-midnight/70 backdrop-blur-xl` when on dark.
+- Replace flat link list with: Home, Products (mega), Packages, Store, How It Works, Career, About, Contact.
+- New `MegaMenu.tsx` shown on Products hover/focus:
+  - Left col: LumiVolt (Residential) · VoltAi (Smart Automation) — sub-brand cards.
+  - Right col: 6-tile grid (Smart Lock, CCTV, Smart Lights, Solar Inverter, Panels, Batteries) → each links to `/store?cat=...`.
+- Add **AI Recommendation** glow badge next to Get Started CTA. Pulsing gold ring, opens existing `LeadForm`.
+- Mobile: collapse mega-menu into accordion inside the existing sheet.
 
-Replace the fixed two-line headline with one cohesive line:
+## Phase 2 — Hero motion + Body components
 
-> **Powering Nigerian homes with** *[rotating word]*
+**Hero (`Hero.tsx`)**
+- Headline: "One system. Everything connected." with letter-stagger reveal (framer-motion-free; CSS keyframe per span).
+- Rotating sub-text cycling through the 3 phrases every 3.5s.
+- Find/replace `5.2KW` → `5.2KWp` across hero graphics/content.
+- Wrap headline in `.no-clip`.
 
-Rotating phrases (typewriter: type → hold → delete → next):
-- `solar energy.`
-- `smart automation.`
-- `smart locks.`
-- `smart lighting.`
-- `security cameras.`
-- `intelligent living.`
+**Problem/Solution flip cards (`ProblemSection.tsx`)**
+- Convert tiles to 3D Y-axis flip on hover (desktop) and on first-tap (mobile, via `onClick` toggle).
+- Front: light card + vector icon; Back: midnight bg + gold text describing Tioga's solution.
 
-Implementation:
-- Inline `Typewriter` component inside `Hero.tsx` (no new deps).
-- Uses `useState` + `useEffect` with `setTimeout`. Typing speed ~70ms, deleting ~40ms, hold ~1400ms.
-- Word renders inside a gradient span (keep current `from-accent via-accent to-yellow-300 bg-clip-text`).
-- Trailing blinking caret (`|`) using a small CSS animation already-available pattern (add a `caret-blink` keyframe to `tailwind.config.ts`, 1s steps).
-- Min-height reserved on the rotating span to prevent layout jump on mobile.
-- The decorative floating `Cpu` chip badge moves to sit beside the gradient word but is hidden on mobile (`hidden sm:inline-flex`) so it doesn't clutter small screens.
+**Solutions grid (`SolutionSection.tsx`)**
+- Add scroll-reveal float-in (reuse `useScrollReveal`).
+- Hover: image scale 1.1 inside `overflow-hidden` container + sliding "Learn More →" overlay.
 
-## 3. Warranty stat
+**Counters (`StatsSection.tsx`)**
+- Replace static numbers with `useCountUp` hook driven by IntersectionObserver.
+- Add animated mesh/solar-wave SVG background behind the strip.
 
-In `Hero.tsx` stat strip, change:
-```
-{ v: "12mo", l: "Warranty" }
-```
-to:
-```
-{ v: "2yrs", l: "Warranty" }
-```
+## Phase 3 — Trust + AI quote modal polish
 
-## 4. Product image placeholder fix (`src/pages/Catalog.tsx`)
+**Brand carousel (`TrustSection.tsx`)**
+- Infinite marquee (already in tailwind config) of grayscale logos: TUYA, AlpSolarr, ITEL, SRNE, Hikvision, Tiandy, Dahua, HDL, Lux Power, Bread, Tiaco, Fireman, LifeSmart, Dawnice. Hover → full color via `grayscale-0` transition. Logos rendered as text-pill placeholders where image assets are unavailable.
 
-Two issues:
-- Some products have an `image_url` value that is empty string, whitespace, or broken — so the `<img>` renders, fails, and the alt text (product name) is what the user sees inside the grey box.
-- The grey container itself appears even when image fails.
+**Quote modal (`LeadForm.tsx`)**
+- Replace top `Progress` bar with a "liquid fill" gradient bar (gold → green) that animates width with spring easing.
+- No flow logic changes (per your answer — reuse existing form).
 
-Fix:
-- Treat empty/whitespace `image_url` as missing: `const hasImage = !!product.image_url?.trim();`
-- Add `onError` handler to the `<img>` that sets local state `imgFailed = true`, which hides the entire image container.
-- Render image alt as empty string (`alt=""`) so a broken image never shows the product name as fallback text. Product name is already shown as the card title below.
-- Apply the same logic anywhere else products are rendered with images (verify only `Catalog.tsx` renders product cards — confirmed by search).
+## Phase 4 — Footer, new pages, QC
+
+**Footer (`SiteFooter.tsx`)**
+- 4 columns: Company · Solutions · Support · Newsletter (email input + high-contrast gold CTA).
+- Move "Why Us" section into About page hero/below-hero band.
+
+**New pages**
+- `src/pages/Packages.tsx` — curated bundle cards (Starter Solar, Smart Home Essentials, Total Security, Whole-Home Combo) using existing product-bundle memory. CTA opens LeadForm.
+- `src/pages/Career.tsx` — intro hero, "Why work at Tioga" trio, open-roles list (placeholder + "No openings, send your CV" mailto), simple application CTA.
+- Routes wired in `App.tsx`. Both use shared `PageHero` + `SiteHeader` + `SiteFooter`.
+- Store: nav "Store" link points to existing `/catalog` (still gated). No new page.
+
+**QC pass**
+- Audit hero/section headings for descender clipping; apply `.no-clip` where needed.
+- Ensure `html { scroll-behavior: smooth }` (already set).
+- Verify flip cards toggle on mobile tap.
+- Lighthouse-style pass on mobile 390px.
+
+---
 
 ## Technical notes
+- No DB migrations. Pure frontend.
+- No new dependencies — animations via Tailwind keyframes + CSS transforms; counter via lightweight custom hook; mega-menu via Radix `NavigationMenu` (already installed).
+- Color memory (`mem://design/colors`) updated after Phase 1 to record navy + refined gold.
+- Memory `mem://features/navigation-ctas` updated after Phase 1 to reflect mega-menu structure.
 
-- All changes are client-side only, no DB or edge-function changes.
-- Add one keyframe `caret-blink` to `tailwind.config.ts` and matching `animation` entry.
-- No new packages.
-
-## Files to change
-
-- `src/components/Hero.tsx` — mobile type scale, rotating typewriter headline, warranty label
-- `src/pages/Catalog.tsx` — robust empty/broken image handling, empty alt
-- `tailwind.config.ts` — add `caret-blink` keyframe + animation
+I'll ship Phase 1 first and pause for your review before continuing to Phase 2.
