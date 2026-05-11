@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, MessageCircle, Sparkles, ChevronDown } from "lucide-react";
+import { Menu, X, MessageCircle, Sparkles } from "lucide-react";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { cn } from "@/lib/utils";
-import MegaMenu from "@/components/MegaMenu";
 
 const links = [
   { label: "Home", to: "/" },
-  { label: "Products & Packages", to: "/packages" },
+  { label: "Packages", to: "/packages" },
   { label: "Store", to: "/catalog" },
-  { label: "How It Works", to: "/#how-it-works" },
+  { label: "LumiVolt AI", to: "/lumivolt-ai" },
   { label: "Career", to: "/career" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
