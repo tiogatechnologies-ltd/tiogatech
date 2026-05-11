@@ -44,16 +44,21 @@ const categories = [
 
 interface MegaMenuProps {
   onDark: boolean;
+  open: boolean;
+  onClose: () => void;
 }
 
-export const MegaMenu = ({ onDark }: MegaMenuProps) => {
+export const MegaMenu = ({ onDark, open, onClose }: MegaMenuProps) => {
   return (
     <div
+      role="menu"
+      aria-hidden={!open}
+      onClick={onClose}
       className={cn(
-        "absolute left-1/2 top-full z-50 mt-3 w-[720px] -translate-x-1/2 rounded-2xl border p-5 shadow-2xl backdrop-blur-xl",
-        "opacity-0 invisible translate-y-2 transition-all duration-200 ease-out",
-        "group-hover:opacity-100 group-hover:visible group-hover:translate-y-0",
-        "focus-within:opacity-100 focus-within:visible focus-within:translate-y-0",
+        "absolute left-1/2 top-full z-50 mt-3 w-[min(720px,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border p-5 shadow-2xl backdrop-blur-xl transition-all duration-200 ease-out",
+        open
+          ? "opacity-100 visible translate-y-0 pointer-events-auto"
+          : "opacity-0 invisible translate-y-2 pointer-events-none",
         onDark
           ? "bg-midnight/95 border-primary-foreground/15 text-primary-foreground"
           : "bg-background/95 border-border text-foreground",
