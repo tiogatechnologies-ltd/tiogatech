@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import Hero from "@/components/Hero";
 import SiteHeader from "@/components/SiteHeader";
 import ProblemSection from "@/components/ProblemSection";
@@ -12,44 +10,15 @@ import TrustSection from "@/components/TrustSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
 import SiteFooter from "@/components/SiteFooter";
-import LeadForm from "@/components/LeadForm";
-import { trackConversion } from "@/lib/tracking";
+import { openLeadForm } from "@/components/SiteHeader";
 
 const Index = () => {
-  const [formOpen, setFormOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const openForm = (source: string) => {
-    trackConversion("cta_click", { source });
-    trackConversion("lead_form_opened", { source });
-    setFormOpen(true);
-  };
-
-  // Listen for AI badge clicks from anywhere in the app
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail || {};
-      openForm(detail.source || "ai_badge");
-    };
-    window.addEventListener("tioga:open-lead-form", handler);
-    return () => window.removeEventListener("tioga:open-lead-form", handler);
-  }, []);
-
-  // Auto-open when navigated with ?lead=1
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get("lead") === "1") {
-      openForm("ai_badge_redirect");
-      params.delete("lead");
-      navigate({ pathname: "/", search: params.toString() }, { replace: true });
-    }
-  }, [location.search, navigate]);
+  const open = (source: string) => openLeadForm(source);
 
   return (
     <div className="min-h-screen scroll-smooth">
       <SiteHeader />
-      <Hero onApply={() => openForm("hero")} />
+      <Hero onApply={() => open("hero")} />
       <ProblemSection />
       <div id="solutions">
         <SolutionSection />
@@ -64,9 +33,8 @@ const Index = () => {
         <TrustSection />
       </div>
       <FAQSection />
-      <FinalCTA onApply={() => openForm("final_cta")} />
+      <FinalCTA onApply={() => open("final_cta")} />
       <SiteFooter />
-      <LeadForm open={formOpen} onClose={() => setFormOpen(false)} />
     </div>
   );
 };
