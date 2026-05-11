@@ -109,10 +109,6 @@ const Hero = ({ onApply }: HeroProps) => {
               className={`inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 px-3 py-1.5 text-[11px] sm:text-sm text-primary-foreground/90 ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.1s" }}
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-accent" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
-              </span>
               <ShieldCheck size={14} />
               <span>Trusted by 100+ Nigerian homes & businesses</span>
             </div>
@@ -158,7 +154,7 @@ const Hero = ({ onApply }: HeroProps) => {
             >
               <button
                 onClick={onApply}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 sm:px-8 py-3 sm:py-4 text-[13px] sm:text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-2xl shadow-accent/30 hover:shadow-accent/50"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-2xl shadow-accent/30 hover:shadow-accent/50"
               >
                 Get My Personalized Quote
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -168,7 +164,7 @@ const Hero = ({ onApply }: HeroProps) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackConversion("whatsapp_click", { source: "hero" })}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 backdrop-blur-md px-5 sm:px-8 py-3 sm:py-4 text-[13px] sm:text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 ios-press"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 backdrop-blur-md px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 ios-press"
               >
                 <MessageCircle size={14} />
                 Chat on WhatsApp
