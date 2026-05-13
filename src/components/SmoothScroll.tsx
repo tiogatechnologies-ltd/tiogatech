@@ -7,8 +7,10 @@ const SmoothScroll = () => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      lerp: 0.1,
-      wheelMultiplier: 1,
+      lerp: 0.075,
+      duration: 1.4,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      wheelMultiplier: 0.9,
       smoothWheel: true,
       // @ts-ignore - older types
       smoothTouch: false,
