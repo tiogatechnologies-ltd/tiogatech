@@ -62,24 +62,16 @@ const SolutionSection = () => {
               className={`group relative block rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] card-hover ${isVisible ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
-              {/* Image with continuous Ken Burns */}
+              {/* Image with subtle hover zoom only */}
               <div className="relative h-56 overflow-hidden">
                 <img
                   src={f.img}
                   alt={f.title}
                   loading="lazy"
-                  className="w-full h-full object-cover animate-ken-burns group-hover:scale-110 transition-transform duration-[1.2s] ease-out"
-                  style={{ animationDelay: `${i * 1.5}s` }}
+                  className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                 />
                 <div className={`absolute inset-0 bg-gradient-to-t ${f.accent} mix-blend-overlay`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-card/60 via-transparent to-transparent" />
-                {/* Continuous shimmer sweep */}
-                <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                  <div
-                    className="absolute top-0 -left-1/3 h-full w-1/3 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-shimmer-sweep"
-                    style={{ animationDelay: `${i * 2}s` }}
-                  />
-                </div>
                 <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
                   <f.icon size={20} className="text-primary" />
                 </div>
