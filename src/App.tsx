@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import BackgroundAura from "@/components/BackgroundAura";
+import AutoReveal from "@/components/AutoReveal";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -94,6 +95,7 @@ const App = () => (
           <ScrollToTop />
           <SmoothScroll />
           <BackgroundAura />
+          <AutoReveal />
           <LeadFormHost />
           <AnimatedRoutes />
         </AuthProvider>
