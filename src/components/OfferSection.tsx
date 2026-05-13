@@ -1,14 +1,18 @@
 import { Sun, Cpu, Camera, Check } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import offerSolar from "@/assets/offer-solar.jpg";
+import offerAutomation from "@/assets/offer-automation.jpg";
+import offerSecurity from "@/assets/offer-security.jpg";
 
 const defaultOffers = [
-  { title: "Solar Inverter Systems", desc: "Say goodbye to generator noise and fuel costs.", highlights: ["Custom-sized for your load", "Lithium battery technology", "5 to 25 year warranty options", "Starts from ₦350,000"] },
-  { title: "Smart Home Automation", desc: "Transform your space into an intelligent environment.", highlights: ["Mobile and voice control", "Scene scheduling and routines", "Works with existing wiring", "Single room to full house"] },
-  { title: "CCTV and Smart Security", desc: "Protect what matters with smart locks, HD cameras, and real-time alerts.", highlights: ["Smart locks with biometric access", "24/7 HD recording and cloud storage", "Motion detection alerts", "Remote viewing from anywhere"] },
+  { title: "Solar Inverter Systems", desc: "Quiet, fuel-free power.", highlights: ["Custom-sized load", "Lithium batteries", "Up to 25yr warranty", "From ₦350,000"] },
+  { title: "Smart Home Automation", desc: "Control everything, anywhere.", highlights: ["App and voice control", "Scenes and schedules", "Works with existing wiring", "Single room to whole home"] },
+  { title: "CCTV and Smart Security", desc: "Eyes on what matters.", highlights: ["Biometric smart locks", "24/7 HD cloud recording", "Instant motion alerts", "View from anywhere"] },
 ];
 
 const icons = [Sun, Cpu, Camera];
+const offerImages = [offerSolar, offerAutomation, offerSecurity];
 
 const OfferSection = () => {
   const { ref, isVisible } = useScrollReveal();
