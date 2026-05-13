@@ -2,7 +2,7 @@ import Hero from "@/components/Hero";
 import SiteHeader from "@/components/SiteHeader";
 import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
-import OfferSection from "@/components/OfferSection";
+
 import StatsSection from "@/components/StatsSection";
 import HowItWorks from "@/components/HowItWorks";
 import TargetUsers from "@/components/TargetUsers";
@@ -22,7 +22,6 @@ const Index = () => {
       <ProblemSection />
       <div id="solutions">
         <SolutionSection />
-        <OfferSection />
       </div>
       <StatsSection />
       <div id="how-it-works">
