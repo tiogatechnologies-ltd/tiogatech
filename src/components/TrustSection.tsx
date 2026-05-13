@@ -104,8 +104,6 @@ const TrustSection = () => {
                 </div>
               ))}
             </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
