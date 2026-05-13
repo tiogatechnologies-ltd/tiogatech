@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Calendar, Sparkles } from "lucide-react";
 
 export type Job = {
+  id?: string;
   title: string;
   location: string;
   summary: string;
@@ -10,11 +11,12 @@ export type Job = {
   requirements: string;
   emailSubject: string;
   deadline?: string;
+  backgroundImage?: string;
 };
 
 const DEFAULT_DEADLINE = "30th May, 2026";
 
-const JobCard = ({ job, index }: { job: Job; index: number }) => {
+const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (job: Job) => void }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, mx: 50, my: 50 });
 
@@ -33,12 +35,6 @@ const JobCard = ({ job, index }: { job: Job; index: number }) => {
   };
   const reset = () => setTilt({ rx: 0, ry: 0, mx: 50, my: 50 });
 
-  const mailto = `mailto:careers@tiogatechnologies.com?subject=${encodeURIComponent(
-    job.emailSubject || `Application - ${job.title}`
-  )}&body=${encodeURIComponent(
-    `Hello Tioga Technologies team,\n\nI'd like to apply for the ${job.title} role.\n\nName:\nLocation:\nYears of experience:\n\nA short note about why I'm a great fit:\n\n[Attach your CV before sending]\n\nThank you.`
-  )}`;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -53,35 +49,46 @@ const JobCard = ({ job, index }: { job: Job; index: number }) => {
         transition: "transform 200ms ease-out",
         transformStyle: "preserve-3d",
       }}
-      className="group relative rounded-2xl backdrop-blur-xl bg-gradient-to-br from-midnight/85 to-midnight/70 border border-emerald-500/25 shadow-[0_10px_40px_rgba(0,0,0,0.4)] hover:border-emerald-400/70 hover:shadow-[0_0_50px_rgba(16,185,129,0.28)] overflow-hidden flex flex-col"
+      className="group relative rounded-2xl backdrop-blur-xl bg-gradient-to-br from-midnight/90 to-midnight/75 border border-primary/25 shadow-[0_10px_40px_hsl(var(--foreground)/0.35)] hover:border-accent/80 hover:shadow-[0_0_46px_hsl(var(--accent)/0.22)] overflow-hidden flex flex-col min-h-[620px]"
     >
+      {job.backgroundImage && (
+        <img
+          src={job.backgroundImage}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover opacity-55 saturate-[0.85] transition-transform duration-700 ease-out group-hover:scale-105"
+        />
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-midnight/70 via-midnight/88 to-midnight/95" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-midnight/95 via-midnight/45 to-midnight/80" />
       {/* Cursor-tracking sheen */}
       <div
         className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: `radial-gradient(420px circle at ${tilt.mx}% ${tilt.my}%, rgba(16,185,129,0.18), transparent 55%)`,
+          background: `radial-gradient(420px circle at ${tilt.mx}% ${tilt.my}%, hsl(var(--accent) / 0.16), transparent 55%)`,
         }}
       />
       {/* Top emerald hairline */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/80 to-transparent" />
       {/* Glow accent */}
-      <div className="pointer-events-none absolute -top-24 -right-24 w-60 h-60 rounded-full bg-emerald-500/15 blur-3xl opacity-70 group-hover:opacity-100 transition-opacity" />
+      <div className="pointer-events-none absolute -top-24 -right-24 w-60 h-60 rounded-full bg-accent/15 blur-3xl opacity-70 group-hover:opacity-100 transition-opacity" />
 
       {/* Header strip */}
       <div className="relative px-6 sm:px-7 pt-6 pb-4 border-b border-white/5">
         <div className="flex items-center gap-2 mb-2">
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1">
+          <span className="inline-flex items-center gap-1 rounded-full bg-accent/15 border border-accent/40 text-accent text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1">
             <Sparkles size={10} /> Now Hiring
           </span>
           <span className="inline-flex items-center gap-1 rounded-full bg-white/5 border border-white/10 text-white/70 text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1">
-            <Calendar size={10} className="text-emerald-300" /> Closes {job.deadline || DEFAULT_DEADLINE}
+            <Calendar size={10} className="text-accent" /> Closes {job.deadline || DEFAULT_DEADLINE}
           </span>
         </div>
         <h3 className="text-xl sm:text-[22px] font-display font-bold text-white leading-snug">
           {job.title}
         </h3>
         <div className="mt-2 inline-flex items-center gap-1.5 text-xs text-white/70">
-          <MapPin size={12} className="text-emerald-400" /> {job.location}
+          <MapPin size={12} className="text-accent" /> {job.location}
         </div>
       </div>
 
@@ -93,7 +100,7 @@ const JobCard = ({ job, index }: { job: Job; index: number }) => {
           <ul className="space-y-2 mb-5">
             {job.highlights.map((h) => (
               <li key={h} className="text-[13px] text-white/80 flex items-start gap-2.5">
-                <span className="mt-[7px] w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                <span className="mt-[7px] w-1.5 h-1.5 rounded-full bg-accent shrink-0 shadow-[0_0_8px_hsl(var(--accent)/0.75)]" />
                 {h}
               </li>
             ))}
@@ -102,17 +109,18 @@ const JobCard = ({ job, index }: { job: Job; index: number }) => {
 
         {job.requirements && (
           <div className="rounded-xl bg-white/[0.04] border border-white/10 p-3.5 mb-5">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-emerald-300 font-semibold mb-1">Requirements</p>
+            <p className="text-[10px] uppercase tracking-[0.18em] text-accent font-semibold mb-1">Requirements</p>
             <p className="text-xs text-white/75 leading-relaxed">{job.requirements}</p>
           </div>
         )}
 
-        <a
-          href={mailto}
-          className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 hover:bg-emerald-400 text-midnight px-5 py-3 text-sm font-bold tracking-wide transition-all shadow-[0_4px_16px_rgba(16,185,129,0.35)] group-hover:shadow-[0_0_28px_rgba(16,185,129,0.7)] active:scale-[0.97] relative z-10"
+        <button
+          type="button"
+          onClick={() => onApply(job)}
+          className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-accent hover:brightness-110 text-accent-foreground px-5 py-3 text-sm font-bold tracking-wide transition-all shadow-[0_4px_16px_hsl(var(--accent)/0.35)] group-hover:shadow-[0_0_28px_hsl(var(--accent)/0.6)] active:scale-[0.97] relative z-10"
         >
           Quick Apply <ArrowRight size={14} />
-        </a>
+        </button>
       </div>
     </motion.div>
   );
