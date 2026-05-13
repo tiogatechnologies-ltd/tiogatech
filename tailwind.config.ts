@@ -149,7 +149,7 @@ export default {
         "pulse-ring": "pulse-ring 2.5s cubic-bezier(0.22, 1, 0.36, 1) infinite",
         "caret-blink": "caret-blink 1s steps(2) infinite",
         "ai-glow": "ai-glow 2.4s ease-in-out infinite",
-        "bounce-soft": "bounce-soft 2.4s cubic-bezier(0.45, 0, 0.25, 1) infinite",
+        "soft-rise": "soft-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards",
         "ken-burns": "ken-burns 18s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate",
         "shimmer-sweep": "shimmer-sweep 7s cubic-bezier(0.4, 0, 0.2, 1) infinite",
         "idle-bob": "idle-bob 5s cubic-bezier(0.45, 0, 0.55, 1) infinite",
