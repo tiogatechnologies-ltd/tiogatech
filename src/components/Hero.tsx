@@ -37,71 +37,37 @@ const Typewriter = ({ words }: { words: string[] }) => {
 
 const Hero = ({ onApply }: HeroProps) => {
   const whatsappUrl = "https://wa.me/2348178000023";
-  const [scrollY, setScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
-  const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setMounted(true);
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => setScrollY(window.scrollY));
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-    };
   }, []);
-
-  const scrollTo = (href: string) => {
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // iPhone-like parallax — subtle, smooth, easeOutQuart
-  const parallaxBg = scrollY * 0.35;
-  const parallaxFg = scrollY * 0.15;
-  const heroOpacity = Math.max(0, 1 - scrollY / 600);
 
   return (
     <section
-      ref={heroRef}
       id="hero"
       className="relative min-h-[100vh] flex items-center overflow-hidden bg-secondary"
     >
-      {/* Parallax background image */}
-      <div
-        className="absolute inset-0 will-change-transform"
-        style={{
-          transform: `translate3d(0, ${parallaxBg}px, 0) scale(${1 + scrollY * 0.0004})`,
-        }}
-      >
+      {/* Static background — no scroll parallax (was conflicting with Lenis and causing glitching) */}
+      <div className="absolute inset-0">
         <img
           src={heroSmartHome}
           alt="Modern smart home with rooftop solar at golden hour"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Cinematic gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/70 to-primary/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />
       </div>
 
-      {/* Animated gradient orbs (clean tech motif) */}
+      {/* Ambient gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-primary/30 blur-3xl animate-blob" />
         <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full bg-accent/20 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
         <div className="absolute -bottom-40 left-1/3 w-[450px] h-[450px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
       </div>
 
-      {/* Main content with parallax */}
-      <div
-        className="relative z-10 section-container w-full pt-24 pb-24 sm:pt-28 sm:pb-20"
-        style={{
-          transform: `translate3d(0, ${-parallaxFg}px, 0)`,
-          opacity: heroOpacity,
-        }}
-      >
+      {/* Main content */}
+      <div className="relative z-10 section-container w-full pt-24 pb-24 sm:pt-28 sm:pb-20">
         <div className="grid lg:grid-cols-12 gap-10 items-center">
           {/* Left — copy */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-7">
