@@ -48,12 +48,12 @@ const BackgroundAura = () => {
         style={{
           left,
           top,
-          width: 800,
-          height: 800,
+          width: 280,
+          height: 280,
           position: "absolute",
           background:
-            "radial-gradient(circle, rgba(34,197,94,0.45) 0%, rgba(34,197,94,0.18) 35%, rgba(34,197,94,0) 70%)",
-          filter: "blur(40px)",
+            "radial-gradient(circle, rgba(34,197,94,0.22) 0%, rgba(34,197,94,0.08) 40%, rgba(34,197,94,0) 70%)",
+          filter: "blur(18px)",
           willChange: "transform, left, top",
         }}
       />
