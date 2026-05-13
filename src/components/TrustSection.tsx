@@ -85,36 +85,25 @@ const TrustSection = () => {
               WebkitMaskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)",
             }}
           >
-            <div className="flex gap-4 animate-marquee whitespace-nowrap w-max">
+            <div className="flex gap-6 animate-marquee whitespace-nowrap w-max will-change-transform">
               {[...Array(2)].map((_, dup) => (
-                <div key={dup} className="flex gap-4 items-center">
-                  {[
-                    { name: "TUYA", color: "#FF4800" },
-                    { name: "Hikvision", color: "#C8102E" },
-                    { name: "Dahua", color: "#E60012" },
-                    { name: "Tiandy", color: "#0066B2" },
-                    { name: "Growatt", color: "#E30613" },
-                    { name: "Deye", color: "#003C71" },
-                    { name: "SRNE", color: "#0073C7" },
-                    { name: "Lux Power", color: "#1A1A1A" },
-                    { name: "HDL", color: "#D71920" },
-                    { name: "LifeSmart", color: "#00A859" },
-                    { name: "ITEL", color: "#0066FF" },
-                    { name: "AlpSolar", color: "#F5A623" },
-                  ].map((b) => (
+                <div key={dup} className="flex gap-6 items-center">
+                  {brands.map((b) => (
                     <div
                       key={`${dup}-${b.name}`}
-                      className="group/logo flex items-center justify-center min-w-[140px] h-14 px-5 rounded-xl bg-card border border-border grayscale hover:grayscale-0 hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-300"
+                      className="group/logo flex items-center justify-center min-w-[160px] h-20 px-6 rounded-xl bg-card border border-border grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-500"
                     >
-                      <span
-                        className="font-display font-extrabold text-base sm:text-lg tracking-tight whitespace-nowrap"
-                        style={{ color: b.color }}
-                      >
-                        {b.name}
-                      </span>
+                      <img
+                        src={b.src}
+                        alt={`${b.name} logo`}
+                        loading="lazy"
+                        className="max-h-12 max-w-[130px] object-contain"
+                      />
                     </div>
                   ))}
                 </div>
+              ))}
+            </div>
               ))}
             </div>
           </div>
