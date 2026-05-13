@@ -30,7 +30,7 @@ const TargetUsers = () => {
             return (
               <div
                 key={i}
-                className={`group rounded-3xl bg-card border border-border p-6 sm:p-8 text-center hover:border-primary/40 hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+                className={`group rounded-3xl bg-card border border-border p-6 sm:p-8 text-center card-hover hover:border-primary/40 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 <div className="relative mx-auto w-16 h-16 mb-4">

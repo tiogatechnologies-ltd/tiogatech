@@ -4,6 +4,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -168,8 +175,30 @@ html {
   }
   .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
 
+  /* Standard card hover — iPhone-style ease */
+  .card-hover {
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 600ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 300ms ease;
+    will-change: transform;
+  }
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .btn-press {
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease, filter 200ms ease;
+  }
+  .btn-press:active { transform: scale(0.97); }
+
+  /* Pause marquee on hover */
+  .marquee-pause:hover .animate-marquee { animation-play-state: paused; }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal-up { opacity: 1 !important; transform: none !important; transition: none !important; }
-    .animate-blob, .animate-float-slow, .animate-float-slower, .animate-marquee, .animate-caret-blink { animation: none !important; }
+    .animate-blob, .animate-float-slow, .animate-float-slower, .animate-marquee,
+    .animate-caret-blink, .animate-ken-burns, .animate-idle-bob, .animate-shimmer-sweep,
+    .animate-pulse-ring { animation: none !important; }
   }
 }

@@ -33,20 +33,20 @@ const OfferSection = () => {
             return (
               <div
                 key={i}
-                className={`group relative rounded-3xl border border-border bg-card hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 flex flex-col overflow-hidden ios-card ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+                className={`group relative rounded-3xl border border-border bg-card card-hover flex flex-col overflow-hidden ${isVisible ? "animate-fade-up" : "opacity-0"}`}
                 style={{ animationDelay: `${i * 120}ms` }}
               >
-                {/* Thumbnail with continuous Ken Burns */}
+                {/* Thumbnail — static, soft tint fade on hover */}
                 <div className="relative h-40 overflow-hidden">
                   <img
                     src={offerImages[i % offerImages.length]}
                     alt={o.title}
                     loading="lazy"
-                    className="w-full h-full object-cover animate-ken-burns group-hover:scale-110 transition-transform duration-700"
-                    style={{ animationDelay: `${i * 1.8}s` }}
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
-                  <div className="absolute -bottom-7 left-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 animate-idle-bob" style={{ animationDelay: `${i * 0.6}s` }}>
+                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-700" />
+                  <div className="absolute -bottom-7 left-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/30 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1">
                     <Icon size={24} className="text-primary-foreground" />
                   </div>
                 </div>

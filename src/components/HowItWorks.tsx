@@ -34,7 +34,7 @@ const HowItWorks = () => {
                 className={`relative group ${isVisible ? "animate-fade-up" : "opacity-0"}`}
                 style={{ animationDelay: `${i * 120}ms` }}
               >
-                <div className="relative rounded-2xl bg-card border border-border p-6 hover:border-primary/40 hover:shadow-[var(--shadow-elevated)] hover:-translate-y-1 transition-all duration-500">
+                <div className="relative rounded-2xl bg-card border border-border p-6 card-hover hover:border-primary/40">
                   <div className="flex items-center justify-between mb-5">
                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
                       <Icon size={20} className="text-primary-foreground" />
