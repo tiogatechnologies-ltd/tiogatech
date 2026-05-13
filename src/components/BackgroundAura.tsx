@@ -13,8 +13,8 @@ const BackgroundAura = () => {
   const sy = useSpring(y, { stiffness: 60, damping: 20, mass: 0.8 });
 
   // Render as CSS background via transform on a positioned div
-  const left = useTransform(sx, (v) => `${v - 400}px`);
-  const top = useTransform(sy, (v) => `${v - 400}px`);
+  const left = useTransform(sx, (v) => `${v - 140}px`);
+  const top = useTransform(sy, (v) => `${v - 140}px`);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
