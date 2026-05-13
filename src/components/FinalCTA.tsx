@@ -19,7 +19,7 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
               <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-accent" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
-            Free consultation, no obligations
+            Free consultation
           </div>
 
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] tracking-tight">
@@ -28,7 +28,7 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
           </h2>
 
           <p className="text-secondary-foreground/75 text-lg leading-relaxed max-w-2xl mx-auto">
-            Join 100+ homes and businesses already enjoying reliable solar power, smart automation, and modern security. Get a personalized recommendation in under 2 minutes.
+            Get a personalized recommendation in under 2 minutes.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
@@ -58,8 +58,16 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
               { icon: Cpu, label: "Smart Home" },
               { icon: ShieldCheck, label: "Security" },
             ].map((b, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 rounded-2xl bg-secondary-foreground/5 backdrop-blur-md border border-secondary-foreground/10 py-4">
-                <b.icon size={20} className="text-accent" />
+              <div
+                key={i}
+                className="group flex flex-col items-center gap-2 rounded-2xl bg-secondary-foreground/5 backdrop-blur-md border border-secondary-foreground/10 py-4 hover:bg-accent/10 hover:border-accent/40 hover:shadow-[0_0_24px_-4px_hsla(51,100%,50%,0.5)] transition-all duration-500"
+              >
+                <div
+                  className="animate-bounce-soft"
+                  style={{ animationDelay: `${i * 0.2}s` }}
+                >
+                  <b.icon size={22} className="text-accent group-hover:scale-110 transition-transform" />
+                </div>
                 <span className="text-xs font-medium text-secondary-foreground/80">{b.label}</span>
               </div>
             ))}
