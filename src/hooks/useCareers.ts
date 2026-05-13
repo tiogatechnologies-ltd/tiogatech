@@ -70,7 +70,7 @@ export const useCareers = () => {
     (async () => {
       const { data, error } = await supabase
         .from("careers")
-        .select("title, location, summary, highlights, requirements, email_subject, deadline")
+        .select("id, title, location, summary, highlights, requirements, email_subject, deadline")
         .eq("is_active", true)
         .order("sort_order", { ascending: true });
       if (!active) return;
