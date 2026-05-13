@@ -1,5 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import BackgroundAura from "@/components/BackgroundAura";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -47,6 +49,40 @@ const PageTracker = () => {
   return null;
 };
 
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<RouteFade><Index /></RouteFade>} />
+        <Route path="/about" element={<RouteFade><About /></RouteFade>} />
+        <Route path="/solutions" element={<Navigate to="/lumivolt" replace />} />
+        <Route path="/lumivolt" element={<RouteFade><LumiVolt /></RouteFade>} />
+        <Route path="/voltai" element={<RouteFade><VoltAi /></RouteFade>} />
+        <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
+        <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
+        <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
+        <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
+        <Route path="/career" element={<RouteFade><Career /></RouteFade>} />
+        <Route path="/privacy" element={<RouteFade><Privacy /></RouteFade>} />
+        <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
+        <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/setup" element={<AdminSetup />} />
+        <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />
+        <Route path="/admin/products" element={<ProtectedAdmin><AdminProducts /></ProtectedAdmin>} />
+        <Route path="/admin/leads" element={<ProtectedAdmin><AdminLeads /></ProtectedAdmin>} />
+        <Route path="/admin/forms" element={<ProtectedAdmin><AdminFormQuestions /></ProtectedAdmin>} />
+        <Route path="/admin/landing" element={<ProtectedAdmin><AdminLandingPage /></ProtectedAdmin>} />
+        <Route path="/admin/email" element={<ProtectedAdmin><AdminEmail /></ProtectedAdmin>} />
+        <Route path="/admin/analytics" element={<ProtectedAdmin><AdminAnalytics /></ProtectedAdmin>} />
+        <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
+        <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -57,33 +93,9 @@ const App = () => (
           <PageTracker />
           <ScrollToTop />
           <SmoothScroll />
+          <BackgroundAura />
           <LeadFormHost />
-          <Routes>
-            <Route path="/" element={<RouteFade><Index /></RouteFade>} />
-            <Route path="/about" element={<RouteFade><About /></RouteFade>} />
-            <Route path="/solutions" element={<Navigate to="/lumivolt" replace />} />
-            <Route path="/lumivolt" element={<RouteFade><LumiVolt /></RouteFade>} />
-            <Route path="/voltai" element={<RouteFade><VoltAi /></RouteFade>} />
-            <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
-            <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
-            <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
-            <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
-            <Route path="/career" element={<RouteFade><Career /></RouteFade>} />
-            <Route path="/privacy" element={<RouteFade><Privacy /></RouteFade>} />
-            <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
-            <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/setup" element={<AdminSetup />} />
-            <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />
-            <Route path="/admin/products" element={<ProtectedAdmin><AdminProducts /></ProtectedAdmin>} />
-            <Route path="/admin/leads" element={<ProtectedAdmin><AdminLeads /></ProtectedAdmin>} />
-            <Route path="/admin/forms" element={<ProtectedAdmin><AdminFormQuestions /></ProtectedAdmin>} />
-            <Route path="/admin/landing" element={<ProtectedAdmin><AdminLandingPage /></ProtectedAdmin>} />
-            <Route path="/admin/email" element={<ProtectedAdmin><AdminEmail /></ProtectedAdmin>} />
-            <Route path="/admin/analytics" element={<ProtectedAdmin><AdminAnalytics /></ProtectedAdmin>} />
-            <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
-            <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
-          </Routes>
+          <AnimatedRoutes />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
