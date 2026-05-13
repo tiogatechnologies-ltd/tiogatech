@@ -1,80 +1,57 @@
-# Tioga Technologies 2.0 — Phased Build Plan
+## Goals
+Make the home page feel alive and easy to scan: continuous animation in body sections, real brand logos, more imagery + transitions, smaller helper text, a bounce on the pre-footer Solar/Smart Home/Security tiles, and trimmed wording throughout.
 
-Existing green primary stays. We layer in **Midnight Navy (#0A192F)** as a new deep surface and keep **Solar Gold (#FFD700)** as the CTA accent (already close to current accent). Green remains the eco/success token.
+## Changes
 
----
+### 1. ProblemSection — shrink "Tap for solution"
+- Reduce label from `text-[10px]` to `text-[9px]`, lower opacity, move to a corner chip so it never overlaps the headline.
+- Show only on hover/focus on desktop; keep a tiny dot indicator at rest.
 
-## Phase 1 — Design tokens + Header / Mega-Menu
+### 2. SolutionSection — continuous transitions on landing
+- Add an always-on subtle Ken Burns zoom + slow pan to each feature image (loops every ~12s, staggered per card) so motion is visible immediately, not only on hover.
+- Add a soft shimmer sweep across each card every ~6s.
+- Image-to-text hover swap: on hover, image scales and a translucent caption strip slides up with a one-line benefit (already partially present — make it auto-cycle once on first viewport entry to hint the interaction).
+- Trim copy: shorter one-line descriptions (≤9 words each).
 
-**Tokens (`src/index.css`, `tailwind.config.ts`)**
-- Add `--midnight: 215 64% 11%` (#0A192F) and `--solar-gold: 51 100% 50%` (#FFD700).
-- Bump `--secondary` to midnight navy so existing dark surfaces (footer, hero overlays) gain depth.
-- Tighten accent gold to #FFD700.
-- Add Plus Jakarta Sans alongside Poppins/Inter (fallback chain only — no font swap on body).
-- Add a `.no-clip` utility (`overflow: visible; padding-block: 0.15em`) for animated headings to prevent descender clipping.
+### 3. TrustSection — real brand logos
+- Replace the text-only marquee with image logos.
+- Add `src/assets/brands/` with simple SVG/PNG wordmarks for: Tuya, Hikvision, Dahua, Tiandy, Growatt, Deye, SRNE, Lux Power, HDL, LifeSmart, ITEL, Bread.
+- Use `imagegen` (transparent PNG, "on a solid white background") to generate clean monochrome wordmark tiles where official assets are not bundled.
+- Keep grayscale → color hover, dual-row marquee for density.
 
-**Header (`SiteHeader.tsx`)**
-- Frosted glass on scroll already present; deepen to `bg-midnight/70 backdrop-blur-xl` when on dark.
-- Replace flat link list with: Home, Products (mega), Packages, Store, How It Works, Career, About, Contact.
-- New `MegaMenu.tsx` shown on Products hover/focus:
-  - Left col: LumiVolt (Residential) · VoltAi (Smart Automation) — sub-brand cards.
-  - Right col: 6-tile grid (Smart Lock, CCTV, Smart Lights, Solar Inverter, Panels, Batteries) → each links to `/store?cat=...`.
-- Add **AI Recommendation** glow badge next to Get Started CTA. Pulsing gold ring, opens existing `LeadForm`.
-- Mobile: collapse mega-menu into accordion inside the existing sheet.
+### 4. More stock imagery + animations on Home
+- ProblemSection: add a parallax background strip (slow translateY on scroll) using an existing `bg-lagos-traffic.jpg`.
+- OfferSection: add a small thumbnail image to each of the 3 offer cards (generate `offer-solar.jpg`, `offer-automation.jpg`, `offer-security.jpg`) with `ios-card` hover and a continuous gentle float.
+- HowItWorks: add a connecting animated line/progress that draws as the section enters view.
+- TargetUsers: add a subtle pulsing ring behind each icon, plus rotate-on-hover already present — add idle micro-bob.
 
-## Phase 2 — Hero motion + Body components
+### 5. FinalCTA (pre-footer) — bounce animation on Solar / Smart Home / Security
+- Add a new keyframe `bounce-soft` (translateY 0 → -8px → 0, 1.6s, easeOutBack) in `tailwind.config.ts`.
+- Apply it to the three benefit tiles with staggered `animationDelay` (0s, 0.2s, 0.4s) so they bounce in a wave, looping infinitely.
+- Add hover scale + accent glow.
 
-**Hero (`Hero.tsx`)**
-- Headline: "One system. Everything connected." with letter-stagger reveal (framer-motion-free; CSS keyframe per span).
-- Rotating sub-text cycling through the 3 phrases every 3.5s.
-- Find/replace `5.2KW` → `5.2KWp` across hero graphics/content.
-- Wrap headline in `.no-clip`.
+### 6. Simplify navigation & copy
+- Hero subtitle: shorten to "Solar, automation, and security — one seamless system."
+- SolutionSection heading description: cut to one sentence.
+- OfferSection: trim each highlight bullet to ≤5 words.
+- TargetUsers: trim each `desc` to one short sentence.
+- FinalCTA paragraph: cut to one sentence.
+- Remove the duplicate "Free consultation, no obligations" badge wording — keep just "Free consultation".
 
-**Problem/Solution flip cards (`ProblemSection.tsx`)**
-- Convert tiles to 3D Y-axis flip on hover (desktop) and on first-tap (mobile, via `onClick` toggle).
-- Front: light card + vector icon; Back: midnight bg + gold text describing Tioga's solution.
+### 7. Global animation utilities
+- Add to `tailwind.config.ts`:
+  - `bounce-soft` (1.6s infinite)
+  - `ken-burns` (12s ease-in-out infinite alternate, scale 1 → 1.08 + translate)
+  - `shimmer-sweep` (6s linear infinite)
+  - `idle-bob` (4s ease-in-out infinite, ±3px)
+- Respect `prefers-reduced-motion` (already handled in `index.css`).
 
-**Solutions grid (`SolutionSection.tsx`)**
-- Add scroll-reveal float-in (reuse `useScrollReveal`).
-- Hover: image scale 1.1 inside `overflow-hidden` container + sliding "Learn More →" overlay.
+## Technical Notes
+- Files touched: `src/components/ProblemSection.tsx`, `SolutionSection.tsx`, `TrustSection.tsx`, `OfferSection.tsx`, `TargetUsers.tsx`, `HowItWorks.tsx`, `FinalCTA.tsx`, `Hero.tsx`, `tailwind.config.ts`, `src/index.css`.
+- New assets: ~12 brand logo PNGs in `src/assets/brands/` + 3 offer thumbnails in `src/assets/`.
+- All colors via semantic tokens; no hardcoded hex.
+- No backend or routing changes.
 
-**Counters (`StatsSection.tsx`)**
-- Replace static numbers with `useCountUp` hook driven by IntersectionObserver.
-- Add animated mesh/solar-wave SVG background behind the strip.
-
-## Phase 3 — Trust + AI quote modal polish
-
-**Brand carousel (`TrustSection.tsx`)**
-- Infinite marquee (already in tailwind config) of grayscale logos: TUYA, AlpSolarr, ITEL, SRNE, Hikvision, Tiandy, Dahua, HDL, Lux Power, Bread, Tiaco, Fireman, LifeSmart, Dawnice. Hover → full color via `grayscale-0` transition. Logos rendered as text-pill placeholders where image assets are unavailable.
-
-**Quote modal (`LeadForm.tsx`)**
-- Replace top `Progress` bar with a "liquid fill" gradient bar (gold → green) that animates width with spring easing.
-- No flow logic changes (per your answer — reuse existing form).
-
-## Phase 4 — Footer, new pages, QC
-
-**Footer (`SiteFooter.tsx`)**
-- 4 columns: Company · Solutions · Support · Newsletter (email input + high-contrast gold CTA).
-- Move "Why Us" section into About page hero/below-hero band.
-
-**New pages**
-- `src/pages/Packages.tsx` — curated bundle cards (Starter Solar, Smart Home Essentials, Total Security, Whole-Home Combo) using existing product-bundle memory. CTA opens LeadForm.
-- `src/pages/Career.tsx` — intro hero, "Why work at Tioga" trio, open-roles list (placeholder + "No openings, send your CV" mailto), simple application CTA.
-- Routes wired in `App.tsx`. Both use shared `PageHero` + `SiteHeader` + `SiteFooter`.
-- Store: nav "Store" link points to existing `/catalog` (still gated). No new page.
-
-**QC pass**
-- Audit hero/section headings for descender clipping; apply `.no-clip` where needed.
-- Ensure `html { scroll-behavior: smooth }` (already set).
-- Verify flip cards toggle on mobile tap.
-- Lighthouse-style pass on mobile 390px.
-
----
-
-## Technical notes
-- No DB migrations. Pure frontend.
-- No new dependencies — animations via Tailwind keyframes + CSS transforms; counter via lightweight custom hook; mega-menu via Radix `NavigationMenu` (already installed).
-- Color memory (`mem://design/colors`) updated after Phase 1 to record navy + refined gold.
-- Memory `mem://features/navigation-ctas` updated after Phase 1 to reflect mega-menu structure.
-
-I'll ship Phase 1 first and pause for your review before continuing to Phase 2.
+## Out of Scope
+- Sub-brand pages (LumiVolt/VoltAi) — already done.
+- Catalog/Packages — unchanged.
