@@ -7,30 +7,9 @@ import featureSecurity from "@/assets/feature-cctv.jpg";
 import { Sun, Smartphone, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 const features = [
-  {
-    icon: Sun,
-    title: "Solar & Storage",
-    desc: "Panels, batteries, inverters sized to your load.",
-    img: featureSolar,
-    accent: "from-amber-400/30 to-yellow-300/10",
-    to: "/catalog",
-  },
-  {
-    icon: Smartphone,
-    title: "Smart Automation",
-    desc: "Lights, climate, and energy in one app.",
-    img: featureApp,
-    accent: "from-primary/40 to-primary/10",
-    to: "/catalog",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Modern Security",
-    desc: "AI cameras and smart locks, 24/7 monitored.",
-    img: featureSecurity,
-    accent: "from-blue-500/30 to-blue-400/10",
-    to: "/catalog",
-  },
+  { icon: Sun, title: "Solar & Storage", desc: "Panels, batteries, inverters sized to your load.", img: featureSolar, to: "/catalog" },
+  { icon: Smartphone, title: "Smart Automation", desc: "Lights, climate, and energy in one app.", img: featureApp, to: "/catalog" },
+  { icon: ShieldCheck, title: "Modern Security", desc: "AI cameras and smart locks, 24/7 monitored.", img: featureSecurity, to: "/catalog" },
 ];
 
 const SolutionSection = () => {
@@ -42,7 +21,6 @@ const SolutionSection = () => {
 
   return (
     <section className="relative py-24 bg-background overflow-hidden">
-      {/* Subtle decorative gradient */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
 
       <div ref={ref} className="relative section-container">
@@ -59,36 +37,35 @@ const SolutionSection = () => {
             <Link
               to={f.to}
               key={f.title}
-              className={`group relative block rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] card-hover ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+              className={`flip-card block rounded-3xl h-80 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
-              {/* Image with subtle hover zoom only */}
-              <div className="relative h-56 overflow-hidden">
-                <img
-                  src={f.img}
-                  alt={f.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                />
-                <div className={`absolute inset-0 bg-gradient-to-t ${f.accent} mix-blend-overlay`} />
-                <div className="absolute inset-0 bg-gradient-to-t from-card/60 via-transparent to-transparent" />
-                <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
-                  <f.icon size={20} className="text-primary" />
+              <div className="flip-card-inner rounded-3xl shadow-[var(--shadow-card)]">
+                {/* Front */}
+                <div className="flip-face rounded-3xl bg-card border border-border">
+                  <img src={f.img} alt={f.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-midnight/85 via-midnight/30 to-transparent" />
+                  <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
+                    <f.icon size={20} className="text-primary" />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
+                    <h3 className="text-2xl font-display font-semibold tracking-tight">{f.title}</h3>
+                    <span className="text-xs uppercase tracking-widest text-primary-foreground/70 mt-1 block">Hover to learn more</span>
+                  </div>
                 </div>
-                {/* Sliding "Learn More" overlay */}
-                <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out bg-midnight/85 backdrop-blur-sm py-3 px-5 flex items-center justify-between text-primary-foreground">
-                  <span className="text-sm font-semibold">Learn More</span>
-                  <ArrowUpRight size={16} className="text-gold" />
+                {/* Back */}
+                <div className="flip-face flip-back rounded-3xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-8 flex flex-col justify-between">
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-primary-foreground/15 flex items-center justify-center mb-4">
+                      <f.icon size={22} className="text-primary-foreground" />
+                    </div>
+                    <h3 className="text-2xl font-display font-semibold mb-3 tracking-tight">{f.title}</h3>
+                    <p className="text-primary-foreground/90 leading-relaxed">{f.desc}</p>
+                  </div>
+                  <span className="inline-flex items-center gap-2 text-sm font-semibold">
+                    Explore <ArrowUpRight size={16} />
+                  </span>
                 </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <h3 className="text-xl font-display font-semibold text-foreground">{f.title}</h3>
-                  <ArrowUpRight size={18} className="text-muted-foreground group-hover:text-primary group-hover:rotate-12 transition-all flex-shrink-0 mt-1" />
-                </div>
-                <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
               </div>
             </Link>
           ))}
