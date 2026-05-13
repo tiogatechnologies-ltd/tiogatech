@@ -95,6 +95,7 @@ const App = () => (
           <ScrollToTop />
           <SmoothScroll />
           <BackgroundAura />
+          <AutoReveal />
           <LeadFormHost />
           <AnimatedRoutes />
         </AuthProvider>
