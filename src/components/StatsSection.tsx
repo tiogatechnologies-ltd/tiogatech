@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import bgTexture from "@/assets/bg-tech-mesh.jpg";
 
 const defaultStats = [
   { value: "100+", label: "Happy Customers", suffix: "+", num: 100 },
@@ -54,7 +55,7 @@ const StatsSection = () => {
         aria-hidden
         className="absolute inset-0 opacity-[0.10] mix-blend-overlay pointer-events-none"
         style={{
-          backgroundImage: `url(/src/assets/bg-tech-mesh.jpg)`,
+          backgroundImage: `url(${bgTexture})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
