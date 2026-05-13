@@ -10,12 +10,20 @@ import logoSrne from "@/assets/brands/srne.png";
 import logoTiandy from "@/assets/brands/tiandy.png";
 import logoAlpsolar from "@/assets/brands/alpsolar.jpeg";
 import logoDahua from "@/assets/brands/dahua.png";
+import logoTuya from "@/assets/brands/tuya.png";
+import logoLifesmart from "@/assets/brands/lifesmart.png";
+import logoLuxpower from "@/assets/brands/luxpower.jpg";
+import logoHdl from "@/assets/brands/hdl.jpg";
 
 const brands = [
+  { name: "Tuya", src: logoTuya },
   { name: "Growatt", src: logoGrowatt },
   { name: "Hikvision", src: logoHikvision },
   { name: "Deye", src: logoDeye },
   { name: "Dahua", src: logoDahua },
+  { name: "LuxPower", src: logoLuxpower },
+  { name: "HDL", src: logoHdl },
+  { name: "LifeSmart", src: logoLifesmart },
   { name: "Tiandy", src: logoTiandy },
   { name: "SRNE", src: logoSrne },
   { name: "AlpSolar", src: logoAlpsolar },
