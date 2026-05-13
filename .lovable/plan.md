@@ -1,57 +1,61 @@
-## Goals
-Make the home page feel alive and easy to scan: continuous animation in body sections, real brand logos, more imagery + transitions, smaller helper text, a bounce on the pre-footer Solar/Smart Home/Security tiles, and trimmed wording throughout.
+## Goal
+Make the home page feel buttery and intentional: silky page scrolling, refined section reveals, and consistent hover micro-interactions. Remove the zoom-in/out on the "What We Offer" thumbnails. Other pages stay untouched in this pass.
 
 ## Changes
 
-### 1. ProblemSection — shrink "Tap for solution"
-- Reduce label from `text-[10px]` to `text-[9px]`, lower opacity, move to a corner chip so it never overlaps the headline.
-- Show only on hover/focus on desktop; keep a tiny dot indicator at rest.
+### 1. Stop the Offer zoom
+`OfferSection.tsx`
+- Remove `animate-ken-burns` and the hover `scale-110` from each thumbnail image.
+- Remove `animate-idle-bob` from the floating icon disc (also reads as a zoom).
+- Replace with a static image plus a soft hover lift on the whole card and a subtle tint overlay fade.
 
-### 2. SolutionSection — continuous transitions on landing
-- Add an always-on subtle Ken Burns zoom + slow pan to each feature image (loops every ~12s, staggered per card) so motion is visible immediately, not only on hover.
-- Add a soft shimmer sweep across each card every ~6s.
-- Image-to-text hover swap: on hover, image scales and a translucent caption strip slides up with a one-line benefit (already partially present — make it auto-cycle once on first viewport entry to hint the interaction).
-- Trim copy: shorter one-line descriptions (≤9 words each).
+### 2. Smooth page scrolling (iPhone feel)
+- Install `lenis` (Studio Freight). Mount once in `App.tsx` with `lerp: 0.1`, `wheelMultiplier: 1`, `smoothTouch: false` so mobile keeps native momentum.
+- Drive a `requestAnimationFrame` loop; respect `prefers-reduced-motion` (skip Lenis init).
+- Keep CSS `scroll-behavior: smooth` as fallback.
 
-### 3. TrustSection — real brand logos
-- Replace the text-only marquee with image logos.
-- Add `src/assets/brands/` with simple SVG/PNG wordmarks for: Tuya, Hikvision, Dahua, Tiandy, Growatt, Deye, SRNE, Lux Power, HDL, LifeSmart, ITEL, Bread.
-- Use `imagegen` (transparent PNG, "on a solid white background") to generate clean monochrome wordmark tiles where official assets are not bundled.
-- Keep grayscale → color hover, dual-row marquee for density.
+### 3. Upgrade the reveal hook
+`useScrollReveal.ts` becomes `useReveal({ direction, delay, threshold, once })`:
+- Directions: `up` (default), `fade`, `left`, `right`, `scale`.
+- Uses `IntersectionObserver` with `rootMargin: "0px 0px -10% 0px"` so reveals trigger slightly before entry — feels anticipatory, not late.
+- Returns `ref` + a `style` object with `transform` / `opacity` / `transition` (cubic-bezier(0.22, 1, 0.36, 1), 800ms) so we don't depend on Tailwind keyframes for one-shot reveals (smoother on first paint).
 
-### 4. More stock imagery + animations on Home
-- ProblemSection: add a parallax background strip (slow translateY on scroll) using an existing `bg-lagos-traffic.jpg`.
-- OfferSection: add a small thumbnail image to each of the 3 offer cards (generate `offer-solar.jpg`, `offer-automation.jpg`, `offer-security.jpg`) with `ios-card` hover and a continuous gentle float.
-- HowItWorks: add a connecting animated line/progress that draws as the section enters view.
-- TargetUsers: add a subtle pulsing ring behind each icon, plus rotate-on-hover already present — add idle micro-bob.
+New `<Reveal>` wrapper component for ergonomic usage:
+```tsx
+<Reveal direction="up" delay={120}>...</Reveal>
+```
 
-### 5. FinalCTA (pre-footer) — bounce animation on Solar / Smart Home / Security
-- Add a new keyframe `bounce-soft` (translateY 0 → -8px → 0, 1.6s, easeOutBack) in `tailwind.config.ts`.
-- Apply it to the three benefit tiles with staggered `animationDelay` (0s, 0.2s, 0.4s) so they bounce in a wave, looping infinitely.
-- Add hover scale + accent glow.
+### 4. Apply the new reveal across home sections
+Replace the current `animate-fade-up + opacity-0` pattern in:
+- `ProblemSection`, `SolutionSection`, `OfferSection`, `StatsSection`, `HowItWorks`, `TargetUsers`, `TrustSection`, `FAQSection`, `FinalCTA`.
+- Stagger children with incremental `delay` (90ms steps) for a wave reveal.
+- Headline blocks use `direction="up"`, side cards alternate `left` / `right` where layout allows (Solution + How It Works).
 
-### 6. Simplify navigation & copy
-- Hero subtitle: shorten to "Solar, automation, and security — one seamless system."
-- SolutionSection heading description: cut to one sentence.
-- OfferSection: trim each highlight bullet to ≤5 words.
-- TargetUsers: trim each `desc` to one short sentence.
-- FinalCTA paragraph: cut to one sentence.
-- Remove the duplicate "Free consultation, no obligations" badge wording — keep just "Free consultation".
+### 5. Standardize hover micro-interactions
+Single utility class `card-hover` in `index.css`:
+```
+.card-hover { transition: transform 500ms cubic-bezier(0.22,1,0.36,1),
+                          box-shadow 500ms cubic-bezier(0.22,1,0.36,1),
+                          border-color 300ms ease; }
+.card-hover:hover { transform: translateY(-6px); box-shadow: var(--shadow-elevated); }
+```
+- Apply to all card grids (Solution, Offer, How It Works, Target Users, Trust reasons).
+- Replace ad-hoc `hover:-translate-y-1/2` + `transition-all` combos with this class for consistency.
+- Buttons: add `.btn-press` (active scale 0.97, 150ms ease-out).
 
-### 7. Global animation utilities
-- Add to `tailwind.config.ts`:
-  - `bounce-soft` (1.6s infinite)
-  - `ken-burns` (12s ease-in-out infinite alternate, scale 1 → 1.08 + translate)
-  - `shimmer-sweep` (6s linear infinite)
-  - `idle-bob` (4s ease-in-out infinite, ±3px)
-- Respect `prefers-reduced-motion` (already handled in `index.css`).
+### 6. Refine continuous animations
+- `tailwind.config.ts`: slow `idle-bob` to 6s, soften `shimmer-sweep` to 9s with a longer fade at edges, slow `ken-burns` to 22s (used only on `SolutionSection` and Hero parallax now).
+- `Hero.tsx`: keep parallax, but clamp scrollY transform to a max so it never feels "jumpy" on long pages, and add `transition: transform 0.05s linear` to smooth rAF gaps.
+- `TrustSection`: pause marquee on hover (`hover:[animation-play-state:paused]`); already GPU-accelerated.
 
-## Technical Notes
-- Files touched: `src/components/ProblemSection.tsx`, `SolutionSection.tsx`, `TrustSection.tsx`, `OfferSection.tsx`, `TargetUsers.tsx`, `HowItWorks.tsx`, `FinalCTA.tsx`, `Hero.tsx`, `tailwind.config.ts`, `src/index.css`.
-- New assets: ~12 brand logo PNGs in `src/assets/brands/` + 3 offer thumbnails in `src/assets/`.
-- All colors via semantic tokens; no hardcoded hex.
-- No backend or routing changes.
+### 7. Respect reduced motion
+- `index.css`: a single `@media (prefers-reduced-motion: reduce)` block disabling Ken Burns, idle-bob, shimmer, marquee, blob, and the Lenis loop.
 
-## Out of Scope
-- Sub-brand pages (LumiVolt/VoltAi) — already done.
-- Catalog/Packages — unchanged.
+## Technical notes
+- Files touched: `src/App.tsx`, `src/index.css`, `src/hooks/useScrollReveal.ts` (rewritten), new `src/components/Reveal.tsx`, `tailwind.config.ts`, and the home section components listed in step 4.
+- New dep: `lenis` (~6 KB).
+- No backend, routing, or content changes.
+
+## Out of scope
+- Other pages (About, Catalog, Packages, etc.) — handled in a follow-up.
+- New imagery or copy.
