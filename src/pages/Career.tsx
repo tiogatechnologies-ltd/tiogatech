@@ -235,41 +235,55 @@ const Career = () => (
           </h2>
         </div>
 
-        {openRoles.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-border bg-card p-8 sm:p-12 text-center max-w-2xl mx-auto">
-            <Users className="text-primary mx-auto mb-3" size={28} />
-            <h3 className="text-xl font-display font-bold text-foreground mb-2 no-clip">
-              No live openings right now
-            </h3>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              We're always meeting strong solar engineers, embedded developers, automation installers and ops leaders. Send your CV and a short note about what excites you.
-            </p>
+        <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+          {openRoles.map((job, i) => (
+            <JobCard key={job.title} job={job} index={i} />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* How to Apply / Contact */}
+    <section className="section-padding">
+      <div className="section-container max-w-4xl">
+        <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 shadow-[var(--shadow-card)]">
+          <div className="text-center mb-8">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">How to Apply</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+              Send your CV and a short note
+            </h2>
+            <p className="mt-3 text-muted-foreground">Tell us which role you're applying for and why you're a great fit. We respond to every serious application.</p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
             <a
-              href="mailto:careers@tiogatechnologies.com?subject=Application%20to%20Tioga"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
+              href="mailto:careers@tiogatechnologies.com"
+              className="group rounded-2xl border border-border bg-background p-5 hover:border-emerald-500/60 hover:shadow-[0_0_24px_rgba(16,185,129,0.15)] transition-all"
             >
-              <Mail size={16} /> careers@tiogatechnologies.com
+              <Mail className="text-emerald-500 mb-2" size={20} />
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Email</p>
+              <p className="text-sm font-semibold text-foreground break-all">careers@tiogatechnologies.com</p>
+            </a>
+            <a
+              href="tel:+2349035966388"
+              className="group rounded-2xl border border-border bg-background p-5 hover:border-emerald-500/60 hover:shadow-[0_0_24px_rgba(16,185,129,0.15)] transition-all"
+            >
+              <Phone className="text-emerald-500 mb-2" size={20} />
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Call</p>
+              <p className="text-sm font-semibold text-foreground">0903 596 6388</p>
+              <p className="text-sm font-semibold text-foreground">0817 800 0023</p>
+            </a>
+            <a
+              href="https://www.linkedin.com/company/tiogatechnologies"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-2xl border border-border bg-background p-5 hover:border-emerald-500/60 hover:shadow-[0_0_24px_rgba(16,185,129,0.15)] transition-all"
+            >
+              <Linkedin className="text-emerald-500 mb-2 transition-transform duration-300 group-hover:scale-125" size={20} />
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">LinkedIn</p>
+              <p className="text-sm font-semibold text-foreground">@tiogatechnologies</p>
             </a>
           </div>
-        ) : (
-          <div className="grid gap-4 max-w-3xl mx-auto">
-            {openRoles.map((r) => (
-              <div key={r.title} className="rounded-2xl border border-border bg-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover-lift">
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-semibold">{r.team}</p>
-                  <h3 className="text-lg font-display font-bold text-foreground mt-0.5">{r.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">{r.type} · {r.location}</p>
-                </div>
-                <a
-                  href={`mailto:careers@tiogatechnologies.com?subject=${encodeURIComponent(r.title)}`}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all shadow-md shadow-primary/20 self-start sm:self-auto"
-                >
-                  Apply <ArrowRight size={14} />
-                </a>
-              </div>
-            ))}
-          </div>
-        )}
+        </div>
       </div>
     </section>
 
