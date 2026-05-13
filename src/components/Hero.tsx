@@ -145,7 +145,7 @@ const Hero = ({ onApply }: HeroProps) => {
               className={`text-base sm:text-lg lg:text-xl text-primary-foreground/75 max-w-xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.4s" }}
             >
-              Solar, smart automation, and security, engineered into one seamless system for homes and businesses across Nigeria.
+              Solar, automation, and security in one seamless system.
             </p>
 
             <div
