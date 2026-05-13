@@ -54,7 +54,7 @@ const TrustSection = () => {
           })}
         </div>
 
-        {/* Brand carousel — grayscale -> full color on hover */}
+        {/* Brand carousel — logo-style tiles, grayscale -> color on hover */}
         <div className="mt-16">
           <p className="text-center text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-6">
             Powered by industry-leading brands
@@ -66,20 +66,34 @@ const TrustSection = () => {
               WebkitMaskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)",
             }}
           >
-            <div className="flex gap-12 animate-marquee whitespace-nowrap w-max">
+            <div className="flex gap-4 animate-marquee whitespace-nowrap w-max">
               {[...Array(2)].map((_, dup) => (
-                <div key={dup} className="flex gap-12 items-center">
+                <div key={dup} className="flex gap-4 items-center">
                   {[
-                    "TUYA", "AlpSolarr", "ITEL", "SRNE", "Hikvision", "Tiandy",
-                    "Dahua", "HDL", "Lux Power", "Bread", "Tiaco", "Fireman",
-                    "LifeSmart", "Dawnice",
+                    { name: "TUYA", color: "#FF4800" },
+                    { name: "Hikvision", color: "#C8102E" },
+                    { name: "Dahua", color: "#E60012" },
+                    { name: "Tiandy", color: "#0066B2" },
+                    { name: "Growatt", color: "#E30613" },
+                    { name: "Deye", color: "#003C71" },
+                    { name: "SRNE", color: "#0073C7" },
+                    { name: "Lux Power", color: "#1A1A1A" },
+                    { name: "HDL", color: "#D71920" },
+                    { name: "LifeSmart", color: "#00A859" },
+                    { name: "ITEL", color: "#0066FF" },
+                    { name: "AlpSolar", color: "#F5A623" },
                   ].map((b) => (
-                    <span
-                      key={`${dup}-${b}`}
-                      className="font-display font-bold text-lg sm:text-xl tracking-tight text-foreground/35 grayscale hover:grayscale-0 hover:text-foreground transition-all duration-300"
+                    <div
+                      key={`${dup}-${b.name}`}
+                      className="group/logo flex items-center justify-center min-w-[140px] h-14 px-5 rounded-xl bg-card border border-border grayscale hover:grayscale-0 hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-300"
                     >
-                      {b}
-                    </span>
+                      <span
+                        className="font-display font-extrabold text-base sm:text-lg tracking-tight whitespace-nowrap"
+                        style={{ color: b.color }}
+                      >
+                        {b.name}
+                      </span>
+                    </div>
                   ))}
                 </div>
               ))}

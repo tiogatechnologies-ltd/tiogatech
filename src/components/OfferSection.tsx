@@ -1,14 +1,18 @@
 import { Sun, Cpu, Camera, Check } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import offerSolar from "@/assets/offer-solar.jpg";
+import offerAutomation from "@/assets/offer-automation.jpg";
+import offerSecurity from "@/assets/offer-security.jpg";
 
 const defaultOffers = [
-  { title: "Solar Inverter Systems", desc: "Say goodbye to generator noise and fuel costs.", highlights: ["Custom-sized for your load", "Lithium battery technology", "5 to 25 year warranty options", "Starts from ₦350,000"] },
-  { title: "Smart Home Automation", desc: "Transform your space into an intelligent environment.", highlights: ["Mobile and voice control", "Scene scheduling and routines", "Works with existing wiring", "Single room to full house"] },
-  { title: "CCTV and Smart Security", desc: "Protect what matters with smart locks, HD cameras, and real-time alerts.", highlights: ["Smart locks with biometric access", "24/7 HD recording and cloud storage", "Motion detection alerts", "Remote viewing from anywhere"] },
+  { title: "Solar Inverter Systems", desc: "Quiet, fuel-free power.", highlights: ["Custom-sized load", "Lithium batteries", "Up to 25yr warranty", "From ₦350,000"] },
+  { title: "Smart Home Automation", desc: "Control everything, anywhere.", highlights: ["App and voice control", "Scenes and schedules", "Works with existing wiring", "Single room to whole home"] },
+  { title: "CCTV and Smart Security", desc: "Eyes on what matters.", highlights: ["Biometric smart locks", "24/7 HD cloud recording", "Instant motion alerts", "View from anywhere"] },
 ];
 
 const icons = [Sun, Cpu, Camera];
+const offerImages = [offerSolar, offerAutomation, offerSecurity];
 
 const OfferSection = () => {
   const { ref, isVisible } = useScrollReveal();
@@ -29,25 +33,38 @@ const OfferSection = () => {
             return (
               <div
                 key={i}
-                className={`group relative rounded-3xl border border-border bg-card p-8 hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 flex flex-col overflow-hidden ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+                className={`group relative rounded-3xl border border-border bg-card hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 flex flex-col overflow-hidden ios-card ${isVisible ? "animate-fade-up" : "opacity-0"}`}
                 style={{ animationDelay: `${i * 120}ms` }}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
-                <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mb-6 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-500">
-                  <Icon size={26} className="text-primary-foreground" />
+                {/* Thumbnail with continuous Ken Burns */}
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src={offerImages[i % offerImages.length]}
+                    alt={o.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover animate-ken-burns group-hover:scale-110 transition-transform duration-700"
+                    style={{ animationDelay: `${i * 1.8}s` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
+                  <div className="absolute -bottom-7 left-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 animate-idle-bob" style={{ animationDelay: `${i * 0.6}s` }}>
+                    <Icon size={24} className="text-primary-foreground" />
+                  </div>
                 </div>
-                <h3 className="relative text-2xl font-display font-semibold text-card-foreground mb-3 tracking-tight">{o.title}</h3>
-                <p className="relative text-muted-foreground leading-relaxed mb-6">{o.desc}</p>
-                <ul className="relative mt-auto space-y-3">
-                  {(o.highlights || []).map((h: string, hi: number) => (
-                    <li key={hi} className="flex items-start gap-3 text-sm text-foreground">
-                      <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-                        <Check size={12} className="text-primary" />
-                      </span>
-                      <span className="leading-relaxed">{h}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="relative p-6 pt-10 flex flex-col flex-1">
+                  <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
+                  <h3 className="relative text-xl font-display font-semibold text-card-foreground mb-2 tracking-tight">{o.title}</h3>
+                  <p className="relative text-muted-foreground text-sm leading-relaxed mb-5">{o.desc}</p>
+                  <ul className="relative mt-auto space-y-2.5">
+                    {(o.highlights || []).map((h: string, hi: number) => (
+                      <li key={hi} className="flex items-start gap-2.5 text-sm text-foreground">
+                        <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                          <Check size={12} className="text-primary" />
+                        </span>
+                        <span className="leading-relaxed">{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             );
           })}

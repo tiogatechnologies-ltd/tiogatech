@@ -119,6 +119,22 @@ export default {
           "0%, 100%": { boxShadow: "0 0 0 0 hsla(51,100%,50%,0.6), 0 0 12px 2px hsla(51,100%,50%,0.35)" },
           "50%": { boxShadow: "0 0 0 6px hsla(51,100%,50%,0), 0 0 22px 6px hsla(51,100%,50%,0.55)" },
         },
+        "bounce-soft": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "ken-burns": {
+          "0%": { transform: "scale(1) translate(0,0)" },
+          "100%": { transform: "scale(1.08) translate(-1.5%, -1%)" },
+        },
+        "shimmer-sweep": {
+          "0%": { transform: "translateX(-120%) skewX(-12deg)" },
+          "100%": { transform: "translateX(220%) skewX(-12deg)" },
+        },
+        "idle-bob": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-4px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -133,6 +149,10 @@ export default {
         "pulse-ring": "pulse-ring 2.5s cubic-bezier(0.22, 1, 0.36, 1) infinite",
         "caret-blink": "caret-blink 1s steps(2) infinite",
         "ai-glow": "ai-glow 2.4s ease-in-out infinite",
+        "bounce-soft": "bounce-soft 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite",
+        "ken-burns": "ken-burns 14s ease-in-out infinite alternate",
+        "shimmer-sweep": "shimmer-sweep 6s ease-in-out infinite",
+        "idle-bob": "idle-bob 4s ease-in-out infinite",
       },
     },
   },

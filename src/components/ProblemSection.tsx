@@ -83,7 +83,10 @@ const ProblemSection = () => {
                     </div>
                     <h3 className="text-base font-display font-semibold text-foreground mb-2">{p.title}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
-                    <p className="absolute bottom-4 right-5 text-[10px] uppercase tracking-widest text-primary/60 font-semibold">Tap for solution</p>
+                    <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[8px] uppercase tracking-[0.18em] text-primary/70 font-semibold">
+                      <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
+                      <span className="hidden sm:inline">Tap</span>
+                    </span>
                   </div>
                   {/* Back */}
                   <div

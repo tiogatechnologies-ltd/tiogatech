@@ -3,10 +3,10 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
 const defaultUsers = [
-  { label: "Homes", desc: "Apartments, bungalows, and duplexes enjoying uninterrupted power and smart living." },
-  { label: "Businesses", desc: "Shops, warehouses, and restaurants cutting energy costs and protecting assets." },
-  { label: "Schools", desc: "Powered classrooms, secure campuses, and lower running costs." },
-  { label: "Offices", desc: "Reliable power, smart controls, and modern security for productive teams." },
+  { label: "Homes", desc: "Uninterrupted power and smart living." },
+  { label: "Businesses", desc: "Lower energy costs, protected assets." },
+  { label: "Schools", desc: "Powered classrooms, secure campuses." },
+  { label: "Offices", desc: "Reliable power and modern security." },
 ];
 
 const icons = [Home, Building2, GraduationCap, Briefcase];
@@ -33,8 +33,11 @@ const TargetUsers = () => {
                 className={`group rounded-3xl bg-card border border-border p-6 sm:p-8 text-center hover:border-primary/40 hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
                 style={{ animationDelay: `${i * 100}ms` }}
               >
-                <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                  <Icon size={28} className="text-primary" />
+                <div className="relative mx-auto w-16 h-16 mb-4">
+                  <span className="absolute inset-0 rounded-2xl bg-primary/10 animate-pulse-ring" />
+                  <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 animate-idle-bob" style={{ animationDelay: `${i * 0.4}s` }}>
+                    <Icon size={28} className="text-primary" />
+                  </div>
                 </div>
                 <span className="block font-display font-semibold text-foreground text-lg mb-2">{u.label}</span>
                 <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{u.desc}</p>

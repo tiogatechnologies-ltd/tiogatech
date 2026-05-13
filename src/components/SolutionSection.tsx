@@ -10,7 +10,7 @@ const features = [
   {
     icon: Sun,
     title: "Solar & Storage",
-    desc: "High-efficiency panels, lithium batteries, and inverters sized to your exact load.",
+    desc: "Panels, batteries, inverters sized to your load.",
     img: featureSolar,
     accent: "from-amber-400/30 to-yellow-300/10",
     to: "/catalog",
@@ -18,7 +18,7 @@ const features = [
   {
     icon: Smartphone,
     title: "Smart Automation",
-    desc: "Control lights, climate, and energy from one app, anywhere in the world.",
+    desc: "Lights, climate, and energy in one app.",
     img: featureApp,
     accent: "from-primary/40 to-primary/10",
     to: "/catalog",
@@ -26,7 +26,7 @@ const features = [
   {
     icon: ShieldCheck,
     title: "Modern Security",
-    desc: "AI cameras, smart locks, and 24/7 monitoring that keep your property safe.",
+    desc: "AI cameras and smart locks, 24/7 monitored.",
     img: featureSecurity,
     accent: "from-blue-500/30 to-blue-400/10",
     to: "/catalog",
@@ -38,7 +38,7 @@ const SolutionSection = () => {
   const { content } = useLandingContent("solution");
 
   const heading = content?.heading || "One system. Everything connected.";
-  const description = content?.description || "Tioga combines solar energy, intelligent home automation, and modern security into a seamless experience — designed, installed, and supported end-to-end.";
+  const description = content?.description || "Solar, automation, and security — designed and installed end-to-end.";
 
   return (
     <section className="relative py-24 bg-background overflow-hidden">
@@ -59,19 +59,27 @@ const SolutionSection = () => {
             <Link
               to={f.to}
               key={f.title}
-              className={`group relative block rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+              className={`group relative block rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ios-spring ${isVisible ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
-              {/* Image */}
+              {/* Image with continuous Ken Burns */}
               <div className="relative h-56 overflow-hidden">
                 <img
                   src={f.img}
                   alt={f.title}
                   loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.2s] ease-out"
+                  className="w-full h-full object-cover animate-ken-burns group-hover:scale-110 transition-transform duration-[1.2s] ease-out"
+                  style={{ animationDelay: `${i * 1.5}s` }}
                 />
                 <div className={`absolute inset-0 bg-gradient-to-t ${f.accent} mix-blend-overlay`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-card/60 via-transparent to-transparent" />
+                {/* Continuous shimmer sweep */}
+                <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                  <div
+                    className="absolute top-0 -left-1/3 h-full w-1/3 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-shimmer-sweep"
+                    style={{ animationDelay: `${i * 2}s` }}
+                  />
+                </div>
                 <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
                   <f.icon size={20} className="text-primary" />
                 </div>
