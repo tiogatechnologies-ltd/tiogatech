@@ -59,7 +59,7 @@ const SolutionSection = () => {
             <Link
               to={f.to}
               key={f.title}
-              className={`group relative block rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:-translate-y-2 transition-all duration-500 ios-spring ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+              className={`group relative block rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] card-hover ${isVisible ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
               {/* Image with continuous Ken Burns */}
