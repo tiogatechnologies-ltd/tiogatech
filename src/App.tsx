@@ -26,6 +26,7 @@ import AdminLandingPage from "./pages/AdminLandingPage.tsx";
 import AdminEmail from "./pages/AdminEmail.tsx";
 import AdminAnalytics from "./pages/AdminAnalytics.tsx";
 import AdminCareers from "./pages/AdminCareers.tsx";
+import AdminCareerApplications from "./pages/AdminCareerApplications.tsx";
 import About from "./pages/About.tsx";
 import LumiVolt from "./pages/LumiVolt.tsx";
 import VoltAi from "./pages/VoltAi.tsx";
@@ -79,6 +80,7 @@ const AnimatedRoutes = () => {
         <Route path="/admin/email" element={<ProtectedAdmin><AdminEmail /></ProtectedAdmin>} />
         <Route path="/admin/analytics" element={<ProtectedAdmin><AdminAnalytics /></ProtectedAdmin>} />
         <Route path="/admin/careers" element={<ProtectedAdmin><AdminCareers /></ProtectedAdmin>} />
+        <Route path="/admin/career-applications" element={<ProtectedAdmin><AdminCareerApplications /></ProtectedAdmin>} />
         <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
         <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
       </Routes>

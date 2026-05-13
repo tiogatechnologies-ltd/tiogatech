@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Job } from "@/components/JobCard";
+import bgInstaller from "@/assets/bg-installer.jpg";
+import bgRooftopInstall from "@/assets/bg-rooftop-install.jpg";
+import bgOffice from "@/assets/bg-office.jpg";
+import bgTeamMeeting from "@/assets/bg-team-meeting.jpg";
+
+const JOB_BACKGROUNDS = [bgInstaller, bgRooftopInstall, bgOffice, bgTeamMeeting];
 
 const FALLBACK: Job[] = [
   {
@@ -11,6 +17,7 @@ const FALLBACK: Job[] = [
     highlights: ["Attractive commission structure", "Reduce client grid dependence", "Access to premium hardware stack"],
     requirements: "Graduate (B.Sc / HND) with valid technical certifications and a proven installation track record.",
     emailSubject: "Application - Partnership (Nationwide Installer)",
+    backgroundImage: bgInstaller,
   },
   {
     title: "Engineering Force — Project Engineers & Solar Installers",
@@ -23,6 +30,7 @@ const FALLBACK: Job[] = [
     ],
     requirements: "HND / B.Eng in Electrical Engineering or related field. COREN / NSE certification is an advantage.",
     emailSubject: "Application - Project Engineer / Solar Installer",
+    backgroundImage: bgRooftopInstall,
   },
   {
     title: "Admin / Sales Representative",
@@ -35,6 +43,7 @@ const FALLBACK: Job[] = [
     ],
     requirements: "Minimum OND / HND / B.Sc in any related discipline.",
     emailSubject: "Application - Admin/Sales Representative (Jos)",
+    backgroundImage: bgOffice,
   },
   {
     title: "Business Development Manager",
@@ -48,6 +57,7 @@ const FALLBACK: Job[] = [
     ],
     requirements: "Bachelor's degree in Business, Engineering or a related field.",
     emailSubject: "Application - Business Development Manager",
+    backgroundImage: bgTeamMeeting,
   },
 ];
 
@@ -60,13 +70,14 @@ export const useCareers = () => {
     (async () => {
       const { data, error } = await supabase
         .from("careers")
-        .select("title, location, summary, highlights, requirements, email_subject, deadline")
+        .select("id, title, location, summary, highlights, requirements, email_subject, deadline")
         .eq("is_active", true)
         .order("sort_order", { ascending: true });
       if (!active) return;
       if (!error && data && data.length > 0) {
         setJobs(
-          data.map((d: any) => ({
+          data.map((d: any, index: number) => ({
+            id: d.id,
             title: d.title,
             location: d.location,
             summary: d.summary,
@@ -74,6 +85,7 @@ export const useCareers = () => {
             requirements: d.requirements,
             emailSubject: d.email_subject,
             deadline: d.deadline,
+            backgroundImage: JOB_BACKGROUNDS[index % JOB_BACKGROUNDS.length],
           }))
         );
       }

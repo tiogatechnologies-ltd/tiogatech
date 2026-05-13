@@ -1,7 +1,9 @@
+import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import JobCard from "@/components/JobCard";
+import JobCard, { type Job } from "@/components/JobCard";
+import CareerApplicationDialog from "@/components/CareerApplicationDialog";
 import { useCareers } from "@/hooks/useCareers";
 import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail, Sparkles, Wrench, Sun, Cpu, Quote, Compass, ShieldCheck, Phone, Linkedin } from "lucide-react";
 import bgTeam from "@/assets/bg-team-meeting.jpg";
@@ -32,6 +34,7 @@ const reasons = [
 
 const Career = () => {
   const { jobs: openRoles } = useCareers();
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   return (
   <div className="min-h-screen flex flex-col">
     <SiteHeader />
@@ -205,11 +208,13 @@ const Career = () => {
 
         <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
           {openRoles.map((job, i) => (
-            <JobCard key={job.title} job={job} index={i} />
+            <JobCard key={job.title} job={job} index={i} onApply={setSelectedJob} />
           ))}
         </div>
       </div>
     </section>
+
+    <CareerApplicationDialog job={selectedJob} open={!!selectedJob} onOpenChange={(open) => !open && setSelectedJob(null)} />
 
     {/* How to Apply / Contact */}
     <section className="section-padding">
