@@ -257,6 +257,7 @@ const Career = () => {
 
     <SiteFooter />
   </div>
-);
+  );
+};
 
 export default Career;
