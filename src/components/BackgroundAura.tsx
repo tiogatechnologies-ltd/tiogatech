@@ -41,8 +41,8 @@ const BackgroundAura = () => {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-      style={{ position: "fixed" }}
+      className="pointer-events-none fixed inset-0 overflow-hidden"
+      style={{ zIndex: 9999, mixBlendMode: "screen" }}
     >
       <motion.div
         style={{
@@ -52,8 +52,8 @@ const BackgroundAura = () => {
           height: 800,
           position: "absolute",
           background:
-            "radial-gradient(circle, rgba(34,197,94,0.15) 0%, rgba(34,197,94,0) 70%)",
-          filter: "blur(8px)",
+            "radial-gradient(circle, rgba(34,197,94,0.35) 0%, rgba(34,197,94,0.12) 35%, rgba(34,197,94,0) 70%)",
+          filter: "blur(20px)",
           willChange: "transform, left, top",
         }}
       />
