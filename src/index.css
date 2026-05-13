@@ -229,9 +229,22 @@ html.lenis, html.lenis body { height: auto; }
   /* Pause marquee on hover */
   .marquee-pause:hover .animate-marquee { animation-play-state: paused; }
 
+  /* Global auto-reveal for every <section> */
+  .auto-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1100ms var(--ease-expo), transform 1100ms var(--ease-expo);
+    will-change: opacity, transform;
+  }
+  .auto-reveal.auto-reveal-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto !important; }
     .reveal-up { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .auto-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .card-hover, .btn-press, .img-soft-zoom { transition: none !important; transform: none !important; }
     .animate-blob, .animate-float-slow, .animate-float-slower, .animate-marquee,
     .animate-caret-blink, .animate-ken-burns, .animate-idle-bob, .animate-shimmer-sweep,
