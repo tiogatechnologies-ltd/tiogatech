@@ -107,7 +107,7 @@ const CareerApplicationDialog = ({ job, open, onOpenChange }: { job: Job | null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
         <DialogHeader>
           <DialogTitle className="font-display text-2xl no-clip">Apply for {job?.title || "this role"}</DialogTitle>
           <DialogDescription>Submit your details and CV. Accepted formats: PDF, DOC and DOCX.</DialogDescription>
