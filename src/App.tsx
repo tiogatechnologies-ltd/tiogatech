@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import ScrollToTop from "@/components/ScrollToTop";
 import SmoothScroll from "@/components/SmoothScroll";
+import RouteFade from "@/components/RouteFade";
 import LeadFormHost from "@/components/LeadFormHost";
 import Index from "./pages/Index.tsx";
 import Catalog from "./pages/Catalog.tsx";
@@ -58,19 +59,19 @@ const App = () => (
           <SmoothScroll />
           <LeadFormHost />
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/" element={<RouteFade><Index /></RouteFade>} />
+            <Route path="/about" element={<RouteFade><About /></RouteFade>} />
             <Route path="/solutions" element={<Navigate to="/lumivolt" replace />} />
-            <Route path="/lumivolt" element={<LumiVolt />} />
-            <Route path="/voltai" element={<VoltAi />} />
+            <Route path="/lumivolt" element={<RouteFade><LumiVolt /></RouteFade>} />
+            <Route path="/voltai" element={<RouteFade><VoltAi /></RouteFade>} />
             <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
-            <Route path="/finance" element={<Finance />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/packages" element={<Packages />} />
-            <Route path="/career" element={<Career />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
+            <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
+            <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
+            <Route path="/career" element={<RouteFade><Career /></RouteFade>} />
+            <Route path="/privacy" element={<RouteFade><Privacy /></RouteFade>} />
+            <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
+            <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />
@@ -81,7 +82,7 @@ const App = () => (
             <Route path="/admin/email" element={<ProtectedAdmin><AdminEmail /></ProtectedAdmin>} />
             <Route path="/admin/analytics" element={<ProtectedAdmin><AdminAnalytics /></ProtectedAdmin>} />
             <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

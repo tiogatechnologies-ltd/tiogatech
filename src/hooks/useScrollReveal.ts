@@ -11,12 +11,14 @@ interface RevealOptions {
   once?: boolean;
 }
 
+const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+
 const initialTransform = (dir: Direction, d: number) => {
   switch (dir) {
     case "fade": return "none";
     case "left": return `translate3d(-${d}px,0,0)`;
     case "right": return `translate3d(${d}px,0,0)`;
-    case "scale": return "scale(0.96)";
+    case "scale": return "scale(0.97)";
     case "up":
     default: return `translate3d(0,${d}px,0)`;
   }
@@ -26,9 +28,9 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(opts: RevealOp
   const {
     direction = "up",
     delay = 0,
-    threshold = 0.15,
-    distance = 28,
-    duration = 850,
+    threshold = 0.12,
+    distance = 18,
+    duration = 1100,
     once = true,
   } = opts;
 
@@ -52,7 +54,7 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(opts: RevealOp
           setVisible(false);
         }
       },
-      { threshold, rootMargin: "0px 0px -8% 0px" }
+      { threshold, rootMargin: "0px 0px -6% 0px" }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -61,7 +63,7 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(opts: RevealOp
   const style: CSSProperties = {
     opacity: visible ? 1 : 0,
     transform: visible ? "none" : initialTransform(direction, distance),
-    transition: `opacity ${duration}ms cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+    transition: `opacity ${duration}ms ${EASE} ${delay}ms, transform ${duration}ms ${EASE} ${delay}ms`,
     willChange: "opacity, transform",
   };
 
@@ -69,7 +71,7 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(opts: RevealOp
 }
 
 // Backward-compatible alias used across existing components
-export const useScrollReveal = (threshold = 0.15) => {
+export const useScrollReveal = (threshold = 0.12) => {
   const { ref, isVisible } = useReveal({ threshold });
   return { ref, isVisible };
 };
