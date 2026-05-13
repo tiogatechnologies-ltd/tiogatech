@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -14,6 +14,7 @@ const navItems = [
   { label: "Form Builder", icon: FileText, path: "/admin/forms" },
   { label: "Landing Page", icon: Layout, path: "/admin/landing" },
   { label: "Careers", icon: Briefcase, path: "/admin/careers" },
+  { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
   { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
   { label: "Email", icon: Mail, path: "/admin/email" },
   { label: "Settings", icon: Settings, path: "/admin/settings" },
