@@ -1,24 +1,75 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, CSSProperties } from "react";
 
-export function useScrollReveal(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+type Direction = "up" | "fade" | "left" | "right" | "scale";
+
+interface RevealOptions {
+  direction?: Direction;
+  delay?: number;
+  threshold?: number;
+  distance?: number;
+  duration?: number;
+  once?: boolean;
+}
+
+const initialTransform = (dir: Direction, d: number) => {
+  switch (dir) {
+    case "fade": return "none";
+    case "left": return `translate3d(-${d}px,0,0)`;
+    case "right": return `translate3d(${d}px,0,0)`;
+    case "scale": return "scale(0.96)";
+    case "up":
+    default: return `translate3d(0,${d}px,0)`;
+  }
+};
+
+export function useReveal<T extends HTMLElement = HTMLDivElement>(opts: RevealOptions = {}) {
+  const {
+    direction = "up",
+    delay = 0,
+    threshold = 0.15,
+    distance = 28,
+    duration = 850,
+    once = true,
+  } = opts;
+
+  const ref = useRef<T>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setVisible(true);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true);
+          if (once) obs.unobserve(el);
+        } else if (!once) {
+          setVisible(false);
         }
       },
-      { threshold }
+      { threshold, rootMargin: "0px 0px -8% 0px" }
     );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold, once]);
 
-  return { ref, isVisible };
+  const style: CSSProperties = {
+    opacity: visible ? 1 : 0,
+    transform: visible ? "none" : initialTransform(direction, distance),
+    transition: `opacity ${duration}ms cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+    willChange: "opacity, transform",
+  };
+
+  return { ref, isVisible: visible, style };
 }
+
+// Backward-compatible alias used across existing components
+export const useScrollReveal = (threshold = 0.15) => {
+  const { ref, isVisible } = useReveal({ threshold });
+  return { ref, isVisible };
+};
