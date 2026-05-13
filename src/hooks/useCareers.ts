@@ -76,7 +76,7 @@ export const useCareers = () => {
       if (!active) return;
       if (!error && data && data.length > 0) {
         setJobs(
-          data.map((d: any) => ({
+          data.map((d: any, index: number) => ({
             id: d.id,
             title: d.title,
             location: d.location,
