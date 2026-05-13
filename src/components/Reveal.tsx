@@ -5,6 +5,8 @@ interface RevealProps {
   children: ReactNode;
   direction?: "up" | "fade" | "left" | "right" | "scale";
   delay?: number;
+  /** When provided, multiplies an 80ms stagger onto delay */
+  index?: number;
   duration?: number;
   distance?: number;
   threshold?: number;
@@ -16,13 +18,15 @@ const Reveal = ({
   children,
   direction = "up",
   delay = 0,
-  duration = 850,
-  distance = 28,
-  threshold = 0.15,
+  index,
+  duration = 1100,
+  distance = 18,
+  threshold = 0.12,
   className,
   as: Tag = "div",
 }: RevealProps) => {
-  const { ref, style } = useReveal<HTMLDivElement>({ direction, delay, duration, distance, threshold });
+  const finalDelay = delay + (typeof index === "number" ? index * 80 : 0);
+  const { ref, style } = useReveal<HTMLDivElement>({ direction, delay: finalDelay, duration, distance, threshold });
   return (
     <Tag ref={ref} style={style} className={className}>
       {children}
