@@ -87,7 +87,7 @@ const TrustSection = () => {
             Powered by industry-leading brands
           </p>
           <div
-            className="relative overflow-hidden"
+            className="relative overflow-hidden marquee-pause"
             style={{
               maskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)",
               WebkitMaskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)",
