@@ -1,7 +1,8 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail, Sparkles, Wrench, Sun, Cpu, Quote, Compass, ShieldCheck } from "lucide-react";
+import JobCard, { type Job } from "@/components/JobCard";
+import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail, Sparkles, Wrench, Sun, Cpu, Quote, Compass, ShieldCheck, Phone, Linkedin } from "lucide-react";
 import bgTeam from "@/assets/bg-team-meeting.jpg";
 import bgTechMesh from "@/assets/bg-fluid-wave.jpg";
 import bgSolarField from "@/assets/bg-commercial-solar.jpg";
@@ -28,8 +29,39 @@ const reasons = [
   },
 ];
 
-const openRoles: { title: string; team: string; type: string; location: string }[] = [
-  // No active openings — show the "send your CV" card.
+const openRoles: Job[] = [
+  {
+    title: "Call for Partnership — Nationwide Installers",
+    location: "Nationwide, Nigeria",
+    summary: "Inviting credible solar installers across Nigeria to partner with Tioga and deploy advanced energy solutions — integrated inverters and lithium battery systems — that reduce grid dependence.",
+    highlights: ["Attractive commission structure", "Reduce client grid dependence", "Access to premium hardware stack"],
+    requirements: "Graduate (B.Sc / HND) with valid technical certifications and a proven installation track record.",
+    emailSubject: "Application - Partnership (Nationwide Installer)",
+  },
+  {
+    title: "Engineering Force — Project Engineers & Solar Installers",
+    location: "Lagos | Abuja | Jos",
+    summary: "Contract-based roles for engineers who can design, install and commission PV and ESS storage systems at scale.",
+    highlights: ["2 to 5 years in Renewable Energy or Electrical Engineering", "PV, ESS Storage and commissioning experience", "Field-ready, safety-first mindset"],
+    requirements: "HND / B.Eng in Electrical Engineering or related field. COREN / NSE certification is an advantage.",
+    emailSubject: "Application - Project Engineer / Solar Installer",
+  },
+  {
+    title: "Admin / Sales Representative",
+    location: "Jos",
+    summary: "Front-line role supporting customers, coordinating quotes and keeping the Jos office running smoothly.",
+    highlights: ["1 to 3 years in Admin or Sales", "Strong multitasking and customer service skills", "Comfortable with CRM and basic reporting"],
+    requirements: "Minimum OND / HND / B.Sc in any related discipline.",
+    emailSubject: "Application - Admin/Sales Representative (Jos)",
+  },
+  {
+    title: "Business Development Manager",
+    location: "Abuja | Jos",
+    summary: "Drive strategic growth across enterprise, SME and residential segments. Own pipeline, partnerships and regional expansion.",
+    highlights: ["3 to 6 years in business development", "Strategic growth and partnership focus", "Renewable Energy background is an advantage"],
+    requirements: "Bachelor's degree in Business, Engineering or a related field.",
+    emailSubject: "Application - Business Development Manager",
+  },
 ];
 
 const Career = () => (
