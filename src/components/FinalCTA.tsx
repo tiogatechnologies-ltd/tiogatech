@@ -63,10 +63,10 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
                 className="group flex flex-col items-center gap-2 rounded-2xl bg-secondary-foreground/5 backdrop-blur-md border border-secondary-foreground/10 py-4 hover:bg-accent/10 hover:border-accent/40 hover:shadow-[0_0_24px_-4px_hsla(51,100%,50%,0.5)] transition-all duration-500"
               >
                 <div
-                  className="animate-bounce-soft"
-                  style={{ animationDelay: `${i * 0.2}s` }}
+                  className="animate-idle-bob"
+                  style={{ animationDelay: `${i * 0.3}s` }}
                 >
-                  <b.icon size={22} className="text-accent group-hover:scale-110 transition-transform" />
+                  <b.icon size={22} className="text-accent group-hover:scale-110 transition-transform duration-500" />
                 </div>
                 <span className="text-xs font-medium text-secondary-foreground/80">{b.label}</span>
               </div>
