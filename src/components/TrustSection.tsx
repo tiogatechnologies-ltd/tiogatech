@@ -2,6 +2,25 @@ import { Award, Users, Banknote, Clock } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import bgTechMesh from "@/assets/bg-polygons.jpg";
+import logoGrowatt from "@/assets/brands/growatt.png";
+import logoHikvision from "@/assets/brands/hikvision.png";
+import logoDeye from "@/assets/brands/deye.png";
+import logoItel from "@/assets/brands/itel.png";
+import logoSrne from "@/assets/brands/srne.png";
+import logoTiandy from "@/assets/brands/tiandy.png";
+import logoAlpsolar from "@/assets/brands/alpsolar.jpeg";
+import logoDahua from "@/assets/brands/dahua.png";
+
+const brands = [
+  { name: "Growatt", src: logoGrowatt },
+  { name: "Hikvision", src: logoHikvision },
+  { name: "Deye", src: logoDeye },
+  { name: "Dahua", src: logoDahua },
+  { name: "Tiandy", src: logoTiandy },
+  { name: "SRNE", src: logoSrne },
+  { name: "AlpSolar", src: logoAlpsolar },
+  { name: "itel", src: logoItel },
+];
 
 const defaultReasons = [
   { title: "Certified Products Only", desc: "Brands like Deye, Growatt, Tuya." },
@@ -66,35 +85,18 @@ const TrustSection = () => {
               WebkitMaskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)",
             }}
           >
-            <div className="flex gap-4 animate-marquee whitespace-nowrap w-max">
-              {[...Array(2)].map((_, dup) => (
-                <div key={dup} className="flex gap-4 items-center">
-                  {[
-                    { name: "TUYA", color: "#FF4800" },
-                    { name: "Hikvision", color: "#C8102E" },
-                    { name: "Dahua", color: "#E60012" },
-                    { name: "Tiandy", color: "#0066B2" },
-                    { name: "Growatt", color: "#E30613" },
-                    { name: "Deye", color: "#003C71" },
-                    { name: "SRNE", color: "#0073C7" },
-                    { name: "Lux Power", color: "#1A1A1A" },
-                    { name: "HDL", color: "#D71920" },
-                    { name: "LifeSmart", color: "#00A859" },
-                    { name: "ITEL", color: "#0066FF" },
-                    { name: "AlpSolar", color: "#F5A623" },
-                  ].map((b) => (
-                    <div
-                      key={`${dup}-${b.name}`}
-                      className="group/logo flex items-center justify-center min-w-[140px] h-14 px-5 rounded-xl bg-card border border-border grayscale hover:grayscale-0 hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-300"
-                    >
-                      <span
-                        className="font-display font-extrabold text-base sm:text-lg tracking-tight whitespace-nowrap"
-                        style={{ color: b.color }}
-                      >
-                        {b.name}
-                      </span>
-                    </div>
-                  ))}
+            <div className="flex animate-marquee whitespace-nowrap w-max will-change-transform">
+              {[...brands, ...brands].map((b, i) => (
+                <div
+                  key={i}
+                  className="mx-3 flex items-center justify-center min-w-[160px] h-20 px-6 rounded-xl bg-card border border-border grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-500"
+                >
+                  <img
+                    src={b.src}
+                    alt={`${b.name} logo`}
+                    loading="lazy"
+                    className="max-h-12 max-w-[130px] object-contain"
+                  />
                 </div>
               ))}
             </div>

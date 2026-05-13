@@ -117,7 +117,10 @@ const Hero = ({ onApply }: HeroProps) => {
               className={`font-display font-bold text-primary-foreground leading-[1.05] tracking-[-0.02em] no-clip ${mounted ? "" : "opacity-0"}`}
             >
               <span className="block text-[1.85rem] xs:text-[2.1rem] sm:text-[2.75rem] md:text-5xl lg:text-[3.75rem] xl:text-[4.5rem]">
-                <LetterStagger as="span" text="Powering Nigerian homes with" delayMs={250} />
+                <LetterStagger as="span" text="Powering Nigerian" delayMs={250} />
+              </span>
+              <span className="block mt-1 sm:mt-2 text-[1.85rem] xs:text-[2.1rem] sm:text-[2.75rem] md:text-5xl lg:text-[3.75rem] xl:text-[4.5rem]">
+                <LetterStagger as="span" text="homes with" delayMs={500} />
               </span>
               <span className="block mt-2 sm:mt-3 text-[1.85rem] xs:text-[2.1rem] sm:text-[2.75rem] md:text-5xl lg:text-[3.75rem] xl:text-[4.5rem] min-h-[1.15em]">
                 <span className="relative inline-block align-baseline">
