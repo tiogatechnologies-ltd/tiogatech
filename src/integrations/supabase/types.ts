@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      careers: {
+        Row: {
+          created_at: string
+          deadline: string
+          email_subject: string
+          highlights: string[]
+          id: string
+          is_active: boolean
+          location: string
+          requirements: string
+          sort_order: number
+          summary: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deadline?: string
+          email_subject?: string
+          highlights?: string[]
+          id?: string
+          is_active?: boolean
+          location?: string
+          requirements?: string
+          sort_order?: number
+          summary?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deadline?: string
+          email_subject?: string
+          highlights?: string[]
+          id?: string
+          is_active?: boolean
+          location?: string
+          requirements?: string
+          sort_order?: number
+          summary?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       conversions: {
         Row: {
           created_at: string
