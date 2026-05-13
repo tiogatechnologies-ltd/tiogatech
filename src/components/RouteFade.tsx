@@ -1,39 +1,23 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode } from "react";
+import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
 /**
- * Fades the route content out (180ms) and the new route in (450ms expo-out + 8px translateY)
- * on every pathname change. CSS-only, no extra deps.
+ * Per-route fade/slide using framer-motion. Wrapped per-route in App.tsx.
+ * Uses spring physics for premium weight.
  */
 const RouteFade = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation();
-  const [stage, setStage] = useState<"in" | "out">("in");
-  const lastPath = useRef(pathname);
-
-  useEffect(() => {
-    if (lastPath.current === pathname) return;
-    setStage("out");
-    const t = setTimeout(() => {
-      lastPath.current = pathname;
-      setStage("in");
-    }, 180);
-    return () => clearTimeout(t);
-  }, [pathname]);
-
   return (
-    <div
-      style={{
-        opacity: stage === "in" ? 1 : 0,
-        transform: stage === "in" ? "translateY(0)" : "translateY(8px)",
-        transition:
-          stage === "in"
-            ? "opacity 450ms cubic-bezier(0.16,1,0.3,1), transform 450ms cubic-bezier(0.16,1,0.3,1)"
-            : "opacity 180ms ease-out, transform 180ms ease-out",
-        willChange: "opacity, transform",
-      }}
+    <motion.div
+      key={pathname}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 };
 
