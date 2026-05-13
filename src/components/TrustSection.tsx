@@ -85,22 +85,18 @@ const TrustSection = () => {
               WebkitMaskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)",
             }}
           >
-            <div className="flex gap-6 animate-marquee whitespace-nowrap w-max will-change-transform">
-              {[...Array(2)].map((_, dup) => (
-                <div key={dup} className="flex gap-6 items-center">
-                  {brands.map((b) => (
-                    <div
-                      key={`${dup}-${b.name}`}
-                      className="group/logo flex items-center justify-center min-w-[160px] h-20 px-6 rounded-xl bg-card border border-border grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-500"
-                    >
-                      <img
-                        src={b.src}
-                        alt={`${b.name} logo`}
-                        loading="lazy"
-                        className="max-h-12 max-w-[130px] object-contain"
-                      />
-                    </div>
-                  ))}
+            <div className="flex animate-marquee whitespace-nowrap w-max will-change-transform">
+              {[...brands, ...brands].map((b, i) => (
+                <div
+                  key={i}
+                  className="mx-3 flex items-center justify-center min-w-[160px] h-20 px-6 rounded-xl bg-card border border-border grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-500"
+                >
+                  <img
+                    src={b.src}
+                    alt={`${b.name} logo`}
+                    loading="lazy"
+                    className="max-h-12 max-w-[130px] object-contain"
+                  />
                 </div>
               ))}
             </div>
