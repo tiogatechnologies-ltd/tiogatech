@@ -119,9 +119,9 @@ export default {
           "0%, 100%": { boxShadow: "0 0 0 0 hsla(51,100%,50%,0.6), 0 0 12px 2px hsla(51,100%,50%,0.35)" },
           "50%": { boxShadow: "0 0 0 6px hsla(51,100%,50%,0), 0 0 22px 6px hsla(51,100%,50%,0.55)" },
         },
-        "bounce-soft": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
+        "soft-rise": {
+          "0%": { opacity: "0", transform: "translateY(14px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "ken-burns": {
           "0%": { transform: "scale(1) translate(0,0)" },
