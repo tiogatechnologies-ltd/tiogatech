@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import ScrollToTop from "@/components/ScrollToTop";
+import SmoothScroll from "@/components/SmoothScroll";
 import LeadFormHost from "@/components/LeadFormHost";
 import Index from "./pages/Index.tsx";
 import Catalog from "./pages/Catalog.tsx";
@@ -54,6 +55,7 @@ const App = () => (
         <AuthProvider>
           <PageTracker />
           <ScrollToTop />
+          <SmoothScroll />
           <LeadFormHost />
           <Routes>
             <Route path="/" element={<Index />} />
