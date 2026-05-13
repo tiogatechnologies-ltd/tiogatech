@@ -34,8 +34,7 @@ const TargetUsers = () => {
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 <div className="relative mx-auto w-16 h-16 mb-4">
-                  <span className="absolute inset-0 rounded-2xl bg-primary/10 animate-pulse-ring" />
-                  <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 animate-idle-bob" style={{ animationDelay: `${i * 0.4}s` }}>
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center transition-transform duration-700 ease-out group-hover:scale-105">
                     <Icon size={28} className="text-primary" />
                   </div>
                 </div>
