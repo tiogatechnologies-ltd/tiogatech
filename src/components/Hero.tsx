@@ -162,7 +162,7 @@ const Hero = ({ onApply }: HeroProps) => {
           <div className="lg:col-span-5 relative hidden lg:block h-[520px]">
             {/* Card 1 — Solar */}
             <div
-              className={`absolute top-0 right-0 w-64 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl animate-float-slow ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-0 right-0 w-64 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.5s" }}
             >
               <div className="flex items-center gap-3 mb-3">
@@ -182,7 +182,7 @@ const Hero = ({ onApply }: HeroProps) => {
 
             {/* Card 2 — Smart Home */}
             <div
-              className={`absolute top-44 left-0 w-72 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl animate-float-slower ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-44 left-0 w-72 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xler ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.7s" }}
             >
               <div className="flex items-center justify-between mb-4">
@@ -208,7 +208,7 @@ const Hero = ({ onApply }: HeroProps) => {
 
             {/* Card 3 — Savings */}
             <div
-              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-gradient-to-br from-accent/30 to-accent/10 backdrop-blur-xl border border-accent/30 p-5 shadow-2xl animate-float-slow ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-gradient-to-br from-accent/30 to-accent/10 backdrop-blur-xl border border-accent/30 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.9s", animationDuration: "7s" }}
             >
               <p className="text-xs text-primary-foreground/70 uppercase tracking-wider mb-1">Monthly Savings</p>
