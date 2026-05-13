@@ -97,13 +97,13 @@ const TrustSection = () => {
               {[...brands, ...brands].map((b, i) => (
                 <div
                   key={i}
-                  className="mx-3 flex items-center justify-center min-w-[160px] h-20 px-6 rounded-xl bg-card border border-border grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-500"
+                  className="mx-2 flex items-center justify-center min-w-[110px] h-12 px-4 rounded-lg bg-card border border-border grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-500"
                 >
                   <img
                     src={b.src}
                     alt={`${b.name} logo`}
                     loading="lazy"
-                    className="max-h-12 max-w-[130px] object-contain"
+                    className="max-h-7 max-w-[88px] object-contain"
                   />
                 </div>
               ))}
