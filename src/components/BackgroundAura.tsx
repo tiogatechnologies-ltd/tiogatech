@@ -13,8 +13,8 @@ const BackgroundAura = () => {
   const sy = useSpring(y, { stiffness: 60, damping: 20, mass: 0.8 });
 
   // Render as CSS background via transform on a positioned div
-  const left = useTransform(sx, (v) => `${v - 140}px`);
-  const top = useTransform(sy, (v) => `${v - 140}px`);
+  const left = useTransform(sx, (v) => `${v - 110}px`);
+  const top = useTransform(sy, (v) => `${v - 110}px`);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -48,12 +48,12 @@ const BackgroundAura = () => {
         style={{
           left,
           top,
-          width: 280,
-          height: 280,
+          width: 220,
+          height: 220,
           position: "absolute",
           background:
-            "radial-gradient(circle, rgba(34,197,94,0.22) 0%, rgba(34,197,94,0.08) 40%, rgba(34,197,94,0) 70%)",
-          filter: "blur(18px)",
+            "radial-gradient(circle, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.04) 45%, rgba(34,197,94,0) 70%)",
+          filter: "blur(22px)",
           willChange: "transform, left, top",
         }}
       />

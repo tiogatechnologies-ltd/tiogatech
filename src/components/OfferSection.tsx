@@ -6,7 +6,7 @@ import offerAutomation from "@/assets/offer-automation.jpg";
 import offerSecurity from "@/assets/offer-security.jpg";
 
 const defaultOffers = [
-  { title: "Solar Inverter Systems", desc: "Quiet, fuel-free power.", highlights: ["Custom-sized load", "Lithium batteries", "Up to 25yr warranty", "From ₦350,000"] },
+  { title: "Solar Inverter Systems", desc: "Quiet, fuel-free power.", highlights: ["Custom-sized load", "Lithium batteries", "Up to 25yr warranty", "From ₦400,000"] },
   { title: "Smart Home Automation", desc: "Control everything, anywhere.", highlights: ["App and voice control", "Scenes and schedules", "Works with existing wiring", "Single room to whole home"] },
   { title: "CCTV and Smart Security", desc: "Eyes on what matters.", highlights: ["Biometric smart locks", "24/7 HD cloud recording", "Instant motion alerts", "View from anywhere"] },
 ];
@@ -56,8 +56,15 @@ const OfferSection = () => {
                   <p className="relative text-muted-foreground text-sm leading-relaxed mb-5">{o.desc}</p>
                   <ul className="relative mt-auto space-y-2.5">
                     {(o.highlights || []).map((h: string, hi: number) => (
-                      <li key={hi} className="flex items-start gap-2.5 text-sm text-foreground">
-                        <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                      <li
+                        key={hi}
+                        className="stagger-item flex items-start gap-2.5 text-sm text-foreground"
+                        style={{ transitionDelay: `${hi * 90}ms` }}
+                      >
+                        <span
+                          className="stagger-icon mt-0.5 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0"
+                          style={{ transitionDelay: `${hi * 90}ms` }}
+                        >
                           <Check size={12} className="text-primary" />
                         </span>
                         <span className="leading-relaxed">{h}</span>

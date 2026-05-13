@@ -58,7 +58,11 @@ const TrustSection = () => {
             return (
               <div
                 key={i}
-                className="relative flex items-start gap-4 rounded-2xl border border-border bg-card p-6 overflow-hidden hover-lift"
+                className="transient-gradient group relative flex items-start gap-4 rounded-2xl border border-border p-6 overflow-hidden"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card)) 45%, hsl(var(--primary) / 0.10) 70%, hsl(var(--accent) / 0.18) 100%)",
+                }}
               >
                 {/* Subtle tech-mesh accent */}
                 <div
@@ -69,7 +73,7 @@ const TrustSection = () => {
                     backgroundPosition: "center",
                   }}
                 />
-                <div className="relative w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <div className="relative w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 transition-colors duration-500 group-hover:bg-primary/20">
                   <Icon size={22} className="text-primary" />
                 </div>
                 <div className="relative">

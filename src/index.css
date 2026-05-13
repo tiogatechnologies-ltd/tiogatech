@@ -229,6 +229,79 @@ html.lenis, html.lenis body { height: auto; }
   /* Pause marquee on hover */
   .marquee-pause:hover .animate-marquee { animation-play-state: paused; }
 
+  /* 3D flip card system */
+  .flip-card { perspective: 1200px; }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 800ms var(--ease-expo);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .flip-card:hover .flip-card-inner,
+  .flip-card:focus-within .flip-card-inner { transform: rotateY(180deg); }
+  .flip-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+  .flip-back {
+    transform: rotateY(180deg);
+  }
+
+  /* Bounce-in entrance for cards (used by Homes card spotlight) */
+  @keyframes bounceFlipIn {
+    0%   { opacity: 0; transform: perspective(1000px) rotateY(-90deg) scale(0.8); }
+    60%  { opacity: 1; transform: perspective(1000px) rotateY(15deg) scale(1.05); }
+    80%  { transform: perspective(1000px) rotateY(-6deg) scale(0.99); }
+    100% { transform: perspective(1000px) rotateY(0deg) scale(1); }
+  }
+  .animate-bounce-flip { animation: bounceFlipIn 1100ms var(--ease-expo) both; }
+
+  /* Pop-out hover for banners + step cards */
+  .pop-hover {
+    transition: transform 500ms var(--ease-expo), box-shadow 500ms var(--ease-expo);
+  }
+  .pop-hover:hover {
+    transform: translateY(-6px) scale(1.025);
+    box-shadow: 0 28px 60px -18px hsla(152, 85%, 30%, 0.35), var(--shadow-elevated);
+  }
+
+  /* Staggered list reveal on group hover */
+  .stagger-item {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 450ms var(--ease-expo), transform 550ms var(--ease-expo);
+  }
+  .group:hover .stagger-item,
+  .group:focus-within .stagger-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stagger-item-idle {
+    opacity: 1;
+  }
+  .stagger-icon {
+    transform: scale(0.6);
+    transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .group:hover .stagger-icon { transform: scale(1); }
+
+  /* Transient gradient shift for trust cards */
+  .transient-gradient {
+    background-size: 200% 200%;
+    background-position: 0% 0%;
+    transition: background-position 900ms var(--ease-expo), border-color 500ms ease, transform 600ms var(--ease-expo), box-shadow 600ms var(--ease-expo);
+  }
+  .transient-gradient:hover {
+    background-position: 100% 100%;
+    transform: translateY(-4px);
+  }
+
   /* Global auto-reveal for every <section> */
   .auto-reveal {
     opacity: 0;

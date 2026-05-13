@@ -22,8 +22,8 @@ const HowItWorks = () => {
       <div ref={ref} className="relative section-container">
         <div className={`max-w-2xl mb-14 ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">How It Works</p>
-          <h2 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4 tracking-tight leading-[1.05]">From inquiry to installation in 4 simple steps</h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">We've made the process as smooth as possible.</p>
+          <h2 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4 tracking-tight leading-[1.05]">From inquiry to installation in four (4) simple steps</h2>
+          <p className="text-muted-foreground text-lg leading-relaxed">A smooth, guided process from start to finish.</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {items.map((s: any, i: number) => {
@@ -34,9 +34,9 @@ const HowItWorks = () => {
                 className={`relative group ${isVisible ? "animate-fade-up" : "opacity-0"}`}
                 style={{ animationDelay: `${i * 120}ms` }}
               >
-                <div className="relative rounded-2xl bg-card border border-border p-6 card-hover hover:border-primary/40">
+                <div className="relative rounded-2xl bg-card border border-border p-6 pop-hover hover:border-primary/40">
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-1">
                       <Icon size={20} className="text-primary-foreground" />
                     </div>
                     <span className="text-4xl font-display font-bold text-primary/15 leading-none">{String(i + 1).padStart(2, "0")}</span>
