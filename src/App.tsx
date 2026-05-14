@@ -29,6 +29,7 @@ import AdminCareers from "./pages/AdminCareers.tsx";
 import AdminCareerApplications from "./pages/AdminCareerApplications.tsx";
 import AdminSolarPackages from "./pages/AdminSolarPackages.tsx";
 import AdminSmartLocks from "./pages/AdminSmartLocks.tsx";
+import AdminHomeAutomation from "./pages/AdminHomeAutomation.tsx";
 import About from "./pages/About.tsx";
 import LumiVolt from "./pages/LumiVolt.tsx";
 import VoltAi from "./pages/VoltAi.tsx";
@@ -85,6 +86,7 @@ const AnimatedRoutes = () => {
         <Route path="/admin/career-applications" element={<ProtectedAdmin><AdminCareerApplications /></ProtectedAdmin>} />
         <Route path="/admin/solar-packages" element={<ProtectedAdmin><AdminSolarPackages /></ProtectedAdmin>} />
         <Route path="/admin/smart-locks" element={<ProtectedAdmin><AdminSmartLocks /></ProtectedAdmin>} />
+        <Route path="/admin/home-automation" element={<ProtectedAdmin><AdminHomeAutomation /></ProtectedAdmin>} />
         <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
         <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
       </Routes>

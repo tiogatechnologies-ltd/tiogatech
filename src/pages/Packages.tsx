@@ -3,7 +3,8 @@ import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SolarPackagesSection from "@/components/SolarPackagesSection";
 import SmartLocksSection from "@/components/SmartLocksSection";
-import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap, Lock, Camera, Lightbulb, BatteryCharging } from "lucide-react";
+import HomeAutomationSection from "@/components/HomeAutomationSection";
+import { ArrowRight, Sparkles, Zap, Lock, Camera, Lightbulb, Sun, BatteryCharging } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import featureSolar from "@/assets/feature-solar-roof.jpg";
@@ -13,69 +14,6 @@ import bgSolarField from "@/assets/bg-rooftop-install.jpg";
 import bgTechMesh from "@/assets/bg-gold-bokeh.jpg";
 import bgLagosNight from "@/assets/bg-lagos-traffic.jpg";
 import bgBundle from "@/assets/bg-bundle.jpg";
-
-const packages = [
-  {
-    icon: Sun,
-    name: "Starter Solar",
-    badge: "Most Popular",
-    tagline: "For small homes & flats",
-    priceFrom: "₦1.45M",
-    points: [
-      "1.5 to 2 kWp solar array",
-      "3 kVA hybrid inverter",
-      "5 kWh lithium battery",
-      "Powers fans, TV, lights, fridge",
-      "Installation + 2-year warranty",
-    ],
-    bg: bgSolarField,
-  },
-  {
-    icon: Home,
-    name: "Smart Home Essentials",
-    badge: "Lifestyle",
-    tagline: "For modern apartments",
-    priceFrom: "₦950K",
-    points: [
-      "Smart locks (front + back door)",
-      "6 smart bulbs + 2 smart switches",
-      "Voice + app control",
-      "Scenes for morning, away, night",
-      "Tuya / HDL ecosystem",
-    ],
-    bg: featureApp,
-  },
-  {
-    icon: ShieldCheck,
-    name: "Total Security",
-    badge: "Peace of Mind",
-    tagline: "For homes & small offices",
-    priceFrom: "₦1.2M",
-    points: [
-      "4-channel HD CCTV system",
-      "Smart doorbell + intercom",
-      "Motion alerts to your phone",
-      "Cloud + 1TB on-device storage",
-      "Night-vision tuned for Nigeria",
-    ],
-    bg: featureSecurity,
-  },
-  {
-    icon: Sparkles,
-    name: "Whole-Home Combo",
-    badge: "Best Value",
-    tagline: "Solar + Smart + Security",
-    priceFrom: "₦4.8M",
-    points: [
-      "5 kWp hybrid solar system",
-      "10 kWh lithium battery",
-      "Smart lighting throughout",
-      "8-channel CCTV + smart locks",
-      "Single dashboard, single team",
-    ],
-    bg: bgLagosNight,
-  },
-];
 
 const Packages = () => (
   <div className="min-h-screen flex flex-col">
@@ -105,63 +43,7 @@ const Packages = () => (
 
     <SmartLocksSection />
 
-    <section className="section-padding">
-      <div className="section-container grid gap-6 sm:grid-cols-2">
-        {packages.map((p) => (
-          <div
-            key={p.name}
-            className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
-          >
-            {/* Image header */}
-            <div className="relative h-44 overflow-hidden">
-              <img
-                src={p.bg}
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/55 to-midnight/20" />
-              <div className="absolute inset-0 flex items-end justify-between p-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-gold/95 flex items-center justify-center shadow-lg">
-                    <p.icon className="text-midnight" size={20} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/75">{p.tagline}</p>
-                    <h3 className="text-xl font-display font-bold text-primary-foreground no-clip leading-tight">{p.name}</h3>
-                  </div>
-                </div>
-                <span className="text-[10px] uppercase tracking-[0.18em] font-bold text-midnight bg-gold px-2.5 py-1 rounded-full shadow">
-                  {p.badge}
-                </span>
-              </div>
-            </div>
-
-            {/* Body */}
-            <div className="p-6 sm:p-7 flex flex-col flex-1">
-              <p className="text-sm text-muted-foreground mb-4">
-                Starting from <span className="text-foreground font-bold text-base">{p.priceFrom}</span>
-              </p>
-              <ul className="space-y-2.5 mb-6 flex-1">
-                {p.points.map((pt) => (
-                  <li key={pt} className="flex items-start gap-2 text-sm text-foreground">
-                    <Check className="text-primary mt-0.5 shrink-0" size={16} />
-                    <span>{pt}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => openLeadForm(`package_${p.name}`)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
-              >
-                Customize this package <ArrowRight size={14} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+    <HomeAutomationSection />
 
     {/* Browse by category */}
     <section id="categories" className="section-padding bg-muted/40 scroll-mt-24">
