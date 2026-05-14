@@ -100,6 +100,8 @@ const Packages = () => (
       </Link>
     </PageHero>
 
+    <SolarPackagesSection />
+
     <section className="section-padding">
       <div className="section-container grid gap-6 sm:grid-cols-2">
         {packages.map((p) => (
