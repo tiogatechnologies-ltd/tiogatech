@@ -470,6 +470,78 @@ export type Database = {
         }
         Relationships: []
       }
+      solar_packages: {
+        Row: {
+          accessories_price: number | null
+          appliances: string
+          badge: string | null
+          battery: string
+          battery_price: number | null
+          battery_type: string
+          charge_controller: string
+          charge_controller_price: number | null
+          created_at: string
+          id: string
+          inverter: string
+          inverter_price: number | null
+          is_active: boolean
+          package_number: number
+          setup_fee: number | null
+          solar_panels: string
+          solar_panels_price: number | null
+          sort_order: number
+          tagline: string | null
+          total_price: number
+          updated_at: string
+        }
+        Insert: {
+          accessories_price?: number | null
+          appliances: string
+          badge?: string | null
+          battery: string
+          battery_price?: number | null
+          battery_type?: string
+          charge_controller?: string
+          charge_controller_price?: number | null
+          created_at?: string
+          id?: string
+          inverter: string
+          inverter_price?: number | null
+          is_active?: boolean
+          package_number: number
+          setup_fee?: number | null
+          solar_panels: string
+          solar_panels_price?: number | null
+          sort_order?: number
+          tagline?: string | null
+          total_price: number
+          updated_at?: string
+        }
+        Update: {
+          accessories_price?: number | null
+          appliances?: string
+          badge?: string | null
+          battery?: string
+          battery_price?: number | null
+          battery_type?: string
+          charge_controller?: string
+          charge_controller_price?: number | null
+          created_at?: string
+          id?: string
+          inverter?: string
+          inverter_price?: number | null
+          is_active?: boolean
+          package_number?: number
+          setup_fee?: number | null
+          solar_panels?: string
+          solar_panels_price?: number | null
+          sort_order?: number
+          tagline?: string | null
+          total_price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
