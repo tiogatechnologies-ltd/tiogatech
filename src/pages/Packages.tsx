@@ -2,6 +2,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SolarPackagesSection from "@/components/SolarPackagesSection";
+import SmartLocksSection from "@/components/SmartLocksSection";
 import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap, Lock, Camera, Lightbulb, BatteryCharging } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
@@ -101,6 +102,8 @@ const Packages = () => (
     </PageHero>
 
     <SolarPackagesSection />
+
+    <SmartLocksSection />
 
     <section className="section-padding">
       <div className="section-container grid gap-6 sm:grid-cols-2">
