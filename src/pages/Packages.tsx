@@ -1,6 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
+import SolarPackagesSection from "@/components/SolarPackagesSection";
 import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap, Lock, Camera, Lightbulb, BatteryCharging } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
