@@ -43,63 +43,7 @@ const Packages = () => (
 
     <SmartLocksSection />
 
-    <section className="section-padding">
-      <div className="section-container grid gap-6 sm:grid-cols-2">
-        {packages.map((p) => (
-          <div
-            key={p.name}
-            className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
-          >
-            {/* Image header */}
-            <div className="relative h-44 overflow-hidden">
-              <img
-                src={p.bg}
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/55 to-midnight/20" />
-              <div className="absolute inset-0 flex items-end justify-between p-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-gold/95 flex items-center justify-center shadow-lg">
-                    <p.icon className="text-midnight" size={20} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/75">{p.tagline}</p>
-                    <h3 className="text-xl font-display font-bold text-primary-foreground no-clip leading-tight">{p.name}</h3>
-                  </div>
-                </div>
-                <span className="text-[10px] uppercase tracking-[0.18em] font-bold text-midnight bg-gold px-2.5 py-1 rounded-full shadow">
-                  {p.badge}
-                </span>
-              </div>
-            </div>
-
-            {/* Body */}
-            <div className="p-6 sm:p-7 flex flex-col flex-1">
-              <p className="text-sm text-muted-foreground mb-4">
-                Starting from <span className="text-foreground font-bold text-base">{p.priceFrom}</span>
-              </p>
-              <ul className="space-y-2.5 mb-6 flex-1">
-                {p.points.map((pt) => (
-                  <li key={pt} className="flex items-start gap-2 text-sm text-foreground">
-                    <Check className="text-primary mt-0.5 shrink-0" size={16} />
-                    <span>{pt}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => openLeadForm(`package_${p.name}`)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
-              >
-                Customize this package <ArrowRight size={14} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+    <HomeAutomationSection />
 
     {/* Browse by category */}
     <section id="categories" className="section-padding bg-muted/40 scroll-mt-24">
