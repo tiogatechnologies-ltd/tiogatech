@@ -3,7 +3,8 @@ import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SolarPackagesSection from "@/components/SolarPackagesSection";
 import SmartLocksSection from "@/components/SmartLocksSection";
-import { ArrowRight, Sun, Home, ShieldCheck, Sparkles, Check, Zap, Lock, Camera, Lightbulb, BatteryCharging } from "lucide-react";
+import HomeAutomationSection from "@/components/HomeAutomationSection";
+import { ArrowRight, Sparkles, Zap, Lock, Camera, Lightbulb, Sun, BatteryCharging } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import featureSolar from "@/assets/feature-solar-roof.jpg";
@@ -13,69 +14,6 @@ import bgSolarField from "@/assets/bg-rooftop-install.jpg";
 import bgTechMesh from "@/assets/bg-gold-bokeh.jpg";
 import bgLagosNight from "@/assets/bg-lagos-traffic.jpg";
 import bgBundle from "@/assets/bg-bundle.jpg";
-
-const packages = [
-  {
-    icon: Sun,
-    name: "Starter Solar",
-    badge: "Most Popular",
-    tagline: "For small homes & flats",
-    priceFrom: "₦1.45M",
-    points: [
-      "1.5 to 2 kWp solar array",
-      "3 kVA hybrid inverter",
-      "5 kWh lithium battery",
-      "Powers fans, TV, lights, fridge",
-      "Installation + 2-year warranty",
-    ],
-    bg: bgSolarField,
-  },
-  {
-    icon: Home,
-    name: "Smart Home Essentials",
-    badge: "Lifestyle",
-    tagline: "For modern apartments",
-    priceFrom: "₦950K",
-    points: [
-      "Smart locks (front + back door)",
-      "6 smart bulbs + 2 smart switches",
-      "Voice + app control",
-      "Scenes for morning, away, night",
-      "Tuya / HDL ecosystem",
-    ],
-    bg: featureApp,
-  },
-  {
-    icon: ShieldCheck,
-    name: "Total Security",
-    badge: "Peace of Mind",
-    tagline: "For homes & small offices",
-    priceFrom: "₦1.2M",
-    points: [
-      "4-channel HD CCTV system",
-      "Smart doorbell + intercom",
-      "Motion alerts to your phone",
-      "Cloud + 1TB on-device storage",
-      "Night-vision tuned for Nigeria",
-    ],
-    bg: featureSecurity,
-  },
-  {
-    icon: Sparkles,
-    name: "Whole-Home Combo",
-    badge: "Best Value",
-    tagline: "Solar + Smart + Security",
-    priceFrom: "₦4.8M",
-    points: [
-      "5 kWp hybrid solar system",
-      "10 kWh lithium battery",
-      "Smart lighting throughout",
-      "8-channel CCTV + smart locks",
-      "Single dashboard, single team",
-    ],
-    bg: bgLagosNight,
-  },
-];
 
 const Packages = () => (
   <div className="min-h-screen flex flex-col">
