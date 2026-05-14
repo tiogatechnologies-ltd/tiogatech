@@ -470,6 +470,66 @@ export type Database = {
         }
         Relationships: []
       }
+      smart_locks: {
+        Row: {
+          badge: string | null
+          category: string
+          created_at: string
+          description: string
+          features: string[]
+          id: string
+          ideal_for: string
+          is_active: boolean
+          model: string
+          name: string
+          power_system: string
+          price: number | null
+          price_label: string | null
+          series: string
+          sort_order: number
+          tagline: string | null
+          updated_at: string
+        }
+        Insert: {
+          badge?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          features?: string[]
+          id?: string
+          ideal_for?: string
+          is_active?: boolean
+          model?: string
+          name: string
+          power_system?: string
+          price?: number | null
+          price_label?: string | null
+          series?: string
+          sort_order?: number
+          tagline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          badge?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          features?: string[]
+          id?: string
+          ideal_for?: string
+          is_active?: boolean
+          model?: string
+          name?: string
+          power_system?: string
+          price?: number | null
+          price_label?: string | null
+          series?: string
+          sort_order?: number
+          tagline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       solar_packages: {
         Row: {
           accessories_price: number | null
