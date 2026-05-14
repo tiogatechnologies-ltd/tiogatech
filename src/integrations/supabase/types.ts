@@ -176,6 +176,57 @@ export type Database = {
         }
         Relationships: []
       }
+      home_automation_packages: {
+        Row: {
+          badge: string | null
+          created_at: string
+          description: string
+          entertainment: string[]
+          features: string[]
+          id: string
+          is_active: boolean
+          name: string
+          price: number | null
+          price_label: string | null
+          sort_order: number
+          tagline: string
+          tier: string
+          updated_at: string
+        }
+        Insert: {
+          badge?: string | null
+          created_at?: string
+          description?: string
+          entertainment?: string[]
+          features?: string[]
+          id?: string
+          is_active?: boolean
+          name: string
+          price?: number | null
+          price_label?: string | null
+          sort_order?: number
+          tagline?: string
+          tier: string
+          updated_at?: string
+        }
+        Update: {
+          badge?: string | null
+          created_at?: string
+          description?: string
+          entertainment?: string[]
+          features?: string[]
+          id?: string
+          is_active?: boolean
+          name?: string
+          price?: number | null
+          price_label?: string | null
+          sort_order?: number
+          tagline?: string
+          tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       landing_content: {
         Row: {
           content: Json
