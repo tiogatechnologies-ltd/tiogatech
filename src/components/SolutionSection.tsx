@@ -37,35 +37,21 @@ const SolutionSection = () => {
             <Link
               to={f.to}
               key={f.title}
-              className={`flip-card block rounded-3xl h-80 ${isVisible ? "animate-fade-up" : "opacity-0"}`}
+              className={`group relative block rounded-3xl h-80 overflow-hidden border border-border shadow-[var(--shadow-card)] hover-lift ${isVisible ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
-              <div className="flip-card-inner rounded-3xl shadow-[var(--shadow-card)]">
-                {/* Front */}
-                <div className="flip-face rounded-3xl bg-card border border-border">
-                  <img src={f.img} alt={f.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight/85 via-midnight/30 to-transparent" />
-                  <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
-                    <f.icon size={20} className="text-primary" />
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
-                    <h3 className="text-2xl font-display font-semibold tracking-tight">{f.title}</h3>
-                    <span className="text-xs uppercase tracking-widest text-primary-foreground/70 mt-1 block">Hover to learn more</span>
-                  </div>
-                </div>
-                {/* Back */}
-                <div className="flip-face flip-back rounded-3xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-8 flex flex-col justify-between">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-primary-foreground/15 flex items-center justify-center mb-4">
-                      <f.icon size={22} className="text-primary-foreground" />
-                    </div>
-                    <h3 className="text-2xl font-display font-semibold mb-3 tracking-tight">{f.title}</h3>
-                    <p className="text-primary-foreground/90 leading-relaxed">{f.desc}</p>
-                  </div>
-                  <span className="inline-flex items-center gap-2 text-sm font-semibold">
-                    Explore <ArrowUpRight size={16} />
-                  </span>
-                </div>
+              <img src={f.img} alt={f.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <div className="absolute inset-0 bg-gradient-to-t from-midnight/70 via-midnight/20 to-transparent" />
+              <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
+                <f.icon size={20} className="text-primary" />
+              </div>
+              {/* Faded white side panel */}
+              <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-white/70 dark:bg-white/15 backdrop-blur-md border border-white/50 p-5 text-foreground">
+                <h3 className="text-xl font-display font-semibold tracking-tight mb-1">{f.title}</h3>
+                <p className="text-sm text-foreground/80 leading-relaxed">{f.desc}</p>
+                <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary">
+                  Explore <ArrowUpRight size={14} />
+                </span>
               </div>
             </Link>
           ))}

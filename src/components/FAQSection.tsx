@@ -3,12 +3,12 @@ import { useLandingContent } from "@/hooks/useLandingContent";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const defaultFaqs = [
-  { q: "How much does a solar system cost?", a: "A basic backup starts from ₦350,000, while full off-grid ranges from ₦1.5M–₦5M+." },
-  { q: "How long does installation take?", a: "Most residential installations are completed within 1–3 days." },
+  { q: "How much does a solar system cost?", a: "A basic backup starts from ₦400,000, while full off-grid ranges from ₦1.8M to ₦5M+." },
+  { q: "How long does installation take?", a: "Most residential installations are completed within 1 to 3 days." },
   { q: "Do you offer payment plans?", a: "Yes! We offer flexible payment options including installment plans." },
-  { q: "What happens if something breaks?", a: "All products come with manufacturer warranties (1–5 years) plus after-sales support." },
+  { q: "What happens if something breaks?", a: "All products come with manufacturer warranties (1 to 5 years) plus after-sales support." },
   { q: "Can I start with one solution and add more later?", a: "Absolutely. Our systems are modular and expandable." },
-  { q: "Do you cover my area?", a: "We currently serve Lagos, Abuja, and surrounding areas." },
+  { q: "Do you cover my area?", a: "We currently serve Lagos, Abuja, and Port Harcourt and other surrounding regions." },
   { q: "Will solar work during rainy season?", a: "Yes. Battery storage keeps you powered through low-sun periods." },
   { q: "What smart home features can I control?", a: "Lights, switches, AC, curtains, fans, water heaters, gate motors, and more." },
 ];
@@ -19,7 +19,7 @@ const FAQSection = () => {
   const faqs = content?.items || defaultFaqs;
 
   return (
-    <section className="section-padding bg-background">
+    <section id="faq" className="section-padding bg-background scroll-mt-24">
       <div ref={ref} className={`section-container max-w-3xl ${isVisible ? "animate-slide-up" : "opacity-0"}`}>
         <div className="text-center mb-12">
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-2">FAQ</p>

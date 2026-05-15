@@ -9,6 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import ScrollToTop from "@/components/ScrollToTop";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import SmoothScroll from "@/components/SmoothScroll";
 import RouteFade from "@/components/RouteFade";
 import LeadFormHost from "@/components/LeadFormHost";
@@ -107,6 +108,7 @@ const App = () => (
           <BackgroundAura />
           <AutoReveal />
           <LeadFormHost />
+          <ScrollToTopButton />
           <AnimatedRoutes />
         </AuthProvider>
       </BrowserRouter>

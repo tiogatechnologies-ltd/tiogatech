@@ -48,6 +48,9 @@ const TargetUsers = () => {
                     <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur flex items-center justify-center">
                       <Icon size={20} className="text-primary" />
                     </div>
+                    <span className="absolute top-4 right-4 text-[10px] uppercase tracking-[0.18em] font-semibold bg-card/85 text-foreground px-2 py-1 rounded-full backdrop-blur">
+                      Tap to view more
+                    </span>
                     <div className="absolute bottom-4 left-4 right-4">
                       <span className="block font-display font-semibold text-primary-foreground text-lg">{u.label}</span>
                     </div>

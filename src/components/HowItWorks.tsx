@@ -31,8 +31,8 @@ const HowItWorks = () => {
             return (
               <div
                 key={i}
-                className={`relative group ${isVisible ? "animate-fade-up" : "opacity-0"}`}
-                style={{ animationDelay: `${i * 120}ms` }}
+                className={`relative group ${isVisible ? "animate-bounce-flip" : "opacity-0"}`}
+                style={{ animationDelay: `${i * 140}ms` }}
               >
                 <div className="relative rounded-2xl bg-card border border-border p-6 pop-hover hover:border-primary/40">
                   <div className="flex items-center justify-between mb-5">
