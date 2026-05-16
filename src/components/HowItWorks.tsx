@@ -22,7 +22,7 @@ const HowItWorks = () => {
       <div ref={ref} className="relative section-container">
         <div className={`max-w-2xl mb-14 ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">How It Works</p>
-          <h2 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4 tracking-tight leading-[1.05]">From inquiry to installation in four (4) simple steps</h2>
+          <h2 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4 tracking-tight leading-[1.05]">From inquiry to installation in four simple steps</h2>
           <p className="text-muted-foreground text-lg leading-relaxed">A smooth, guided process from start to finish.</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

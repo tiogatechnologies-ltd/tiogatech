@@ -10,10 +10,9 @@ const fmt = (item: SmartLock) =>
 
 const LockCard = ({ p, i }: { p: SmartLock; i: number }) => (
   <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ type: "spring", stiffness: 100, damping: 20, delay: (i % 4) * 0.05 }}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.35, ease: "easeOut", delay: (i % 6) * 0.04 }}
     className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
   >
     <div className="relative h-44 overflow-hidden">
@@ -149,9 +148,9 @@ const SmartLocksSection = () => {
           </div>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div key={tab} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p, i) => (
-            <LockCard key={p.id} p={p} i={i} />
+            <LockCard key={`${tab}-${p.id}`} p={p} i={i} />
           ))}
         </div>
 

@@ -83,9 +83,9 @@ const ProblemSection = () => {
                     </div>
                     <h3 className="text-base font-display font-semibold text-foreground mb-2">{p.title}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
-                    <span className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1 rounded-full bg-primary/10 px-1.5 py-[2px] text-[7px] uppercase tracking-[0.2em] text-primary/60 font-semibold">
-                      <span className="w-[3px] h-[3px] rounded-full bg-primary animate-pulse" />
-                      <span className="hidden sm:inline">Tap</span>
+                    <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-primary font-semibold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                      Tap to view more
                     </span>
                   </div>
                   {/* Back */}
