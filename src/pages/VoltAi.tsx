@@ -1,7 +1,7 @@
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import bgAutomation from "@/assets/bg-voltai-automation.jpg";
+import bgAutomation from "@/assets/bg-voltai-ai.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import featureSecurity from "@/assets/feature-security.jpg";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
