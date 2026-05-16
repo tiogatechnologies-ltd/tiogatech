@@ -23,7 +23,7 @@ const FAQSection = () => {
       <div ref={ref} className={`section-container max-w-3xl ${isVisible ? "animate-slide-up" : "opacity-0"}`}>
         <div className="text-center mb-12">
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-2">FAQ</p>
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">Got questions? We've got answers.</h2>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">Got questions? We have got answers.</h2>
           <p className="text-muted-foreground">Here are the most common things people ask before getting started.</p>
         </div>
         <Accordion type="single" collapsible className="w-full">

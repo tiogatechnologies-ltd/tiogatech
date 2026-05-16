@@ -1,4 +1,4 @@
-import SiteHeader from "@/components/SiteHeader";
+import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroFinance from "@/assets/feature-tablet-monitor.jpg";
@@ -23,7 +23,7 @@ const faqs = [
   { q: "What happens if I miss a payment?", a: "We send a reminder 3 days before each due date. If a payment is missed, our team reaches out to arrange a flexible solution before any penalties apply." },
   { q: "Is there a credit check required?", a: "No formal credit check. We assess affordability through a brief consultation to ensure plan fits your budget." },
   { q: "Can I pay off early without penalty?", a: "Yes. You can settle the remaining balance any time at no extra cost." },
-  { q: "What's included in the quoted price?", a: "Equipment, installation, configuration, testing, and a 2-year workmanship warranty. No hidden fees." },
+  { q: "What is included in the quoted price?", a: "Equipment, installation, configuration, testing, and a 2-year workmanship warranty. No hidden fees." },
   { q: "Do you offer financing for businesses?", a: "Yes. We offer extended commercial plans for SMEs, schools, and offices. Contact us for a custom quote." },
 ];
 
@@ -137,7 +137,7 @@ const Finance = () => (
         <p className="text-muted-foreground max-w-xl mx-auto mb-7">Start with a free consultation and see how affordable clean energy can be.</p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
-            to="/?lead=1"
+            to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
           >
             Get a Free Quote <ArrowRight size={16} />

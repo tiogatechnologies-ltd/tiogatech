@@ -59,7 +59,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
 
   const buildWhatsAppUrl = () => {
     const lines = [
-      "Hi Tioga! I'd like a personalized recommendation.",
+      "Hi Tioga! I would like a personalized recommendation.",
       data.category ? `• Interested in: ${data.category}` : "",
       data.fullName ? `• Name: ${data.fullName}` : "",
       data.location ? `• Location: ${data.location}` : "",
@@ -209,7 +209,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
 
       return (
         <div className="space-y-5">
-          <h3 className="text-xl font-display font-bold text-card-foreground">What's your budget?</h3>
+          <h3 className="text-xl font-display font-bold text-card-foreground">What is your budget?</h3>
           {wattsWarning && (
             <p className="text-xs text-muted-foreground">Based on your appliances ({data.totalWatts.toLocaleString()}W), packages start from ₦{(minNeeded / 1000000).toFixed(1)}M</p>
           )}
@@ -276,7 +276,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Any notes? (Optional)</label>
               <textarea
                 className={`${inputClass} min-h-[80px] resize-none`}
-                placeholder="Anything else you'd like us to know..."
+                placeholder="Anything else you would like us to know..."
                 value={data.notes}
                 onChange={(e) => update({ notes: e.target.value })}
                 maxLength={500}

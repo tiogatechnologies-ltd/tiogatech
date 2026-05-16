@@ -16,7 +16,7 @@ export function renderSecurityStep(stepKey: string, data: LeadFormData, update: 
     case "sec_intro":
       return (
         <StepUI title="Secure your space" subtitle="With smart, modern systems">
-          <p className="text-sm text-muted-foreground">We'll help you find the right security setup for your property.</p>
+          <p className="text-sm text-muted-foreground">We will help you find the right security setup for your property.</p>
         </StepUI>
       );
     case "sec_needs":

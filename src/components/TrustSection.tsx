@@ -49,8 +49,8 @@ const TrustSection = () => {
       <div ref={ref} className={`section-container ${isVisible ? "animate-slide-up" : "opacity-0"}`}>
         <div className="text-center max-w-2xl mx-auto mb-12">
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-2">Why Tioga</p>
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">You're in safe hands</h2>
-          <p className="text-muted-foreground">We're not just selling products. We're building long-term relationships.</p>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">You are in safe hands</h2>
+          <p className="text-muted-foreground">We are not just selling products. We are building long-term relationships.</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
           {items.map((r: any, i: number) => {

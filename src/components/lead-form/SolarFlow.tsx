@@ -14,8 +14,8 @@ export function renderSolarStep(stepKey: string, data: LeadFormData, update: (d:
   switch (stepKey) {
     case "solar_intro":
       return (
-        <StepUI title="Let's design the perfect solar system" subtitle="For your home or business">
-          <p className="text-sm text-muted-foreground">We'll ask a few quick questions to recommend the best setup. Takes under 2 minutes.</p>
+        <StepUI title="Let us design the perfect solar system" subtitle="For your home or business">
+          <p className="text-sm text-muted-foreground">We will ask a few quick questions to recommend the best setup. Takes under 2 minutes.</p>
         </StepUI>
       );
     case "solar_appliances":

@@ -87,13 +87,7 @@ const SiteHeader = () => {
 
   const onDark = !scrolled && !open;
 
-  const handleAiClick = () => {
-    if (location.pathname !== "/") {
-      navigate("/?lead=1");
-    } else {
-      openLeadForm("ai_badge");
-    }
-  };
+  const handleAiClick = () => { openLeadForm("ai_badge"); };
 
   return (
     <header

@@ -22,7 +22,7 @@ const defaultProblems = [
   },
   {
     title: "Outdated Security",
-    desc: "Traditional locks and basic CCTV won't stop modern threats. Without smart monitoring and real-time alerts, your property stays vulnerable.",
+    desc: "Traditional locks and basic CCTV will not stop modern threats. Without smart monitoring and real-time alerts, your property stays vulnerable.",
     solution: "AI cameras, smart locks and live alerts on your phone, monitored 24/7 from anywhere.",
   },
   {
@@ -40,7 +40,7 @@ const ProblemSection = () => {
   const [flipped, setFlipped] = useState<number | null>(null);
 
   const heading = content?.heading || "Sound familiar?";
-  const subtitle = content?.subtitle || "Millions of Nigerians deal with these challenges daily. If any of these hit close to home, you're not alone and there's a better way.";
+  const subtitle = content?.subtitle || "Millions of Nigerians deal with these challenges daily. If any of these hit close to home, you are not alone and there is a better way.";
   const items = content?.items || defaultProblems;
 
   return (

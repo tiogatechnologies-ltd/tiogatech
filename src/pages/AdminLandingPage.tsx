@@ -29,7 +29,7 @@ const defaultContent: Record<string, any> = {
     items: [
       { title: "Unreliable Electricity", desc: "Nigeria averages just 4–6 hours of grid power daily." },
       { title: "Skyrocketing Fuel Costs", desc: "Many homes spend ₦50,000–₦200,000+ monthly on fuel." },
-      { title: "Outdated Security", desc: "Traditional locks won't stop modern threats." },
+      { title: "Outdated Security", desc: "Traditional locks will not stop modern threats." },
       { title: "Wasted Productivity", desc: "Every outage means lost revenue." },
     ],
   },
