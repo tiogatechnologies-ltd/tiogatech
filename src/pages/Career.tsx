@@ -27,7 +27,7 @@ const reasons = [
   {
     icon: Heart,
     title: "Be respected and well paid",
-    desc: "Competitive Naira compensation, real ownership, and tools that don't slow you down.",
+    desc: "Competitive Naira compensation, real ownership, and tools that do not slow you down.",
     bg: bgLagosNight,
   },
 ];
@@ -41,7 +41,7 @@ const Career = () => {
     <PageHero
       eyebrow="Careers"
       title="Build with the team powering Nigeria."
-      subtitle="We're a small, deeply technical team in Lagos. We hire engineers, installers and operators who care about craft and about the people we serve."
+      subtitle="We are a small, deeply technical team in Lagos. We hire engineers, installers and operators who care about craft and about the people we serve."
       backgroundImage={bgTeam}
       backgroundAlt="Tioga Technologies team and installations"
     >
@@ -107,7 +107,7 @@ const Career = () => {
         </div>
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: ShieldCheck, title: "Reliability first", desc: "We over-engineer for Nigerian conditions. If it can't survive a brownout, it doesn't ship." },
+            { icon: ShieldCheck, title: "Reliability first", desc: "We over-engineer for Nigerian conditions. If it cannot survive a brownout, it does not ship." },
             { icon: Compass, title: "Customer obsession", desc: "Every system is somebody's home or business. We act like it." },
             { icon: Sparkles, title: "Bias for craft", desc: "Clean cabling, neat installs, well-named code. The boring details matter." },
             { icon: Heart, title: "People over titles", desc: "Best idea wins. Junior engineers ship to production from week one." },
@@ -225,7 +225,7 @@ const Career = () => {
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
               Send your CV and a short note
             </h2>
-            <p className="mt-3 text-muted-foreground">Tell us which role you're applying for and why you're a great fit. We respond to every serious application.</p>
+            <p className="mt-3 text-muted-foreground">Tell us which role you are applying for and why you are a great fit. We respond to every serious application.</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <a

@@ -1,4 +1,4 @@
-import SiteHeader from "@/components/SiteHeader";
+import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroSmartHome from "@/assets/bg-about-hero.jpg";
@@ -178,7 +178,7 @@ const About = () => (
             </div>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                to="/?lead=1"
+                to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
               >
                 Get in Touch <ArrowRight size={16} />

@@ -1,7 +1,7 @@
-import SiteHeader from "@/components/SiteHeader";
+import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import bgAutomation from "@/assets/bg-voltai-automation.jpg";
+import bgAutomation from "@/assets/bg-voltai-ai.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import featureSecurity from "@/assets/feature-security.jpg";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
@@ -44,7 +44,7 @@ const VoltAi = () => {
         backgroundAlt="Hand interacting with futuristic smart home control interface"
       >
         <Link
-          to="/?lead=1"
+          to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
         >
           Automate My Home <ArrowRight size={16} />
@@ -141,11 +141,11 @@ const VoltAi = () => {
               Ready to automate your home?
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto mb-6">
-              Tell us your space and we'll design a VoltAi setup that fits, then install and tune it for you.
+              Tell us your space and we will design a VoltAi setup that fits, then install and tune it for you.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
-                to="/?lead=1"
+                to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
               >
                 Get a Quote <ArrowRight size={16} />

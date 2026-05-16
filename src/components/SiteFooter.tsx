@@ -38,7 +38,7 @@ const SiteFooter = () => {
       toast.error("Please enter a valid email address");
       return;
     }
-    toast.success("Thanks! We'll be in touch with energy tips and offers.");
+    toast.success("Thanks! We will be in touch with energy tips and offers.");
     setEmail("");
   };
 

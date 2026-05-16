@@ -122,7 +122,7 @@ const HomeAutomationSection = () => {
             Want a custom blend?
           </h3>
           <p className="text-muted-foreground max-w-xl mx-auto mb-5 text-sm">
-            Mix and match features across tiers. Tell us your home size and goals and we'll design a tailored automation plan.
+            Mix and match features across tiers. Tell us your home size and goals and we will design a tailored automation plan.
           </p>
           <button
             onClick={() => openLeadForm("home_automation_custom")}

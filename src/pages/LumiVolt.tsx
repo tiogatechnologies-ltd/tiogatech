@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SiteHeader from "@/components/SiteHeader";
+import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
@@ -54,7 +54,7 @@ const LumiVolt = () => {
         backgroundAlt="Modern Nigerian home with rooftop solar at golden hour"
       >
         <Link
-          to="/?lead=1"
+          to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
         >
           Get a Solar Quote <ArrowRight size={16} />
@@ -150,7 +150,7 @@ const LumiVolt = () => {
             <div className="mt-6 pt-6 border-t border-border text-center">
               <p className="text-sm text-muted-foreground mb-3">Ready for a personalized solar recommendation?</p>
               <Link
-                to="/?lead=1"
+                to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
                 className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-bold text-midnight hover:brightness-110 ios-press shadow-md shadow-gold/30"
               >
                 <Sparkles size={15} /> Get AI Recommendation <ArrowRight size={16} />
@@ -165,7 +165,7 @@ const LumiVolt = () => {
         <div className="section-container">
           <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 shadow-[var(--shadow-card)] text-center">
             <Lightbulb className="text-primary mx-auto mb-3" size={28} />
-            <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-6">What's in your LumiVolt design</h2>
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-6">What is in your LumiVolt design</h2>
             <ul className="grid gap-3 sm:grid-cols-2 text-left max-w-2xl mx-auto">
               {youGet.map((g) => (
                 <li key={g} className="flex items-start gap-2 text-sm text-foreground">
@@ -175,7 +175,7 @@ const LumiVolt = () => {
               ))}
             </ul>
             <Link
-              to="/?lead=1"
+              to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
             >
               Get My LumiVolt Design <ArrowRight size={16} />

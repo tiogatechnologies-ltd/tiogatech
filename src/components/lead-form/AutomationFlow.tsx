@@ -13,7 +13,7 @@ export function renderAutomationStep(stepKey: string, data: LeadFormData, update
     case "auto_intro":
       return (
         <StepUI title="Make your home smarter" subtitle="More convenient and fully controllable">
-          <p className="text-sm text-muted-foreground">Let's find the perfect automation setup for your space.</p>
+          <p className="text-sm text-muted-foreground">Let us find the perfect automation setup for your space.</p>
         </StepUI>
       );
     case "auto_what":

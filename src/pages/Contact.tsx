@@ -45,8 +45,8 @@ const Contact = () => {
       <SiteHeader />
       <PageHero
         eyebrow="Contact"
-        title="Let's start your project"
-        subtitle="Tell us about your space and what you'd like to power. Our team will get back to you within one business day."
+        title="Let us start your project"
+        subtitle="Tell us about your space and what you would like to power. Our team will get back to you within one business day."
         backgroundImage={heroBg}
         backgroundAlt="Tioga Technologies workspace"
       />
@@ -169,7 +169,7 @@ const Contact = () => {
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       rows={5}
                       className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
-                      placeholder="Tell us about your project, location, or what you'd like to power..."
+                      placeholder="Tell us about your project, location, or what you would like to power..."
                     />
                   </div>
                   <button

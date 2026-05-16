@@ -5,6 +5,10 @@ import bgSprout from "@/assets/offer-automation.jpg";
 import bgIbiza from "@/assets/hero-smart-home.jpg";
 
 const IMAGE_BY_TIER: Record<string, string> = {
+  Apex: bgAscentia,
+  Aura: bgSprout,
+  Riviera: bgIbiza,
+  // legacy fallbacks
   Ascentia: bgAscentia,
   Sprout: bgSprout,
   Ibiza: bgIbiza,

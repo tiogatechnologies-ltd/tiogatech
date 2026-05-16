@@ -94,7 +94,7 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
   const [activeIdx, setActiveIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
-  const waMsg = encodeURIComponent(`Hi, I'm interested in the ${product.name}${product.price ? ` (${product.price})` : ""}`);
+  const waMsg = encodeURIComponent(`Hi, I am interested in the ${product.name}${product.price ? ` (${product.price})` : ""}`);
   const isCombo = product.tags?.includes("combo") || product.series?.includes("Combo");
 
   // Build a clean image list: prefer gallery, else fall back to product.image_url
@@ -262,7 +262,7 @@ const ComingSoonStore = () => {
             The Tioga <span className="bg-gradient-to-r from-accent via-yellow-300 to-accent bg-clip-text text-transparent">Online Store</span> is launching soon.
           </h1>
           <p className="mt-5 text-base sm:text-lg text-primary-foreground/75 max-w-xl mx-auto animate-fade-up" style={{ animationDelay: "0.2s" }}>
-            We're putting the finishing touches on a curated catalog of solar, smart home, and security gear, complete with one-tap WhatsApp ordering.
+            We are putting the finishing touches on a curated catalog of solar, smart home, and security gear, complete with one-tap WhatsApp ordering.
           </p>
           <p className="mt-3 text-sm text-primary-foreground/60 max-w-xl mx-auto animate-fade-up" style={{ animationDelay: "0.25s" }}>
             In the meantime, get an instant AI-tailored recommendation for your space.
@@ -272,7 +272,6 @@ const ComingSoonStore = () => {
             <button
               onClick={() => {
                 window.dispatchEvent(new CustomEvent("tioga:open-lead-form", { detail: { source: "store_coming_soon" } }));
-                navigate("/?lead=1");
               }}
               className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3.5 text-sm font-bold text-midnight hover:brightness-110 active:scale-[0.97] transition-all shadow-xl shadow-gold/40"
             >
@@ -528,7 +527,7 @@ const Catalog = () => {
             <ArrowLeft size={14} /> Back to Home
           </button>
           <h1 className="text-xl sm:text-3xl font-display font-bold leading-tight">
-            {userName ? `${userName}, here's` : "Here's"} what we{" "}
+            {userName ? `${userName}, here is` : "Here is"} what we{" "}
             <span className="text-accent">recommend for you</span>
           </h1>
           <p className="text-sm text-secondary-foreground/70">
@@ -701,7 +700,7 @@ const Catalog = () => {
             <span className="hidden sm:inline">Chat on </span>WhatsApp
           </a>
           <a
-            href={`${WHATSAPP}?text=${encodeURIComponent("Hi, I'd like to request an installation consultation.")}`}
+            href={`${WHATSAPP}?text=${encodeURIComponent("Hi, I would like to request an installation consultation.")}`}
             target="_blank" rel="noopener noreferrer"
             className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg border border-primary px-4 sm:px-6 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition-all"
           >

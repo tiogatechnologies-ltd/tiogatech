@@ -5,7 +5,7 @@ import PageHero from "@/components/PageHero";
 import SolarPackagesSection from "@/components/SolarPackagesSection";
 import SmartLocksSection from "@/components/SmartLocksSection";
 import HomeAutomationSection from "@/components/HomeAutomationSection";
-import { ArrowRight, Sparkles, Zap, Lock, Sun, Home as HomeIcon } from "lucide-react";
+import { ArrowRight, Sparkles, Lock, Sun, Home as HomeIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import bgBundle from "@/assets/bg-bundle.jpg";
@@ -95,26 +95,6 @@ const Packages = () => {
       {active === "solar" && <SolarPackagesSection />}
       {active === "locks" && <SmartLocksSection />}
       {active === "automation" && <HomeAutomationSection />}
-
-      <section className="section-padding">
-        <div className="section-container">
-          <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 text-center shadow-[var(--shadow-card)]">
-            <Zap className="text-gold mx-auto mb-3" size={28} />
-            <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-3 no-clip">
-              Need something different?
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto mb-7">
-              Tell us your load profile and goals. Our LumiVolt AI will design a custom package just for you in under 2 minutes.
-            </p>
-            <button
-              onClick={() => openLeadForm("packages_cta")}
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
-            >
-              <Sparkles size={16} /> Build my custom package
-            </button>
-          </div>
-        </div>
-      </section>
 
       <SiteFooter />
     </div>
