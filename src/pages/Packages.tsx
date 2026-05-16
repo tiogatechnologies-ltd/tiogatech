@@ -5,7 +5,7 @@ import PageHero from "@/components/PageHero";
 import SolarPackagesSection from "@/components/SolarPackagesSection";
 import SmartLocksSection from "@/components/SmartLocksSection";
 import HomeAutomationSection from "@/components/HomeAutomationSection";
-import { ArrowRight, Sparkles, Zap, Lock, Sun, Home as HomeIcon } from "lucide-react";
+import { ArrowRight, Sparkles, Lock, Sun, Home as HomeIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import bgBundle from "@/assets/bg-bundle.jpg";
