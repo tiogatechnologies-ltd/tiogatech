@@ -9,13 +9,16 @@ import { ArrowRight, Sparkles, Lock, Sun, Home as HomeIcon } from "lucide-react"
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import bgBundle from "@/assets/bg-bundle.jpg";
+import catSolar from "@/assets/cat-solar.jpg";
+import catLocks from "@/assets/cat-locks.jpg";
+import catAutomation from "@/assets/cat-automation.jpg";
 
 type CategoryKey = "solar" | "locks" | "automation";
 
-const CATEGORIES: { key: CategoryKey; label: string; icon: typeof Sun; desc: string }[] = [
-  { key: "solar", label: "Solar Inverter Systems", icon: Sun, desc: "From 1KVA to 30KVA — pre-engineered for Nigerian load profiles." },
-  { key: "locks", label: "Smart Lock Series", icon: Lock, desc: "STAMA biometric home locks and full hotel access ecosystems." },
-  { key: "automation", label: "Home Automation", icon: HomeIcon, desc: "Three curated tiers: Ascentia, Sprout and Ibiza." },
+const CATEGORIES: { key: CategoryKey; label: string; icon: typeof Sun; desc: string; image: string }[] = [
+  { key: "solar", label: "Solar Inverter Systems", icon: Sun, desc: "From 1KVA to 30KVA — pre-engineered for Nigerian load profiles.", image: catSolar },
+  { key: "locks", label: "Smart Lock Series", icon: Lock, desc: "STAMA biometric home locks and full hotel access ecosystems.", image: catLocks },
+  { key: "automation", label: "Home Automation", icon: HomeIcon, desc: "Three curated tiers: Apex, Aura and Riviera.", image: catAutomation },
 ];
 
 const Packages = () => {
