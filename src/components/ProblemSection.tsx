@@ -47,11 +47,12 @@ const ProblemSection = () => {
     <section className="relative py-24 bg-background overflow-hidden">
       <div className="absolute -top-40 right-1/4 w-[500px] h-[500px] rounded-full bg-destructive/5 blur-3xl pointer-events-none" />
       <div ref={ref} className="relative section-container">
-        <div className={`max-w-2xl mb-14 ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
+        <div className={`max-w-2xl mb-4 ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">The Problem</p>
           <h2 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4 tracking-tight leading-[1.05] no-clip">{heading}</h2>
           <p className="text-muted-foreground text-lg leading-relaxed">{subtitle}</p>
         </div>
+        <p className="text-xs text-muted-foreground/80 mb-8 italic">Tap any card to see how Tioga solves it.</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5" style={{ perspective: "1200px" }}>
           {items.map((p: any, i: number) => {
             const Icon = icons[i % icons.length];
@@ -83,10 +84,6 @@ const ProblemSection = () => {
                     </div>
                     <h3 className="text-base font-display font-semibold text-foreground mb-2">{p.title}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
-                    <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-primary font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                      Tap to view more
-                    </span>
                   </div>
                   {/* Back */}
                   <div

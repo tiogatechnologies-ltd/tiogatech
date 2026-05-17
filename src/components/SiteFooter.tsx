@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Mail, MessageCircle } from "lucide-react";
+import { ArrowUpRight, Mail, MessageCircle, MapPin, Phone, Clock } from "lucide-react";
 import { useState } from "react";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { toast } from "@/components/ui/sonner";
@@ -60,16 +60,32 @@ const SiteFooter = () => {
             </div>
             <ul className="mt-5 space-y-2 text-sm">
               <li className="flex items-center gap-2">
-                <Mail size={14} className="text-gold" />
+                <Mail size={14} className="text-gold shrink-0" />
                 <a href="mailto:sales@tiogatechnologies.com" className="hover:text-gold transition-colors">
                   sales@tiogatechnologies.com
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <MessageCircle size={14} className="text-gold" />
+                <MessageCircle size={14} className="text-gold shrink-0" />
                 <a href="https://wa.me/2348178000023" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
                   +234 817 800 0023
                 </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone size={14} className="text-gold shrink-0" />
+                <a href="tel:+2349035966388" className="hover:text-gold transition-colors">
+                  0903 596 6388
+                </a>
+              </li>
+              <li className="flex items-start gap-2">
+                <MapPin size={14} className="text-gold shrink-0 mt-0.5" />
+                <span className="text-primary-foreground/85 leading-relaxed">
+                  No 7, Commercial Layout, Abattoir Rd, LGA, behind Airforce Primary School, Jos 930103, Plateau State, Nigeria
+                </span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Clock size={14} className="text-gold shrink-0" />
+                <span className="text-primary-foreground/85">Mon to Fri · 10am to 6pm</span>
               </li>
             </ul>
           </div>

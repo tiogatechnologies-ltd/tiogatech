@@ -7,7 +7,7 @@ import bgSolarField from "@/assets/bg-solar-field.jpg";
 import featureSolar from "@/assets/feature-solar-panel.jpg";
 import featureApp from "@/assets/feature-energy-app.jpg";
 import bgTechMesh from "@/assets/bg-grid-particles.jpg";
-import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus } from "lucide-react";
+import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import WattsCalculator from "@/components/lead-form/WattsCalculator";
 import type { SelectedAppliance } from "@/data/applianceWatts";
@@ -54,10 +54,10 @@ const LumiVolt = () => {
         backgroundAlt="Modern Nigerian home with rooftop solar at golden hour"
       >
         <Link
-          to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
+          to="/coming-soon"
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
         >
-          Get a Solar Quote <ArrowRight size={16} />
+          <Download size={16} /> Download App
         </Link>
       </PageHero>
 
@@ -175,10 +175,10 @@ const LumiVolt = () => {
               ))}
             </ul>
             <Link
-              to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
+              to="/coming-soon"
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
             >
-              Get My LumiVolt Design <ArrowRight size={16} />
+              <Download size={16} /> Download App
             </Link>
           </div>
           <p className="mt-6 text-center text-sm text-muted-foreground">

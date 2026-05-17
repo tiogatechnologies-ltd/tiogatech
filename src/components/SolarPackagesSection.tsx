@@ -9,10 +9,9 @@ const fmt = (n: number | null) =>
 
 const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => (
   <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ type: "spring", stiffness: 100, damping: 20, delay: (i % 4) * 0.05 }}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.35, ease: "easeOut", delay: (i % 4) * 0.05 }}
     className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
   >
     <div className="relative h-44 overflow-hidden">
@@ -106,7 +105,7 @@ const SolarPackagesSection = () => {
   if (loading || packages.length === 0) return null;
 
   return (
-    <section id="solar-packages" className="section-padding bg-muted/30 scroll-mt-24">
+    <section id="solar-packages" data-no-reveal className="section-padding bg-muted/30 scroll-mt-24">
       <div className="section-container">
         <div className="text-center mb-10">
           <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">

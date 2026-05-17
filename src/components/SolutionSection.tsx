@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import featureSolar from "@/assets/bg-lumivolt-rooftop.jpg";
-import featureApp from "@/assets/feature-battery.jpg";
+import featureApp from "@/assets/feature-smart-automation-device.jpg";
 import featureSecurity from "@/assets/feature-cctv.jpg";
 import { Sun, Smartphone, ShieldCheck, ArrowUpRight } from "lucide-react";
 

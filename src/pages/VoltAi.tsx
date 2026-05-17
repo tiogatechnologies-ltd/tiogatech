@@ -5,7 +5,7 @@ import bgAutomation from "@/assets/bg-voltai-ai.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import featureSecurity from "@/assets/feature-security.jpg";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
-import { Lock, Lightbulb, Camera, Wifi, Cpu, Mic, Smartphone, Zap, Shield, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { Lock, Lightbulb, Camera, Wifi, Cpu, Mic, Smartphone, Zap, Shield, ArrowRight, CheckCircle2, Sparkles, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pillars = [
@@ -44,10 +44,10 @@ const VoltAi = () => {
         backgroundAlt="Hand interacting with futuristic smart home control interface"
       >
         <Link
-          to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
+          to="/coming-soon"
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
         >
-          Automate My Home <ArrowRight size={16} />
+          <Download size={16} /> Download App
         </Link>
       </PageHero>
 
@@ -145,10 +145,10 @@ const VoltAi = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
-                to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
+                to="/coming-soon"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
               >
-                Get a Quote <ArrowRight size={16} />
+                <Download size={16} /> Download App
               </Link>
               <Link
                 to="/lumivolt"

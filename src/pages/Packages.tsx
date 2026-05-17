@@ -9,13 +9,16 @@ import { ArrowRight, Sparkles, Lock, Sun, Home as HomeIcon } from "lucide-react"
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import bgBundle from "@/assets/bg-bundle.jpg";
+import catSolar from "@/assets/cat-solar.jpg";
+import catLocks from "@/assets/cat-locks.jpg";
+import catAutomation from "@/assets/cat-automation.jpg";
 
 type CategoryKey = "solar" | "locks" | "automation";
 
-const CATEGORIES: { key: CategoryKey; label: string; icon: typeof Sun; desc: string }[] = [
-  { key: "solar", label: "Solar Inverter Systems", icon: Sun, desc: "From 1KVA to 30KVA — pre-engineered for Nigerian load profiles." },
-  { key: "locks", label: "Smart Lock Series", icon: Lock, desc: "STAMA biometric home locks and full hotel access ecosystems." },
-  { key: "automation", label: "Home Automation", icon: HomeIcon, desc: "Three curated tiers: Ascentia, Sprout and Ibiza." },
+const CATEGORIES: { key: CategoryKey; label: string; icon: typeof Sun; desc: string; image: string }[] = [
+  { key: "solar", label: "Solar Inverter Systems", icon: Sun, desc: "From 1KVA to 30KVA — pre-engineered for Nigerian load profiles.", image: catSolar },
+  { key: "locks", label: "Smart Lock Series", icon: Lock, desc: "STAMA biometric home locks and full hotel access ecosystems.", image: catLocks },
+  { key: "automation", label: "Home Automation", icon: HomeIcon, desc: "Three curated tiers: Apex, Aura and Riviera.", image: catAutomation },
 ];
 
 const Packages = () => {
@@ -69,22 +72,31 @@ const Packages = () => {
                   key={c.key}
                   type="button"
                   onClick={() => setActive(isActive ? null : c.key)}
-                  className={`group relative text-left rounded-3xl border p-6 transition-all duration-500 hover-lift ${
+                  className={`group relative text-left rounded-3xl border overflow-hidden hover-lift transition-all duration-500 ${
                     isActive
-                      ? "border-primary bg-primary/5 shadow-[var(--shadow-elevated)]"
-                      : "border-border bg-card hover:border-primary/40"
+                      ? "border-primary shadow-[var(--shadow-elevated)]"
+                      : "border-border hover:border-primary/40"
                   }`}
                 >
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className={`grid h-11 w-11 place-items-center rounded-xl shadow ${isActive ? "bg-primary text-primary-foreground" : "bg-gold text-midnight"}`}>
+                  <div className="relative h-40 overflow-hidden">
+                    <img
+                      src={c.image}
+                      alt={c.label}
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/40 to-midnight/10" />
+                    <span className={`absolute top-4 left-4 grid h-11 w-11 place-items-center rounded-xl shadow ${isActive ? "bg-primary text-primary-foreground" : "bg-gold text-midnight"}`}>
                       <Icon size={18} />
                     </span>
-                    <h3 className="font-display font-bold text-lg text-foreground no-clip">{c.label}</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground">{c.desc}</p>
-                  <span className={`mt-4 inline-flex items-center gap-1.5 text-xs font-semibold ${isActive ? "text-primary" : "text-foreground/70 group-hover:text-primary"}`}>
-                    {isActive ? "Showing below" : "Tap to view packages"} <ArrowRight size={14} />
-                  </span>
+                  <div className={`p-6 ${isActive ? "bg-primary/5" : "bg-card"}`}>
+                    <h3 className="font-display font-bold text-lg text-foreground no-clip mb-2">{c.label}</h3>
+                    <p className="text-sm text-muted-foreground">{c.desc}</p>
+                    <span className={`mt-4 inline-flex items-center gap-1.5 text-xs font-semibold ${isActive ? "text-primary" : "text-foreground/70 group-hover:text-primary"}`}>
+                      {isActive ? "Showing below" : "Tap to view packages"} <ArrowRight size={14} />
+                    </span>
+                  </div>
                 </button>
               );
             })}

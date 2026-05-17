@@ -116,7 +116,7 @@ const SmartLocksSection = () => {
   if (loading || items.length === 0) return null;
 
   return (
-    <section id="smart-locks" className="section-padding scroll-mt-24">
+    <section id="smart-locks" data-no-reveal className="section-padding scroll-mt-24">
       <div className="section-container">
         <div className="text-center mb-10">
           <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">
