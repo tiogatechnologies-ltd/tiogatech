@@ -2,9 +2,9 @@ import { Home, Building2, GraduationCap, Briefcase } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import imgHomes from "@/assets/bg-lagos-apartment.jpg";
-import imgBusiness from "@/assets/bg-office.jpg";
+import imgBusiness from "@/assets/bg-office-people.jpg";
 import imgSchools from "@/assets/bg-team-meeting.jpg";
-import imgOffices from "@/assets/bg-dashboard.jpg";
+import imgOffices from "@/assets/bg-office-people.jpg";
 
 const defaultUsers = [
   { label: "Homes", desc: "Apartments, bungalows, and duplexes enjoying uninterrupted power and smart living." },
@@ -28,6 +28,7 @@ const TargetUsers = () => {
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">Who We Serve</p>
           <h2 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4 tracking-tight leading-[1.05]">Built for every space</h2>
           <p className="text-muted-foreground text-lg leading-relaxed">A solution that fits, from a single room to a multi-story building.</p>
+          <p className="mt-3 text-xs text-muted-foreground/80 italic">Tap any card to learn more.</p>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {items.map((u: any, i: number) => {
@@ -48,9 +49,6 @@ const TargetUsers = () => {
                     <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur flex items-center justify-center">
                       <Icon size={20} className="text-primary" />
                     </div>
-                    <span className="absolute top-4 right-4 text-[10px] uppercase tracking-[0.18em] font-semibold bg-card/85 text-foreground px-2 py-1 rounded-full backdrop-blur">
-                      Tap to view more
-                    </span>
                     <div className="absolute bottom-4 left-4 right-4">
                       <span className="block font-display font-semibold text-primary-foreground text-lg">{u.label}</span>
                     </div>
