@@ -175,8 +175,8 @@ html.lenis, html.lenis body { height: auto; }
 
   .reveal-up {
     opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 1.1s var(--ease-expo), transform 1.1s var(--ease-expo);
+    transform: translateY(14px);
+    transition: opacity 500ms var(--ease-expo), transform 500ms var(--ease-expo);
     will-change: opacity, transform;
   }
   .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
@@ -305,8 +305,8 @@ html.lenis, html.lenis body { height: auto; }
   /* Global auto-reveal for every <section> */
   .auto-reveal {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 1100ms var(--ease-expo), transform 1100ms var(--ease-expo);
+    transform: translateY(20px);
+    transition: opacity 500ms var(--ease-expo), transform 500ms var(--ease-expo);
     will-change: opacity, transform;
   }
   .auto-reveal.auto-reveal-in {

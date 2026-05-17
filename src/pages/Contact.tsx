@@ -3,7 +3,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroBg from "@/assets/hero-bg.jpg";
-import { Mail, MessageCircle, MapPin, Clock, Send, Loader2, CheckCircle2 } from "lucide-react";
+import { Mail, MessageCircle, MapPin, Clock, Send, Loader2, CheckCircle2, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
 import { toast } from "@/hooks/use-toast";
@@ -86,11 +86,26 @@ const Contact = () => {
               </div>
               <div className="flex items-start gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <Phone className="text-primary" size={18} />
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Phone</p>
+                  <a href="tel:+2349035966388" className="text-foreground font-medium hover:text-primary">
+                    0903 596 6388
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <MapPin className="text-primary" size={18} />
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Office</p>
-                  <p className="text-foreground font-medium">Ikeja, Lagos, Nigeria</p>
+                  <p className="text-foreground font-medium leading-relaxed">
+                    No 7, Commercial Layout, Abattoir Rd, LGA,<br />
+                    behind Airforce Primary School,<br />
+                    Jos 930103, Plateau State, Nigeria
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -99,7 +114,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Hours</p>
-                  <p className="text-foreground font-medium">Mon to Fri · 9:00 AM to 6:00 PM WAT</p>
+                  <p className="text-foreground font-medium">Mon to Fri · 10:00 AM to 6:00 PM WAT</p>
                 </div>
               </div>
             </div>
