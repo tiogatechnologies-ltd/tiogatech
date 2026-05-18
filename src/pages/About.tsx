@@ -46,7 +46,12 @@ const partners = [
 
 const About = () => (
   <div className="min-h-screen flex flex-col">
-    <SiteHeader />
+   <SEO
+     title="About Tioga Technologies"
+     description="Tioga Technologies builds IoT infrastructure, embedded systems and renewable energy management platforms across Africa, from Jos to Lagos and beyond."
+     path="/about"
+   />
+   <SiteHeader />
     <PageHero
       eyebrow="About Tioga Technologies"
       title="Powering Africa's clean energy transition"
