@@ -31,7 +31,11 @@ const AppWaitlistForm = () => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.from("app_waitlist").insert(parsed.data);
+    const { error } = await supabase.from("app_waitlist").insert({
+      full_name: parsed.data.full_name,
+      email: parsed.data.email,
+      platform: parsed.data.platform,
+    });
     setSubmitting(false);
     if (error) {
       if (error.code === "23505") {
