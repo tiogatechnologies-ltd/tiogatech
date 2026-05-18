@@ -130,21 +130,23 @@ const SmartLocksSection = () => {
           </p>
         </div>
 
-        <div className="flex justify-center mb-10">
-          <div className="inline-flex p-1.5 rounded-full bg-card border border-border shadow-sm flex-wrap gap-1">
-            {TABS.map(({ key, label, icon: Icon }) => (
-              <button
-                key={key}
-                onClick={() => setTab(key)}
-                className={`px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all inline-flex items-center gap-1.5 ${
-                  tab === key
-                    ? "bg-primary text-primary-foreground shadow"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Icon size={14} /> {label}
-              </button>
-            ))}
+        <div className="mb-10 -mx-4 px-4 overflow-x-auto scrollbar-none">
+          <div className="flex justify-center min-w-max mx-auto">
+            <div className="inline-flex p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
+              {TABS.map(({ key, label, icon: Icon }) => (
+                <button
+                  key={key}
+                  onClick={() => setTab(key)}
+                  className={`whitespace-nowrap px-3 sm:px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all inline-flex items-center gap-1.5 ${
+                    tab === key
+                      ? "bg-primary text-primary-foreground shadow"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Icon size={14} /> {label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
