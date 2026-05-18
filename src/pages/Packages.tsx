@@ -1,11 +1,9 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
-import SolarPackagesSection from "@/components/SolarPackagesSection";
-import SmartLocksSection from "@/components/SmartLocksSection";
-import HomeAutomationSection from "@/components/HomeAutomationSection";
-import { ArrowRight, Sparkles, Lock, Sun, Home as HomeIcon } from "lucide-react";
+import SEO from "@/components/SEO";
+import { ArrowRight, Sparkles, Lock, Sun, Home as HomeIcon, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import bgBundle from "@/assets/bg-bundle.jpg";
@@ -13,19 +11,36 @@ import catSolar from "@/assets/cat-solar.jpg";
 import catLocks from "@/assets/cat-locks.jpg";
 import catAutomation from "@/assets/cat-automation.jpg";
 
+const SolarPackagesSection = lazy(() => import("@/components/SolarPackagesSection"));
+const SmartLocksSection = lazy(() => import("@/components/SmartLocksSection"));
+const HomeAutomationSection = lazy(() => import("@/components/HomeAutomationSection"));
+
 type CategoryKey = "solar" | "locks" | "automation";
 
 const CATEGORIES: { key: CategoryKey; label: string; icon: typeof Sun; desc: string; image: string }[] = [
-  { key: "solar", label: "Solar Inverter Systems", icon: Sun, desc: "From 1KVA to 30KVA — pre-engineered for Nigerian load profiles.", image: catSolar },
+  { key: "solar", label: "Solar Inverter Systems", icon: Sun, desc: "From 1KVA to 30KVA, pre-engineered for Nigerian load profiles.", image: catSolar },
   { key: "locks", label: "Smart Lock Series", icon: Lock, desc: "STAMA biometric home locks and full hotel access ecosystems.", image: catLocks },
   { key: "automation", label: "Home Automation", icon: HomeIcon, desc: "Three curated tiers: Apex, Aura and Riviera.", image: catAutomation },
 ];
+
+const SectionLoader = () => (
+  <div className="section-padding">
+    <div className="section-container flex items-center justify-center py-16">
+      <Loader2 size={24} className="animate-spin text-primary" />
+    </div>
+  </div>
+);
 
 const Packages = () => {
   const [active, setActive] = useState<CategoryKey | null>(null);
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="Packages — Solar, Smart Locks & Home Automation"
+        description="Browse Tioga Technologies' curated solar packages (1KVA to 30KVA), STAMA smart locks, and Apex/Aura/Riviera home automation bundles. Installable next week."
+        path="/packages"
+      />
       <SiteHeader />
       <PageHero
         eyebrow="Packages"
@@ -48,7 +63,6 @@ const Packages = () => {
         </Link>
       </PageHero>
 
-      {/* Category selector */}
       <section className="section-padding bg-muted/30">
         <div className="section-container">
           <div className="text-center mb-10">
@@ -83,6 +97,8 @@ const Packages = () => {
                       src={c.image}
                       alt={c.label}
                       loading="lazy"
+                      width={1024}
+                      height={400}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/40 to-midnight/10" />
@@ -104,9 +120,11 @@ const Packages = () => {
         </div>
       </section>
 
-      {active === "solar" && <SolarPackagesSection />}
-      {active === "locks" && <SmartLocksSection />}
-      {active === "automation" && <HomeAutomationSection />}
+      <Suspense fallback={<SectionLoader />}>
+        {active === "solar" && <SolarPackagesSection />}
+        {active === "locks" && <SmartLocksSection />}
+        {active === "automation" && <HomeAutomationSection />}
+      </Suspense>
 
       <SiteFooter />
     </div>
