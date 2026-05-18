@@ -43,6 +43,11 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="Contact Tioga Technologies"
+        description="Talk to Tioga Technologies about solar, smart locks or home automation. Call +234 903 596 6388, WhatsApp, or visit our Jos office."
+        path="/contact"
+      />
       <SiteHeader />
       <PageHero
         eyebrow="Contact"
