@@ -1,136 +1,56 @@
-# Plan: Smoother Motion + Admin Readiness Audit
+# Implementation Plan
 
-## Part 1 — Sitewide motion polish (slower, smoother, more refined)
+This is a large batch. I will ship it in the order below so the smaller wins land fast and the heavy CMS work is last.
 
-Goal: make every scroll reveal, page transition, and hover feel slower and silkier (iPhone-like), without changing layout or content.
+## 1. Smart Lock category nav centering (mobile)
+- In `SmartLocksSection.tsx`, the series tab strip currently left-aligns and overflows on small screens. Wrap the tab row in a `flex justify-center` container and let it scroll horizontally with `overflow-x-auto` + center alignment to match the Solar tabs.
 
-### 1.1 Smoother page scroll (Lenis tuning)
-File: `src/components/SmoothScroll.tsx`
-- Lower `lerp` from `0.1` to `0.075` (slower glide, more inertia).
-- Add `duration: 1.4` and `easing: t => Math.min(1, 1.001 - Math.pow(2, -10*t))` for an exponential ease-out feel.
-- Set `wheelMultiplier: 0.9` so wheel input feels less twitchy.
-- Keep reduced-motion guard.
+## 2. Replace the "Businesses" stock image on the home page
+- The `TargetUsers.tsx` Businesses card reuses the Office image. Generate a fresh stock photo (a Nigerian retail shopfront or small business storefront with lights on) and wire it into the card.
 
-### 1.2 Slower, gentler reveals
-File: `src/hooks/useScrollReveal.ts` + `src/components/Reveal.tsx`
-- Bump default `duration` from 850ms to 1100ms.
-- Default `distance` from 24px to 18px (less travel = calmer).
-- Default `threshold` 0.12, `rootMargin` `0px 0px -6% 0px` so reveals fire just before entering view.
-- Standardize easing to `cubic-bezier(0.16, 1, 0.3, 1)` (expo-out) across all directions.
-- Stagger helper: allow `delay` prop to be auto-multiplied via an optional `index` prop on `<Reveal index={i} />` (×80ms per child).
+## 3. App Waitlist (Coming Soon page)
+- New table `app_waitlist` (name, email, platform, created_at) with public INSERT + admin SELECT/DELETE RLS.
+- Add a form on `/coming-soon` collecting **Name + Email + Platform (iOS / Android / Both)** with zod validation, toast confirmation, success state.
+- New admin page `/admin/waitlist` listing entries with CSV export.
 
-### 1.3 Hover micro-interactions (calmer, longer)
-File: `src/index.css`
-- `.card-hover`: change transition from 600ms to 700ms `cubic-bezier(0.22,1,0.36,1)`, lift from `-6px` to `-4px`, add a subtle `box-shadow` fade (no scale).
-- `.btn-press`: 220ms ease-out, scale `0.985` (less aggressive).
-- New `.link-soft` utility: underline grows from 0→100% over 500ms ease-out for inline links.
-- New `.img-soft-zoom` utility: image `transform: scale(1)` → `scale(1.03)` on parent hover over 1200ms ease-out (used for OfferSection thumbs as a replacement for the removed Ken Burns, only on hover).
+## 4. Packages page perceived loading
+- Lazy-load `SolarPackagesSection`, `SmartLocksSection`, `HomeAutomationSection` via `React.lazy` + `Suspense` skeleton so the hero and tabs render instantly.
+- Preload the category background images so swapping is instant.
 
-### 1.4 Continuous animation tuning
-File: `tailwind.config.ts`
-- `idle-bob` 6s → 7s, range −4px → −3px.
-- `shimmer-sweep` 9s → 12s.
-- `ken-burns` 22s → 28s (kept only where currently used).
-- `marquee` 50s → 70s for the brand row (slower, more premium).
-- `float-slow` 6s → 8s, `float-slower` 9s → 12s.
+## 5. Admin "Content" section (Phase 2 CMS)
+- Rename sidebar group: replace "Landing Page" with a collapsible **Content** group containing: Landing, About, VoltAI, LumiVolt, Finance, Contact, FAQ, Coming Soon, Solar Packages, Smart Locks, Home Automation, Products, Careers.
+- Extend the existing `landing_content` table to hold one row per `page_key` (already supports arbitrary JSON). Each static page gets a content schema: `{ hero: {eyebrow, title, subtitle, image}, sections: [...] }`.
+- Refactor `About.tsx`, `VoltAi.tsx`, `LumiVolt.tsx`, `Finance.tsx`, `Contact.tsx`, `ComingSoon.tsx`, `FAQSection.tsx` to read copy/images from `useLandingContent(<page_key>)` with the current hardcoded text as fallback (no visual regression if DB row missing).
+- Build a generic admin editor `AdminContentEditor.tsx` that takes a page key + schema and renders text inputs, textareas, list editors, and an image picker (uploads to existing `product-images` bucket or new `content-images` bucket).
+- Routes: `/admin/content/landing`, `/admin/content/about`, … one per page.
 
-### 1.5 Route transitions
-New file: `src/components/RouteFade.tsx` (wraps `<Routes>` children).
-- On `location.pathname` change, fade old view out (180ms) and new view in (450ms expo-out + 8px translateY).
-- Implemented with a tiny CSS class toggle keyed off `useLocation().pathname` — no extra deps.
-- Mounted in `src/App.tsx` around `<Routes>`.
+## 6. Admin sidebar mobile/tablet overlap fix
+- `AdminLayout.tsx` sidebar uses `absolute bottom-0` for the sign-out block which overlaps the nav when the menu grows past viewport height. Switch the sidebar to a flex column (`flex flex-col h-full`), make the `nav` `flex-1 overflow-y-auto`, and let the user/sign-out block sit at the bottom naturally.
+- Add `flex-shrink-0` to header/footer blocks. Verify on 390px and 768px viewports.
 
-### 1.6 Reduced-motion respect
-- Single `@media (prefers-reduced-motion: reduce)` block in `index.css` already exists; extend to also disable RouteFade and reset Lenis.
+## 7. Analytics accuracy
+You did not specify which numbers look wrong, so I will do a targeted audit pass:
+- De-duplicate page views per session+path within a 30s window (bot/double-fire protection).
+- Fix device detection to handle iPad iPadOS 13+ (reports as Mac).
+- Filter admin routes (`/admin/*`) out of public traffic counts.
+- Recompute "unique visitors" by `count(distinct session_id)` instead of row count.
+- Show "Last 7d / 30d / 90d" toggle that actually filters the queries.
+If you can tell me which specific chart looked wrong I will go deeper on it.
 
-Out of scope: copy changes, layout changes, new sections.
+## 8. SEO pass
+- Run `seo_chat--list_findings`, then fix everything in one batch:
+  - Per-route `<title>` + `<meta description>` via `react-helmet-async` on the 10 main routes.
+  - Add canonical URLs.
+  - Add `Organization` JSON-LD in `index.html` with address + phone + hours.
+  - Generate `public/sitemap.xml` via `scripts/generate-sitemap.ts` covering all public routes + dynamic packages.
+  - Add `public/robots.txt` with sitemap reference if missing.
+  - Add alt text audit and `loading="lazy"` to non-hero images.
+- Mark findings fixed after each.
 
----
+## Technical notes
+- Storage: reuse `product-images` bucket for content images to avoid a new bucket migration.
+- All new tables: `app_waitlist` only. CMS leverages existing `landing_content` with new keys.
+- Backward compatibility: every page falls back to its current hardcoded copy if no CMS row exists, so nothing breaks while you populate content.
+- Estimated tool calls: ~40–50. I'll ship in the order above, pausing only if a migration needs your approval.
 
-## Part 2 — Admin audit: gaps + tracking readiness
-
-Findings from reviewing `AdminDashboard`, `AdminLeads`, `AdminProducts`, `AdminAnalytics`, `AdminEmail`, `AdminFormQuestions`, `AdminLandingPage`, `AdminSettings`, `AdminLayout`, `usePageTracker`, `tracking.ts`, and `track-pageview` Edge Function.
-
-### 2.1 Tracking gaps (high priority)
-Currently tracked: pageviews (via `track-pageview`), conversions table writes from `tracking.ts`. Missing wiring:
-- **`cta_click`** — only fired by LeadFormHost on form open. Add to: Hero primary CTAs, sticky mobile CTA, MegaMenu "Get Started", FinalCTA buttons, Footer CTA.
-- **`whatsapp_click`** — defined but not invoked anywhere. Add to all WhatsApp buttons (Catalog product cards, Contact page, StickyCTA, Footer).
-- **`product_click`** — not invoked. Add to Catalog product card click + product detail/lightbox open.
-- **`catalog_view`** — fire once per Catalog page mount.
-- **`lead_form_started`** — fire when user advances past step 1 of LeadForm.
-- **`contact_submitted`** — fire on Contact form success.
-- **UTM capture** — read `utm_source/medium/campaign` from URL on first visit, persist in `sessionStorage`, attach to every `conversions.metadata` insert and to lead inserts.
-- **Scroll depth** — single util that fires `scroll_depth` (25/50/75/100) per page in `usePageTracker`.
-- **Outbound link tracking** — global click listener for external links → `outbound_click`.
-
-### 2.2 Admin features missing / incomplete
-- **Dashboard KPIs** (`AdminDashboard`) — verify it shows: today/7d/30d leads, conversion rate (lead/pageview), top source, top product, pending follow-ups. Add any missing tiles.
-- **Leads** (`AdminLeads`):
-  - CSV export button (already common pattern; confirm + add if absent).
-  - Status pipeline view (kanban-lite: new → contacted → qualified → won/lost).
-  - Bulk actions (status update, delete, export selected).
-  - Notes/activity log per lead with timestamp + admin email.
-  - Quick WhatsApp/Call/Email deep-links per row.
-  - Assigned-to field (admin user) for multi-admin teams.
-- **Products** (`AdminProducts`):
-  - Drag-and-drop reordering inside category.
-  - Bulk activate/deactivate.
-  - Stock/availability flag (in stock / on order / out).
-  - "Featured" toggle surfaced on home Offer/Catalog.
-- **Form Builder** (`AdminFormQuestions`):
-  - Preview mode (renders the live LeadForm with current questions).
-  - Question reordering + duplicate.
-  - Conditional logic UI (show Q if previous answer = X) — currently encoded in code; expose in UI.
-- **Landing Page** (`AdminLandingPage`):
-  - Live preview pane.
-  - Image upload directly to Storage (replace URL paste flow).
-  - Section visibility toggles (hide/show TrustSection, StatsSection, etc.).
-- **Email** (`AdminEmail`):
-  - Saved templates + variables (`{{lead_name}}`, `{{product}}`).
-  - Send-history log table.
-  - Test-send to admin before broadcast.
-- **Analytics** (`AdminAnalytics`):
-  - Date-range comparison (vs previous period).
-  - Funnel: pageview → form open → form start → submit.
-  - Source/UTM breakdown chart.
-  - Per-page conversion table.
-  - Export PNG/CSV of each chart.
-- **Settings** (`AdminSettings`):
-  - SEO defaults (default OG image, meta title/desc per route).
-  - Business hours + auto-reply toggle.
-  - Multi-recipient notification list (currently single email).
-- **Auth/Roles**:
-  - Admin user management screen (invite/remove, role: admin/editor/viewer) — currently only `assign-admin-role` Edge Function exists with no UI.
-  - Audit log of admin actions.
-
-### 2.3 Customer-readiness gaps (visible site)
-- 404 page CTA back to home/catalog (verify NotFound has it).
-- Cookie/consent banner for analytics (legal + tracking trust).
-- WhatsApp floating button visible on every page (StickyCTA already exists — confirm coverage).
-- Email confirmation page after lead submit (currently toast only).
-- robots.txt + sitemap.xml — confirm sitemap is generated for all public routes.
-- Per-route SEO `<title>` + meta description + OG image (some pages may inherit defaults).
-
-### 2.4 Reliability + ops
-- Error boundary at `App.tsx` root with friendly fallback + `error_logged` conversion event.
-- Sentry-style client error capture into a `client_errors` table (lightweight).
-- Edge Function logs review surface inside Admin (read-only list of recent failures from `notify-new-lead`, `ai-recommend`).
-
----
-
-## Suggested implementation order (after approval)
-1. Motion pass (Part 1) — single PR, low risk.
-2. Tracking wiring (2.1) — single PR; unlocks meaningful Analytics.
-3. Admin Leads upgrades (2.2 Leads) + CSV export.
-4. Analytics funnel + UTM views.
-5. Landing Page preview + Storage upload.
-6. Admin user management + audit log.
-7. Cookie banner + per-route SEO.
-
-## Technical notes (for implementer)
-- All animation easings centralized as CSS custom props in `index.css` (`--ease-expo`, `--ease-soft`) so future tweaks are one-line.
-- New `conversions.metadata` keys: `utm_source`, `utm_medium`, `utm_campaign`, `referrer_host`, `scroll_depth`.
-- New table (later step, not in motion PR): `admin_activity_log (id, admin_id, action, target_table, target_id, metadata, created_at)` with RLS restricted to admins via `has_role`.
-- `client_errors (id, session_id, message, stack, page_path, user_agent, created_at)` — insert-only via Edge Function or anon insert with rate-limit RLS.
-
-Confirm to proceed with **Part 1 (motion polish) first**, or pick a different starting slice.
+Reply **approve** to start, or tell me to reorder / drop items.
