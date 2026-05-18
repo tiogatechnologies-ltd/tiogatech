@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import SiteHeader from "@/components/SiteHeader";
+import SEO from "@/components/SEO";
 import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
 
