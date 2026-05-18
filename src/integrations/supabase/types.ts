@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          platform: string
+          source: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          platform?: string
+          source?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          platform?: string
+          source?: string
+        }
+        Relationships: []
+      }
       career_applications: {
         Row: {
           career_id: string | null

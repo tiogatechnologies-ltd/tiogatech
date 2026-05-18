@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -14,8 +14,9 @@ const navItems = [
   { label: "Smart Locks", icon: Lock, path: "/admin/smart-locks" },
   { label: "Home Automation", icon: Home, path: "/admin/home-automation" },
   { label: "Leads", icon: Users, path: "/admin/leads" },
+  { label: "App Waitlist", icon: Smartphone, path: "/admin/waitlist" },
   { label: "Form Builder", icon: FileText, path: "/admin/forms" },
-  { label: "Landing Page", icon: Layout, path: "/admin/landing" },
+  { label: "Content", icon: Layout, path: "/admin/landing" },
   { label: "Careers", icon: Briefcase, path: "/admin/careers" },
   { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
   { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
@@ -36,14 +37,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-40 bg-foreground/30 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-secondary text-secondary-foreground transform transition-transform lg:translate-x-0 lg:static lg:z-auto ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-        <div className="flex items-center justify-between px-6 py-5 border-b border-secondary-foreground/10">
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-secondary text-secondary-foreground transform transition-transform lg:translate-x-0 lg:static lg:z-auto flex flex-col ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="flex items-center justify-between px-6 py-5 border-b border-secondary-foreground/10 shrink-0">
           <span className="font-display text-lg font-bold tracking-tight">
             Tioga<span className="text-accent">.</span> Admin
           </span>
@@ -52,9 +51,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </button>
         </div>
 
-        <nav className="p-4 space-y-1">
+        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
           {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
+            const isActive = location.pathname === item.path || (item.path === "/admin/landing" && location.pathname.startsWith("/admin/content"));
             return (
               <button
                 key={item.path}
@@ -72,7 +71,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-secondary-foreground/10">
+        <div className="shrink-0 p-4 border-t border-secondary-foreground/10">
           <div className="text-xs text-secondary-foreground/50 mb-2 truncate px-4">{user?.email}</div>
           <button
             onClick={handleSignOut}
@@ -84,9 +83,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </div>
       </aside>
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top bar */}
         <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-lg border-b border-border px-4 sm:px-6 py-3 flex items-center gap-3">
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors">
             <Menu size={20} />

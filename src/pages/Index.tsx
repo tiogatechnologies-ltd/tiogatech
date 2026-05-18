@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import SiteHeader from "@/components/SiteHeader";
+import SEO from "@/components/SEO";
 import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
 
@@ -17,6 +18,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen scroll-smooth">
+      <SEO
+        title="Tioga Technologies — Solar, Smart Locks & Home Automation in Nigeria"
+        description="Reliable solar power, STAMA smart locks and full home automation across Lagos, Abuja, Port Harcourt, Jos and beyond. Browse packages or get a free quote."
+        path="/"
+      />
       <SiteHeader />
       <Hero onApply={() => open("hero")} />
       <ProblemSection />

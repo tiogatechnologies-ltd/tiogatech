@@ -2,7 +2,7 @@ import { Home, Building2, GraduationCap, Briefcase } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import imgHomes from "@/assets/bg-lagos-apartment.jpg";
-import imgBusiness from "@/assets/bg-office-people.jpg";
+import imgBusiness from "@/assets/bg-business-storefront.jpg";
 import imgSchools from "@/assets/bg-team-meeting.jpg";
 import imgOffices from "@/assets/bg-office-people.jpg";
 
