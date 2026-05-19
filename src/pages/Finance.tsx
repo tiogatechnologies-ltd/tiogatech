@@ -160,6 +160,7 @@ const Finance = () => {
 
     <SiteFooter />
   </div>
-);
+  );
+};
 
 export default Finance;
