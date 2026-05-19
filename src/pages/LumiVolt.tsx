@@ -44,15 +44,17 @@ const youGet = [
 
 const LumiVolt = () => {
   const [appliances, setAppliances] = useState<SelectedAppliance[]>([]);
+  const { content: cms } = useLandingContent("page_lumivolt");
+  const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
       <SEO title="LumiVolt — Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with LumiVolt by Tioga Technologies." path="/lumivolt" />
       <SiteHeader />
 
       <PageHero
-        eyebrow="A Tioga Sub-brand · Residential"
-        title="LumiVolt — clean, reliable solar for your home"
-        subtitle="Off-grid, hybrid and grid-tie solar systems engineered for Nigerian homes. Sized accurately, installed cleanly, monitored 24/7."
+        eyebrow={c.eyebrow || "A Tioga Sub-brand · Residential"}
+        title={c.title || "LumiVolt — clean, reliable solar for your home"}
+        subtitle={c.subtitle || "Off-grid, hybrid and grid-tie solar systems engineered for Nigerian homes. Sized accurately, installed cleanly, monitored 24/7."}
         backgroundImage={bgResidential}
         backgroundAlt="Modern Nigerian home with rooftop solar at golden hour"
       >
