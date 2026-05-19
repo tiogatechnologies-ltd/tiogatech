@@ -8,11 +8,14 @@ import { Mail, MessageCircle, MapPin, Clock, Send, Loader2, CheckCircle2, Phone 
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
 import { toast } from "@/hooks/use-toast";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const { content: cms } = useLandingContent("page_contact");
+  const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,9 +53,9 @@ const Contact = () => {
       />
       <SiteHeader />
       <PageHero
-        eyebrow="Contact"
-        title="Let us start your project"
-        subtitle="Tell us about your space and what you would like to power. Our team will get back to you within one business day."
+        eyebrow={c.eyebrow || "Contact"}
+        title={c.title || "Let us start your project"}
+        subtitle={c.subtitle || "Tell us about your space and what you would like to power. Our team will get back to you within one business day."}
         backgroundImage={heroBg}
         backgroundAlt="Tioga Technologies workspace"
       />

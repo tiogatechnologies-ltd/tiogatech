@@ -24,6 +24,7 @@ import AdminSettings from "./pages/AdminSettings.tsx";
 import AdminSetup from "./pages/AdminSetup.tsx";
 import AdminFormQuestions from "./pages/AdminFormQuestions.tsx";
 import AdminLandingPage from "./pages/AdminLandingPage.tsx";
+import AdminContent from "./pages/AdminContent.tsx";
 import AdminEmail from "./pages/AdminEmail.tsx";
 import AdminAnalytics from "./pages/AdminAnalytics.tsx";
 import AdminCareers from "./pages/AdminCareers.tsx";
@@ -84,6 +85,7 @@ const AnimatedRoutes = () => {
         <Route path="/admin/leads" element={<ProtectedAdmin><AdminLeads /></ProtectedAdmin>} />
         <Route path="/admin/forms" element={<ProtectedAdmin><AdminFormQuestions /></ProtectedAdmin>} />
         <Route path="/admin/landing" element={<ProtectedAdmin><AdminLandingPage /></ProtectedAdmin>} />
+        <Route path="/admin/content" element={<ProtectedAdmin><AdminContent /></ProtectedAdmin>} />
         <Route path="/admin/email" element={<ProtectedAdmin><AdminEmail /></ProtectedAdmin>} />
         <Route path="/admin/analytics" element={<ProtectedAdmin><AdminAnalytics /></ProtectedAdmin>} />
         <Route path="/admin/careers" element={<ProtectedAdmin><AdminCareers /></ProtectedAdmin>} />

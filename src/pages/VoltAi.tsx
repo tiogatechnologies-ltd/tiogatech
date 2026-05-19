@@ -8,6 +8,7 @@ import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 import { Lock, Lightbulb, Camera, Wifi, Cpu, Mic, Smartphone, Zap, Shield, ArrowRight, CheckCircle2, Sparkles, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const pillars = [
   { icon: Lock, title: "Smart Locks & Access", desc: "Keyless entry, fingerprint and remote unlock for doors, gates and offices." },
@@ -33,15 +34,17 @@ const useCases = [
 ];
 
 const VoltAi = () => {
+  const { content: cms } = useLandingContent("page_voltai");
+  const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
       <SEO title="VoltAi — Smart Home Automation by Tioga" description="Smart locks, lights, cameras and sensors orchestrated through one app. AI-powered home automation by Tioga Technologies, built for Nigeria." path="/voltai" />
       <SiteHeader />
 
       <PageHero
-        eyebrow="A Tioga Sub-brand · Smart Automation"
-        title="VoltAi — your home, intelligently automated"
-        subtitle="Locks, lights, cameras and sensors orchestrated through one app. Built to work seamlessly with LumiVolt solar."
+        eyebrow={c.eyebrow || "A Tioga Sub-brand · Smart Automation"}
+        title={c.title || "VoltAi — your home, intelligently automated"}
+        subtitle={c.subtitle || "Locks, lights, cameras and sensors orchestrated through one app. Built to work seamlessly with LumiVolt solar."}
         backgroundImage={bgAutomation}
         backgroundAlt="Hand interacting with futuristic smart home control interface"
       >

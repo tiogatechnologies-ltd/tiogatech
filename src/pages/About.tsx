@@ -9,6 +9,7 @@ import bgTeam from "@/assets/bg-team.jpg";
 import { Target, Eye, Wifi, Cpu, Zap, ArrowRight, Globe2, Sparkles, Shield, Leaf, Users, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const pillars = [
   {
@@ -45,7 +46,10 @@ const partners = [
   { icon: Globe2, label: "NGOs & Operators" },
 ];
 
-const About = () => (
+const About = () => {
+  const { content: cms } = useLandingContent("page_about");
+  const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
+  return (
   <div className="min-h-screen flex flex-col">
    <SEO
      title="About Tioga Technologies"
@@ -54,9 +58,9 @@ const About = () => (
    />
    <SiteHeader />
     <PageHero
-      eyebrow="About Tioga Technologies"
-      title="Powering Africa's clean energy transition"
-      subtitle="Tioga Technologies Ltd is an IoT infrastructure and embedded systems company building the intelligent backbone of Africa's renewable energy future."
+      eyebrow={c.eyebrow || "About Tioga Technologies"}
+      title={c.title || "Powering Africa's clean energy transition"}
+      subtitle={c.subtitle || "Tioga Technologies Ltd is an IoT infrastructure and embedded systems company building the intelligent backbone of Africa's renewable energy future."}
       backgroundImage={heroSmartHome}
       backgroundAlt="Modern smart home with rooftop solar at golden hour"
     />
@@ -220,6 +224,7 @@ const About = () => (
 
     <SiteFooter />
   </div>
-);
+  );
+};
 
 export default About;
