@@ -35,6 +35,7 @@ const useCases = [
 const VoltAi = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO title="VoltAi — Smart Home Automation by Tioga" description="Smart locks, lights, cameras and sensors orchestrated through one app. AI-powered home automation by Tioga Technologies, built for Nigeria." path="/voltai" />
       <SiteHeader />
 
       <PageHero
