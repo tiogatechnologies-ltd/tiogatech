@@ -10,6 +10,7 @@ import bgTeam from "@/assets/bg-team-meeting.jpg";
 import bgTechMesh from "@/assets/bg-fluid-wave.jpg";
 import bgSolarField from "@/assets/bg-commercial-solar.jpg";
 import bgLagosNight from "@/assets/bg-lagos-apartment.jpg";
+import SEO from "@/components/SEO";
 
 const reasons = [
   {
@@ -37,6 +38,7 @@ const Career = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   return (
   <div className="min-h-screen flex flex-col">
+    <SEO title="Careers at Tioga Technologies" description="Join the team building Nigeria's clean energy and smart automation infrastructure. Engineering, installation and operations roles in Jos and Lagos." path="/career" />
     <SiteHeader />
     <PageHero
       eyebrow="Careers"

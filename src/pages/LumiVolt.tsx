@@ -10,6 +10,7 @@ import bgTechMesh from "@/assets/bg-grid-particles.jpg";
 import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import WattsCalculator from "@/components/lead-form/WattsCalculator";
+import SEO from "@/components/SEO";
 import type { SelectedAppliance } from "@/data/applianceWatts";
 
 const pillars = [
@@ -44,6 +45,7 @@ const LumiVolt = () => {
   const [appliances, setAppliances] = useState<SelectedAppliance[]>([]);
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO title="LumiVolt — Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with LumiVolt by Tioga Technologies." path="/lumivolt" />
       <SiteHeader />
 
       <PageHero

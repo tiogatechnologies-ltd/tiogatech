@@ -4,6 +4,7 @@ import PageHero from "@/components/PageHero";
 import heroFinance from "@/assets/feature-tablet-monitor.jpg";
 import { MessageCircle, FileText, CreditCard, Wrench, Home, ShieldCheck, Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 
 const steps = [
   { n: 1, icon: MessageCircle, title: "Free Consultation", desc: "Talk to our experts about your energy needs and get a personalized assessment of your property." },
@@ -29,6 +30,7 @@ const faqs = [
 
 const Finance = () => (
   <div className="min-h-screen flex flex-col">
+    <SEO title="Solar Financing in Nigeria" description="Flexible 3, 6 or 12-month payment plans for solar, smart locks and home automation. Start with just 30% down — zero hidden fees." path="/finance" />
     <SiteHeader />
     <PageHero
       eyebrow="Finance"

@@ -8,6 +8,7 @@ import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 import bgTeam from "@/assets/bg-team.jpg";
 import { Target, Eye, Wifi, Cpu, Zap, ArrowRight, Globe2, Sparkles, Shield, Leaf, Users, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 
 const pillars = [
   {

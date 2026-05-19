@@ -2,6 +2,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import bgOffice from "@/assets/bg-office.jpg";
+import SEO from "@/components/SEO";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-8">
@@ -12,6 +13,7 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 
 const Terms = () => (
   <div className="min-h-screen flex flex-col">
+    <SEO title="Terms of Service" description="The terms governing your use of Tioga Technologies' website, products and installation services." path="/terms" />
     <SiteHeader />
     <PageHero
       eyebrow="Legal"

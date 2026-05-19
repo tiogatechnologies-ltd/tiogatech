@@ -2,6 +2,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import bgTechMesh from "@/assets/bg-circuit.jpg";
+import SEO from "@/components/SEO";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-8">
@@ -12,6 +13,7 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 
 const Privacy = () => (
   <div className="min-h-screen flex flex-col">
+    <SEO title="Privacy Policy" description="How Tioga Technologies collects, uses and protects your information across our solar, smart lock and home automation services." path="/privacy" />
     <SiteHeader />
     <PageHero
       eyebrow="Legal"
