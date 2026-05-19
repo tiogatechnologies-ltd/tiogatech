@@ -14,6 +14,8 @@ const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const { content: cms } = useLandingContent("page_contact");
+  const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
