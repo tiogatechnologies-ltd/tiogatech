@@ -11,6 +11,7 @@ import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet,
 import { Link } from "react-router-dom";
 import WattsCalculator from "@/components/lead-form/WattsCalculator";
 import SEO from "@/components/SEO";
+import { useLandingContent } from "@/hooks/useLandingContent";
 import type { SelectedAppliance } from "@/data/applianceWatts";
 
 const pillars = [
