@@ -8,6 +8,7 @@ import { Mail, MessageCircle, MapPin, Clock, Send, Loader2, CheckCircle2, Phone 
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
 import { toast } from "@/hooks/use-toast";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
