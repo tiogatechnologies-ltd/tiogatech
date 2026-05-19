@@ -5,6 +5,7 @@ import heroFinance from "@/assets/feature-tablet-monitor.jpg";
 import { MessageCircle, FileText, CreditCard, Wrench, Home, ShieldCheck, Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const steps = [
   { n: 1, icon: MessageCircle, title: "Free Consultation", desc: "Talk to our experts about your energy needs and get a personalized assessment of your property." },
