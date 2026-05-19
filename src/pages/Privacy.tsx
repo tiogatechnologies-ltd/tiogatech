@@ -13,6 +13,7 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 
 const Privacy = () => (
   <div className="min-h-screen flex flex-col">
+    <SEO title="Privacy Policy" description="How Tioga Technologies collects, uses and protects your information across our solar, smart lock and home automation services." path="/privacy" />
     <SiteHeader />
     <PageHero
       eyebrow="Legal"
