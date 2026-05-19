@@ -9,6 +9,7 @@ import bgTeam from "@/assets/bg-team.jpg";
 import { Target, Eye, Wifi, Cpu, Zap, ArrowRight, Globe2, Sparkles, Shield, Leaf, Users, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const pillars = [
   {
