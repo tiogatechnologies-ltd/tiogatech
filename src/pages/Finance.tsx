@@ -29,14 +29,17 @@ const faqs = [
   { q: "Do you offer financing for businesses?", a: "Yes. We offer extended commercial plans for SMEs, schools, and offices. Contact us for a custom quote." },
 ];
 
-const Finance = () => (
+const Finance = () => {
+  const { content: cms } = useLandingContent("page_finance");
+  const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
+  return (
   <div className="min-h-screen flex flex-col">
     <SEO title="Solar Financing in Nigeria" description="Flexible 3, 6 or 12-month payment plans for solar, smart locks and home automation. Start with just 30% down — zero hidden fees." path="/finance" />
     <SiteHeader />
     <PageHero
-      eyebrow="Finance"
-      title="Flexible payment plans that work for you"
-      subtitle="Start your energy journey with just 30% down. Spread the rest over 3, 6, or 12 months with zero hidden fees."
+      eyebrow={c.eyebrow || "Finance"}
+      title={c.title || "Flexible payment plans that work for you"}
+      subtitle={c.subtitle || "Start your energy journey with just 30% down. Spread the rest over 3, 6, or 12 months with zero hidden fees."}
       backgroundImage={heroFinance}
       backgroundAlt="Smart home control app on phone"
     />
