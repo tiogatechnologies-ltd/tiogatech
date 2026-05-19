@@ -30,6 +30,7 @@ const faqs = [
 
 const Finance = () => (
   <div className="min-h-screen flex flex-col">
+    <SEO title="Solar Financing in Nigeria" description="Flexible 3, 6 or 12-month payment plans for solar, smart locks and home automation. Start with just 30% down — zero hidden fees." path="/finance" />
     <SiteHeader />
     <PageHero
       eyebrow="Finance"
