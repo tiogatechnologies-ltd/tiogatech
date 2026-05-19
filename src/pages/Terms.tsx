@@ -13,6 +13,7 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 
 const Terms = () => (
   <div className="min-h-screen flex flex-col">
+    <SEO title="Terms of Service" description="The terms governing your use of Tioga Technologies' website, products and installation services." path="/terms" />
     <SiteHeader />
     <PageHero
       eyebrow="Legal"
