@@ -8,6 +8,7 @@ import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 import { Lock, Lightbulb, Camera, Wifi, Cpu, Mic, Smartphone, Zap, Shield, ArrowRight, CheckCircle2, Sparkles, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const pillars = [
   { icon: Lock, title: "Smart Locks & Access", desc: "Keyless entry, fingerprint and remote unlock for doors, gates and offices." },
