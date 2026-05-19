@@ -37,14 +37,16 @@ const reasons = [
 const Career = () => {
   const { jobs: openRoles } = useCareers();
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const { content: cms } = useLandingContent("page_career");
+  const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
   <div className="min-h-screen flex flex-col">
     <SEO title="Careers at Tioga Technologies" description="Join the team building Nigeria's clean energy and smart automation infrastructure. Engineering, installation and operations roles in Jos and Lagos." path="/career" />
     <SiteHeader />
     <PageHero
-      eyebrow="Careers"
-      title="Build with the team powering Nigeria."
-      subtitle="We are a small, deeply technical team in Lagos. We hire engineers, installers and operators who care about craft and about the people we serve."
+      eyebrow={c.eyebrow || "Careers"}
+      title={c.title || "Build with the team powering Nigeria."}
+      subtitle={c.subtitle || "We are a small, deeply technical team in Lagos. We hire engineers, installers and operators who care about craft and about the people we serve."}
       backgroundImage={bgTeam}
       backgroundAlt="Tioga Technologies team and installations"
     >
