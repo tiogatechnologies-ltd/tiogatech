@@ -24,6 +24,7 @@ import AdminSettings from "./pages/AdminSettings.tsx";
 import AdminSetup from "./pages/AdminSetup.tsx";
 import AdminFormQuestions from "./pages/AdminFormQuestions.tsx";
 import AdminLandingPage from "./pages/AdminLandingPage.tsx";
+import AdminContent from "./pages/AdminContent.tsx";
 import AdminEmail from "./pages/AdminEmail.tsx";
 import AdminAnalytics from "./pages/AdminAnalytics.tsx";
 import AdminCareers from "./pages/AdminCareers.tsx";
