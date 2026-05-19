@@ -224,6 +224,7 @@ const About = () => {
 
     <SiteFooter />
   </div>
-);
+  );
+};
 
 export default About;
