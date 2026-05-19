@@ -10,6 +10,7 @@ import bgTechMesh from "@/assets/bg-grid-particles.jpg";
 import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import WattsCalculator from "@/components/lead-form/WattsCalculator";
+import SEO from "@/components/SEO";
 import type { SelectedAppliance } from "@/data/applianceWatts";
 
 const pillars = [
