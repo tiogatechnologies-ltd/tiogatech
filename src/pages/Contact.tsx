@@ -53,9 +53,9 @@ const Contact = () => {
       />
       <SiteHeader />
       <PageHero
-        eyebrow="Contact"
-        title="Let us start your project"
-        subtitle="Tell us about your space and what you would like to power. Our team will get back to you within one business day."
+        eyebrow={c.eyebrow || "Contact"}
+        title={c.title || "Let us start your project"}
+        subtitle={c.subtitle || "Tell us about your space and what you would like to power. Our team will get back to you within one business day."}
         backgroundImage={heroBg}
         backgroundAlt="Tioga Technologies workspace"
       />
