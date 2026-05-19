@@ -38,6 +38,7 @@ const Career = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   return (
   <div className="min-h-screen flex flex-col">
+    <SEO title="Careers at Tioga Technologies" description="Join the team building Nigeria's clean energy and smart automation infrastructure. Engineering, installation and operations roles in Jos and Lagos." path="/career" />
     <SiteHeader />
     <PageHero
       eyebrow="Careers"
