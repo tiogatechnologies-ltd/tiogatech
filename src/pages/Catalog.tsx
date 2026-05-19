@@ -6,6 +6,7 @@ import ImageLightbox from "@/components/ImageLightbox";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import bgLagosNight from "@/assets/bg-lagos-skyline.jpg";
+import SEO from "@/components/SEO";
 
 const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("_tid_session") || "unknown";
