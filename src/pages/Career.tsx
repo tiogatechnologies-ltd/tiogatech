@@ -10,6 +10,7 @@ import bgTeam from "@/assets/bg-team-meeting.jpg";
 import bgTechMesh from "@/assets/bg-fluid-wave.jpg";
 import bgSolarField from "@/assets/bg-commercial-solar.jpg";
 import bgLagosNight from "@/assets/bg-lagos-apartment.jpg";
+import SEO from "@/components/SEO";
 
 const reasons = [
   {
