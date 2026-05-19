@@ -521,6 +521,7 @@ const Catalog = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
+      <SEO title="Personalized Product Catalog" description="Browse Tioga's curated catalog of solar inverters, batteries, smart locks and home automation products tailored to your needs." path="/catalog" />
       <SiteHeader />
       <div className="bg-secondary text-secondary-foreground">
         <div className="section-container py-6 sm:py-8 space-y-3">
