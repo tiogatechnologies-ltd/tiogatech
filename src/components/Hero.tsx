@@ -53,6 +53,10 @@ const Hero = ({ onApply }: HeroProps) => {
         <img
           src={heroSmartHome}
           alt="Modern smart home with rooftop solar at golden hour"
+          width={1920}
+          height={1080}
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/70 to-primary/60" />
@@ -111,7 +115,7 @@ const Hero = ({ onApply }: HeroProps) => {
             </h1>
 
             <p
-              className={`text-base sm:text-lg lg:text-xl text-primary-foreground/75 max-w-xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              className={`text-base sm:text-lg lg:text-xl text-primary-foreground/90 max-w-xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.4s" }}
             >
               Solar, automation, and security in one seamless system.
@@ -152,7 +156,7 @@ const Hero = ({ onApply }: HeroProps) => {
               ].map((s) => (
                 <div key={s.l} className="flex items-baseline gap-2">
                   <span className="text-xl font-display font-bold text-primary-foreground">{s.v}</span>
-                  <span className="text-[11px] uppercase tracking-wider text-primary-foreground/60">{s.l}</span>
+                  <span className="text-[11px] uppercase tracking-wider text-primary-foreground/80">{s.l}</span>
                 </div>
               ))}
             </div>

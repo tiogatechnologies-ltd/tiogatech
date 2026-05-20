@@ -37,9 +37,17 @@ const Packages = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEO
-        title="Packages — Solar, Smart Locks & Home Automation"
-        description="Browse Tioga Technologies' curated solar packages (1KVA to 30KVA), STAMA smart locks, and Apex/Aura/Riviera home automation bundles. Installable next week."
+        title="Packages — Solar, Locks & Automation"
+        description="Curated solar packages (1KVA to 30KVA), STAMA smart locks, and Apex/Aura/Riviera home automation bundles. Installable next week."
         path="/packages"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Tioga Packages",
+          description: "Curated solar, smart lock and home automation bundles for Nigerian homes and businesses.",
+          url: "https://tiogatechnologies.com/packages",
+          about: ["Solar inverter systems", "STAMA smart locks", "Home automation bundles"],
+        }}
       />
       <SiteHeader />
       <PageHero

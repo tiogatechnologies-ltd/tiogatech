@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Package, Users, TrendingUp, Clock } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
+import AdminSEO from "@/components/AdminSEO";
 
 interface Stats {
   totalLeads: number;
@@ -74,6 +75,7 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout>
+      <AdminSEO title="Admin Dashboard" />
       {loading ? (
         <div className="flex items-center justify-center py-20">
           <div className="animate-pulse text-muted-foreground">Loading dashboard...</div>
