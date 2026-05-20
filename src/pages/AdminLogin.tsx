@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { ShieldCheck, LogIn } from "lucide-react";
+import AdminSEO from "@/components/AdminSEO";
 
 const AdminLogin = () => {
   const { signIn, loading, isAdmin, user } = useAuth();

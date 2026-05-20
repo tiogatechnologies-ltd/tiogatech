@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ShieldCheck, UserPlus } from "lucide-react";
 import { toast } from "sonner";
+import AdminSEO from "@/components/AdminSEO";
 
 const AdminSetup = () => {
   const navigate = useNavigate();
