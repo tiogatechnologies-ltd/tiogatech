@@ -75,6 +75,7 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout>
+      <AdminSEO title="Admin Dashboard" />
       {loading ? (
         <div className="flex items-center justify-center py-20">
           <div className="animate-pulse text-muted-foreground">Loading dashboard...</div>
