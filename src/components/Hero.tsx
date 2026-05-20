@@ -53,6 +53,10 @@ const Hero = ({ onApply }: HeroProps) => {
         <img
           src={heroSmartHome}
           alt="Modern smart home with rooftop solar at golden hour"
+          width={1920}
+          height={1080}
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/70 to-primary/60" />

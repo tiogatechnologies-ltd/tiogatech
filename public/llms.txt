@@ -1,0 +1,23 @@
+# Tioga Technologies
+
+> Solar power, STAMA smart locks and home automation across Nigeria. Lead-gen and product catalog site for residential and commercial customers in Lagos, Abuja, Port Harcourt, Jos and beyond.
+
+Tioga Technologies Ltd is an IoT infrastructure and embedded systems company building intelligent renewable energy and smart-home solutions for Africa. We sell pre-engineered solar packages (1KVA to 30KVA), biometric smart locks, and three tiers of home automation (Apex, Aura, Riviera).
+
+## Pages
+
+- [Home](/): Overview of solar, smart lock and home automation offerings, with a personalized quote flow.
+- [About](/about): Company mission, vision, three pillars of innovation, team and values.
+- [Packages](/packages): Curated bundles for solar inverter systems, STAMA smart locks and home automation.
+- [Catalog](/catalog): Full product catalog with 129+ items, filtering by category and budget.
+- [LumiVolt](/lumivolt): Solar energy product line and waitlist for the LumiVolt mobile app.
+- [VoltAi](/voltai): AI-driven home automation product line and waitlist for the VoltAi app.
+- [Finance](/finance): Payment plans, installments and financing options for Nigerian customers.
+- [Contact](/contact): Phone, email, opening hours and physical office address in Jos, Plateau State.
+- [Careers](/career): Open roles and how to apply.
+
+## Optional
+
+- [Coming Soon](/coming-soon): App waitlist signup for LumiVolt and VoltAi.
+- [Privacy](/privacy): Privacy policy.
+- [Terms](/terms): Terms of service.
