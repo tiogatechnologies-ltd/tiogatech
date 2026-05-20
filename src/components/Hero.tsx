@@ -115,7 +115,7 @@ const Hero = ({ onApply }: HeroProps) => {
             </h1>
 
             <p
-              className={`text-base sm:text-lg lg:text-xl text-primary-foreground/75 max-w-xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              className={`text-base sm:text-lg lg:text-xl text-primary-foreground/90 max-w-xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.4s" }}
             >
               Solar, automation, and security in one seamless system.
@@ -156,7 +156,7 @@ const Hero = ({ onApply }: HeroProps) => {
               ].map((s) => (
                 <div key={s.l} className="flex items-baseline gap-2">
                   <span className="text-xl font-display font-bold text-primary-foreground">{s.v}</span>
-                  <span className="text-[11px] uppercase tracking-wider text-primary-foreground/60">{s.l}</span>
+                  <span className="text-[11px] uppercase tracking-wider text-primary-foreground/80">{s.l}</span>
                 </div>
               ))}
             </div>

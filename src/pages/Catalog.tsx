@@ -521,7 +521,18 @@ const Catalog = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <SEO title="Personalized Product Catalog" description="Browse Tioga's curated catalog of solar inverters, batteries, smart locks and home automation products tailored to your needs." path="/catalog" />
+      <SEO
+        title="Product Catalog — Solar, Locks & Automation"
+        description="Browse 129+ solar inverters, batteries, STAMA smart locks and home automation products with filtering by category and budget."
+        path="/catalog"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Tioga Product Catalog",
+          description: "Full Tioga product catalog: solar inverters, batteries, smart locks, home automation.",
+          url: "https://tiogatechnologies.com/catalog",
+        }}
+      />
       <SiteHeader />
       <div className="bg-secondary text-secondary-foreground">
         <div className="section-container py-6 sm:py-8 space-y-3">
