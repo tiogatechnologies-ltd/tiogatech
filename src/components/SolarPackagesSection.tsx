@@ -1,13 +1,17 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Battery, Sun, Zap, Cpu, Check, ArrowRight, Sparkles } from "lucide-react";
+import { Battery, Sun, Zap, Cpu, Check, ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
 import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
+import { useCart } from "@/contexts/CartContext";
+import { trackConversion } from "@/lib/tracking";
 
 const fmt = (n: number | null) =>
   n == null ? "—" : `₦${Math.round(n).toLocaleString("en-NG")}`;
 
-const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => (
+const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
+  const { add } = useCart();
+  return (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -80,18 +84,38 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => (
         <div className="flex justify-between"><span>Setup</span><span className="text-foreground">{fmt(p.setup_fee)}</span></div>
       </div>
 
-      <button
-        onClick={() => openLeadForm(`solar_package_${p.package_number}`)}
-        className="mt-auto w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
-      >
-        Customize this package <ArrowRight size={14} />
-      </button>
+      <div className="mt-auto grid grid-cols-2 gap-2">
+        <button
+          onClick={() => {
+            add({
+              refId: p.id,
+              type: "package",
+              name: `Solar Package #${p.package_number} — ${p.inverter}`,
+              price: fmt(p.total_price),
+              numericPrice: p.total_price,
+              image: p.image,
+              category: "solar",
+            });
+            trackConversion("cart_add", { source: "solar_package", id: p.package_number });
+          }}
+          className="inline-flex items-center justify-center gap-1.5 rounded-full border border-primary bg-primary/10 text-primary px-4 py-3 text-xs font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
+        >
+          <ShoppingBag size={13} /> Add to Cart
+        </button>
+        <button
+          onClick={() => openLeadForm(`solar_package_${p.package_number}`)}
+          className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
+        >
+          Customize <ArrowRight size={13} />
+        </button>
+      </div>
       <p className="text-[10px] text-muted-foreground text-center mt-2">
         <Check size={10} className="inline" /> Valid 2 weeks · Installation included
       </p>
     </div>
   </motion.div>
-);
+  );
+};
 
 const SolarPackagesSection = () => {
   const { packages, loading } = useSolarPackages();
