@@ -17,7 +17,10 @@ export type ConversionEvent =
   | "whatsapp_click"
   | "catalog_view"
   | "product_click"
-  | "contact_submitted";
+  | "contact_submitted"
+  | "cart_add"
+  | "cart_checkout_whatsapp"
+  | "cart_checkout_lead";
 
 /** Fire-and-forget conversion tracking. Never blocks UI. */
 export function trackConversion(
