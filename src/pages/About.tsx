@@ -10,6 +10,7 @@ import { Target, Eye, Wifi, Cpu, Zap, ArrowRight, Globe2, Sparkles, Shield, Leaf
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import founderImage from "@/assets/founder-oluwatosin-gbolade.jpg";
 
 const pillars = [
   {
@@ -48,7 +49,18 @@ const partners = [
 
 const About = () => {
   const { content: cms } = useLandingContent("page_about");
+  const { content: founderCms } = useLandingContent("about_founder");
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
+  const f = (founderCms || {}) as { eyebrow?: string; name?: string; role?: string; image?: string; body?: string };
+  const founder = {
+    eyebrow: f.eyebrow || "About Our Founder",
+    name: f.name || "Oluwatosin (Paul) Gbolade",
+    role: f.role || "Founder & CEO, Tioga Technologies",
+    image: f.image || founderImage,
+    body:
+      f.body ||
+      "Oluwatosin (Paul) Gbolade is the Founder and CEO of Tioga Technologies, a company focused on advancing smart living and energy independence across Africa through clean energy, smart automation, security infrastructure, IoT, and AI-powered solutions.\n\nHe specializes in building scalable technology ecosystems, strategic partnerships, and innovative infrastructure that simplify living, empower businesses, and drive sustainable development. His expertise spans renewable energy, smart technology, AI automation, cloud infrastructure, business strategy, and smart security systems.\n\nPassionate about Africa's technological growth, Oluwatosin is committed to creating smarter, safer, and more connected communities through innovation and collaboration.",
+  };
   return (
   <div className="min-h-screen flex flex-col">
    <SEO
@@ -165,6 +177,41 @@ const About = () => {
               <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+
+    {/* About Our Founder */}
+    <section className="section-padding bg-muted">
+      <div className="section-container">
+        <div className="grid gap-8 lg:grid-cols-5 items-center">
+          <div className="lg:col-span-2 relative">
+            <div className="relative rounded-3xl overflow-hidden border border-border shadow-[var(--shadow-elevated)] aspect-[4/5] max-w-md mx-auto">
+              <img
+                src={founder.image}
+                alt={`${founder.name}, ${founder.role}`}
+                loading="lazy"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-midnight/95 via-midnight/40 to-transparent p-5">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-gold font-bold mb-1">Founder</p>
+                <p className="text-primary-foreground font-display font-bold text-lg leading-tight">{founder.name}</p>
+                <p className="text-primary-foreground/75 text-xs mt-0.5">{founder.role}</p>
+              </div>
+            </div>
+          </div>
+          <div className="lg:col-span-3">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">{founder.eyebrow}</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight mb-2 no-clip">
+              {founder.name}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-5 font-medium">{founder.role}</p>
+            <div className="space-y-4 text-muted-foreground leading-relaxed text-base">
+              {founder.body.split(/\n\n+/).map((para, idx) => (
+                <p key={idx}>{para}</p>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

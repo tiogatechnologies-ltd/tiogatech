@@ -5,6 +5,7 @@ import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { cn } from "@/lib/utils";
 import MegaMenu from "@/components/MegaMenu";
+import CartButton from "@/components/CartButton";
 
 // Standalone sub-brand links shown next to Products.
 const brandLinks = [
@@ -200,6 +201,7 @@ const SiteHeader = () => {
         </nav>
 
         <div className="flex items-center gap-2">
+          <CartButton onDark={onDark} />
           {/* AI Recommendation badge — always high-contrast */}
           <button
             type="button"

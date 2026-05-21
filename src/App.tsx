@@ -13,6 +13,8 @@ import ScrollToTopButton from "@/components/ScrollToTopButton";
 import SmoothScroll from "@/components/SmoothScroll";
 import RouteFade from "@/components/RouteFade";
 import LeadFormHost from "@/components/LeadFormHost";
+import { CartProvider } from "@/contexts/CartContext";
+import CartDrawer from "@/components/CartDrawer";
 import Index from "./pages/Index.tsx";
 import Catalog from "./pages/Catalog.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -108,14 +110,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <PageTracker />
-          <ScrollToTop />
-          <SmoothScroll />
-          <BackgroundAura />
-          <AutoReveal />
-          <LeadFormHost />
-          <ScrollToTopButton />
-          <AnimatedRoutes />
+          <CartProvider>
+            <PageTracker />
+            <ScrollToTop />
+            <SmoothScroll />
+            <BackgroundAura />
+            <AutoReveal />
+            <LeadFormHost />
+            <CartDrawer />
+            <ScrollToTopButton />
+            <AnimatedRoutes />
+          </CartProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

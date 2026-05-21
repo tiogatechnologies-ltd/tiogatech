@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
 import { toast } from "@/hooks/use-toast";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import SocialLinks from "@/components/SocialLinks";
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
@@ -139,6 +140,11 @@ const Contact = () => {
               <p className="font-display font-bold text-lg mb-1">Chat with us instantly</p>
               <p className="text-sm text-primary-foreground/80">Get answers on WhatsApp in minutes.</p>
             </a>
+
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">Follow Us</p>
+              <SocialLinks variant="dark" size="md" />
+            </div>
           </div>
 
           {/* Form */}

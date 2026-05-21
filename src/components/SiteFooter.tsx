@@ -3,6 +3,7 @@ import { ArrowUpRight, Mail, MessageCircle, MapPin, Phone, Clock } from "lucide-
 import { useState } from "react";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { toast } from "@/components/ui/sonner";
+import SocialLinks from "@/components/SocialLinks";
 
 const company = [
   { label: "About", to: "/about" },
@@ -88,6 +89,10 @@ const SiteFooter = () => {
                 <span className="text-primary-foreground/85">Mon to Fri · 10am to 6pm</span>
               </li>
             </ul>
+            <div className="mt-5">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-primary-foreground/45 mb-2">Follow Us</p>
+              <SocialLinks variant="light" size="sm" />
+            </div>
           </div>
 
           <div>

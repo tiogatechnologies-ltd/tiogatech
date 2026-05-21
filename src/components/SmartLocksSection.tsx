@@ -1,14 +1,18 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, ArrowRight, Lock, Sparkles, KeyRound, Building2 } from "lucide-react";
+import { Check, ArrowRight, Lock, Sparkles, KeyRound, Building2, ShoppingBag } from "lucide-react";
 import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
+import { useCart } from "@/contexts/CartContext";
+import { trackConversion } from "@/lib/tracking";
 
 const fmt = (item: SmartLock) =>
   item.price_label?.trim() ||
   (item.price ? `₦${Math.round(item.price).toLocaleString("en-NG")}` : "Quote");
 
-const LockCard = ({ p, i }: { p: SmartLock; i: number }) => (
+const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
+  const { add } = useCart();
+  return (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -85,18 +89,38 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => (
         </div>
       )}
 
-      <button
-        onClick={() => openLeadForm(`smart_lock_${p.model || p.name}`)}
-        className="mt-auto w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
-      >
-        Order or get a quote <ArrowRight size={14} />
-      </button>
+      <div className="mt-auto grid grid-cols-2 gap-2">
+        <button
+          onClick={() => {
+            add({
+              refId: p.id,
+              type: "product",
+              name: p.name,
+              price: fmt(p),
+              numericPrice: p.price ?? null,
+              image: p.image,
+              category: "smart_locks",
+            });
+            trackConversion("cart_add", { source: "smart_lock", id: p.id });
+          }}
+          className="inline-flex items-center justify-center gap-1.5 rounded-full border border-primary bg-primary/10 text-primary px-4 py-3 text-xs font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
+        >
+          <ShoppingBag size={13} /> Add to Cart
+        </button>
+        <button
+          onClick={() => openLeadForm(`smart_lock_${p.model || p.name}`)}
+          className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
+        >
+          Quote <ArrowRight size={13} />
+        </button>
+      </div>
       <p className="text-[10px] text-muted-foreground text-center mt-2">
         <Check size={10} className="inline" /> 1-year warranty · Pro installation included
       </p>
     </div>
   </motion.div>
-);
+  );
+};
 
 const TABS = [
   { key: "lock", label: "Smart Locks", icon: Lock },
