@@ -10,6 +10,7 @@ import { trackConversion } from "@/lib/tracking";
 import { toast } from "@/hooks/use-toast";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import SocialLinks from "@/components/SocialLinks";
+import { TELEGRAM_COMMUNITY_URL } from "@/components/TelegramWidget";
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
@@ -139,6 +140,18 @@ const Contact = () => {
               <MessageCircle size={22} className="mb-3" />
               <p className="font-display font-bold text-lg mb-1">Chat with us instantly</p>
               <p className="text-sm text-primary-foreground/80">Get answers on WhatsApp in minutes.</p>
+            </a>
+
+            <a
+              href={TELEGRAM_COMMUNITY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-2xl p-6 text-white shadow-md transition-all hover:brightness-110"
+              style={{ background: "linear-gradient(135deg, #229ED9, #1d8dc2)" }}
+            >
+              <Send size={22} className="mb-3" />
+              <p className="font-display font-bold text-lg mb-1">Join our Telegram community</p>
+              <p className="text-sm text-white/85">Talk to our team and other Tioga customers in real time.</p>
             </a>
 
             <div className="rounded-2xl border border-border bg-card p-5">
