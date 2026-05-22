@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Package, Store, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight } from "lucide-react";
+import { Package, Store, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight, Home, Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const productHubs = [
@@ -16,6 +16,20 @@ const productHubs = [
     desc: "Individual devices, panels, locks, cameras and more. Order on WhatsApp.",
     to: "/catalog",
     icon: Store,
+  },
+  {
+    name: "LumiVolt",
+    tag: "Residential solar",
+    desc: "Rooftop solar, lithium backup and hybrid inverters for Nigerian homes.",
+    to: "/lumivolt",
+    icon: Home,
+  },
+  {
+    name: "VoltAi",
+    tag: "Smart automation",
+    desc: "Smart locks, lighting and CCTV unified in one intelligent home system.",
+    to: "/voltai",
+    icon: Cpu,
   },
 ];
 
@@ -41,7 +55,7 @@ export const MegaMenu = ({ onDark, open, onClose }: MegaMenuProps) => {
       aria-hidden={!open}
       onClick={onClose}
       className={cn(
-        "absolute left-1/2 top-full z-50 mt-3 w-[min(720px,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border p-5 shadow-2xl backdrop-blur-xl transition-all duration-200 ease-out",
+        "absolute left-1/2 top-full z-50 mt-3 w-[min(780px,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border p-5 shadow-2xl backdrop-blur-xl transition-all duration-200 ease-out",
         open
           ? "opacity-100 visible translate-y-0 pointer-events-auto"
           : "opacity-0 invisible translate-y-2 pointer-events-none",

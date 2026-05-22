@@ -46,6 +46,7 @@ import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
 import Packages from "./pages/Packages.tsx";
 import Career from "./pages/Career.tsx";
+import Jobs from "./pages/Jobs.tsx";
 import ComingSoon from "./pages/ComingSoon.tsx";
 
 const queryClient = new QueryClient();
@@ -77,6 +78,7 @@ const AnimatedRoutes = () => {
         <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
         <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
         <Route path="/career" element={<RouteFade><Career /></RouteFade>} />
+        <Route path="/careers/jobs" element={<RouteFade><Jobs /></RouteFade>} />
         <Route path="/coming-soon" element={<RouteFade><ComingSoon /></RouteFade>} />
         <Route path="/privacy" element={<RouteFade><Privacy /></RouteFade>} />
         <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
