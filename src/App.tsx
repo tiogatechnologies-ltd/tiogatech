@@ -15,6 +15,7 @@ import RouteFade from "@/components/RouteFade";
 import LeadFormHost from "@/components/LeadFormHost";
 import { CartProvider } from "@/contexts/CartContext";
 import CartDrawer from "@/components/CartDrawer";
+import TelegramWidget from "@/components/TelegramWidget";
 import Index from "./pages/Index.tsx";
 import Catalog from "./pages/Catalog.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -118,6 +119,7 @@ const App = () => (
             <AutoReveal />
             <LeadFormHost />
             <CartDrawer />
+            <TelegramWidget />
             <ScrollToTopButton />
             <AnimatedRoutes />
           </CartProvider>
