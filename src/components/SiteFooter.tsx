@@ -4,6 +4,7 @@ import { useState } from "react";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { toast } from "@/components/ui/sonner";
 import SocialLinks from "@/components/SocialLinks";
+import { TELEGRAM_COMMUNITY_URL } from "@/components/TelegramWidget";
 
 const company = [
   { label: "About", to: "/about" },

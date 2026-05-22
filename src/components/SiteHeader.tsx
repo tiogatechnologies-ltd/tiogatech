@@ -7,11 +7,8 @@ import { cn } from "@/lib/utils";
 import MegaMenu from "@/components/MegaMenu";
 import CartButton from "@/components/CartButton";
 
-// Standalone sub-brand links shown next to Products.
-const brandLinks = [
-  { label: "LumiVolt", to: "/lumivolt" },
-  { label: "VoltAi", to: "/voltai" },
-];
+// Sub-brands now live inside the Products mega-menu (see MegaMenu.tsx).
+const brandLinks: { label: string; to: string }[] = [];
 
 // Secondary links shown after the merged Products mega-menu.
 const secondaryLinks = [
@@ -23,6 +20,8 @@ const secondaryLinks = [
 const productSubLinks = [
   { label: "Packages", to: "/packages" },
   { label: "Store", to: "/catalog" },
+  { label: "LumiVolt", to: "/lumivolt" },
+  { label: "VoltAi", to: "/voltai" },
 ];
 
 // Open the lead form anywhere on the site by dispatching this event.

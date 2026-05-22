@@ -7,7 +7,7 @@ import bgSolarField from "@/assets/bg-solar-field.jpg";
 import featureSolar from "@/assets/feature-solar-panel.jpg";
 import featureApp from "@/assets/feature-energy-app.jpg";
 import bgTechMesh from "@/assets/bg-grid-particles.jpg";
-import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download } from "lucide-react";
+import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download, Coins, TrendingUp, Building2, Users2, Briefcase, Wrench, Shield, Smartphone, Cpu, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import WattsCalculator from "@/components/lead-form/WattsCalculator";
 import SEO from "@/components/SEO";
@@ -65,6 +65,166 @@ const LumiVolt = () => {
           <Download size={16} /> Download App
         </Link>
       </PageHero>
+
+      {/* Project Overview */}
+      <section className="section-padding">
+        <div className="section-container max-w-4xl">
+          <div className="text-center mb-6">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Project Overview</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+              A tokenized renewable energy platform
+            </h2>
+          </div>
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-center">
+            LumiVolt combines virtual solar ownership, climate fintech, and digital wealth management. It operates as a unified SaaS platform merging Digital Solar, PAYG (Pay-As-You-Go) Energy Automation, RTO/LTO Mini-grid Systems, and Renewable Energy E-commerce (VoltStack).
+          </p>
+        </div>
+      </section>
+
+      {/* Core Goal & Impact */}
+      <section className="section-padding bg-muted">
+        <div className="section-container">
+          <div className="text-center mb-12">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Core Goal & Impact</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+              An integrated clean-energy ecosystem
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              Built to empower urban residents and SMEs in Nigeria with affordable, reliable energy and tangible investment returns.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-3 max-w-5xl mx-auto">
+            {[
+              { icon: Wallet, stat: "30%", label: "Energy cost reduction", desc: "Cut bills with prepaid solar credits for renters and SMEs." },
+              { icon: TrendingUp, stat: "12 to 18%", label: "Annual ROI", desc: "Invest in clean energy assets that yield steady returns." },
+              { icon: Coins, stat: "$14B", label: "Market opportunity", desc: "Annual diesel-to-solar estate PPA management market." },
+            ].map((s) => (
+              <div key={s.label} className="rounded-2xl border border-border bg-card p-6 ios-card text-center">
+                <div className="w-12 h-12 mx-auto rounded-xl bg-gold/15 flex items-center justify-center mb-3">
+                  <s.icon className="text-gold" size={22} />
+                </div>
+                <p className="text-3xl sm:text-4xl font-display font-bold text-primary mb-1">{s.stat}</p>
+                <p className="text-sm font-semibold text-foreground mb-1.5">{s.label}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* The Problem */}
+      <section className="section-padding">
+        <div className="section-container">
+          <div className="text-center mb-12">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">The Problem</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+              Current energy alternatives are broken
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              Expensive, unreliable and operationally burdensome for every stakeholder in the chain.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { icon: Building2, title: "Urban Renters & SMEs", desc: "High recurring diesel costs and no rooftop ownership block access to solar. SMEs face unstable grids and limited financing." },
+              { icon: Home, title: "Estates & Communities", desc: "Capex-heavy infrastructure upgrades alongside fragmented billing and disjointed support processes." },
+              { icon: Shield, title: "System Operators", desc: "Need auditable settlements, fraud resistance, and clear reconciliation across energy usage and payments." },
+              { icon: Wrench, title: "Solar Installers", desc: "Lack adequate inventory financing and verified distribution channels to scale operations sustainably." },
+            ].map((p) => (
+              <div key={p.title} className="rounded-2xl border border-border bg-card p-6 ios-card">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                  <p.icon className="text-primary" size={20} />
+                </div>
+                <h3 className="font-display font-semibold text-foreground mb-1.5">{p.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Target Audience */}
+      <section className="section-padding bg-muted">
+        <div className="section-container">
+          <div className="text-center mb-12">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Target Audience</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+              Who LumiVolt is built for
+            </h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
+            {[
+              { icon: Users2, label: "Urban salaried renters and SME operators" },
+              { icon: Home, label: "Home and nester owners" },
+              { icon: Sun, label: "Verified OEM solar vendors" },
+              { icon: Briefcase, label: "Energy industry players, NGOs and financial institutions" },
+            ].map((a) => (
+              <div key={a.label} className="rounded-2xl border border-border bg-card p-5 flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gold/15 flex items-center justify-center shrink-0">
+                  <a.icon className="text-gold" size={18} />
+                </div>
+                <p className="text-sm font-medium text-foreground leading-snug">{a.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Capabilities */}
+      <section className="section-padding">
+        <div className="section-container">
+          <div className="text-center mb-12">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Platform Capabilities</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+              Portable credits, PAYG automation, seamless across web and mobile
+            </h2>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2 max-w-5xl mx-auto">
+            <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Smartphone className="text-primary" size={22} />
+                </div>
+                <h3 className="font-display font-bold text-lg text-foreground">Core Capabilities</h3>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  "Portable energy credits across properties",
+                  "PAYG automation with smart device integrations",
+                  "Unified web and mobile experience",
+                  "Climate fintech and digital wealth management",
+                ].map((cap) => (
+                  <li key={cap} className="flex items-start gap-2.5 text-sm text-foreground">
+                    <CheckCircle2 className="text-primary mt-0.5 shrink-0" size={16} />
+                    <span>{cap}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 rounded-xl bg-gold/15 flex items-center justify-center">
+                  <Cpu className="text-gold" size={22} />
+                </div>
+                <h3 className="font-display font-bold text-lg text-foreground">MVP Validates</h3>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  "Solar product marketplace transactions with embedded financing (BNPL / BOOT / PAY-G)",
+                  "SaaS energy asset management dashboard with seamless payments and IoT device integrations",
+                  "Digital solar capacity reservation, energy credit issuance and bill offset simulation",
+                  "Basic AI-powered underwriting for credit decisions",
+                ].map((mvp) => (
+                  <li key={mvp} className="flex items-start gap-2.5 text-sm text-foreground">
+                    <Zap className="text-gold mt-0.5 shrink-0" size={16} />
+                    <span>{mvp}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Pillars */}
       <section className="section-padding">

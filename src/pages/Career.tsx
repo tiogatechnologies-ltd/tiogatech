@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -207,15 +208,27 @@ const Career = () => {
         <div className="text-center mb-10">
           <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Open Roles</p>
           <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
-            We hire continuously
+            Featured openings
           </h2>
+          <p className="mt-3 text-muted-foreground">A snapshot of our most-needed roles right now.</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-          {openRoles.map((job, i) => (
-            <JobCard key={job.title} job={job} index={i} onApply={setSelectedJob} />
+          {openRoles.slice(0, 2).map((job, i) => (
+            <JobCard key={job.id || job.title} job={job} index={i} onApply={setSelectedJob} />
           ))}
         </div>
+
+        {openRoles.length > 2 && (
+          <div className="text-center mt-10">
+            <Link
+              to="/careers/jobs"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
+            >
+              See all {openRoles.length} open roles <ArrowRight size={16} />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
 
