@@ -8,7 +8,9 @@ import MegaMenu from "@/components/MegaMenu";
 import CartButton from "@/components/CartButton";
 
 // Sub-brands now live inside the Products mega-menu (see MegaMenu.tsx).
-const brandLinks: { label: string; to: string }[] = [];
+const brandLinks: { label: string; to: string }[] = [
+  { label: "LumiVolt", to: "/lumivolt" },
+];
 
 // Secondary links shown after the merged Products mega-menu.
 const secondaryLinks = [
