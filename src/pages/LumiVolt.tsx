@@ -3,8 +3,13 @@ import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
+import bgRooftop from "@/assets/bg-lumivolt-rooftop.jpg";
 import bgSolarField from "@/assets/bg-solar-field.jpg";
+import bgSolarAerial from "@/assets/bg-solar-aerial.jpg";
+import bgPanelClose from "@/assets/bg-panel-closeup.jpg";
 import featureSolar from "@/assets/feature-solar-panel.jpg";
+import featureSolarRoof from "@/assets/feature-solar-roof.jpg";
+import featureBattery from "@/assets/feature-battery.jpg";
 import featureApp from "@/assets/feature-energy-app.jpg";
 import bgTechMesh from "@/assets/bg-grid-particles.jpg";
 import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download, Coins, TrendingUp, Building2, Users2, Briefcase, Wrench, Shield, Smartphone, Cpu, Zap } from "lucide-react";
@@ -68,44 +73,43 @@ const LumiVolt = () => {
 
       {/* Project Overview */}
       <section className="section-padding">
-        <div className="section-container max-w-4xl">
-          <div className="text-center mb-6">
+        <div className="section-container grid gap-8 lg:grid-cols-2 items-center max-w-6xl">
+          <div className="relative rounded-3xl overflow-hidden border border-border aspect-[4/3] order-2 lg:order-1">
+            <img src={bgRooftop} alt="LumiVolt rooftop solar install" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+          </div>
+          <div className="order-1 lg:order-2">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Project Overview</p>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip mb-4">
               A tokenized renewable energy platform
             </h2>
+            <p className="text-base text-muted-foreground leading-relaxed">
+              Virtual solar ownership, climate fintech and PAYG energy automation in one platform. Built for Nigerian homes, renters and SMEs.
+            </p>
           </div>
-          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-center">
-            LumiVolt combines virtual solar ownership, climate fintech, and digital wealth management. It operates as a unified SaaS platform merging Digital Solar, PAYG (Pay-As-You-Go) Energy Automation, RTO/LTO Mini-grid Systems, and Renewable Energy E-commerce (VoltStack).
-          </p>
         </div>
       </section>
 
       {/* Core Goal & Impact */}
       <section className="section-padding bg-muted">
         <div className="section-container">
-          <div className="text-center mb-12">
-            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Core Goal & Impact</p>
+          <div className="text-center mb-10">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Impact</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
-              An integrated clean-energy ecosystem
+              Real returns, real savings
             </h2>
-            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-              Built to empower urban residents and SMEs in Nigeria with affordable, reliable energy and tangible investment returns.
-            </p>
           </div>
           <div className="grid gap-5 sm:grid-cols-3 max-w-5xl mx-auto">
             {[
-              { icon: Wallet, stat: "30%", label: "Energy cost reduction", desc: "Cut bills with prepaid solar credits for renters and SMEs." },
-              { icon: TrendingUp, stat: "12 to 18%", label: "Annual ROI", desc: "Invest in clean energy assets that yield steady returns." },
-              { icon: Coins, stat: "$14B", label: "Market opportunity", desc: "Annual diesel-to-solar estate PPA management market." },
+              { icon: Wallet, stat: "30%", label: "Lower bills" },
+              { icon: TrendingUp, stat: "12-18%", label: "Annual ROI" },
+              { icon: Coins, stat: "$14B", label: "Market opportunity" },
             ].map((s) => (
               <div key={s.label} className="rounded-2xl border border-border bg-card p-6 ios-card text-center">
                 <div className="w-12 h-12 mx-auto rounded-xl bg-gold/15 flex items-center justify-center mb-3">
                   <s.icon className="text-gold" size={22} />
                 </div>
                 <p className="text-3xl sm:text-4xl font-display font-bold text-primary mb-1">{s.stat}</p>
-                <p className="text-sm font-semibold text-foreground mb-1.5">{s.label}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+                <p className="text-sm font-semibold text-foreground">{s.label}</p>
               </div>
             ))}
           </div>
@@ -115,21 +119,18 @@ const LumiVolt = () => {
       {/* The Problem */}
       <section className="section-padding">
         <div className="section-container">
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">The Problem</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
-              Current energy alternatives are broken
+              Energy in Nigeria is broken
             </h2>
-            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-              Expensive, unreliable and operationally burdensome for every stakeholder in the chain.
-            </p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Building2, title: "Urban Renters & SMEs", desc: "High recurring diesel costs and no rooftop ownership block access to solar. SMEs face unstable grids and limited financing." },
-              { icon: Home, title: "Estates & Communities", desc: "Capex-heavy infrastructure upgrades alongside fragmented billing and disjointed support processes." },
-              { icon: Shield, title: "System Operators", desc: "Need auditable settlements, fraud resistance, and clear reconciliation across energy usage and payments." },
-              { icon: Wrench, title: "Solar Installers", desc: "Lack adequate inventory financing and verified distribution channels to scale operations sustainably." },
+              { icon: Building2, title: "Renters & SMEs", desc: "Diesel costs eat margins. No rooftop, no solar access." },
+              { icon: Home, title: "Estates", desc: "Heavy capex, fragmented billing, slow support." },
+              { icon: Shield, title: "Operators", desc: "No auditable settlements or fraud-resistant reconciliation." },
+              { icon: Wrench, title: "Installers", desc: "Limited inventory financing and verified channels." },
             ].map((p) => (
               <div key={p.title} className="rounded-2xl border border-border bg-card p-6 ios-card">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
@@ -143,23 +144,41 @@ const LumiVolt = () => {
         </div>
       </section>
 
-      {/* Target Audience */}
+      {/* Visual showcase strip */}
       <section className="section-padding bg-muted">
+        <div className="section-container grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl">
+          {[
+            { src: featureSolarRoof, label: "Rooftop installs" },
+            { src: featureBattery, label: "Lithium backup" },
+            { src: bgPanelClose, label: "Tier-1 panels" },
+            { src: bgSolarAerial, label: "Estate scale" },
+          ].map((img) => (
+            <div key={img.label} className="relative rounded-2xl overflow-hidden aspect-[4/5] border border-border hover-lift">
+              <img src={img.src} alt={img.label} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/30 to-transparent" />
+              <p className="absolute bottom-3 left-4 right-4 text-sm font-semibold text-primary-foreground">{img.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Target Audience */}
+      <section className="section-padding">
         <div className="section-container">
-          <div className="text-center mb-12">
-            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Target Audience</p>
+          <div className="text-center mb-10">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Built For</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
-              Who LumiVolt is built for
+              Who uses LumiVolt
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
             {[
-              { icon: Users2, label: "Urban salaried renters and SME operators" },
-              { icon: Home, label: "Home and nester owners" },
-              { icon: Sun, label: "Verified OEM solar vendors" },
-              { icon: Briefcase, label: "Energy industry players, NGOs and financial institutions" },
+              { icon: Users2, label: "Urban renters & SMEs" },
+              { icon: Home, label: "Homeowners" },
+              { icon: Sun, label: "Verified solar vendors" },
+              { icon: Briefcase, label: "NGOs & financiers" },
             ].map((a) => (
-              <div key={a.label} className="rounded-2xl border border-border bg-card p-5 flex items-start gap-3">
+              <div key={a.label} className="rounded-2xl border border-border bg-card p-5 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gold/15 flex items-center justify-center shrink-0">
                   <a.icon className="text-gold" size={18} />
                 </div>
@@ -171,12 +190,12 @@ const LumiVolt = () => {
       </section>
 
       {/* Platform Capabilities */}
-      <section className="section-padding">
+      <section className="section-padding bg-muted">
         <div className="section-container">
-          <div className="text-center mb-12">
-            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Platform Capabilities</p>
+          <div className="text-center mb-10">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Platform</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
-              Portable credits, PAYG automation, seamless across web and mobile
+              What LumiVolt does
             </h2>
           </div>
           <div className="grid gap-6 lg:grid-cols-2 max-w-5xl mx-auto">
@@ -185,14 +204,14 @@ const LumiVolt = () => {
                 <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Smartphone className="text-primary" size={22} />
                 </div>
-                <h3 className="font-display font-bold text-lg text-foreground">Core Capabilities</h3>
+                <h3 className="font-display font-bold text-lg text-foreground">Core features</h3>
               </div>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {[
-                  "Portable energy credits across properties",
-                  "PAYG automation with smart device integrations",
-                  "Unified web and mobile experience",
-                  "Climate fintech and digital wealth management",
+                  "Portable energy credits",
+                  "PAYG smart-device automation",
+                  "Unified web & mobile app",
+                  "Climate fintech wallet",
                 ].map((cap) => (
                   <li key={cap} className="flex items-start gap-2.5 text-sm text-foreground">
                     <CheckCircle2 className="text-primary mt-0.5 shrink-0" size={16} />
@@ -206,14 +225,14 @@ const LumiVolt = () => {
                 <div className="w-11 h-11 rounded-xl bg-gold/15 flex items-center justify-center">
                   <Cpu className="text-gold" size={22} />
                 </div>
-                <h3 className="font-display font-bold text-lg text-foreground">MVP Validates</h3>
+                <h3 className="font-display font-bold text-lg text-foreground">MVP validates</h3>
               </div>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {[
-                  "Solar product marketplace transactions with embedded financing (BNPL / BOOT / PAY-G)",
-                  "SaaS energy asset management dashboard with seamless payments and IoT device integrations",
-                  "Digital solar capacity reservation, energy credit issuance and bill offset simulation",
-                  "Basic AI-powered underwriting for credit decisions",
+                  "Marketplace with BNPL / BOOT / PAYG",
+                  "SaaS dashboard with IoT integrations",
+                  "Solar reservation & energy credits",
+                  "AI-powered underwriting",
                 ].map((mvp) => (
                   <li key={mvp} className="flex items-start gap-2.5 text-sm text-foreground">
                     <Zap className="text-gold mt-0.5 shrink-0" size={16} />
@@ -225,6 +244,7 @@ const LumiVolt = () => {
           </div>
         </div>
       </section>
+
 
       {/* Pillars */}
       <section className="section-padding">
