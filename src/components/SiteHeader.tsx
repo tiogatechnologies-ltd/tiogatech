@@ -19,8 +19,7 @@ const secondaryLinks = [
 
 const productSubLinks = [
   { label: "Packages", to: "/packages" },
-  { label: "Store", to: "/catalog" },
-  { label: "LumiVolt", to: "/lumivolt" },
+  { label: "Retail", to: "/catalog" },
   { label: "VoltAi", to: "/voltai" },
 ];
 
