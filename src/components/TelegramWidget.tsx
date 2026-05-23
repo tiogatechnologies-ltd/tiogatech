@@ -1,9 +1,10 @@
 import { useLocation } from "react-router-dom";
 import { Send, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { trackConversion } from "@/lib/tracking";
 
-// Public Telegram community link. Replace with your real group invite link.
-export const TELEGRAM_COMMUNITY_URL = "https://t.me/tiogacommunity";
+// Public Telegram community link.
+export const TELEGRAM_COMMUNITY_URL = "https://t.me/+VTYITwpTx64xYTQ0";
 
 /**
  * Floating Telegram community button (bottom-right).
@@ -48,6 +49,7 @@ const TelegramWidget = () => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Join Tioga Telegram community"
+        onClick={() => trackConversion("cta_click", { kind: "telegram_community", surface: "floating_widget" })}
         className="inline-flex items-center justify-center h-13 w-13 sm:h-14 sm:w-14 rounded-full text-white shadow-2xl active:scale-95 transition-transform"
         style={{ background: "linear-gradient(135deg, #229ED9, #1d8dc2)", height: 52, width: 52 }}
       >

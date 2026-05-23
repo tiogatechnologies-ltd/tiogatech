@@ -11,18 +11,11 @@ const productHubs = [
     icon: Package,
   },
   {
-    name: "Store",
+    name: "Retail",
     tag: "Browse catalog",
     desc: "Individual devices, panels, locks, cameras and more. Order on WhatsApp.",
     to: "/catalog",
     icon: Store,
-  },
-  {
-    name: "LumiVolt",
-    tag: "Residential solar",
-    desc: "Rooftop solar, lithium backup and hybrid inverters for Nigerian homes.",
-    to: "/lumivolt",
-    icon: Home,
   },
   {
     name: "VoltAi",
