@@ -70,7 +70,7 @@ const CareerApplicationDialog = ({ job, open, onOpenChange }: { job: Job | null;
 
     setSubmitting(true);
     const safeName = cvFile.name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-90);
-    const cvPath = `${crypto.randomUUID()}-${safeName}`;
+    const cvPath = `${crypto.randomUUID()}/${safeName}`;
     const { error: uploadError } = await supabase.storage.from("career-cvs").upload(cvPath, cvFile, {
       cacheControl: "3600",
       upsert: false,
