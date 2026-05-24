@@ -228,27 +228,6 @@ const LumiVolt = () => {
       </section>
 
 
-      {/* Pillars */}
-      <section className="section-padding">
-        <div className="section-container">
-          <div className="text-center mb-12">
-            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">What LumiVolt Powers</p>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">A complete residential energy stack</h2>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-3">
-            {pillars.map((p) => (
-              <div key={p.title} className="rounded-2xl border border-border bg-card p-6 ios-card">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                  <p.icon className="text-primary" size={22} />
-                </div>
-                <h3 className="font-display font-semibold text-lg text-foreground mb-1.5">{p.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How it works */}
       <section className="section-padding bg-muted">
         <div className="section-container">
