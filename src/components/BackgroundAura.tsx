@@ -1,42 +1,54 @@
-import { useEffect } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 /**
- * Global mouse-follow green aura. Lives behind everything (z-0, pointer-events-none).
- * Uses spring physics for a lagged, premium feel.
+ * Global mouse-follow green aura. Lives above content but pointer-events:none.
+ * - Uses transform (GPU) instead of left/top to avoid layout thrash.
+ * - rAF-throttled; only one update per frame.
+ * - Disabled on touch / coarse-pointer devices (mobile/tablet) and when the
+ *   user prefers reduced motion.
  */
 const BackgroundAura = () => {
-  const x = useMotionValue(typeof window !== "undefined" ? window.innerWidth / 2 : 0);
-  const y = useMotionValue(typeof window !== "undefined" ? window.innerHeight / 2 : 0);
-
-  const sx = useSpring(x, { stiffness: 60, damping: 20, mass: 0.8 });
-  const sy = useSpring(y, { stiffness: 60, damping: 20, mass: 0.8 });
-
-  // Render as CSS background via transform on a positioned div
-  const left = useTransform(sx, (v) => `${v - 110}px`);
-  const top = useTransform(sy, (v) => `${v - 110}px`);
+  const ref = useRef<HTMLDivElement>(null);
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    if (reduced || coarse) return;
+    setEnabled(true);
+
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let curX = targetX;
+    let curY = targetY;
+    let raf = 0;
 
     const onMove = (e: MouseEvent) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
+      targetX = e.clientX;
+      targetY = e.clientY;
     };
-    const onTouch = (e: TouchEvent) => {
-      const t = e.touches[0];
-      if (!t) return;
-      x.set(t.clientX);
-      y.set(t.clientY);
+
+    const tick = () => {
+      // simple lerp for a lagged, smooth feel — no React, no layout
+      curX += (targetX - curX) * 0.12;
+      curY += (targetY - curY) * 0.12;
+      const el = ref.current;
+      if (el) {
+        el.style.transform = `translate3d(${curX - 110}px, ${curY - 110}px, 0)`;
+      }
+      raf = requestAnimationFrame(tick);
     };
+
     window.addEventListener("mousemove", onMove, { passive: true });
-    window.addEventListener("touchmove", onTouch, { passive: true });
+    raf = requestAnimationFrame(tick);
     return () => {
       window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("touchmove", onTouch);
+      cancelAnimationFrame(raf);
     };
-  }, [x, y]);
+  }, []);
+
+  if (!enabled) return null;
 
   return (
     <div
@@ -44,17 +56,19 @@ const BackgroundAura = () => {
       className="pointer-events-none fixed inset-0 overflow-hidden"
       style={{ zIndex: 9999 }}
     >
-      <motion.div
+      <div
+        ref={ref}
         style={{
-          left,
-          top,
+          position: "absolute",
+          top: 0,
+          left: 0,
           width: 220,
           height: 220,
-          position: "absolute",
           background:
             "radial-gradient(circle, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.04) 45%, rgba(34,197,94,0) 70%)",
           filter: "blur(22px)",
-          willChange: "transform, left, top",
+          willChange: "transform",
+          transform: "translate3d(-9999px,-9999px,0)",
         }}
       />
     </div>
