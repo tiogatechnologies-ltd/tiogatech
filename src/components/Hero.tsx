@@ -186,7 +186,7 @@ const Hero = ({ onApply }: HeroProps) => {
 
             {/* Card 2 — Smart Home */}
             <div
-              className={`absolute top-44 left-0 w-72 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xler ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-44 left-0 w-72 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.7s" }}
             >
               <div className="flex items-center justify-between mb-4">
