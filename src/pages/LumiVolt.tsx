@@ -144,24 +144,6 @@ const LumiVolt = () => {
         </div>
       </section>
 
-      {/* Visual showcase strip */}
-      <section className="section-padding bg-muted">
-        <div className="section-container grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl">
-          {[
-            { src: featureSolarRoof, label: "Rooftop installs" },
-            { src: featureBattery, label: "Lithium backup" },
-            { src: bgPanelClose, label: "Tier-1 panels" },
-            { src: bgSolarAerial, label: "Estate scale" },
-          ].map((img) => (
-            <div key={img.label} className="relative rounded-2xl overflow-hidden aspect-[4/5] border border-border hover-lift">
-              <img src={img.src} alt={img.label} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/30 to-transparent" />
-              <p className="absolute bottom-3 left-4 right-4 text-sm font-semibold text-primary-foreground">{img.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Target Audience */}
       <section className="section-padding">
         <div className="section-container">
