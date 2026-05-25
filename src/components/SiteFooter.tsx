@@ -164,9 +164,10 @@ const SiteFooter = () => {
                 />
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-gold px-4 py-2 text-sm font-bold text-midnight hover:brightness-110 active:scale-[0.97] transition-all"
+                  disabled={submitting}
+                  className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-gold px-4 py-2 text-sm font-bold text-midnight hover:brightness-110 active:scale-[0.97] transition-all disabled:opacity-60"
                 >
-                  Subscribe <ArrowUpRight size={14} />
+                  {submitting ? <><Loader2 size={14} className="animate-spin" /> Subscribing</> : <>Subscribe <ArrowUpRight size={14} /></>}
                 </button>
               </form>
             </div>
