@@ -1,56 +1,55 @@
-# Plan
+## What I'll do
 
-Four scoped changes. All frontend/presentation except a small CMS content addition for LumiVolt (reuses existing `useLandingContent` pattern).
+### 1. Fix "24 Support" → "24/7 Support & Monitoring"
+The stat value is already set to `"24/7"` in `StatsSection.tsx`, but a bug in the `Counter` auto-extracts the digits `24` and renders that instead of the literal `"24/7"`. Fix: only treat the value as a counter when it doesn't contain non-numeric characters like `/`.
 
-## 1. Telegram Live Community Chat Widget
+### 2. SEO — get non-home pages indexed by Google
+Most pages already mount `<SEO>`, but a few gaps explain why only the home page is showing up:
 
-Add a floating Telegram chat bubble (bottom-right) on all public pages.
+- **Pre-rendered HTML** — only `index.html` has the title/description baked into the source. Crawlers that don't run JS only see one page. Add a small `vite-plugin-prerender`-style step OR (lighter) inject route-specific `<title>` / `<meta description>` / `<link rel="canonical">` in `index.html` via a prerender script for all public routes. I'll use a `scripts/prerender.ts` invoked from `postbuild` that emits `dist/<route>/index.html` with the right head.
+- **Per-page canonicals** — audit every public page (`About`, `LumiVolt`, `VoltAi`, `Finance`, `Contact`, `Packages`, `Catalog`, `Career`, `Jobs`, `Privacy`, `Terms`, `ComingSoon`) to confirm each `<SEO>` call has unique `title`, `description`, `path`. Fix any duplicates.
+- **Sitemap** — add `/blog` and any new routes, set `<lastmod>`, and confirm it's referenced from `robots.txt` (it already is).
+- **Internal linking** — add Blog link to header + footer so crawlers discover it.
+- **Trigger an SEO scan** at the end so you get a fresh report in the SEO tab.
 
-- Use a hosted widget script. Recommended: **Elfsight Telegram Chat** (no-code, single `<script>` snippet, free tier). Alternatives we can swap to: Social Intents, Re:amaze, Boei.
-- Implementation: inject the widget script in `index.html` so it loads on every public route. Hide it on `/admin/*` routes via a small effect that toggles `display:none` on the widget container based on `location.pathname`.
-- Required from you: the widget embed snippet (or the Telegram group invite link + we generate via Elfsight). I will use a placeholder snippet and a clearly-marked spot to paste the real one.
-- Add a secondary "Join our Telegram Community" button to the footer and Contact page next to the existing social icons.
+### 3. Add a Blog feature (CMS + public pages + admin)
+**Database** (new migration):
+- `blog_posts` table: `slug` (unique), `title`, `excerpt`, `content` (markdown), `cover_image_url`, `author`, `tags` (text[]), `published` (bool), `published_at`, `seo_title`, `seo_description`.
+- RLS: public can read where `published = true`; admins full CRUD via `has_role`.
 
-Note: BotFather tokens are NOT pasted into the website — they live inside the widget provider's dashboard. The site only ever gets a public JS snippet.
+**Public pages**:
+- `/blog` — index with cards (cover, title, excerpt, date, tags), pagination.
+- `/blog/:slug` — article page with markdown rendering (`react-markdown` + `remark-gfm`), `<SEO>` with Article JSON-LD, BreadcrumbList JSON-LD, canonical, og:image from cover.
 
-## 2. Move VoltAi under the Products mega-menu
+**Admin** (`/admin/blog`):
+- List, create, edit, delete posts.
+- Markdown editor with live preview, cover image upload to existing storage bucket, tag input, publish toggle, SEO override fields.
 
-- In `src/components/MegaMenu.tsx`: add **VoltAi** (and optionally **LumiVolt**) to the `productHubs` section so they appear inside the Products dropdown.
-- In `src/components/SiteHeader.tsx`: remove `VoltAi` (and optionally `LumiVolt`) from the top-level `brandLinks` array, and remove from the mobile top-level nav. Keep them accessible via the Products mobile accordion (`productSubLinks`).
+**Nav & SEO wiring**:
+- Add "Blog" to `SiteHeader` and `SiteFooter`.
+- Add `/blog` and dynamic post URLs to `sitemap.xml` (generator script reads from DB at build time).
 
-Question for you: should **LumiVolt** also move under Products, or stay as a top-level link? (Default: move both for consistency.)
+### 4. Make Newsletter functional
+Currently the footer form just toasts a fake success.
 
-## 3. Career page → 2 jobs + "See more" → full jobs page
+- New `newsletter_subscribers` table: `email` (unique, citext), `source`, `confirmed` (bool), `confirm_token`, `unsubscribe_token`, `subscribed_at`.
+- RLS: anyone can insert (with email-format check); only admins can read.
+- New edge function `subscribe-newsletter`: validates email, inserts row, sends double-opt-in confirmation email (using existing Resend setup via `notify-new-lead` pattern).
+- New edge function `confirm-newsletter` (public route): flips `confirmed=true` when the token link is clicked, then redirects to a thank-you page.
+- Admin page `/admin/newsletter`: list subscribers, export CSV, send broadcast via existing Email Composer.
+- Update `SiteFooter` `onSubscribe` to call the edge function and show real success/error.
 
-- `src/pages/Career.tsx`: slice job list to first 2, add a "See all openings" CTA.
-- New `src/pages/Jobs.tsx` (route `/careers/jobs`): LinkedIn-style listing with:
-  - Search bar (title/keyword)
-  - Filters: department, location, employment type (full-time/part-time/contract/intern), remote/onsite
-  - Category chips for quick filtering
-  - Card list with apply CTA reusing existing `CareerApplicationDialog`
-- Data source: existing `useCareers` hook + `careers` table. No schema changes needed (existing columns cover department/location/type).
-- Add route to `src/App.tsx` and a sitemap entry.
+### 5. Security & feature audit
+- Run `supabase--linter` and `security--run_security_scan`, fix anything new (most likely: blog/newsletter RLS tightening, rate limiting on newsletter endpoint).
+- Verify: leaked-password protection, admin role table, RLS on every new table, no client-side admin checks, validation triggers on inputs.
+- Add a basic rate-limit (IP + email) on the newsletter and blog-comment endpoints to prevent abuse.
 
-## 4. LumiVolt page — add the new structured content
+### Technical summary (for reference)
+- Files touched: `StatsSection.tsx` (1-line fix), `SiteHeader.tsx`, `SiteFooter.tsx`, `App.tsx` (route registration), `sitemap.xml` / generator, `index.html` (if needed).
+- New files: `pages/Blog.tsx`, `pages/BlogPost.tsx`, `pages/AdminBlog.tsx`, `pages/AdminNewsletter.tsx`, `pages/NewsletterConfirm.tsx`, `components/MarkdownRenderer.tsx`, `supabase/functions/subscribe-newsletter/`, `supabase/functions/confirm-newsletter/`, `scripts/generate-sitemap.ts` (upgrade existing), one migration for `blog_posts` + `newsletter_subscribers`.
+- Packages: `react-markdown`, `remark-gfm`.
 
-Extend `src/pages/LumiVolt.tsx` with these new sections, wired to CMS via `useLandingContent` so you can edit text later in Admin → Content:
-
-1. **Project Overview** — short intro paragraph
-2. **Core Goal & Impact** — headline + 3 stat callouts (30% cost reduction, 12–18% ROI, $14B market)
-3. **The Problem** — 4 cards (Urban Renters & SMEs, Estates & Communities, System Operators, Solar Installers)
-4. **Target Audience** — 4-item icon list
-5. **Platform Capabilities** — 2-column layout: capabilities list + MVP validation bullets (marketplace+BNPL/BOOT/PAYG, SaaS dashboard with IoT, digital solar reservation + AI underwriting)
-
-Add corresponding rows to `landing_content` for each section (eyebrow/title/subtitle/body) and surface them in `AdminContent.tsx` under the existing LumiVolt tab. Hardcoded fallbacks shipped in the component so the page renders before any CMS edit.
-
-## Technical notes
-
-- No database schema changes. New `landing_content` rows only (data inserts).
-- New files: `src/pages/Jobs.tsx`, `src/components/TelegramWidget.tsx` (mount + admin-route hide logic).
-- Edited files: `index.html`, `src/App.tsx`, `src/components/SiteHeader.tsx`, `src/components/MegaMenu.tsx`, `src/components/SiteFooter.tsx`, `src/pages/Contact.tsx`, `src/pages/Career.tsx`, `src/pages/LumiVolt.tsx`, `src/pages/AdminContent.tsx`, `public/sitemap.xml`.
-
-## Open questions before I build
-
-1. Which widget provider do you want? (Elfsight recommended — free, fastest.) Do you already have the embed snippet, or should I scaffold a placeholder you paste later?
-2. Move **LumiVolt** under Products too, or keep it top-level?
-3. Telegram group public invite link (e.g. `https://t.me/+xxxx`) for the "Join Community" button in footer/contact.
+### Questions before I start
+1. **Prerendering** — happy with a build-time prerender script that produces static HTML for each public route? (Best fix for "only home page in Google" without changing stack.)
+2. **Blog content authoring** — markdown editor in admin is fine, or do you want a richer WYSIWYG (TipTap)?
+3. **Newsletter double opt-in** — confirm yes (recommended, anti-spam). If no, I'll skip the confirm step.
