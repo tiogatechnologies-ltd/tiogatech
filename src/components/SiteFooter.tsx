@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Mail, MessageCircle, MapPin, Phone, Clock } from "lucide-react";
+import { ArrowUpRight, Mail, MessageCircle, MapPin, Phone, Clock, Loader2 } from "lucide-react";
 import { useState } from "react";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { toast } from "@/components/ui/sonner";
 import SocialLinks from "@/components/SocialLinks";
+import { supabase } from "@/integrations/supabase/client";
 import { TELEGRAM_COMMUNITY_URL } from "@/components/TelegramWidget";
 
 const company = [
   { label: "About", to: "/about" },
   { label: "Career", to: "/career" },
+  { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
   { label: "LumiVolt — Residential", to: "/lumivolt" },
   { label: "VoltAi — Smart Automation", to: "/voltai" },
@@ -33,15 +35,27 @@ const support = [
 
 const SiteFooter = () => {
   const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const onSubscribe = (e: React.FormEvent) => {
+  const onSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       toast.error("Please enter a valid email address");
       return;
     }
-    toast.success("Thanks! We will be in touch with energy tips and offers.");
-    setEmail("");
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke("subscribe-newsletter", {
+        body: { email, source: "footer" },
+      });
+      if (error) throw error;
+      toast.success("Subscribed! Check your inbox for a welcome message.");
+      setEmail("");
+    } catch (err: any) {
+      toast.error(err?.message || "Could not subscribe. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
