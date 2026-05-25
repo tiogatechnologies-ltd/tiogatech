@@ -41,6 +41,10 @@ import LumiVolt from "./pages/LumiVolt.tsx";
 import VoltAi from "./pages/VoltAi.tsx";
 import Finance from "./pages/Finance.tsx";
 import Contact from "./pages/Contact.tsx";
+import Blog from "./pages/Blog.tsx";
+import BlogPost from "./pages/BlogPost.tsx";
+import AdminBlog from "./pages/AdminBlog.tsx";
+import AdminNewsletter from "./pages/AdminNewsletter.tsx";
 
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
@@ -83,6 +87,10 @@ const AnimatedRoutes = () => {
         <Route path="/privacy" element={<RouteFade><Privacy /></RouteFade>} />
         <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
         <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
+        <Route path="/blog" element={<RouteFade><Blog /></RouteFade>} />
+        <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />
+        <Route path="/admin/blog" element={<ProtectedAdmin><AdminBlog /></ProtectedAdmin>} />
+        <Route path="/admin/newsletter" element={<ProtectedAdmin><AdminNewsletter /></ProtectedAdmin>} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/setup" element={<AdminSetup />} />
         <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />

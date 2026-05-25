@@ -68,7 +68,12 @@ const StatsSection = () => {
       <div ref={ref} className="relative section-container">
         <div className={`grid grid-cols-2 lg:grid-cols-4 gap-8 ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
           {items.map((s: any, i: number) => {
-            const num = typeof s.num === "number" ? s.num : (s.value?.match(/\d+/) ? parseInt(s.value.match(/\d+/)[0]) : null);
+            // Only animate a counter when the value is a pure number string (allowing one trailing prefix/suffix
+            // handled separately). Anything containing slashes, currency, or extra letters renders literally.
+            const isCountable = typeof s.value === "string" && /^[₦$€]?\d[\d,]*[+%]?$/.test(s.value);
+            const num = typeof s.num === "number"
+              ? s.num
+              : (isCountable && s.value?.match(/\d+/) ? parseInt(s.value.match(/\d+/)[0]) : null);
             const display = s.value;
             return (
               <div

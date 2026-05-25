@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -15,6 +15,8 @@ const navItems = [
   { label: "Home Automation", icon: Home, path: "/admin/home-automation" },
   { label: "Leads", icon: Users, path: "/admin/leads" },
   { label: "App Waitlist", icon: Smartphone, path: "/admin/waitlist" },
+  { label: "Newsletter", icon: Send, path: "/admin/newsletter" },
+  { label: "Blog", icon: Newspaper, path: "/admin/blog" },
   { label: "Form Builder", icon: FileText, path: "/admin/forms" },
   { label: "Landing Sections", icon: Layout, path: "/admin/landing" },
   { label: "Static Pages", icon: FileText, path: "/admin/content" },
