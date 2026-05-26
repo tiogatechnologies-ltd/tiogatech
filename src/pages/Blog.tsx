@@ -4,7 +4,9 @@ import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
 import { useBlogPosts } from "@/hooks/useBlog";
-import { Calendar, Clock, ArrowRight, Loader2 } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Loader2, Rss } from "lucide-react";
+
+const RSS_URL = "https://yqeayhukgjtbptblvmhd.supabase.co/functions/v1/blog-rss";
 
 const Blog = () => {
   const { posts, loading } = useBlogPosts();
@@ -39,6 +41,16 @@ const Blog = () => {
       />
 
       <section className="section-container py-16">
+        <div className="flex justify-end mb-6">
+          <a
+            href={RSS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors"
+          >
+            <Rss size={14} /> RSS Feed
+          </a>
+        </div>
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="animate-spin text-muted-foreground" />
