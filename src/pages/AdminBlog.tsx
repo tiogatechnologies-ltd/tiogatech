@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Loader2, Plus, Trash2, Edit, Eye, EyeOff, Save, X, FileText } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import MarkdownToolbar from "@/components/MarkdownToolbar";
 
 interface BlogPost {
   id: string;
@@ -193,7 +194,7 @@ const AdminBlog = () => {
 
             <div className="p-6 space-y-4">
               {showPreview ? (
-                <div className="prose prose-lg max-w-none">
+                <div className="prose prose-lg dark:prose-invert max-w-none">
                   <h1>{editing.title}</h1>
                   <p className="lead">{editing.excerpt}</p>
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>{editing.content || ""}</ReactMarkdown>
@@ -317,14 +318,33 @@ const AdminBlog = () => {
                   </div>
 
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground uppercase">Content (Markdown)</label>
-                    <textarea
-                      rows={18}
-                      value={editing.content || ""}
-                      onChange={(e) => setEditing({ ...editing, content: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 rounded-lg border border-border bg-card font-mono text-sm"
-                      placeholder="# Heading&#10;&#10;Write in **markdown**..."
-                    />
+                    <label className="text-xs font-semibold text-muted-foreground uppercase">Content</label>
+                    <div className="mt-1">
+                      <MarkdownToolbar
+                        value={editing.content || ""}
+                        onChange={(v) => setEditing({ ...editing, content: v })}
+                        rows={20}
+                        placeholder="Write your post. Use the toolbar for headings, bold, links, lists, images…"
+                        onImageUpload={async () => {
+                          return new Promise((resolve) => {
+                            const input = document.createElement("input");
+                            input.type = "file";
+                            input.accept = "image/*";
+                            input.onchange = async () => {
+                              const file = input.files?.[0];
+                              if (!file) return resolve(null);
+                              const path = `blog/${crypto.randomUUID()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_")}`;
+                              const { error } = await supabase.storage.from("product-images").upload(path, file);
+                              if (error) { toast.error("Upload failed"); return resolve(null); }
+                              const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+                              resolve(data.publicUrl);
+                            };
+                            input.click();
+                          });
+                        }}
+                      />
+                    </div>
+                    <p className="mt-1.5 text-[11px] text-muted-foreground">Tip: leave a blank line between paragraphs for proper spacing.</p>
                   </div>
 
                   <details className="rounded-lg border border-border p-3">
