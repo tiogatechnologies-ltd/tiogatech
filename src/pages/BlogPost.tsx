@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
+import RelatedPosts from "@/components/RelatedPosts";
 import { useBlogPost } from "@/hooks/useBlog";
 import { Calendar, Clock, ArrowLeft, Loader2, User } from "lucide-react";
 
@@ -95,11 +96,13 @@ const BlogPost = () => {
             />
           )}
 
-          <div className="prose prose-lg dark:prose-invert max-w-none mt-10 prose-headings:font-display prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-xl">
+          <div className="prose prose-lg dark:prose-invert max-w-none mt-10 prose-headings:font-display prose-headings:tracking-tight prose-headings:mt-10 prose-headings:mb-4 prose-p:my-5 prose-p:leading-relaxed prose-li:my-1.5 prose-a:text-primary prose-img:rounded-xl prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
           </div>
         </div>
       </article>
+
+      <RelatedPosts currentSlug={post.slug} tags={post.tags ?? []} category={post.category} />
 
       <SiteFooter />
     </div>
