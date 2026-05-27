@@ -45,11 +45,15 @@ const SiteFooter = () => {
     }
     setSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("subscribe-newsletter", {
+      const { data, error } = await supabase.functions.invoke("subscribe-newsletter", {
         body: { email, source: "footer" },
       });
       if (error) throw error;
-      toast.success("Subscribed! Check your inbox for a welcome message.");
+      toast.success(
+        data?.pending_confirmation
+          ? "Almost there — check your inbox to confirm."
+          : "You're already subscribed. Thanks!"
+      );
       setEmail("");
     } catch (err: any) {
       toast.error(err?.message || "Could not subscribe. Please try again.");
