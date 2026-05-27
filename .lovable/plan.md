@@ -1,55 +1,77 @@
-## What I'll do
+## 1. Remove RSS Feed from blog
 
-### 1. Fix "24 Support" → "24/7 Support & Monitoring"
-The stat value is already set to `"24/7"` in `StatsSection.tsx`, but a bug in the `Counter` auto-extracts the digits `24` and renders that instead of the literal `"24/7"`. Fix: only treat the value as a counter when it doesn't contain non-numeric characters like `/`.
+- Remove the "RSS Feed" button + `Rss` icon import + `RSS_URL` constant from `src/pages/Blog.tsx`.
+- Remove the `<link rel="alternate" type="application/rss+xml">` auto-discovery tag from `index.html`.
+- Delete the `supabase/functions/blog-rss/` Edge Function (no longer referenced).
 
-### 2. SEO — get non-home pages indexed by Google
-Most pages already mount `<SEO>`, but a few gaps explain why only the home page is showing up:
+(Keeping the function deployed but unused would be dead infra — safer to remove.)
 
-- **Pre-rendered HTML** — only `index.html` has the title/description baked into the source. Crawlers that don't run JS only see one page. Add a small `vite-plugin-prerender`-style step OR (lighter) inject route-specific `<title>` / `<meta description>` / `<link rel="canonical">` in `index.html` via a prerender script for all public routes. I'll use a `scripts/prerender.ts` invoked from `postbuild` that emits `dist/<route>/index.html` with the right head.
-- **Per-page canonicals** — audit every public page (`About`, `LumiVolt`, `VoltAi`, `Finance`, `Contact`, `Packages`, `Catalog`, `Career`, `Jobs`, `Privacy`, `Terms`, `ComingSoon`) to confirm each `<SEO>` call has unique `title`, `description`, `path`. Fix any duplicates.
-- **Sitemap** — add `/blog` and any new routes, set `<lastmod>`, and confirm it's referenced from `robots.txt` (it already is).
-- **Internal linking** — add Blog link to header + footer so crawlers discover it.
-- **Trigger an SEO scan** at the end so you get a fresh report in the SEO tab.
+## 2. Website audit — missing or incomplete features
 
-### 3. Add a Blog feature (CMS + public pages + admin)
-**Database** (new migration):
-- `blog_posts` table: `slug` (unique), `title`, `excerpt`, `content` (markdown), `cover_image_url`, `author`, `tags` (text[]), `published` (bool), `published_at`, `seo_title`, `seo_description`.
-- RLS: public can read where `published = true`; admins full CRUD via `has_role`.
+After scanning the codebase, routes, DB schema, and edge functions, here is what is genuinely missing or only half-built. Nothing below is a "nice to have" — each is something the UI implies should work but doesn't, or a standard expectation for a site of this scope.
 
-**Public pages**:
-- `/blog` — index with cards (cover, title, excerpt, date, tags), pagination.
-- `/blog/:slug` — article page with markdown rendering (`react-markdown` + `remark-gfm`), `<SEO>` with Article JSON-LD, BreadcrumbList JSON-LD, canonical, og:image from cover.
+### A. Newsletter — partially done
+- `subscribe-newsletter` works and stores subscribers, but there is **no double opt-in / confirm flow** (no `confirm-newsletter` function, no `/newsletter/confirm` page, no `confirmed` column on the table).
+- **No unsubscribe page**, even though `unsubscribe_token` is stored. Required for CAN-SPAM / good sender reputation.
+- **No broadcast / send-to-list** action in `/admin/newsletter` — admins can only export CSV.
 
-**Admin** (`/admin/blog`):
-- List, create, edit, delete posts.
-- Markdown editor with live preview, cover image upload to existing storage bucket, tag input, publish toggle, SEO override fields.
+### B. Blog — partially done
+- No **search** or **category/tag filter** on `/blog`.
+- No **pagination** (loads all posts in one query).
+- No **draft preview** for admins (can only see live, published posts).
+- No **scheduled publishing** (only an instant publish toggle).
+- `read_minutes` is stored as a manual number; should auto-calc from content length.
 
-**Nav & SEO wiring**:
-- Add "Blog" to `SiteHeader` and `SiteFooter`.
-- Add `/blog` and dynamic post URLs to `sitemap.xml` (generator script reads from DB at build time).
+### C. SEO
+- `public/sitemap.xml` is **static** — new blog posts are never added. Needs a dynamic sitemap (edge function `sitemap-xml` reading from `blog_posts`).
+- No `og:image` fallback on most pages — only set when a post has a cover image.
+- No structured data for `Organization` / `LocalBusiness` on the home page (important for Google Knowledge Panel + local Nigerian search).
 
-### 4. Make Newsletter functional
-Currently the footer form just toasts a fake success.
+### D. Auth & accounts
+- Admin auth exists, but there is **no customer-facing auth** at all. Implications:
+  - "Cart" persists only in localStorage; no order history, no saved addresses.
+  - Newsletter confirm / unsubscribe links can't tie to a user.
+  - Lead-form re-entry — returning users re-fill everything.
+- No password reset flow for admins.
 
-- New `newsletter_subscribers` table: `email` (unique, citext), `source`, `confirmed` (bool), `confirm_token`, `unsubscribe_token`, `subscribed_at`.
-- RLS: anyone can insert (with email-format check); only admins can read.
-- New edge function `subscribe-newsletter`: validates email, inserts row, sends double-opt-in confirmation email (using existing Resend setup via `notify-new-lead` pattern).
-- New edge function `confirm-newsletter` (public route): flips `confirmed=true` when the token link is clicked, then redirects to a thank-you page.
-- Admin page `/admin/newsletter`: list subscribers, export CSV, send broadcast via existing Email Composer.
-- Update `SiteFooter` `onSubscribe` to call the edge function and show real success/error.
+### E. Cart / Checkout
+- `CartDrawer` exists and items can be added, but there is **no checkout** — pressing checkout just opens WhatsApp with a pre-filled message. No `orders` table, no order confirmation email, no admin order management.
 
-### 5. Security & feature audit
-- Run `supabase--linter` and `security--run_security_scan`, fix anything new (most likely: blog/newsletter RLS tightening, rate limiting on newsletter endpoint).
-- Verify: leaked-password protection, admin role table, RLS on every new table, no client-side admin checks, validation triggers on inputs.
-- Add a basic rate-limit (IP + email) on the newsletter and blog-comment endpoints to prevent abuse.
+### F. Lead flow
+- `notify-new-lead` exists but I should verify it actually sends (no rate-limit, no retry).
+- No **lead assignment** to specific staff in `/admin/leads`.
+- No **status pipeline** UI (status is just a text field; no Kanban or quick-update).
 
-### Technical summary (for reference)
-- Files touched: `StatsSection.tsx` (1-line fix), `SiteHeader.tsx`, `SiteFooter.tsx`, `App.tsx` (route registration), `sitemap.xml` / generator, `index.html` (if needed).
-- New files: `pages/Blog.tsx`, `pages/BlogPost.tsx`, `pages/AdminBlog.tsx`, `pages/AdminNewsletter.tsx`, `pages/NewsletterConfirm.tsx`, `components/MarkdownRenderer.tsx`, `supabase/functions/subscribe-newsletter/`, `supabase/functions/confirm-newsletter/`, `scripts/generate-sitemap.ts` (upgrade existing), one migration for `blog_posts` + `newsletter_subscribers`.
-- Packages: `react-markdown`, `remark-gfm`.
+### G. Analytics
+- `page_views` + `product_clicks` are captured, but `/admin/analytics` likely shows only basic counts. No funnel, no source breakdown, no time-on-page.
+- No **Google Analytics 4** or **Meta Pixel** snippet in `index.html` — relying only on first-party tracking misses retargeting.
 
-### Questions before I start
-1. **Prerendering** — happy with a build-time prerender script that produces static HTML for each public route? (Best fix for "only home page in Google" without changing stack.)
-2. **Blog content authoring** — markdown editor in admin is fine, or do you want a richer WYSIWYG (TipTap)?
-3. **Newsletter double opt-in** — confirm yes (recommended, anti-spam). If no, I'll skip the confirm step.
+### H. Communications
+- No **WhatsApp Business API** webhook (currently only `wa.me` deep links).
+- No **SMS** confirmation for leads / orders (critical in NG where email is less reliable).
+- No **transactional email templates** stored in DB — every function hardcodes HTML.
+
+### I. Content / CMS gaps
+- `landing_content` is editable, but **About**, **Finance**, **Contact**, **Privacy**, **Terms** pages are hardcoded — admin can't edit copy without a code change.
+- No **testimonials** / case studies CMS (the home page testimonial block is hardcoded if present).
+- No **media library** — every image upload goes to `product-images` bucket regardless of context.
+
+### J. Security / ops
+- No **rate-limiting** on public edge functions (`subscribe-newsletter`, `notify-new-lead`, `ai-recommend`) — vulnerable to spam/abuse.
+- No **CAPTCHA** on lead form, newsletter, career application.
+- No **error monitoring** (Sentry-equivalent) — silent failures.
+- `career-cvs` bucket is private, but no signed-URL admin viewer is wired (need to confirm `AdminCareerApplications` can actually download CVs).
+
+### K. Mobile / PWA
+- No `manifest.json` / install prompt / offline shell — site is mobile-responsive but not installable, despite being heavily mobile-targeted.
+
+### L. Misc
+- 404 page exists but has no internal-link suggestions.
+- No `humans.txt`, no security.txt, no `/api/health` for uptime monitors.
+- WhatsApp click tracking — `wa.me` links don't fire a `conversions` event.
+
+## Next step
+
+I'll wait for your direction before doing anything beyond the RSS removal (item 1).
+
+**Reply with which of A–L you want me to tackle now** (e.g., "Do A, C, E, J"), and I'll either implement directly or come back with a focused plan for each. If you just want the RSS removal, say "just RSS" and I'll ship only that.
