@@ -7,6 +7,7 @@ const corsHeaders = {
 };
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+const SITE = "https://tiogatechnologies.com";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -45,48 +46,69 @@ serve(async (req) => {
       });
     }
 
-    // Send welcome email via Lovable email API (used elsewhere in the project)
+    // Fetch the row to get tokens for the email links
+    const { data: row } = await supabase
+      .from("newsletter_subscribers")
+      .select("confirm_token, unsubscribe_token, confirmed")
+      .eq("email", cleanEmail)
+      .maybeSingle();
+
+    const confirmUrl = `${SITE}/newsletter/confirm?token=${row?.confirm_token}`;
+    const unsubUrl = `${SITE}/newsletter/unsubscribe?token=${row?.unsubscribe_token}`;
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (LOVABLE_API_KEY) {
+      // If already confirmed, send "you're already in" note; else send confirmation
+      const isConfirm = !row?.confirmed;
+      const subject = isConfirm
+        ? "Please confirm your Tioga newsletter subscription"
+        : "You're already subscribed to Tioga";
+
       const html = `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="background: #0d6b3f; color: #fff; padding: 20px 24px; border-radius: 12px 12px 0 0;">
-    <h1 style="margin: 0; font-size: 20px;">Welcome to Tioga Technologies</h1>
+    <h1 style="margin: 0; font-size: 20px;">${isConfirm ? "One quick click" : "Welcome back"}</h1>
   </div>
   <div style="background: #ffffff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 12px 12px; color: #333; font-size: 14px; line-height: 1.6;">
     <p>${cleanName ? `Hi ${cleanName},` : "Hi there,"}</p>
-    <p>Thanks for subscribing. You will get energy tips, package launches and grid alerts straight to your inbox.</p>
-    <p>In the meantime, browse our latest solar packages and smart-home products at <a href="https://tiogatechnologies.com" style="color: #0d6b3f;">tiogatechnologies.com</a>.</p>
-    <p style="margin-top: 24px; font-size: 12px; color: #999;">— The Tioga Team</p>
+    ${isConfirm
+      ? `<p>Thanks for joining the Tioga newsletter. Please confirm your email so we can start sending you energy tips, package launches and grid alerts.</p>
+         <p style="text-align: center; margin: 28px 0;">
+           <a href="${confirmUrl}" style="display: inline-block; background: #FFD700; color: #0A192F; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700;">Confirm my email</a>
+         </p>
+         <p style="font-size: 12px; color: #777;">Or paste this link: <br/>${confirmUrl}</p>`
+      : `<p>You're already subscribed to the Tioga newsletter. No action needed.</p>`}
+    <hr style="border:none;border-top:1px solid #eee;margin:24px 0" />
+    <p style="font-size: 11px; color: #999;">Didn't ask for this? <a href="${unsubUrl}" style="color:#999;">Unsubscribe</a>.</p>
   </div>
 </div>`.trim();
 
-      // Fire and forget — do not block response if email transport fails
       fetch("https://api.lovable.dev/v1/email/send", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
         body: JSON.stringify({
           to: cleanEmail,
-          subject: "Welcome to Tioga Technologies",
-          text: "Thanks for subscribing to the Tioga newsletter.",
+          subject,
+          text: isConfirm ? `Confirm your subscription: ${confirmUrl}` : "You're already subscribed.",
           html,
         }),
-      }).catch((e) => console.log("Welcome email failed:", e));
+      }).catch((e) => console.log("Confirm email failed:", e));
 
-      // Notify the admin too
-      fetch("https://api.lovable.dev/v1/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
-        body: JSON.stringify({
-          to: "sales@tiogatechnologies.com",
-          subject: `New newsletter subscriber: ${cleanEmail}`,
-          text: `${cleanName ?? "(no name)"} <${cleanEmail}> joined from ${cleanSource}.`,
-          html: `<p><strong>${cleanName ?? "(no name)"}</strong> &lt;${cleanEmail}&gt; subscribed from <em>${cleanSource}</em>.</p>`,
-        }),
-      }).catch(() => {});
+      if (isConfirm) {
+        fetch("https://api.lovable.dev/v1/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
+          body: JSON.stringify({
+            to: "sales@tiogatechnologies.com",
+            subject: `New newsletter signup (pending confirm): ${cleanEmail}`,
+            text: `${cleanName ?? "(no name)"} <${cleanEmail}> from ${cleanSource}.`,
+            html: `<p><strong>${cleanName ?? "(no name)"}</strong> &lt;${cleanEmail}&gt; signed up from <em>${cleanSource}</em>. Awaiting email confirmation.</p>`,
+          }),
+        }).catch(() => {});
+      }
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, pending_confirmation: !row?.confirmed }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {

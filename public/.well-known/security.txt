@@ -1,0 +1,6 @@
+Contact: mailto:security@tiogatechnologies.com
+Contact: mailto:sales@tiogatechnologies.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://tiogatechnologies.com/.well-known/security.txt
+Policy: https://tiogatechnologies.com/privacy

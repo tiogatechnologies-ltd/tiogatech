@@ -1,0 +1,12 @@
+/* TEAM */
+Company: Tioga Technologies
+Site: https://tiogatechnologies.com
+Contact: sales@tiogatechnologies.com
+Location: Jos, Plateau State, Nigeria
+
+/* THANKS */
+To every customer powering their home with reliable energy.
+
+/* SITE */
+Stack: React, Vite, TypeScript, Tailwind, Lovable Cloud
+Standards: HTML5, CSS3, JSON-LD

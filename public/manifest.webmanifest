@@ -1,0 +1,21 @@
+{
+  "name": "Tioga Technologies",
+  "short_name": "Tioga",
+  "description": "Solar, smart locks and home automation across Nigeria.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0A192F",
+  "theme_color": "#0A192F",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "utilities", "shopping"],
+  "lang": "en-NG"
+}
