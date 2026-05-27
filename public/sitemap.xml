@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://tiogatechnologies.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://tiogatechnologies.com/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://tiogatechnologies.com/packages</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://tiogatechnologies.com/catalog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://tiogatechnologies.com/lumivolt</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://tiogatechnologies.com/voltai</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://tiogatechnologies.com/finance</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://tiogatechnologies.com/contact</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://tiogatechnologies.com/career</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://tiogatechnologies.com/careers/jobs</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://tiogatechnologies.com/coming-soon</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://tiogatechnologies.com/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://tiogatechnologies.com/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://yqeayhukgjtbptblvmhd.supabase.co/functions/v1/sitemap-xml</loc>
+  </sitemap>
+</sitemapindex>

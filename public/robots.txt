@@ -2,5 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/
+Disallow: /newsletter/confirm
+Disallow: /newsletter/unsubscribe
 
+Sitemap: https://yqeayhukgjtbptblvmhd.supabase.co/functions/v1/sitemap-xml
 Sitemap: https://tiogatechnologies.com/sitemap.xml
