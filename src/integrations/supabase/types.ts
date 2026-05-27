@@ -53,6 +53,7 @@ export type Database = {
           published: boolean
           published_at: string | null
           read_minutes: number
+          scheduled_for: string | null
           seo_description: string | null
           seo_title: string | null
           slug: string
@@ -71,6 +72,7 @@ export type Database = {
           published?: boolean
           published_at?: string | null
           read_minutes?: number
+          scheduled_for?: string | null
           seo_description?: string | null
           seo_title?: string | null
           slug: string
@@ -89,6 +91,7 @@ export type Database = {
           published?: boolean
           published_at?: string | null
           read_minutes?: number
+          scheduled_for?: string | null
           seo_description?: string | null
           seo_title?: string | null
           slug?: string
@@ -424,8 +427,38 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_broadcasts: {
+        Row: {
+          created_at: string
+          html: string
+          id: string
+          sent_by: string | null
+          sent_count: number
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          html: string
+          id?: string
+          sent_by?: string | null
+          sent_count?: number
+          subject: string
+        }
+        Update: {
+          created_at?: string
+          html?: string
+          id?: string
+          sent_by?: string | null
+          sent_count?: number
+          subject?: string
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
+          confirm_token: string
+          confirmed: boolean
+          confirmed_at: string | null
           created_at: string
           email: string
           full_name: string | null
@@ -436,6 +469,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          confirm_token?: string
+          confirmed?: boolean
+          confirmed_at?: string | null
           created_at?: string
           email: string
           full_name?: string | null
@@ -446,6 +482,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          confirm_token?: string
+          confirmed?: boolean
+          confirmed_at?: string | null
           created_at?: string
           email?: string
           full_name?: string | null
