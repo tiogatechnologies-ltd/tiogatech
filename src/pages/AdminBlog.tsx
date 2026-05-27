@@ -19,10 +19,17 @@ interface BlogPost {
   category: string;
   published: boolean;
   published_at: string | null;
+  scheduled_for: string | null;
   seo_title: string | null;
   seo_description: string | null;
   read_minutes: number;
 }
+
+const wordsPerMinute = 220;
+const calcReadMinutes = (content: string) => {
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / wordsPerMinute));
+};
 
 const blank = (): Partial<BlogPost> => ({
   slug: "",
@@ -62,11 +69,16 @@ const AdminBlog = () => {
     if (!editing) return;
     if (!editing.title || !editing.slug) return toast.error("Title and slug are required");
 
+    const autoMinutes = calcReadMinutes(editing.content || "");
     const payload: any = {
       ...editing,
       tags: editing.tags ?? [],
       slug: slugify(editing.slug),
-      published_at: editing.published && !editing.published_at ? new Date().toISOString() : editing.published_at,
+      read_minutes: editing.read_minutes && editing.read_minutes > 0 ? editing.read_minutes : autoMinutes,
+      published_at:
+        editing.published && !editing.published_at
+          ? (editing.scheduled_for ?? new Date().toISOString())
+          : editing.published_at,
     };
 
     const { error } = editing.id
@@ -258,7 +270,7 @@ const AdminBlog = () => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground uppercase">Category</label>
                       <input
@@ -268,11 +280,24 @@ const AdminBlog = () => {
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold text-muted-foreground uppercase">Read Minutes</label>
+                      <label className="text-xs font-semibold text-muted-foreground uppercase" title="Auto-calculated from content if left at 0">
+                        Read min
+                      </label>
                       <input
                         type="number"
-                        value={editing.read_minutes || 5}
-                        onChange={(e) => setEditing({ ...editing, read_minutes: parseInt(e.target.value) || 5 })}
+                        min={0}
+                        value={editing.read_minutes ?? 0}
+                        onChange={(e) => setEditing({ ...editing, read_minutes: parseInt(e.target.value) || 0 })}
+                        placeholder={`auto (${calcReadMinutes(editing.content || "")})`}
+                        className="w-full mt-1 px-3 py-2 rounded-lg border border-border bg-card text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground uppercase">Schedule for</label>
+                      <input
+                        type="datetime-local"
+                        value={editing.scheduled_for ? new Date(editing.scheduled_for).toISOString().slice(0, 16) : ""}
+                        onChange={(e) => setEditing({ ...editing, scheduled_for: e.target.value ? new Date(e.target.value).toISOString() : null })}
                         className="w-full mt-1 px-3 py-2 rounded-lg border border-border bg-card text-xs"
                       />
                     </div>
