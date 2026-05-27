@@ -45,6 +45,8 @@ import Blog from "./pages/Blog.tsx";
 import BlogPost from "./pages/BlogPost.tsx";
 import AdminBlog from "./pages/AdminBlog.tsx";
 import AdminNewsletter from "./pages/AdminNewsletter.tsx";
+import NewsletterConfirm from "./pages/NewsletterConfirm.tsx";
+import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe.tsx";
 
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
@@ -89,6 +91,8 @@ const AnimatedRoutes = () => {
         <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
         <Route path="/blog" element={<RouteFade><Blog /></RouteFade>} />
         <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />
+        <Route path="/newsletter/confirm" element={<RouteFade><NewsletterConfirm /></RouteFade>} />
+        <Route path="/newsletter/unsubscribe" element={<RouteFade><NewsletterUnsubscribe /></RouteFade>} />
         <Route path="/admin/blog" element={<ProtectedAdmin><AdminBlog /></ProtectedAdmin>} />
         <Route path="/admin/newsletter" element={<ProtectedAdmin><AdminNewsletter /></ProtectedAdmin>} />
         <Route path="/admin/login" element={<AdminLogin />} />
