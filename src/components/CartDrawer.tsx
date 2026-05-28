@@ -49,11 +49,6 @@ const CartDrawer = () => {
     const parsed = leadSchema.safeParse(form);
     if (!parsed.success) { toast.error("Please complete required fields"); return; }
     setSubmitting(true);
-    const notes = `Cart order:\n${items.map((i) => `• ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` — ${i.price}` : ""}`).join("\n")}`;
-  const submitLead = async () => {
-    const parsed = leadSchema.safeParse(form);
-    if (!parsed.success) { toast.error("Please complete required fields"); return; }
-    setSubmitting(true);
     const { data, error } = await supabase.functions.invoke("submit-order", {
       body: {
         full_name: parsed.data.full_name,
@@ -79,6 +74,16 @@ const CartDrawer = () => {
     setDone(true);
     clear();
   };
+
+  return (
+    <Sheet open={open} onOpenChange={(v) => { setOpen(v); if (!v) reset(); }}>
+      <SheetContent className="w-full sm:max-w-md flex flex-col p-0">
+        <SheetHeader className="p-5 border-b border-border">
+          <SheetTitle className="flex items-center gap-2 font-display">
+            <ShoppingBag size={18} />
+            {step === "cart" ? `Your Cart (${count})` : done ? "Order Sent" : "Checkout"}
+          </SheetTitle>
+        </SheetHeader>
 
             <ShoppingBag size={18} />
             {step === "cart" ? `Your Cart (${count})` : done ? "Order Sent" : "Checkout"}
