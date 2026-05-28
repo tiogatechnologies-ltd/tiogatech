@@ -48,7 +48,9 @@ import AdminNewsletter from "./pages/AdminNewsletter.tsx";
 import NewsletterConfirm from "./pages/NewsletterConfirm.tsx";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe.tsx";
 
-import Privacy from "./pages/Privacy.tsx";
+import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe.tsx";
+import AdminOrders from "./pages/AdminOrders.tsx";
+
 import Terms from "./pages/Terms.tsx";
 import Packages from "./pages/Packages.tsx";
 import Career from "./pages/Career.tsx";
@@ -102,7 +104,9 @@ const AnimatedRoutes = () => {
         <Route path="/admin/leads" element={<ProtectedAdmin><AdminLeads /></ProtectedAdmin>} />
         <Route path="/admin/forms" element={<ProtectedAdmin><AdminFormQuestions /></ProtectedAdmin>} />
         <Route path="/admin/landing" element={<ProtectedAdmin><AdminLandingPage /></ProtectedAdmin>} />
-        <Route path="/admin/content" element={<ProtectedAdmin><AdminContent /></ProtectedAdmin>} />
+        <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />
+        <Route path="/admin/orders" element={<ProtectedAdmin><AdminOrders /></ProtectedAdmin>} />
+
         <Route path="/admin/email" element={<ProtectedAdmin><AdminEmail /></ProtectedAdmin>} />
         <Route path="/admin/analytics" element={<ProtectedAdmin><AdminAnalytics /></ProtectedAdmin>} />
         <Route path="/admin/careers" element={<ProtectedAdmin><AdminCareers /></ProtectedAdmin>} />
