@@ -47,11 +47,10 @@ import AdminBlog from "./pages/AdminBlog.tsx";
 import AdminNewsletter from "./pages/AdminNewsletter.tsx";
 import NewsletterConfirm from "./pages/NewsletterConfirm.tsx";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe.tsx";
-
-import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe.tsx";
 import AdminOrders from "./pages/AdminOrders.tsx";
-
+import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
+
 import Packages from "./pages/Packages.tsx";
 import Career from "./pages/Career.tsx";
 import Jobs from "./pages/Jobs.tsx";
