@@ -85,10 +85,7 @@ const CartDrawer = () => {
           </SheetTitle>
         </SheetHeader>
 
-            <ShoppingBag size={18} />
-            {step === "cart" ? `Your Cart (${count})` : done ? "Order Sent" : "Checkout"}
-          </SheetTitle>
-        </SheetHeader>
+
 
         {done ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
