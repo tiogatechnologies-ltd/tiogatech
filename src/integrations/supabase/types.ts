@@ -496,6 +496,98 @@ export type Database = {
         }
         Relationships: []
       }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          order_id: string
+          price_label: string | null
+          product_name: string
+          product_type: string | null
+          quantity: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          order_id: string
+          price_label?: string | null
+          product_name: string
+          product_type?: string | null
+          quantity?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          order_id?: string
+          price_label?: string | null
+          product_name?: string
+          product_type?: string | null
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          consent: boolean
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          item_count: number
+          items_summary: string
+          location: string
+          notes: string | null
+          order_number: string
+          phone: string
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          consent?: boolean
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          item_count?: number
+          items_summary?: string
+          location: string
+          notes?: string | null
+          order_number?: string
+          phone: string
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          consent?: boolean
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          item_count?: number
+          items_summary?: string
+          location?: string
+          notes?: string | null
+          order_number?: string
+          phone?: string
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       page_views: {
         Row: {
           city: string | null

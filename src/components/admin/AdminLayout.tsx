@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -9,6 +9,7 @@ interface AdminLayoutProps {
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
+  { label: "Orders", icon: ShoppingBag, path: "/admin/orders" },
   { label: "Products", icon: Package, path: "/admin/products" },
   { label: "Solar Packages", icon: Sun, path: "/admin/solar-packages" },
   { label: "Smart Locks", icon: Lock, path: "/admin/smart-locks" },
@@ -26,6 +27,7 @@ const navItems = [
   { label: "Email", icon: Mail, path: "/admin/email" },
   { label: "Settings", icon: Settings, path: "/admin/settings" },
 ];
+
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const { signOut, user } = useAuth();

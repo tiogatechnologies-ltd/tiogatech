@@ -49,20 +49,28 @@ const CartDrawer = () => {
     const parsed = leadSchema.safeParse(form);
     if (!parsed.success) { toast.error("Please complete required fields"); return; }
     setSubmitting(true);
-    const notes = `Cart order:\n${items.map((i) => `• ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` — ${i.price}` : ""}`).join("\n")}`;
-    const { error } = await supabase.from("leads").insert({
-      full_name: parsed.data.full_name,
-      phone: parsed.data.phone,
-      email: parsed.data.email || null,
-      location: parsed.data.location,
-      products: items.map((i) => i.name),
-      notes,
-      consent: true,
-      source: "cart_checkout",
+    const { data, error } = await supabase.functions.invoke("submit-order", {
+      body: {
+        full_name: parsed.data.full_name,
+        phone: parsed.data.phone,
+        email: parsed.data.email || undefined,
+        location: parsed.data.location,
+        source: "cart_checkout",
+        items: items.map((i) => ({
+          product_name: i.name,
+          product_type: i.type,
+          price_label: i.price,
+          quantity: i.quantity,
+          image_url: i.image,
+        })),
+      },
     });
     setSubmitting(false);
-    if (error) { toast.error("Could not submit order"); return; }
-    trackConversion("cart_checkout_lead", { item_count: count });
+    if (error || (data && (data as any).error)) {
+      toast.error("Could not submit order");
+      return;
+    }
+    trackConversion("cart_checkout_lead", { item_count: count, order_number: (data as any)?.order_number });
     setDone(true);
     clear();
   };
@@ -76,6 +84,8 @@ const CartDrawer = () => {
             {step === "cart" ? `Your Cart (${count})` : done ? "Order Sent" : "Checkout"}
           </SheetTitle>
         </SheetHeader>
+
+
 
         {done ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
