@@ -28,12 +28,6 @@ const navItems = [
   { label: "Settings", icon: Settings, path: "/admin/settings" },
 ];
 
-  { label: "Careers", icon: Briefcase, path: "/admin/careers" },
-  { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
-  { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
-  { label: "Email", icon: Mail, path: "/admin/email" },
-  { label: "Settings", icon: Settings, path: "/admin/settings" },
-];
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const { signOut, user } = useAuth();
