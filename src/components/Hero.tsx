@@ -55,10 +55,12 @@ const Hero = ({ onApply }: HeroProps) => {
           alt="Modern smart home with rooftop solar at golden hour"
           width={1920}
           height={1080}
-          fetchPriority="high"
           decoding="async"
+          loading="eager"
+          {...({ fetchpriority: "high" } as any)}
           className="absolute inset-0 w-full h-full object-cover"
         />
+
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/70 to-primary/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />
       </div>
