@@ -27,7 +27,7 @@ const TelegramWidget = () => {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <div className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end gap-2">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end gap-2" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
       {open && !dismissed && (
         <div className="relative max-w-[240px] rounded-2xl bg-card border border-border shadow-xl p-3 pr-8 animate-fade-up">
           <button
