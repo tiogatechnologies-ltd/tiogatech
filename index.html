@@ -3,9 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tioga Technologies — Solar & Smart Home in Nigeria</title>
-    <meta name="description" content="Reliable solar, STAMA smart locks and home automation across Nigeria. Browse packages or get a free quote in minutes." />
+    <title>Tioga Technologies — Solar, Smart Locks & Home Automation in Nigeria</title>
+    <meta name="description" content="Tioga Technologies is a Nigerian IoT company providing reliable solar power, STAMA smart locks and AI-driven home automation across Lagos, Abuja, Port Harcourt and Jos. Get a free quote in minutes." />
     <meta name="author" content="Tioga Technologies" />
+    <meta name="keywords" content="Tioga Technologies, Tioga, solar Nigeria, solar inverter Lagos, smart lock Nigeria, STAMA smart lock, home automation Nigeria, solar Abuja, solar Port Harcourt, solar Jos, renewable energy Nigeria" />
+    <link rel="canonical" href="https://tiogatechnologies.com/" />
+
     
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
@@ -30,38 +33,108 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "@id": "https://tiogatechnologies.com/#business",
-      "name": "Tioga Technologies",
-      "url": "https://tiogatechnologies.com",
-      "logo": "https://tiogatechnologies.com/favicon.png",
-      "image": "https://tiogatechnologies.com/favicon.png",
-      "description": "Tioga Technologies provides solar power, smart locks and home automation across Nigeria.",
-      "telephone": "+234 903 596 6388",
-      "email": "sales@tiogatechnologies.com",
-      "priceRange": "₦₦",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "No 7, Commercial Layout, Abattoir Rd, behind Airforce Primary School",
-        "addressLocality": "Jos",
-        "addressRegion": "Plateau",
-        "postalCode": "930103",
-        "addressCountry": "NG"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 9.8965,
-        "longitude": 8.8583
-      },
-      "openingHoursSpecification": [{
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-        "opens": "10:00",
-        "closes": "18:00"
-      }],
-      "areaServed": ["Lagos", "Abuja", "Port Harcourt", "Jos", "Nigeria"]
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://tiogatechnologies.com/#organization",
+          "name": "Tioga Technologies",
+          "legalName": "Tioga Technologies Ltd",
+          "alternateName": ["Tioga", "Tioga Tech", "Tioga Smart Life"],
+          "url": "https://tiogatechnologies.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://tiogatechnologies.com/favicon.png",
+            "width": 512,
+            "height": 512
+          },
+          "image": "https://tiogatechnologies.com/favicon.png",
+          "description": "Tioga Technologies is a Nigerian IoT and renewable energy company providing solar power systems, STAMA biometric smart locks, and AI-driven home automation across Lagos, Abuja, Port Harcourt, Jos and beyond.",
+          "foundingDate": "2021",
+          "email": "sales@tiogatechnologies.com",
+          "telephone": "+234 903 596 6388",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "No 7, Commercial Layout, Abattoir Rd, behind Airforce Primary School",
+            "addressLocality": "Jos",
+            "addressRegion": "Plateau",
+            "postalCode": "930103",
+            "addressCountry": "NG"
+          },
+          "areaServed": [
+            { "@type": "Country", "name": "Nigeria" },
+            { "@type": "City", "name": "Lagos" },
+            { "@type": "City", "name": "Abuja" },
+            { "@type": "City", "name": "Port Harcourt" },
+            { "@type": "City", "name": "Jos" }
+          ],
+          "knowsAbout": ["Solar Power", "Solar Inverters", "Smart Locks", "Home Automation", "IoT", "Renewable Energy", "Smart Home", "Biometric Security"],
+          "sameAs": [
+            "https://www.instagram.com/tiogasmartlife_system",
+            "https://www.facebook.com/profile.php?id=61583313523225",
+            "https://www.linkedin.com/company/tiogatechnologies/",
+            "https://www.tiktok.com/@tiogatechnologies"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://tiogatechnologies.com/#website",
+          "url": "https://tiogatechnologies.com",
+          "name": "Tioga Technologies",
+          "description": "Solar power, smart locks and home automation across Nigeria.",
+          "publisher": { "@id": "https://tiogatechnologies.com/#organization" },
+          "inLanguage": "en-NG",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://tiogatechnologies.com/catalog?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://tiogatechnologies.com/#business",
+          "name": "Tioga Technologies",
+          "url": "https://tiogatechnologies.com",
+          "logo": "https://tiogatechnologies.com/favicon.png",
+          "image": "https://tiogatechnologies.com/favicon.png",
+          "description": "Solar power, smart locks and home automation in Nigeria.",
+          "telephone": "+234 903 596 6388",
+          "email": "sales@tiogatechnologies.com",
+          "priceRange": "₦₦",
+          "parentOrganization": { "@id": "https://tiogatechnologies.com/#organization" },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "No 7, Commercial Layout, Abattoir Rd, behind Airforce Primary School",
+            "addressLocality": "Jos",
+            "addressRegion": "Plateau",
+            "postalCode": "930103",
+            "addressCountry": "NG"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 9.8965,
+            "longitude": 8.8583
+          },
+          "openingHoursSpecification": [{
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+            "opens": "10:00",
+            "closes": "18:00"
+          }],
+          "areaServed": ["Lagos", "Abuja", "Port Harcourt", "Jos", "Nigeria"],
+          "sameAs": [
+            "https://www.instagram.com/tiogasmartlife_system",
+            "https://www.facebook.com/profile.php?id=61583313523225",
+            "https://www.linkedin.com/company/tiogatechnologies/",
+            "https://www.tiktok.com/@tiogatechnologies"
+          ]
+        }
+      ]
     }
     </script>
+
     
   </head>
 
