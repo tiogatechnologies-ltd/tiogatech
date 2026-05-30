@@ -169,7 +169,7 @@ const Stepper = ({ value, onChange, min = 0 }: { value: number; onChange: (n: nu
 const Customize = () => {
   const { type, id } = useParams<{ type: string; id: string }>();
   const navigate = useNavigate();
-  const { add, open } = useCart();
+  const { add } = useCart();
   const { pkg, loading, error } = useLoadPackage(type, id);
 
   const [items, setItems] = useState<LineItem[]>([]);
@@ -238,7 +238,6 @@ const Customize = () => {
       category: pkg.type,
     });
     trackConversion("cart_add", { source: "customize", type: pkg.type, id: pkg.id });
-    open();
   };
 
   return (
@@ -391,10 +390,7 @@ const Customize = () => {
                       <MessageCircle size={16} /> Send to WhatsApp
                     </button>
                     <button
-                      onClick={() => {
-                        trackConversion("ai_recommend_open", { source: "customize", type: pkg.type, id: pkg.id });
-                        openLeadForm(`customize_${pkg.type}_${pkg.id}`);
-                      }}
+                      onClick={() => openLeadForm(`customize_${pkg.type}_${pkg.id}`)}
                       className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent text-accent-foreground hover:brightness-110 active:scale-[0.98] transition-all px-5 py-3 text-sm font-semibold shadow-md shadow-accent/30"
                     >
                       <Sparkles size={16} /> Get AI Recommendation
