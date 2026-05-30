@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Check, ArrowRight, Sparkles, Music, Home, ShoppingBag } from "lucide-react";
 import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/useHomeAutomationPackages";
 import { openLeadForm } from "@/components/SiteHeader";
@@ -98,12 +99,12 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
         >
           <ShoppingBag size={13} /> Add to Cart
         </button>
-        <button
-          onClick={() => openLeadForm(`home_automation_${p.tier.toLowerCase()}`)}
+        <Link
+          to={`/customize/automation/${p.id}`}
           className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
         >
           Customize <ArrowRight size={13} />
-        </button>
+        </Link>
       </div>
       <p className="text-[10px] text-muted-foreground text-center mt-2">
         <Check size={10} className="inline" /> Site survey & installation included

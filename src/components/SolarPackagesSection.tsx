@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Battery, Sun, Zap, Cpu, Check, ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
 import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
@@ -102,12 +103,12 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
         >
           <ShoppingBag size={13} /> Add to Cart
         </button>
-        <button
-          onClick={() => openLeadForm(`solar_package_${p.package_number}`)}
+        <Link
+          to={`/customize/solar/${p.id}`}
           className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
         >
           Customize <ArrowRight size={13} />
-        </button>
+        </Link>
       </div>
       <p className="text-[10px] text-muted-foreground text-center mt-2">
         <Check size={10} className="inline" /> Valid 2 weeks · Installation included

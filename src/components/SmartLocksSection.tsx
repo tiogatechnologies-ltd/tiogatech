@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Check, ArrowRight, Lock, Sparkles, KeyRound, Building2, ShoppingBag } from "lucide-react";
 import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
@@ -107,12 +108,12 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
         >
           <ShoppingBag size={13} /> Add to Cart
         </button>
-        <button
-          onClick={() => openLeadForm(`smart_lock_${p.model || p.name}`)}
+        <Link
+          to={`/customize/lock/${p.id}`}
           className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
         >
-          Quote <ArrowRight size={13} />
-        </button>
+          Customize <ArrowRight size={13} />
+        </Link>
       </div>
       <p className="text-[10px] text-muted-foreground text-center mt-2">
         <Check size={10} className="inline" /> 1-year warranty · Pro installation included

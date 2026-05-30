@@ -35,6 +35,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost.tsx"));
 const Privacy = lazy(() => import("./pages/Privacy.tsx"));
 const Terms = lazy(() => import("./pages/Terms.tsx"));
 const Packages = lazy(() => import("./pages/Packages.tsx"));
+const Customize = lazy(() => import("./pages/Customize.tsx"));
 const Career = lazy(() => import("./pages/Career.tsx"));
 const Jobs = lazy(() => import("./pages/Jobs.tsx"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon.tsx"));
@@ -108,6 +109,8 @@ const AnimatedRoutes = () => {
           <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
           <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
           <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
+          <Route path="/customize/:type/:id" element={<RouteFade><Customize /></RouteFade>} />
+
           <Route path="/career" element={<RouteFade><Career /></RouteFade>} />
           <Route path="/careers/jobs" element={<RouteFade><Jobs /></RouteFade>} />
           <Route path="/coming-soon" element={<RouteFade><ComingSoon /></RouteFade>} />
