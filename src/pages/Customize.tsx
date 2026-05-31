@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Sparkles, MessageCircle, Minus, Plus, Loader2, Check, ShoppingBag } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, MessageCircle, Minus, Plus, Loader2, Check, ShoppingBag, Info } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
@@ -18,11 +18,15 @@ const ngn = (n: number | null | undefined) =>
 
 type LineItem = {
   key: string;
-  label: string;
-  detail: string;
+  group: "core" | "addon";
+  label: string;         // e.g. "Solar Panel"
+  detail: string;        // e.g. "450W Panel"
   unitPrice: number | null;
   qty: number;
-  minQty?: number;
+  defaultQty: number;
+  minQty: number;
+  unit?: string;         // e.g. "panel", "battery"
+  note?: string;
 };
 
 type LoadedPkg = {
@@ -30,17 +34,169 @@ type LoadedPkg = {
   id: string;
   title: string;
   subtitle: string;
-  image: string | null;
   basePrice: number | null;
   items: LineItem[];
   extras: { label: string; price: number | null }[];
   raw: any;
 };
 
-const parseLeadingQty = (s: string | null | undefined): number => {
-  if (!s) return 1;
-  const m = s.match(/^\s*(\d+)\s*[xX×]/);
-  return m ? Math.max(1, parseInt(m[1], 10)) : 1;
+// Parse "450W Panels x 8" → { name: "450W Panel", qty: 8 }
+// Also handles "5kWh 24/48V x 1", "60Amp MPPT" (qty 1), "Hybrid 3.5KVA 24V (Transformer-Based)"
+const parseSpec = (s: string | null | undefined): { name: string; qty: number } => {
+  if (!s) return { name: "", qty: 1 };
+  const trimmed = s.trim();
+  const m = trimmed.match(/^(.*?)\s*[xX×]\s*(\d+)\s*$/);
+  if (m) {
+    let name = m[1].trim();
+    // Singularize trailing "Panels" → "Panel", "Batteries" → "Battery"
+    name = name.replace(/Panels$/i, "Panel").replace(/Batteries$/i, "Battery");
+    return { name, qty: Math.max(1, parseInt(m[2], 10)) };
+  }
+  return { name: trimmed, qty: 1 };
+};
+
+const buildSolarItems = (d: any): LineItem[] => {
+  const items: LineItem[] = [];
+
+  const inv = parseSpec(d.inverter);
+  items.push({
+    key: "inverter",
+    group: "core",
+    label: "Inverter",
+    detail: inv.name,
+    unitPrice: d.inverter_price != null && inv.qty ? d.inverter_price / inv.qty : d.inverter_price,
+    qty: inv.qty,
+    defaultQty: inv.qty,
+    minQty: 1,
+    unit: "inverter",
+  });
+
+  const pan = parseSpec(d.solar_panels);
+  items.push({
+    key: "panels",
+    group: "core",
+    label: "Solar Panels",
+    detail: pan.name,
+    unitPrice: d.solar_panels_price != null && pan.qty ? d.solar_panels_price / pan.qty : d.solar_panels_price,
+    qty: pan.qty,
+    defaultQty: pan.qty,
+    minQty: 0,
+    unit: "panel",
+    note: "Add more to generate extra daytime power, or reduce if your roof space is limited.",
+  });
+
+  const bat = parseSpec(d.battery);
+  items.push({
+    key: "battery",
+    group: "core",
+    label: "Battery Storage",
+    detail: bat.name,
+    unitPrice: d.battery_price != null && bat.qty ? d.battery_price / bat.qty : d.battery_price,
+    qty: bat.qty,
+    defaultQty: bat.qty,
+    minQty: 1,
+    unit: "battery",
+    note: "Add more batteries for longer night-time backup.",
+  });
+
+  if (d.charge_controller && d.charge_controller.toUpperCase() !== "NIL") {
+    const cc = parseSpec(d.charge_controller);
+    items.push({
+      key: "controller",
+      group: "core",
+      label: "Charge Controller",
+      detail: cc.name,
+      unitPrice: d.charge_controller_price != null && cc.qty ? d.charge_controller_price / cc.qty : d.charge_controller_price,
+      qty: cc.qty,
+      defaultQty: cc.qty,
+      minQty: 1,
+      unit: "controller",
+    });
+  }
+
+  return items;
+};
+
+const buildLockItems = (d: any): LineItem[] => {
+  const items: LineItem[] = [
+    {
+      key: "lock_unit",
+      group: "core",
+      label: d.name,
+      detail: d.tagline || d.series || "Smart lock unit",
+      unitPrice: d.price,
+      qty: 1,
+      defaultQty: 1,
+      minQty: 1,
+      unit: "unit",
+      note: "Increase quantity if you have multiple doors.",
+    },
+  ];
+
+  const features: string[] = Array.isArray(d.features) ? d.features : [];
+  features.forEach((f, i) => {
+    items.push({
+      key: `feature_${i}`,
+      group: "addon",
+      label: f,
+      detail: "Included feature — adjust if you need extra capacity",
+      unitPrice: null,
+      qty: 1,
+      defaultQty: 1,
+      minQty: 0,
+      unit: "unit",
+    });
+  });
+
+  return items;
+};
+
+const buildAutomationItems = (d: any): LineItem[] => {
+  const items: LineItem[] = [
+    {
+      key: "package_base",
+      group: "core",
+      label: `${d.name} Package — Base Setup`,
+      detail: d.description?.slice(0, 120) || `${d.tier} whole-home automation`,
+      unitPrice: d.price,
+      qty: 1,
+      defaultQty: 1,
+      minQty: 1,
+      unit: "package",
+    },
+  ];
+
+  const features: string[] = Array.isArray(d.features) ? d.features : [];
+  features.forEach((f, i) => {
+    items.push({
+      key: `feature_${i}`,
+      group: "addon",
+      label: f,
+      detail: "Smart device included — increase qty for extra rooms or zones",
+      unitPrice: null,
+      qty: 1,
+      defaultQty: 1,
+      minQty: 0,
+      unit: "zone",
+    });
+  });
+
+  const ent: string[] = Array.isArray(d.entertainment) ? d.entertainment : [];
+  ent.forEach((f, i) => {
+    items.push({
+      key: `ent_${i}`,
+      group: "addon",
+      label: f,
+      detail: "Entertainment add-on — adjust to taste",
+      unitPrice: null,
+      qty: 1,
+      defaultQty: 1,
+      minQty: 0,
+      unit: "unit",
+    });
+  });
+
+  return items;
 };
 
 const useLoadPackage = (type: string | undefined, id: string | undefined) => {
@@ -87,21 +243,13 @@ const useLoadPackage = (type: string | undefined, id: string | undefined) => {
           type: "solar",
           id: d.id,
           title: `Solar Package #${d.package_number} — ${d.inverter}`,
-          subtitle: d.tagline || (d.battery_type === "lithium" ? "Lithium LiFePO4" : "Tubular / Gel"),
-          image: null,
+          subtitle: d.tagline || (d.battery_type === "lithium" ? "Lithium LiFePO4 system" : "Tubular / Gel system"),
           basePrice: d.total_price,
-          items: [
-            { key: "inverter", label: "Inverter", detail: d.inverter, unitPrice: d.inverter_price, qty: parseLeadingQty(d.inverter) },
-            { key: "panels", label: "Solar Panels", detail: d.solar_panels, unitPrice: d.solar_panels_price, qty: parseLeadingQty(d.solar_panels) },
-            { key: "battery", label: "Battery", detail: d.battery, unitPrice: d.battery_price, qty: parseLeadingQty(d.battery) },
-            ...(d.charge_controller && d.charge_controller !== "NIL"
-              ? [{ key: "controller", label: "Charge Controller", detail: d.charge_controller, unitPrice: d.charge_controller_price, qty: parseLeadingQty(d.charge_controller) }]
-              : []),
-          ],
+          items: buildSolarItems(d),
           extras: [
             { label: "Accessories & cabling", price: d.accessories_price },
             { label: "Installation & setup", price: d.setup_fee },
-          ],
+          ].filter((e) => e.price != null),
           raw: d,
         });
       } else if (type === "lock") {
@@ -110,11 +258,8 @@ const useLoadPackage = (type: string | undefined, id: string | undefined) => {
           id: d.id,
           title: d.name,
           subtitle: d.series || d.model || "STAMA Smart Lock",
-          image: null,
           basePrice: d.price,
-          items: [
-            { key: "unit", label: d.name, detail: d.tagline || d.model || "Smart lock unit", unitPrice: d.price, qty: 1, minQty: 1 },
-          ],
+          items: buildLockItems(d),
           extras: [],
           raw: d,
         });
@@ -124,11 +269,8 @@ const useLoadPackage = (type: string | undefined, id: string | undefined) => {
           id: d.id,
           title: `${d.name} — Home Automation`,
           subtitle: d.tagline || d.tier,
-          image: null,
           basePrice: d.price,
-          items: [
-            { key: "package", label: `${d.name} Package`, detail: d.description?.slice(0, 90) || "Whole-home automation tier", unitPrice: d.price, qty: 1, minQty: 1 },
-          ],
+          items: buildAutomationItems(d),
           extras: [],
           raw: d,
         });
@@ -166,6 +308,54 @@ const Stepper = ({ value, onChange, min = 0 }: { value: number; onChange: (n: nu
   </div>
 );
 
+const ItemCard = ({ item, onChange, index }: { item: LineItem; onChange: (n: number) => void; index: number }) => {
+  const changed = item.qty !== item.defaultQty;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: Math.min(index * 0.03, 0.2) }}
+      className={`rounded-2xl border bg-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4 transition-colors ${
+        changed ? "border-primary/50 ring-1 ring-primary/20" : "border-border hover:border-primary/30"
+      }`}
+    >
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{item.label}</p>
+          {changed && (
+            <span className="text-[9px] uppercase tracking-wider font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+              {item.qty > item.defaultQty ? `+${item.qty - item.defaultQty}` : `${item.qty - item.defaultQty}`}
+            </span>
+          )}
+        </div>
+        <p className="font-semibold text-foreground leading-snug">{item.detail}</p>
+        {item.unitPrice != null && (
+          <p className="text-xs text-muted-foreground mt-1">
+            {ngn(item.unitPrice)} per {item.unit ?? "unit"}
+          </p>
+        )}
+        {item.unitPrice == null && item.group === "addon" && (
+          <p className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
+            <Info size={11} /> Quoted with package
+          </p>
+        )}
+        {item.note && (
+          <p className="text-[11px] text-muted-foreground mt-1.5 italic">{item.note}</p>
+        )}
+      </div>
+      <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+        <Stepper value={item.qty} onChange={onChange} min={item.minQty} />
+        <div className="text-right min-w-[90px]">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Subtotal</p>
+          <p className="font-display font-bold text-foreground tabular-nums">
+            {item.unitPrice != null ? ngn(item.unitPrice * item.qty) : "—"}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Customize = () => {
   const { type, id } = useParams<{ type: string; id: string }>();
   const navigate = useNavigate();
@@ -178,6 +368,9 @@ const Customize = () => {
   useEffect(() => {
     if (pkg) setItems(pkg.items);
   }, [pkg]);
+
+  const coreItems = useMemo(() => items.filter((i) => i.group === "core"), [items]);
+  const addonItems = useMemo(() => items.filter((i) => i.group === "addon"), [items]);
 
   const itemsSubtotal = useMemo(
     () => items.reduce((sum, it) => sum + (it.unitPrice ? it.unitPrice * it.qty : 0), 0),
@@ -201,11 +394,23 @@ const Customize = () => {
       `*${pkg.title}*`,
       `(${pkg.subtitle})`,
       ``,
-      `Items I want:`,
-      ...items
+      `My configuration:`,
+      ...coreItems
         .filter((i) => i.qty > 0)
-        .map((i) => `• ${i.qty} × ${i.label} — ${i.detail}${i.unitPrice ? ` (${ngn(i.unitPrice * i.qty)})` : ""}`),
+        .map((i) => {
+          const diff = i.qty !== i.defaultQty ? ` [changed from ${i.defaultQty}]` : "";
+          return `• ${i.qty} × ${i.detail}${i.unitPrice ? ` — ${ngn(i.unitPrice * i.qty)}` : ""}${diff}`;
+        }),
     ];
+
+    const adjustedAddons = addonItems.filter((i) => i.qty !== i.defaultQty || i.qty > 1);
+    if (adjustedAddons.length) {
+      lines.push("", "Add-on adjustments:");
+      adjustedAddons.forEach((i) =>
+        lines.push(`• ${i.qty} × ${i.label}${i.qty !== i.defaultQty ? ` [was ${i.defaultQty}]` : ""}`)
+      );
+    }
+
     if (pkg.extras.length) {
       lines.push("", "Included:");
       pkg.extras.forEach((e) => lines.push(`• ${e.label}${e.price ? ` (${ngn(e.price)})` : ""}`));
@@ -224,9 +429,9 @@ const Customize = () => {
 
   const handleAddToCart = () => {
     if (!pkg) return;
-    const summary = items
+    const summary = coreItems
       .filter((i) => i.qty > 0)
-      .map((i) => `${i.qty}× ${i.label}`)
+      .map((i) => `${i.qty}× ${i.detail}`)
       .join(", ");
     add({
       refId: pkg.id,
@@ -234,25 +439,29 @@ const Customize = () => {
       name: `${pkg.title} (Custom: ${summary})`,
       price: ngn(total),
       numericPrice: total,
-      image: pkg.image ?? "",
+      image: "",
       category: pkg.type,
     });
     trackConversion("cart_add", { source: "customize", type: pkg.type, id: pkg.id });
+  };
+
+  const resetToDefault = () => {
+    setItems((arr) => arr.map((i) => ({ ...i, qty: i.defaultQty })));
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <SEO
         title={pkg ? `Customize: ${pkg.title}` : "Customize your package"}
-        description="Adjust quantities for inverters, panels, batteries and accessories — then send your custom build to our WhatsApp or AI advisor."
+        description="Adjust quantities for inverters, panels, batteries, smart-lock features and more — then send your exact spec to our team."
         path={`/customize/${type}/${id}`}
       />
       <SiteHeader />
 
       <PageHero
         eyebrow="Customize"
-        title="Tailor this package to your needs"
-        subtitle="Adjust quantities, add notes, then send the exact spec straight to our team on WhatsApp or get an AI-tuned recommendation."
+        title="Tailor every component to your needs"
+        subtitle="Increase or decrease quantities for each part of the package. Your total updates live, and we'll confirm the final spec with you."
         backgroundImage={bgCustomize}
         backgroundAlt="Tailor your solar, security or automation package"
       >
@@ -281,7 +490,6 @@ const Customize = () => {
 
           {pkg && !loading && (
             <div className="grid lg:grid-cols-[1fr_360px] gap-8">
-              {/* Left: configurator */}
               <div>
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
@@ -294,40 +502,47 @@ const Customize = () => {
                     {pkg.title}
                   </h1>
                   <p className="text-sm text-muted-foreground">
-                    Use the steppers below to choose exactly how many of each component you need. Your total updates live.
+                    Use the steppers below to choose exactly how many of each component you need.
+                    {coreItems.some((i) => i.unitPrice) && " Your total updates live."}
                   </p>
                 </motion.div>
 
-                <div className="space-y-4">
-                  {items.map((it, i) => (
-                    <motion.div
-                      key={it.key}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.04 }}
-                      className="rounded-2xl border border-border bg-card p-5 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-primary/30 transition-colors"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{it.label}</p>
-                        <p className="font-semibold text-foreground">{it.detail}</p>
-                        {it.unitPrice != null && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Unit price: <span className="text-foreground font-medium">{ngn(it.unitPrice)}</span>
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex items-center justify-between sm:justify-end gap-4">
-                        <Stepper value={it.qty} onChange={(n) => setQty(it.key, n)} min={it.minQty ?? 0} />
-                        <div className="text-right min-w-[90px]">
-                          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Subtotal</p>
-                          <p className="font-display font-bold text-foreground">
-                            {it.unitPrice ? ngn(it.unitPrice * it.qty) : "—"}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                {coreItems.length > 0 && (
+                  <div className="mb-8">
+                    <div className="flex items-baseline justify-between mb-3 px-1">
+                      <h2 className="text-sm font-bold uppercase tracking-wider text-foreground">Core components</h2>
+                      <button
+                        onClick={resetToDefault}
+                        className="text-[11px] text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        Reset to default
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {coreItems.map((it, i) => (
+                        <ItemCard key={it.key} item={it} index={i} onChange={(n) => setQty(it.key, n)} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {addonItems.length > 0 && (
+                  <div className="mb-6">
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-foreground mb-1 px-1">
+                      {pkg.type === "lock" ? "Features & capacity" : "Add-ons & devices"}
+                    </h2>
+                    <p className="text-xs text-muted-foreground mb-3 px-1">
+                      {pkg.type === "lock"
+                        ? "These features come with the lock. Increase any quantity to request extra capacity or additional units."
+                        : "Devices included with the package. Adjust quantities to match your home."}
+                    </p>
+                    <div className="space-y-3">
+                      {addonItems.map((it, i) => (
+                        <ItemCard key={it.key} item={it} index={i} onChange={(n) => setQty(it.key, n)} />
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {pkg.extras.length > 0 && (
                   <div className="mt-6 rounded-2xl bg-muted/40 border border-border p-5">
@@ -354,32 +569,38 @@ const Customize = () => {
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     rows={3}
-                    placeholder="e.g. I'd like to add a second battery, or my house is 2-storey…"
+                    placeholder="e.g. I want the lock fitted on a metal door, or my house has 3 bedrooms upstairs…"
                     className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                   />
                 </div>
               </div>
 
-              {/* Right: sticky summary */}
+              {/* Sticky summary */}
               <aside className="lg:sticky lg:top-24 self-start">
                 <div className="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-elevated)]">
                   <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Your custom total</p>
-                  <p className="text-4xl font-display font-bold text-foreground mb-1">{ngn(total)}</p>
+                  <p className="text-4xl font-display font-bold text-foreground mb-1 tabular-nums">{ngn(total)}</p>
                   <p className="text-xs text-muted-foreground mb-5">
                     Final pricing confirmed after a quick site review.
                   </p>
 
-                  <div className="space-y-2 text-xs mb-5 max-h-48 overflow-auto pr-1">
-                    {items
+                  <div className="space-y-2 text-xs mb-5 max-h-56 overflow-auto pr-1">
+                    {coreItems
                       .filter((i) => i.qty > 0)
                       .map((i) => (
                         <div key={i.key} className="flex justify-between gap-3">
-                          <span className="text-muted-foreground truncate">{i.qty}× {i.label}</span>
+                          <span className="text-muted-foreground truncate">{i.qty}× {i.detail}</span>
                           <span className="text-foreground tabular-nums shrink-0">
                             {i.unitPrice ? ngn(i.unitPrice * i.qty) : "—"}
                           </span>
                         </div>
                       ))}
+                    {addonItems.filter((i) => i.qty !== i.defaultQty).map((i) => (
+                      <div key={i.key} className="flex justify-between gap-3 text-primary">
+                        <span className="truncate">{i.qty}× {i.label}</span>
+                        <span className="tabular-nums shrink-0">adj.</span>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="space-y-2.5">
