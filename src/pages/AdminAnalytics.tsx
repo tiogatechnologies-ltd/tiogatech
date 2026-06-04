@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from "recharts";
-import { TrendingUp, TrendingDown, Users, Target, DollarSign, MapPin, Calendar, Filter, ArrowUpRight, ArrowDownRight, Globe, Monitor, Smartphone, Tablet, Eye, Download } from "lucide-react";
+import { TrendingUp, TrendingDown, Users, Target, DollarSign, MapPin, Calendar, Filter, ArrowUpRight, ArrowDownRight, Globe, Monitor, Smartphone, Tablet, Eye, Download, Activity, AlertTriangle, Gauge } from "lucide-react";
 
 interface Lead {
   id: string;
@@ -43,6 +43,14 @@ interface ProductClick {
   created_at: string;
   product_name?: string;
 }
+interface ConversionRow {
+  id: string;
+  event_type: string;
+  page_path: string | null;
+  metadata: any;
+  created_at: string;
+}
+
 
 const COLORS = [
   "hsl(var(--primary))",
@@ -83,19 +91,22 @@ const AdminAnalytics = () => {
   const [productClicks, setProductClicks] = useState<ProductClick[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState(30);
-  const [activeTab, setActiveTab] = useState<"leads" | "traffic" | "products">("leads");
+  const [perfEvents, setPerfEvents] = useState<ConversionRow[]>([]);
+  const [activeTab, setActiveTab] = useState<"leads" | "traffic" | "products" | "performance">("leads");
 
   useEffect(() => {
     const fetchAll = async () => {
-      const [leadsRes, productsRes, pvRes, clicksRes] = await Promise.all([
+      const [leadsRes, productsRes, pvRes, clicksRes, perfRes] = await Promise.all([
         supabase.from("leads").select("*").order("created_at", { ascending: true }),
         supabase.from("products").select("id, name, category, series, price, is_active"),
         supabase.from("page_views").select("id, session_id, page_path, device_type, created_at").order("created_at", { ascending: true }),
         supabase.from("product_clicks").select("product_id, created_at").order("created_at", { ascending: false }).limit(500),
+        supabase.from("conversions").select("id, event_type, page_path, metadata, created_at").in("event_type", ["vitals", "error"]).order("created_at", { ascending: false }).limit(2000),
       ]);
       setLeads((leadsRes.data as Lead[]) ?? []);
       setProducts((productsRes.data as Product[]) ?? []);
       setPageViews((pvRes.data as PageView[]) ?? []);
+      setPerfEvents((perfRes.data as ConversionRow[]) ?? []);
 
       // Enrich clicks with product names
       const prods = (productsRes.data || []) as Product[];
