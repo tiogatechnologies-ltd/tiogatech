@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2 } from "lucide-react";
+import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, CreditCard } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
@@ -19,7 +19,7 @@ const leadSchema = z.object({
 const CartDrawer = () => {
   const { items, open, setOpen, remove, updateQty, clear, count } = useCart();
   const [step, setStep] = useState<"cart" | "checkout">("cart");
-  const [mode, setMode] = useState<"whatsapp" | "lead">("whatsapp");
+  const [mode, setMode] = useState<"whatsapp" | "lead" | "paystack">("whatsapp");
   const [form, setForm] = useState({ full_name: "", phone: "", email: "", location: "" });
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -105,7 +105,7 @@ const CartDrawer = () => {
               {items.map((i) => (
                 <div key={i.id} className="flex gap-3 rounded-2xl border border-border bg-card p-3">
                   {i.image ? (
-                    <img src={i.image} alt="" className="h-16 w-16 rounded-xl object-cover bg-muted shrink-0" />
+                    <img src={i.image} alt="" className="h-16 w-16 rounded-xl object-cover bg-muted shrink-0"  loading="lazy" decoding="async" />
                   ) : (
                     <div className="h-16 w-16 rounded-xl bg-muted shrink-0 grid place-items-center text-muted-foreground text-xs">
                       {i.type === "package" ? "Pkg" : "Item"}
@@ -139,16 +139,21 @@ const CartDrawer = () => {
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">How would you like to order?</p>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   <button onClick={() => setMode("whatsapp")} className={`rounded-xl border p-3 text-left ${mode === "whatsapp" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                     <MessageCircle size={16} className="text-primary mb-1" />
                     <p className="text-xs font-bold text-foreground">WhatsApp</p>
-                    <p className="text-[10px] text-muted-foreground">Send order on chat</p>
+                    <p className="text-[10px] text-muted-foreground">Send on chat</p>
                   </button>
                   <button onClick={() => setMode("lead")} className={`rounded-xl border p-3 text-left ${mode === "lead" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                     <Send size={16} className="text-primary mb-1" />
-                    <p className="text-xs font-bold text-foreground">Request Callback</p>
-                    <p className="text-[10px] text-muted-foreground">We will call you back</p>
+                    <p className="text-xs font-bold text-foreground">Callback</p>
+                    <p className="text-[10px] text-muted-foreground">We call back</p>
+                  </button>
+                  <button onClick={() => setMode("paystack")} className={`rounded-xl border p-3 text-left relative ${mode === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                    <CreditCard size={16} className="text-primary mb-1" />
+                    <p className="text-xs font-bold text-foreground">Pay Online</p>
+                    <p className="text-[10px] text-muted-foreground">Paystack — soon</p>
                   </button>
                 </div>
               </div>
@@ -173,6 +178,14 @@ const CartDrawer = () => {
               {mode === "whatsapp" ? (
                 <button onClick={goWhatsApp} className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all">
                   <MessageCircle size={14} /> Send Order on WhatsApp
+                </button>
+              ) : mode === "paystack" ? (
+                <button
+                  disabled
+                  title="Online payment will be enabled once Paystack is configured."
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground opacity-60 cursor-not-allowed"
+                >
+                  <CreditCard size={14} /> Pay with Paystack (coming soon)
                 </button>
               ) : (
                 <button onClick={submitLead} disabled={submitting} className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all disabled:opacity-60">
