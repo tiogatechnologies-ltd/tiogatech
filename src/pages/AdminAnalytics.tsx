@@ -828,6 +828,123 @@ const AdminAnalytics = () => {
               </div>
             </div>
           )}
+
+          {/* ===== PERFORMANCE TAB ===== */}
+          {activeTab === "performance" && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {perfKpis.map(kpi => (
+                  <div key={kpi.label} className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-muted-foreground">{kpi.label}</span>
+                      <kpi.icon size={16} className="text-primary" />
+                    </div>
+                    <p className="text-2xl font-display font-bold text-card-foreground">{kpi.value}</p>
+                    <p className="text-xs text-muted-foreground capitalize">{kpi.sub}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Core Web Vitals by Date</h3>
+                  <div className="h-64">
+                    {vitalsTrend.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={vitalsTrend}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                          <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                          <Tooltip contentStyle={tooltipStyle} />
+                          <Legend wrapperStyle={{ fontSize: 11 }} />
+                          <Line type="monotone" dataKey="LCP" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} name="LCP (ms)" />
+                          <Line type="monotone" dataKey="INP" stroke="#6366f1" strokeWidth={2} dot={false} name="INP (ms)" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No vitals captured yet</p>}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Errors Over Time</h3>
+                  <div className="h-64">
+                    {errorTrend.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={errorTrend}>
+                          <defs>
+                            <linearGradient id="errGrad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.35} />
+                              <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                          <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
+                          <Tooltip contentStyle={tooltipStyle} />
+                          <Area type="monotone" dataKey="errors" stroke="#ef4444" fill="url(#errGrad)" strokeWidth={2} />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No errors recorded — nice!</p>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Top Failing Routes</h3>
+                  <div className="h-64">
+                    {topFailingRoutes.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={topFailingRoutes} layout="vertical">
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
+                          <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={140} />
+                          <Tooltip contentStyle={tooltipStyle} />
+                          <Bar dataKey="value" fill="#ef4444" radius={[0, 6, 6, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No errors per route</p>}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Slowest Pages (LCP)</h3>
+                  <div className="h-64">
+                    {worstLcpRoutes.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={worstLcpRoutes} layout="vertical">
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                          <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={140} />
+                          <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${v} ms`} />
+                          <Bar dataKey="value" fill="hsl(var(--primary))" radius={[0, 6, 6, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No LCP samples yet</p>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <h3 className="font-display font-bold text-card-foreground mb-4">Top Failing Components & Messages</h3>
+                {topFailingComponents.length > 0 ? (
+                  <div className="space-y-2">
+                    {topFailingComponents.map((c, i) => (
+                      <div key={c.name} className="flex items-center justify-between gap-3 text-sm border-b border-border/40 pb-2 last:border-0">
+                        <span className="text-muted-foreground truncate flex-1 font-mono text-xs">{c.name}</span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
+                            <div className="h-full rounded-full bg-red-500" style={{ width: `${(c.value / (topFailingComponents[0]?.value || 1)) * 100}%` }} />
+                          </div>
+                          <span className="text-xs font-medium text-card-foreground w-8 text-right">{c.value}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : <p className="text-sm text-muted-foreground">No component-level errors detected</p>}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </AdminLayout>
