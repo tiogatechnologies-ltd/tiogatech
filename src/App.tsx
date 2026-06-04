@@ -15,6 +15,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import RouteFade from "@/components/RouteFade";
 import LeadFormHost from "@/components/LeadFormHost";
 import { CartProvider } from "@/contexts/CartContext";
+import PreloadCritical from "@/components/PreloadCritical";
 
 // Eager: above-the-fold landing page only (fastest first paint)
 import Index from "./pages/Index.tsx";
@@ -157,6 +158,7 @@ const App = () => (
         <AuthProvider>
           <CartProvider>
             <PageTracker />
+            <PreloadCritical />
             <ScrollToTop />
             <SmoothScroll />
             <BackgroundAura />

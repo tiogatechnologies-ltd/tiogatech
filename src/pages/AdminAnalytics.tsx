@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from "recharts";
-import { TrendingUp, TrendingDown, Users, Target, DollarSign, MapPin, Calendar, Filter, ArrowUpRight, ArrowDownRight, Globe, Monitor, Smartphone, Tablet, Eye, Download } from "lucide-react";
+import { TrendingUp, TrendingDown, Users, Target, DollarSign, MapPin, Calendar, Filter, ArrowUpRight, ArrowDownRight, Globe, Monitor, Smartphone, Tablet, Eye, Download, Activity, AlertTriangle, Gauge } from "lucide-react";
 
 interface Lead {
   id: string;
@@ -43,6 +43,14 @@ interface ProductClick {
   created_at: string;
   product_name?: string;
 }
+interface ConversionRow {
+  id: string;
+  event_type: string;
+  page_path: string | null;
+  metadata: any;
+  created_at: string;
+}
+
 
 const COLORS = [
   "hsl(var(--primary))",
@@ -83,19 +91,22 @@ const AdminAnalytics = () => {
   const [productClicks, setProductClicks] = useState<ProductClick[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState(30);
-  const [activeTab, setActiveTab] = useState<"leads" | "traffic" | "products">("leads");
+  const [perfEvents, setPerfEvents] = useState<ConversionRow[]>([]);
+  const [activeTab, setActiveTab] = useState<"leads" | "traffic" | "products" | "performance">("leads");
 
   useEffect(() => {
     const fetchAll = async () => {
-      const [leadsRes, productsRes, pvRes, clicksRes] = await Promise.all([
+      const [leadsRes, productsRes, pvRes, clicksRes, perfRes] = await Promise.all([
         supabase.from("leads").select("*").order("created_at", { ascending: true }),
         supabase.from("products").select("id, name, category, series, price, is_active"),
         supabase.from("page_views").select("id, session_id, page_path, device_type, created_at").order("created_at", { ascending: true }),
         supabase.from("product_clicks").select("product_id, created_at").order("created_at", { ascending: false }).limit(500),
+        supabase.from("conversions").select("id, event_type, page_path, metadata, created_at").in("event_type", ["vitals", "error"]).order("created_at", { ascending: false }).limit(2000),
       ]);
       setLeads((leadsRes.data as Lead[]) ?? []);
       setProducts((productsRes.data as Product[]) ?? []);
       setPageViews((pvRes.data as PageView[]) ?? []);
+      setPerfEvents((perfRes.data as ConversionRow[]) ?? []);
 
       // Enrich clicks with product names
       const prods = (productsRes.data || []) as Product[];
@@ -338,10 +349,102 @@ const AdminAnalytics = () => {
     URL.revokeObjectURL(url);
   };
 
+  // ===== PERFORMANCE / ERROR ANALYTICS =====
+  const filteredPerf = useMemo(() => filterByPeriod(perfEvents), [perfEvents, period]);
+  const vitals = useMemo(() => filteredPerf.filter(e => e.event_type === "vitals"), [filteredPerf]);
+  const errors = useMemo(() => filteredPerf.filter(e => e.event_type === "error"), [filteredPerf]);
+
+  // Vitals trend by date (avg per metric per day)
+  const vitalsTrend = useMemo(() => {
+    const map: Record<string, { LCP: number[]; INP: number[]; CLS: number[] }> = {};
+    vitals.forEach(v => {
+      const d = new Date(v.created_at);
+      const key = `${d.getMonth() + 1}/${d.getDate()}`;
+      if (!map[key]) map[key] = { LCP: [], INP: [], CLS: [] };
+      const m = v.metadata?.metric as "LCP" | "INP" | "CLS" | undefined;
+      const val = Number(v.metadata?.value);
+      if (m && map[key][m] && !Number.isNaN(val)) map[key][m].push(val);
+    });
+    return Object.entries(map).map(([date, vals]) => ({
+      date,
+      LCP: vals.LCP.length ? Math.round(vals.LCP.reduce((a, b) => a + b, 0) / vals.LCP.length) : 0,
+      INP: vals.INP.length ? Math.round(vals.INP.reduce((a, b) => a + b, 0) / vals.INP.length) : 0,
+      CLS: vals.CLS.length ? +(vals.CLS.reduce((a, b) => a + b, 0) / vals.CLS.length).toFixed(3) : 0,
+    }));
+  }, [vitals]);
+
+  const avgVital = (name: "LCP" | "INP" | "CLS") => {
+    const vs = vitals.filter(v => v.metadata?.metric === name).map(v => Number(v.metadata?.value)).filter(n => !Number.isNaN(n));
+    if (!vs.length) return null;
+    return vs.reduce((a, b) => a + b, 0) / vs.length;
+  };
+  const avgLCP = avgVital("LCP");
+  const avgINP = avgVital("INP");
+  const avgCLS = avgVital("CLS");
+
+  const rateVital = (name: "LCP" | "INP" | "CLS", v: number | null) => {
+    if (v == null) return "—";
+    if (name === "LCP") return v <= 2500 ? "good" : v <= 4000 ? "needs work" : "poor";
+    if (name === "INP") return v <= 200 ? "good" : v <= 500 ? "needs work" : "poor";
+    return v <= 0.1 ? "good" : v <= 0.25 ? "needs work" : "poor";
+  };
+
+  // Errors trend by date
+  const errorTrend = useMemo(() => {
+    const map: Record<string, number> = {};
+    errors.forEach(e => {
+      const d = new Date(e.created_at);
+      const key = `${d.getMonth() + 1}/${d.getDate()}`;
+      map[key] = (map[key] || 0) + 1;
+    });
+    return Object.entries(map).map(([date, count]) => ({ date, errors: count }));
+  }, [errors]);
+
+  // Top failing routes (by error count)
+  const topFailingRoutes = useMemo(() => {
+    const map: Record<string, number> = {};
+    errors.forEach(e => { const p = e.page_path || "unknown"; map[p] = (map[p] || 0) + 1; });
+    return Object.entries(map).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 10);
+  }, [errors]);
+
+  // Top failing components / messages
+  const topFailingComponents = useMemo(() => {
+    const map: Record<string, number> = {};
+    errors.forEach(e => {
+      const msg = (e.metadata?.message || "Unknown error").toString().slice(0, 80);
+      // Try to extract component from stack
+      const stack = (e.metadata?.stack || "") as string;
+      const compMatch = stack.match(/at\s+([A-Z]\w+)/);
+      const key = compMatch ? `${compMatch[1]} — ${msg}` : msg;
+      map[key] = (map[key] || 0) + 1;
+    });
+    return Object.entries(map).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 10);
+  }, [errors]);
+
+  // Worst LCP routes
+  const worstLcpRoutes = useMemo(() => {
+    const map: Record<string, number[]> = {};
+    vitals.filter(v => v.metadata?.metric === "LCP").forEach(v => {
+      const p = v.page_path || "unknown";
+      const val = Number(v.metadata?.value);
+      if (!Number.isNaN(val)) (map[p] = map[p] || []).push(val);
+    });
+    return Object.entries(map).map(([name, arr]) => ({ name, value: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) }))
+      .sort((a, b) => b.value - a.value).slice(0, 8);
+  }, [vitals]);
+
+  const perfKpis = [
+    { label: "Avg LCP", value: avgLCP != null ? `${Math.round(avgLCP)} ms` : "—", icon: Gauge, sub: rateVital("LCP", avgLCP) },
+    { label: "Avg INP", value: avgINP != null ? `${Math.round(avgINP)} ms` : "—", icon: Activity, sub: rateVital("INP", avgINP) },
+    { label: "Avg CLS", value: avgCLS != null ? avgCLS.toFixed(3) : "—", icon: Eye, sub: rateVital("CLS", avgCLS) },
+    { label: "Total Errors", value: errors.length, icon: AlertTriangle, sub: `${topFailingRoutes.length} routes affected` },
+  ];
+
   const tabs = [
     { key: "leads" as const, label: "Lead Analytics" },
     { key: "traffic" as const, label: "Site Traffic" },
     { key: "products" as const, label: "Product Insights" },
+    { key: "performance" as const, label: "Performance" },
   ];
 
   return (
@@ -722,6 +825,123 @@ const AdminAnalytics = () => {
                     ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No inquiry data yet. Clicks on "Chat to Order" will appear here.</p>}
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* ===== PERFORMANCE TAB ===== */}
+          {activeTab === "performance" && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {perfKpis.map(kpi => (
+                  <div key={kpi.label} className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-muted-foreground">{kpi.label}</span>
+                      <kpi.icon size={16} className="text-primary" />
+                    </div>
+                    <p className="text-2xl font-display font-bold text-card-foreground">{kpi.value}</p>
+                    <p className="text-xs text-muted-foreground capitalize">{kpi.sub}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Core Web Vitals by Date</h3>
+                  <div className="h-64">
+                    {vitalsTrend.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={vitalsTrend}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                          <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                          <Tooltip contentStyle={tooltipStyle} />
+                          <Legend wrapperStyle={{ fontSize: 11 }} />
+                          <Line type="monotone" dataKey="LCP" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} name="LCP (ms)" />
+                          <Line type="monotone" dataKey="INP" stroke="#6366f1" strokeWidth={2} dot={false} name="INP (ms)" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No vitals captured yet</p>}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Errors Over Time</h3>
+                  <div className="h-64">
+                    {errorTrend.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={errorTrend}>
+                          <defs>
+                            <linearGradient id="errGrad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.35} />
+                              <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                          <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
+                          <Tooltip contentStyle={tooltipStyle} />
+                          <Area type="monotone" dataKey="errors" stroke="#ef4444" fill="url(#errGrad)" strokeWidth={2} />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No errors recorded — nice!</p>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Top Failing Routes</h3>
+                  <div className="h-64">
+                    {topFailingRoutes.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={topFailingRoutes} layout="vertical">
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
+                          <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={140} />
+                          <Tooltip contentStyle={tooltipStyle} />
+                          <Bar dataKey="value" fill="#ef4444" radius={[0, 6, 6, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No errors per route</p>}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Slowest Pages (LCP)</h3>
+                  <div className="h-64">
+                    {worstLcpRoutes.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={worstLcpRoutes} layout="vertical">
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                          <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={140} />
+                          <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${v} ms`} />
+                          <Bar dataKey="value" fill="hsl(var(--primary))" radius={[0, 6, 6, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No LCP samples yet</p>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <h3 className="font-display font-bold text-card-foreground mb-4">Top Failing Components & Messages</h3>
+                {topFailingComponents.length > 0 ? (
+                  <div className="space-y-2">
+                    {topFailingComponents.map((c, i) => (
+                      <div key={c.name} className="flex items-center justify-between gap-3 text-sm border-b border-border/40 pb-2 last:border-0">
+                        <span className="text-muted-foreground truncate flex-1 font-mono text-xs">{c.name}</span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
+                            <div className="h-full rounded-full bg-red-500" style={{ width: `${(c.value / (topFailingComponents[0]?.value || 1)) * 100}%` }} />
+                          </div>
+                          <span className="text-xs font-medium text-card-foreground w-8 text-right">{c.value}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : <p className="text-sm text-muted-foreground">No component-level errors detected</p>}
               </div>
             </div>
           )}
