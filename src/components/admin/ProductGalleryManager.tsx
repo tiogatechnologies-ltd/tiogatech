@@ -200,7 +200,7 @@ const ProductGalleryManager = ({ productId }: Props) => {
                 img.is_primary ? "border-primary ring-2 ring-primary/30" : "border-border"
               }`}
             >
-              <img src={img.url} alt="" className="w-full h-24 object-cover" />
+              <img src={img.url} alt="" className="w-full h-24 object-cover"  loading="lazy" decoding="async" />
               {img.is_primary && (
                 <span className="absolute top-1 left-1 text-[10px] px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-semibold">
                   Primary

@@ -136,7 +136,7 @@ const ImageUpload = ({ value, onChange, sectionKey }: { value?: string; onChange
       <div className="flex items-start gap-3">
         {value ? (
           <div className="relative w-32 h-20 rounded-lg overflow-hidden border border-border bg-muted shrink-0">
-            <img src={value} alt="" className="w-full h-full object-cover" />
+            <img src={value} alt="" className="w-full h-full object-cover"  loading="lazy" decoding="async" />
             <button type="button" onClick={() => onChange("")} className="absolute top-1 right-1 h-5 w-5 rounded-full bg-background/90 grid place-items-center text-foreground hover:text-destructive">
               <X size={11} />
             </button>

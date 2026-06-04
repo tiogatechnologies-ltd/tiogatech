@@ -79,7 +79,7 @@ const VoltAi = () => {
 
       {/* Visual showcase */}
       <section className="relative section-padding overflow-hidden bg-midnight">
-        <img src={bgTechMesh} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <img src={bgTechMesh} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-25"  loading="lazy" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-br from-midnight via-midnight/90 to-primary/30" />
         <div className="relative section-container grid gap-10 lg:grid-cols-2 items-center">
           <div className="text-primary-foreground">

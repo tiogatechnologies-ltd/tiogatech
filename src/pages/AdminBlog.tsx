@@ -266,7 +266,7 @@ const AdminBlog = () => {
                       </label>
                     </div>
                     {editing.cover_image_url && (
-                      <img src={editing.cover_image_url} alt="cover preview" className="mt-2 max-h-40 rounded-lg border border-border" />
+                      <img src={editing.cover_image_url} alt="cover preview" className="mt-2 max-h-40 rounded-lg border border-border"  loading="lazy" decoding="async" />
                     )}
                   </div>
 

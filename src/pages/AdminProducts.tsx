@@ -276,7 +276,7 @@ const AdminProducts = () => {
                     <tr key={p.id} className="border-b border-border/50 hover:bg-muted/30">
                       <td className="px-4 py-2"><input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)} className="h-4 w-4 rounded accent-primary" /></td>
                       <td className="px-4 py-2">
-                        {p.image_url ? <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-lg object-cover border border-border" /> : <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center"><ImageIcon size={14} className="text-muted-foreground" /></div>}
+                        {p.image_url ? <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-lg object-cover border border-border"  loading="lazy" decoding="async" /> : <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center"><ImageIcon size={14} className="text-muted-foreground" /></div>}
                       </td>
                       <td className="px-4 py-3 font-medium text-card-foreground">{p.name}</td>
                       <td className="px-4 py-3 text-muted-foreground capitalize hidden sm:table-cell">{p.category.replace("_", " ")}</td>
@@ -321,7 +321,7 @@ const AdminProducts = () => {
                 <label className="text-xs font-medium text-muted-foreground mb-2 block">Product Image</label>
                 {imagePreview ? (
                   <div className="relative w-full h-40 rounded-xl overflow-hidden border border-border bg-muted">
-                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover"  loading="lazy" decoding="async" />
                     <div className="absolute top-2 right-2 flex gap-1">
                       <button onClick={() => fileInputRef.current?.click()} className="p-1.5 rounded-lg bg-card/90 hover:bg-card shadow-sm text-foreground"><Upload size={14} /></button>
                       <button onClick={removeImage} className="p-1.5 rounded-lg bg-card/90 hover:bg-card shadow-sm text-destructive"><X size={14} /></button>
