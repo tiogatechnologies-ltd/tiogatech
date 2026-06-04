@@ -349,10 +349,102 @@ const AdminAnalytics = () => {
     URL.revokeObjectURL(url);
   };
 
+  // ===== PERFORMANCE / ERROR ANALYTICS =====
+  const filteredPerf = useMemo(() => filterByPeriod(perfEvents), [perfEvents, period]);
+  const vitals = useMemo(() => filteredPerf.filter(e => e.event_type === "vitals"), [filteredPerf]);
+  const errors = useMemo(() => filteredPerf.filter(e => e.event_type === "error"), [filteredPerf]);
+
+  // Vitals trend by date (avg per metric per day)
+  const vitalsTrend = useMemo(() => {
+    const map: Record<string, { LCP: number[]; INP: number[]; CLS: number[] }> = {};
+    vitals.forEach(v => {
+      const d = new Date(v.created_at);
+      const key = `${d.getMonth() + 1}/${d.getDate()}`;
+      if (!map[key]) map[key] = { LCP: [], INP: [], CLS: [] };
+      const m = v.metadata?.metric as "LCP" | "INP" | "CLS" | undefined;
+      const val = Number(v.metadata?.value);
+      if (m && map[key][m] && !Number.isNaN(val)) map[key][m].push(val);
+    });
+    return Object.entries(map).map(([date, vals]) => ({
+      date,
+      LCP: vals.LCP.length ? Math.round(vals.LCP.reduce((a, b) => a + b, 0) / vals.LCP.length) : 0,
+      INP: vals.INP.length ? Math.round(vals.INP.reduce((a, b) => a + b, 0) / vals.INP.length) : 0,
+      CLS: vals.CLS.length ? +(vals.CLS.reduce((a, b) => a + b, 0) / vals.CLS.length).toFixed(3) : 0,
+    }));
+  }, [vitals]);
+
+  const avgVital = (name: "LCP" | "INP" | "CLS") => {
+    const vs = vitals.filter(v => v.metadata?.metric === name).map(v => Number(v.metadata?.value)).filter(n => !Number.isNaN(n));
+    if (!vs.length) return null;
+    return vs.reduce((a, b) => a + b, 0) / vs.length;
+  };
+  const avgLCP = avgVital("LCP");
+  const avgINP = avgVital("INP");
+  const avgCLS = avgVital("CLS");
+
+  const rateVital = (name: "LCP" | "INP" | "CLS", v: number | null) => {
+    if (v == null) return "—";
+    if (name === "LCP") return v <= 2500 ? "good" : v <= 4000 ? "needs work" : "poor";
+    if (name === "INP") return v <= 200 ? "good" : v <= 500 ? "needs work" : "poor";
+    return v <= 0.1 ? "good" : v <= 0.25 ? "needs work" : "poor";
+  };
+
+  // Errors trend by date
+  const errorTrend = useMemo(() => {
+    const map: Record<string, number> = {};
+    errors.forEach(e => {
+      const d = new Date(e.created_at);
+      const key = `${d.getMonth() + 1}/${d.getDate()}`;
+      map[key] = (map[key] || 0) + 1;
+    });
+    return Object.entries(map).map(([date, count]) => ({ date, errors: count }));
+  }, [errors]);
+
+  // Top failing routes (by error count)
+  const topFailingRoutes = useMemo(() => {
+    const map: Record<string, number> = {};
+    errors.forEach(e => { const p = e.page_path || "unknown"; map[p] = (map[p] || 0) + 1; });
+    return Object.entries(map).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 10);
+  }, [errors]);
+
+  // Top failing components / messages
+  const topFailingComponents = useMemo(() => {
+    const map: Record<string, number> = {};
+    errors.forEach(e => {
+      const msg = (e.metadata?.message || "Unknown error").toString().slice(0, 80);
+      // Try to extract component from stack
+      const stack = (e.metadata?.stack || "") as string;
+      const compMatch = stack.match(/at\s+([A-Z]\w+)/);
+      const key = compMatch ? `${compMatch[1]} — ${msg}` : msg;
+      map[key] = (map[key] || 0) + 1;
+    });
+    return Object.entries(map).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 10);
+  }, [errors]);
+
+  // Worst LCP routes
+  const worstLcpRoutes = useMemo(() => {
+    const map: Record<string, number[]> = {};
+    vitals.filter(v => v.metadata?.metric === "LCP").forEach(v => {
+      const p = v.page_path || "unknown";
+      const val = Number(v.metadata?.value);
+      if (!Number.isNaN(val)) (map[p] = map[p] || []).push(val);
+    });
+    return Object.entries(map).map(([name, arr]) => ({ name, value: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) }))
+      .sort((a, b) => b.value - a.value).slice(0, 8);
+  }, [vitals]);
+
+  const perfKpis = [
+    { label: "Avg LCP", value: avgLCP != null ? `${Math.round(avgLCP)} ms` : "—", icon: Gauge, sub: rateVital("LCP", avgLCP) },
+    { label: "Avg INP", value: avgINP != null ? `${Math.round(avgINP)} ms` : "—", icon: Activity, sub: rateVital("INP", avgINP) },
+    { label: "Avg CLS", value: avgCLS != null ? avgCLS.toFixed(3) : "—", icon: Eye, sub: rateVital("CLS", avgCLS) },
+    { label: "Total Errors", value: errors.length, icon: AlertTriangle, sub: `${topFailingRoutes.length} routes affected` },
+  ];
+
   const tabs = [
     { key: "leads" as const, label: "Lead Analytics" },
     { key: "traffic" as const, label: "Site Traffic" },
     { key: "products" as const, label: "Product Insights" },
+    { key: "performance" as const, label: "Performance" },
   ];
 
   return (
