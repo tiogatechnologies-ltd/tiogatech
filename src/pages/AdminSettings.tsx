@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Save, Bell } from "lucide-react";
+import { Save, Bell, UserPlus } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
 
@@ -137,6 +137,8 @@ const AdminSettings = () => {
           </div>
         </div>
 
+        <CreateAdminCard />
+
         <button onClick={handleSave} disabled={saving}
           className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all disabled:opacity-40">
           <Save size={16} />
@@ -146,5 +148,50 @@ const AdminSettings = () => {
     </AdminLayout>
   );
 };
+
+const CreateAdminCard = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [creating, setCreating] = useState(false);
+  const inputClass = "w-full rounded-xl border border-border bg-muted/50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 text-foreground";
+
+  const handleCreate = async () => {
+    if (!email || password.length < 8) {
+      toast.error("Email and password (min 8 chars) required");
+      return;
+    }
+    setCreating(true);
+    const { data, error } = await supabase.functions.invoke("create-admin", { body: { email, password } });
+    setCreating(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error((data as { error?: string })?.error ?? error?.message ?? "Failed to create admin");
+      return;
+    }
+    toast.success(`Admin ${email} created`);
+    setEmail("");
+    setPassword("");
+  };
+
+  return (
+    <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 space-y-5">
+      <h2 className="font-display font-bold text-card-foreground flex items-center gap-2"><UserPlus size={18} /> Create New Admin</h2>
+      <p className="text-xs text-muted-foreground">Add another administrator by setting their login email and password manually. They can sign in immediately at /admin/login.</p>
+      <div>
+        <label className="text-xs font-medium text-muted-foreground mb-1 block">Email</label>
+        <input className={inputClass} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="newadmin@tiogatechnologies.com" />
+      </div>
+      <div>
+        <label className="text-xs font-medium text-muted-foreground mb-1 block">Password (min 8 chars)</label>
+        <input className={inputClass} type="text" value={password} onChange={e => setPassword(e.target.value)} placeholder="Strong password" />
+      </div>
+      <button onClick={handleCreate} disabled={creating}
+        className="inline-flex items-center gap-2 rounded-xl bg-foreground px-5 py-2.5 text-sm font-semibold text-background hover:opacity-90 transition-all disabled:opacity-40">
+        <UserPlus size={14} />
+        {creating ? "Creating..." : "Create Admin Account"}
+      </button>
+    </div>
+  );
+};
+
 
 export default AdminSettings;

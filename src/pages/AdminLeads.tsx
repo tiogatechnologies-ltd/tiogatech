@@ -48,6 +48,9 @@ const AdminLeads = () => {
   const [viewing, setViewing] = useState<Lead | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("");
   const [activities, setActivities] = useState<Activity[]>([]);
   const [newAction, setNewAction] = useState("note");
   const [newNote, setNewNote] = useState("");
@@ -130,8 +133,13 @@ const AdminLeads = () => {
     URL.revokeObjectURL(url);
   };
 
+  const sources = Array.from(new Set(leads.map(l => l.source ?? "website_form"))).sort();
+
   const filtered = leads
     .filter(l => !statusFilter || l.status === statusFilter)
+    .filter(l => !sourceFilter || (l.source ?? "website_form") === sourceFilter)
+    .filter(l => !dateFrom || new Date(l.created_at) >= new Date(dateFrom))
+    .filter(l => !dateTo || new Date(l.created_at) <= new Date(`${dateTo}T23:59:59`))
     .filter(l => !search || l.full_name.toLowerCase().includes(search.toLowerCase()) || l.phone.includes(search) || (l.email?.toLowerCase().includes(search.toLowerCase())));
 
   const counts = statuses.reduce((acc, s) => {
@@ -152,15 +160,31 @@ const AdminLeads = () => {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="relative w-full sm:w-72">
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between flex-wrap">
+          <div className="relative w-full sm:w-64">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input className="w-full rounded-xl border border-border bg-muted/50 pl-9 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 text-foreground"
               placeholder="Search by name, phone, email..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
-          <button onClick={exportCSV} className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-all shrink-0">
-            <Download size={14} /> Export CSV
-          </button>
+          <div className="flex flex-wrap gap-2 items-center">
+            <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)}
+              className="rounded-xl border border-border bg-muted/50 px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30" title="From date" />
+            <span className="text-xs text-muted-foreground">to</span>
+            <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)}
+              className="rounded-xl border border-border bg-muted/50 px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30" title="To date" />
+            <select value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}
+              className="rounded-xl border border-border bg-muted/50 px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30">
+              <option value="">All sources</option>
+              {sources.map(s => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
+            </select>
+            {(dateFrom || dateTo || sourceFilter || statusFilter) && (
+              <button onClick={() => { setDateFrom(""); setDateTo(""); setSourceFilter(""); setStatusFilter(""); }}
+                className="text-xs text-muted-foreground hover:text-foreground underline">Reset</button>
+            )}
+            <button onClick={exportCSV} className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-all">
+              <Download size={14} /> Export
+            </button>
+          </div>
         </div>
 
         {loading ? (

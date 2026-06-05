@@ -20,8 +20,13 @@ const TelegramWidget = () => {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setOpen(true), 4000);
-    return () => clearTimeout(t);
+    const showT = setTimeout(() => setOpen(true), 4000);
+    // Auto-dismiss 10 seconds after appearing so it doesn't distract users
+    const hideT = setTimeout(() => setDismissed(true), 14000);
+    return () => {
+      clearTimeout(showT);
+      clearTimeout(hideT);
+    };
   }, []);
 
   if (pathname.startsWith("/admin")) return null;
