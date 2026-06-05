@@ -120,7 +120,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
 
 const SolarPackagesSection = () => {
   const { packages, loading } = useSolarPackages();
-  const [tab, setTab] = useState<"lithium" | "tubular">("lithium");
+  const [tab, setTab] = useState<"lithium" | "tubular" | "high_voltage">("lithium");
 
   const filtered = useMemo(
     () => packages.filter((p) => p.battery_type === tab),
@@ -140,27 +140,28 @@ const SolarPackagesSection = () => {
             Pre-engineered solar packages
           </h2>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-            From 1KVA to 30KVA. Every package is sized for real Nigerian load profiles, with clear inverter, panel, battery and setup costs. Pick a battery chemistry to compare.
+            From 1KVA homes to 40KVA commercial systems. Every package is sized for real Nigerian load profiles, with clear inverter, panel, battery and setup costs.
           </p>
         </div>
 
         <div className="flex justify-center mb-10">
-          <div className="inline-flex p-1.5 rounded-full bg-card border border-border shadow-sm">
-            {(["lithium", "tubular"] as const).map((k) => (
+          <div className="inline-flex flex-wrap p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
+            {(["lithium", "tubular", "high_voltage"] as const).map((k) => (
               <button
                 key={k}
                 onClick={() => setTab(k)}
-                className={`px-5 sm:px-6 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all ${
+                className={`px-4 sm:px-6 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all ${
                   tab === k
                     ? "bg-primary text-primary-foreground shadow"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {k === "lithium" ? "Lithium (LiFePO4)" : "Tubular / Gel"}
+                {k === "lithium" ? "Lithium (LiFePO4)" : k === "tubular" ? "Tubular / Gel" : "High Voltage (40KVA+)"}
               </button>
             ))}
           </div>
         </div>
+
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p, i) => (

@@ -27,7 +27,7 @@ const IMAGES = [
 export type SolarPackage = {
   id: string;
   package_number: number;
-  battery_type: "lithium" | "tubular";
+  battery_type: "lithium" | "tubular" | "high_voltage";
   inverter: string;
   inverter_price: number | null;
   solar_panels: string;
