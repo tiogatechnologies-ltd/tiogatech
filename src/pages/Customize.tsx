@@ -40,17 +40,23 @@ type LoadedPkg = {
   raw: any;
 };
 
-// Parse "450W Panels x 8" → { name: "450W Panel", qty: 8 }
-// Also handles "5kWh 24/48V x 1", "60Amp MPPT" (qty 1), "Hybrid 3.5KVA 24V (Transformer-Based)"
+// Parse component spec strings into { name, qty }.
+// Handles trailing qty "450W Panels x 8", leading qty "60 x 600W Solar Panels",
+// and bare strings like "60kWh Lithium Battery" or "Hybrid 3.5KVA 24V" (qty 1).
 const parseSpec = (s: string | null | undefined): { name: string; qty: number } => {
   if (!s) return { name: "", qty: 1 };
   const trimmed = s.trim();
-  const m = trimmed.match(/^(.*?)\s*[xX×]\s*(\d+)\s*$/);
+  // Trailing qty: "450W Panels x 8"
+  let m = trimmed.match(/^(.*?)\s*[xX×]\s*(\d+)\s*$/);
   if (m) {
-    let name = m[1].trim();
-    // Singularize trailing "Panels" → "Panel", "Batteries" → "Battery"
-    name = name.replace(/Panels$/i, "Panel").replace(/Batteries$/i, "Battery");
+    const name = m[1].trim().replace(/Panels$/i, "Panel").replace(/Batteries$/i, "Battery");
     return { name, qty: Math.max(1, parseInt(m[2], 10)) };
+  }
+  // Leading qty: "60 x 600W Solar Panels"
+  m = trimmed.match(/^(\d+)\s*[xX×]\s*(.+)$/);
+  if (m) {
+    const name = m[2].trim().replace(/Panels$/i, "Panel").replace(/Batteries$/i, "Battery");
+    return { name, qty: Math.max(1, parseInt(m[1], 10)) };
   }
   return { name: trimmed, qty: 1 };
 };
