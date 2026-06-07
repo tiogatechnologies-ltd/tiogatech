@@ -235,6 +235,75 @@ const Career = () => {
     </section>
 
     <CareerApplicationDialog job={selectedJob} open={!!selectedJob} onOpenChange={(open) => !open && setSelectedJob(null)} />
+    <AffiliateApplicationDialog open={affiliateOpen} onOpenChange={setAffiliateOpen} />
+
+    {/* Affiliate program */}
+    <section id="affiliate" className="section-padding">
+      <div className="section-container max-w-5xl">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-card to-gold/10 p-8 sm:p-12">
+          <div className="absolute -top-16 -right-16 w-64 h-64 bg-gold/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
+          <div className="relative grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-3 py-1 mb-4">
+                <Share2 size={14} className="text-gold" />
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-gold">New — Affiliate Program</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip mb-4">
+                Refer customers. Earn naira.
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Join the Tioga Affiliate Program and earn commission every time someone you refer installs a solar system, smart lock, or home automation package. Built for content creators, energy consultants, installers, estate managers and anyone with an audience.
+              </p>
+              <div className="grid sm:grid-cols-3 gap-3 mb-6">
+                <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
+                  <DollarSign className="text-emerald-500 mb-2" size={18} />
+                  <p className="text-xs font-bold text-foreground">Up to 10% commission</p>
+                  <p className="text-[11px] text-muted-foreground">on confirmed installs</p>
+                </div>
+                <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
+                  <LinkIcon className="text-primary mb-2" size={18} />
+                  <p className="text-xs font-bold text-foreground">Tracked links</p>
+                  <p className="text-[11px] text-muted-foreground">unique code + UTM</p>
+                </div>
+                <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
+                  <TrendingUp className="text-gold mb-2" size={18} />
+                  <p className="text-xs font-bold text-foreground">60-day window</p>
+                  <p className="text-[11px] text-muted-foreground">long attribution</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setAffiliateOpen(true)}
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
+              >
+                <Sparkles size={16} /> Apply to become an affiliate
+              </button>
+            </div>
+            <div className="rounded-2xl border border-border bg-card/80 backdrop-blur p-6 space-y-4">
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">How it works</p>
+              <ol className="space-y-3 text-sm">
+                <li className="flex gap-3">
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">1</span>
+                  <span className="text-foreground/90">Apply with your audience details — takes 2 minutes.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">2</span>
+                  <span className="text-foreground/90">Get approved and receive your unique referral code & tracked link.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">3</span>
+                  <span className="text-foreground/90">Share it anywhere — every lead is attributed back to you for 60 days.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">4</span>
+                  <span className="text-foreground/90">Get paid in naira once the install is confirmed.</span>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     {/* How to Apply / Contact */}
     <section className="section-padding">
