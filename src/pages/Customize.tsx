@@ -603,11 +603,47 @@ const Customize = () => {
                 <div className="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-elevated)]">
                   <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Your custom total</p>
                   <p className="text-4xl font-display font-bold text-foreground mb-1 tabular-nums">{ngn(total)}</p>
+                  {priceDelta !== 0 && baselinePrice > 0 && (
+                    <p className={`text-xs mb-2 font-semibold ${priceDelta > 0 ? "text-amber-600" : "text-emerald-600"}`}>
+                      {priceDelta > 0 ? "+" : "−"}{ngn(Math.abs(priceDelta))} vs. base package ({ngn(baselinePrice)})
+                    </p>
+                  )}
                   <p className="text-xs text-muted-foreground mb-5">
                     Final pricing confirmed after a quick site review.
                   </p>
 
-                  <div className="space-y-2 text-xs mb-5 max-h-56 overflow-auto pr-1">
+                  {/* Live breakdown */}
+                  <div className="rounded-2xl bg-muted/40 border border-border p-3 mb-4 space-y-1.5 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Hardware subtotal</span>
+                      <span className="text-foreground font-semibold tabular-nums">{ngn(hardwareSubtotal)}</span>
+                    </div>
+                    {accessoriesCost > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Accessories & cabling</span>
+                        <span className="text-foreground tabular-nums">{ngn(accessoriesCost)}</span>
+                      </div>
+                    )}
+                    {installCost > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Installation & setup</span>
+                        <span className="text-foreground tabular-nums">{ngn(installCost)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between pt-1.5 mt-1.5 border-t border-border">
+                      <span className="text-foreground font-bold">Estimated total</span>
+                      <span className="text-foreground font-bold tabular-nums">{ngn(total)}</span>
+                    </div>
+                  </div>
+
+                  {hasZeroCritical && (
+                    <div className="rounded-xl bg-destructive/10 border border-destructive/30 px-3 py-2 mb-3 text-[11px] text-destructive flex items-start gap-2">
+                      <Info size={12} className="mt-0.5 shrink-0" />
+                      <span>One or more required components are below the minimum needed. Increase quantities before submitting.</span>
+                    </div>
+                  )}
+
+                  <div className="space-y-1.5 text-xs mb-4 max-h-44 overflow-auto pr-1">
                     {coreItems
                       .filter((i) => i.qty > 0)
                       .map((i) => (
@@ -626,10 +662,17 @@ const Customize = () => {
                     ))}
                   </div>
 
+                  {changedItems.length > 0 && (
+                    <p className="text-[11px] text-muted-foreground mb-3 italic">
+                      {changedItems.length} change{changedItems.length === 1 ? "" : "s"} from the default configuration.
+                    </p>
+                  )}
+
                   <div className="space-y-2.5">
                     <button
                       onClick={handleWhatsApp}
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] hover:brightness-110 active:scale-[0.98] transition-all text-white px-5 py-3 text-sm font-semibold shadow-md"
+                      disabled={hasZeroCritical}
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] hover:brightness-110 active:scale-[0.98] transition-all text-white px-5 py-3 text-sm font-semibold shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <MessageCircle size={16} /> Send to WhatsApp
                     </button>
@@ -641,11 +684,16 @@ const Customize = () => {
                     </button>
                     <button
                       onClick={handleAddToCart}
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-full border border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all px-5 py-3 text-sm font-semibold"
+                      disabled={hasZeroCritical}
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-full border border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all px-5 py-3 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <ShoppingBag size={16} /> Add custom build to cart
                     </button>
                   </div>
+
+                  <p className="mt-3 text-[10px] text-muted-foreground leading-relaxed">
+                    Prices are estimates in NGN and exclude VAT, off-grid permits, and any structural / civil works. We confirm the final invoice after a free site assessment.
+                  </p>
 
                   <Link
                     to="/packages"
