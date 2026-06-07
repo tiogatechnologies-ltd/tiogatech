@@ -516,6 +516,18 @@ const Customize = () => {
                     Use the steppers below to choose exactly how many of each component you need.
                     {coreItems.some((i) => i.unitPrice) && " Your total updates live."}
                   </p>
+
+                  {isHighVoltage && (
+                    <div className="mt-4 rounded-2xl border border-gold/40 bg-gold/10 p-4 text-xs text-foreground/90 space-y-1.5">
+                      <p className="font-bold uppercase tracking-wider text-[10px] text-gold flex items-center gap-1.5">
+                        <Info size={12} /> High-voltage system assumptions
+                      </p>
+                      <p>• Pricing assumes a three-phase grid connection and adequate roof / ground mounting area.</p>
+                      <p>• Cable runs over 30m, lightning protection upgrades and DB rework are quoted after a site survey.</p>
+                      <p>• Battery and panel additions must keep PV ≥ 1.2× battery kWh for healthy daily recharge.</p>
+                      <p>• Logistics outside Lagos, Abuja and Jos may attract a one-time travel & accommodation fee.</p>
+                    </div>
+                  )}
                 </motion.div>
 
                 {coreItems.length > 0 && (
