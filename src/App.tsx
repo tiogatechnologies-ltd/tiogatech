@@ -65,6 +65,7 @@ const AdminWaitlist = lazy(() => import("./pages/AdminWaitlist.tsx"));
 const AdminBlog = lazy(() => import("./pages/AdminBlog.tsx"));
 const AdminNewsletter = lazy(() => import("./pages/AdminNewsletter.tsx"));
 const AdminOrders = lazy(() => import("./pages/AdminOrders.tsx"));
+const AdminAffiliates = lazy(() => import("./pages/AdminAffiliates.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -141,6 +142,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/smart-locks" element={<ProtectedAdmin><AdminSmartLocks /></ProtectedAdmin>} />
           <Route path="/admin/home-automation" element={<ProtectedAdmin><AdminHomeAutomation /></ProtectedAdmin>} />
           <Route path="/admin/waitlist" element={<ProtectedAdmin><AdminWaitlist /></ProtectedAdmin>} />
+          <Route path="/admin/affiliates" element={<ProtectedAdmin><AdminAffiliates /></ProtectedAdmin>} />
           <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
