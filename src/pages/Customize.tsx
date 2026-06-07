@@ -378,15 +378,20 @@ const Customize = () => {
   const coreItems = useMemo(() => items.filter((i) => i.group === "core"), [items]);
   const addonItems = useMemo(() => items.filter((i) => i.group === "addon"), [items]);
 
-  const itemsSubtotal = useMemo(
+  const hardwareSubtotal = useMemo(
     () => items.reduce((sum, it) => sum + (it.unitPrice ? it.unitPrice * it.qty : 0), 0),
     [items]
   );
-  const extrasSubtotal = useMemo(
-    () => (pkg?.extras ?? []).reduce((s, e) => s + (e.price ?? 0), 0),
-    [pkg]
-  );
-  const total = itemsSubtotal + extrasSubtotal;
+  const accessoriesCost = pkg?.raw?.accessories_price ?? 0;
+  const installCost = pkg?.raw?.setup_fee ?? 0;
+  const extrasSubtotal = accessoriesCost + installCost;
+  const total = hardwareSubtotal + extrasSubtotal;
+
+  const isHighVoltage = pkg?.type === "solar" && pkg?.raw?.battery_type === "high_voltage";
+  const changedItems = items.filter((i) => i.qty !== i.defaultQty);
+  const hasZeroCritical = coreItems.some((i) => i.minQty > 0 && i.qty < i.minQty);
+  const baselinePrice = pkg?.basePrice ?? 0;
+  const priceDelta = total - baselinePrice;
 
   const setQty = (key: string, qty: number) => {
     setItems((arr) => arr.map((it) => (it.key === key ? { ...it, qty } : it)));
