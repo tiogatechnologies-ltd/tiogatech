@@ -97,7 +97,7 @@ const AdminAffiliates = () => {
         .from("affiliate_applications" as any)
         .select("*")
         .order("created_at", { ascending: false }),
-      supabase.from("leads").select("affiliate_code").not("affiliate_code", "is", null),
+      (supabase.from("leads") as any).select("affiliate_code").not("affiliate_code", "is", null),
     ]);
     if (aff.data) setAffiliates(aff.data as unknown as Affiliate[]);
     if (apps.data) setApplications(apps.data as unknown as Application[]);
