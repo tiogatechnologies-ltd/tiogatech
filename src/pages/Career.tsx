@@ -65,6 +65,12 @@ const Career = () => {
       >
         See open roles <ArrowRight size={16} />
       </a>
+      <a
+        href="#affiliate"
+        className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/15 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-gold/25 transition-all"
+      >
+        <Share2 size={16} /> Become an affiliate
+      </a>
     </PageHero>
 
     <section className="section-padding">
