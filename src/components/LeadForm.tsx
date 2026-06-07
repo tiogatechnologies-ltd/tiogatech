@@ -5,6 +5,7 @@ import { X, ArrowRight, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { trackConversion } from "@/lib/tracking";
+import { attributionForLead } from "@/lib/attribution";
 import { LeadFormData, initialFormData, budgetOptions, FlowCategory } from "./lead-form/types";
 import { inputClass, selectBtnClass } from "./lead-form/StepUI";
 import AddressInput from "./lead-form/AddressInput";
@@ -97,8 +98,9 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
         timeline: null,
         notes: data.notes.trim() || null,
         consent: data.consent,
+        ...attributionForLead(),
       };
-      const { error } = await supabase.from("leads").insert(leadPayload);
+      const { error } = await supabase.from("leads").insert(leadPayload as any);
       if (error) throw error;
 
       trackConversion("lead_submitted", {

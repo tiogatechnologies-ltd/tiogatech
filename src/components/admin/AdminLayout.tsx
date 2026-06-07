@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2 } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -23,6 +23,7 @@ const navItems = [
   { label: "Static Pages", icon: FileText, path: "/admin/content" },
   { label: "Careers", icon: Briefcase, path: "/admin/careers" },
   { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
+  { label: "Affiliates", icon: Share2, path: "/admin/affiliates" },
   { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
   { label: "Email", icon: Mail, path: "/admin/email" },
   { label: "Settings", icon: Settings, path: "/admin/settings" },

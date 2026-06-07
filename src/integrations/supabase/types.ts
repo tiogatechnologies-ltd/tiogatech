@@ -14,6 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_applications: {
+        Row: {
+          audience_size: string | null
+          channels: string[]
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          location: string | null
+          notes: string | null
+          phone: string
+          social_links: string | null
+          status: string
+          updated_at: string
+          why: string | null
+        }
+        Insert: {
+          audience_size?: string | null
+          channels?: string[]
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          phone: string
+          social_links?: string | null
+          status?: string
+          updated_at?: string
+          why?: string | null
+        }
+        Update: {
+          audience_size?: string | null
+          channels?: string[]
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          phone?: string
+          social_links?: string | null
+          status?: string
+          updated_at?: string
+          why?: string | null
+        }
+        Relationships: []
+      }
+      affiliates: {
+        Row: {
+          application_id: string | null
+          code: string
+          commission_rate: number
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          notes: string | null
+          payout_details: string | null
+          payout_method: string | null
+          phone: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          application_id?: string | null
+          code: string
+          commission_rate?: number
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          notes?: string | null
+          payout_details?: string | null
+          payout_method?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string | null
+          code?: string
+          commission_rate?: number
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          notes?: string | null
+          payout_details?: string | null
+          payout_method?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliates_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       app_waitlist: {
         Row: {
           created_at: string
@@ -372,6 +476,7 @@ export type Database = {
       }
       leads: {
         Row: {
+          affiliate_code: string | null
           appliances: string[] | null
           budget: string | null
           consent: boolean
@@ -385,11 +490,16 @@ export type Database = {
           notes: string | null
           phone: string
           products: string[]
+          referrer: string | null
           source: string
           status: string
           timeline: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
         }
         Insert: {
+          affiliate_code?: string | null
           appliances?: string[] | null
           budget?: string | null
           consent?: boolean
@@ -403,11 +513,16 @@ export type Database = {
           notes?: string | null
           phone: string
           products?: string[]
+          referrer?: string | null
           source?: string
           status?: string
           timeline?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
         }
         Update: {
+          affiliate_code?: string | null
           appliances?: string[] | null
           budget?: string | null
           consent?: boolean
@@ -421,9 +536,13 @@ export type Database = {
           notes?: string | null
           phone?: string
           products?: string[]
+          referrer?: string | null
           source?: string
           status?: string
           timeline?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
         }
         Relationships: []
       }
