@@ -100,7 +100,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
         consent: data.consent,
         ...attributionForLead(),
       };
-      const { error } = await supabase.from("leads").insert(leadPayload);
+      const { error } = await supabase.from("leads").insert(leadPayload as any);
       if (error) throw error;
 
       trackConversion("lead_submitted", {
