@@ -5,8 +5,9 @@ import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import JobCard, { type Job } from "@/components/JobCard";
 import CareerApplicationDialog from "@/components/CareerApplicationDialog";
+import AffiliateApplicationDialog from "@/components/AffiliateApplicationDialog";
 import { useCareers } from "@/hooks/useCareers";
-import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail, Sparkles, Wrench, Sun, Cpu, Quote, Compass, ShieldCheck, Phone, Linkedin } from "lucide-react";
+import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail, Sparkles, Wrench, Sun, Cpu, Quote, Compass, ShieldCheck, Phone, Linkedin, Share2, DollarSign, TrendingUp, Link as LinkIcon } from "lucide-react";
 import bgTeam from "@/assets/bg-team-meeting.jpg";
 import bgTechMesh from "@/assets/bg-fluid-wave.jpg";
 import bgSolarField from "@/assets/bg-commercial-solar.jpg";
@@ -38,6 +39,7 @@ const reasons = [
 const Career = () => {
   const { jobs: openRoles } = useCareers();
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [affiliateOpen, setAffiliateOpen] = useState(false);
   const { content: cms } = useLandingContent("page_career");
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
