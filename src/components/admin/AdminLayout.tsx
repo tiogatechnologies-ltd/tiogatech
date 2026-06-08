@@ -24,6 +24,8 @@ const navItems = [
   { label: "Careers", icon: Briefcase, path: "/admin/careers" },
   { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
   { label: "Affiliates", icon: Share2, path: "/admin/affiliates" },
+  { label: "Affiliate Payouts", icon: Wallet, path: "/admin/affiliates/payouts" },
+  { label: "Affiliate Analytics", icon: LineChart, path: "/admin/affiliates/analytics" },
   { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
   { label: "Email", icon: Mail, path: "/admin/email" },
   { label: "Settings", icon: Settings, path: "/admin/settings" },
