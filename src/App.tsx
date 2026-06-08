@@ -66,6 +66,8 @@ const AdminBlog = lazy(() => import("./pages/AdminBlog.tsx"));
 const AdminNewsletter = lazy(() => import("./pages/AdminNewsletter.tsx"));
 const AdminOrders = lazy(() => import("./pages/AdminOrders.tsx"));
 const AdminAffiliates = lazy(() => import("./pages/AdminAffiliates.tsx"));
+const AdminAffiliatePayouts = lazy(() => import("./pages/AdminAffiliatePayouts.tsx"));
+const AdminAffiliateAnalytics = lazy(() => import("./pages/AdminAffiliateAnalytics.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
