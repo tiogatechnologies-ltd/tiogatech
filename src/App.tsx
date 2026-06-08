@@ -145,6 +145,8 @@ const AnimatedRoutes = () => {
           <Route path="/admin/home-automation" element={<ProtectedAdmin><AdminHomeAutomation /></ProtectedAdmin>} />
           <Route path="/admin/waitlist" element={<ProtectedAdmin><AdminWaitlist /></ProtectedAdmin>} />
           <Route path="/admin/affiliates" element={<ProtectedAdmin><AdminAffiliates /></ProtectedAdmin>} />
+          <Route path="/admin/affiliates/payouts" element={<ProtectedAdmin><AdminAffiliatePayouts /></ProtectedAdmin>} />
+          <Route path="/admin/affiliates/analytics" element={<ProtectedAdmin><AdminAffiliateAnalytics /></ProtectedAdmin>} />
           <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
