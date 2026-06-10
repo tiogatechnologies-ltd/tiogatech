@@ -38,19 +38,63 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Valid email and password (min 8 chars) required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
+    let userId: string | null = null;
+    let promoted = false;
+
     const { data: created, error: createErr } = await admin.auth.admin.createUser({
       email, password, email_confirm: true,
     });
-    if (createErr || !created.user) {
-      return new Response(JSON.stringify({ error: createErr?.message ?? "Could not create user" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+    if (createErr || !created?.user) {
+      const msg = (createErr?.message ?? "").toLowerCase();
+      const alreadyExists = msg.includes("already") || msg.includes("registered") || msg.includes("exists");
+      if (!alreadyExists) {
+        return new Response(JSON.stringify({ error: createErr?.message ?? "Could not create user" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+
+      // User already exists — locate them, update password, then ensure admin role.
+      let found: { id: string } | null = null;
+      let page = 1;
+      while (page <= 20 && !found) {
+        const { data: list, error: listErr } = await admin.auth.admin.listUsers({ page, perPage: 200 });
+        if (listErr) break;
+        found = (list.users || []).find((u) => (u.email ?? "").toLowerCase() === email) ?? null;
+        if ((list.users || []).length < 200) break;
+        page++;
+      }
+      if (!found) {
+        return new Response(JSON.stringify({ error: "Email exists but user could not be located" }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      userId = found.id;
+      await admin.auth.admin.updateUserById(userId, { password, email_confirm: true });
+      promoted = true;
+    } else {
+      userId = created.user.id;
     }
 
-    const { error: roleErr } = await admin.from("user_roles").insert({ user_id: created.user.id, role: "admin" });
-    if (roleErr) {
-      return new Response(JSON.stringify({ error: `User created but role failed: ${roleErr.message}` }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    // Idempotent role assignment
+    const { data: existingRole } = await admin
+      .from("user_roles")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (!existingRole) {
+      const { error: roleErr } = await admin.from("user_roles").insert({ user_id: userId, role: "admin" });
+      if (roleErr) {
+        return new Response(JSON.stringify({ error: `User ready but role assignment failed: ${roleErr.message}` }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
     }
 
-    return new Response(JSON.stringify({ success: true, user_id: created.user.id }), {
+    return new Response(JSON.stringify({
+      success: true,
+      user_id: userId,
+      promoted,
+      message: promoted
+        ? "Existing account was promoted to admin and password updated."
+        : "Admin account created.",
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
