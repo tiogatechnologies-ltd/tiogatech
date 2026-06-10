@@ -130,6 +130,28 @@ const AdminAffiliatePayouts = () => {
     return acc;
   }, [payouts]);
 
+  const notifyAffiliate = async (
+    p: Payout,
+    subject: string,
+    message: string,
+  ) => {
+    const aff = affiliates.find((a) => a.id === p.affiliate_id);
+    if (!aff?.email) return;
+    try {
+      await supabase.functions.invoke("notify-new-lead", {
+        body: {
+          custom_email: true,
+          to: aff.email,
+          recipient_name: aff.full_name,
+          subject,
+          message,
+        },
+      });
+    } catch (err) {
+      console.error("Payout notification failed", err);
+    }
+  };
+
   const approve = async (p: Payout) => {
     const { error } = await supabase
       .from("affiliate_payouts" as any)
@@ -137,6 +159,11 @@ const AdminAffiliatePayouts = () => {
       .eq("id", p.id);
     if (error) return toast.error(error.message);
     toast.success("Payout approved");
+    void notifyAffiliate(
+      p,
+      "Your payout has been approved",
+      `Good news — your payout of ₦${Number(p.amount).toLocaleString()} for ${p.period_start} to ${p.period_end} has been approved and is queued for payment.`,
+    );
     void load();
   };
 
@@ -148,6 +175,11 @@ const AdminAffiliatePayouts = () => {
       .eq("id", p.id);
     if (error) return toast.error(error.message);
     toast.success("Payout rejected");
+    void notifyAffiliate(
+      p,
+      "Your payout request was not approved",
+      `Your payout request of ₦${Number(p.amount).toLocaleString()} for ${p.period_start} to ${p.period_end} was not approved at this time. Please reach out to the affiliate team if you have questions.`,
+    );
     void load();
   };
 
