@@ -14,6 +14,7 @@ const brandLinks: { label: string; to: string }[] = [
 
 // Secondary links shown after the merged Products mega-menu.
 const secondaryLinks = [
+  { label: "Finance", to: "/finance" },
   { label: "Career", to: "/career" },
   { label: "Blog", to: "/blog" },
   { label: "About", to: "/about" },
