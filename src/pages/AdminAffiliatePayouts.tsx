@@ -329,7 +329,16 @@ const AdminAffiliatePayouts = () => {
       <MarkPaidDialog
         payout={paying}
         onClose={() => setPaying(null)}
-        onSaved={load}
+        onSaved={() => {
+          if (paying) {
+            void notifyAffiliate(
+              paying,
+              "Your payout has been paid",
+              `Your payout of ₦${Number(paying.amount).toLocaleString()} for ${paying.period_start} to ${paying.period_end} has been marked as paid. You can download your statement from your affiliate dashboard.`,
+            );
+          }
+          load();
+        }}
       />
     </AdminLayout>
   );
