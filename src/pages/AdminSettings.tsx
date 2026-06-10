@@ -163,11 +163,12 @@ const CreateAdminCard = () => {
     setCreating(true);
     const { data, error } = await supabase.functions.invoke("create-admin", { body: { email, password } });
     setCreating(false);
-    if (error || (data as { error?: string })?.error) {
-      toast.error((data as { error?: string })?.error ?? error?.message ?? "Failed to create admin");
+    const payload = data as { error?: string; promoted?: boolean; message?: string } | null;
+    if (error || payload?.error) {
+      toast.error(payload?.error ?? error?.message ?? "Failed to create admin");
       return;
     }
-    toast.success(`Admin ${email} created`);
+    toast.success(payload?.message ?? `Admin ${email} ready`);
     setEmail("");
     setPassword("");
   };
