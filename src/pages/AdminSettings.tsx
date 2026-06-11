@@ -164,127 +164,95 @@ const AdminSettings = () => {
   return (
     <AdminLayout>
       <div className="max-w-4xl space-y-6">
-        <Tabs defaultValue="general" className="w-full">
-          <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/60 p-1 rounded-xl">
-            <TabsTrigger value="general"><Building2 size={14} className="mr-1.5" />General</TabsTrigger>
-            <TabsTrigger value="contact"><Phone size={14} className="mr-1.5" />Contact</TabsTrigger>
-            <TabsTrigger value="finance"><Wallet size={14} className="mr-1.5" />Finance</TabsTrigger>
-            <TabsTrigger value="shipping"><Truck size={14} className="mr-1.5" />Shipping</TabsTrigger>
-            <TabsTrigger value="affiliate"><Sparkles size={14} className="mr-1.5" />Affiliates</TabsTrigger>
-            <TabsTrigger value="notifications"><Bell size={14} className="mr-1.5" />Notifications</TabsTrigger>
-            <TabsTrigger value="seo"><Search size={14} className="mr-1.5" />SEO</TabsTrigger>
-            <TabsTrigger value="social"><Share2 size={14} className="mr-1.5" />Social</TabsTrigger>
-            <TabsTrigger value="admins"><Shield size={14} className="mr-1.5" />Admins</TabsTrigger>
-          </TabsList>
+        <Section icon={Building2} title="Brand & Hero" desc="Headline copy that appears on the homepage hero.">
+          <Field label="Site Name"><input className={inputClass} value={general.site_name} onChange={e => setGeneral({ ...general, site_name: e.target.value })} /></Field>
+          <Field label="Tagline"><input className={inputClass} value={general.tagline} onChange={e => setGeneral({ ...general, tagline: e.target.value })} /></Field>
+          <Field label="Hero Title"><input className={inputClass} value={general.hero_title} onChange={e => setGeneral({ ...general, hero_title: e.target.value })} /></Field>
+          <Field label="Hero Subtitle"><textarea className={`${inputClass} min-h-[60px] resize-none`} value={general.hero_subtitle} onChange={e => setGeneral({ ...general, hero_subtitle: e.target.value })} /></Field>
+        </Section>
 
-          <TabsContent value="general" className="mt-5 space-y-6">
-            <Section icon={Building2} title="Brand & Hero" desc="Headline copy that appears on the homepage hero.">
-              <Field label="Site Name"><input className={inputClass} value={general.site_name} onChange={e => setGeneral({ ...general, site_name: e.target.value })} /></Field>
-              <Field label="Tagline"><input className={inputClass} value={general.tagline} onChange={e => setGeneral({ ...general, tagline: e.target.value })} /></Field>
-              <Field label="Hero Title"><input className={inputClass} value={general.hero_title} onChange={e => setGeneral({ ...general, hero_title: e.target.value })} /></Field>
-              <Field label="Hero Subtitle"><textarea className={`${inputClass} min-h-[60px] resize-none`} value={general.hero_subtitle} onChange={e => setGeneral({ ...general, hero_subtitle: e.target.value })} /></Field>
-            </Section>
-          </TabsContent>
+        <Section icon={Phone} title="Contact Information" desc="Used in the footer, contact page and lead notifications.">
+          <Field label="Sales Phone"><input className={inputClass} value={contact.phone} onChange={e => setContact({ ...contact, phone: e.target.value })} /></Field>
+          <Field label="Sales Email"><input className={inputClass} value={contact.email} onChange={e => setContact({ ...contact, email: e.target.value })} /></Field>
+          <Field label="Support Email"><input className={inputClass} value={contact.support_email} onChange={e => setContact({ ...contact, support_email: e.target.value })} /></Field>
+          <Field label="WhatsApp Number" hint="Include country code, e.g. +2348178000023"><input className={inputClass} value={contact.whatsapp} onChange={e => setContact({ ...contact, whatsapp: e.target.value })} /></Field>
+          <Field label="Office Address"><input className={inputClass} value={contact.address} onChange={e => setContact({ ...contact, address: e.target.value })} /></Field>
+          <Field label="Business Hours"><input className={inputClass} value={contact.business_hours} onChange={e => setContact({ ...contact, business_hours: e.target.value })} /></Field>
+        </Section>
 
-          <TabsContent value="contact" className="mt-5 space-y-6">
-            <Section icon={Phone} title="Contact Information" desc="Used in the footer, contact page and lead notifications.">
-              <Field label="Sales Phone"><input className={inputClass} value={contact.phone} onChange={e => setContact({ ...contact, phone: e.target.value })} /></Field>
-              <Field label="Sales Email"><input className={inputClass} value={contact.email} onChange={e => setContact({ ...contact, email: e.target.value })} /></Field>
-              <Field label="Support Email"><input className={inputClass} value={contact.support_email} onChange={e => setContact({ ...contact, support_email: e.target.value })} /></Field>
-              <Field label="WhatsApp Number" hint="Include country code, e.g. +2348178000023"><input className={inputClass} value={contact.whatsapp} onChange={e => setContact({ ...contact, whatsapp: e.target.value })} /></Field>
-              <Field label="Office Address"><input className={inputClass} value={contact.address} onChange={e => setContact({ ...contact, address: e.target.value })} /></Field>
-              <Field label="Business Hours"><input className={inputClass} value={contact.business_hours} onChange={e => setContact({ ...contact, business_hours: e.target.value })} /></Field>
-            </Section>
-          </TabsContent>
+        <Section icon={Wallet} title="Flexible Payments & Financing" desc="Controls the plans shown on /finance and used when generating quotes.">
+          <Field label="Required Deposit (%)" hint="Customer pays this upfront to start installation."><input type="number" className={inputClass} value={finance.deposit_percent} onChange={e => setFinance({ ...finance, deposit_percent: Number(e.target.value) })} /></Field>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <Field label="3-Month Plan Rate (%/mo)"><input type="number" step="0.1" className={inputClass} value={finance.plan_3_month_rate} onChange={e => setFinance({ ...finance, plan_3_month_rate: Number(e.target.value) })} /></Field>
+            <Field label="6-Month Plan Rate (%/mo)"><input type="number" step="0.1" className={inputClass} value={finance.plan_6_month_rate} onChange={e => setFinance({ ...finance, plan_6_month_rate: Number(e.target.value) })} /></Field>
+            <Field label="12-Month Plan Rate (%/mo)"><input type="number" step="0.1" className={inputClass} value={finance.plan_12_month_rate} onChange={e => setFinance({ ...finance, plan_12_month_rate: Number(e.target.value) })} /></Field>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Min Finance Amount (₦)"><input type="number" className={inputClass} value={finance.min_finance_amount_ngn} onChange={e => setFinance({ ...finance, min_finance_amount_ngn: Number(e.target.value) })} /></Field>
+            <Field label="Max Finance Amount (₦)"><input type="number" className={inputClass} value={finance.max_finance_amount_ngn} onChange={e => setFinance({ ...finance, max_finance_amount_ngn: Number(e.target.value) })} /></Field>
+          </div>
+          <Field label="Late Fee (%)"><input type="number" step="0.1" className={inputClass} value={finance.late_fee_percent} onChange={e => setFinance({ ...finance, late_fee_percent: Number(e.target.value) })} /></Field>
+          <Field label="Terms & Conditions URL"><input className={inputClass} value={finance.finance_terms_url} onChange={e => setFinance({ ...finance, finance_terms_url: e.target.value })} /></Field>
+        </Section>
 
-          <TabsContent value="finance" className="mt-5 space-y-6">
-            <Section icon={Wallet} title="Flexible Payments & Financing" desc="Controls the plans shown on /finance and used when generating quotes.">
-              <Field label="Required Deposit (%)" hint="Customer pays this upfront to start installation."><input type="number" className={inputClass} value={finance.deposit_percent} onChange={e => setFinance({ ...finance, deposit_percent: Number(e.target.value) })} /></Field>
-              <div className="grid sm:grid-cols-3 gap-4">
-                <Field label="3-Month Plan Rate (%/mo)"><input type="number" step="0.1" className={inputClass} value={finance.plan_3_month_rate} onChange={e => setFinance({ ...finance, plan_3_month_rate: Number(e.target.value) })} /></Field>
-                <Field label="6-Month Plan Rate (%/mo)"><input type="number" step="0.1" className={inputClass} value={finance.plan_6_month_rate} onChange={e => setFinance({ ...finance, plan_6_month_rate: Number(e.target.value) })} /></Field>
-                <Field label="12-Month Plan Rate (%/mo)"><input type="number" step="0.1" className={inputClass} value={finance.plan_12_month_rate} onChange={e => setFinance({ ...finance, plan_12_month_rate: Number(e.target.value) })} /></Field>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Min Finance Amount (₦)"><input type="number" className={inputClass} value={finance.min_finance_amount_ngn} onChange={e => setFinance({ ...finance, min_finance_amount_ngn: Number(e.target.value) })} /></Field>
-                <Field label="Max Finance Amount (₦)"><input type="number" className={inputClass} value={finance.max_finance_amount_ngn} onChange={e => setFinance({ ...finance, max_finance_amount_ngn: Number(e.target.value) })} /></Field>
-              </div>
-              <Field label="Late Fee (%)"><input type="number" step="0.1" className={inputClass} value={finance.late_fee_percent} onChange={e => setFinance({ ...finance, late_fee_percent: Number(e.target.value) })} /></Field>
-              <Field label="Terms & Conditions URL"><input className={inputClass} value={finance.finance_terms_url} onChange={e => setFinance({ ...finance, finance_terms_url: e.target.value })} /></Field>
-            </Section>
-          </TabsContent>
+        <Section icon={Truck} title="Shipping & Delivery" desc="Used by the catalog checkout and order summary.">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Default Shipping Fee (₦)"><input type="number" className={inputClass} value={shipping.default_shipping_fee_ngn} onChange={e => setShipping({ ...shipping, default_shipping_fee_ngn: Number(e.target.value) })} /></Field>
+            <Field label="Free Shipping Above (₦)"><input type="number" className={inputClass} value={shipping.free_shipping_threshold_ngn} onChange={e => setShipping({ ...shipping, free_shipping_threshold_ngn: Number(e.target.value) })} /></Field>
+          </div>
+          <Field label="Delivery ETA (days)"><input className={inputClass} value={shipping.delivery_eta_days} onChange={e => setShipping({ ...shipping, delivery_eta_days: e.target.value })} /></Field>
+          <Field label="Service Areas" hint="Comma separated cities/states we deliver to."><input className={inputClass} value={shipping.service_areas} onChange={e => setShipping({ ...shipping, service_areas: e.target.value })} /></Field>
+        </Section>
 
-          <TabsContent value="shipping" className="mt-5 space-y-6">
-            <Section icon={Truck} title="Shipping & Delivery" desc="Used by the catalog checkout and order summary.">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Default Shipping Fee (₦)"><input type="number" className={inputClass} value={shipping.default_shipping_fee_ngn} onChange={e => setShipping({ ...shipping, default_shipping_fee_ngn: Number(e.target.value) })} /></Field>
-                <Field label="Free Shipping Above (₦)"><input type="number" className={inputClass} value={shipping.free_shipping_threshold_ngn} onChange={e => setShipping({ ...shipping, free_shipping_threshold_ngn: Number(e.target.value) })} /></Field>
-              </div>
-              <Field label="Delivery ETA (days)"><input className={inputClass} value={shipping.delivery_eta_days} onChange={e => setShipping({ ...shipping, delivery_eta_days: e.target.value })} /></Field>
-              <Field label="Service Areas" hint="Comma separated cities/states we deliver to."><input className={inputClass} value={shipping.service_areas} onChange={e => setShipping({ ...shipping, service_areas: e.target.value })} /></Field>
-            </Section>
-          </TabsContent>
+        <Section icon={Sparkles} title="Affiliate Program" desc="Defaults applied to new affiliates and payouts.">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Default Commission (%)"><input type="number" step="0.1" className={inputClass} value={affiliate.default_commission_percent} onChange={e => setAffiliate({ ...affiliate, default_commission_percent: Number(e.target.value) })} /></Field>
+            <Field label="Minimum Payout (₦)"><input type="number" className={inputClass} value={affiliate.min_payout_ngn} onChange={e => setAffiliate({ ...affiliate, min_payout_ngn: Number(e.target.value) })} /></Field>
+          </div>
+          <Field label="Attribution Window (days)"><input type="number" className={inputClass} value={affiliate.cookie_window_days} onChange={e => setAffiliate({ ...affiliate, cookie_window_days: Number(e.target.value) })} /></Field>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" checked={affiliate.auto_approve_applications} onChange={e => setAffiliate({ ...affiliate, auto_approve_applications: e.target.checked })} className="rounded border-border" />
+            <span className="text-sm text-card-foreground">Auto-approve affiliate applications</span>
+          </label>
+        </Section>
 
-          <TabsContent value="affiliate" className="mt-5 space-y-6">
-            <Section icon={Sparkles} title="Affiliate Program" desc="Defaults applied to new affiliates and payouts.">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Default Commission (%)"><input type="number" step="0.1" className={inputClass} value={affiliate.default_commission_percent} onChange={e => setAffiliate({ ...affiliate, default_commission_percent: Number(e.target.value) })} /></Field>
-                <Field label="Minimum Payout (₦)"><input type="number" className={inputClass} value={affiliate.min_payout_ngn} onChange={e => setAffiliate({ ...affiliate, min_payout_ngn: Number(e.target.value) })} /></Field>
-              </div>
-              <Field label="Attribution Window (days)"><input type="number" className={inputClass} value={affiliate.cookie_window_days} onChange={e => setAffiliate({ ...affiliate, cookie_window_days: Number(e.target.value) })} /></Field>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" checked={affiliate.auto_approve_applications} onChange={e => setAffiliate({ ...affiliate, auto_approve_applications: e.target.checked })} className="rounded border-border" />
-                <span className="text-sm text-card-foreground">Auto-approve affiliate applications</span>
+        <Section icon={Bell} title="Notification Preferences" desc="Choose which events email the team.">
+          <Field label="Notification Email" hint="All selected alerts are sent here."><input className={inputClass} value={notif.notify_email} onChange={e => setNotif({ ...notif, notify_email: e.target.value })} /></Field>
+          <div className="space-y-3">
+            {[
+              ["notify_on_new_lead", "New lead submitted"],
+              ["notify_on_conversion", "Lead converted (won)"],
+              ["notify_on_order", "New order placed"],
+              ["notify_on_affiliate_application", "Affiliate application received"],
+              ["notify_on_payout_request", "Affiliate payout request"],
+            ].map(([k, label]) => (
+              <label key={k} className="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" checked={notif[k as keyof NotificationPrefs] as boolean}
+                  onChange={e => setNotif({ ...notif, [k]: e.target.checked } as NotificationPrefs)}
+                  className="rounded border-border" />
+                <span className="text-sm text-card-foreground">{label}</span>
               </label>
-            </Section>
-          </TabsContent>
+            ))}
+          </div>
+        </Section>
 
-          <TabsContent value="notifications" className="mt-5 space-y-6">
-            <Section icon={Bell} title="Notification Preferences" desc="Choose which events email the team.">
-              <Field label="Notification Email" hint="All selected alerts are sent here."><input className={inputClass} value={notif.notify_email} onChange={e => setNotif({ ...notif, notify_email: e.target.value })} /></Field>
-              <div className="space-y-3">
-                {[
-                  ["notify_on_new_lead", "New lead submitted"],
-                  ["notify_on_conversion", "Lead converted (won)"],
-                  ["notify_on_order", "New order placed"],
-                  ["notify_on_affiliate_application", "Affiliate application received"],
-                  ["notify_on_payout_request", "Affiliate payout request"],
-                ].map(([k, label]) => (
-                  <label key={k} className="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" checked={notif[k as keyof NotificationPrefs] as boolean}
-                      onChange={e => setNotif({ ...notif, [k]: e.target.checked } as NotificationPrefs)}
-                      className="rounded border-border" />
-                    <span className="text-sm text-card-foreground">{label}</span>
-                  </label>
-                ))}
-              </div>
-            </Section>
-          </TabsContent>
+        <Section icon={Search} title="SEO & Analytics" desc="Default meta tags and tracking identifiers.">
+          <Field label="Default Meta Title"><input className={inputClass} value={seo.meta_title} onChange={e => setSeo({ ...seo, meta_title: e.target.value })} /></Field>
+          <Field label="Default Meta Description"><textarea className={`${inputClass} min-h-[60px] resize-none`} value={seo.meta_description} onChange={e => setSeo({ ...seo, meta_description: e.target.value })} /></Field>
+          <Field label="Open Graph Image URL"><input className={inputClass} value={seo.og_image_url} onChange={e => setSeo({ ...seo, og_image_url: e.target.value })} /></Field>
+          <Field label="Google Analytics ID" hint="e.g. G-XXXXXXX"><input className={inputClass} value={seo.google_analytics_id} onChange={e => setSeo({ ...seo, google_analytics_id: e.target.value })} /></Field>
+          <Field label="Meta Pixel ID"><input className={inputClass} value={seo.meta_pixel_id} onChange={e => setSeo({ ...seo, meta_pixel_id: e.target.value })} /></Field>
+        </Section>
 
-          <TabsContent value="seo" className="mt-5 space-y-6">
-            <Section icon={Search} title="SEO & Analytics" desc="Default meta tags and tracking identifiers.">
-              <Field label="Default Meta Title"><input className={inputClass} value={seo.meta_title} onChange={e => setSeo({ ...seo, meta_title: e.target.value })} /></Field>
-              <Field label="Default Meta Description"><textarea className={`${inputClass} min-h-[60px] resize-none`} value={seo.meta_description} onChange={e => setSeo({ ...seo, meta_description: e.target.value })} /></Field>
-              <Field label="Open Graph Image URL"><input className={inputClass} value={seo.og_image_url} onChange={e => setSeo({ ...seo, og_image_url: e.target.value })} /></Field>
-              <Field label="Google Analytics ID" hint="e.g. G-XXXXXXX"><input className={inputClass} value={seo.google_analytics_id} onChange={e => setSeo({ ...seo, google_analytics_id: e.target.value })} /></Field>
-              <Field label="Meta Pixel ID"><input className={inputClass} value={seo.meta_pixel_id} onChange={e => setSeo({ ...seo, meta_pixel_id: e.target.value })} /></Field>
-            </Section>
-          </TabsContent>
+        <Section icon={Share2} title="Social Media" desc="Shown in the footer and on contact pages.">
+          {(["facebook","instagram","twitter","linkedin","tiktok","youtube","telegram"] as const).map((k) => (
+            <Field key={k} label={k.charAt(0).toUpperCase() + k.slice(1) + " URL"}>
+              <input className={inputClass} value={social[k]} onChange={e => setSocial({ ...social, [k]: e.target.value })} placeholder={`https://${k}.com/...`} />
+            </Field>
+          ))}
+        </Section>
 
-          <TabsContent value="social" className="mt-5 space-y-6">
-            <Section icon={Share2} title="Social Media" desc="Shown in the footer and on contact pages.">
-              {(["facebook","instagram","twitter","linkedin","tiktok","youtube","telegram"] as const).map((k) => (
-                <Field key={k} label={k.charAt(0).toUpperCase() + k.slice(1) + " URL"}>
-                  <input className={inputClass} value={social[k]} onChange={e => setSocial({ ...social, [k]: e.target.value })} placeholder={`https://${k}.com/...`} />
-                </Field>
-              ))}
-            </Section>
-          </TabsContent>
-
-          <TabsContent value="admins" className="mt-5 space-y-6">
-            <CreateAdminCard />
-          </TabsContent>
-        </Tabs>
+        <CreateAdminCard />
 
         <button onClick={save} disabled={saving}
           className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all disabled:opacity-40">
