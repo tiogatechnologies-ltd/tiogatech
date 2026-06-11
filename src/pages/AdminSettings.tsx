@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Save, Bell, UserPlus, Building2, Phone, Wallet, Share2, Search, Shield, Sparkles, Truck } from "lucide-react";
+import { Save, Bell, UserPlus, Building2, Phone, Wallet, Share2, Search, Sparkles, Truck } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 
 interface GeneralSettings {
