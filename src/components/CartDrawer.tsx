@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, CreditCard } from "lucide-react";
+import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, CreditCard, Wallet, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
@@ -127,6 +128,22 @@ const CartDrawer = () => {
               ))}
             </div>
             <div className="border-t border-border p-4 space-y-2">
+              <Link
+                to="/finance"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors p-3"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="grid place-items-center h-8 w-8 rounded-full bg-primary/15 text-primary shrink-0">
+                    <Wallet size={15} />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-foreground leading-tight">Want flexible payments?</p>
+                    <p className="text-[11px] text-muted-foreground leading-tight">Click here to spread the cost over 3, 6 or 12 months.</p>
+                  </div>
+                </div>
+                <ArrowRight size={14} className="text-primary shrink-0" />
+              </Link>
               <p className="text-[11px] text-muted-foreground text-center">Final pricing confirmed after consultation. Installation and delivery added at checkout.</p>
               <button onClick={() => setStep("checkout")} className="w-full rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all">
                 Proceed to Checkout
