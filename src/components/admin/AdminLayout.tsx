@@ -7,7 +7,7 @@ interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
-const navGroups: { label: string; items: { label: string; icon: React.ComponentType<{ size?: number }>; path: string }[] }[] = [
+const navGroups: { label: string; items: { label: string; icon: typeof LayoutDashboard; path: string }[] }[] = [
   {
     label: "Overview",
     items: [
