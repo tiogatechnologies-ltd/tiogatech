@@ -145,7 +145,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             <Menu size={20} />
           </button>
           <h1 className="font-display font-bold text-foreground text-lg">
-            {navItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}
+            {allNavItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}
           </h1>
         </header>
 
