@@ -7,30 +7,71 @@ interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
-const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
-  { label: "Orders", icon: ShoppingBag, path: "/admin/orders" },
-  { label: "Products", icon: Package, path: "/admin/products" },
-  { label: "Solar Packages", icon: Sun, path: "/admin/solar-packages" },
-  { label: "Smart Locks", icon: Lock, path: "/admin/smart-locks" },
-  { label: "Home Automation", icon: Home, path: "/admin/home-automation" },
-  { label: "Leads", icon: Users, path: "/admin/leads" },
-  { label: "App Waitlist", icon: Smartphone, path: "/admin/waitlist" },
-  { label: "Newsletter", icon: Send, path: "/admin/newsletter" },
-  { label: "Blog", icon: Newspaper, path: "/admin/blog" },
-  { label: "Form Builder", icon: FileText, path: "/admin/forms" },
-  { label: "Landing Sections", icon: Layout, path: "/admin/landing" },
-  { label: "Static Pages", icon: FileText, path: "/admin/content" },
-  { label: "Careers", icon: Briefcase, path: "/admin/careers" },
-  { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
-  { label: "Affiliates", icon: Share2, path: "/admin/affiliates" },
-  { label: "Affiliate Payouts", icon: Wallet, path: "/admin/affiliates/payouts" },
-  { label: "Affiliate Analytics", icon: LineChart, path: "/admin/affiliates/analytics" },
-  { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
-  { label: "Email", icon: Mail, path: "/admin/email" },
-  { label: "Settings", icon: Settings, path: "/admin/settings" },
+const navGroups: { label: string; items: { label: string; icon: typeof LayoutDashboard; path: string }[] }[] = [
+  {
+    label: "Overview",
+    items: [
+      { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
+      { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
+    ],
+  },
+  {
+    label: "Sales",
+    items: [
+      { label: "Orders", icon: ShoppingBag, path: "/admin/orders" },
+      { label: "Leads", icon: Users, path: "/admin/leads" },
+      { label: "App Waitlist", icon: Smartphone, path: "/admin/waitlist" },
+    ],
+  },
+  {
+    label: "Catalog",
+    items: [
+      { label: "Products", icon: Package, path: "/admin/products" },
+      { label: "Solar Packages", icon: Sun, path: "/admin/solar-packages" },
+      { label: "Smart Locks", icon: Lock, path: "/admin/smart-locks" },
+      { label: "Home Automation", icon: Home, path: "/admin/home-automation" },
+    ],
+  },
+  {
+    label: "Content",
+    items: [
+      { label: "Blog", icon: Newspaper, path: "/admin/blog" },
+      { label: "Landing Sections", icon: Layout, path: "/admin/landing" },
+      { label: "Static Pages", icon: FileText, path: "/admin/content" },
+      { label: "Form Builder", icon: FileText, path: "/admin/forms" },
+    ],
+  },
+  {
+    label: "Marketing",
+    items: [
+      { label: "Newsletter", icon: Send, path: "/admin/newsletter" },
+      { label: "Email", icon: Mail, path: "/admin/email" },
+    ],
+  },
+  {
+    label: "Affiliates",
+    items: [
+      { label: "Affiliates", icon: Share2, path: "/admin/affiliates" },
+      { label: "Payouts", icon: Wallet, path: "/admin/affiliates/payouts" },
+      { label: "Analytics", icon: LineChart, path: "/admin/affiliates/analytics" },
+    ],
+  },
+  {
+    label: "Careers",
+    items: [
+      { label: "Job Listings", icon: Briefcase, path: "/admin/careers" },
+      { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { label: "Settings", icon: Settings, path: "/admin/settings" },
+    ],
+  },
 ];
 
+const allNavItems = navGroups.flatMap((g) => g.items);
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const { signOut, user } = useAuth();
@@ -59,24 +100,31 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path === "/admin/landing" && location.pathname.startsWith("/admin/content"));
-            return (
-              <button
-                key={item.path}
-                onClick={() => { navigate(item.path); setSidebarOpen(false); }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  isActive
-                    ? "bg-primary/20 text-primary-foreground"
-                    : "text-secondary-foreground/70 hover:bg-secondary-foreground/10 hover:text-secondary-foreground"
-                }`}
-              >
-                <item.icon size={18} />
-                {item.label}
-              </button>
-            );
-          })}
+        <nav className="flex-1 overflow-y-auto p-4 space-y-5">
+          {navGroups.map((group) => (
+            <div key={group.label} className="space-y-1">
+              <p className="px-4 text-[10px] font-semibold uppercase tracking-wider text-secondary-foreground/40 mb-1.5">
+                {group.label}
+              </p>
+              {group.items.map((item) => {
+                const isActive = location.pathname === item.path || (item.path === "/admin/landing" && location.pathname.startsWith("/admin/content"));
+                return (
+                  <button
+                    key={item.path}
+                    onClick={() => { navigate(item.path); setSidebarOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-primary/20 text-primary-foreground"
+                        : "text-secondary-foreground/70 hover:bg-secondary-foreground/10 hover:text-secondary-foreground"
+                    }`}
+                  >
+                    <item.icon size={18} />
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </nav>
 
         <div className="shrink-0 p-4 border-t border-secondary-foreground/10">
@@ -97,7 +145,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             <Menu size={20} />
           </button>
           <h1 className="font-display font-bold text-foreground text-lg">
-            {navItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}
+            {allNavItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}
           </h1>
         </header>
 
