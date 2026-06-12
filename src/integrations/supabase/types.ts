@@ -723,8 +723,12 @@ export type Database = {
       }
       orders: {
         Row: {
+          affiliate_code: string | null
+          billing_address: Json | null
           consent: boolean
           created_at: string
+          discount_amount: number | null
+          discount_code: string | null
           email: string | null
           full_name: string
           id: string
@@ -733,14 +737,28 @@ export type Database = {
           location: string
           notes: string | null
           order_number: string
+          payment_method: string | null
+          payment_provider: string | null
+          payment_reference: string | null
+          payment_status: string | null
           phone: string
+          shipping_address: Json | null
+          shipping_fee: number | null
+          shipping_method: string | null
           source: string
           status: string
+          subtotal: number | null
+          total: number | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
+          affiliate_code?: string | null
+          billing_address?: Json | null
           consent?: boolean
           created_at?: string
+          discount_amount?: number | null
+          discount_code?: string | null
           email?: string | null
           full_name: string
           id?: string
@@ -749,14 +767,28 @@ export type Database = {
           location: string
           notes?: string | null
           order_number?: string
+          payment_method?: string | null
+          payment_provider?: string | null
+          payment_reference?: string | null
+          payment_status?: string | null
           phone: string
+          shipping_address?: Json | null
+          shipping_fee?: number | null
+          shipping_method?: string | null
           source?: string
           status?: string
+          subtotal?: number | null
+          total?: number | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
+          affiliate_code?: string | null
+          billing_address?: Json | null
           consent?: boolean
           created_at?: string
+          discount_amount?: number | null
+          discount_code?: string | null
           email?: string | null
           full_name?: string
           id?: string
@@ -765,10 +797,20 @@ export type Database = {
           location?: string
           notes?: string | null
           order_number?: string
+          payment_method?: string | null
+          payment_provider?: string | null
+          payment_reference?: string | null
+          payment_status?: string | null
           phone?: string
+          shipping_address?: Json | null
+          shipping_fee?: number | null
+          shipping_method?: string | null
           source?: string
           status?: string
+          subtotal?: number | null
+          total?: number | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -928,6 +970,36 @@ export type Database = {
           specifications?: Json | null
           tags?: string[] | null
           tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -1108,6 +1180,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_any_role: {
+        Args: {
+          _roles: Database["public"]["Enums"]["app_role"][]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
