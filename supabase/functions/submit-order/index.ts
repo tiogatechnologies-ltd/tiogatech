@@ -22,6 +22,15 @@ interface OrderPayload {
   notes?: string;
   items: OrderItem[];
   source?: string;
+  payment_method?: string;
+  shipping_method?: string;
+  shipping_fee?: number;
+  subtotal?: number;
+  total?: number;
+  shipping_address?: Record<string, unknown> | null;
+  billing_address?: Record<string, unknown> | null;
+  user_id?: string | null;
+  discount_code?: string | null;
 }
 
 const ADMIN_EMAIL = "sales@tiogatechnologies.com";
@@ -100,6 +109,16 @@ serve(async (req) => {
         items_summary,
         item_count,
         source: body.source || "cart_checkout",
+        payment_method: body.payment_method || "whatsapp",
+        payment_status: "pending",
+        shipping_method: body.shipping_method || "standard",
+        shipping_fee: body.shipping_fee ?? 0,
+        subtotal: body.subtotal ?? 0,
+        total: body.total ?? 0,
+        shipping_address: body.shipping_address ?? null,
+        billing_address: body.billing_address ?? null,
+        user_id: body.user_id ?? null,
+        discount_code: body.discount_code ?? null,
       })
       .select()
       .single();
