@@ -690,6 +690,7 @@ const Customize = () => {
                     >
                       <ShoppingBag size={16} /> Add custom build to cart
                     </button>
+                    <FlexiblePaymentButton itemName={pkg.title} itemType="package" itemId={pkg.id} price={total} />
                   </div>
 
                   <p className="mt-3 text-[10px] text-muted-foreground leading-relaxed">
