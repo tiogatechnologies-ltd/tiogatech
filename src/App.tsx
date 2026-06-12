@@ -7,7 +7,8 @@ import AutoReveal from "@/components/AutoReveal";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import RequireRole from "@/components/auth/RequireRole";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
@@ -17,14 +18,11 @@ import LeadFormHost from "@/components/LeadFormHost";
 import { CartProvider } from "@/contexts/CartContext";
 import PreloadCritical from "@/components/PreloadCritical";
 
-// Eager: above-the-fold landing page only (fastest first paint)
 import Index from "./pages/Index.tsx";
 
-// Floating overlays — lazy so they don't block first paint
 const CartDrawer = lazy(() => import("@/components/CartDrawer"));
 const TelegramWidget = lazy(() => import("@/components/TelegramWidget"));
 
-// Public routes — lazy
 const About = lazy(() => import("./pages/About.tsx"));
 const Catalog = lazy(() => import("./pages/Catalog.tsx"));
 const LumiVolt = lazy(() => import("./pages/LumiVolt.tsx"));
@@ -44,7 +42,13 @@ const NewsletterConfirm = lazy(() => import("./pages/NewsletterConfirm.tsx"));
 const NewsletterUnsubscribe = lazy(() => import("./pages/NewsletterUnsubscribe.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
-// Admin routes — lazy (massive bundles never shipped to public visitors)
+const Auth = lazy(() => import("./pages/Auth.tsx"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
+const Account = lazy(() => import("./pages/Account.tsx"));
+const Checkout = lazy(() => import("./pages/Checkout.tsx"));
+const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess.tsx"));
+const AffiliateDashboard = lazy(() => import("./pages/AffiliateDashboard.tsx"));
+
 const AdminLogin = lazy(() => import("./pages/AdminLogin.tsx"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup.tsx"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard.tsx"));
@@ -68,11 +72,12 @@ const AdminOrders = lazy(() => import("./pages/AdminOrders.tsx"));
 const AdminAffiliates = lazy(() => import("./pages/AdminAffiliates.tsx"));
 const AdminAffiliatePayouts = lazy(() => import("./pages/AdminAffiliatePayouts.tsx"));
 const AdminAffiliateAnalytics = lazy(() => import("./pages/AdminAffiliateAnalytics.tsx"));
+const AdminUsers = lazy(() => import("./pages/AdminUsers.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 min — avoid refetch storms
+      staleTime: 5 * 60 * 1000,
       gcTime: 10 * 60 * 1000,
       refetchOnWindowFocus: false,
       retry: 1,
@@ -86,17 +91,11 @@ const RouteFallback = () => (
   </div>
 );
 
-const ProtectedAdmin = ({ children }: { children: React.ReactNode }) => {
-  const { user, isAdmin, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="animate-pulse text-muted-foreground">Loading...</div></div>;
-  if (!user || !isAdmin) return <Navigate to="/admin/login" replace />;
-  return <>{children}</>;
-};
+const Admin = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => (
+  <RequireRole roles={adminOnly ? ["admin"] : ["admin", "staff"]} redirectTo="/admin/login">{children}</RequireRole>
+);
 
-const PageTracker = () => {
-  usePageTracker();
-  return null;
-};
+const PageTracker = () => { usePageTracker(); return null; };
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -125,29 +124,42 @@ const AnimatedRoutes = () => {
           <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />
           <Route path="/newsletter/confirm" element={<RouteFade><NewsletterConfirm /></RouteFade>} />
           <Route path="/newsletter/unsubscribe" element={<RouteFade><NewsletterUnsubscribe /></RouteFade>} />
-          <Route path="/admin/blog" element={<ProtectedAdmin><AdminBlog /></ProtectedAdmin>} />
-          <Route path="/admin/newsletter" element={<ProtectedAdmin><AdminNewsletter /></ProtectedAdmin>} />
+
+          {/* Auth + Account */}
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/login" element={<Navigate to="/auth" replace />} />
+          <Route path="/signup" element={<Navigate to="/auth?mode=signup" replace />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/account" element={<RequireRole><Account /></RequireRole>} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout/success" element={<CheckoutSuccess />} />
+          <Route path="/affiliate" element={<RequireRole roles={["affiliate", "admin"]}><AffiliateDashboard /></RequireRole>} />
+
+          {/* Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/setup" element={<AdminSetup />} />
-          <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />
-          <Route path="/admin/products" element={<ProtectedAdmin><AdminProducts /></ProtectedAdmin>} />
-          <Route path="/admin/leads" element={<ProtectedAdmin><AdminLeads /></ProtectedAdmin>} />
-          <Route path="/admin/forms" element={<ProtectedAdmin><AdminFormQuestions /></ProtectedAdmin>} />
-          <Route path="/admin/landing" element={<ProtectedAdmin><AdminLandingPage /></ProtectedAdmin>} />
-          <Route path="/admin/content" element={<ProtectedAdmin><AdminContent /></ProtectedAdmin>} />
-          <Route path="/admin/orders" element={<ProtectedAdmin><AdminOrders /></ProtectedAdmin>} />
-          <Route path="/admin/email" element={<ProtectedAdmin><AdminEmail /></ProtectedAdmin>} />
-          <Route path="/admin/analytics" element={<ProtectedAdmin><AdminAnalytics /></ProtectedAdmin>} />
-          <Route path="/admin/careers" element={<ProtectedAdmin><AdminCareers /></ProtectedAdmin>} />
-          <Route path="/admin/career-applications" element={<ProtectedAdmin><AdminCareerApplications /></ProtectedAdmin>} />
-          <Route path="/admin/solar-packages" element={<ProtectedAdmin><AdminSolarPackages /></ProtectedAdmin>} />
-          <Route path="/admin/smart-locks" element={<ProtectedAdmin><AdminSmartLocks /></ProtectedAdmin>} />
-          <Route path="/admin/home-automation" element={<ProtectedAdmin><AdminHomeAutomation /></ProtectedAdmin>} />
-          <Route path="/admin/waitlist" element={<ProtectedAdmin><AdminWaitlist /></ProtectedAdmin>} />
-          <Route path="/admin/affiliates" element={<ProtectedAdmin><AdminAffiliates /></ProtectedAdmin>} />
-          <Route path="/admin/affiliates/payouts" element={<ProtectedAdmin><AdminAffiliatePayouts /></ProtectedAdmin>} />
-          <Route path="/admin/affiliates/analytics" element={<ProtectedAdmin><AdminAffiliateAnalytics /></ProtectedAdmin>} />
-          <Route path="/admin/settings" element={<ProtectedAdmin><AdminSettings /></ProtectedAdmin>} />
+          <Route path="/admin" element={<Admin><AdminDashboard /></Admin>} />
+          <Route path="/admin/products" element={<Admin><AdminProducts /></Admin>} />
+          <Route path="/admin/leads" element={<Admin><AdminLeads /></Admin>} />
+          <Route path="/admin/forms" element={<Admin><AdminFormQuestions /></Admin>} />
+          <Route path="/admin/landing" element={<Admin><AdminLandingPage /></Admin>} />
+          <Route path="/admin/content" element={<Admin><AdminContent /></Admin>} />
+          <Route path="/admin/orders" element={<Admin><AdminOrders /></Admin>} />
+          <Route path="/admin/email" element={<Admin><AdminEmail /></Admin>} />
+          <Route path="/admin/analytics" element={<Admin><AdminAnalytics /></Admin>} />
+          <Route path="/admin/careers" element={<Admin><AdminCareers /></Admin>} />
+          <Route path="/admin/career-applications" element={<Admin><AdminCareerApplications /></Admin>} />
+          <Route path="/admin/solar-packages" element={<Admin><AdminSolarPackages /></Admin>} />
+          <Route path="/admin/smart-locks" element={<Admin><AdminSmartLocks /></Admin>} />
+          <Route path="/admin/home-automation" element={<Admin><AdminHomeAutomation /></Admin>} />
+          <Route path="/admin/waitlist" element={<Admin><AdminWaitlist /></Admin>} />
+          <Route path="/admin/blog" element={<Admin><AdminBlog /></Admin>} />
+          <Route path="/admin/newsletter" element={<Admin><AdminNewsletter /></Admin>} />
+          <Route path="/admin/affiliates" element={<Admin><AdminAffiliates /></Admin>} />
+          <Route path="/admin/affiliates/payouts" element={<Admin><AdminAffiliatePayouts /></Admin>} />
+          <Route path="/admin/affiliates/analytics" element={<Admin><AdminAffiliateAnalytics /></Admin>} />
+          <Route path="/admin/users" element={<Admin adminOnly><AdminUsers /></Admin>} />
+          <Route path="/admin/settings" element={<Admin adminOnly><AdminSettings /></Admin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
       </Suspense>
