@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, CreditCard } from "lucide-react";
+import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, CreditCard, Wallet } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
@@ -127,9 +128,22 @@ const CartDrawer = () => {
               ))}
             </div>
             <div className="border-t border-border p-4 space-y-2">
-              <p className="text-[11px] text-muted-foreground text-center">Final pricing confirmed after consultation. Installation and delivery added at checkout.</p>
-              <button onClick={() => setStep("checkout")} className="w-full rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all">
+              <Link
+                to="/finance"
+                onClick={() => setOpen(false)}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent/10 text-accent-foreground py-2.5 text-xs font-semibold hover:bg-accent/20"
+              >
+                <Wallet size={13} /> Want flexible payments? Pay over 3, 6 or 12 months
+              </Link>
+              <Link
+                to="/checkout"
+                onClick={() => setOpen(false)}
+                className="w-full block text-center rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all"
+              >
                 Proceed to Checkout
+              </Link>
+              <button onClick={() => setStep("checkout")} className="w-full rounded-full border border-border bg-card py-2.5 text-xs font-semibold text-foreground hover:bg-muted">
+                Quick order (WhatsApp / callback)
               </button>
               <button onClick={clear} className="w-full text-xs text-muted-foreground hover:text-foreground py-1">Clear cart</button>
             </div>

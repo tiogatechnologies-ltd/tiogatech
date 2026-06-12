@@ -5,6 +5,7 @@ import { Check, ArrowRight, Lock, Sparkles, KeyRound, Building2, ShoppingBag } f
 import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
+import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 
 const fmt = (item: SmartLock) =>
@@ -115,6 +116,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
           Customize <ArrowRight size={13} />
         </Link>
       </div>
+      <div className="mt-2"><FlexiblePaymentButton itemName={p.name} itemType="lock" itemId={p.id} price={p.price ?? null} /></div>
       <p className="text-[10px] text-muted-foreground text-center mt-2">
         <Check size={10} className="inline" /> 1-year warranty · Pro installation included
       </p>

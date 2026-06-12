@@ -4,6 +4,7 @@ import { Check, ArrowRight, Sparkles, Music, Home, ShoppingBag } from "lucide-re
 import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/useHomeAutomationPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
+import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 
 const fmt = (p: HomeAutomationPackage) =>
@@ -106,6 +107,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
           Customize <ArrowRight size={13} />
         </Link>
       </div>
+      <div className="mt-2"><FlexiblePaymentButton itemName={p.name} itemType="automation" itemId={p.id} price={p.price ?? null} /></div>
       <p className="text-[10px] text-muted-foreground text-center mt-2">
         <Check size={10} className="inline" /> Site survey & installation included
       </p>

@@ -5,7 +5,7 @@ import { ShieldCheck, LogIn } from "lucide-react";
 import AdminSEO from "@/components/AdminSEO";
 
 const AdminLogin = () => {
-  const { signIn, loading, isAdmin, user } = useAuth();
+  const { signIn, loading, isStaff, user } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +20,7 @@ const AdminLogin = () => {
     );
   }
 
-  if (user && isAdmin) {
+  if (user && isStaff) {
     navigate("/admin");
     return null;
   }

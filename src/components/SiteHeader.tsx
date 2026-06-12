@@ -6,6 +6,7 @@ import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { cn } from "@/lib/utils";
 import MegaMenu from "@/components/MegaMenu";
 import CartButton from "@/components/CartButton";
+import AccountButton from "@/components/AccountButton";
 
 // Sub-brands now live inside the Products mega-menu (see MegaMenu.tsx).
 const brandLinks: { label: string; to: string }[] = [
@@ -204,6 +205,7 @@ const SiteHeader = () => {
 
         <div className="flex items-center gap-2">
           <CartButton onDark={onDark} />
+          <AccountButton onDark={onDark} />
           {/* AI Recommendation badge — always high-contrast */}
           <button
             type="button"

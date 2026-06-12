@@ -8,6 +8,7 @@ import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
+import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 import bgCustomize from "@/assets/feature-control-panel.jpg";
 
@@ -689,6 +690,7 @@ const Customize = () => {
                     >
                       <ShoppingBag size={16} /> Add custom build to cart
                     </button>
+                    <FlexiblePaymentButton itemName={pkg.title} itemType="package" itemId={pkg.id} price={total} />
                   </div>
 
                   <p className="mt-3 text-[10px] text-muted-foreground leading-relaxed">

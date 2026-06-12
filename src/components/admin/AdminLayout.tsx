@@ -66,6 +66,7 @@ const navGroups: { label: string; items: { label: string; icon: typeof LayoutDas
   {
     label: "System",
     items: [
+      { label: "Users & Roles", icon: UserRoundCheck, path: "/admin/users" },
       { label: "Settings", icon: Settings, path: "/admin/settings" },
     ],
   },

@@ -5,6 +5,7 @@ import { Battery, Sun, Zap, Cpu, Check, ArrowRight, Sparkles, ShoppingBag } from
 import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
+import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 
 const fmt = (n: number | null) =>
@@ -110,6 +111,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
           Customize <ArrowRight size={13} />
         </Link>
       </div>
+      <div className="mt-2"><FlexiblePaymentButton itemName={`Solar Package #${p.package_number}`} itemType="package" itemId={p.id} price={p.total_price} /></div>
       <p className="text-[10px] text-muted-foreground text-center mt-2">
         <Check size={10} className="inline" /> Valid 2 weeks · Installation included
       </p>
