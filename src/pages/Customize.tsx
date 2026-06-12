@@ -8,6 +8,7 @@ import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
+import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 import bgCustomize from "@/assets/feature-control-panel.jpg";
 

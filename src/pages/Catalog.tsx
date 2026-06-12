@@ -9,6 +9,7 @@ import bgLagosNight from "@/assets/bg-lagos-skyline.jpg";
 import SEO from "@/components/SEO";
 import { useCart } from "@/contexts/CartContext";
 import { trackConversion } from "@/lib/tracking";
+import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 
 const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("_tid_session") || "unknown";
