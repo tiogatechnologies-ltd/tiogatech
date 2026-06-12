@@ -9,7 +9,7 @@ const CheckoutSuccess = () => {
 
   return (
     <div className="min-h-screen grid place-items-center bg-muted/30 px-4">
-      <SEO title="Order Confirmed" path="/checkout/success" />
+      <SEO title="Order Confirmed" description="Your Tioga order has been received." path="/checkout/success" />
       <div className="w-full max-w-lg bg-card rounded-3xl border border-border p-8 sm:p-10 text-center shadow-[var(--shadow-card)]">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 text-primary mb-4">
           <CheckCircle2 size={32} />

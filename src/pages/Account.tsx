@@ -41,7 +41,7 @@ const Account = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="My Account" path="/account" />
+      <SEO title="My Account" description="Manage your Tioga profile, orders and financing." path="/account" />
       <SiteHeader />
       <main className="flex-1 section-padding bg-muted/30">
         <div className="section-container max-w-5xl">

@@ -27,7 +27,7 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen grid place-items-center px-4 bg-muted/30">
-      <SEO title="Reset your password" path="/reset-password" />
+      <SEO title="Reset your password" description="Set a new password for your Tioga account." path="/reset-password" />
       <div className="w-full max-w-sm bg-card rounded-3xl border border-border p-8 shadow-[var(--shadow-card)]">
         <div className="text-center mb-5">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3"><Lock size={22} /></div>

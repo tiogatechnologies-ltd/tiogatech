@@ -31,7 +31,7 @@ const AffiliateDashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Affiliate Dashboard" path="/affiliate" />
+      <SEO title="Affiliate Dashboard" description="Track your affiliate referrals, commission and payouts." path="/affiliate" />
       <SiteHeader />
       <main className="flex-1 section-padding bg-muted/30">
         <div className="section-container max-w-5xl">
