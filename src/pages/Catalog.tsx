@@ -221,33 +221,36 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
 
         <p className="text-sm font-bold text-accent">{product.price ?? "Price on request"}</p>
 
-        <div className="mt-auto grid grid-cols-2 gap-2">
-          <button
-            onClick={() => {
-              addToCart({
-                refId: product.id,
-                type: "product",
-                name: product.name,
-                price: product.price,
-                image: allImages[0] || product.image_url,
-                category: product.category,
-              });
-              trackProductClick(product.id);
-              trackConversion("cart_add", { product_id: product.id, source: "catalog" });
-            }}
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-primary bg-primary/10 text-primary px-3 py-2.5 text-xs font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
-          >
-            <ShoppingBag size={13} /> Add to Cart
-          </button>
-          <a
-            href={`${WHATSAPP}?text=${waMsg}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackProductClick(product.id)}
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground hover:brightness-110 transition-all"
-          >
-            <MessageCircle size={13} /> Chat
-          </a>
+        <div className="mt-auto space-y-2">
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => {
+                addToCart({
+                  refId: product.id,
+                  type: "product",
+                  name: product.name,
+                  price: product.price,
+                  image: allImages[0] || product.image_url,
+                  category: product.category,
+                });
+                trackProductClick(product.id);
+                trackConversion("cart_add", { product_id: product.id, source: "catalog" });
+              }}
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-primary bg-primary/10 text-primary px-3 py-2.5 text-xs font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
+            >
+              <ShoppingBag size={13} /> Add to Cart
+            </button>
+            <a
+              href={`${WHATSAPP}?text=${waMsg}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackProductClick(product.id)}
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground hover:brightness-110 transition-all"
+            >
+              <MessageCircle size={13} /> Chat
+            </a>
+          </div>
+          <FlexiblePaymentButton itemName={product.name} itemType="product" itemId={product.id} />
         </div>
       </div>
     </div>
