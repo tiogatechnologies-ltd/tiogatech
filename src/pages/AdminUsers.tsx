@@ -1,28 +1,37 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
-import { ShieldCheck, UserPlus, Trash2, Loader2, Search } from "lucide-react";
+import { Loader2, Search, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import type { AppRole } from "@/contexts/AuthContext";
 
 const ROLES: AppRole[] = ["admin", "staff", "affiliate", "customer"];
 
+interface UserRow {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  phone: string | null;
+  created_at: string;
+  last_sign_in_at: string | null;
+  roles: string[];
+}
+
 const AdminUsers = () => {
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<"all" | AppRole>("all");
 
   const load = async () => {
     setLoading(true);
-    const [{ data: profiles }, { data: roles }] = await Promise.all([
-      supabase.from("profiles").select("*").order("created_at", { ascending: false }),
-      supabase.from("user_roles").select("user_id, role"),
-    ]);
-    const rolesByUser: Record<string, string[]> = {};
-    (roles || []).forEach((r: any) => {
-      rolesByUser[r.user_id] = [...(rolesByUser[r.user_id] || []), r.role];
-    });
-    setUsers((profiles || []).map((p: any) => ({ ...p, roles: rolesByUser[p.id] || [] })));
+    const { data, error } = await supabase.functions.invoke("list-users");
+    if (error) {
+      toast.error(error.message || "Failed to load users");
+      setUsers([]);
+    } else {
+      setUsers(((data as any)?.users ?? []) as UserRow[]);
+    }
     setLoading(false);
   };
 
@@ -31,11 +40,11 @@ const AdminUsers = () => {
   const toggleRole = async (userId: string, role: AppRole, currentlyHas: boolean) => {
     if (currentlyHas) {
       const { error } = await supabase.from("user_roles").delete().eq("user_id", userId).eq("role", role);
-      if (error) { toast.error(error.message); return; }
+      if (error) return toast.error(error.message);
       toast.success(`Removed "${role}"`);
     } else {
       const { error } = await supabase.from("user_roles").insert({ user_id: userId, role });
-      if (error) { toast.error(error.message); return; }
+      if (error) return toast.error(error.message);
       toast.success(`Granted "${role}"`);
     }
     load();
@@ -43,15 +52,34 @@ const AdminUsers = () => {
 
   const filtered = users.filter((u) => {
     const q = search.toLowerCase();
-    return !q || (u.email || "").toLowerCase().includes(q) || (u.full_name || "").toLowerCase().includes(q);
+    const matchQ = !q || (u.email || "").toLowerCase().includes(q) || (u.full_name || "").toLowerCase().includes(q);
+    const matchR = filter === "all" || u.roles.includes(filter);
+    return matchQ && matchR;
   });
+
+  const counts = ROLES.reduce<Record<string, number>>((acc, r) => {
+    acc[r] = users.filter((u) => u.roles.includes(r)).length;
+    return acc;
+  }, { all: users.length });
 
   return (
     <AdminLayout>
       <div className="space-y-5">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-foreground">Users & Roles</h1>
-          <p className="text-sm text-muted-foreground">Manage who can access admin, affiliate or customer features.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-display font-bold text-foreground">Users & Roles</h1>
+            <p className="text-sm text-muted-foreground">Manage who can access admin, staff, affiliate or customer features.</p>
+          </div>
+          <button onClick={load} className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-border hover:bg-muted"><RefreshCw size={12} /> Refresh</button>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+          {(["all", ...ROLES] as const).map((r) => (
+            <button key={r} onClick={() => setFilter(r as any)}
+              className={`px-3 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider border transition-colors ${filter === r ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border text-muted-foreground hover:border-primary/40"}`}>
+              {r} <span className="opacity-60">({counts[r] ?? 0})</span>
+            </button>
+          ))}
         </div>
 
         <div className="relative">
@@ -65,51 +93,48 @@ const AdminUsers = () => {
           ) : filtered.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground text-sm">No users found.</div>
           ) : (
-            <table className="w-full text-sm">
-              <thead className="bg-muted/50">
-                <tr className="text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <th className="px-4 py-3">User</th>
-                  <th className="px-4 py-3">Roles</th>
-                  <th className="px-4 py-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filtered.map((u) => (
-                  <tr key={u.id}>
-                    <td className="px-4 py-3">
-                      <p className="font-semibold text-foreground">{u.full_name || "—"}</p>
-                      <p className="text-xs text-muted-foreground">{u.email}</p>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-1.5">
-                        {u.roles.length === 0 && <span className="text-xs text-muted-foreground">none</span>}
-                        {u.roles.map((r: string) => (
-                          <span key={r} className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">{r}</span>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="inline-flex flex-wrap gap-1.5 justify-end">
-                        {ROLES.map((r) => {
-                          const has = u.roles.includes(r);
-                          return (
-                            <button
-                              key={r}
-                              onClick={() => toggleRole(u.id, r, has)}
-                              className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border transition-colors ${has ? "bg-destructive/10 text-destructive border-destructive/30 hover:bg-destructive/20" : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-primary"}`}
-                            >
-                              {has ? `- ${r}` : `+ ${r}`}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr className="text-left text-xs uppercase tracking-wider text-muted-foreground">
+                    <th className="px-4 py-3">User</th>
+                    <th className="px-4 py-3 hidden md:table-cell">Joined</th>
+                    <th className="px-4 py-3 hidden lg:table-cell">Last Sign In</th>
+                    <th className="px-4 py-3">Roles</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {filtered.map((u) => (
+                    <tr key={u.id}>
+                      <td className="px-4 py-3">
+                        <p className="font-semibold text-foreground">{u.full_name || "—"}</p>
+                        <p className="text-xs text-muted-foreground">{u.email}</p>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-muted-foreground hidden md:table-cell">{new Date(u.created_at).toLocaleDateString()}</td>
+                      <td className="px-4 py-3 text-xs text-muted-foreground hidden lg:table-cell">{u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleDateString() : "—"}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-wrap gap-1.5">
+                          {ROLES.map((r) => {
+                            const has = u.roles.includes(r);
+                            return (
+                              <button key={r} onClick={() => toggleRole(u.id, r, has)}
+                                className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border transition-colors ${has ? "bg-primary/10 text-primary border-primary/30 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30" : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-primary"}`}
+                                title={has ? `Click to remove ${r}` : `Click to grant ${r}`}>
+                                {r}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
+
+        <p className="text-xs text-muted-foreground">Showing {filtered.length} of {users.length} users. Click a role pill to toggle it.</p>
       </div>
     </AdminLayout>
   );
