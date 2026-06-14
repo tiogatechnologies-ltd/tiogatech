@@ -1,4 +1,4 @@
-// Site-wide AI chat assistant — simple JSON request/response with tool calling.
+// Site-wide AI chat assistant — simple JSON request/response with tool calling. v2
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "../_shared/ai-gateway.ts";
 
