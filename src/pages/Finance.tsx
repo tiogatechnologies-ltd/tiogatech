@@ -76,9 +76,9 @@ const Finance = () => {
               Setting up flexible payment for <strong className="font-semibold">{itemName}</strong>
               {presetAmount > 0 && <> at <strong className="font-semibold">{formatNGN(presetAmount)}</strong></>}.
             </p>
-            <button onClick={() => openLeadForm(`finance_${itemName}`)} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">
+            <Link to={`/finance/apply?item=${encodeURIComponent(itemName)}&amount=${presetAmount || amount}&months=6`} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">
               Apply now <ArrowRight size={12} />
-            </button>
+            </Link>
           </div>
         </section>
       )}
@@ -140,9 +140,12 @@ const Finance = () => {
             </div>
           </div>
 
-          <div className="text-center mt-8">
-            <button onClick={() => openLeadForm("finance_calculator")} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20">
+          <div className="text-center mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link to={`/finance/apply?item=${encodeURIComponent(itemName || "Custom plan")}&amount=${amount}&months=6`} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20">
               Apply for this plan <ArrowRight size={14} />
+            </Link>
+            <button onClick={() => openLeadForm("finance_calculator")} className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-muted">
+              Talk to an expert
             </button>
           </div>
         </div>
