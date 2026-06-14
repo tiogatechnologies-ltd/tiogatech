@@ -84,7 +84,7 @@ const FinanceApply = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Apply for Flexible Payment — Tioga Technologies" />
+      <SEO title="Apply for Flexible Payment — Tioga Technologies" description="Apply for 3, 6, or 12 month flexible payment plans for solar, smart home and security purchases." />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-8">
           <button onClick={() => navigate(-1)} className="text-sm text-muted-foreground mb-4">← Back</button>

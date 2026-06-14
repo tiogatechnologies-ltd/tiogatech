@@ -5,13 +5,14 @@ import { Bot, Send, Loader2, Sparkles, Copy } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
 
-const TASKS = [
-  { id: "analyze_period", label: "Analyze last 30 days", params: { days: 30 } },
+type Task = { id: string; label: string; needs?: string[] };
+const TASKS: Task[] = [
+  { id: "analyze_period", label: "Analyze last 30 days" },
   { id: "generate_blog", label: "Generate a blog post", needs: ["topic"] },
   { id: "summarize_lead", label: "Summarize a lead", needs: ["lead_id"] },
   { id: "draft_email", label: "Draft a follow-up email", needs: ["lead_id"] },
   { id: "write_product_description", label: "Write product description", needs: ["product_id"] },
-] as const;
+];
 
 const AdminCopilot = () => {
   const [task, setTask] = useState<string>("analyze_period");
@@ -50,7 +51,7 @@ const AdminCopilot = () => {
               </select>
             </div>
             {TASKS.find((t) => t.id === task)?.needs && (
-              <div><label className="text-xs font-semibold block mb-1.5">{(TASKS.find((t) => t.id === task) as any).needs[0]}</label>
+              <div><label className="text-xs font-semibold block mb-1.5">{TASKS.find((t) => t.id === task)?.needs?.[0]}</label>
                 <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="…" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" />
               </div>
             )}
