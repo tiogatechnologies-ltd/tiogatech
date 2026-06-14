@@ -1,5 +1,5 @@
 // Shared Lovable AI Gateway provider for AI SDK calls inside Supabase Edge Functions.
-import { createOpenAICompatible } from "npm:@ai-sdk/openai-compatible@0.2.16";
+import { createOpenAICompatible } from "npm:@ai-sdk/openai-compatible@1.0.18";
 
 export function createLovableAiGatewayProvider(lovableApiKey: string) {
   return createOpenAICompatible({
