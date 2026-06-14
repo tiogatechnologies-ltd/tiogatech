@@ -210,6 +210,45 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_log: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          created_at: string
+          diff: Json | null
+          entity: string | null
+          entity_id: string | null
+          id: string
+          ip: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          diff?: Json | null
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+          ip?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          diff?: Json | null
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+          ip?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author: string
@@ -389,6 +428,377 @@ export type Database = {
           session_id?: string
         }
         Relationships: []
+      }
+      customer_notes: {
+        Row: {
+          author_id: string | null
+          body: string
+          created_at: string
+          id: string
+          pinned: boolean
+          user_id: string
+        }
+        Insert: {
+          author_id?: string | null
+          body: string
+          created_at?: string
+          id?: string
+          pinned?: boolean
+          user_id: string
+        }
+        Update: {
+          author_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          pinned?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
+      customer_tags: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          tag: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          tag: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          tag?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      discount_redemptions: {
+        Row: {
+          amount_discounted: number
+          created_at: string
+          discount_id: string
+          email: string | null
+          id: string
+          order_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount_discounted?: number
+          created_at?: string
+          discount_id: string
+          email?: string | null
+          id?: string
+          order_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount_discounted?: number
+          created_at?: string
+          discount_id?: string
+          email?: string | null
+          id?: string
+          order_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discount_redemptions_discount_id_fkey"
+            columns: ["discount_id"]
+            isOneToOne: false
+            referencedRelation: "discounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "discount_redemptions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discounts: {
+        Row: {
+          active: boolean
+          applies_to: string
+          applies_to_values: string[]
+          code: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          max_uses: number | null
+          min_cart_ngn: number
+          per_customer_cap: number
+          starts_at: string | null
+          type: string
+          updated_at: string
+          uses_count: number
+          value: number
+        }
+        Insert: {
+          active?: boolean
+          applies_to?: string
+          applies_to_values?: string[]
+          code: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          min_cart_ngn?: number
+          per_customer_cap?: number
+          starts_at?: string | null
+          type: string
+          updated_at?: string
+          uses_count?: number
+          value: number
+        }
+        Update: {
+          active?: boolean
+          applies_to?: string
+          applies_to_values?: string[]
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          min_cart_ngn?: number
+          per_customer_cap?: number
+          starts_at?: string | null
+          type?: string
+          updated_at?: string
+          uses_count?: number
+          value?: number
+        }
+        Relationships: []
+      }
+      finance_applications: {
+        Row: {
+          address: string
+          approved_at: string | null
+          city: string | null
+          consent: boolean
+          created_at: string
+          date_of_birth: string | null
+          deposit_ngn: number
+          email: string
+          employer: string | null
+          financed_ngn: number
+          full_name: string
+          id: string
+          id_document_url: string | null
+          id_number: string | null
+          id_type: string | null
+          item_name: string
+          item_reference: string | null
+          monthly_income_ngn: number | null
+          monthly_payment_ngn: number
+          months: number
+          next_of_kin_name: string | null
+          next_of_kin_phone: string | null
+          notes: string | null
+          occupation: string | null
+          phone: string
+          rejection_reason: string | null
+          reviewer_id: string | null
+          state: string | null
+          status: Database["public"]["Enums"]["finance_app_status"]
+          total_amount_ngn: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address: string
+          approved_at?: string | null
+          city?: string | null
+          consent?: boolean
+          created_at?: string
+          date_of_birth?: string | null
+          deposit_ngn?: number
+          email: string
+          employer?: string | null
+          financed_ngn: number
+          full_name: string
+          id?: string
+          id_document_url?: string | null
+          id_number?: string | null
+          id_type?: string | null
+          item_name: string
+          item_reference?: string | null
+          monthly_income_ngn?: number | null
+          monthly_payment_ngn: number
+          months: number
+          next_of_kin_name?: string | null
+          next_of_kin_phone?: string | null
+          notes?: string | null
+          occupation?: string | null
+          phone: string
+          rejection_reason?: string | null
+          reviewer_id?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["finance_app_status"]
+          total_amount_ngn: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: string
+          approved_at?: string | null
+          city?: string | null
+          consent?: boolean
+          created_at?: string
+          date_of_birth?: string | null
+          deposit_ngn?: number
+          email?: string
+          employer?: string | null
+          financed_ngn?: number
+          full_name?: string
+          id?: string
+          id_document_url?: string | null
+          id_number?: string | null
+          id_type?: string | null
+          item_name?: string
+          item_reference?: string | null
+          monthly_income_ngn?: number | null
+          monthly_payment_ngn?: number
+          months?: number
+          next_of_kin_name?: string | null
+          next_of_kin_phone?: string | null
+          notes?: string | null
+          occupation?: string | null
+          phone?: string
+          rejection_reason?: string | null
+          reviewer_id?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["finance_app_status"]
+          total_amount_ngn?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      finance_payments: {
+        Row: {
+          amount_ngn: number
+          application_id: string
+          created_at: string
+          id: string
+          method: string
+          proof_url: string | null
+          reference: string | null
+          schedule_id: string | null
+          verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          amount_ngn: number
+          application_id: string
+          created_at?: string
+          id?: string
+          method?: string
+          proof_url?: string | null
+          reference?: string | null
+          schedule_id?: string | null
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          amount_ngn?: number
+          application_id?: string
+          created_at?: string
+          id?: string
+          method?: string
+          proof_url?: string | null
+          reference?: string | null
+          schedule_id?: string | null
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "finance_payments_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "finance_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "finance_payments_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "finance_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      finance_schedules: {
+        Row: {
+          amount_ngn: number
+          application_id: string
+          created_at: string
+          due_date: string
+          id: string
+          installment_no: number
+          paid_at: string | null
+          paid_reference: string | null
+          proof_url: string | null
+          reminded_at: string | null
+          status: Database["public"]["Enums"]["finance_inst_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount_ngn: number
+          application_id: string
+          created_at?: string
+          due_date: string
+          id?: string
+          installment_no: number
+          paid_at?: string | null
+          paid_reference?: string | null
+          proof_url?: string | null
+          reminded_at?: string | null
+          status?: Database["public"]["Enums"]["finance_inst_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount_ngn?: number
+          application_id?: string
+          created_at?: string
+          due_date?: string
+          id?: string
+          installment_no?: number
+          paid_at?: string | null
+          paid_reference?: string | null
+          proof_url?: string | null
+          reminded_at?: string | null
+          status?: Database["public"]["Enums"]["finance_inst_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "finance_schedules_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "finance_applications"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       form_questions: {
         Row: {
@@ -721,6 +1131,44 @@ export type Database = {
           },
         ]
       }
+      order_status_history: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          from_status: string | null
+          id: string
+          note: string | null
+          order_id: string
+          to_status: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          from_status?: string | null
+          id?: string
+          note?: string | null
+          order_id: string
+          to_status: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          from_status?: string | null
+          id?: string
+          note?: string | null
+          order_id?: string
+          to_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           affiliate_code: string | null
@@ -730,8 +1178,10 @@ export type Database = {
           discount_amount: number | null
           discount_code: string | null
           email: string | null
+          fulfilled_at: string | null
           full_name: string
           id: string
+          internal_notes: string | null
           item_count: number
           items_summary: string
           location: string
@@ -749,6 +1199,7 @@ export type Database = {
           status: string
           subtotal: number | null
           total: number | null
+          tracking_number: string | null
           updated_at: string
           user_id: string | null
         }
@@ -760,8 +1211,10 @@ export type Database = {
           discount_amount?: number | null
           discount_code?: string | null
           email?: string | null
+          fulfilled_at?: string | null
           full_name: string
           id?: string
+          internal_notes?: string | null
           item_count?: number
           items_summary?: string
           location: string
@@ -779,6 +1232,7 @@ export type Database = {
           status?: string
           subtotal?: number | null
           total?: number | null
+          tracking_number?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -790,8 +1244,10 @@ export type Database = {
           discount_amount?: number | null
           discount_code?: string | null
           email?: string | null
+          fulfilled_at?: string | null
           full_name?: string
           id?: string
+          internal_notes?: string | null
           item_count?: number
           items_summary?: string
           location?: string
@@ -809,6 +1265,7 @@ export type Database = {
           status?: string
           subtotal?: number | null
           total?: number | null
+          tracking_number?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -927,11 +1384,13 @@ export type Database = {
           id: string
           image_url: string | null
           is_active: boolean
+          low_stock_threshold: number | null
           name: string
           price: string | null
           series: string | null
           sort_order: number
           specifications: Json | null
+          stock_qty: number | null
           tags: string[] | null
           tier: string
           updated_at: string
@@ -945,11 +1404,13 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_active?: boolean
+          low_stock_threshold?: number | null
           name: string
           price?: string | null
           series?: string | null
           sort_order?: number
           specifications?: Json | null
+          stock_qty?: number | null
           tags?: string[] | null
           tier?: string
           updated_at?: string
@@ -963,11 +1424,13 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_active?: boolean
+          low_stock_threshold?: number | null
           name?: string
           price?: string | null
           series?: string | null
           sort_order?: number
           specifications?: Json | null
+          stock_qty?: number | null
           tags?: string[] | null
           tier?: string
           updated_at?: string
@@ -1194,9 +1657,28 @@ export type Database = {
         }
         Returns: boolean
       }
+      log_audit: {
+        Args: {
+          _action: string
+          _diff: Json
+          _entity: string
+          _entity_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "user" | "staff" | "affiliate" | "customer"
+      finance_app_status:
+        | "pending"
+        | "under_review"
+        | "approved"
+        | "rejected"
+        | "active"
+        | "completed"
+        | "defaulted"
+        | "cancelled"
+      finance_inst_status: "upcoming" | "due" | "paid" | "overdue" | "waived"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1325,6 +1807,17 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user", "staff", "affiliate", "customer"],
+      finance_app_status: [
+        "pending",
+        "under_review",
+        "approved",
+        "rejected",
+        "active",
+        "completed",
+        "defaulted",
+        "cancelled",
+      ],
+      finance_inst_status: ["upcoming", "due", "paid", "overdue", "waived"],
     },
   },
 } as const

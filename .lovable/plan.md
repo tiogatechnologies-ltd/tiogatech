@@ -1,94 +1,123 @@
-## Goal
-Ship a complete auth + role-based system, a real e-commerce checkout (Paystack), a "Flexible Payment" CTA on every product/package that routes to the Finance page, and round out the admin + Finance UX.
+## 1. Admin Settings redesign — Left-rail nav + cards
 
-## 1. Authentication & RBAC
+New `/admin/settings` layout:
 
-**Roles** (app_role enum extended): `admin`, `staff`, `affiliate`, `customer`.
+```text
+┌──────────────────────────────────────────────────────────┐
+│ Settings                            [Search settings 🔍] │
+├─────────────┬────────────────────────────────────────────┤
+│ ◉ General   │  ┌──────────── Section header ─────────┐   │
+│   Branding  │  │ Title + subtitle              [Save]│   │
+│   Contact   │  ├─────────────────────────────────────┤   │
+│   Payments  │  │  Card: Field   Field                │   │
+│   Financing │  │  Card: Toggle  Toggle               │   │
+│   Shipping  │  └─────────────────────────────────────┘   │
+│   Tax       │  ┌── Next card group ──────────────────┐   │
+│   ...       │  └─────────────────────────────────────┘   │
+└─────────────┴────────────────────────────────────────────┘
+```
 
-**Tables**
-- Extend `app_role` enum to add `staff` and `customer`.
-- `profiles` table: `id (auth.users)`, `full_name`, `phone`, `avatar_url`, timestamps. RLS: user reads/updates own; admin/staff read all.
-- Trigger on `auth.users` insert -> creates a profile and assigns `customer` role by default.
-- Keep `has_role(_user_id, _role)` security-definer function; add `has_any_role(_user_id, _roles)` helper.
-- Backfill existing affiliates so each linked auth user gets the `affiliate` role.
-- GRANTs on new tables per Lovable rules.
+Components: collapsible left rail (sticky, scroll-spy active state, icon + label, mobile becomes a top sheet/drawer), per-section card groups, inline field hints, image upload chips for logo/favicon/OG image, copy buttons for keys, "Last saved" timestamp, sticky bottom "Unsaved changes" bar with Save/Discard, optimistic save with toast, per-section permission gating (admin-only sections hidden for staff).
 
-**Frontend**
-- New unified `/auth` page (tabs: Sign in / Sign up / Forgot password) — email + password, Google OAuth, `emailRedirectTo = window.location.origin`.
-- New `/reset-password` route.
-- `AuthContext` extended: `roles: app_role[]`, `hasRole(r)`, `profile`. Role check uses RPC `has_role`, fired async to avoid deadlock (existing pattern preserved).
-- Route guards:
-  - `<RequireAuth>` — any signed-in user.
-  - `<RequireRole roles={[...]}>` — generic guard. Used for `/admin/*` (admin/staff), `/affiliate/*` (affiliate), `/account/*` (any authed).
-- Header: show "Account" dropdown when logged in (My orders, Affiliate dashboard if affiliate, Admin if admin/staff, Sign out).
-- Affiliate login is still reachable but reuses the same `/auth` page with a `?role=affiliate` hint.
-- Customer pages: `/account` (profile + orders list), `/account/orders/:id`.
+Sections (additions in bold): General, Branding, Contact, Payments, Financing, Shipping, **Tax & invoicing**, Affiliates, **Discounts**, **Customers**, Notifications, **Email & templates**, SEO, Social, **Integrations** (Paystack, GA, Meta Pixel, GTM, WhatsApp Business, Telegram, Gmail), Security, **API & webhooks**, **Backups & exports**, **Audit log**, **Feature flags**, Admins.
 
-**Edge functions / security fixes**
-- `create-admin`: handle "email already exists" by detecting the user and just assigning the admin role (resolves earlier 400).
-- All edge functions: validate JWT via `getClaims`, enforce role via `has_role` for admin actions.
+## 2. New admin areas
 
-## 2. Revamped Checkout (Paystack)
+**Orders & Inventory**
 
-Style modeled on the Shopinverse screenshot: single-column, sticky order summary collapsible, clean white surface, large typography, NGN formatting.
+- `/admin/orders`: filter by status (pending/paid/processing/shipped/delivered/cancelled/refunded), bulk status update, search, date range, payment method filter, export CSV.
+- Order detail drawer: customer, items, addresses, payment ref, timeline, internal notes, refund button, resend invoice email, mark shipped + tracking number.
+- `/admin/inventory`: stock per product, low-stock threshold, auto low-stock email, bulk stock adjust, stock movements log.
+- DB: `orders.status` enum, `order_status_history`, `product_stock_movements`, `products.low_stock_threshold`.
 
-**Pages / components**
-- `/checkout` route replacing the current cart -> WhatsApp flow. Sections:
-  1. Contact (email; pre-filled if logged in; "Sign in" link on the right).
-  2. Delivery — Ship / Pickup toggle; Nigerian states dropdown (existing `AddressInput`), city, street, phone.
-  3. Shipping method — pulled from `site_settings` (free shipping threshold, flat fee).
-  4. Payment — Paystack (default) + "Bank transfer / WhatsApp confirmation" radio + "Flexible payment plan" link to `/finance`.
-  5. Billing address (same as shipping toggle).
-  6. Sticky bottom "Pay now" button + total breakdown (subtotal, shipping, discount, total in NGN).
-- Order summary panel on right (desktop) / collapsible header (mobile).
-- Discount code field hitting a future `discounts` table (placeholder for now, validates non-empty only — actual table can come later if requested).
+**Discounts**
 
-**Paystack integration**
-- Two new secrets requested: `PAYSTACK_SECRET_KEY` and `PAYSTACK_PUBLIC_KEY`.
-- Edge function `paystack-initialize`: creates order (status `pending`), calls Paystack `/transaction/initialize`, returns `authorization_url`.
-- Edge function `paystack-verify`: verifies reference, updates order to `paid`, decrements stock, attributes affiliate commission, fires `notify-new-order` email.
-- Edge function `paystack-webhook`: signed via `x-paystack-signature` (HMAC SHA512 with secret); idempotent order status updates.
-- Client: redirect to `authorization_url`; success page `/checkout/success?reference=...` calls `paystack-verify`.
+- `/admin/discounts`: list, create/edit modal.
+- Fields: code, type (percent/flat), value, min cart, max uses, per-customer cap, starts_at, expires_at, applies_to (all/categories/products), active.
+- Checkout: validate via edge function `validate-discount`, show breakdown.
+- DB: `discounts`, `discount_redemptions`.
 
-**Schema additions to `orders`**: `payment_method` (`paystack` | `bank_transfer` | `whatsapp`), `payment_reference`, `payment_status`, `shipping_method`, `shipping_fee`, `discount_code`, `discount_amount`, `user_id` (nullable for guests), `billing_address` jsonb.
+**Customers CRM**
 
-## 3. Flexible Payment CTA
+- `/admin/customers`: profiles + computed LTV, orders count, last order, tags, notes.
+- Detail page: timeline (orders, leads, emails sent, page views), manual email send, tag/segment.
+- DB: `customer_tags`, `customer_notes`.
 
-- New small button "Flexible Payment" added to:
-  - Product cards in Catalog
-  - Solar Packages cards
-  - Smart Locks cards
-  - Home Automation cards
-  - Product detail / customize views
-- Behavior: `<Link to="/finance?item={slug}&type={product|package}">` — pure navigation per user choice.
-- Finance page reads the query params and shows a small banner "Setting up flexible payment for {item name}" with a prefilled "Get Started" CTA that opens the lead form with the item context.
+**Audit log + exports**
 
-## 4. Finance Page additions
-- Payment plan calculator: input total amount -> auto-shows 30% deposit + monthly breakdown for 3/6/12 months using rates from `site_settings.finance_*`.
-- "Apply for financing" button -> opens lead form with `interest = financing` and item context if present.
-- "Eligibility checklist" mini-section (valid ID, Nigerian address, employment/business).
-- Downloadable PDF "Financing Terms" (static file in /public).
-- Existing how-it-works, plans, FAQ kept; copy synced with admin-configurable rates.
+- `/admin/audit-log`: who/what/when, filter by actor/entity/action.
+- DB: `audit_log` (actor_id, action, entity, entity_id, diff jsonb, ip, ua). Triggers on `site_settings`, `user_roles`, `discounts`, `orders` status changes. Edge function `log-audit` for app-level events.
+- Exports: CSV download buttons on Leads, Orders, Customers, Affiliates, Newsletter. Edge function `export-csv` (admin-gated).
 
-## 5. Admin dashboard upgrades
-- New sidebar entries (kept inside existing groups):
-  - Overview: "Revenue" (new) — daily orders + revenue chart pulling from `orders` paid.
-  - Sales: "Customers" page (lists profiles + orders), "Discounts" page (basic CRUD on `discounts` if added).
-  - Affiliates: keep existing.
-  - System: "Users & Roles" page — list profiles, assign/remove `admin`/`staff`/`affiliate` roles via secure edge function `manage-user-role` (admin-only).
-- AdminDashboard summary cards refreshed to include paid revenue, pending payouts, conversion rate, new customers (last 30d).
-- All admin pages wrapped in `<RequireRole roles={["admin","staff"]}>`; super-admin-only sections (Users & Roles, Settings finance/payment) gated to `admin` only.
+## 3. Flexible Payment — Application + schedule tracking
 
-## 6. Security warning sweep
-- Fix any new linter warnings post-migration (search_path on new functions, GRANTs on all new public tables, RLS on every new table).
-- Ensure `profiles`, `orders` user_id RLS scoped to `auth.uid()`.
-- Add HIBP password check via `configure_auth(password_hibp_enabled: true)`.
+**Customer flow**
 
-## Technical notes
-- All new tables follow: CREATE TABLE -> GRANT (authenticated + service_role; no anon) -> ENABLE RLS -> POLICY.
-- Update trigger `set_updated_at` reused.
-- No changes to `src/integrations/supabase/client.ts` or auto-gen types until migration runs.
-- Cart drawer keeps existing behavior plus a new "Checkout" button that routes to `/checkout` instead of WhatsApp (WhatsApp remains as a secondary option).
+- `/finance` keeps calculator. New "Apply for this plan" button opens `/finance/apply?item=...&amount=...&months=...`.
+- Application form: personal, employment, monthly income, ID upload (Storage bucket `finance-docs`), delivery address, plan choice, e-signature checkbox.
+- Submit creates `finance_applications` row (status `pending`), notifies admin email.
 
-## Out of scope (ask later if needed)
-- Multi-currency, tax engine, refunds UI, real shipping carrier rates, 2FA, SAML SSO.
+**Admin flow**
+
+- `/admin/finance/applications`: list, filter by status (pending/under-review/approved/rejected/active/completed/defaulted).
+- Review page: applicant data, ID preview, approve → auto-generates `finance_schedules` (N installments, due dates), reject with reason.
+- `/admin/finance/schedules`: list of active plans, filter by overdue, mark installment paid with reference, send manual reminder.
+
+**Automation**
+
+- Daily cron edge function `finance-reminders`: emails customers 3 days before due, on due date, and 3/7/14 days overdue; updates schedule item status (`upcoming`/`due`/`overdue`/`paid`).
+- Customer self-serve at `/account/finance`: shows their plans, next due, payment instructions, upload proof of payment.
+
+**Tables**: `finance_applications`, `finance_schedules` (application_id, installment_no, due_date, amount, status, paid_at, paid_reference, proof_url), `finance_payments`.
+
+## 4. AI upgrades
+
+All AI runs through Lovable AI Gateway via Supabase Edge Functions using `google/gemini-3-flash-preview` by default.
+
+**Smarter recommender** — upgrade `ai-recommend`
+
+- Inputs: budget, appliances, location, electricity availability, prior lead history, current cart.
+- Output: ranked top 3 with one-line reasoning + add-on suggestions. Cached per session.
+
+**Admin AI copilot** — new `/admin/copilot`
+
+- Side panel available across admin (sheet trigger).
+- Tools: `summarize_lead(id)`, `draft_email(lead_id, intent)`, `analyze_period(days)`, `generate_blog(topic, keywords)`, `write_product_description(product_id)`, `suggest_discount(scenario)`.
+- Uses AI SDK `streamText` + tools, role-gated to admin/staff.
+
+**Site AI chat assistant** — `AiChatWidget` floating bottom-right
+
+- Per `chat-agent-ui-contract`: one conversation, localStorage persistence (no per-user threading initially).
+- Knowledge: products, packages, financing terms, contact info pulled into system prompt.
+- Tools: `search_products`, `get_finance_quote`, `start_consultation` (creates lead), `handoff_to_whatsapp` (returns wa.me link).
+- AI Elements components: Conversation, Message, MessageResponse, PromptInput, Shimmer, Tool. Custom Tioga brand avatar (no Sparkles).
+- Toggle in Settings → Feature flags to disable site-wide.
+
+## 5. Security & permissions
+
+- Every new table: GRANT to authenticated + service_role, RLS enabled, policies scoped via `has_role`/`has_any_role`.
+- Audit-log writes via SECURITY DEFINER function, reads admin-only.
+- Finance docs in private Storage bucket with signed URLs.
+- Sidebar visibility: new groups (Finance, Discounts, Customers, Audit) gated by role using existing `can()` helper.
+
+## 6. Mobile
+
+- Settings rail collapses into a top sheet picker on <768px.
+- Order/customer detail uses bottom-sheet drawer on mobile.
+- AI chat widget: full-screen on mobile, FAB on desktop.
+
+## Technical summary (for reference)
+
+- New tables: `order_status_history`, `product_stock_movements`, `discounts`, `discount_redemptions`, `customer_tags`, `customer_notes`, `audit_log`, `finance_applications`, `finance_schedules`, `finance_payments`, `ai_chat_sessions` (optional, only if persistence requested later).
+- New columns: `products.low_stock_threshold`, `orders.tracking_number`, `orders.internal_notes`.
+- New Storage bucket: `finance-docs` (private).
+- New edge functions: `validate-discount`, `export-csv`, `log-audit`, `finance-reminders` (pg_cron), `ai-solar-size`, `ai-copilot`, `ai-chat`. Upgrade `ai-recommend`.
+- pg_cron job for `finance-reminders` (daily 09:00 WAT).
+- New routes: `/admin/orders/:id`, `/admin/inventory`, `/admin/discounts`, `/admin/customers`, `/admin/customers/:id`, `/admin/audit-log`, `/admin/finance/applications`, `/admin/finance/applications/:id`, `/admin/finance/schedules`, `/admin/copilot`, `/finance/apply`, `/account/finance`.
+- AI Elements install for chat widget: `bun x ai-elements@latest add conversation message prompt-input shimmer tool`.
+
+## Out of scope (ask later)
+
+- Paystack live integration / recurring auto-debit.
+- Multi-currency, real shipping rates, refunds via payment processor, 2FA, SAML SSO.
+- Per-user AI chat threads in DB (deferred unless requested).

@@ -1,28 +1,37 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag, ScrollText, Bot, Calendar } from "lucide-react";
 
 interface AdminLayoutProps { children: React.ReactNode; }
 
 type NavItem = { label: string; icon: typeof LayoutDashboard; path: string; roles?: AppRole[] };
 type NavGroup = { label: string; roles?: AppRole[]; items: NavItem[] };
 
-// Default visibility = admin + staff. `roles` narrows access further.
 const navGroups: NavGroup[] = [
   {
     label: "Overview",
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
       { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
+      { label: "AI Copilot", icon: Bot, path: "/admin/copilot" },
     ],
   },
   {
     label: "Sales",
     items: [
       { label: "Orders", icon: ShoppingBag, path: "/admin/orders" },
+      { label: "Customers", icon: Users, path: "/admin/customers" },
       { label: "Leads", icon: Users, path: "/admin/leads" },
+      { label: "Discounts", icon: Tag, path: "/admin/discounts" },
       { label: "App Waitlist", icon: Smartphone, path: "/admin/waitlist" },
+    ],
+  },
+  {
+    label: "Finance",
+    items: [
+      { label: "Applications", icon: Wallet, path: "/admin/finance/applications" },
+      { label: "Schedules", icon: Calendar, path: "/admin/finance/schedules" },
     ],
   },
   {
@@ -71,6 +80,7 @@ const navGroups: NavGroup[] = [
     roles: ["admin"],
     items: [
       { label: "Users & Roles", icon: UserRoundCheck, path: "/admin/users" },
+      { label: "Audit Log", icon: ScrollText, path: "/admin/audit-log" },
       { label: "Settings", icon: Settings, path: "/admin/settings" },
     ],
   },

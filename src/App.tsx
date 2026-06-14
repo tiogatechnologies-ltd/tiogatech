@@ -73,6 +73,16 @@ const AdminAffiliates = lazy(() => import("./pages/AdminAffiliates.tsx"));
 const AdminAffiliatePayouts = lazy(() => import("./pages/AdminAffiliatePayouts.tsx"));
 const AdminAffiliateAnalytics = lazy(() => import("./pages/AdminAffiliateAnalytics.tsx"));
 const AdminUsers = lazy(() => import("./pages/AdminUsers.tsx"));
+const AdminDiscounts = lazy(() => import("./pages/AdminDiscounts.tsx"));
+const AdminAuditLog = lazy(() => import("./pages/AdminAuditLog.tsx"));
+const AdminCustomers = lazy(() => import("./pages/AdminCustomers.tsx"));
+const AdminFinanceApplications = lazy(() => import("./pages/AdminFinanceApplications.tsx"));
+const AdminFinanceSchedules = lazy(() => import("./pages/AdminFinanceSchedules.tsx"));
+const AdminCopilot = lazy(() => import("./pages/AdminCopilot.tsx"));
+
+const FinanceApply = lazy(() => import("./pages/FinanceApply.tsx"));
+const AccountFinance = lazy(() => import("./pages/AccountFinance.tsx"));
+const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -120,6 +130,7 @@ const AnimatedRoutes = () => {
           <Route path="/privacy" element={<RouteFade><Privacy /></RouteFade>} />
           <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
           <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
+          <Route path="/finance/apply" element={<RouteFade><FinanceApply /></RouteFade>} />
           <Route path="/blog" element={<RouteFade><Blog /></RouteFade>} />
           <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />
           <Route path="/newsletter/confirm" element={<RouteFade><NewsletterConfirm /></RouteFade>} />
@@ -131,6 +142,7 @@ const AnimatedRoutes = () => {
           <Route path="/signup" element={<Navigate to="/auth?mode=signup" replace />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/account" element={<RequireRole><Account /></RequireRole>} />
+          <Route path="/account/finance" element={<RequireRole><AccountFinance /></RequireRole>} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
           <Route path="/affiliate" element={<RequireRole roles={["affiliate", "admin"]}><AffiliateDashboard /></RequireRole>} />
@@ -159,6 +171,12 @@ const AnimatedRoutes = () => {
           <Route path="/admin/affiliates/payouts" element={<Admin><AdminAffiliatePayouts /></Admin>} />
           <Route path="/admin/affiliates/analytics" element={<Admin><AdminAffiliateAnalytics /></Admin>} />
           <Route path="/admin/users" element={<Admin adminOnly><AdminUsers /></Admin>} />
+          <Route path="/admin/discounts" element={<Admin><AdminDiscounts /></Admin>} />
+          <Route path="/admin/customers" element={<Admin><AdminCustomers /></Admin>} />
+          <Route path="/admin/audit-log" element={<Admin adminOnly><AdminAuditLog /></Admin>} />
+          <Route path="/admin/copilot" element={<Admin><AdminCopilot /></Admin>} />
+          <Route path="/admin/finance/applications" element={<Admin><AdminFinanceApplications /></Admin>} />
+          <Route path="/admin/finance/schedules" element={<Admin><AdminFinanceSchedules /></Admin>} />
           <Route path="/admin/settings" element={<Admin adminOnly><AdminSettings /></Admin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
@@ -185,6 +203,7 @@ const App = () => (
             <Suspense fallback={null}>
               <CartDrawer />
               <TelegramWidget />
+              <AiChatWidget />
             </Suspense>
             <ScrollToTopButton />
             <AnimatedRoutes />
