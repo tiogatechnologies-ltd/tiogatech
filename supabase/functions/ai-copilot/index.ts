@@ -22,6 +22,18 @@ async function callAi(prompt: string, json = false) {
   return j.choices?.[0]?.message?.content || "";
 }
 
+async function callChat(messages: Array<{ role: string; content: string }>) {
+  const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ model: "google/gemini-2.5-flash", messages }),
+  });
+  if (!r.ok) throw new Error(`gateway ${r.status} ${await r.text()}`);
+  const j = await r.json();
+  return j.choices?.[0]?.message?.content || "";
+}
+
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (!KEY) return new Response(JSON.stringify({ error: "Missing LOVABLE_API_KEY" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
