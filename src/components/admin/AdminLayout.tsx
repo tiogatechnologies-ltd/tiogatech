@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag, ScrollText, Bot, Calendar } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag, ScrollText, Calendar, Search } from "lucide-react";
 
 interface AdminLayoutProps { children: React.ReactNode; }
 
@@ -14,7 +14,6 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
       { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
-      { label: "AI Copilot", icon: Bot, path: "/admin/copilot" },
     ],
   },
   {
@@ -155,12 +154,77 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       <div className="flex-1 flex flex-col min-w-0">
         <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-lg border-b border-border px-4 sm:px-6 py-3 flex items-center gap-3">
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"><Menu size={20} /></button>
-          <h1 className="font-display font-bold text-foreground text-lg">{allNavItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}</h1>
+          <h1 className="font-display font-bold text-foreground text-base sm:text-lg truncate">{allNavItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}</h1>
+          <div className="ml-auto"><AdminSearch items={visibleGroups.flatMap(g => g.items.map(i => ({ ...i, group: g.label })))} /></div>
         </header>
-        <main className="flex-1 p-4 sm:p-6 overflow-auto">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">{children}</main>
       </div>
     </div>
   );
 };
+
+// ---- Quick search ----
+function AdminSearch({ items }: { items: Array<{ label: string; path: string; group: string; icon: any }> }) {
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setOpen(true);
+      }
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    if (open) setTimeout(() => inputRef.current?.focus(), 30);
+    else setQ("");
+  }, [open]);
+
+  const results = useMemo(() => {
+    const term = q.trim().toLowerCase();
+    if (!term) return items.slice(0, 8);
+    return items.filter(i => i.label.toLowerCase().includes(term) || i.group.toLowerCase().includes(term)).slice(0, 10);
+  }, [q, items]);
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-muted/40 hover:bg-muted text-sm text-muted-foreground min-w-[180px] sm:min-w-[240px]">
+        <Search size={15} />
+        <span className="hidden sm:inline">Search admin…</span>
+        <span className="sm:hidden">Search</span>
+        <kbd className="ml-auto hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-background border border-border">⌘K</kbd>
+      </button>
+      {open && (
+        <div className="fixed inset-0 z-[100] bg-foreground/40 backdrop-blur-sm flex items-start justify-center pt-[10vh] px-4" onClick={() => setOpen(false)}>
+          <div className="w-full max-w-lg bg-card border border-border rounded-2xl shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
+              <Search size={16} className="text-muted-foreground" />
+              <input ref={inputRef} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search pages, sections…" className="flex-1 bg-transparent outline-none text-sm" />
+              <button onClick={() => setOpen(false)} className="p-1 rounded hover:bg-muted"><X size={16} /></button>
+            </div>
+            <div className="max-h-[50vh] overflow-y-auto py-2">
+              {results.length === 0 ? (
+                <div className="px-4 py-6 text-center text-sm text-muted-foreground">No matches</div>
+              ) : results.map((r) => (
+                <button key={r.path} onClick={() => { navigate(r.path); setOpen(false); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-muted text-left">
+                  <r.icon size={16} className="text-muted-foreground" />
+                  <span className="text-sm font-medium">{r.label}</span>
+                  <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">{r.group}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
 
 export default AdminLayout;
