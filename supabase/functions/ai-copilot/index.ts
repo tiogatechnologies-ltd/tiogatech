@@ -54,7 +54,28 @@ Deno.serve(async (req) => {
   if (!isAdmin) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
   try {
-    const { task, params = {} } = await req.json();
+    const { task, params = {}, messages } = await req.json();
+
+    if (task === "chat") {
+      const since = new Date(Date.now() - 30 * 86400_000).toISOString();
+      const [{ count: leads30 }, { count: orders30 }, { data: rev30 }, { count: totalLeads }, { count: totalOrders }, { count: products }] = await Promise.all([
+        admin.from("leads").select("id", { count: "exact", head: true }).gte("created_at", since),
+        admin.from("orders").select("id", { count: "exact", head: true }).gte("created_at", since),
+        admin.from("orders").select("total").eq("payment_status", "paid").gte("created_at", since),
+        admin.from("leads").select("id", { count: "exact", head: true }),
+        admin.from("orders").select("id", { count: "exact", head: true }),
+        admin.from("products").select("id", { count: "exact", head: true }),
+      ]);
+      const rev = (rev30 || []).reduce((s: number, r: any) => s + Number(r.total || 0), 0);
+      const sys = {
+        role: "system",
+        content: `You are the Tioga Technologies Admin Copilot — an internal AI assistant for the admin team of a Nigerian solar, smart-home, and security company. Be concise, practical, use markdown, and price in Naira (NGN).\n\nLive platform stats:\n- Last 30 days: ${leads30 ?? 0} leads, ${orders30 ?? 0} orders, ₦${rev.toLocaleString()} paid revenue.\n- All-time: ${totalLeads ?? 0} leads, ${totalOrders ?? 0} orders, ${products ?? 0} products.\n\nYou can help with: analyzing trends, drafting customer emails, writing blog/product copy, summarizing leads, suggesting discounts, and operational questions. For destructive actions (delete, refund, ban), tell the admin you can only suggest — they must use the relevant admin page.`,
+      };
+      const text = await callChat([sys, ...(Array.isArray(messages) ? messages : [])]);
+      return new Response(JSON.stringify({ result: text }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+
 
     if (task === "summarize_lead") {
       const { data: lead } = await admin.from("leads").select("*").eq("id", params.lead_id).maybeSingle();
