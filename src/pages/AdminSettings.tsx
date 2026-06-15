@@ -126,32 +126,86 @@ const AdminSettings = () => {
     document.getElementById(`sec-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const activeSection = SECTIONS.find((s) => s.id === active);
+
   return (
     <AdminLayout>
+      {/* Mobile section picker */}
+      <div className="lg:hidden mb-4 sticky top-14 z-20 -mx-4 px-4 py-2 bg-background/95 backdrop-blur border-b border-border">
+        <select
+          value={active}
+          onChange={(e) => scrollTo(e.target.value)}
+          className={`${inputClass} py-2.5 font-semibold`}
+          aria-label="Jump to section"
+        >
+          {Object.entries(groups).map(([group, items]) => (
+            <optgroup key={group} label={group}>
+              {items.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
+            </optgroup>
+          ))}
+        </select>
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left rail */}
-        <aside className="lg:w-64 shrink-0">
+        {/* Left rail — modern */}
+        <aside className="hidden lg:block lg:w-72 shrink-0">
           <div className="lg:sticky lg:top-20 space-y-4">
-            <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search settings" className={`${inputClass} pl-9 py-2`} />
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground">
+                  <FileSliders size={15} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-display font-bold leading-tight">Settings</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{SECTIONS.length} sections</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search settings…"
+                  className="w-full rounded-lg border border-border bg-background pl-8 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30"
+                />
+              </div>
             </div>
-            <nav className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
+
+            <nav className="rounded-2xl border border-border bg-card p-2 space-y-3 max-h-[68vh] overflow-y-auto shadow-sm">
               {Object.entries(groups).map(([group, items]) => (
                 <div key={group}>
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground px-2 mb-1.5">{group}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/70 px-3 pt-2 pb-1.5">{group}</p>
                   <div className="space-y-0.5">
-                    {items.map((s) => (
-                      <button key={s.id} onClick={() => scrollTo(s.id)} className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${active === s.id ? "bg-primary/10 text-primary font-semibold" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"}`}>
-                        <s.icon size={15} />{s.label}
-                      </button>
-                    ))}
+                    {items.map((s) => {
+                      const isActive = active === s.id;
+                      return (
+                        <button
+                          key={s.id}
+                          onClick={() => scrollTo(s.id)}
+                          className={`group w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all ${
+                            isActive
+                              ? "bg-gradient-to-r from-primary/15 to-primary/5 text-primary font-semibold shadow-sm"
+                              : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                          }`}
+                        >
+                          <span className={`flex h-7 w-7 items-center justify-center rounded-md ${isActive ? "bg-primary/15" : "bg-muted/50 group-hover:bg-muted"}`}>
+                            <s.icon size={14} />
+                          </span>
+                          <span className="flex-1 text-left truncate">{s.label}</span>
+                          {isActive && <span className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
+              {Object.keys(groups).length === 0 && (
+                <p className="text-xs text-muted-foreground text-center py-6">No matches</p>
+              )}
             </nav>
           </div>
         </aside>
+
 
         {/* Content */}
         <div className="flex-1 min-w-0 space-y-8 pb-32">
