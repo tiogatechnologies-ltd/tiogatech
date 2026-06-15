@@ -78,7 +78,7 @@ const AdminAuditLog = lazy(() => import("./pages/AdminAuditLog.tsx"));
 const AdminCustomers = lazy(() => import("./pages/AdminCustomers.tsx"));
 const AdminFinanceApplications = lazy(() => import("./pages/AdminFinanceApplications.tsx"));
 const AdminFinanceSchedules = lazy(() => import("./pages/AdminFinanceSchedules.tsx"));
-const AdminCopilot = lazy(() => import("./pages/AdminCopilot.tsx"));
+
 
 const FinanceApply = lazy(() => import("./pages/FinanceApply.tsx"));
 const AccountFinance = lazy(() => import("./pages/AccountFinance.tsx"));
@@ -174,7 +174,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/discounts" element={<Admin><AdminDiscounts /></Admin>} />
           <Route path="/admin/customers" element={<Admin><AdminCustomers /></Admin>} />
           <Route path="/admin/audit-log" element={<Admin adminOnly><AdminAuditLog /></Admin>} />
-          <Route path="/admin/copilot" element={<Admin><AdminCopilot /></Admin>} />
+          
           <Route path="/admin/finance/applications" element={<Admin><AdminFinanceApplications /></Admin>} />
           <Route path="/admin/finance/schedules" element={<Admin><AdminFinanceSchedules /></Admin>} />
           <Route path="/admin/settings" element={<Admin adminOnly><AdminSettings /></Admin>} />
