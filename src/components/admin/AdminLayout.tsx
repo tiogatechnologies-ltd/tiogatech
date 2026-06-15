@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag, ScrollText, Bot, Calendar } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag, ScrollText, Calendar, Search } from "lucide-react";
 
 interface AdminLayoutProps { children: React.ReactNode; }
 
@@ -14,7 +14,6 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
       { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
-      { label: "AI Copilot", icon: Bot, path: "/admin/copilot" },
     ],
   },
   {
