@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
+import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle, History } from "lucide-react";
 import { format } from "date-fns";
 
 interface Order {
@@ -62,12 +62,18 @@ const AdminOrders = () => {
     return () => { supabase.removeChannel(ch); };
   }, []);
 
+  const [historyById, setHistoryById] = useState<Record<string, Array<{ id: string; from_status: string | null; to_status: string; created_at: string }>>>({});
+
   const toggleExpand = async (id: string) => {
     if (expanded === id) { setExpanded(null); return; }
     setExpanded(id);
     if (!itemsById[id]) {
-      const { data } = await supabase.from("order_items").select("*").eq("order_id", id);
-      setItemsById((p) => ({ ...p, [id]: (data || []) as OrderItem[] }));
+      const [{ data: items }, { data: hist }] = await Promise.all([
+        supabase.from("order_items").select("*").eq("order_id", id),
+        supabase.from("order_status_history").select("id, from_status, to_status, created_at").eq("order_id", id).order("created_at", { ascending: false }),
+      ]);
+      setItemsById((p) => ({ ...p, [id]: (items || []) as OrderItem[] }));
+      setHistoryById((p) => ({ ...p, [id]: (hist || []) as any }));
     }
   };
 
@@ -76,6 +82,11 @@ const AdminOrders = () => {
     if (error) { toast.error("Could not update status"); return; }
     toast.success("Status updated");
     setOrders((p) => p.map((o) => (o.id === id ? { ...o, status } : o)));
+    // refresh timeline if this order is expanded
+    if (expanded === id) {
+      const { data: hist } = await supabase.from("order_status_history").select("id, from_status, to_status, created_at").eq("order_id", id).order("created_at", { ascending: false });
+      setHistoryById((p) => ({ ...p, [id]: (hist || []) as any }));
+    }
   };
 
   const deleteOrder = async (id: string) => {
