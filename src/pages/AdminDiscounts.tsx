@@ -10,12 +10,19 @@ const empty: Partial<Discount> = { code: "", description: "", type: "percent", v
 
 const AdminDiscounts = () => {
   const [rows, setRows] = useState<Discount[]>([]);
+  const [savedTotals, setSavedTotals] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Partial<Discount> | null>(null);
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from("discounts").select("*").order("created_at", { ascending: false });
+    const [{ data }, { data: red }] = await Promise.all([
+      supabase.from("discounts").select("*").order("created_at", { ascending: false }),
+      supabase.from("discount_redemptions").select("discount_id, amount_discounted"),
+    ]);
+    const totals: Record<string, number> = {};
+    (red || []).forEach((r: any) => { totals[r.discount_id] = (totals[r.discount_id] || 0) + Number(r.amount_discounted || 0); });
+    setSavedTotals(totals);
     setRows((data || []) as any); setLoading(false);
   };
   useEffect(() => { load(); }, []);
@@ -43,12 +50,12 @@ const AdminDiscounts = () => {
           <table className="w-full text-sm">
             <thead className="bg-muted/30">
               <tr className="text-left text-xs uppercase text-muted-foreground">
-                <th className="px-4 py-3">Code</th><th className="px-4 py-3">Type</th><th className="px-4 py-3">Value</th><th className="px-4 py-3">Min cart</th><th className="px-4 py-3">Uses</th><th className="px-4 py-3">Expires</th><th className="px-4 py-3">Status</th><th></th>
+                <th className="px-4 py-3">Code</th><th className="px-4 py-3">Type</th><th className="px-4 py-3">Value</th><th className="px-4 py-3">Min cart</th><th className="px-4 py-3">Uses</th><th className="px-4 py-3">Discounted</th><th className="px-4 py-3">Expires</th><th className="px-4 py-3">Status</th><th></th>
               </tr>
             </thead>
             <tbody>
-              {loading ? <tr><td colSpan={8} className="px-4 py-8 text-center text-muted-foreground">Loading…</td></tr> :
-              rows.length === 0 ? <tr><td colSpan={8} className="px-4 py-8 text-center text-muted-foreground">No discount codes yet</td></tr> :
+              {loading ? <tr><td colSpan={9} className="px-4 py-8 text-center text-muted-foreground">Loading…</td></tr> :
+              rows.length === 0 ? <tr><td colSpan={9} className="px-4 py-8 text-center text-muted-foreground">No discount codes yet</td></tr> :
               rows.map((d) => (
                 <tr key={d.id} className="border-t border-border hover:bg-muted/20">
                   <td className="px-4 py-3"><div className="flex items-center gap-2"><Tag size={13} className="text-primary" /><code className="font-mono font-semibold">{d.code}</code><button onClick={() => { navigator.clipboard.writeText(d.code); toast.success("Copied"); }}><Copy size={12} className="opacity-50 hover:opacity-100" /></button></div></td>
