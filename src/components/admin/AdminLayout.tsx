@@ -37,6 +37,7 @@ const navGroups: NavGroup[] = [
     label: "Catalog",
     items: [
       { label: "Products", icon: Package, path: "/admin/products" },
+      { label: "Inventory", icon: Package, path: "/admin/inventory" },
       { label: "Solar Packages", icon: Sun, path: "/admin/solar-packages" },
       { label: "Smart Locks", icon: Lock, path: "/admin/smart-locks" },
       { label: "Home Automation", icon: Home, path: "/admin/home-automation" },
