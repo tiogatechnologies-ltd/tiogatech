@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
+import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle, History } from "lucide-react";
 import { format } from "date-fns";
 
 interface Order {
@@ -62,12 +62,18 @@ const AdminOrders = () => {
     return () => { supabase.removeChannel(ch); };
   }, []);
 
+  const [historyById, setHistoryById] = useState<Record<string, Array<{ id: string; from_status: string | null; to_status: string; created_at: string }>>>({});
+
   const toggleExpand = async (id: string) => {
     if (expanded === id) { setExpanded(null); return; }
     setExpanded(id);
     if (!itemsById[id]) {
-      const { data } = await supabase.from("order_items").select("*").eq("order_id", id);
-      setItemsById((p) => ({ ...p, [id]: (data || []) as OrderItem[] }));
+      const [{ data: items }, { data: hist }] = await Promise.all([
+        supabase.from("order_items").select("*").eq("order_id", id),
+        supabase.from("order_status_history").select("id, from_status, to_status, created_at").eq("order_id", id).order("created_at", { ascending: false }),
+      ]);
+      setItemsById((p) => ({ ...p, [id]: (items || []) as OrderItem[] }));
+      setHistoryById((p) => ({ ...p, [id]: (hist || []) as any }));
     }
   };
 
@@ -76,6 +82,11 @@ const AdminOrders = () => {
     if (error) { toast.error("Could not update status"); return; }
     toast.success("Status updated");
     setOrders((p) => p.map((o) => (o.id === id ? { ...o, status } : o)));
+    // refresh timeline if this order is expanded
+    if (expanded === id) {
+      const { data: hist } = await supabase.from("order_status_history").select("id, from_status, to_status, created_at").eq("order_id", id).order("created_at", { ascending: false });
+      setHistoryById((p) => ({ ...p, [id]: (hist || []) as any }));
+    }
   };
 
   const deleteOrder = async (id: string) => {
@@ -188,7 +199,21 @@ const AdminOrders = () => {
                         )}
                       </ul>
                       {o.notes && (
-                        <div className="rounded-lg bg-amber-500/10 p-3 text-xs text-amber-700 dark:text-amber-300"><strong>Notes:</strong> {o.notes}</div>
+                        <div className="rounded-lg bg-amber-500/10 p-3 text-xs text-amber-700 dark:text-amber-300 mb-3"><strong>Notes:</strong> {o.notes}</div>
+                      )}
+                      {(historyById[o.id]?.length || 0) > 0 && (
+                        <>
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1"><History size={11} /> Status timeline</h4>
+                          <ol className="space-y-1.5">
+                            {historyById[o.id].map((h) => (
+                              <li key={h.id} className="flex items-center gap-2 text-xs">
+                                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                                <span className="text-muted-foreground">{format(new Date(h.created_at), "MMM d, HH:mm")}</span>
+                                <span className="font-medium capitalize">{h.from_status || "new"} → {h.to_status}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </>
                       )}
                     </div>
                   )}
