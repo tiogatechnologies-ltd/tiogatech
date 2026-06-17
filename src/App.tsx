@@ -17,6 +17,7 @@ import RouteFade from "@/components/RouteFade";
 import LeadFormHost from "@/components/LeadFormHost";
 import { CartProvider } from "@/contexts/CartContext";
 import PreloadCritical from "@/components/PreloadCritical";
+import DeferredMount from "@/components/DeferredMount";
 
 import Index from "./pages/Index.tsx";
 
@@ -202,8 +203,10 @@ const App = () => (
             <LeadFormHost />
             <Suspense fallback={null}>
               <CartDrawer />
-              <TelegramWidget />
-              <AiChatWidget />
+              <DeferredMount delay={2500}>
+                <TelegramWidget />
+                <AiChatWidget />
+              </DeferredMount>
             </Suspense>
             <ScrollToTopButton />
             <AnimatedRoutes />
