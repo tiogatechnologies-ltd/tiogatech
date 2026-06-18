@@ -84,7 +84,7 @@ const AdminDashboard = () => {
         supabase.from("finance_applications").select("id, full_name, status, created_at").order("created_at", { ascending: false }).limit(6),
         supabase.from("career_applications").select("id, full_name, status, created_at").order("created_at", { ascending: false }).limit(4),
         supabase.from("affiliate_applications").select("id, full_name, status, created_at").order("created_at", { ascending: false }).limit(4),
-        supabase.from("order_items").select("product_name, quantity, unit_price").gte("created_at", weekAgo.toISOString()).limit(500),
+        supabase.from("order_items").select("product_name, quantity").gte("created_at", weekAgo.toISOString()).limit(500),
         supabase.from("finance_applications").select("id, full_name, created_at").eq("status", "pending").order("created_at", { ascending: false }).limit(5),
         supabase.from("career_applications").select("id, full_name, created_at").eq("status", "submitted").order("created_at", { ascending: false }).limit(5),
         supabase.from("affiliate_applications").select("id, full_name, created_at").eq("status", "pending").order("created_at", { ascending: false }).limit(5),
