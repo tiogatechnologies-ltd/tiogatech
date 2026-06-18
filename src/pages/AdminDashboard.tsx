@@ -334,9 +334,8 @@ const AdminDashboard = () => {
                     <span className="text-xs font-bold text-muted-foreground w-5">{i + 1}</span>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-card-foreground truncate">{p.name}</p>
-                      <p className="text-xs text-muted-foreground">{p.qty} sold</p>
                     </div>
-                    <span className="text-sm font-bold text-primary">{NGN(p.revenue)}</span>
+                    <span className="text-sm font-bold text-primary">{p.qty} sold</span>
                   </div>
                 ))}
               </div>
