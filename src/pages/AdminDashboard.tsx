@@ -138,15 +138,14 @@ const AdminDashboard = () => {
 
       setLowStock((lowStockRows.data ?? []).map((p: any) => ({ id: p.id, name: p.name, stock: p.stock ?? 0, threshold: p.low_stock_threshold ?? 5 })));
 
-      // Top products
+      // Top products (by quantity sold)
       const tp = new Map<string, { revenue: number; qty: number }>();
       (topItems.data ?? []).forEach((i: any) => {
         const cur = tp.get(i.product_name) ?? { revenue: 0, qty: 0 };
         cur.qty += Number(i.quantity ?? 0);
-        cur.revenue += Number(i.quantity ?? 0) * Number(i.unit_price ?? 0);
         tp.set(i.product_name, cur);
       });
-      setTopProducts([...tp.entries()].sort((a, b) => b[1].revenue - a[1].revenue).slice(0, 5).map(([name, v]) => ({ name, ...v })));
+      setTopProducts([...tp.entries()].sort((a, b) => b[1].qty - a[1].qty).slice(0, 5).map(([name, v]) => ({ name, ...v })));
 
       // Pending review queue
       const pq: PendingItem[] = [
