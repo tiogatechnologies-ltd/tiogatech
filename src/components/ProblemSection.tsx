@@ -106,7 +106,7 @@ const ProblemSection = () => {
                       <p className="text-[10px] uppercase tracking-[0.22em] text-gold/90 mb-3">Tioga Solution</p>
                       <p className="text-gold font-display text-lg font-bold leading-snug drop-shadow">{solution}</p>
                       <span className="mt-auto inline-flex items-center gap-1.5 text-xs text-primary-foreground/85">
-                        Learn more <ArrowRight size={12} />
+                        Learn more about our {p.title.toLowerCase()} solution <ArrowRight size={12} aria-hidden />
                       </span>
                     </div>
                   </div>
