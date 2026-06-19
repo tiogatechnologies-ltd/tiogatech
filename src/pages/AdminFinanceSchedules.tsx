@@ -32,15 +32,24 @@ const AdminFinanceSchedules = () => {
     toast.success("Marked as paid"); load();
   };
 
+  const sendReminder = async () => {
+    const { error } = await supabase.functions.invoke("finance-reminders", { body: {} });
+    if (error) return toast.error(error.message);
+    toast.success("Reminder job triggered for all due/overdue installments");
+  };
+
   const filtered = rows.filter((r) => filter === "all" ? true : r.status === filter);
   const counts = { overdue: rows.filter((r) => r.status === "overdue").length, upcoming: rows.filter((r) => r.status === "upcoming").length, paid: rows.filter((r) => r.status === "paid").length };
 
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="font-display text-2xl font-bold flex items-center gap-2"><Calendar size={22} />Repayment Schedules</h1>
-          <p className="text-sm text-muted-foreground">{counts.overdue} overdue · {counts.upcoming} upcoming · {counts.paid} paid</p>
+        <div className="flex items-start justify-between flex-wrap gap-3">
+          <div>
+            <h1 className="font-display text-2xl font-bold flex items-center gap-2"><Calendar size={22} />Repayment Schedules</h1>
+            <p className="text-sm text-muted-foreground">{counts.overdue} overdue · {counts.upcoming} upcoming · {counts.paid} paid</p>
+          </div>
+          <button onClick={sendReminder} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-semibold hover:bg-muted"><Bell size={14} />Send reminders now</button>
         </div>
 
         <div className="flex gap-1 border-b border-border">
