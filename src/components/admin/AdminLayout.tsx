@@ -76,6 +76,13 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    label: "Tools",
+    items: [
+      { label: "Reports", icon: FileText, path: "/admin/reports" },
+      { label: "Media Library", icon: Layout, path: "/admin/storage" },
+    ],
+  },
+  {
     label: "System",
     roles: ["admin"],
     items: [
