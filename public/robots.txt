@@ -42,5 +42,4 @@ Allow: /
 User-agent: meta-externalagent
 Allow: /
 
-Sitemap: https://yqeayhukgjtbptblvmhd.supabase.co/functions/v1/sitemap-xml
 Sitemap: https://tiogatechnologies.com/sitemap.xml
