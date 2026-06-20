@@ -82,6 +82,11 @@ const AdminFinanceApplications = lazy(() => import("./pages/AdminFinanceApplicat
 const AdminFinanceSchedules = lazy(() => import("./pages/AdminFinanceSchedules.tsx"));
 const AdminReports = lazy(() => import("./pages/AdminReports.tsx"));
 const AdminStorage = lazy(() => import("./pages/AdminStorage.tsx"));
+const AdminAssessments = lazy(() => import("./pages/AdminAssessments.tsx"));
+const AdminCustomRequests = lazy(() => import("./pages/AdminCustomRequests.tsx"));
+const SolarAssessment = lazy(() => import("./pages/SolarAssessment.tsx"));
+const SolarAssessmentReport = lazy(() => import("./pages/SolarAssessmentReport.tsx"));
+const AccountAssessments = lazy(() => import("./pages/AccountAssessments.tsx"));
 
 
 const FinanceApply = lazy(() => import("./pages/FinanceApply.tsx"));
@@ -139,6 +144,10 @@ const AnimatedRoutes = () => {
           <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />
           <Route path="/newsletter/confirm" element={<RouteFade><NewsletterConfirm /></RouteFade>} />
           <Route path="/newsletter/unsubscribe" element={<RouteFade><NewsletterUnsubscribe /></RouteFade>} />
+          <Route path="/solar-assessment" element={<RouteFade><SolarAssessment /></RouteFade>} />
+          <Route path="/solar-assessment/:id/full" element={<RouteFade><SolarAssessmentReport /></RouteFade>} />
+          
+          <Route path="/account/assessments" element={<RequireRole><AccountAssessments /></RequireRole>} />
 
           {/* Auth + Account */}
           <Route path="/auth" element={<Auth />} />
@@ -185,6 +194,8 @@ const AnimatedRoutes = () => {
           <Route path="/admin/settings" element={<Admin adminOnly><AdminSettings /></Admin>} />
           <Route path="/admin/reports" element={<Admin><AdminReports /></Admin>} />
           <Route path="/admin/storage" element={<Admin><AdminStorage /></Admin>} />
+          <Route path="/admin/assessments" element={<Admin><AdminAssessments /></Admin>} />
+          <Route path="/admin/custom-requests" element={<Admin><AdminCustomRequests /></Admin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
       </Suspense>

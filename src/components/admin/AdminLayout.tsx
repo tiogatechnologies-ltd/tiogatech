@@ -34,6 +34,13 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    label: "Assessments",
+    items: [
+      { label: "Solar Assessments", icon: Sun, path: "/admin/assessments" },
+      { label: "Custom Requests", icon: FileText, path: "/admin/custom-requests" },
+    ],
+  },
+  {
     label: "Catalog",
     items: [
       { label: "Products", icon: Package, path: "/admin/products" },

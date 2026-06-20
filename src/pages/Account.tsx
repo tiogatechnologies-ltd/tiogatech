@@ -67,6 +67,11 @@ const Account = () => {
               <p className="font-semibold text-foreground text-sm">Financing</p>
               <p className="text-xs text-muted-foreground">3, 6, or 12 month plans</p>
             </Link>
+            <Link to="/account/assessments" className="rounded-2xl border border-border bg-card p-4 hover-lift">
+              <Wallet className="text-primary mb-2" size={18} />
+              <p className="font-semibold text-foreground text-sm">Solar Assessments</p>
+              <p className="text-xs text-muted-foreground">Reports & free analyses</p>
+            </Link>
             {isAffiliate && (
               <Link to="/affiliate" className="rounded-2xl border border-border bg-card p-4 hover-lift">
                 <Share2 className="text-primary mb-2" size={18} />
