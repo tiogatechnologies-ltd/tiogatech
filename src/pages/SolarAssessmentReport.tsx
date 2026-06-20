@@ -43,7 +43,7 @@ const SolarAssessmentReport = () => {
       const fr = (assessment?.full_report || (a as any).full_report) as any;
       const slugs: string[] = fr?.recommended_package_slugs || [];
       if (slugs.length) {
-        const { data: pkgs } = await supabase.from("solar_packages").select("*").in("slug", slugs).eq("is_active", true);
+        const { data: pkgs } = await (supabase.from("solar_packages") as any).select("*").in("slug", slugs).eq("is_active", true);
         setPackages(pkgs || []);
       }
       setLoading(false);
