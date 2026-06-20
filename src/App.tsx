@@ -144,6 +144,10 @@ const AnimatedRoutes = () => {
           <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />
           <Route path="/newsletter/confirm" element={<RouteFade><NewsletterConfirm /></RouteFade>} />
           <Route path="/newsletter/unsubscribe" element={<RouteFade><NewsletterUnsubscribe /></RouteFade>} />
+          <Route path="/solar-assessment" element={<RouteFade><SolarAssessment /></RouteFade>} />
+          <Route path="/solar-assessment/:id/full" element={<RouteFade><SolarAssessmentReport /></RouteFade>} />
+          <Route path="/r/:token" element={<RouteFade><SolarAssessmentReport /></RouteFade>} />
+          <Route path="/account/assessments" element={<RequireRole><AccountAssessments /></RequireRole>} />
 
           {/* Auth + Account */}
           <Route path="/auth" element={<Auth />} />
