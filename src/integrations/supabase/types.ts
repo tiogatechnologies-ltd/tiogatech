@@ -210,6 +210,33 @@ export type Database = {
         }
         Relationships: []
       }
+      assessment_credits: {
+        Row: {
+          created_at: string
+          purchased_credits: number
+          total_credits: number
+          updated_at: string
+          used_credits: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          purchased_credits?: number
+          total_credits?: number
+          updated_at?: string
+          used_credits?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          purchased_credits?: number
+          total_credits?: number
+          updated_at?: string
+          used_credits?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
@@ -428,6 +455,59 @@ export type Database = {
           session_id?: string
         }
         Relationships: []
+      }
+      custom_solution_requests: {
+        Row: {
+          admin_notes: string | null
+          assessment_id: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          location: string | null
+          phone: string | null
+          requirements: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          assessment_id?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          location?: string | null
+          phone?: string | null
+          requirements?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          assessment_id?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          location?: string | null
+          phone?: string | null
+          requirements?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_solution_requests_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "solar_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       customer_notes: {
         Row: {
@@ -1477,6 +1557,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_type: string | null
           avatar_url: string | null
           created_at: string
           email: string | null
@@ -1486,6 +1567,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          account_type?: string | null
           avatar_url?: string | null
           created_at?: string
           email?: string | null
@@ -1495,6 +1577,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          account_type?: string | null
           avatar_url?: string | null
           created_at?: string
           email?: string | null
@@ -1585,6 +1668,92 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      solar_assessments: {
+        Row: {
+          appliances: Json
+          building_type: string | null
+          created_at: string
+          current_power_situation: string | null
+          daily_kwh: number | null
+          email: string
+          engineer_id: string | null
+          engineer_notes: string | null
+          full_name: string
+          full_report: Json | null
+          id: string
+          is_full_unlocked: boolean
+          lead_id: string | null
+          location: string | null
+          monthly_bill_ngn: number | null
+          occupants: number | null
+          peak_load_w: number | null
+          phone: string | null
+          recommendation: Json | null
+          share_token: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          appliances?: Json
+          building_type?: string | null
+          created_at?: string
+          current_power_situation?: string | null
+          daily_kwh?: number | null
+          email: string
+          engineer_id?: string | null
+          engineer_notes?: string | null
+          full_name: string
+          full_report?: Json | null
+          id?: string
+          is_full_unlocked?: boolean
+          lead_id?: string | null
+          location?: string | null
+          monthly_bill_ngn?: number | null
+          occupants?: number | null
+          peak_load_w?: number | null
+          phone?: string | null
+          recommendation?: Json | null
+          share_token?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          appliances?: Json
+          building_type?: string | null
+          created_at?: string
+          current_power_situation?: string | null
+          daily_kwh?: number | null
+          email?: string
+          engineer_id?: string | null
+          engineer_notes?: string | null
+          full_name?: string
+          full_report?: Json | null
+          id?: string
+          is_full_unlocked?: boolean
+          lead_id?: string | null
+          location?: string | null
+          monthly_bill_ngn?: number | null
+          occupants?: number | null
+          peak_load_w?: number | null
+          phone?: string | null
+          recommendation?: Json | null
+          share_token?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "solar_assessments_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       solar_packages: {
         Row: {
