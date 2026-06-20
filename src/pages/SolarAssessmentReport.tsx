@@ -99,7 +99,7 @@ const SolarAssessmentReport = () => {
 
   const shareWhatsApp = () => {
     const fr = assessment?.full_report;
-    const url = `${window.location.origin}/r/${assessment?.share_token}`;
+    const url = `${window.location.origin}/solar-assessment/${assessment?.id}/full`;
     const msg = `My Tioga solar recommendation: ${fr?.inverter_spec?.size_kva}kVA inverter, ${fr?.battery_spec?.capacity_kwh}kWh battery, ${fr?.solar_sizing?.panel_count} panels. View: ${url}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
   };
