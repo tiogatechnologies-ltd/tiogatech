@@ -35,6 +35,7 @@ const navGroups: NavGroup[] = [
   },
   {
     label: "Assessments",
+    roles: ["admin", "staff", "engineer"],
     items: [
       { label: "Solar Assessments", icon: Sun, path: "/admin/assessments" },
       { label: "Custom Requests", icon: FileText, path: "/admin/custom-requests" },
