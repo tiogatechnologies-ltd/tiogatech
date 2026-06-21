@@ -14,10 +14,9 @@ import featureApp from "@/assets/feature-energy-app.jpg";
 import bgTechMesh from "@/assets/bg-grid-particles.jpg";
 import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download, Coins, TrendingUp, Building2, Users2, Briefcase, Wrench, Shield, Smartphone, Cpu, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-import WattsCalculator from "@/components/lead-form/WattsCalculator";
+import LumiVoltSizer from "@/components/LumiVoltSizer";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
-import type { SelectedAppliance } from "@/data/applianceWatts";
 
 const pillars = [
   { icon: Sun, title: "Rooftop Solar", desc: "Tier-1 panels sized for your roof and daily load, engineered for Nigerian sun hours." },
