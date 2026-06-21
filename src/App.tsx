@@ -84,6 +84,7 @@ const AdminReports = lazy(() => import("./pages/AdminReports.tsx"));
 const AdminStorage = lazy(() => import("./pages/AdminStorage.tsx"));
 const AdminAssessments = lazy(() => import("./pages/AdminAssessments.tsx"));
 const AdminCustomRequests = lazy(() => import("./pages/AdminCustomRequests.tsx"));
+const AdminLumiVoltSizings = lazy(() => import("./pages/AdminLumiVoltSizings.tsx"));
 const SolarAssessment = lazy(() => import("./pages/SolarAssessment.tsx"));
 const SolarAssessmentReport = lazy(() => import("./pages/SolarAssessmentReport.tsx"));
 const AccountAssessments = lazy(() => import("./pages/AccountAssessments.tsx"));
