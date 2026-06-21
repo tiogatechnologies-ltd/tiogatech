@@ -1101,6 +1101,87 @@ export type Database = {
         }
         Relationships: []
       }
+      lumivolt_sizings: {
+        Row: {
+          appliances: Json
+          battery_ah: number | null
+          battery_dod: number
+          battery_kwh: number | null
+          battery_type: string
+          battery_voltage: number
+          charge_controller_a: number | null
+          created_at: string
+          daily_energy_wh: number
+          days_autonomy: number
+          email: string | null
+          full_name: string | null
+          id: string
+          inverter_w: number | null
+          location: string | null
+          notes: string | null
+          phone: string | null
+          recommended_panel_w: number | null
+          solar_panel_w: number | null
+          source: string | null
+          sunlight_hours: number
+          total_load_w: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          appliances?: Json
+          battery_ah?: number | null
+          battery_dod?: number
+          battery_kwh?: number | null
+          battery_type?: string
+          battery_voltage?: number
+          charge_controller_a?: number | null
+          created_at?: string
+          daily_energy_wh?: number
+          days_autonomy?: number
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          inverter_w?: number | null
+          location?: string | null
+          notes?: string | null
+          phone?: string | null
+          recommended_panel_w?: number | null
+          solar_panel_w?: number | null
+          source?: string | null
+          sunlight_hours?: number
+          total_load_w?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          appliances?: Json
+          battery_ah?: number | null
+          battery_dod?: number
+          battery_kwh?: number | null
+          battery_type?: string
+          battery_voltage?: number
+          charge_controller_a?: number | null
+          created_at?: string
+          daily_energy_wh?: number
+          days_autonomy?: number
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          inverter_w?: number | null
+          location?: string | null
+          notes?: string | null
+          phone?: string | null
+          recommended_panel_w?: number | null
+          solar_panel_w?: number | null
+          source?: string | null
+          sunlight_hours?: number
+          total_load_w?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       newsletter_broadcasts: {
         Row: {
           created_at: string
