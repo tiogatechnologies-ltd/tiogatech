@@ -84,6 +84,7 @@ const AdminReports = lazy(() => import("./pages/AdminReports.tsx"));
 const AdminStorage = lazy(() => import("./pages/AdminStorage.tsx"));
 const AdminAssessments = lazy(() => import("./pages/AdminAssessments.tsx"));
 const AdminCustomRequests = lazy(() => import("./pages/AdminCustomRequests.tsx"));
+const AdminLumiVoltSizings = lazy(() => import("./pages/AdminLumiVoltSizings.tsx"));
 const SolarAssessment = lazy(() => import("./pages/SolarAssessment.tsx"));
 const SolarAssessmentReport = lazy(() => import("./pages/SolarAssessmentReport.tsx"));
 const AccountAssessments = lazy(() => import("./pages/AccountAssessments.tsx"));
@@ -196,6 +197,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/storage" element={<Admin><AdminStorage /></Admin>} />
           <Route path="/admin/assessments" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminAssessments /></RequireRole>} />
           <Route path="/admin/custom-requests" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminCustomRequests /></RequireRole>} />
+          <Route path="/admin/lumivolt-sizings" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminLumiVoltSizings /></RequireRole>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
       </Suspense>
