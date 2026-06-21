@@ -38,6 +38,7 @@ const navGroups: NavGroup[] = [
     roles: ["admin", "staff", "engineer"],
     items: [
       { label: "Solar Assessments", icon: Sun, path: "/admin/assessments" },
+      { label: "LumiVolt Sizings", icon: Calculator, path: "/admin/lumivolt-sizings" },
       { label: "Custom Requests", icon: FileText, path: "/admin/custom-requests" },
     ],
   },
