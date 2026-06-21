@@ -33,6 +33,9 @@ interface DashStats {
   lowStockCount: number;
   newsletterSubs: number;
   totalProducts: number;
+  assessmentsToday: number;
+  assessmentsPendingReview: number;
+  customRequestsOpen: number;
 }
 
 interface TrendPoint { day: string; revenue: number; leads: number; }
@@ -65,6 +68,7 @@ const AdminDashboard = () => {
         financeActive, overdue, lowStockRows, newsletter, productsCount,
         orders30, leads30, ordersByStatus, recentOrders, recentLeads,
         recentFinance, recentCareer, recentAffApps, topItems, pendFinance, pendCareer, pendAff,
+        assessToday, assessPending, customOpen,
       ] = await Promise.all([
         supabase.from("orders").select("total").gte("created_at", today.toISOString()).neq("status", "cancelled"),
         supabase.from("orders").select("total").gte("created_at", weekAgo.toISOString()).neq("status", "cancelled"),
@@ -88,6 +92,9 @@ const AdminDashboard = () => {
         supabase.from("finance_applications").select("id, full_name, created_at").eq("status", "pending").order("created_at", { ascending: false }).limit(5),
         supabase.from("career_applications").select("id, full_name, created_at").eq("status", "submitted").order("created_at", { ascending: false }).limit(5),
         supabase.from("affiliate_applications").select("id, full_name, created_at").eq("status", "pending").order("created_at", { ascending: false }).limit(5),
+        (supabase.from("solar_assessments" as any).select("id", { count: "exact", head: true }) as any).gte("created_at", today.toISOString()),
+        (supabase.from("solar_assessments" as any).select("id", { count: "exact", head: true }) as any).eq("status", "full"),
+        (supabase.from("custom_solution_requests" as any).select("id", { count: "exact", head: true }) as any).in("status", ["new", "contacted"]),
       ]);
 
       const sumTotal = (rows: any) => (rows.data ?? []).reduce((s: number, r: any) => s + Number(r.total ?? 0), 0);
@@ -103,6 +110,9 @@ const AdminDashboard = () => {
         lowStockCount: (lowStockRows.data ?? []).length,
         newsletterSubs: newsletter.count ?? 0,
         totalProducts: productsCount.count ?? 0,
+        assessmentsToday: (assessToday as any).count ?? 0,
+        assessmentsPendingReview: (assessPending as any).count ?? 0,
+        customRequestsOpen: (customOpen as any).count ?? 0,
       });
 
       // 30-day trend
@@ -177,10 +187,13 @@ const AdminDashboard = () => {
     { label: "Revenue 7d", value: NGN(stats.revenue7d), icon: Wallet, accent: "text-accent", href: "/admin/orders" },
     { label: "Orders pending", value: stats.ordersPending, icon: ShoppingBag, accent: "text-primary", href: "/admin/orders" },
     { label: "Leads today", value: stats.leadsToday, icon: Users, accent: "text-accent", href: "/admin/leads" },
-    { label: "New customers 7d", value: stats.newCustomers7d, icon: Users, accent: "text-primary", href: "/admin/customers" },
+    { label: "Assessments today", value: stats.assessmentsToday, icon: Sparkles, accent: "text-primary", href: "/admin/assessments" },
+    { label: "Pending engineering", value: stats.assessmentsPendingReview, icon: Clock, accent: stats.assessmentsPendingReview > 0 ? "text-accent" : "text-muted-foreground", href: "/admin/assessments" },
+    { label: "Custom requests", value: stats.customRequestsOpen, icon: FileText, accent: stats.customRequestsOpen > 0 ? "text-accent" : "text-muted-foreground", href: "/admin/custom-requests" },
     { label: "Active finance", value: stats.activeFinance, icon: Wallet, accent: "text-accent", href: "/admin/finance/schedules" },
     { label: "Overdue installments", value: stats.overdueInstallments, icon: AlertTriangle, accent: stats.overdueInstallments > 0 ? "text-destructive" : "text-muted-foreground", href: "/admin/finance/schedules" },
     { label: "Low-stock SKUs", value: stats.lowStockCount, icon: Package, accent: stats.lowStockCount > 0 ? "text-destructive" : "text-muted-foreground", href: "/admin/inventory" },
+    { label: "New customers 7d", value: stats.newCustomers7d, icon: Users, accent: "text-primary", href: "/admin/customers" },
   ] : [], [stats]);
 
   return (
