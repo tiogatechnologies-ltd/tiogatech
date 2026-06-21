@@ -197,6 +197,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/storage" element={<Admin><AdminStorage /></Admin>} />
           <Route path="/admin/assessments" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminAssessments /></RequireRole>} />
           <Route path="/admin/custom-requests" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminCustomRequests /></RequireRole>} />
+          <Route path="/admin/lumivolt-sizings" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminLumiVoltSizings /></RequireRole>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
       </Suspense>
