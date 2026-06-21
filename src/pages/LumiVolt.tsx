@@ -290,16 +290,7 @@ const LumiVolt = () => {
             </p>
           </div>
           <div className="max-w-2xl mx-auto rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-[var(--shadow-card)]">
-            <WattsCalculator selectedAppliances={appliances} onChange={setAppliances} />
-            <div className="mt-6 pt-6 border-t border-border text-center">
-              <p className="text-sm text-muted-foreground mb-3">Ready for a personalized solar recommendation?</p>
-              <Link
-                to="#" onClick={(e) => { e.preventDefault(); openLeadForm("page_cta"); }}
-                className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-bold text-midnight hover:brightness-110 ios-press shadow-md shadow-gold/30"
-              >
-                <Sparkles size={15} /> Get AI Recommendation <ArrowRight size={16} />
-              </Link>
-            </div>
+            <LumiVoltSizer />
           </div>
         </div>
       </section>
