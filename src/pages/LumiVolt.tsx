@@ -47,7 +47,6 @@ const youGet = [
 ];
 
 const LumiVolt = () => {
-  const [appliances, setAppliances] = useState<SelectedAppliance[]>([]);
   const { content: cms } = useLandingContent("page_lumivolt");
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
