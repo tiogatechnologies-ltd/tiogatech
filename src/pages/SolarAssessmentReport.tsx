@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import CustomSolutionDialog from "@/components/CustomSolutionDialog";
 
 const SolarAssessmentReport = () => {
   const { id } = useParams();
@@ -19,6 +20,7 @@ const SolarAssessmentReport = () => {
   const [paywall, setPaywall] = useState(false);
   const [assessment, setAssessment] = useState<any>(null);
   const [packages, setPackages] = useState<any[]>([]);
+  const [customOpen, setCustomOpen] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -193,12 +195,18 @@ const SolarAssessmentReport = () => {
           )}
 
           <div className="text-center pt-4">
-            <Link to="/contact" className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground">
+            <button onClick={() => setCustomOpen(true)} className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:opacity-90 transition-opacity">
               Request Custom Solar Solution <ArrowRight size={16} />
-            </Link>
+            </button>
           </div>
         </div>
       </main>
+      <CustomSolutionDialog
+        open={customOpen}
+        onOpenChange={setCustomOpen}
+        assessmentId={assessment.id}
+        defaults={{ full_name: assessment.full_name, email: assessment.email, phone: assessment.phone, location: assessment.location }}
+      />
       <SiteFooter />
     </div>
   );
