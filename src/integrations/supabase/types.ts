@@ -183,6 +183,48 @@ export type Database = {
           },
         ]
       }
+      ai_subscriptions: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          granted_by: string | null
+          id: string
+          monthly_price_ngn: number
+          notes: string | null
+          plan: Database["public"]["Enums"]["ai_plan"]
+          started_at: string
+          status: Database["public"]["Enums"]["ai_sub_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          granted_by?: string | null
+          id?: string
+          monthly_price_ngn?: number
+          notes?: string | null
+          plan?: Database["public"]["Enums"]["ai_plan"]
+          started_at?: string
+          status?: Database["public"]["Enums"]["ai_sub_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          granted_by?: string | null
+          id?: string
+          monthly_price_ngn?: number
+          notes?: string | null
+          plan?: Database["public"]["Enums"]["ai_plan"]
+          started_at?: string
+          status?: Database["public"]["Enums"]["ai_sub_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       app_waitlist: {
         Row: {
           created_at: string
@@ -669,6 +711,7 @@ export type Database = {
         Row: {
           address: string
           approved_at: string | null
+          assessment_id: string | null
           city: string | null
           consent: boolean
           created_at: string
@@ -682,8 +725,11 @@ export type Database = {
           id_document_url: string | null
           id_number: string | null
           id_type: string | null
+          insurance_fee_ngn: number | null
+          interest_rate_pct: number | null
           item_name: string
           item_reference: string | null
+          management_fee_ngn: number | null
           monthly_income_ngn: number | null
           monthly_payment_ngn: number
           months: number
@@ -691,18 +737,21 @@ export type Database = {
           next_of_kin_phone: string | null
           notes: string | null
           occupation: string | null
+          package_slug: string | null
           phone: string
           rejection_reason: string | null
           reviewer_id: string | null
           state: string | null
           status: Database["public"]["Enums"]["finance_app_status"]
           total_amount_ngn: number
+          total_repayment_ngn: number | null
           updated_at: string
           user_id: string | null
         }
         Insert: {
           address: string
           approved_at?: string | null
+          assessment_id?: string | null
           city?: string | null
           consent?: boolean
           created_at?: string
@@ -716,8 +765,11 @@ export type Database = {
           id_document_url?: string | null
           id_number?: string | null
           id_type?: string | null
+          insurance_fee_ngn?: number | null
+          interest_rate_pct?: number | null
           item_name: string
           item_reference?: string | null
+          management_fee_ngn?: number | null
           monthly_income_ngn?: number | null
           monthly_payment_ngn: number
           months: number
@@ -725,18 +777,21 @@ export type Database = {
           next_of_kin_phone?: string | null
           notes?: string | null
           occupation?: string | null
+          package_slug?: string | null
           phone: string
           rejection_reason?: string | null
           reviewer_id?: string | null
           state?: string | null
           status?: Database["public"]["Enums"]["finance_app_status"]
           total_amount_ngn: number
+          total_repayment_ngn?: number | null
           updated_at?: string
           user_id?: string | null
         }
         Update: {
           address?: string
           approved_at?: string | null
+          assessment_id?: string | null
           city?: string | null
           consent?: boolean
           created_at?: string
@@ -750,8 +805,11 @@ export type Database = {
           id_document_url?: string | null
           id_number?: string | null
           id_type?: string | null
+          insurance_fee_ngn?: number | null
+          interest_rate_pct?: number | null
           item_name?: string
           item_reference?: string | null
+          management_fee_ngn?: number | null
           monthly_income_ngn?: number | null
           monthly_payment_ngn?: number
           months?: number
@@ -759,16 +817,26 @@ export type Database = {
           next_of_kin_phone?: string | null
           notes?: string | null
           occupation?: string | null
+          package_slug?: string | null
           phone?: string
           rejection_reason?: string | null
           reviewer_id?: string | null
           state?: string | null
           status?: Database["public"]["Enums"]["finance_app_status"]
           total_amount_ngn?: number
+          total_repayment_ngn?: number | null
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "finance_applications_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "solar_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       finance_payments: {
         Row: {
@@ -1931,6 +1999,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_active_ai_subscription: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
       has_any_role: {
         Args: {
           _roles: Database["public"]["Enums"]["app_role"][]
@@ -1956,6 +2028,8 @@ export type Database = {
       }
     }
     Enums: {
+      ai_plan: "free" | "starter" | "business"
+      ai_sub_status: "active" | "expired" | "pending" | "revoked"
       app_role:
         | "admin"
         | "user"
@@ -2100,6 +2174,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      ai_plan: ["free", "starter", "business"],
+      ai_sub_status: ["active", "expired", "pending", "revoked"],
       app_role: ["admin", "user", "staff", "affiliate", "customer", "engineer"],
       finance_app_status: [
         "pending",
