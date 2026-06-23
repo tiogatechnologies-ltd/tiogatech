@@ -165,11 +165,13 @@ Return JSON ONLY in this schema:
       share_token,
     }).eq("id", assessment_id);
 
-    await admin.from("assessment_credits").update({
-      used_credits: (credits?.used_credits ?? 0) + 1,
-    }).eq("user_id", userId);
+    if (!hasSub) {
+      await admin.from("assessment_credits").update({
+        used_credits: (credits?.used_credits ?? 0) + 1,
+      }).eq("user_id", userId);
+    }
 
-    return new Response(JSON.stringify({ full_report, share_token, credits_remaining: available - 1 }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ full_report, share_token, credits_remaining: hasSub ? null : available - 1, subscription_active: hasSub }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
     console.error("solar-assess error", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
