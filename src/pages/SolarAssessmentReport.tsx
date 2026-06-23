@@ -4,12 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
-import { Download, Share2, Loader2, Sun, Lock, MessageCircle, ArrowRight } from "lucide-react";
+import { Download, Share2, Loader2, Sun, MessageCircle, ArrowRight, FileSignature, Wrench, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import CustomSolutionDialog from "@/components/CustomSolutionDialog";
+import AiUpgradeDialog from "@/components/AiUpgradeDialog";
 
 const SolarAssessmentReport = () => {
   const { id } = useParams();
@@ -34,11 +35,11 @@ const SolarAssessmentReport = () => {
         const { data, error } = await supabase.functions.invoke("solar-assess", { body: { mode: "full", assessment_id: id } });
         if (error) {
           const msg = (error as any).message || "";
-          if (msg.includes("no_credits") || msg.includes("402")) { setPaywall(true); setLoading(false); return; }
+          if (msg.includes("subscription_required") || msg.includes("no_credits") || msg.includes("402")) { setPaywall(true); setLoading(false); return; }
           toast.error(msg || "Could not unlock");
           setLoading(false); return;
         }
-        if (data?.error === "no_credits") { setPaywall(true); setLoading(false); return; }
+        if (data?.error === "subscription_required" || data?.error === "no_credits") { setPaywall(true); setLoading(false); return; }
         const { data: refreshed } = await supabase.from("solar_assessments" as any).select("*").eq("id", id).maybeSingle();
         setAssessment(refreshed);
       }
@@ -116,15 +117,9 @@ const SolarAssessmentReport = () => {
         <SEO title="Upgrade to continue - Tioga Technologies" description="Unlock additional solar assessments." path={`/solar-assessment/${id}/full`} />
         <SiteHeader />
         <main className="flex-1 grid place-items-center p-6 bg-muted/30">
-          <div className="max-w-md text-center bg-card rounded-3xl border border-border p-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/20 text-accent-foreground mb-3"><Lock size={24} /></div>
-            <h1 className="text-2xl font-display font-bold mb-2">You've used your 3 free analyses</h1>
-            <p className="text-sm text-muted-foreground mb-6">Contact our sales team to unlock more detailed solar reports or request a custom quotation.</p>
-            <a href="https://wa.me/2348000000000?text=I'd%20like%20to%20unlock%20more%20solar%20analyses" target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
-              <MessageCircle size={16} /> Contact sales on WhatsApp
-            </a>
-          </div>
+          <div />
         </main>
+        <AiUpgradeDialog open onOpenChange={(o) => { if (!o) navigate("/account/assessments"); }} />
         <SiteFooter />
       </div>
     );
@@ -187,6 +182,37 @@ const SolarAssessmentReport = () => {
             </div>
           )}
 
+          {(() => {
+            const sizeKva = Number(fr?.inverter_spec?.size_kva || assessment?.recommendation?.inverter_kva || 0);
+            const totalCost = (fr?.bill_of_materials || []).reduce((s: number, b: any) => s + (Number(b.estimated_cost_ngn) || 0), 0);
+            const flagshipPkg = sizeKva > 0 && sizeKva <= 7 ? 20 : sizeKva > 7 ? 21 : null;
+            const matchedAmount = flagshipPkg === 20 ? 8185403 : flagshipPkg === 21 ? 12033763 : totalCost || 5000000;
+            const waMsg = encodeURIComponent(`Hi Tioga, I'd like to schedule installation for my solar assessment ${assessment.id.slice(0, 8)} (${sizeKva}kVA / ${fr?.battery_spec?.capacity_kwh}kWh).`);
+            return (
+              <div className="bg-card rounded-2xl border border-primary/30 p-6">
+                <h2 className="font-display font-bold text-lg mb-1">Next steps</h2>
+                <p className="text-sm text-muted-foreground mb-4">Three ways to move forward with this design.</p>
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <button onClick={() => setCustomOpen(true)} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors">
+                    <FileSignature className="text-primary mb-2" size={20} />
+                    <div className="font-display font-bold text-sm">Get formal quote</div>
+                    <div className="text-xs text-muted-foreground mt-1">Engineer-reviewed quotation with itemized pricing.</div>
+                  </button>
+                  <Link to={`/finance/apply?assessment=${assessment.id}&amount=${matchedAmount}&months=12${flagshipPkg ? `&package=pkg-${flagshipPkg}` : ""}&item=${encodeURIComponent(`${sizeKva}kVA Tioga Solar System`)}`} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
+                    <Wallet className="text-primary mb-2" size={20} />
+                    <div className="font-display font-bold text-sm">Apply for Flex Pay</div>
+                    <div className="text-xs text-muted-foreground mt-1">30% deposit, then 12 or 24 monthly installments.</div>
+                  </Link>
+                  <a href={`https://wa.me/2348000000000?text=${waMsg}`} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
+                    <Wrench className="text-primary mb-2" size={20} />
+                    <div className="font-display font-bold text-sm">Schedule installation</div>
+                    <div className="text-xs text-muted-foreground mt-1">Book a site visit + commissioning slot.</div>
+                  </a>
+                </div>
+              </div>
+            );
+          })()}
+
           {fr.engineer_summary && (
             <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6">
               <h2 className="font-display font-bold text-lg mb-2">Engineer Summary</h2>
@@ -194,11 +220,10 @@ const SolarAssessmentReport = () => {
             </div>
           )}
 
-          <div className="text-center pt-4">
-            <button onClick={() => setCustomOpen(true)} className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:opacity-90 transition-opacity">
-              Request Custom Solar Solution <ArrowRight size={16} />
-            </button>
+          <div className="text-center pt-2 text-xs text-muted-foreground">
+            <Link to="/ai-pricing" className="inline-flex items-center gap-1 text-primary hover:underline">Manage AI subscription</Link>
           </div>
+
         </div>
       </main>
       <CustomSolutionDialog

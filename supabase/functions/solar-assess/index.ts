@@ -86,14 +86,18 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Check & decrement credits
+    // Check active paid AI subscription — bypasses credit usage
+    const { data: subActive } = await admin.rpc("has_active_ai_subscription", { _user_id: userId });
+    const hasSub = subActive === true;
+
+    // Check & decrement credits (only if no active subscription)
     const { data: credits } = await admin.from("assessment_credits").select("*").eq("user_id", userId).maybeSingle();
     if (!credits) {
       await admin.from("assessment_credits").insert({ user_id: userId, total_credits: 3 });
     }
     const available = ((credits?.total_credits ?? 3) + (credits?.purchased_credits ?? 0)) - (credits?.used_credits ?? 0);
-    if (available <= 0) {
-      return new Response(JSON.stringify({ error: "no_credits", message: "You've used all your free analyses. Contact sales to unlock more." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    if (!hasSub && available <= 0) {
+      return new Response(JSON.stringify({ error: "subscription_required", message: "You've used all your free analyses. Subscribe to AI Starter (₦2,500/mo) for unlimited reports." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     // Generate full report via AI
@@ -161,11 +165,13 @@ Return JSON ONLY in this schema:
       share_token,
     }).eq("id", assessment_id);
 
-    await admin.from("assessment_credits").update({
-      used_credits: (credits?.used_credits ?? 0) + 1,
-    }).eq("user_id", userId);
+    if (!hasSub) {
+      await admin.from("assessment_credits").update({
+        used_credits: (credits?.used_credits ?? 0) + 1,
+      }).eq("user_id", userId);
+    }
 
-    return new Response(JSON.stringify({ full_report, share_token, credits_remaining: available - 1 }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ full_report, share_token, credits_remaining: hasSub ? null : available - 1, subscription_active: hasSub }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
     console.error("solar-assess error", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });

@@ -5,10 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import { Wallet, ArrowRight, Loader2, ShieldCheck, Upload, Check } from "lucide-react";
 import { toast } from "sonner";
+import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, type FinanceConfig } from "@/lib/financeCalc";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
-
-const RATES = { 3: 0.233, 6: 0.117, 12: 0.058 };
 
 const FinanceApply = () => {
   const navigate = useNavigate();
@@ -17,8 +16,11 @@ const FinanceApply = () => {
 
   const itemName = params.get("item") || "";
   const amount = Number(params.get("amount") || 0);
-  const monthsParam = Number(params.get("months") || 6) as 3 | 6 | 12;
+  const monthsParam = Math.max(12, Math.min(24, Number(params.get("months") || 12)));
+  const packageSlug = params.get("package") || "";
+  const assessmentId = params.get("assessment") || null;
 
+  const [config, setConfig] = useState<FinanceConfig>(DEFAULT_FINANCE_CONFIG);
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [docPath, setDocPath] = useState<string | null>(null);
@@ -39,15 +41,34 @@ const FinanceApply = () => {
     id_number: "",
     next_of_kin_name: "",
     next_of_kin_phone: "",
-    item_name: itemName,
+    item_name: itemName || (packageSlug ? `Flex package ${packageSlug}` : ""),
     total_amount_ngn: amount as any,
-    months: monthsParam as 3 | 6 | 12,
+    months: monthsParam as number,
     consent: false,
   });
 
-  const deposit = useMemo(() => Math.round(Number(form.total_amount_ngn || 0) * 0.3), [form.total_amount_ngn]);
-  const financed = useMemo(() => Number(form.total_amount_ngn || 0) - deposit, [form.total_amount_ngn, deposit]);
-  const monthly = useMemo(() => Math.round((financed / form.months) * (1 + RATES[form.months])), [financed, form.months]);
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from("site_settings").select("value").eq("key", "finance").maybeSingle();
+      if (data?.value) setConfig({ ...DEFAULT_FINANCE_CONFIG, ...(data.value as any) });
+
+      // Prefill from assessment if logged in
+      if (assessmentId && user?.id) {
+        const { data: a } = await supabase.from("solar_assessments").select("full_name,email,phone,location").eq("id", assessmentId).eq("user_id", user.id).maybeSingle();
+        if (a) setForm((f) => ({
+          ...f,
+          full_name: f.full_name || a.full_name,
+          email: f.email || a.email,
+          phone: f.phone || a.phone || "",
+          address: f.address || a.location || "",
+        }));
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [assessmentId, user?.id]);
+
+  const tenures = config.tenures_months?.length ? config.tenures_months : [12, 24];
+  const breakdown = useMemo(() => calcPlan(Number(form.total_amount_ngn || 0), form.months, config), [form.total_amount_ngn, form.months, config]);
 
   const upload = async (file: File) => {
     setUploading(true);
@@ -56,12 +77,13 @@ const FinanceApply = () => {
     const { error } = await supabase.storage.from("finance-docs").upload(path, file, { upsert: false });
     setUploading(false);
     if (error) return toast.error(error.message);
-    setDocPath(path); toast.success("ID uploaded");
+    setDocPath(path); toast.success("Document uploaded");
   };
 
   const submit = async () => {
     if (!form.consent) return toast.error("Please consent to the terms");
     if (!form.full_name || !form.email || !form.phone) return toast.error("Fill required fields");
+    if (!form.total_amount_ngn || Number(form.total_amount_ngn) < 1_000_000) return toast.error("Minimum financed amount is ₦1,000,000");
     setSubmitting(true);
     const { data, error } = await supabase.from("finance_applications").insert({
       user_id: user?.id || null,
@@ -72,27 +94,41 @@ const FinanceApply = () => {
       monthly_income_ngn: form.monthly_income_ngn ? Number(form.monthly_income_ngn) : null,
       id_type: form.id_type, id_number: form.id_number, id_document_url: docPath,
       next_of_kin_name: form.next_of_kin_name, next_of_kin_phone: form.next_of_kin_phone,
-      item_name: form.item_name, total_amount_ngn: Number(form.total_amount_ngn),
-      deposit_ngn: deposit, financed_ngn: financed, months: form.months, monthly_payment_ngn: monthly,
+      item_name: form.item_name,
+      total_amount_ngn: breakdown.total,
+      deposit_ngn: breakdown.deposit,
+      financed_ngn: breakdown.financed,
+      months: breakdown.tenure_months,
+      monthly_payment_ngn: breakdown.monthly_payment,
+      interest_rate_pct: breakdown.interest_rate,
+      insurance_fee_ngn: breakdown.insurance_fee,
+      management_fee_ngn: breakdown.management_fee,
+      total_repayment_ngn: breakdown.total_repayment,
+      package_slug: packageSlug || null,
+      assessment_id: assessmentId,
       consent: form.consent,
     } as any).select("id").maybeSingle();
     setSubmitting(false);
     if (error) return toast.error(error.message);
+
+    try {
+      await supabase.functions.invoke("notify-new-lead", { body: { source: "finance_application", application_id: data?.id, full_name: form.full_name, email: form.email, phone: form.phone, summary: `${form.item_name} · ${formatNGN(breakdown.total)} · ${breakdown.tenure_months}mo` } });
+    } catch { /* non-fatal */ }
+
     toast.success("Application submitted! We'll contact you within 24 hours.");
-    navigate(`/finance/apply/success?id=${data?.id}`);
+    navigate(`/account/finance`);
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Apply for Flexible Payment — Tioga Technologies" description="Apply for 3, 6, or 12 month flexible payment plans for solar, smart home and security purchases." />
+      <SEO title="Apply for Flex Lease-to-Own — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 12 or 24 month repayments, bank-partner approval." />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-8">
           <button onClick={() => navigate(-1)} className="text-sm text-muted-foreground mb-4">← Back</button>
-          <h1 className="font-display text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary" /> Flexible Payment Application</h1>
-          <p className="text-sm text-muted-foreground mt-2">30% deposit, then 3, 6 or 12 monthly installments. Decision within 24 hours.</p>
+          <h1 className="font-display text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary" /> Flex Lease-to-Own Application</h1>
+          <p className="text-sm text-muted-foreground mt-2">30% deposit, then 12 or 24 fixed monthly installments. Decision within 24 hours.</p>
         </div>
 
-        {/* Stepper */}
         <div className="flex items-center gap-2 mb-8">
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex-1 flex items-center gap-2">
@@ -108,55 +144,74 @@ const FinanceApply = () => {
             <>
               <h2 className="font-display text-lg font-bold">Choose your plan</h2>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div><label className="text-xs font-semibold">Item</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.item_name} onChange={(e) => setForm({ ...form, item_name: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">Total amount (NGN)</label><input type="number" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.total_amount_ngn} onChange={(e) => setForm({ ...form, total_amount_ngn: e.target.value })} /></div>
+                <div><label className="text-xs font-semibold">Item / Package</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.item_name} onChange={(e) => setForm({ ...form, item_name: e.target.value })} /></div>
+                <div><label className="text-xs font-semibold">Total amount (NGN)</label><input type="number" min={1000000} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.total_amount_ngn} onChange={(e) => setForm({ ...form, total_amount_ngn: e.target.value })} /></div>
               </div>
               <div>
                 <label className="text-xs font-semibold block mb-2">Plan length</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {[3, 6, 12].map((m) => (
-                    <button key={m} onClick={() => setForm({ ...form, months: m as 3 | 6 | 12 })} className={`p-3 rounded-xl border text-sm font-semibold ${form.months === m ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-muted"}`}>
+                <div className="grid grid-cols-2 gap-2">
+                  {tenures.map((m) => (
+                    <button key={m} onClick={() => setForm({ ...form, months: m })} className={`p-3 rounded-xl border text-sm font-semibold ${form.months === m ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-muted"}`}>
                       {m} months
                     </button>
                   ))}
                 </div>
               </div>
               <div className="p-4 rounded-xl bg-muted/40 space-y-1.5 text-sm">
-                <div className="flex justify-between"><span>Total</span><span>₦{Number(form.total_amount_ngn || 0).toLocaleString()}</span></div>
-                <div className="flex justify-between text-muted-foreground"><span>30% deposit</span><span>₦{deposit.toLocaleString()}</span></div>
-                <div className="flex justify-between text-muted-foreground"><span>Financed</span><span>₦{financed.toLocaleString()}</span></div>
-                <div className="flex justify-between pt-2 border-t border-border font-display text-base font-bold"><span>Monthly</span><span className="text-primary">₦{monthly.toLocaleString()}</span></div>
+                <Row label="Total project cost" value={formatNGN(breakdown.total)} />
+                <Row label="30% deposit" value={formatNGN(breakdown.deposit)} muted />
+                <Row label="Financed (70%)" value={formatNGN(breakdown.financed)} muted />
+                <Row label={`Interest (${(breakdown.interest_rate * 100).toFixed(0)}%)`} value={formatNGN(breakdown.interest_amount)} muted />
+                <Row label="Insurance (2%)" value={formatNGN(breakdown.insurance_fee)} muted />
+                <Row label="Management (1%)" value={formatNGN(breakdown.management_fee)} muted />
+                <div className="pt-2 border-t border-border">
+                  <Row label="Total repayment" value={formatNGN(breakdown.total_repayment)} bold />
+                </div>
+                <div className="pt-2 border-t border-border flex justify-between font-display text-base font-bold">
+                  <span>Monthly</span><span className="text-primary">{formatNGN(breakdown.monthly_payment)}</span>
+                </div>
               </div>
-              <button onClick={() => setStep(2)} disabled={!form.total_amount_ngn} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold flex items-center justify-center gap-2 disabled:opacity-50">Continue <ArrowRight size={16} /></button>
+              <button onClick={() => setStep(2)} disabled={!form.total_amount_ngn || Number(form.total_amount_ngn) < 1_000_000} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold flex items-center justify-center gap-2 disabled:opacity-50">Continue <ArrowRight size={16} /></button>
             </>
           )}
 
           {step === 2 && (
             <>
-              <h2 className="font-display text-lg font-bold">Personal details</h2>
+              <h2 className="font-display text-lg font-bold">Personal & eligibility details</h2>
               <div className="grid sm:grid-cols-2 gap-3">
-                <div><label className="text-xs font-semibold">Full name *</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">Email *</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">Phone *</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">Date of birth</label><input type="date" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.date_of_birth} onChange={(e) => setForm({ ...form, date_of_birth: e.target.value })} /></div>
-                <div className="sm:col-span-2"><label className="text-xs font-semibold">Address</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">City</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">State</label><select className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })}>{NG_STATES.map((s) => <option key={s}>{s}</option>)}</select></div>
-                <div><label className="text-xs font-semibold">Occupation</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.occupation} onChange={(e) => setForm({ ...form, occupation: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">Employer</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.employer} onChange={(e) => setForm({ ...form, employer: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">Monthly income (NGN)</label><input type="number" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.monthly_income_ngn} onChange={(e) => setForm({ ...form, monthly_income_ngn: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">ID type</label><select className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.id_type} onChange={(e) => setForm({ ...form, id_type: e.target.value })}><option>NIN</option><option>BVN</option><option>Driver's License</option><option>International Passport</option><option>Voter's Card</option></select></div>
-                <div><label className="text-xs font-semibold">ID number</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.id_number} onChange={(e) => setForm({ ...form, id_number: e.target.value })} /></div>
+                <Field label="Full name *" value={form.full_name} onChange={(v) => setForm({ ...form, full_name: v })} />
+                <Field label="Email *" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
+                <Field label="Phone *" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
+                <Field label="Date of birth" type="date" value={form.date_of_birth} onChange={(v) => setForm({ ...form, date_of_birth: v })} />
+                <div className="sm:col-span-2"><Field label="Address" value={form.address} onChange={(v) => setForm({ ...form, address: v })} /></div>
+                <Field label="City" value={form.city} onChange={(v) => setForm({ ...form, city: v })} />
+                <div>
+                  <label className="text-xs font-semibold">State</label>
+                  <select className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })}>{NG_STATES.map((s) => <option key={s}>{s}</option>)}</select>
+                </div>
+                <Field label="Occupation / Business" value={form.occupation} onChange={(v) => setForm({ ...form, occupation: v })} />
+                <Field label="Employer / Business name" value={form.employer} onChange={(v) => setForm({ ...form, employer: v })} />
+                <Field label="Monthly income (NGN)" type="number" value={form.monthly_income_ngn} onChange={(v) => setForm({ ...form, monthly_income_ngn: v })} />
+                <div>
+                  <label className="text-xs font-semibold">ID type</label>
+                  <select className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.id_type} onChange={(e) => setForm({ ...form, id_type: e.target.value })}>
+                    <option>NIN</option><option>BVN</option><option>Driver's License</option><option>International Passport</option><option>Voter's Card</option>
+                  </select>
+                </div>
+                <Field label="ID number" value={form.id_number} onChange={(v) => setForm({ ...form, id_number: v })} />
                 <div className="sm:col-span-2">
-                  <label className="text-xs font-semibold">Upload ID document (PDF / image)</label>
+                  <label className="text-xs font-semibold">Upload supporting documents (ID, bank statement, utility bill)</label>
                   <div className="mt-1 flex items-center gap-3">
                     <input type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} className="hidden" id="id-upload" />
-                    <label htmlFor="id-upload" className="px-4 py-2.5 rounded-lg border border-dashed border-border hover:bg-muted text-sm flex items-center gap-2 cursor-pointer">{uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}{docPath ? "Replace file" : "Choose file"}</label>
+                    <label htmlFor="id-upload" className="px-4 py-2.5 rounded-lg border border-dashed border-border hover:bg-muted text-sm flex items-center gap-2 cursor-pointer">
+                      {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}{docPath ? "Replace file" : "Choose file"}
+                    </label>
                     {docPath && <span className="text-xs text-green-600">✓ Uploaded</span>}
                   </div>
+                  <p className="text-[11px] text-muted-foreground mt-1.5">You can upload additional documents to our team via WhatsApp after submission.</p>
                 </div>
-                <div><label className="text-xs font-semibold">Next of kin name</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.next_of_kin_name} onChange={(e) => setForm({ ...form, next_of_kin_name: e.target.value })} /></div>
-                <div><label className="text-xs font-semibold">Next of kin phone</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.next_of_kin_phone} onChange={(e) => setForm({ ...form, next_of_kin_phone: e.target.value })} /></div>
+                <Field label="Next of kin / guarantor name" value={form.next_of_kin_name} onChange={(v) => setForm({ ...form, next_of_kin_name: v })} />
+                <Field label="Next of kin / guarantor phone" value={form.next_of_kin_phone} onChange={(v) => setForm({ ...form, next_of_kin_phone: v })} />
               </div>
               <div className="flex gap-2">
                 <button onClick={() => setStep(1)} className="flex-1 py-3 rounded-xl border border-border font-semibold">Back</button>
@@ -169,16 +224,22 @@ const FinanceApply = () => {
             <>
               <h2 className="font-display text-lg font-bold">Review & submit</h2>
               <div className="p-4 rounded-xl bg-muted/40 space-y-2 text-sm">
-                <div className="flex justify-between"><span className="text-muted-foreground">Item</span><span className="font-semibold">{form.item_name || "—"}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">Total</span><span>₦{Number(form.total_amount_ngn).toLocaleString()}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">Plan</span><span>{form.months} months × ₦{monthly.toLocaleString()}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">Deposit due upfront</span><span className="font-semibold">₦{deposit.toLocaleString()}</span></div>
+                <Row label="Item" value={form.item_name || "—"} />
+                <Row label="Total cost" value={formatNGN(breakdown.total)} />
+                <Row label="Deposit upfront" value={formatNGN(breakdown.deposit)} muted />
+                <Row label="Interest rate" value={`${(breakdown.interest_rate * 100).toFixed(0)}%`} muted />
+                <Row label="Insurance + management" value={formatNGN(breakdown.insurance_fee + breakdown.management_fee)} muted />
+                <Row label="Total repayment" value={formatNGN(breakdown.total_repayment)} />
+                <div className="pt-2 border-t border-border flex justify-between font-display text-base font-bold">
+                  <span>Monthly × {breakdown.tenure_months}</span>
+                  <span className="text-primary">{formatNGN(breakdown.monthly_payment)}</span>
+                </div>
               </div>
               <label className="flex items-start gap-2 text-sm">
                 <input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1" />
-                <span>I confirm the information provided is accurate and agree to Tioga Technologies' financing terms. I authorize verification of the provided ID and consent to email/SMS reminders.</span>
+                <span>I confirm the information provided is accurate and consent to Tioga Technologies and its bank partner verifying my identity, income, and creditworthiness. I agree to the financing terms including insurance and management fees.</span>
               </label>
-              <div className="text-xs text-muted-foreground flex items-start gap-2"><ShieldCheck size={14} className="text-primary mt-0.5 shrink-0" />Your ID is stored in a private, encrypted bucket. Only Tioga admin can view it.</div>
+              <div className="text-xs text-muted-foreground flex items-start gap-2"><ShieldCheck size={14} className="text-primary mt-0.5 shrink-0" />Your documents are stored in a private, encrypted bucket. Only Tioga admin and our bank partner can view them.</div>
               <div className="flex gap-2">
                 <button onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl border border-border font-semibold">Back</button>
                 <button onClick={submit} disabled={submitting || !form.consent} className="flex-1 bg-primary text-primary-foreground py-3 rounded-xl font-semibold flex items-center justify-center gap-2 disabled:opacity-50">{submitting ? <Loader2 size={16} className="animate-spin" /> : null}Submit application</button>
@@ -190,5 +251,19 @@ const FinanceApply = () => {
     </div>
   );
 };
+
+const Row = ({ label, value, muted, bold }: { label: string; value: string; muted?: boolean; bold?: boolean }) => (
+  <div className="flex justify-between">
+    <span className={muted ? "text-muted-foreground" : ""}>{label}</span>
+    <span className={`${bold ? "font-display text-base font-bold" : "font-semibold"}`}>{value}</span>
+  </div>
+);
+
+const Field = ({ label, value, onChange, type = "text" }: { label: string; value: any; onChange: (v: string) => void; type?: string }) => (
+  <div>
+    <label className="text-xs font-semibold">{label}</label>
+    <input type={type} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={value} onChange={(e) => onChange(e.target.value)} />
+  </div>
+);
 
 export default FinanceApply;

@@ -1,108 +1,137 @@
-## Solar Assessment Platform — Implementation Plan
+## Tioga Flex Lease-to-Own + AI Subscription Integration
 
-Transforms the existing lead form into a full solar assessment + gated report platform with engineering review, trial credits, and PDF reports. Reuses existing infrastructure (Lovable Cloud auth, products table, solar_packages, ai-solar-size edge function, lead system, admin dashboard).
+Three coordinated workstreams replace the current finance model, add a paid AI tier, and stitch the assessment → quote → finance → install pipeline together.
 
 ---
 
-### Phase 1A — Database Schema
+### 1. Lease-to-Own Finance Overhaul (replaces current model)
 
-New migration adding:
+**Database (`site_settings.finance`)** — new structure:
 
-- **`solar_assessments`** — stores every assessment (logged-in or guest).
-  Fields: `user_id` (nullable), `lead_id`, `full_name`, `email`, `phone`, `location`, `building_type`, `occupants`, `appliances` (jsonb: [{name, qty, watts, hours}]), `daily_kwh`, `peak_load_w`, `current_power_situation`, `monthly_bill_ngn`, `recommendation` (jsonb: inverter/battery/panels/backup), `full_report` (jsonb: detailed spec), `status` (draft/basic/full/reviewed/quoted), `engineer_id`, `engineer_notes`, `is_full_unlocked` (bool).
-- **`assessment_credits`** — `user_id`, `total_credits` (default 3), `used_credits`, `purchased_credits`.
-- **`assessment_reports`** — generated PDF artifacts: `assessment_id`, `pdf_path` (storage), `shared_via` (email/whatsapp/link), `share_token`.
-- **`custom_solution_requests`** — `assessment_id` (nullable), name/email/phone/location/requirements, `status`.
-- Extend **`profiles`** with `account_type` (individual/business/installer).
-- RLS: users see only own rows; admin/staff/engineer see all. New `engineer` role added to `app_role` enum. GRANTs on all new tables.
-- Trigger: on new user, insert `assessment_credits` row with 3 free credits.
-- Storage bucket: `assessment-reports` (private, signed URLs).
+```json
+{
+  "deposit_pct": 0.30,
+  "insurance_pct": 0.02,
+  "management_pct": 0.01,
+  "tenures_months": [12, 24],
+  "interest_tiers": [
+    { "min": 1000000, "max": 5000000, "rate": 0.09 },
+    { "min": 5000001, "max": 7500000, "rate": 0.15 },
+    { "min": 7500001, "max": null,    "rate": 0.25 }
+  ],
+  "vat_pct": 0.075,
+  "install_pct": 0.10
+}
+```
 
-### Phase 1B — AI Recommendation Engine
+**`finance_applications`** — add columns:
+- `interest_rate_pct numeric`
+- `insurance_fee_ngn numeric`
+- `management_fee_ngn numeric`
+- `total_repayment_ngn numeric`
+- `tenure_months int` (kept; constrained to 12 or 24)
 
-- Extend existing `ai-solar-size` edge function (or new `solar-assess`) to accept the full appliance list + building context and return:
-  - Basic output: inverter kVA, battery kWh, panel count/wattage, backup hours, package category.
-  - Full output (gated): load table, peak load, daily kWh, panel arrangement, inverter model suggestions, battery type/voltage, cable sizing, breaker ratings, charge controller, earthing, mounting/space notes, bill of materials matched to `products` table, recommended `solar_packages`.
-- Uses Lovable AI Gateway (`google/gemini-2.5-pro` for full report, flash for basic).
-- Server-side credit decrement happens in the edge function before returning full report.
+**Flagship packages** seeded into `solar_packages` + BoM items in `products`:
+- Package A: 6KVA / 48V / 15.36kWh — ₦8,185,402.50 total
+- Package B: 11KVA / 48V / 20.48kWh — ₦12,033,762.50 total
 
-### Phase 2 — User Frontend
+Each package row stores BoQ JSON (item, qty, price), equipment subtotal, VAT (7.5%), install (10%), and the auto-derived monthly payments for 12 & 24 months.
 
-New/updated pages and components:
+**Frontend updates**
 
-- **`/solar-assessment`** (new page) — multi-step wizard replacing the solar branch of the current LeadForm:
-  1. Contact + location
-  2. Building type + occupants
-  3. Appliance picker (reuse `WattsCalculator` + `applianceWatts.ts`, add qty/hours per item)
-  4. Power situation + monthly bill
-  5. Submit → basic recommendation card
-- **Basic recommendation card** — inverter/battery/panels/backup summary + "View Full System Specification" CTA.
-- **Auth gate** — unauthenticated users redirected to `/auth?next=/solar-assessment/:id/full`. After login, full report unlocks if credits available; otherwise paywall card.
-- **`/solar-assessment/:id/full`** — renders the detailed engineering spec, BoM table, package recommendations, download/share buttons.
-- **`/account/assessments`** — list of user's past assessments + remaining credits + re-download/share.
-- **PDF generation** — client-side via `jspdf` + `jspdf-autotable` (no new server cost); brand-styled header, customer block, energy analysis, BoM, packages.
-- **Share** — email (mailto), WhatsApp (wa.me with summary + link), and tokenized public share link (`/r/:share_token`).
-- **Recommended packages section** — pulled from `solar_packages` table filtered by capacity match.
-- **"Request Custom Solution" CTA** — opens dialog, creates `custom_solution_requests` row + lead, triggers `notify-new-lead`.
+- `src/pages/Finance.tsx` — new calculator: pick package (or enter cost) → shows deposit, tiered interest auto-selected, insurance, management, total repayment, and side-by-side 12-mo vs 24-mo monthly figures. Mirrors the proposal's amortization layout.
+- `src/pages/FinanceApply.tsx` — 3-step form: plan/package → applicant + eligibility docs (ID, utility bill, bank statement, employment/business doc, BVN/NIN, optional guarantor) → review. Uploads to `finance-docs` bucket.
+- `src/components/FlexiblePaymentButton.tsx` — propagate package selection.
+- New `src/lib/financeCalc.ts` — single source of truth for the formula; used by Finance page, FinanceApply, and `approve-finance` edge function.
 
-### Phase 3 — Account Type & Trials
+**Edge function**
 
-- Extend `/auth` signup with account-type radio (Individual/Business/Installer).
-- Credit badge in `Account` header showing `X of 3 free analyses left`.
-- After credits exhausted: paywall card with WhatsApp CTA ("Contact sales to unlock more reports").
+- `approve-finance` — rewrite calculation to: deposit = 30%; financed = 70%; interest tier lookup; total = financed + interest + insurance + mgmt; monthly = total / tenure. Schedule generation unchanged shape.
 
-### Phase 4 — Admin / Engineering
+**Admin**
 
-New admin surfaces:
+- `AdminFinanceApplications.tsx` — show full breakdown (interest tier, insurance, mgmt, total repayment) in detail drawer.
+- `AdminSettings.tsx` — editor for deposit %, insurance %, mgmt %, tier table, tenures.
 
-- **`/admin/assessments`** — table of all assessments, filters (status, building type, location, date), row drawer with full input + AI output + customer contact.
-- **`/admin/assessments/:id`** (Engineering Review Panel) — edit recommendation JSON, approve/modify, add notes, assign engineer, convert to quote/lead, generate quotation PDF.
-- **`/admin/custom-requests`** — list of custom solution requests with status pipeline.
-- **Dashboard additions**: KPIs for total assessments, assessments today, pending engineering review, top requested system sizes, popular packages, conversion (assessment → order). Add to existing `AdminDashboard.tsx` grid.
-- **Sidebar**: new "Assessments" section grouping Assessments, Engineering Queue, Custom Requests.
-- **Role gating**: new `engineer` role limited to assessment review + product/package read.
-- **User management**: extend `AdminUsers` with credit adjustment (add/reset trial credits).
+---
 
-### Phase 5 — Notifications
+### 2. AI Subscription Paywall (Free 3 + ₦2,500/mo)
 
-Edge functions / triggers:
+**Database — new table `ai_subscriptions`**:
 
-- New assessment → email admin + customer confirmation (reuse `send-gmail`).
-- Full report generated → customer email with PDF link.
-- Trial credits at 1 left → in-app banner + email nudge.
-- Custom request → admin email + Telegram (existing channel).
-- Engineering review completed → customer email with updated spec.
+| Field | Notes |
+|---|---|
+| `user_id` | unique |
+| `plan` | enum `free` / `starter` / `business` (business surfaced as "Contact sales") |
+| `status` | `active` / `expired` / `pending` |
+| `started_at`, `expires_at` | manual admin-controlled |
+| `monthly_price_ngn` | default 2500 |
+| `granted_by` | admin user id |
+| `notes` | text |
 
-### Phase 6 — Analytics
+RLS: user reads own row; admin/staff full access; service_role for edge functions.
 
-Extend `AdminAnalytics`:
+**Credit/paywall logic**
 
-- Assessments per day chart
-- Most common building types
-- Average system size (kVA, kWh)
-- Top appliances reported
-- Geographic heat (state breakdown)
-- Conversion funnel: assessment → full unlock → custom request → order
+- Existing `assessment_credits` (3 free) stays for guests & free tier.
+- `solar-assess` and `ai-recommend` edge functions: before charging a credit, check `ai_subscriptions` — active starter/business = unlimited, skip credit decrement.
+- When free credits exhausted AND no active subscription:
+  - Edge function returns `{ error: "subscription_required" }` HTTP 402.
+  - Frontend shows upgrade dialog (new `src/components/AiUpgradeDialog.tsx`) with two plan cards (Starter ₦2,500/mo, Business "Contact sales") and a WhatsApp CTA to sales.
 
-### Out of scope (Phase 2 / future)
+**Pages**
 
-- Marketplace, installer network, payment-based credit top-ups, automated procurement, mobile app, real-time monitoring. Wire only the placeholders ("Contact sales to upgrade") for now.
+- `src/pages/Pricing.tsx` (new) — `/ai-pricing`: lists Free, Starter (₦2,500/mo), Business plans + feature matrix + WhatsApp CTA.
+- `src/pages/AccountAssessments.tsx` — replace "X credits left" badge with subscription state ("Free — 2/3 uses left" or "Starter — unlimited until DD MMM").
+- `src/components/AiChatWidget.tsx`, `LumiVoltSizer.tsx`, `SolarAssessment.tsx` — gate behind the same paywall check.
 
-### Technical notes
+**Admin**
 
-- No new heavy deps beyond `jspdf` + `jspdf-autotable` (~50KB gz).
-- Reuses: `AuthContext`, `useAuth`, `RequireRole`, `applianceWatts.ts`, `WattsCalculator`, `solar_packages` table, `products` table, `ai-solar-size` function, `notify-new-lead`, `send-gmail`, `AdminLayout`.
-- All new public-schema tables include GRANTs + RLS in the same migration.
-- Engineer role added to `app_role` enum; `has_role`/`has_any_role` already support it.
-- PDF generation client-side to avoid serverless cost; share-token route renders read-only HTML report.
+- New `src/pages/AdminAiSubscriptions.tsx` (`/admin/ai-subscriptions`):
+  - Table of all subscriptions, filter by plan/status.
+  - "Grant subscription" action: pick user, plan, duration (1/3/6/12 months), notes → inserts row, emails user.
+  - "Revoke" action.
+  - Linked from sidebar under existing Assessments group.
+
+No payment gateway — all activation is manual via this admin page (WhatsApp/bank confirmation off-platform).
+
+---
+
+### 3. End-to-End Journey Wiring (AI → Quote → Finance → Install)
+
+**SolarAssessmentReport.tsx**
+
+- After the recommendation, add a "Next steps" section with three CTAs:
+  1. **Get formal quote** — opens existing `CustomSolutionDialog` prefilled with assessment summary, inverter/battery/panel sizing, contact info.
+  2. **Apply for Flex Pay** — deep-links to `/finance/apply?package=<matched_slug>&assessment=<id>`. If a flagship package matches the recommended sizing (≤6kVA → Package A, 7–11kVA → Package B), preselect it; otherwise pass through total cost from BoM.
+  3. **Schedule installation** — WhatsApp link with assessment ID.
+
+**FinanceApply.tsx**
+
+- Read `package` and `assessment` query params; prefill item_name, total cost, BoM reference, and applicant fields from the assessment's contact block (when logged-in user owns it).
+- On submit, write `assessment_id` into the new column `finance_applications.assessment_id` so admin can see the full lineage.
+
+**Admin lineage**
+
+- `AdminAssessments` row drawer adds links: "Quote requests (N)", "Finance applications (N)" filtered by assessment_id.
+- `AdminFinanceApplications` drawer adds "View source assessment" link.
+
+**Migration adds**: `finance_applications.assessment_id uuid references solar_assessments(id)`.
+
+---
 
 ### Build order
 
-1. Migration (schema + role + bucket + trigger)
-2. `solar-assess` edge function (basic + full)
-3. `/solar-assessment` wizard + basic result card
-4. Auth gate + credit logic + full report page + PDF + share
-5. `/account/assessments` + credit badge
-6. Admin: assessments list + engineering panel + custom requests
-7. Dashboard KPIs + analytics extensions
-8. Notification wiring
+1. Migration: `finance_applications` columns, `ai_subscriptions` table + grants + RLS, package seed inserts.
+2. `src/lib/financeCalc.ts` + `Finance.tsx` rewrite + `approve-finance` edge function update.
+3. `FinanceApply.tsx` rewrite (eligibility docs + package param).
+4. `ai_subscriptions` paywall: edge function gating, `AiUpgradeDialog`, `Pricing.tsx`, account badge.
+5. `AdminAiSubscriptions.tsx` + sidebar entry + `AdminFinanceApplications` drawer breakdown + `AdminSettings` finance editor.
+6. SolarAssessmentReport "Next steps" CTAs + lineage links in admin pages.
+7. Update sitemap + nav (Footer/MegaMenu link to `/ai-pricing`).
+
+### Out of scope
+
+- Online subscription billing (Paystack/Stripe) — manual only for now.
+- Bank API integration — interest tiers are computed locally; admin still manually approves each application.
+- Mobile app, marketplace, installer network (Phase 2 placeholders only).
