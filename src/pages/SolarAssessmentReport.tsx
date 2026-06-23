@@ -224,11 +224,6 @@ const SolarAssessmentReport = () => {
             <Link to="/ai-pricing" className="inline-flex items-center gap-1 text-primary hover:underline">Manage AI subscription</Link>
           </div>
 
-          <div className="text-center pt-4">
-            <button onClick={() => setCustomOpen(true)} className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:opacity-90 transition-opacity">
-              Request Custom Solar Solution <ArrowRight size={16} />
-            </button>
-          </div>
         </div>
       </main>
       <CustomSolutionDialog
