@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag, ScrollText, Calendar, Search, Calculator } from "lucide-react";
+import { LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout, Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone, Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag, ScrollText, Calendar, Search, Calculator, Zap } from "lucide-react";
 
 interface AdminLayoutProps { children: React.ReactNode; }
 
