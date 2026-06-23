@@ -4,12 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
-import { Download, Share2, Loader2, Sun, Lock, MessageCircle, ArrowRight } from "lucide-react";
+import { Download, Share2, Loader2, Sun, MessageCircle, ArrowRight, FileSignature, Wrench, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import CustomSolutionDialog from "@/components/CustomSolutionDialog";
+import AiUpgradeDialog from "@/components/AiUpgradeDialog";
 
 const SolarAssessmentReport = () => {
   const { id } = useParams();
