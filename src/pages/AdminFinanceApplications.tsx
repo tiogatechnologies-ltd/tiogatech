@@ -4,7 +4,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { Wallet, Check, X, Loader2, FileText } from "lucide-react";
 import { toast } from "sonner";
 
-interface App { id: string; full_name: string; email: string; phone: string; item_name: string; total_amount_ngn: number; deposit_ngn: number; financed_ngn: number; months: number; monthly_payment_ngn: number; status: string; rejection_reason: string | null; created_at: string; address: string; state: string | null; city: string | null; occupation: string | null; monthly_income_ngn: number | null; id_document_url: string | null; }
+interface App { id: string; full_name: string; email: string; phone: string; item_name: string; total_amount_ngn: number; deposit_ngn: number; financed_ngn: number; months: number; monthly_payment_ngn: number; status: string; rejection_reason: string | null; created_at: string; address: string; state: string | null; city: string | null; occupation: string | null; monthly_income_ngn: number | null; id_document_url: string | null; interest_rate_pct: number | null; insurance_fee_ngn: number | null; management_fee_ngn: number | null; total_repayment_ngn: number | null; package_slug: string | null; assessment_id: string | null; }
 
 const STATUS_TABS = ["pending", "under_review", "active", "completed", "rejected"] as const;
 
