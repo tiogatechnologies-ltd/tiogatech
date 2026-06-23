@@ -11,20 +11,25 @@ const AccountAssessments = () => {
   const { user } = useAuth();
   const [items, setItems] = useState<any[]>([]);
   const [credits, setCredits] = useState<any>(null);
+  const [sub, setSub] = useState<any>(null);
 
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const [{ data: list }, { data: c }] = await Promise.all([
+      const [{ data: list }, { data: c }, { data: s }] = await Promise.all([
         supabase.from("solar_assessments" as any).select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
         supabase.from("assessment_credits" as any).select("*").eq("user_id", user.id).maybeSingle(),
+        supabase.from("ai_subscriptions" as any).select("*").eq("user_id", user.id).maybeSingle(),
       ]);
       setItems(list || []);
       setCredits(c);
+      setSub(s);
     })();
   }, [user]);
 
   const remaining = credits ? (credits.total_credits + credits.purchased_credits) - credits.used_credits : 3;
+  const total = credits ? credits.total_credits + credits.purchased_credits : 3;
+  const hasActiveSub = sub && sub.status === "active" && (sub.plan === "starter" || sub.plan === "business") && (!sub.expires_at || new Date(sub.expires_at) > new Date());
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -37,12 +42,17 @@ const AccountAssessments = () => {
             <Link to="/solar-assessment" className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"><Plus size={14} /> New assessment</Link>
           </div>
 
-          <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 mb-6 flex items-center justify-between">
-            <div>
-              <div className="text-xs uppercase tracking-wider text-muted-foreground">Free analyses remaining</div>
-              <div className="text-2xl font-display font-bold">{remaining} of {credits ? credits.total_credits + credits.purchased_credits : 3}</div>
+          <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 mb-6 flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <div className="text-xs uppercase tracking-wider text-muted-foreground">{hasActiveSub ? `AI ${sub.plan} plan` : "Free analyses remaining"}</div>
+              <div className="text-2xl font-display font-bold">
+                {hasActiveSub ? `Unlimited${sub.expires_at ? ` until ${new Date(sub.expires_at).toLocaleDateString()}` : ""}` : `${remaining} of ${total}`}
+              </div>
+              {!hasActiveSub && remaining <= 1 && (
+                <Link to="/ai-pricing" className="text-xs text-primary font-semibold hover:underline">Upgrade for unlimited →</Link>
+              )}
             </div>
-            <Sun size={28} className="text-primary" />
+            <Sun size={28} className="text-primary shrink-0" />
           </div>
 
           {items.length === 0 ? (
