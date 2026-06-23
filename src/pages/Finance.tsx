@@ -170,7 +170,7 @@ const Finance = () => {
               </div>
             </div>
 
-            <div className={`grid sm:grid-cols-${plans.length} gap-3`}>
+            <div className="grid sm:grid-cols-2 gap-3">
               {plans.map((p, i) => {
                 const popular = i === 0;
                 return (
