@@ -35,11 +35,11 @@ const SolarAssessmentReport = () => {
         const { data, error } = await supabase.functions.invoke("solar-assess", { body: { mode: "full", assessment_id: id } });
         if (error) {
           const msg = (error as any).message || "";
-          if (msg.includes("no_credits") || msg.includes("402")) { setPaywall(true); setLoading(false); return; }
+          if (msg.includes("subscription_required") || msg.includes("no_credits") || msg.includes("402")) { setPaywall(true); setLoading(false); return; }
           toast.error(msg || "Could not unlock");
           setLoading(false); return;
         }
-        if (data?.error === "no_credits") { setPaywall(true); setLoading(false); return; }
+        if (data?.error === "subscription_required" || data?.error === "no_credits") { setPaywall(true); setLoading(false); return; }
         const { data: refreshed } = await supabase.from("solar_assessments" as any).select("*").eq("id", id).maybeSingle();
         setAssessment(refreshed);
       }
