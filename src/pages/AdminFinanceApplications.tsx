@@ -101,6 +101,20 @@ const AdminFinanceApplications = () => {
                 <div className="p-3 rounded-lg bg-muted/40 sm:col-span-2"><p className="text-[10px] uppercase text-muted-foreground">Address</p><p>{selected.address}, {selected.city}, {selected.state}</p></div>
               </div>
 
+              <div className="rounded-lg border border-border p-4 space-y-2 text-sm">
+                <p className="text-xs font-semibold uppercase text-muted-foreground mb-1">Lease-to-Own breakdown</p>
+                <div className="flex justify-between"><span className="text-muted-foreground">Total cost</span><span>₦{Number(selected.total_amount_ngn).toLocaleString()}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">30% deposit</span><span>₦{Number(selected.deposit_ngn).toLocaleString()}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">Financed (70%)</span><span>₦{Number(selected.financed_ngn).toLocaleString()}</span></div>
+                {selected.interest_rate_pct != null && <div className="flex justify-between"><span className="text-muted-foreground">Interest ({(Number(selected.interest_rate_pct) * 100).toFixed(0)}%)</span><span>₦{Math.round(Number(selected.financed_ngn) * Number(selected.interest_rate_pct)).toLocaleString()}</span></div>}
+                {selected.insurance_fee_ngn != null && <div className="flex justify-between"><span className="text-muted-foreground">Insurance (2%)</span><span>₦{Number(selected.insurance_fee_ngn).toLocaleString()}</span></div>}
+                {selected.management_fee_ngn != null && <div className="flex justify-between"><span className="text-muted-foreground">Management (1%)</span><span>₦{Number(selected.management_fee_ngn).toLocaleString()}</span></div>}
+                {selected.total_repayment_ngn != null && <div className="flex justify-between font-semibold border-t border-border pt-2"><span>Total repayment</span><span>₦{Number(selected.total_repayment_ngn).toLocaleString()}</span></div>}
+                <div className="flex justify-between font-display text-base font-bold border-t border-border pt-2"><span>Monthly × {selected.months}</span><span className="text-primary">₦{Number(selected.monthly_payment_ngn).toLocaleString()}</span></div>
+                {selected.package_slug && <p className="text-[11px] text-muted-foreground pt-1">Package: <span className="font-mono">{selected.package_slug}</span></p>}
+                {selected.assessment_id && <a href={`/admin/assessments`} className="text-[11px] text-primary hover:underline inline-block pt-1">View source solar assessment →</a>}
+              </div>
+
               {docUrl && <a href={docUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-primary"><FileText size={14} />View ID document</a>}
 
               {selected.status === "pending" && (
