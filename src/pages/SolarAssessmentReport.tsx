@@ -117,15 +117,9 @@ const SolarAssessmentReport = () => {
         <SEO title="Upgrade to continue - Tioga Technologies" description="Unlock additional solar assessments." path={`/solar-assessment/${id}/full`} />
         <SiteHeader />
         <main className="flex-1 grid place-items-center p-6 bg-muted/30">
-          <div className="max-w-md text-center bg-card rounded-3xl border border-border p-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/20 text-accent-foreground mb-3"><Lock size={24} /></div>
-            <h1 className="text-2xl font-display font-bold mb-2">You've used your 3 free analyses</h1>
-            <p className="text-sm text-muted-foreground mb-6">Contact our sales team to unlock more detailed solar reports or request a custom quotation.</p>
-            <a href="https://wa.me/2348000000000?text=I'd%20like%20to%20unlock%20more%20solar%20analyses" target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
-              <MessageCircle size={16} /> Contact sales on WhatsApp
-            </a>
-          </div>
+          <div />
         </main>
+        <AiUpgradeDialog open onOpenChange={(o) => { if (!o) navigate("/account/assessments"); }} />
         <SiteFooter />
       </div>
     );
