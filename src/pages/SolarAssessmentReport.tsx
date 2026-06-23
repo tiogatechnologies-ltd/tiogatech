@@ -182,12 +182,47 @@ const SolarAssessmentReport = () => {
             </div>
           )}
 
+          {(() => {
+            const sizeKva = Number(fr?.inverter_spec?.size_kva || assessment?.recommendation?.inverter_kva || 0);
+            const totalCost = (fr?.bill_of_materials || []).reduce((s: number, b: any) => s + (Number(b.estimated_cost_ngn) || 0), 0);
+            const flagshipPkg = sizeKva > 0 && sizeKva <= 7 ? 20 : sizeKva > 7 ? 21 : null;
+            const matchedAmount = flagshipPkg === 20 ? 8185403 : flagshipPkg === 21 ? 12033763 : totalCost || 5000000;
+            const waMsg = encodeURIComponent(`Hi Tioga, I'd like to schedule installation for my solar assessment ${assessment.id.slice(0, 8)} (${sizeKva}kVA / ${fr?.battery_spec?.capacity_kwh}kWh).`);
+            return (
+              <div className="bg-card rounded-2xl border border-primary/30 p-6">
+                <h2 className="font-display font-bold text-lg mb-1">Next steps</h2>
+                <p className="text-sm text-muted-foreground mb-4">Three ways to move forward with this design.</p>
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <button onClick={() => setCustomOpen(true)} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors">
+                    <FileSignature className="text-primary mb-2" size={20} />
+                    <div className="font-display font-bold text-sm">Get formal quote</div>
+                    <div className="text-xs text-muted-foreground mt-1">Engineer-reviewed quotation with itemized pricing.</div>
+                  </button>
+                  <Link to={`/finance/apply?assessment=${assessment.id}&amount=${matchedAmount}&months=12${flagshipPkg ? `&package=pkg-${flagshipPkg}` : ""}&item=${encodeURIComponent(`${sizeKva}kVA Tioga Solar System`)}`} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
+                    <Wallet className="text-primary mb-2" size={20} />
+                    <div className="font-display font-bold text-sm">Apply for Flex Pay</div>
+                    <div className="text-xs text-muted-foreground mt-1">30% deposit, then 12 or 24 monthly installments.</div>
+                  </Link>
+                  <a href={`https://wa.me/2348000000000?text=${waMsg}`} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
+                    <Wrench className="text-primary mb-2" size={20} />
+                    <div className="font-display font-bold text-sm">Schedule installation</div>
+                    <div className="text-xs text-muted-foreground mt-1">Book a site visit + commissioning slot.</div>
+                  </a>
+                </div>
+              </div>
+            );
+          })()}
+
           {fr.engineer_summary && (
             <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6">
               <h2 className="font-display font-bold text-lg mb-2">Engineer Summary</h2>
               <p className="text-sm text-muted-foreground whitespace-pre-line">{fr.engineer_summary}</p>
             </div>
           )}
+
+          <div className="text-center pt-2 text-xs text-muted-foreground">
+            <Link to="/ai-pricing" className="inline-flex items-center gap-1 text-primary hover:underline">Manage AI subscription</Link>
+          </div>
 
           <div className="text-center pt-4">
             <button onClick={() => setCustomOpen(true)} className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:opacity-90 transition-opacity">
