@@ -92,6 +92,8 @@ const AccountAssessments = lazy(() => import("./pages/AccountAssessments.tsx"));
 
 const FinanceApply = lazy(() => import("./pages/FinanceApply.tsx"));
 const AccountFinance = lazy(() => import("./pages/AccountFinance.tsx"));
+const Pricing = lazy(() => import("./pages/Pricing.tsx"));
+const AdminAiSubscriptions = lazy(() => import("./pages/AdminAiSubscriptions.tsx"));
 const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
 const queryClient = new QueryClient({
