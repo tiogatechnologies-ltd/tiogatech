@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { User, LogIn, LogOut, Package, ShieldCheck, Share2 } from "lucide-react";
+import { User, LogIn, LogOut, Package, ShieldCheck, Share2, Sun, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const AccountButton = ({ onDark = false }: { onDark?: boolean }) => {
@@ -60,6 +60,12 @@ const AccountButton = ({ onDark = false }: { onDark?: boolean }) => {
             </Link>
             <Link to="/account" onClick={() => setOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted">
               <Package size={14} /> My orders
+            </Link>
+            <Link to="/account/assessments" onClick={() => setOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted">
+              <Sun size={14} /> My AI assessments
+            </Link>
+            <Link to="/account/subscription" onClick={() => setOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted">
+              <Zap size={14} /> AI plan & credits
             </Link>
             {isAffiliate && (
               <Link to="/affiliate" onClick={() => setOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted">

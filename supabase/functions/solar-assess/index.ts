@@ -171,6 +171,17 @@ Return JSON ONLY in this schema:
       }).eq("user_id", userId);
     }
 
+    // Log usage (for user + admin history)
+    await admin.from("ai_credit_usage").insert({
+      user_id: userId,
+      feature: "solar_assess",
+      assessment_id,
+      source: "solar-assessment",
+      description: `${assessment.recommendation?.inverter_kva || "?"}kVA · ${assessment.recommendation?.battery_kwh || "?"}kWh report · ${assessment.location || "Nigeria"}`,
+      used_free_credit: !hasSub,
+      subscription_plan: hasSub ? "starter_or_business" : null,
+    });
+
     return new Response(JSON.stringify({ full_report, share_token, credits_remaining: hasSub ? null : available - 1, subscription_active: hasSub }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
     console.error("solar-assess error", e);

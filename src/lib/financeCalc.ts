@@ -21,7 +21,7 @@ export const DEFAULT_FINANCE_CONFIG: FinanceConfig = {
   deposit_pct: 0.30,
   insurance_pct: 0.02,
   management_pct: 0.01,
-  tenures_months: [12, 24],
+  tenures_months: [3, 6, 12, 24],
   interest_tiers: [
     { min: 1_000_000, max: 5_000_000, rate: 0.09 },
     { min: 5_000_001, max: 7_500_000, rate: 0.15 },
