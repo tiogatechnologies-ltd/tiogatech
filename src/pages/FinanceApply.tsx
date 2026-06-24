@@ -16,7 +16,7 @@ const FinanceApply = () => {
 
   const itemName = params.get("item") || "";
   const amount = Number(params.get("amount") || 0);
-  const monthsParam = Math.max(12, Math.min(24, Number(params.get("months") || 12)));
+  const monthsParam = [3, 6, 12, 24].includes(Number(params.get("months"))) ? Number(params.get("months")) : 12;
   const packageSlug = params.get("package") || "";
   const assessmentId = params.get("assessment") || null;
 
@@ -67,7 +67,7 @@ const FinanceApply = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assessmentId, user?.id]);
 
-  const tenures = config.tenures_months?.length ? config.tenures_months : [12, 24];
+  const tenures = config.tenures_months?.length ? config.tenures_months : [3, 6, 12, 24];
   const breakdown = useMemo(() => calcPlan(Number(form.total_amount_ngn || 0), form.months, config), [form.total_amount_ngn, form.months, config]);
 
   const upload = async (file: File) => {
@@ -149,10 +149,10 @@ const FinanceApply = () => {
               </div>
               <div>
                 <label className="text-xs font-semibold block mb-2">Plan length</label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {tenures.map((m) => (
                     <button key={m} onClick={() => setForm({ ...form, months: m })} className={`p-3 rounded-xl border text-sm font-semibold ${form.months === m ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-muted"}`}>
-                      {m} months
+                      {m} mo
                     </button>
                   ))}
                 </div>
