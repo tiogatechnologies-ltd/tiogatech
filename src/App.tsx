@@ -93,7 +93,9 @@ const AccountAssessments = lazy(() => import("./pages/AccountAssessments.tsx"));
 const FinanceApply = lazy(() => import("./pages/FinanceApply.tsx"));
 const AccountFinance = lazy(() => import("./pages/AccountFinance.tsx"));
 const Pricing = lazy(() => import("./pages/Pricing.tsx"));
+const AccountSubscription = lazy(() => import("./pages/AccountSubscription.tsx"));
 const AdminAiSubscriptions = lazy(() => import("./pages/AdminAiSubscriptions.tsx"));
+const AdminAiCreditUsage = lazy(() => import("./pages/AdminAiCreditUsage.tsx"));
 const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
 const queryClient = new QueryClient({
@@ -152,6 +154,7 @@ const AnimatedRoutes = () => {
           <Route path="/ai-pricing" element={<RouteFade><Pricing /></RouteFade>} />
           
           <Route path="/account/assessments" element={<RequireRole><AccountAssessments /></RequireRole>} />
+          <Route path="/account/subscription" element={<RequireRole><AccountSubscription /></RequireRole>} />
 
           {/* Auth + Account */}
           <Route path="/auth" element={<Auth />} />
@@ -202,6 +205,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/custom-requests" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminCustomRequests /></RequireRole>} />
           <Route path="/admin/lumivolt-sizings" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminLumiVoltSizings /></RequireRole>} />
           <Route path="/admin/ai-subscriptions" element={<Admin><AdminAiSubscriptions /></Admin>} />
+          <Route path="/admin/ai-usage" element={<Admin><AdminAiCreditUsage /></Admin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
       </Suspense>
