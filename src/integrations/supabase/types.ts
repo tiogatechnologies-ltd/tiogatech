@@ -183,6 +183,42 @@ export type Database = {
           },
         ]
       }
+      ai_credit_usage: {
+        Row: {
+          assessment_id: string | null
+          created_at: string
+          description: string | null
+          feature: string
+          id: string
+          source: string | null
+          subscription_plan: string | null
+          used_free_credit: boolean
+          user_id: string
+        }
+        Insert: {
+          assessment_id?: string | null
+          created_at?: string
+          description?: string | null
+          feature: string
+          id?: string
+          source?: string | null
+          subscription_plan?: string | null
+          used_free_credit?: boolean
+          user_id: string
+        }
+        Update: {
+          assessment_id?: string | null
+          created_at?: string
+          description?: string | null
+          feature?: string
+          id?: string
+          source?: string | null
+          subscription_plan?: string | null
+          used_free_credit?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_subscriptions: {
         Row: {
           created_at: string
