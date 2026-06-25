@@ -20,6 +20,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.35, ease: "easeOut", delay: (i % 6) * 0.04 }}
     className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
+    id={`lock-${p.id}`}
   >
     <div className="relative h-44 overflow-hidden">
       <img
@@ -177,7 +178,7 @@ const SmartLocksSection = () => {
           </div>
         </div>
 
-        <div key={tab} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div key={tab} className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p, i) => (
             <LockCard key={`${tab}-${p.id}`} p={p} i={i} />
           ))}
