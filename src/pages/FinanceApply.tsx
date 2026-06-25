@@ -122,24 +122,24 @@ const FinanceApply = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO title="Apply for Flex Lease-to-Own — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 3, 6, 12 or 24 month repayments, bank-partner approval." />
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8">
           <button onClick={() => navigate(-1)} className="text-sm text-muted-foreground mb-4">← Back</button>
-          <h1 className="font-display text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary" /> Flex Lease-to-Own Application</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary shrink-0" /> Flex Lease-to-Own Application</h1>
           <p className="text-sm text-muted-foreground mt-2">30% deposit, then 3, 6, 12 or 24 fixed monthly installments. Decision within 24 hours.</p>
         </div>
 
-        <div className="flex items-center gap-2 mb-8">
+        <div className="flex items-center gap-1.5 sm:gap-2 mb-8 overflow-x-auto pb-1">
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex-1 flex items-center gap-2">
               <div className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold ${step >= s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{step > s ? <Check size={14} /> : s}</div>
-              <span className={`text-xs ${step >= s ? "text-foreground" : "text-muted-foreground"}`}>{["Plan", "Details", "Review"][s - 1]}</span>
+              <span className={`text-[11px] sm:text-xs ${step >= s ? "text-foreground" : "text-muted-foreground"}`}>{["Plan", "Details", "Review"][s - 1]}</span>
               {s < 3 && <div className={`flex-1 h-0.5 ${step > s ? "bg-primary" : "bg-muted"}`} />}
             </div>
           ))}
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-6 space-y-5">
+        <div className="rounded-2xl border border-border bg-card p-4 sm:p-6 space-y-5">
           {step === 1 && (
             <>
               <h2 className="font-display text-lg font-bold">Choose your plan</h2>
@@ -157,7 +157,7 @@ const FinanceApply = () => {
                   ))}
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-muted/40 space-y-1.5 text-sm">
+              <div className="p-4 rounded-xl bg-muted/40 space-y-1.5 text-xs sm:text-sm">
                 <Row label="Total project cost" value={formatNGN(breakdown.total)} />
                 <Row label="30% deposit" value={formatNGN(breakdown.deposit)} muted />
                 <Row label="Financed (70%)" value={formatNGN(breakdown.financed)} muted />

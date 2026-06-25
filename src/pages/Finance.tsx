@@ -97,16 +97,16 @@ const Finance = () => {
             <p className="mt-3 text-muted-foreground">Enter any project cost to see your deposit, interest tier, and monthly payment across all 4 plan lengths.</p>
           </div>
 
-          <div className="grid lg:grid-cols-[1fr_2fr] gap-6">
-            <div className="rounded-3xl border border-border bg-card p-6">
+          <div className="grid lg:grid-cols-[1fr_2fr] gap-4 sm:gap-6">
+            <div className="rounded-3xl border border-border bg-card p-4 sm:p-6">
               <label className="text-xs uppercase tracking-wider text-muted-foreground">System cost (NGN)</label>
               <input type="number" min={1000000} step={50000} value={amount}
                 onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-                className="w-full mt-2 rounded-xl border border-border bg-background px-4 py-3 text-2xl font-display font-bold" />
+                className="w-full mt-2 rounded-xl border border-border bg-background px-3 sm:px-4 py-3 text-xl sm:text-2xl font-display font-bold" />
               <input type="range" min={1000000} max={20000000} step={50000} value={amount}
                 onChange={(e) => setAmount(Number(e.target.value))}
                 className="w-full mt-3 accent-primary" />
-              <div className="mt-5 space-y-2 text-sm border-t border-border pt-4">
+              <div className="mt-5 space-y-2 text-xs sm:text-sm border-t border-border pt-4">
                 <Row label="30% Deposit" value={formatNGN(primary.deposit)} />
                 <Row label="Financed (70%)" value={formatNGN(primary.financed)} />
                 <Row label={`Interest tier (${(primary.interest_rate * 100).toFixed(0)}%)`} value={formatNGN(primary.interest_amount)} muted />
@@ -122,11 +122,11 @@ const Finance = () => {
               {plans.map((p, i) => {
                 const popular = i === plans.length - 1; // longest tenure = smallest monthly
                 return (
-                  <div key={p.tenure_months} className={`rounded-3xl border p-5 bg-card relative ${popular ? "border-primary shadow-[var(--shadow-elevated)]" : "border-border"}`}>
+                  <div key={p.tenure_months} className={`rounded-3xl border p-4 sm:p-5 bg-card relative ${popular ? "border-primary shadow-[var(--shadow-elevated)]" : "border-border"}`}>
                     {popular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex px-3 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">Lowest monthly</span>}
                     <h3 className="font-display font-bold">{p.tenure_months}-Month Plan</h3>
                     <p className="text-[11px] text-muted-foreground mb-3">{(p.interest_rate * 100).toFixed(0)}% interest · 2% insurance · 1% mgmt</p>
-                    <p className="text-2xl font-display font-bold text-primary tabular-nums">{formatNGN(p.monthly_payment)}</p>
+                    <p className="text-xl sm:text-2xl font-display font-bold text-primary tabular-nums break-words">{formatNGN(p.monthly_payment)}</p>
                     <p className="text-[11px] text-muted-foreground mb-3">per month × {p.tenure_months}</p>
                     <ul className="space-y-1 text-xs">
                       <li className="flex items-start gap-1.5"><Check className="text-primary mt-0.5 shrink-0" size={12} />Deposit: {formatNGN(p.deposit)}</li>

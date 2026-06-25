@@ -36,9 +36,13 @@ const Packages = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  const scrollToSection = (key: CategoryKey) => {
+  const scrollToSection = (key: CategoryKey, attempts = 0) => {
     const id = key === "solar" ? "solar-packages" : key === "locks" ? "smart-locks" : "home-automation";
-    window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+    window.setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) return el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (attempts < 6) scrollToSection(key, attempts + 1);
+    }, attempts === 0 ? 80 : 220);
   };
 
   useEffect(() => {
