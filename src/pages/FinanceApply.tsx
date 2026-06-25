@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import { Wallet, ArrowRight, Loader2, ShieldCheck, Upload, Check } from "lucide-react";
 import { toast } from "sonner";
-import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, type FinanceConfig } from "@/lib/financeCalc";
+import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
 
@@ -50,7 +50,7 @@ const FinanceApply = () => {
   useEffect(() => {
     (async () => {
       const { data } = await supabase.from("site_settings").select("value").eq("key", "finance").maybeSingle();
-      if (data?.value) setConfig({ ...DEFAULT_FINANCE_CONFIG, ...(data.value as any) });
+      if (data?.value) setConfig(normalizeFinanceConfig(data.value as any));
 
       // Prefill from assessment if logged in
       if (assessmentId && user?.id) {
@@ -121,12 +121,12 @@ const FinanceApply = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Apply for Flex Lease-to-Own — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 12 or 24 month repayments, bank-partner approval." />
+      <SEO title="Apply for Flex Lease-to-Own — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 3, 6, 12 or 24 month repayments, bank-partner approval." />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-8">
           <button onClick={() => navigate(-1)} className="text-sm text-muted-foreground mb-4">← Back</button>
           <h1 className="font-display text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary" /> Flex Lease-to-Own Application</h1>
-          <p className="text-sm text-muted-foreground mt-2">30% deposit, then 12 or 24 fixed monthly installments. Decision within 24 hours.</p>
+          <p className="text-sm text-muted-foreground mt-2">30% deposit, then 3, 6, 12 or 24 fixed monthly installments. Decision within 24 hours.</p>
         </div>
 
         <div className="flex items-center gap-2 mb-8">

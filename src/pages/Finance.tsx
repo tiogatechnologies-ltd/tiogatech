@@ -8,7 +8,7 @@ import { MessageCircle, FileText, CreditCard, Wrench, Home, ShieldCheck, Check, 
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { supabase } from "@/integrations/supabase/client";
-import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, type FinanceConfig } from "@/lib/financeCalc";
+import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 
 const steps = [
   { n: 1, icon: MessageCircle, title: "Free Consultation", desc: "Talk to our experts about your energy needs and get a personalized assessment." },
@@ -52,7 +52,7 @@ const Finance = () => {
   useEffect(() => {
     (async () => {
       const { data: settings } = await supabase.from("site_settings").select("value").eq("key", "finance").maybeSingle();
-      if (settings?.value) setConfig({ ...DEFAULT_FINANCE_CONFIG, ...(settings.value as any) });
+      if (settings?.value) setConfig(normalizeFinanceConfig(settings.value as any));
     })();
   }, []);
 

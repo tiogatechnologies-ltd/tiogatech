@@ -31,6 +31,22 @@ export const DEFAULT_FINANCE_CONFIG: FinanceConfig = {
   install_pct: 0.10,
 };
 
+export const normalizeFinanceConfig = (raw?: Partial<FinanceConfig> & Record<string, any>): FinanceConfig => {
+  const allowed = [3, 6, 12, 24];
+  const saved = Array.isArray(raw?.tenures_months) ? raw.tenures_months.map(Number) : [];
+  return {
+    ...DEFAULT_FINANCE_CONFIG,
+    ...(raw || {}),
+    deposit_pct:
+      typeof raw?.deposit_pct === "number"
+        ? raw.deposit_pct
+        : typeof raw?.deposit_percent === "number"
+          ? raw.deposit_percent / 100
+          : DEFAULT_FINANCE_CONFIG.deposit_pct,
+    tenures_months: allowed.filter((m) => saved.length === 0 || saved.includes(m) || [3, 6].includes(m)),
+  };
+};
+
 export const lookupInterest = (cost: number, cfg: FinanceConfig = DEFAULT_FINANCE_CONFIG): InterestTier => {
   for (const t of cfg.interest_tiers) {
     if (cost >= t.min && (t.max === null || cost <= t.max)) return t;

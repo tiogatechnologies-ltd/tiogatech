@@ -20,7 +20,7 @@ const TOOL_SPECS = [
     function: {
       name: "get_finance_quote",
       description: "Compute flexible-payment estimate (deposit + monthly).",
-      parameters: { type: "object", properties: { total_ngn: { type: "number" }, months: { type: "number", enum: [3, 6, 12] } }, required: ["total_ngn", "months"] },
+      parameters: { type: "object", properties: { total_ngn: { type: "number" }, months: { type: "number", enum: [3, 6, 12, 24] } }, required: ["total_ngn", "months"] },
     },
   },
   {
@@ -51,10 +51,11 @@ async function runTool(name: string, args: any) {
     return { results: alt || [] };
   }
   if (name === "get_finance_quote") {
-    const deposit = Math.round(args.total_ngn * 0.3);
-    const financed = args.total_ngn - deposit;
-    const rate: Record<number, number> = { 3: 0.233, 6: 0.117, 12: 0.058 };
-    const monthly = Math.round((financed / args.months) * (1 + rate[args.months]));
+    const total = Number(args.total_ngn || 0);
+    const deposit = Math.round(total * 0.3);
+    const financed = total - deposit;
+    const rate = total <= 5_000_000 ? 0.09 : total <= 7_500_000 ? 0.15 : 0.25;
+    const monthly = Math.round((financed + financed * rate + financed * 0.02 + financed * 0.01) / args.months);
     return { deposit, financed, months: args.months, monthly_payment: monthly, total_payable: deposit + monthly * args.months };
   }
   if (name === "start_consultation") {
@@ -88,7 +89,7 @@ Deno.serve(async (req) => {
 Style: warm, concise, Naira (NGN) only, no em dashes.
 Use tools when helpful:
 - search_products for catalog questions
-- get_finance_quote for plan estimates (30% deposit + 3/6/12 monthly)
+- get_finance_quote for plan estimates (30% deposit + 3/6/12/24 monthly)
 - start_consultation to capture a lead
 - handoff_to_whatsapp to connect to a human
 
