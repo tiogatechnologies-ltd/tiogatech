@@ -37,7 +37,7 @@ const defaults: Record<string, any> = {
   social: { facebook: "", instagram: "", twitter: "", linkedin: "", tiktok: "", youtube: "", telegram: "", whatsapp_community: "" },
   seo: { meta_title: "Tioga Technologies — Solar, Smart Home, Security in Nigeria", meta_description: "Reliable solar, smart home and security systems with flexible financing across Nigeria.", og_image_url: "", google_analytics_id: "", meta_pixel_id: "", google_tag_manager_id: "", google_site_verification: "", robots_index: true },
   payment: { paystack_public_key: "", bank_name: "", bank_account_name: "Tioga Technologies", bank_account_number: "", accept_bank_transfer: true, accept_card: true, accept_pay_on_delivery: false, allow_guest_checkout: true },
-  finance: { deposit_percent: 30, plan_3_month_rate: 23.3, plan_6_month_rate: 11.7, plan_12_month_rate: 5.8, min_finance_amount_ngn: 500000, max_finance_amount_ngn: 50000000, finance_terms_url: "/finance" },
+  finance: { deposit_pct: 0.30, tenures_months: [3, 6, 12, 24], vat_pct: 0.075, install_pct: 0.10, insurance_pct: 0.02, management_pct: 0.01, min_finance_amount_ngn: 500000, max_finance_amount_ngn: 50000000, finance_terms_url: "/finance", interest_tiers: [{ min: 1000000, max: 5000000, rate: 0.09 }, { min: 5000001, max: 7500000, rate: 0.15 }, { min: 7500001, max: null, rate: 0.25 }] },
   shipping: { free_shipping_threshold_ngn: 500000, default_shipping_fee_ngn: 6000, delivery_eta_days: "3-7", service_areas: "Lagos, Abuja, Port Harcourt, Ibadan", pickup_address: "Ikeja, Lagos" },
   tax: { vat_percent: 7.5, vat_inclusive: true, invoice_prefix: "TIO", invoice_footer: "Thank you for your business." },
   discounts: { allow_stacking: false, show_code_field: true },
@@ -61,6 +61,14 @@ const Field = ({ label, hint, children }: { label: string; hint?: string; childr
 
 const inputClass = "w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 text-foreground placeholder:text-muted-foreground";
 const toggleClass = "relative inline-flex h-5 w-9 items-center rounded-full transition-colors";
+const normalizeFinanceSettings = (value: any = {}) => {
+  const base = { ...defaults.finance, ...(value || {}) };
+  return {
+    ...base,
+    deposit_pct: typeof base.deposit_pct === "number" ? base.deposit_pct : Number(base.deposit_percent || 30) / 100,
+    tenures_months: [3, 6, 12, 24],
+  };
+};
 
 const Toggle = ({ value, onChange, label }: { value: boolean; onChange: (v: boolean) => void; label: string }) => (
   <button type="button" onClick={() => onChange(!value)} className="flex items-center justify-between w-full px-3 py-2.5 rounded-lg border border-border hover:bg-muted/40 text-left">
@@ -93,7 +101,7 @@ const AdminSettings = () => {
     (async () => {
       const { data: rows } = await supabase.from("site_settings").select("key, value");
       const merged = { ...defaults };
-      (rows || []).forEach((r: any) => { merged[r.key] = { ...defaults[r.key], ...(r.value || {}) }; });
+      (rows || []).forEach((r: any) => { merged[r.key] = r.key === "finance" ? normalizeFinanceSettings(r.value) : { ...defaults[r.key], ...(r.value || {}) }; });
       setData(merged); setOriginal(merged); setLoading(false);
     })();
   }, []);
@@ -314,12 +322,19 @@ const AdminSettings = () => {
                 <header><h2 className="font-display text-xl font-bold">Flexible Payment</h2></header>
                 <Card title="Plan rates" desc="Markup applied per plan tenor.">
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <Field label="Deposit %"><input type="number" className={inputClass} value={data.finance.deposit_percent} onChange={(e) => set("finance", { deposit_percent: +e.target.value })} /></Field>
-                    <Field label="3 month rate %"><input type="number" step="0.1" className={inputClass} value={data.finance.plan_3_month_rate} onChange={(e) => set("finance", { plan_3_month_rate: +e.target.value })} /></Field>
-                    <Field label="6 month rate %"><input type="number" step="0.1" className={inputClass} value={data.finance.plan_6_month_rate} onChange={(e) => set("finance", { plan_6_month_rate: +e.target.value })} /></Field>
-                    <Field label="12 month rate %"><input type="number" step="0.1" className={inputClass} value={data.finance.plan_12_month_rate} onChange={(e) => set("finance", { plan_12_month_rate: +e.target.value })} /></Field>
+                    <Field label="Deposit %"><input type="number" className={inputClass} value={Math.round((data.finance.deposit_pct ?? 0.3) * 100)} onChange={(e) => set("finance", { deposit_pct: +e.target.value / 100 })} /></Field>
+                    <Field label="Insurance %"><input type="number" step="0.1" className={inputClass} value={((data.finance.insurance_pct ?? 0.02) * 100).toFixed(1)} onChange={(e) => set("finance", { insurance_pct: +e.target.value / 100 })} /></Field>
+                    <Field label="Management %"><input type="number" step="0.1" className={inputClass} value={((data.finance.management_pct ?? 0.01) * 100).toFixed(1)} onChange={(e) => set("finance", { management_pct: +e.target.value / 100 })} /></Field>
+                    <Field label="VAT %"><input type="number" step="0.1" className={inputClass} value={((data.finance.vat_pct ?? 0.075) * 100).toFixed(1)} onChange={(e) => set("finance", { vat_pct: +e.target.value / 100 })} /></Field>
                     <Field label="Min finance amount (NGN)"><input type="number" className={inputClass} value={data.finance.min_finance_amount_ngn} onChange={(e) => set("finance", { min_finance_amount_ngn: +e.target.value })} /></Field>
                     <Field label="Max finance amount (NGN)"><input type="number" className={inputClass} value={data.finance.max_finance_amount_ngn} onChange={(e) => set("finance", { max_finance_amount_ngn: +e.target.value })} /></Field>
+                  </div>
+                  <div className="mt-4 rounded-2xl border border-border bg-background/50 p-4">
+                    <label className="text-xs font-semibold text-foreground block mb-2">Available tenures</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {[3, 6, 12, 24].map((m) => <span key={m} className="rounded-xl border border-primary/30 bg-primary/10 px-3 py-3 text-center text-sm font-semibold text-primary">{m} months</span>)}
+                    </div>
+                    <p className="mt-2 text-[11px] text-muted-foreground">All four tenures are enforced on the public calculator, application form, and backend schedule generator.</p>
                   </div>
                 </Card>
               </section>

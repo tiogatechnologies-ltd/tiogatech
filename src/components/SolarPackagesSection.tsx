@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Battery, Sun, Zap, Cpu, Check, ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
 import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
@@ -19,6 +19,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.35, ease: "easeOut", delay: (i % 4) * 0.05 }}
     className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
+    id={`pkg-${p.package_number}`}
   >
     <div className="relative h-44 overflow-hidden">
       <img
@@ -123,6 +124,17 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
 const SolarPackagesSection = () => {
   const { packages, loading } = useSolarPackages();
   const [tab, setTab] = useState<"lithium" | "tubular" | "high_voltage">("lithium");
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const target = searchParams.get("id") || searchParams.get("package");
+    if (!target || !packages.length) return;
+    const found = packages.find((p) => String(p.package_number) === target || p.id === target || `pkg-${p.package_number}` === target);
+    if (found) {
+      setTab(found.battery_type);
+      window.setTimeout(() => document.getElementById(`pkg-${found.package_number}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
+    }
+  }, [packages, searchParams]);
 
   const filtered = useMemo(
     () => packages.filter((p) => p.battery_type === tab),
@@ -146,8 +158,8 @@ const SolarPackagesSection = () => {
           </p>
         </div>
 
-        <div className="flex justify-center mb-10">
-          <div className="inline-flex flex-wrap p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
+        <div className="mb-8 sm:mb-10 -mx-4 px-4 overflow-x-auto scrollbar-none">
+          <div className="inline-flex min-w-max p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
             {(["lithium", "tubular", "high_voltage"] as const).map((k) => (
               <button
                 key={k}
@@ -165,7 +177,7 @@ const SolarPackagesSection = () => {
         </div>
 
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p, i) => (
             <PackageCard key={p.id} p={p} i={i} />
           ))}

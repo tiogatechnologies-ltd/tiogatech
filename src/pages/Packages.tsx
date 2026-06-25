@@ -1,10 +1,10 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
 import { ArrowRight, Sparkles, Lock, Sun, Home as HomeIcon, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 import bgBundle from "@/assets/bg-bundle.jpg";
 import catSolar from "@/assets/cat-solar.jpg";
@@ -33,6 +33,29 @@ const SectionLoader = () => (
 
 const Packages = () => {
   const [active, setActive] = useState<CategoryKey | null>(null);
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  const scrollToSection = (key: CategoryKey, attempts = 0) => {
+    const id = key === "solar" ? "solar-packages" : key === "locks" ? "smart-locks" : "home-automation";
+    window.setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) return el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (attempts < 6) scrollToSection(key, attempts + 1);
+    }, attempts === 0 ? 80 : 220);
+  };
+
+  useEffect(() => {
+    const hash = location.hash.replace("#", "");
+    const category = searchParams.get("category") as CategoryKey | null;
+    const packageId = searchParams.get("id") || searchParams.get("package");
+    const next: CategoryKey | null = category || (hash === "smart-locks" ? "locks" : hash === "home-automation" ? "automation" : hash === "solar-packages" || packageId ? "solar" : null);
+    if (next) {
+      setActive(next);
+      scrollToSection(next);
+      if (packageId) window.setTimeout(() => document.getElementById(`pkg-${packageId}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 350);
+    }
+  }, [location.hash, searchParams]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -71,7 +94,7 @@ const Packages = () => {
         </Link>
       </PageHero>
 
-      <section className="section-padding bg-muted/30">
+      <section id="categories" className="section-padding bg-muted/30 scroll-mt-24">
         <div className="section-container">
           <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">
@@ -85,7 +108,7 @@ const Packages = () => {
             </p>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-3">
+          <div className="grid gap-4 sm:gap-5 sm:grid-cols-3">
             {CATEGORIES.map((c) => {
               const Icon = c.icon;
               const isActive = active === c.key;
@@ -93,14 +116,14 @@ const Packages = () => {
                 <button
                   key={c.key}
                   type="button"
-                  onClick={() => setActive(isActive ? null : c.key)}
+                  onClick={() => { const next = isActive ? null : c.key; setActive(next); if (next) scrollToSection(next); }}
                   className={`group relative text-left rounded-3xl border overflow-hidden hover-lift transition-all duration-500 ${
                     isActive
                       ? "border-primary shadow-[var(--shadow-elevated)]"
                       : "border-border hover:border-primary/40"
                   }`}
                 >
-                  <div className="relative h-40 overflow-hidden">
+                  <div className="relative h-32 sm:h-40 overflow-hidden">
                     <img
                       src={c.image}
                       alt={c.label}
@@ -114,7 +137,7 @@ const Packages = () => {
                       <Icon size={18} />
                     </span>
                   </div>
-                  <div className={`p-6 ${isActive ? "bg-primary/5" : "bg-card"}`}>
+                  <div className={`p-4 sm:p-6 ${isActive ? "bg-primary/5" : "bg-card"}`}>
                     <h3 className="font-display font-bold text-lg text-foreground no-clip mb-2">{c.label}</h3>
                     <p className="text-sm text-muted-foreground">{c.desc}</p>
                     <span className={`mt-4 inline-flex items-center gap-1.5 text-xs font-semibold ${isActive ? "text-primary" : "text-foreground/70 group-hover:text-primary"}`}>

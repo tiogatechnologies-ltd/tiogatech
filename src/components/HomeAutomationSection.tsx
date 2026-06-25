@@ -18,6 +18,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.35, ease: "easeOut", delay: (i % 6) * 0.05 }}
     className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
+    id={`automation-${p.id}`}
   >
     <div className="relative h-48 overflow-hidden">
       <img
@@ -136,7 +137,7 @@ const HomeAutomationSection = () => {
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {packages.map((p, i) => (
             <PackageCard key={p.id} p={p} i={i} />
           ))}

@@ -172,7 +172,7 @@ const SolarAssessmentReport = () => {
               <h2 className="font-display font-bold text-lg mb-3">Recommended Tioga Packages</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {packages.map((p) => (
-                  <Link key={p.id} to={`/packages`} className="rounded-xl border border-border bg-background p-4 hover:border-primary transition-colors">
+                  <Link key={p.id} to={`/packages?category=solar`} className="rounded-xl border border-border bg-background p-4 hover:border-primary transition-colors">
                     <div className="font-display font-bold">{p.name}</div>
                     <div className="text-xs text-muted-foreground">{p.capacity_kva}kVA / {p.battery_kwh}kWh</div>
                     <div className="text-primary font-bold mt-2">₦{Number(p.price_ngn).toLocaleString()}</div>
@@ -185,8 +185,7 @@ const SolarAssessmentReport = () => {
           {(() => {
             const sizeKva = Number(fr?.inverter_spec?.size_kva || assessment?.recommendation?.inverter_kva || 0);
             const totalCost = (fr?.bill_of_materials || []).reduce((s: number, b: any) => s + (Number(b.estimated_cost_ngn) || 0), 0);
-            const flagshipPkg = sizeKva > 0 && sizeKva <= 7 ? 20 : sizeKva > 7 ? 21 : null;
-            const matchedAmount = flagshipPkg === 20 ? 8185403 : flagshipPkg === 21 ? 12033763 : totalCost || 5000000;
+            const matchedAmount = totalCost || 5000000;
             const waMsg = encodeURIComponent(`Hi Tioga, I'd like to schedule installation for my solar assessment ${assessment.id.slice(0, 8)} (${sizeKva}kVA / ${fr?.battery_spec?.capacity_kwh}kWh).`);
             return (
               <div className="bg-card rounded-2xl border border-primary/30 p-6">
@@ -198,10 +197,10 @@ const SolarAssessmentReport = () => {
                     <div className="font-display font-bold text-sm">Get formal quote</div>
                     <div className="text-xs text-muted-foreground mt-1">Engineer-reviewed quotation with itemized pricing.</div>
                   </button>
-                  <Link to={`/finance/apply?assessment=${assessment.id}&amount=${matchedAmount}&months=12${flagshipPkg ? `&package=pkg-${flagshipPkg}` : ""}&item=${encodeURIComponent(`${sizeKva}kVA Tioga Solar System`)}`} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
+                  <Link to={`/finance/apply?assessment=${assessment.id}&amount=${matchedAmount}&months=3&item=${encodeURIComponent(`${sizeKva}kVA Tioga Solar System`)}`} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
                     <Wallet className="text-primary mb-2" size={20} />
                     <div className="font-display font-bold text-sm">Apply for Flex Pay</div>
-                    <div className="text-xs text-muted-foreground mt-1">30% deposit, then 12 or 24 monthly installments.</div>
+                    <div className="text-xs text-muted-foreground mt-1">30% deposit, then 3, 6, 12 or 24 monthly installments.</div>
                   </Link>
                   <a href={`https://wa.me/2348000000000?text=${waMsg}`} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
                     <Wrench className="text-primary mb-2" size={20} />

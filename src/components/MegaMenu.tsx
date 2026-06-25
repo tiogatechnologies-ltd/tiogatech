@@ -27,12 +27,12 @@ const productHubs = [
 ];
 
 const categories = [
-  { label: "Smart Locks", to: "/packages#categories", icon: Lock },
+  { label: "Smart Locks", to: "/packages#smart-locks", icon: Lock },
   { label: "CCTV", to: "/packages#categories", icon: Camera },
   { label: "Smart Lights", to: "/packages#categories", icon: Lightbulb },
-  { label: "Solar Inverters", to: "/packages#categories", icon: Zap },
-  { label: "Solar Panels", to: "/packages#categories", icon: Sun },
-  { label: "Batteries", to: "/packages#categories", icon: BatteryCharging },
+  { label: "Solar Inverters", to: "/packages#solar-packages", icon: Zap },
+  { label: "Solar Panels", to: "/packages#solar-packages", icon: Sun },
+  { label: "Batteries", to: "/packages#solar-packages", icon: BatteryCharging },
 ];
 
 interface MegaMenuProps {
