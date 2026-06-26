@@ -55,6 +55,18 @@ const AccountSubscription = () => {
   const pct = total > 0 ? Math.min(100, (used / total) * 100) : 0;
   const hasActiveSub = sub && sub.status === "active" && (sub.plan === "starter" || sub.plan === "business") && (!sub.expires_at || new Date(sub.expires_at) > new Date());
 
+  // Aggregations
+  const now = new Date();
+  const last30 = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const usage30 = usage.filter((u) => new Date(u.created_at) >= last30);
+  const usageMonth = usage.filter((u) => new Date(u.created_at) >= monthStart);
+  const byFeature = usage30.reduce<Record<string, number>>((acc, u) => {
+    acc[u.feature] = (acc[u.feature] || 0) + 1;
+    return acc;
+  }, {});
+  const featureMax = Math.max(1, ...Object.values(byFeature));
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEO title="My AI Plan & Credits — Tioga" description="Manage your AI subscription, view free credits and usage history." path="/account/subscription" />
