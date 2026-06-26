@@ -5,7 +5,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
-import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, XCircle, Sun, Calculator, Lightbulb } from "lucide-react";
+import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, MessageCircle, Check } from "lucide-react";
+
+const WA_STARTER = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to subscribe to AI Starter (₦2,500/mo).");
+const WA_BUSINESS = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like a quote for the AI Business plan.");
+const WA_CANCEL = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
 
 interface UsageRow {
   id: string;
