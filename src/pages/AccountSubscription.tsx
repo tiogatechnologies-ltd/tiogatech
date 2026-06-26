@@ -5,7 +5,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
-import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, XCircle, Sun, Calculator, Lightbulb } from "lucide-react";
+import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, MessageCircle, Check } from "lucide-react";
+
+const WA_STARTER = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to subscribe to AI Starter (₦2,500/mo).");
+const WA_BUSINESS = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like a quote for the AI Business plan.");
+const WA_CANCEL = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
 
 interface UsageRow {
   id: string;
@@ -51,12 +55,24 @@ const AccountSubscription = () => {
   const pct = total > 0 ? Math.min(100, (used / total) * 100) : 0;
   const hasActiveSub = sub && sub.status === "active" && (sub.plan === "starter" || sub.plan === "business") && (!sub.expires_at || new Date(sub.expires_at) > new Date());
 
+  // Aggregations
+  const now = new Date();
+  const last30 = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const usage30 = usage.filter((u) => new Date(u.created_at) >= last30);
+  const usageMonth = usage.filter((u) => new Date(u.created_at) >= monthStart);
+  const byFeature = usage30.reduce<Record<string, number>>((acc, u) => {
+    acc[u.feature] = (acc[u.feature] || 0) + 1;
+    return acc;
+  }, {});
+  const featureMax = Math.max(1, ...Object.values(byFeature));
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEO title="My AI Plan & Credits — Tioga" description="Manage your AI subscription, view free credits and usage history." path="/account/subscription" />
       <SiteHeader />
       <main className="flex-1 py-10 px-4 bg-muted/30">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-5xl mx-auto space-y-6">
           <div>
             <h1 className="text-2xl sm:text-3xl font-display font-bold">AI plan & credits</h1>
             <p className="text-sm text-muted-foreground mt-1">Your Tioga AI subscription, free analyses, and usage history.</p>
@@ -87,9 +103,14 @@ const AccountSubscription = () => {
                   Upgrade to unlimited <ArrowRight size={14} />
                 </Link>
               ) : (
-                <Link to="/ai-pricing" className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
-                  Manage plan
-                </Link>
+                <div className="flex flex-col items-end gap-2">
+                  <Link to="/ai-pricing" className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
+                    Manage plan
+                  </Link>
+                  <a href={WA_CANCEL} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-destructive">
+                    Pause or cancel
+                  </a>
+                </div>
               )}
             </div>
 
@@ -108,6 +129,104 @@ const AccountSubscription = () => {
               </div>
             )}
           </div>
+
+          {/* Usage stats grid */}
+          <div className="grid sm:grid-cols-3 gap-3">
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">This month</span>
+                <Calendar size={14} className="text-muted-foreground" />
+              </div>
+              <div className="font-display text-2xl font-bold mt-1">{usageMonth.length}</div>
+              <div className="text-xs text-muted-foreground">AI analyses generated</div>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">Last 30 days</span>
+                <BarChart3 size={14} className="text-muted-foreground" />
+              </div>
+              <div className="font-display text-2xl font-bold mt-1">{usage30.length}</div>
+              <div className="text-xs text-muted-foreground">Across all features</div>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">All time</span>
+                <Sparkles size={14} className="text-muted-foreground" />
+              </div>
+              <div className="font-display text-2xl font-bold mt-1">{usage.length}</div>
+              <div className="text-xs text-muted-foreground">Total reports run</div>
+            </div>
+          </div>
+
+          {/* Feature breakdown */}
+          {Object.keys(byFeature).length > 0 && (
+            <div className="rounded-3xl border border-border bg-card p-5 sm:p-6">
+              <h2 className="font-display font-bold mb-1">Usage by feature</h2>
+              <p className="text-xs text-muted-foreground mb-4">Last 30 days breakdown.</p>
+              <div className="space-y-3">
+                {Object.entries(byFeature).sort((a, b) => b[1] - a[1]).map(([f, n]) => {
+                  const meta = FEATURE_LABEL[f] || { label: f, icon: Sparkles };
+                  const Icon = meta.icon;
+                  return (
+                    <div key={f}>
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="flex items-center gap-2 font-medium"><Icon size={13} className="text-primary" /> {meta.label}</span>
+                        <span className="font-bold tabular-nums">{n}</span>
+                      </div>
+                      <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full bg-primary" style={{ width: `${(n / featureMax) * 100}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Plan comparison / upgrade */}
+          {!hasActiveSub && (
+            <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/5 to-transparent p-5 sm:p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <Zap size={18} className="text-primary" />
+                <h2 className="font-display font-bold">Upgrade for unlimited AI</h2>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">Pick the plan that matches how you use Tioga AI.</p>
+              <div className="grid md:grid-cols-2 gap-3">
+                <div className="rounded-2xl border-2 border-primary bg-background p-5 relative">
+                  <span className="absolute -top-2.5 left-4 inline-flex px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">Most popular</span>
+                  <div className="flex items-center gap-2 mb-1"><Zap size={16} className="text-primary" /><h3 className="font-display font-bold">AI Starter</h3></div>
+                  <div className="flex items-baseline gap-1 mb-3">
+                    <span className="font-display text-2xl font-bold">₦2,500</span>
+                    <span className="text-xs text-muted-foreground">/month</span>
+                  </div>
+                  <ul className="text-xs space-y-1.5 mb-4">
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Unlimited AI assessments</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Full engineering reports + PDF</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Bill of materials breakdown</li>
+                  </ul>
+                  <a href={WA_STARTER} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground px-4 py-2.5 text-sm font-semibold">
+                    <MessageCircle size={13} /> Activate via WhatsApp
+                  </a>
+                </div>
+                <div className="rounded-2xl border border-border bg-background p-5">
+                  <div className="flex items-center gap-2 mb-1"><Crown size={16} className="text-amber-600" /><h3 className="font-display font-bold">AI Business</h3></div>
+                  <div className="flex items-baseline gap-1 mb-3">
+                    <span className="font-display text-2xl font-bold">Custom</span>
+                  </div>
+                  <ul className="text-xs space-y-1.5 mb-4">
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Everything in Starter</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Multi-site & commercial analysis</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Priority engineer review</li>
+                  </ul>
+                  <a href={WA_BUSINESS} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
+                    <MessageCircle size={13} /> Talk to sales
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+
 
           {/* Usage history */}
           <div className="rounded-3xl border border-border bg-card overflow-hidden">
