@@ -85,21 +85,21 @@ const Account = () => {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const tasks: Promise<any>[] = [
+      const tasks: any[] = [
         supabase.from("orders").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
         supabase.from("finance_applications").select("id,item_name,status,monthly_payment_ngn,months,total_amount_ngn,created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
         supabase.from("solar_assessments").select("id,location,system_type,status,created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
         supabase.from("ai_subscriptions").select("*").eq("user_id", user.id).maybeSingle(),
         supabase.from("assessment_credits").select("*").eq("user_id", user.id).maybeSingle(),
       ];
-      if (isAffiliate) {
+      if (isAffiliate && user.email) {
         tasks.push(supabase.from("affiliates").select("*").eq("email", user.email).maybeSingle());
       }
       if (isEngineer || isStaff) {
         tasks.push(supabase.from("solar_assessments").select("id", { count: "exact", head: true }).in("status", ["pending_review", "submitted"]));
       }
 
-      const results = await Promise.all(tasks);
+      const results: any[] = await Promise.all(tasks);
       setOrders(results[0].data || []);
       setFinance(results[1].data || []);
       setAssessments(results[2].data || []);
@@ -107,15 +107,15 @@ const Account = () => {
       setCredits(results[4].data);
 
       let idx = 5;
-      if (isAffiliate) {
+      if (isAffiliate && user.email) {
         const aff = results[idx++]?.data;
         setAffiliate(aff);
         if (aff?.id) {
-          const [{ count }, { data: payouts }] = await Promise.all([
-            supabase.from("conversions").select("*", { count: "exact", head: true }).eq("affiliate_id", aff.id),
-            supabase.from("affiliate_payouts").select("amount_ngn,status").eq("affiliate_id", aff.id),
-          ]);
-          setAffConvCount(count || 0);
+          const { data: payouts } = await supabase
+            .from("affiliate_payouts")
+            .select("amount_ngn,status")
+            .eq("affiliate_id", aff.id);
+          setAffConvCount((payouts || []).length);
           setAffEarnings((payouts || []).filter((p: any) => p.status === "paid").reduce((s: number, p: any) => s + Number(p.amount_ngn || 0), 0));
         }
       }
