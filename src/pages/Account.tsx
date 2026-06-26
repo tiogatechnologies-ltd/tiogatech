@@ -331,10 +331,10 @@ const Account = () => {
                   <label className="text-xs text-muted-foreground flex items-center gap-1"><Phone size={11} /> Phone</label>
                   <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+234…" className="w-full mt-1 rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
                 </div>
-                {profile?.account_type && (
+                {(profile as any)?.account_type && (
                   <div>
                     <label className="text-xs text-muted-foreground">Account type</label>
-                    <div className="mt-1 text-sm font-semibold capitalize text-foreground">{profile.account_type}</div>
+                    <div className="mt-1 text-sm font-semibold capitalize text-foreground">{(profile as any).account_type}</div>
                   </div>
                 )}
                 <button onClick={saveProfile} disabled={saving} className="w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground hover:brightness-110 disabled:opacity-50 flex items-center justify-center gap-2">
