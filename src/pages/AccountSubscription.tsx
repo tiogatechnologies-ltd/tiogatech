@@ -72,7 +72,7 @@ const AccountSubscription = () => {
       <SEO title="My AI Plan & Credits — Tioga" description="Manage your AI subscription, view free credits and usage history." path="/account/subscription" />
       <SiteHeader />
       <main className="flex-1 py-10 px-4 bg-muted/30">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-5xl mx-auto space-y-6">
           <div>
             <h1 className="text-2xl sm:text-3xl font-display font-bold">AI plan & credits</h1>
             <p className="text-sm text-muted-foreground mt-1">Your Tioga AI subscription, free analyses, and usage history.</p>
