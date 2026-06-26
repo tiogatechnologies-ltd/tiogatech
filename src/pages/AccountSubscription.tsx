@@ -130,6 +130,104 @@ const AccountSubscription = () => {
             )}
           </div>
 
+          {/* Usage stats grid */}
+          <div className="grid sm:grid-cols-3 gap-3">
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">This month</span>
+                <Calendar size={14} className="text-muted-foreground" />
+              </div>
+              <div className="font-display text-2xl font-bold mt-1">{usageMonth.length}</div>
+              <div className="text-xs text-muted-foreground">AI analyses generated</div>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">Last 30 days</span>
+                <BarChart3 size={14} className="text-muted-foreground" />
+              </div>
+              <div className="font-display text-2xl font-bold mt-1">{usage30.length}</div>
+              <div className="text-xs text-muted-foreground">Across all features</div>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">All time</span>
+                <Sparkles size={14} className="text-muted-foreground" />
+              </div>
+              <div className="font-display text-2xl font-bold mt-1">{usage.length}</div>
+              <div className="text-xs text-muted-foreground">Total reports run</div>
+            </div>
+          </div>
+
+          {/* Feature breakdown */}
+          {Object.keys(byFeature).length > 0 && (
+            <div className="rounded-3xl border border-border bg-card p-5 sm:p-6">
+              <h2 className="font-display font-bold mb-1">Usage by feature</h2>
+              <p className="text-xs text-muted-foreground mb-4">Last 30 days breakdown.</p>
+              <div className="space-y-3">
+                {Object.entries(byFeature).sort((a, b) => b[1] - a[1]).map(([f, n]) => {
+                  const meta = FEATURE_LABEL[f] || { label: f, icon: Sparkles };
+                  const Icon = meta.icon;
+                  return (
+                    <div key={f}>
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="flex items-center gap-2 font-medium"><Icon size={13} className="text-primary" /> {meta.label}</span>
+                        <span className="font-bold tabular-nums">{n}</span>
+                      </div>
+                      <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full bg-primary" style={{ width: `${(n / featureMax) * 100}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Plan comparison / upgrade */}
+          {!hasActiveSub && (
+            <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/5 to-transparent p-5 sm:p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <Zap size={18} className="text-primary" />
+                <h2 className="font-display font-bold">Upgrade for unlimited AI</h2>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">Pick the plan that matches how you use Tioga AI.</p>
+              <div className="grid md:grid-cols-2 gap-3">
+                <div className="rounded-2xl border-2 border-primary bg-background p-5 relative">
+                  <span className="absolute -top-2.5 left-4 inline-flex px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">Most popular</span>
+                  <div className="flex items-center gap-2 mb-1"><Zap size={16} className="text-primary" /><h3 className="font-display font-bold">AI Starter</h3></div>
+                  <div className="flex items-baseline gap-1 mb-3">
+                    <span className="font-display text-2xl font-bold">₦2,500</span>
+                    <span className="text-xs text-muted-foreground">/month</span>
+                  </div>
+                  <ul className="text-xs space-y-1.5 mb-4">
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Unlimited AI assessments</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Full engineering reports + PDF</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Bill of materials breakdown</li>
+                  </ul>
+                  <a href={WA_STARTER} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground px-4 py-2.5 text-sm font-semibold">
+                    <MessageCircle size={13} /> Activate via WhatsApp
+                  </a>
+                </div>
+                <div className="rounded-2xl border border-border bg-background p-5">
+                  <div className="flex items-center gap-2 mb-1"><Crown size={16} className="text-amber-600" /><h3 className="font-display font-bold">AI Business</h3></div>
+                  <div className="flex items-baseline gap-1 mb-3">
+                    <span className="font-display text-2xl font-bold">Custom</span>
+                  </div>
+                  <ul className="text-xs space-y-1.5 mb-4">
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Everything in Starter</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Multi-site & commercial analysis</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Priority engineer review</li>
+                  </ul>
+                  <a href={WA_BUSINESS} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
+                    <MessageCircle size={13} /> Talk to sales
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+
+
           {/* Usage history */}
           <div className="rounded-3xl border border-border bg-card overflow-hidden">
             <div className="px-6 py-4 border-b border-border flex items-center justify-between">
