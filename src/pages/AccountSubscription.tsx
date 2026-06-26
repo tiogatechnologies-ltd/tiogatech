@@ -103,9 +103,14 @@ const AccountSubscription = () => {
                   Upgrade to unlimited <ArrowRight size={14} />
                 </Link>
               ) : (
-                <Link to="/ai-pricing" className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
-                  Manage plan
-                </Link>
+                <div className="flex flex-col items-end gap-2">
+                  <Link to="/ai-pricing" className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
+                    Manage plan
+                  </Link>
+                  <a href={WA_CANCEL} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-destructive">
+                    Pause or cancel
+                  </a>
+                </div>
               )}
             </div>
 
