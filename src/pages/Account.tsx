@@ -450,6 +450,139 @@ const Account = () => {
                   </ul>
                 )}
               </SectionCard>
+
+              <SectionCard
+                title="Affiliates"
+                icon={Share2}
+                action={
+                  affiliate ? (
+                    <Link to="/affiliate" className="text-xs text-primary font-semibold">Open dashboard</Link>
+                  ) : !affApplication ? (
+                    <Link to="/?affiliate=apply" className="text-xs text-primary font-semibold">Apply</Link>
+                  ) : null
+                }
+              >
+                {loading ? (
+                  <div className="text-sm text-muted-foreground py-6 text-center">Loading…</div>
+                ) : affiliate ? (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Status</span>
+                        <StatusPill status={affiliate.status} />
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Commission <span className="font-bold text-foreground">{Math.round((affiliate.commission_rate || 0) * 100)}%</span>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-border bg-muted/30 p-3 flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Referral link</div>
+                        <div className="font-mono text-xs text-foreground truncate">{`${window.location.origin}/?ref=${affiliate.code}`}</div>
+                      </div>
+                      <button
+                        onClick={() => copy(`${window.location.origin}/?ref=${affiliate.code}`, "Referral link copied")}
+                        className="text-xs rounded-lg bg-primary text-primary-foreground px-3 py-2 inline-flex items-center gap-1.5 shrink-0"
+                      >
+                        <Copy size={12} /> Copy
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                      <div className="rounded-xl bg-background border border-border p-2.5">
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Conversions</div>
+                        <div className="font-display font-bold text-foreground">{affConvCount}</div>
+                      </div>
+                      <div className="rounded-xl bg-background border border-border p-2.5">
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Payouts</div>
+                        <div className="font-display font-bold text-foreground">{affPayouts.length}</div>
+                      </div>
+                      <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/20 p-2.5">
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Paid</div>
+                        <div className="font-display font-bold text-emerald-600 truncate">{formatNGN(affEarnings)}</div>
+                      </div>
+                      <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-2.5">
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Pending</div>
+                        <div className="font-display font-bold text-amber-600 truncate">{formatNGN(affPendingEarnings)}</div>
+                      </div>
+                    </div>
+
+                    {affiliate.payout_method && (
+                      <div className="text-xs text-muted-foreground">
+                        Payout via <span className="font-semibold text-foreground capitalize">{affiliate.payout_method}</span>
+                        {affiliate.payout_details && <> · <span className="text-foreground">{affiliate.payout_details}</span></>}
+                      </div>
+                    )}
+
+                    <div>
+                      <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-2">Recent payouts</div>
+                      {affPayouts.length === 0 ? (
+                        <p className="text-xs text-muted-foreground py-3 text-center">No payouts yet — keep referring to earn commissions.</p>
+                      ) : (
+                        <ul className="divide-y divide-border">
+                          {affPayouts.slice(0, 5).map((p) => (
+                            <li key={p.id} className="py-2.5 flex items-center justify-between gap-3">
+                              <div className="min-w-0">
+                                <p className="text-sm font-semibold text-foreground">{formatNGN(p.amount)}</p>
+                                <p className="text-[11px] text-muted-foreground">
+                                  {p.period_start} → {p.period_end} · {p.lead_count || 0} lead(s)
+                                </p>
+                              </div>
+                              <div className="text-right shrink-0">
+                                <StatusPill status={p.status} />
+                                {p.paid_at && <p className="text-[10px] text-muted-foreground mt-1"><Calendar size={9} className="inline" /> {new Date(p.paid_at).toLocaleDateString()}</p>}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                ) : affApplication ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        {affApplication.status === "pending" ? <Clock size={16} className="text-amber-600" /> :
+                          affApplication.status === "approved" ? <CheckCircle2 size={16} className="text-emerald-600" /> :
+                          <AlertCircle size={16} className="text-destructive" />}
+                        <span className="text-sm font-semibold text-foreground capitalize">Application {affApplication.status}</span>
+                      </div>
+                      <StatusPill status={affApplication.status} />
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Submitted {new Date(affApplication.created_at).toLocaleDateString()} · We'll notify you at <span className="text-foreground">{affApplication.email}</span> once a decision is made.
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="rounded-xl bg-muted/40 p-2.5">
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Audience</div>
+                        <div className="text-foreground font-semibold truncate">{affApplication.audience_size || "—"}</div>
+                      </div>
+                      <div className="rounded-xl bg-muted/40 p-2.5">
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Channels</div>
+                        <div className="text-foreground font-semibold truncate">{(affApplication.channels || []).join(", ") || "—"}</div>
+                      </div>
+                    </div>
+                    {affApplication.status === "rejected" && affApplication.notes && (
+                      <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-3 text-xs text-foreground">
+                        <span className="font-semibold">Note from team:</span> {affApplication.notes}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="text-center py-6">
+                    <Share2 className="mx-auto text-primary mb-2" size={26} />
+                    <p className="text-sm font-semibold text-foreground">Earn commission referring solar customers</p>
+                    <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
+                      Join the Tioga affiliate program to earn a recurring share on every successful referral you bring in.
+                    </p>
+                    <Link to="/?affiliate=apply" className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold px-4 py-2">
+                      <TrendingUp size={12} /> Apply to become an affiliate
+                    </Link>
+                  </div>
+                )}
+              </SectionCard>
+
             </div>
           </div>
         </div>
