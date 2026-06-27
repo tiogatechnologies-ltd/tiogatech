@@ -72,8 +72,11 @@ const Account = () => {
   const [aiSub, setAiSub] = useState<any>(null);
   const [credits, setCredits] = useState<any>(null);
   const [affiliate, setAffiliate] = useState<any>(null);
+  const [affApplication, setAffApplication] = useState<any>(null);
   const [affConvCount, setAffConvCount] = useState(0);
   const [affEarnings, setAffEarnings] = useState(0);
+  const [affPendingEarnings, setAffPendingEarnings] = useState(0);
+  const [affPayouts, setAffPayouts] = useState<any[]>([]);
   const [engineerQueue, setEngineerQueue] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -92,8 +95,11 @@ const Account = () => {
         supabase.from("ai_subscriptions").select("*").eq("user_id", user.id).maybeSingle(),
         supabase.from("assessment_credits").select("*").eq("user_id", user.id).maybeSingle(),
       ];
-      if (isAffiliate && user.email) {
+      if (user.email) {
         tasks.push(supabase.from("affiliates").select("*").eq("email", user.email).maybeSingle());
+        tasks.push(
+          supabase.from("affiliate_applications").select("*").eq("email", user.email).order("created_at", { ascending: false }).limit(1).maybeSingle()
+        );
       }
       if (isEngineer || isStaff) {
         tasks.push(supabase.from("solar_assessments").select("id", { count: "exact", head: true }).in("status", ["pending_review", "submitted"]));
@@ -107,16 +113,22 @@ const Account = () => {
       setCredits(results[4].data);
 
       let idx = 5;
-      if (isAffiliate && user.email) {
+      if (user.email) {
         const aff = results[idx++]?.data;
         setAffiliate(aff);
+        const app = results[idx++]?.data;
+        setAffApplication(app);
         if (aff?.id) {
           const { data: payouts } = await supabase
             .from("affiliate_payouts")
-            .select("amount_ngn,status")
-            .eq("affiliate_id", aff.id);
-          setAffConvCount((payouts || []).length);
-          setAffEarnings((payouts || []).filter((p: any) => p.status === "paid").reduce((s: number, p: any) => s + Number(p.amount_ngn || 0), 0));
+            .select("id, amount, status, period_start, period_end, lead_count, commission_total, paid_at, created_at, payment_method")
+            .eq("affiliate_id", aff.id)
+            .order("created_at", { ascending: false });
+          const list = payouts || [];
+          setAffPayouts(list);
+          setAffConvCount(list.reduce((s: number, p: any) => s + Number(p.lead_count || 0), 0));
+          setAffEarnings(list.filter((p: any) => p.status === "paid").reduce((s: number, p: any) => s + Number(p.amount || 0), 0));
+          setAffPendingEarnings(list.filter((p: any) => p.status !== "paid").reduce((s: number, p: any) => s + Number(p.amount || 0), 0));
         }
       }
       if (isEngineer || isStaff) {
@@ -124,7 +136,7 @@ const Account = () => {
       }
       setLoading(false);
     })();
-  }, [user, isAffiliate, isEngineer, isStaff]);
+  }, [user, isEngineer, isStaff]);
 
   const saveProfile = async () => {
     if (!user) return;
