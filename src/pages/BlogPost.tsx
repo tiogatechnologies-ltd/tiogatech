@@ -97,7 +97,20 @@ const BlogPost = () => {
           )}
 
           <div className="prose prose-lg dark:prose-invert max-w-none mt-10 prose-headings:font-display prose-headings:tracking-tight prose-headings:mt-10 prose-headings:mb-4 prose-p:my-5 prose-p:leading-relaxed prose-li:my-1.5 prose-a:text-primary prose-img:rounded-xl prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {(() => {
+                let c = post.content ?? "";
+                // Strip a leading markdown image if it duplicates the cover
+                if (post.cover_image_url) {
+                  const re = /^\s*!\[[^\]]*\]\(([^)]+)\)\s*\n+/;
+                  const m = c.match(re);
+                  if (m && m[1].trim() === post.cover_image_url.trim()) {
+                    c = c.replace(re, "");
+                  }
+                }
+                return c;
+              })()}
+            </ReactMarkdown>
           </div>
         </div>
       </article>
