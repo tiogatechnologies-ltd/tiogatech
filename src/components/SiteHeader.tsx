@@ -272,18 +272,20 @@ const SiteHeader = () => {
               </div>
             )}
 
-            {[...brandLinks, ...secondaryLinks].map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                className={({ isActive }) =>
-                  cn("px-3 py-3 rounded-lg text-sm font-medium",
-                    isActive ? "bg-primary/10 text-primary" : "text-foreground/80 hover:bg-muted")
-                }
-              >
-                {l.label}
-              </NavLink>
-            ))}
+            {[...brandLinks, ...secondaryLinks]
+              .filter((l) => l.to !== "/blog")
+              .map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  className={({ isActive }) =>
+                    cn("px-3 py-3 rounded-lg text-sm font-medium",
+                      isActive ? "bg-primary/10 text-primary" : "text-foreground/80 hover:bg-muted")
+                  }
+                >
+                  {l.label}
+                </NavLink>
+              ))}
 
             <button
               type="button"
