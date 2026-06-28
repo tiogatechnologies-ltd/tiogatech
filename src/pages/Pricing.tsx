@@ -36,36 +36,37 @@ const PLANS = [
     accent: "border-primary shadow-[var(--shadow-elevated)]",
     badge: "Most popular",
     features: [
-      "Unlimited AI assessments",
+      "20 AI credits per month",
       "Full engineering reports + PDF",
       "Bill of materials breakdown",
       "Priority recommendations",
-      "Updated recommendations any time",
+      "Unused credits roll over up to 30 days",
     ],
     cta: "Talk to sales",
-    href: `${WA}${encodeURIComponent("Hi Tioga, I'd like to subscribe to AI Starter (₦2,500/mo).")}`,
+    href: `${WA}${encodeURIComponent("Hi Tioga, I'd like to subscribe to AI Starter (₦2,500/mo, 20 credits).")}`,
     external: true,
   },
   {
-    id: "business",
-    name: "AI Business",
+    id: "custom",
+    name: "AI Custom",
     price: "Custom",
     period: "",
     icon: Crown,
     accent: "border-accent",
     features: [
       "Everything in Starter",
-      "Commercial load analysis",
-      "Multi-site assessments",
+      "Choose your monthly credit pack",
+      "Commercial & multi-site assessments",
       "Installer / consultant dashboard",
       "Priority engineer review",
-      "API / bulk access (on request)",
+      "API / bulk access on request",
     ],
-    cta: "Contact sales",
-    href: `${WA}${encodeURIComponent("Hi Tioga, I'd like a quote for the AI Business plan.")}`,
+    cta: "Build my plan",
+    href: `${WA}${encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ")}`,
     external: true,
   },
 ];
+
 
 const Pricing = () => {
   const { user } = useAuth();
@@ -81,7 +82,7 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="AI Pricing — Tioga Energy Intelligence" description="Tioga AI plans: 3 free solar assessments, then ₦2,500/month for unlimited engineering reports, or a custom Business plan for installers and SMEs." path="/ai-pricing" />
+      <SEO title="AI Pricing — Tioga Energy Intelligence" description="Tioga AI plans: 3 free solar assessments, then 20 monthly AI credits for ₦2,500, or a custom credit pack for installers and SMEs." path="/ai-pricing" />
       <SiteHeader />
       <main className="flex-1 bg-muted/20 py-14 sm:py-20 px-4">
         <div className="max-w-6xl mx-auto">
@@ -90,14 +91,15 @@ const Pricing = () => {
               <Sparkles size={12} /> AI Energy Intelligence
             </div>
             <h1 className="text-3xl sm:text-5xl font-display font-bold tracking-tight no-clip">Plans for every solar journey</h1>
-            <p className="mt-4 text-muted-foreground">Use Tioga AI for free up to 3 times. Upgrade when you need unlimited engineering reports, BoMs, and personalized package matches.</p>
+            <p className="mt-4 text-muted-foreground">Use Tioga AI free for your first 3 analyses. Upgrade to 20 monthly credits, or build a custom pack sized to your usage.</p>
           </div>
 
-          {sub && (sub.plan === "starter" || sub.plan === "business") && sub.status === "active" && (
+          {sub && (sub.plan === "starter" || sub.plan === "business" || sub.plan === "custom") && sub.status === "active" && (
             <div className="max-w-md mx-auto mb-8 rounded-2xl border border-primary/40 bg-primary/5 p-4 text-center text-sm">
               You're on <strong className="capitalize">{sub.plan}</strong> · active{sub.expires_at ? ` until ${new Date(sub.expires_at).toLocaleDateString()}` : ""}.
             </div>
           )}
+
 
           <div className="grid md:grid-cols-3 gap-5">
             {PLANS.map((p) => {

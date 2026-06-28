@@ -65,7 +65,10 @@ const AiChatWidget = () => {
       )}
 
       {open && (
-        <div className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 z-50 md:h-[640px] md:w-[400px] md:max-h-[85vh] bg-background md:rounded-2xl md:border md:border-border md:shadow-2xl flex flex-col">
+        <>
+          <div onClick={() => setOpen(false)} className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px] hidden md:block" aria-hidden />
+        <div className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 z-50 md:h-[640px] md:w-[400px] md:max-h-[85vh] bg-background md:rounded-2xl md:border md:border-border md:shadow-2xl flex flex-col" onClick={(e) => e.stopPropagation()}>
+
           <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-gradient-to-r from-primary to-primary/80 text-primary-foreground md:rounded-t-2xl">
             <div className="flex items-center gap-2">
               <div className="h-9 w-9 rounded-full bg-primary-foreground/15 flex items-center justify-center font-display font-bold">V</div>
@@ -162,9 +165,11 @@ const AiChatWidget = () => {
             </button>
           </form>
         </div>
+        </>
       )}
     </>
   );
 };
+
 
 export default AiChatWidget;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { ShieldCheck, LogIn } from "lucide-react";
@@ -12,6 +12,10 @@ const AdminLogin = () => {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (!loading && user && isStaff) navigate("/admin", { replace: true });
+  }, [loading, user, isStaff, navigate]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -20,10 +24,19 @@ const AdminLogin = () => {
     );
   }
 
-  if (user && isStaff) {
-    navigate("/admin");
-    return null;
+  if (user && !isStaff) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-4">
+        <div className="max-w-sm text-center space-y-3">
+          <ShieldCheck className="mx-auto text-muted-foreground" size={32} />
+          <p className="text-sm text-muted-foreground">This account does not have admin or staff access. Please contact your administrator.</p>
+          <button onClick={() => navigate("/")} className="text-sm text-primary font-semibold">Back to website</button>
+        </div>
+      </div>
+    );
   }
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

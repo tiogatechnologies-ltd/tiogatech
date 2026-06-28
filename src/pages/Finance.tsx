@@ -4,6 +4,12 @@ import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroFinance from "@/assets/feature-tablet-monitor.jpg";
+import imgRooftopInstall from "@/assets/bg-rooftop-install.jpg";
+import imgLagosApartment from "@/assets/bg-lagos-apartment.jpg";
+import imgFamilyHome from "@/assets/feature-solar-roof.jpg";
+import imgInstaller from "@/assets/bg-installer.jpg";
+import imgBattery from "@/assets/feature-battery.jpg";
+
 import { MessageCircle, FileText, CreditCard, Wrench, Home, ShieldCheck, Check, ArrowRight, Calculator, Sparkles } from "lucide-react";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
@@ -150,9 +156,35 @@ const Finance = () => {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* VISUAL BAND */}
       <section className="section-padding">
-        <div className="section-container max-w-3xl">
+        <div className="section-container">
+          <div className="grid sm:grid-cols-3 gap-4">
+            {[
+              { img: imgFamilyHome, title: "Power your home", desc: "Lease-to-own systems sized for Nigerian family homes." },
+              { img: imgLagosApartment, title: "Run your business", desc: "Keep shops, salons and offices open through every outage." },
+              { img: imgBattery, title: "Backup that lasts", desc: "Lithium battery banks built for daily cycling, not just outages." },
+            ].map((card) => (
+              <div key={card.title} className="group relative rounded-3xl overflow-hidden border border-border bg-card hover-lift">
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img src={card.img} alt={card.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="p-5">
+                  <h3 className="font-display font-bold text-lg">{card.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{card.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="section-padding bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
+          <img src={imgRooftopInstall} alt="" className="w-full h-full object-cover" />
+        </div>
+        <div className="section-container max-w-3xl relative">
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">How it works</h2>
             <p className="mt-3 text-muted-foreground">Five simple steps from consultation to switching on.</p>
@@ -171,6 +203,7 @@ const Finance = () => {
           </ol>
         </div>
       </section>
+
 
       {/* ELIGIBILITY */}
       <section className="section-padding bg-muted/30">
@@ -191,15 +224,20 @@ const Finance = () => {
       {/* TRUST */}
       <section className="section-padding">
         <div className="section-container">
-          <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 text-center shadow-[var(--shadow-card)]">
-            <ShieldCheck className="text-primary mx-auto mb-4" size={36} />
-            <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight mb-3">Your investment is protected</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Every Flex plan includes 2% insurance, professional installation, and ongoing maintenance support. Your system is covered for the full repayment period.
-            </p>
+          <div className="relative rounded-3xl overflow-hidden border border-border shadow-[var(--shadow-card)]">
+            <img src={imgInstaller} alt="Certified Tioga installer on rooftop" className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-midnight/90 via-midnight/75 to-midnight/40" />
+            <div className="relative p-8 sm:p-14 max-w-2xl text-primary-foreground">
+              <ShieldCheck className="text-gold mb-4" size={36} />
+              <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight mb-3">Your investment is protected</h2>
+              <p className="opacity-90 leading-relaxed">
+                Every Flex plan includes 2% insurance, professional installation, and ongoing maintenance. Your system is covered for the full repayment period and beyond.
+              </p>
+            </div>
           </div>
         </div>
       </section>
+
 
       {/* FAQ */}
       <section className="section-padding bg-muted/30">

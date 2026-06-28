@@ -7,9 +7,10 @@ import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, MessageCircle, Check } from "lucide-react";
 
-const WA_STARTER = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to subscribe to AI Starter (₦2,500/mo).");
-const WA_BUSINESS = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like a quote for the AI Business plan.");
+const WA_STARTER = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to subscribe to AI Starter (₦2,500/mo, 20 credits).");
+const WA_BUSINESS = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like a custom AI credit pack. My monthly usage is around: ");
 const WA_CANCEL = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
+
 
 interface UsageRow {
   id: string;
@@ -53,7 +54,7 @@ const AccountSubscription = () => {
   const used = credits?.used_credits || 0;
   const remaining = Math.max(0, total - used);
   const pct = total > 0 ? Math.min(100, (used / total) * 100) : 0;
-  const hasActiveSub = sub && sub.status === "active" && (sub.plan === "starter" || sub.plan === "business") && (!sub.expires_at || new Date(sub.expires_at) > new Date());
+  const hasActiveSub = sub && sub.status === "active" && (sub.plan === "starter" || sub.plan === "business" || sub.plan === "custom") && (!sub.expires_at || new Date(sub.expires_at) > new Date());
 
   // Aggregations
   const now = new Date();
@@ -100,7 +101,7 @@ const AccountSubscription = () => {
               </div>
               {!hasActiveSub ? (
                 <Link to="/ai-pricing" className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground">
-                  Upgrade to unlimited <ArrowRight size={14} />
+                  Upgrade plan <ArrowRight size={14} />
                 </Link>
               ) : (
                 <div className="flex flex-col items-end gap-2">
@@ -124,11 +125,12 @@ const AccountSubscription = () => {
                   <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
                 </div>
                 {remaining === 0 && (
-                  <p className="text-xs text-destructive mt-2">You've used all your free analyses. Upgrade to AI Starter (₦2,500/mo) for unlimited reports.</p>
+                  <p className="text-xs text-destructive mt-2">You've used all your free analyses. Upgrade to AI Starter (₦2,500/mo · 20 credits) to keep generating reports.</p>
                 )}
               </div>
             )}
           </div>
+
 
           {/* Usage stats grid */}
           <div className="grid sm:grid-cols-3 gap-3">
@@ -188,19 +190,19 @@ const AccountSubscription = () => {
             <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/5 to-transparent p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-1">
                 <Zap size={18} className="text-primary" />
-                <h2 className="font-display font-bold">Upgrade for unlimited AI</h2>
+                <h2 className="font-display font-bold">Upgrade your AI plan</h2>
               </div>
-              <p className="text-xs text-muted-foreground mb-4">Pick the plan that matches how you use Tioga AI.</p>
+              <p className="text-xs text-muted-foreground mb-4">Pick a credit pack that matches how you use Tioga AI.</p>
               <div className="grid md:grid-cols-2 gap-3">
                 <div className="rounded-2xl border-2 border-primary bg-background p-5 relative">
                   <span className="absolute -top-2.5 left-4 inline-flex px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">Most popular</span>
                   <div className="flex items-center gap-2 mb-1"><Zap size={16} className="text-primary" /><h3 className="font-display font-bold">AI Starter</h3></div>
                   <div className="flex items-baseline gap-1 mb-3">
                     <span className="font-display text-2xl font-bold">₦2,500</span>
-                    <span className="text-xs text-muted-foreground">/month</span>
+                    <span className="text-xs text-muted-foreground">/month · 20 credits</span>
                   </div>
                   <ul className="text-xs space-y-1.5 mb-4">
-                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Unlimited AI assessments</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> 20 AI credits per month</li>
                     <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Full engineering reports + PDF</li>
                     <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Bill of materials breakdown</li>
                   </ul>
@@ -209,22 +211,24 @@ const AccountSubscription = () => {
                   </a>
                 </div>
                 <div className="rounded-2xl border border-border bg-background p-5">
-                  <div className="flex items-center gap-2 mb-1"><Crown size={16} className="text-amber-600" /><h3 className="font-display font-bold">AI Business</h3></div>
+                  <div className="flex items-center gap-2 mb-1"><Crown size={16} className="text-amber-600" /><h3 className="font-display font-bold">AI Custom</h3></div>
                   <div className="flex items-baseline gap-1 mb-3">
                     <span className="font-display text-2xl font-bold">Custom</span>
+                    <span className="text-xs text-muted-foreground">credit pack</span>
                   </div>
                   <ul className="text-xs space-y-1.5 mb-4">
                     <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Everything in Starter</li>
-                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Multi-site & commercial analysis</li>
+                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Choose your monthly credit volume</li>
                     <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Priority engineer review</li>
                   </ul>
                   <a href={WA_BUSINESS} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
-                    <MessageCircle size={13} /> Talk to sales
+                    <MessageCircle size={13} /> Build my plan
                   </a>
                 </div>
               </div>
             </div>
           )}
+
 
 
 
