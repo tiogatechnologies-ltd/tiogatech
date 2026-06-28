@@ -100,11 +100,15 @@ const BlogPost = () => {
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {(() => {
                 let c = post.content ?? "";
-                // Strip a leading markdown image if it duplicates the cover
                 if (post.cover_image_url) {
-                  const re = /^\s*!\[[^\]]*\]\(([^)]+)\)\s*\n+/;
-                  const m = c.match(re);
-                  if (m && m[1].trim() === post.cover_image_url.trim()) {
+                  const cover = post.cover_image_url.trim();
+                  // Strip any leading markdown image whose URL matches the cover (even with whitespace/title)
+                  c = c.replace(/^\s*!\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)\s*\n+/, (full, url) => (url.trim() === cover ? "" : full));
+                  // Also strip the first occurrence of the cover image anywhere in the top 400 chars
+                  const head = c.slice(0, 400);
+                  const idx = head.indexOf(cover);
+                  if (idx !== -1) {
+                    const re = new RegExp(`!\\[[^\\]]*\\]\\(\\s*${cover.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[^)]*\\)\\s*\\n?`);
                     c = c.replace(re, "");
                   }
                 }
@@ -112,6 +116,7 @@ const BlogPost = () => {
               })()}
             </ReactMarkdown>
           </div>
+
         </div>
       </article>
 

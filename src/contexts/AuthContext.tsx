@@ -72,15 +72,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let mounted = true;
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!mounted) return;
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) await loadUserData(u.id);
-      if (mounted) setLoading(false);
-    });
+    const init = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error?.message?.toLowerCase().includes("refresh")) {
+          await supabase.auth.signOut().catch(() => {});
+        }
+        if (!mounted) return;
+        const u = session?.user ?? null;
+        setUser(u);
+        if (u) await loadUserData(u.id);
+      } catch (err: any) {
+        console.warn("Auth init failed, clearing session:", err?.message);
+        await supabase.auth.signOut().catch(() => {});
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    init();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!mounted) return;
       const u = session?.user ?? null;
       setUser(u);
@@ -90,6 +101,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setRoles([]);
         setProfile(null);
       }
+      if (event === "TOKEN_REFRESHED" || event === "SIGNED_IN" || event === "SIGNED_OUT") {
+        setLoading(false);
+      }
     });
 
     return () => {
@@ -97,6 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       subscription.unsubscribe();
     };
   }, [loadUserData]);
+
 
   const hasRole = useCallback((role: AppRole) => roles.includes(role), [roles]);
   const hasAnyRole = useCallback((rs: AppRole[]) => rs.some((r) => roles.includes(r)), [roles]);

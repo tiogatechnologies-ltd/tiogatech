@@ -25,19 +25,28 @@ export const useBlogPosts = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      const { data } = await supabase
+    let cancelled = false;
+    const fetchPosts = async (attempt = 0): Promise<void> => {
+      const { data, error } = await supabase
         .from("blog_posts")
         .select("*")
         .eq("published", true)
         .order("published_at", { ascending: false });
+      if (cancelled) return;
+      if ((error || !data) && attempt < 2) {
+        await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+        return fetchPosts(attempt + 1);
+      }
       setPosts((data as BlogPost[]) ?? []);
       setLoading(false);
-    })();
+    };
+    fetchPosts();
+    return () => { cancelled = true; };
   }, []);
 
   return { posts, loading };
 };
+
 
 export const useBlogPost = (slug: string | undefined) => {
   const [post, setPost] = useState<BlogPost | null>(null);
@@ -46,7 +55,8 @@ export const useBlogPost = (slug: string | undefined) => {
 
   useEffect(() => {
     if (!slug) return;
-    (async () => {
+    let cancelled = false;
+    const fetchOne = async (attempt = 0): Promise<void> => {
       setLoading(true);
       const { data, error } = await supabase
         .from("blog_posts")
@@ -54,11 +64,19 @@ export const useBlogPost = (slug: string | undefined) => {
         .eq("slug", slug)
         .eq("published", true)
         .maybeSingle();
+      if (cancelled) return;
+      if ((error || !data) && attempt < 2) {
+        await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
+        return fetchOne(attempt + 1);
+      }
       if (error || !data) setNotFound(true);
       setPost(data as BlogPost | null);
       setLoading(false);
-    })();
+    };
+    fetchOne();
+    return () => { cancelled = true; };
   }, [slug]);
+
 
   return { post, loading, notFound };
 };
