@@ -424,7 +424,7 @@ const LumiVolt = () => {
       </section>
 
       {/* Watts Calculator */}
-      <section className="relative section-padding overflow-hidden">
+      <section id="power-calculator" className="relative section-padding overflow-hidden scroll-mt-24">
         <img src={bgSolarField} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-15" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
         <div className="relative section-container">
