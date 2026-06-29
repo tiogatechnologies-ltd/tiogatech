@@ -116,17 +116,40 @@ const Checkout = () => {
       toast.error("Could not place order. Please try again.");
       return;
     }
-    trackConversion("cart_checkout_lead", { item_count: count, order_number: (data as any)?.order_number });
+    const orderNumber = (data as any)?.order_number || "";
+    trackConversion("cart_checkout_lead", { item_count: count, order_number: orderNumber });
+
+    if (payment === "paystack") {
+      // Launch Paystack hosted checkout
+      const callback = `${window.location.origin}/checkout/success?order=${orderNumber}&method=paystack`;
+      const init = await supabase.functions.invoke("paystack-init", {
+        body: {
+          amount_ngn: total,
+          email: form.email,
+          callback_url: callback,
+          reference: `tioga_${orderNumber || Date.now()}`,
+          metadata: { order_number: orderNumber, full_name: `${form.first_name} ${form.last_name}` },
+        },
+      });
+      if (init.error || (init.data as any)?.error) {
+        setSubmitting(false);
+        toast.error((init.data as any)?.error || "Could not start Paystack checkout. Try another method.");
+        return;
+      }
+      clear();
+      window.location.href = (init.data as any).authorization_url;
+      return;
+    }
 
     if (payment === "whatsapp") {
       const msg = items.map((i, n) => `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` — ${i.price}` : ""}`).join("\n");
-      const text = encodeURIComponent(`Hi Tioga, I just placed order ${(data as any)?.order_number}.\n\n${msg}\n\nTotal: ${formNGN(total)}\nName: ${form.first_name} ${form.last_name}\nPhone: ${form.phone}\nAddress: ${form.address}, ${form.city}, ${form.state}`);
+      const text = encodeURIComponent(`Hi Tioga, I just placed order ${orderNumber}.\n\n${msg}\n\nTotal: ${formNGN(total)}\nName: ${form.first_name} ${form.last_name}\nPhone: ${form.phone}\nAddress: ${form.address}, ${form.city}, ${form.state}`);
       window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank", "noopener,noreferrer");
     }
 
     clear();
     setSubmitting(false);
-    navigate(`/checkout/success?order=${(data as any)?.order_number || ""}&method=${payment}`);
+    navigate(`/checkout/success?order=${orderNumber}&method=${payment}`);
   };
 
   const setF = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -234,11 +257,11 @@ const Checkout = () => {
                   <p className="text-xs text-muted-foreground mt-1">Place the order and complete payment over WhatsApp with our sales team.</p>
                 </div>
               </label>
-              <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-not-allowed opacity-70 ${payment === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                <input type="radio" disabled checked={payment === "paystack"} onChange={() => setPayment("paystack")} className="mt-1" />
+              <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                <input type="radio" checked={payment === "paystack"} onChange={() => setPayment("paystack")} className="mt-1" />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-muted-foreground" /><span className="font-semibold text-sm text-foreground">Card / Paystack <span className="text-[10px] uppercase tracking-wider text-muted-foreground ml-1">coming soon</span></span></div>
-                  <p className="text-xs text-muted-foreground mt-1">Online card payment via Paystack.</p>
+                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Paystack</span></div>
+                  <p className="text-xs text-muted-foreground mt-1">Pay securely with debit card, bank transfer or USSD via Paystack.</p>
                 </div>
               </label>
               <Link to="/finance" className="flex items-start gap-3 rounded-xl border border-dashed border-accent/50 bg-accent/5 p-4 hover:bg-accent/10 transition-colors">
