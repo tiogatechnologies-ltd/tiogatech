@@ -225,6 +225,152 @@ const LumiVolt = () => {
         </div>
       </section>
 
+      {/* Tagline / Mission & Vision */}
+      <section className="relative section-padding overflow-hidden">
+        <img src={bgSolarAerial} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-15" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        <div className="relative section-container max-w-5xl">
+          <div className="text-center mb-10">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Tagline</p>
+            <h2 className="text-3xl sm:text-5xl font-display font-bold text-foreground tracking-tight no-clip">
+              Powering Africa's Clean Energy Future
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              LumiVolt is Africa's next-generation renewable energy management platform — designed to make clean energy smarter, more accessible, and highly efficient. We combine smart metering, AI-driven analytics, and modular energy systems to transform how homes and businesses generate, store, and consume energy.
+            </p>
+            <p className="mt-3 text-sm font-semibold text-primary uppercase tracking-wider">📍 Abuja, Nigeria</p>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2 mt-10">
+            <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 ios-card">
+              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4"><Sparkles className="text-primary" size={22} /></div>
+              <h3 className="font-display font-bold text-xl text-foreground mb-2">Our Mission</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                To make clean energy accessible, efficient, and intelligent — expanding reliable power to homes, businesses, and communities, optimizing usage through smart metering and AI-driven insights, and delivering cost-effective, scalable solutions that empower users with full control and visibility.
+              </p>
+            </div>
+            <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 ios-card">
+              <div className="w-11 h-11 rounded-xl bg-gold/15 flex items-center justify-center mb-4"><Globe className="text-gold" size={22} /></div>
+              <h3 className="font-display font-bold text-xl text-foreground mb-2">Our Vision</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                To power Africa's transition into a connected, intelligent, and sustainable energy ecosystem — where clean energy is accessible to all, systems are self-optimizing, and communities thrive through reliable power. We envision Africa leading the world in renewable energy innovation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What We Do — Detailed Services */}
+      <section className="section-padding bg-muted">
+        <div className="section-container">
+          <div className="text-center mb-12">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">What We Do</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+              Smarter Energy. Lower Costs. Sustainable Future.
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              A unified platform that connects smart metering, AI analytics, modular storage and solar integration.
+            </p>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {[
+              { icon: BarChart3, img: featureApp, title: "Smart Metering Technology", emoji: "⚡", desc: "Gain full visibility and control over your energy usage.", items: ["Real-time monitoring", "Usage insights & reporting", "Cost tracking and optimization"] },
+              { icon: Cpu, img: bgTechMesh, title: "AI-Driven Energy Analytics", emoji: "🧠", desc: "Turn data into smarter energy decisions.", items: ["Predictive consumption", "Automated optimization", "Intelligent energy distribution"] },
+              { icon: Sun, img: featureSolarRoof, title: "Solar Integration (Residential & Commercial)", emoji: "☀️", desc: "Seamless solar solutions for homes and businesses.", items: ["System design & installation", "Hybrid energy solutions", "Long-term cost savings"] },
+              { icon: BatteryCharging, img: featureBattery, title: "Modular Energy Storage Systems", emoji: "🔋", desc: "Reliable energy storage designed for flexibility.", items: ["Scalable battery solutions", "Backup power systems", "Efficient storage and release"] },
+            ].map((s) => (
+              <div key={s.title} className="rounded-3xl overflow-hidden border border-border bg-card ios-card flex flex-col sm:flex-row">
+                <div className="relative sm:w-2/5 h-44 sm:h-auto shrink-0">
+                  <img src={s.img} alt={s.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-midnight/70 to-transparent sm:bg-gradient-to-r" />
+                  <span className="absolute top-3 left-3 text-2xl">{s.emoji}</span>
+                </div>
+                <div className="flex-1 p-5 sm:p-6">
+                  <h3 className="font-display font-bold text-lg text-foreground mb-1.5">{s.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{s.desc}</p>
+                  <ul className="space-y-1.5">
+                    {s.items.map((it) => (
+                      <li key={it} className="flex items-start gap-2 text-sm text-foreground">
+                        <CheckCircle2 className="text-primary mt-0.5 shrink-0" size={14} /> <span>{it}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust / Impact stats */}
+      <section className="relative section-padding overflow-hidden bg-midnight text-primary-foreground">
+        <img src={bgPanelClose} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <div className="absolute inset-0 bg-gradient-to-b from-midnight/90 via-midnight/85 to-midnight/95" />
+        <div className="relative section-container">
+          <div className="text-center mb-12">
+            <p className="text-xs sm:text-sm font-semibold text-gold uppercase tracking-[0.2em] mb-3">Trust / Impact</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight no-clip">Building more than power systems</h2>
+            <p className="mt-3 text-primary-foreground/80 max-w-2xl mx-auto">
+              At LumiVolt we are not just powering homes and businesses — we are powering the future of Africa.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto mb-10">
+            {[
+              { stat: "1,856+", label: "Projects Completed" },
+              { stat: "8+", label: "Years of Experience" },
+              { stat: "2,400+", label: "Happy Customers" },
+              { stat: "60+", label: "Expert Engineers" },
+            ].map((s) => (
+              <div key={s.label} className="rounded-2xl border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-sm p-6 text-center">
+                <p className="text-3xl sm:text-4xl font-display font-bold text-gold mb-1">{s.stat}</p>
+                <p className="text-sm font-medium text-primary-foreground/80">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
+            {[
+              { icon: Cpu, label: "Intelligent Energy Systems" },
+              { icon: Shield, label: "Reliable Power Infrastructure" },
+              { icon: Sparkles, label: "AI-Driven Optimization" },
+              { icon: Globe, label: "Sustainable Impact" },
+            ].map((t) => (
+              <div key={t.label} className="rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-4 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-gold/20 grid place-items-center shrink-0"><t.icon className="text-gold" size={16} /></div>
+                <p className="text-sm font-medium leading-snug">{t.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="section-padding">
+        <div className="section-container max-w-6xl">
+          <div className="text-center mb-10">
+            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Testimonials</p>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">What they say about us</h2>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {[
+              { name: "Adaeze O.", role: "Lekki, Lagos", quote: "Our generator bills dropped over 70% in three months. The LumiVolt app shows exactly what every appliance is doing." },
+              { name: "Mr. Bashir", role: "SME owner, Abuja", quote: "Smart metering caught two faulty ACs that were eating power. Installation was clean and the team is responsive." },
+              { name: "Estate Manager", role: "Port Harcourt", quote: "Modular storage let us start small and scale. Tenants finally have reliable, fair, prepaid power." },
+            ].map((t) => (
+              <figure key={t.name} className="rounded-2xl border border-border bg-card p-6 ios-card">
+                <blockquote className="text-sm text-foreground leading-relaxed">"{t.quote}"</blockquote>
+                <figcaption className="mt-4 pt-4 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.role}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20">
+              Contact Us <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* How it works */}
       <section className="section-padding bg-muted">
