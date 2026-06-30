@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Package, Store, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight, Home, Cpu } from "lucide-react";
+import { Package, Store, Lock, Camera, Lightbulb, Zap, Sun, BatteryCharging, ArrowRight, Home, Cpu, Calculator } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const productHubs = [
@@ -16,6 +16,13 @@ const productHubs = [
     desc: "Individual devices, panels, locks, cameras and more. Order on WhatsApp.",
     to: "/catalog",
     icon: Store,
+  },
+  {
+    name: "Energy Calculator",
+    tag: "Size your system",
+    desc: "Free Nigerian solar calculator — get the exact panel, inverter and battery you need.",
+    to: "/energy-calculator",
+    icon: Calculator,
   },
   {
     name: "VoltAi",
