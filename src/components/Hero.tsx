@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { MessageCircle, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight } from "lucide-react";
+import { Calculator, ShieldCheck, Sun, Zap, Home, Camera, ArrowRight } from "lucide-react";
+import { openEnergyCalculator } from "@/components/EnergyCalculatorDialog";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
 import { trackConversion } from "@/lib/tracking";
 import LetterStagger from "@/components/LetterStagger";
@@ -36,7 +37,6 @@ const Typewriter = ({ words }: { words: string[] }) => {
 };
 
 const Hero = ({ onApply }: HeroProps) => {
-  const whatsappUrl = "https://wa.me/2348178000023";
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -134,16 +134,14 @@ const Hero = ({ onApply }: HeroProps) => {
                 Get My Personalized Quote
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </button>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackConversion("whatsapp_click", { source: "hero" })}
+              <button
+                type="button"
+                onClick={() => { trackConversion("energy_calculator_open", { source: "hero" }); openEnergyCalculator(); }}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 backdrop-blur-md px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 ios-press"
               >
-                <MessageCircle size={14} />
-                Chat on WhatsApp
-              </a>
+                <Calculator size={14} />
+                Energy Calculator
+              </button>
             </div>
 
             {/* Mini stat strip */}

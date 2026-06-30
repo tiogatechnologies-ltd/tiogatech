@@ -20,7 +20,8 @@ export type ConversionEvent =
   | "contact_submitted"
   | "cart_add"
   | "cart_checkout_whatsapp"
-  | "cart_checkout_lead";
+  | "cart_checkout_lead"
+  | "energy_calculator_open";
 
 /** Fire-and-forget conversion tracking. Never blocks UI. */
 export function trackConversion(

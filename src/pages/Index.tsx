@@ -11,9 +11,6 @@ import TrustSection from "@/components/TrustSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
 import SiteFooter from "@/components/SiteFooter";
-import LumiVoltSizer from "@/components/LumiVoltSizer";
-import { Calculator, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
 
 const Index = () => {
@@ -59,31 +56,6 @@ const Index = () => {
         <HowItWorks />
       </div>
       <TargetUsers />
-
-      {/* Calculate your power needs */}
-      <section id="power-calculator" className="section-padding bg-muted/30 scroll-mt-24">
-        <div className="section-container">
-          <div className="text-center mb-8">
-            <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3 inline-flex items-center gap-2 justify-center">
-              <Calculator size={14} /> Free Tool
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
-              Calculate your power needs
-            </h2>
-            <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-              Add your appliances to instantly see your total wattage and the recommended inverter size. No sign-up required.
-            </p>
-          </div>
-          <div className="max-w-2xl mx-auto rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-[var(--shadow-card)]">
-            <LumiVoltSizer />
-          </div>
-          <div className="mt-6 text-center">
-            <Link to="/lumivolt#power-calculator" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
-              Explore LumiVolt residential solar <ArrowRight size={14} />
-            </Link>
-          </div>
-        </div>
-      </section>
 
       <div id="trust">
         <TrustSection />

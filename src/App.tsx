@@ -18,6 +18,7 @@ import LeadFormHost from "@/components/LeadFormHost";
 import { CartProvider } from "@/contexts/CartContext";
 import PreloadCritical from "@/components/PreloadCritical";
 import DeferredMount from "@/components/DeferredMount";
+import EnergyCalculatorDialog from "@/components/EnergyCalculatorDialog";
 
 import Index from "./pages/Index.tsx";
 
@@ -35,6 +36,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost.tsx"));
 const Privacy = lazy(() => import("./pages/Privacy.tsx"));
 const Terms = lazy(() => import("./pages/Terms.tsx"));
 const Packages = lazy(() => import("./pages/Packages.tsx"));
+const EnergyCalculator = lazy(() => import("./pages/EnergyCalculator.tsx"));
 const Customize = lazy(() => import("./pages/Customize.tsx"));
 const Career = lazy(() => import("./pages/Career.tsx"));
 const Jobs = lazy(() => import("./pages/Jobs.tsx"));
@@ -136,6 +138,7 @@ const AnimatedRoutes = () => {
           <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
           <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
           <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
+          <Route path="/energy-calculator" element={<RouteFade><EnergyCalculator /></RouteFade>} />
           <Route path="/customize/:type/:id" element={<RouteFade><Customize /></RouteFade>} />
 
           <Route path="/career" element={<RouteFade><Career /></RouteFade>} />
@@ -228,6 +231,7 @@ const App = () => (
             <BackgroundAura />
             <AutoReveal />
             <LeadFormHost />
+            <EnergyCalculatorDialog />
             <Suspense fallback={null}>
               <CartDrawer />
               <DeferredMount delay={2500}>

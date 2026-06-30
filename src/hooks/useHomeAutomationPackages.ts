@@ -30,32 +30,44 @@ export type HomeAutomationPackage = {
   image: string;
 };
 
+const CACHE_KEY = "tioga:home_automation:v2";
+const decorate = (rows: any[]): HomeAutomationPackage[] =>
+  rows.map((p) => ({ ...p, image: IMAGE_BY_TIER[p.tier] ?? bgAscentia })) as HomeAutomationPackage[];
+
 export const useHomeAutomationPackages = () => {
-  const [packages, setPackages] = useState<HomeAutomationPackage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [packages, setPackages] = useState<HomeAutomationPackage[]>(() => {
+    try {
+      const raw = sessionStorage.getItem(CACHE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) return decorate(parsed);
+      }
+    } catch {}
+    return [];
+  });
+  const [loading, setLoading] = useState(() => packages.length === 0);
 
   useEffect(() => {
     let active = true;
-    (async () => {
+    const run = async (attempt = 0): Promise<void> => {
       const { data, error } = await supabase
         .from("home_automation_packages" as any)
         .select("*")
         .eq("is_active", true)
         .order("sort_order", { ascending: true });
       if (!active) return;
-      if (!error && data) {
-        setPackages(
-          (data as any[]).map((p) => ({
-            ...p,
-            image: IMAGE_BY_TIER[p.tier] ?? bgAscentia,
-          })) as HomeAutomationPackage[]
-        );
+      if ((error || !data) && attempt < 2) {
+        await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
+        return run(attempt + 1);
+      }
+      if (data) {
+        setPackages(decorate(data as any[]));
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch {}
       }
       setLoading(false);
-    })();
-    return () => {
-      active = false;
     };
+    run();
+    return () => { active = false; };
   }, []);
 
   return { packages, loading };
