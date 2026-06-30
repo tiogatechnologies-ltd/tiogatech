@@ -1,137 +1,53 @@
-## Tioga Flex Lease-to-Own + AI Subscription Integration
 
-Three coordinated workstreams replace the current finance model, add a paid AI tier, and stitch the assessment → quote → finance → install pipeline together.
+## 1. Admin access for inememmanuel@gmail.com and @tiogatechnologies.com
+- Add a DB migration that grants `admin` role to any existing `auth.users` row matching `inememmanuel@gmail.com` OR an `@tiogatechnologies.com` email (insert into `public.user_roles` on conflict do nothing).
+- Add a trigger on `auth.users` (insert + update of `email_confirmed_at`) that auto-grants `admin` for verified emails matching those rules (per the email-domain-role-assignment security pattern — verified emails only).
+- Frontend: `AuthContext` already exposes `loading`; double-check `RequireRole` waits for it (it does). Add a small "force refresh roles" call right after sign-in in `AdminLogin` to avoid first-load races.
 
----
+## 2. Hero CTA: replace "Chat on WhatsApp" with "Energy Calculator" popup
+- In `src/components/Hero.tsx`, swap the WhatsApp secondary button for an "Energy Calculator" button that opens a Dialog containing `LumiVoltSizer` (same modal pattern as the AI recommendations popup).
+- New component `src/components/EnergyCalculatorDialog.tsx` (Dialog wrapper around `LumiVoltSizer`, with CTA to the full page).
 
-### 1. Lease-to-Own Finance Overhaul (replaces current model)
+## 3. Remove the homepage calculator section
+- In `src/pages/Index.tsx`, delete the `#power-calculator` section block (the one added previously). Keep the deep-link target on the new full page.
 
-**Database (`site_settings.finance`)** — new structure:
+## 4. New full Energy Calculator page
+- New route `/energy-calculator` → `src/pages/EnergyCalculator.tsx` with:
+  - SEO meta + JSON-LD
+  - Cover image (generate one stock-style hero, stored in `src/assets/`)
+  - Sections: what it does, how it works, why sizing matters, appliance tips, FAQ, embedded `LumiVoltSizer`, CTAs to packages/finance.
+- Add route in `src/App.tsx`.
+- Add link under the "Products" group in the hamburger / mega menu (`SiteHeader.tsx` + `MegaMenu.tsx`).
 
-```json
-{
-  "deposit_pct": 0.30,
-  "insurance_pct": 0.02,
-  "management_pct": 0.01,
-  "tenures_months": [12, 24],
-  "interest_tiers": [
-    { "min": 1000000, "max": 5000000, "rate": 0.09 },
-    { "min": 5000001, "max": 7500000, "rate": 0.15 },
-    { "min": 7500001, "max": null,    "rate": 0.25 }
-  ],
-  "vat_pct": 0.075,
-  "install_pct": 0.10
-}
-```
+## 5. Packages page not loading for some users + speed
+- Audit `src/pages/Packages.tsx` and `useSolarPackages` hook: ensure no infinite spinner when query returns empty; add retry-with-backoff (same pattern as `useBlog.ts`) and a stale-while-revalidate cache in `sessionStorage` so a revisit renders instantly.
+- Fix the deep-link scroll: if data isn't loaded yet, defer the scrollIntoView until after packages render (run in a `useEffect` keyed on `packages.length` + `location.hash`).
+- Add proper empty/error states with a "Retry" button.
 
-**`finance_applications`** — add columns:
-- `interest_rate_pct numeric`
-- `insurance_fee_ngn numeric`
-- `management_fee_ngn numeric`
-- `total_repayment_ngn numeric`
-- `tenure_months int` (kept; constrained to 12 or 24)
+## 6. Minor bugs & cache issues
+- Verify `index.html` cache headers are sane (HTML no-cache, assets hashed/cacheable — already set, re-verify).
+- Add a small `BUILD_ID` query bust on critical Supabase reads that users reported as stale (landing_content, blog_posts, solar_packages) via `sb.from(...).select(...).order(...)` already correct; main fix is the SWR cache + retry pattern.
+- Sweep for known small issues: AI chat outside-click close (verify still works), TelegramWidget popup timing.
 
-**Flagship packages** seeded into `solar_packages` + BoM items in `products`:
-- Package A: 6KVA / 48V / 15.36kWh — ₦8,185,402.50 total
-- Package B: 11KVA / 48V / 20.48kWh — ₦12,033,762.50 total
+## 7. AI Credit Pricing page — 3 tiers
+- Rebuild `src/pages/Pricing.tsx` with **Starters / Businesses / Custom** tiers. Clear distinctions:
+  - **Starters** — ₦2,500/mo · 20 credits · personal use · email support · reports + BoM
+  - **Businesses** — ₦12,000/mo · 120 credits · multi-site, team seats (3), installer dashboard, priority queue, CSV export, monthly insights
+  - **Custom** — Talk to sales · unlimited team seats, custom credit pack, API access, dedicated engineer review, SLA
+- Each tier: icon, distinct accent color, "Best for…" line, feature checklist, CTA (Subscribe via WhatsApp / Build my plan).
+- Keep free 3-credit onboarding banner above the grid (not a tier).
+- Ensure `/ai-pricing` route already wired; add link from `AccountSubscription` + AI chat upgrade dialog.
 
-Each package row stores BoQ JSON (item, qty, price), equipment subtotal, VAT (7.5%), install (10%), and the auto-derived monthly payments for 12 & 24 months.
+## 8. Blog page showing no posts
+- Investigate live: query `blog_posts` for `published=true`. Most likely cause is that the migration adding the 5 SEO posts was either rolled back or `published` defaults to false.
+- Fix via migration: upsert the 5 SEO posts (solar costs, sizing, generators vs solar, financing, smart homes) with `published=true`, `published_at=now()`, proper slugs, cover_image_url, tags, seo_title/seo_description, and bodies that don't begin with a duplicate cover image.
+- Verify `useBlogPosts` already retries — keep as-is.
 
-**Frontend updates**
+## Technical notes
+- All DB changes via `supabase--migration`. Public-schema tables touched (`user_roles`, `blog_posts`) already have GRANTs from prior migrations; the migration only inserts data + a trigger function (SECURITY DEFINER, `search_path=public`).
+- New image asset generated via `imagegen` (premium not needed — no text).
+- No new deps required.
 
-- `src/pages/Finance.tsx` — new calculator: pick package (or enter cost) → shows deposit, tiered interest auto-selected, insurance, management, total repayment, and side-by-side 12-mo vs 24-mo monthly figures. Mirrors the proposal's amortization layout.
-- `src/pages/FinanceApply.tsx` — 3-step form: plan/package → applicant + eligibility docs (ID, utility bill, bank statement, employment/business doc, BVN/NIN, optional guarantor) → review. Uploads to `finance-docs` bucket.
-- `src/components/FlexiblePaymentButton.tsx` — propagate package selection.
-- New `src/lib/financeCalc.ts` — single source of truth for the formula; used by Finance page, FinanceApply, and `approve-finance` edge function.
-
-**Edge function**
-
-- `approve-finance` — rewrite calculation to: deposit = 30%; financed = 70%; interest tier lookup; total = financed + interest + insurance + mgmt; monthly = total / tenure. Schedule generation unchanged shape.
-
-**Admin**
-
-- `AdminFinanceApplications.tsx` — show full breakdown (interest tier, insurance, mgmt, total repayment) in detail drawer.
-- `AdminSettings.tsx` — editor for deposit %, insurance %, mgmt %, tier table, tenures.
-
----
-
-### 2. AI Subscription Paywall (Free 3 + ₦2,500/mo)
-
-**Database — new table `ai_subscriptions`**:
-
-| Field | Notes |
-|---|---|
-| `user_id` | unique |
-| `plan` | enum `free` / `starter` / `business` (business surfaced as "Contact sales") |
-| `status` | `active` / `expired` / `pending` |
-| `started_at`, `expires_at` | manual admin-controlled |
-| `monthly_price_ngn` | default 2500 |
-| `granted_by` | admin user id |
-| `notes` | text |
-
-RLS: user reads own row; admin/staff full access; service_role for edge functions.
-
-**Credit/paywall logic**
-
-- Existing `assessment_credits` (3 free) stays for guests & free tier.
-- `solar-assess` and `ai-recommend` edge functions: before charging a credit, check `ai_subscriptions` — active starter/business = unlimited, skip credit decrement.
-- When free credits exhausted AND no active subscription:
-  - Edge function returns `{ error: "subscription_required" }` HTTP 402.
-  - Frontend shows upgrade dialog (new `src/components/AiUpgradeDialog.tsx`) with two plan cards (Starter ₦2,500/mo, Business "Contact sales") and a WhatsApp CTA to sales.
-
-**Pages**
-
-- `src/pages/Pricing.tsx` (new) — `/ai-pricing`: lists Free, Starter (₦2,500/mo), Business plans + feature matrix + WhatsApp CTA.
-- `src/pages/AccountAssessments.tsx` — replace "X credits left" badge with subscription state ("Free — 2/3 uses left" or "Starter — unlimited until DD MMM").
-- `src/components/AiChatWidget.tsx`, `LumiVoltSizer.tsx`, `SolarAssessment.tsx` — gate behind the same paywall check.
-
-**Admin**
-
-- New `src/pages/AdminAiSubscriptions.tsx` (`/admin/ai-subscriptions`):
-  - Table of all subscriptions, filter by plan/status.
-  - "Grant subscription" action: pick user, plan, duration (1/3/6/12 months), notes → inserts row, emails user.
-  - "Revoke" action.
-  - Linked from sidebar under existing Assessments group.
-
-No payment gateway — all activation is manual via this admin page (WhatsApp/bank confirmation off-platform).
-
----
-
-### 3. End-to-End Journey Wiring (AI → Quote → Finance → Install)
-
-**SolarAssessmentReport.tsx**
-
-- After the recommendation, add a "Next steps" section with three CTAs:
-  1. **Get formal quote** — opens existing `CustomSolutionDialog` prefilled with assessment summary, inverter/battery/panel sizing, contact info.
-  2. **Apply for Flex Pay** — deep-links to `/finance/apply?package=<matched_slug>&assessment=<id>`. If a flagship package matches the recommended sizing (≤6kVA → Package A, 7–11kVA → Package B), preselect it; otherwise pass through total cost from BoM.
-  3. **Schedule installation** — WhatsApp link with assessment ID.
-
-**FinanceApply.tsx**
-
-- Read `package` and `assessment` query params; prefill item_name, total cost, BoM reference, and applicant fields from the assessment's contact block (when logged-in user owns it).
-- On submit, write `assessment_id` into the new column `finance_applications.assessment_id` so admin can see the full lineage.
-
-**Admin lineage**
-
-- `AdminAssessments` row drawer adds links: "Quote requests (N)", "Finance applications (N)" filtered by assessment_id.
-- `AdminFinanceApplications` drawer adds "View source assessment" link.
-
-**Migration adds**: `finance_applications.assessment_id uuid references solar_assessments(id)`.
-
----
-
-### Build order
-
-1. Migration: `finance_applications` columns, `ai_subscriptions` table + grants + RLS, package seed inserts.
-2. `src/lib/financeCalc.ts` + `Finance.tsx` rewrite + `approve-finance` edge function update.
-3. `FinanceApply.tsx` rewrite (eligibility docs + package param).
-4. `ai_subscriptions` paywall: edge function gating, `AiUpgradeDialog`, `Pricing.tsx`, account badge.
-5. `AdminAiSubscriptions.tsx` + sidebar entry + `AdminFinanceApplications` drawer breakdown + `AdminSettings` finance editor.
-6. SolarAssessmentReport "Next steps" CTAs + lineage links in admin pages.
-7. Update sitemap + nav (Footer/MegaMenu link to `/ai-pricing`).
-
-### Out of scope
-
-- Online subscription billing (Paystack/Stripe) — manual only for now.
-- Bank API integration — interest tiers are computed locally; admin still manually approves each application.
-- Mobile app, marketplace, installer network (Phase 2 placeholders only).
+## Out of scope (will not touch)
+- Paystack flow, finance calculator, LumiVolt page content — already shipped.
+- Admin Copilot — confirmed removed.
