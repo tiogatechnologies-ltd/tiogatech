@@ -20,9 +20,21 @@ export interface BlogPost {
   updated_at: string;
 }
 
+const LIST_CACHE = "tioga:blog_posts:v2";
+const POST_CACHE = (slug: string) => `tioga:blog_post:v2:${slug}`;
+
 export const useBlogPosts = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState<BlogPost[]>(() => {
+    try {
+      const raw = sessionStorage.getItem(LIST_CACHE);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) return parsed as BlogPost[];
+      }
+    } catch {}
+    return [];
+  });
+  const [loading, setLoading] = useState(() => posts.length === 0);
 
   useEffect(() => {
     let cancelled = false;
@@ -37,7 +49,10 @@ export const useBlogPosts = () => {
         await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
         return fetchPosts(attempt + 1);
       }
-      setPosts((data as BlogPost[]) ?? []);
+      if (data) {
+        setPosts(data as BlogPost[]);
+        try { sessionStorage.setItem(LIST_CACHE, JSON.stringify(data)); } catch {}
+      }
       setLoading(false);
     };
     fetchPosts();
@@ -47,17 +62,22 @@ export const useBlogPosts = () => {
   return { posts, loading };
 };
 
-
 export const useBlogPost = (slug: string | undefined) => {
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState<BlogPost | null>(() => {
+    if (!slug) return null;
+    try {
+      const raw = sessionStorage.getItem(POST_CACHE(slug));
+      if (raw) return JSON.parse(raw) as BlogPost;
+    } catch {}
+    return null;
+  });
+  const [loading, setLoading] = useState(() => !post);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
     let cancelled = false;
     const fetchOne = async (attempt = 0): Promise<void> => {
-      setLoading(true);
       const { data, error } = await supabase
         .from("blog_posts")
         .select("*")
@@ -69,14 +89,16 @@ export const useBlogPost = (slug: string | undefined) => {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
         return fetchOne(attempt + 1);
       }
-      if (error || !data) setNotFound(true);
-      setPost(data as BlogPost | null);
+      if (!data && !error) setNotFound(true);
+      if (data) {
+        setPost(data as BlogPost);
+        try { sessionStorage.setItem(POST_CACHE(slug), JSON.stringify(data)); } catch {}
+      }
       setLoading(false);
     };
     fetchOne();
     return () => { cancelled = true; };
   }, [slug]);
-
 
   return { post, loading, notFound };
 };

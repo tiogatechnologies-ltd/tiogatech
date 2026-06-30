@@ -36,32 +36,44 @@ const pickImage = (item: { category: string; series: string }) => {
   return bgBase;
 };
 
+const CACHE_KEY = "tioga:smart_locks:v2";
+
 export const useSmartLocks = () => {
-  const [items, setItems] = useState<SmartLock[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState<SmartLock[]>(() => {
+    try {
+      const raw = sessionStorage.getItem(CACHE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) {
+          return parsed.map((p: any) => ({ ...p, image: pickImage(p) })) as SmartLock[];
+        }
+      }
+    } catch {}
+    return [];
+  });
+  const [loading, setLoading] = useState(() => items.length === 0);
 
   useEffect(() => {
     let active = true;
-    (async () => {
+    const run = async (attempt = 0): Promise<void> => {
       const { data, error } = await supabase
         .from("smart_locks" as any)
         .select("*")
         .eq("is_active", true)
         .order("sort_order", { ascending: true });
       if (!active) return;
-      if (!error && data) {
-        setItems(
-          (data as any[]).map((p) => ({
-            ...p,
-            image: pickImage(p),
-          })) as SmartLock[]
-        );
+      if ((error || !data) && attempt < 2) {
+        await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
+        return run(attempt + 1);
+      }
+      if (data) {
+        setItems((data as any[]).map((p) => ({ ...p, image: pickImage(p) })) as SmartLock[]);
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch {}
       }
       setLoading(false);
-    })();
-    return () => {
-      active = false;
     };
+    run();
+    return () => { active = false; };
   }, []);
 
   return { items, loading };
