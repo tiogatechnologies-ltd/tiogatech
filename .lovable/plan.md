@@ -1,53 +1,61 @@
+## Priority 1 — Admin access (permanent fix)
 
-## 1. Admin access for inememmanuel@gmail.com and @tiogatechnologies.com
-- Add a DB migration that grants `admin` role to any existing `auth.users` row matching `inememmanuel@gmail.com` OR an `@tiogatechnologies.com` email (insert into `public.user_roles` on conflict do nothing).
-- Add a trigger on `auth.users` (insert + update of `email_confirmed_at`) that auto-grants `admin` for verified emails matching those rules (per the email-domain-role-assignment security pattern — verified emails only).
-- Frontend: `AuthContext` already exposes `loading`; double-check `RequireRole` waits for it (it does). Add a small "force refresh roles" call right after sign-in in `AdminLogin` to avoid first-load races.
+**Problem:** `inememmanuel@gmail.com` and `tiogatechnologies@gmail.com` sometimes show as "customer" and get blocked from `/admin`. Existing trigger only covers verified `@tiogatechnologies.com` domain + `inememmanuel@gmail.com`, and only fires on future auth events — it doesn't heal existing rows or the second Gmail address.
 
-## 2. Hero CTA: replace "Chat on WhatsApp" with "Energy Calculator" popup
-- In `src/components/Hero.tsx`, swap the WhatsApp secondary button for an "Energy Calculator" button that opens a Dialog containing `LumiVoltSizer` (same modal pattern as the AI recommendations popup).
-- New component `src/components/EnergyCalculatorDialog.tsx` (Dialog wrapper around `LumiVoltSizer`, with CTA to the full page).
+**Fix:**
 
-## 3. Remove the homepage calculator section
-- In `src/pages/Index.tsx`, delete the `#power-calculator` section block (the one added previously). Keep the deep-link target on the new full page.
+1. **Migration** — extend `grant_admin_for_verified_tioga_email()` to also match `tiogatechnologies@gmail.com` (exact address). Backfill: `INSERT INTO user_roles(user_id,'admin') SELECT id FROM auth.users WHERE lower(email) IN (...) OR lower(split_part(email,'@',2))='tiogatechnologies.com' ON CONFLICT DO NOTHING`. Also **remove** the stray `'customer'` row for these accounts so the UI badge is correct.
+2. **Password reset** — reset `inememmanuel@gmail.com` password to `emma2013e` via a one-off admin edge function call (`supabase.auth.admin.updateUserById`) invoked from a new `bootstrap-superadmin` edge function that runs the backfill + password set. Safe because it's guarded by service role and hardcoded email allowlist.
+3. **RequireRole race** — `AuthContext.loadUserData` runs async after `setUser`; roles can briefly be `[]` causing `<Navigate to="/">`. Change `RequireRole` to also wait for a `rolesLoaded` flag (new state in AuthContext set true after `loadUserData` resolves), not just `loading`.
+4. **AdminLogin** — after successful `signIn`, explicitly `await refreshProfile()` before navigating to `/admin` so the first render already has roles.
+5. **Account page role badge** — show highest role (admin > staff > affiliate > customer) instead of first one, so admins never display as "customer". [inememmanuel@gmail.com](mailto:inememmanuel@gmail.com) must always be seen as an admin.
 
-## 4. New full Energy Calculator page
-- New route `/energy-calculator` → `src/pages/EnergyCalculator.tsx` with:
-  - SEO meta + JSON-LD
-  - Cover image (generate one stock-style hero, stored in `src/assets/`)
-  - Sections: what it does, how it works, why sizing matters, appliance tips, FAQ, embedded `LumiVoltSizer`, CTAs to packages/finance.
-- Add route in `src/App.tsx`.
-- Add link under the "Products" group in the hamburger / mega menu (`SiteHeader.tsx` + `MegaMenu.tsx`).
+## Priority 2 — Cache issues (users can't see blog/packages)
 
-## 5. Packages page not loading for some users + speed
-- Audit `src/pages/Packages.tsx` and `useSolarPackages` hook: ensure no infinite spinner when query returns empty; add retry-with-backoff (same pattern as `useBlog.ts`) and a stale-while-revalidate cache in `sessionStorage` so a revisit renders instantly.
-- Fix the deep-link scroll: if data isn't loaded yet, defer the scrollIntoView until after packages render (run in a `useEffect` keyed on `packages.length` + `location.hash`).
-- Add proper empty/error states with a "Retry" button.
+**Root cause:** SWR layer stores in `sessionStorage` keyed by hook name with no version key. When a migration republishes posts or toggles `published`, stale clients keep serving the old empty payload until the tab is closed.
 
-## 6. Minor bugs & cache issues
-- Verify `index.html` cache headers are sane (HTML no-cache, assets hashed/cacheable — already set, re-verify).
-- Add a small `BUILD_ID` query bust on critical Supabase reads that users reported as stale (landing_content, blog_posts, solar_packages) via `sb.from(...).select(...).order(...)` already correct; main fix is the SWR cache + retry pattern.
-- Sweep for known small issues: AI chat outside-click close (verify still works), TelegramWidget popup timing.
+**Fix:**
 
-## 7. AI Credit Pricing page — 3 tiers
-- Rebuild `src/pages/Pricing.tsx` with **Starters / Businesses / Custom** tiers. Clear distinctions:
-  - **Starters** — ₦2,500/mo · 20 credits · personal use · email support · reports + BoM
-  - **Businesses** — ₦12,000/mo · 120 credits · multi-site, team seats (3), installer dashboard, priority queue, CSV export, monthly insights
-  - **Custom** — Talk to sales · unlimited team seats, custom credit pack, API access, dedicated engineer review, SLA
-- Each tier: icon, distinct accent color, "Best for…" line, feature checklist, CTA (Subscribe via WhatsApp / Build my plan).
-- Keep free 3-credit onboarding banner above the grid (not a tier).
-- Ensure `/ai-pricing` route already wired; add link from `AccountSubscription` + AI chat upgrade dialog.
+1. Add a global `CACHE_VERSION` constant (bumped per deploy via Vite `__BUILD_ID__` define). All SWR hooks (`useBlog`, `useSolarPackages`, `useSmartLocks`, `useHomeAutomationPackages`, `useLandingContent`) prefix their sessionStorage key with the build id; stale versions are ignored and purged.
+2. Add a lightweight `site_cache_bust` row in `site_settings` (single row, `updated_at`). On app boot, fetch it once; if newer than local `lastBust`, clear all `tioga:` sessionStorage keys.
+3. New **Admin Settings → "Clear website cache" button** that:
+  - Bumps `site_cache_bust.updated_at = now()` (all clients invalidate on next load).
+  - Calls a new `purge-cache` edge function that: touches the row, and pings `/` with a cache-buster to warm the CDN.
+  - Also clears local admin's own storage.
+4. Show a small toast "All visitors will fetch fresh data within 60s".
+5. Add explicit empty/error/retry state to `Blog.tsx` and `Packages.tsx` so a transient empty fetch no longer looks like "nothing exists".
 
-## 8. Blog page showing no posts
-- Investigate live: query `blog_posts` for `published=true`. Most likely cause is that the migration adding the 5 SEO posts was either rolled back or `published` defaults to false.
-- Fix via migration: upsert the 5 SEO posts (solar costs, sizing, generators vs solar, financing, smart homes) with `published=true`, `published_at=now()`, proper slugs, cover_image_url, tags, seo_title/seo_description, and bodies that don't begin with a duplicate cover image.
-- Verify `useBlogPosts` already retries — keep as-is.
+## Priority 3 — Google Drive backup
 
-## Technical notes
-- All DB changes via `supabase--migration`. Public-schema tables touched (`user_roles`, `blog_posts`) already have GRANTs from prior migrations; the migration only inserts data + a trigger function (SECURITY DEFINER, `search_path=public`).
-- New image asset generated via `imagegen` (premium not needed — no text).
-- No new deps required.
+1. Use existing `google_drive` connector (already wired) — no new secret needed.
+2. New edge function `backup-to-drive`:
+  - Dumps key tables to JSON via `service_role` (`profiles`, `orders`, `order_items`, `products`, `solar_packages`, `home_automation_packages`, `smart_locks`, `blog_posts`, `leads`, `finance_applications`, `solar_assessments`, `lumivolt_sizings`, `newsletter_subscribers`, `affiliates`, `user_roles`, `landing_content`, `careers`, `career_applications`).
+  - Zips into a single `tioga-backup-YYYY-MM-DD.json` (JSON per table).
+  - Uploads to Drive via connector gateway multipart upload into a `Tioga Backups` folder (created if missing).
+3. **Admin Settings → "Backups" card:**
+  - "Backup now" button → invokes function, shows Drive file link on success.
+  - Schedule toggle → `pg_cron` daily 02:00 WAT.
+  - Table listing last 10 backups (new `backups_log` table: filename, drive_file_id, size, created_at, status).
 
-## Out of scope (will not touch)
-- Paystack flow, finance calculator, LumiVolt page content — already shipped.
-- Admin Copilot — confirmed removed.
+## Priority 4 — Routing & UX fixes
+
+1. **Pricing route:** wherever code links to the "2 plans" page (`AccountSubscription`, `AiUpgradeDialog`, AI chat upsell), change every `/pricing` / `/subscription` upgrade link to `/ai-pricing` (the 3-tier page). Audit: `AccountSubscription.tsx`, `AiChatWidget.tsx`, `AiUpgradeDialog.tsx`, Account.tsx CTA.
+2. **Merge Pricing with AccountSubscription:** delete standalone `/subscription` page content; make `AccountSubscription` embed the 3-tier pricing grid (Starters/Businesses/Custom) plus the user's current plan card, credits meter, usage history, and "Manage" actions. Redirect old `/subscription` → `/account/subscription`. Keep `/ai-pricing` as the public marketing route that shows the same tier grid without the user-scoped panels.
+3. **Energy Calculator → LumiVolt back button:** add a top-of-page "← Back to LumiVolt" link on `EnergyCalculator.tsx` (and inside the popup dialog footer).
+4. **Waitlist as popup:**
+  - Convert `AppWaitlistForm` into a Dialog-wrapped `WaitlistDialog` (pattern from `EnergyCalculatorDialog`).
+  - Everywhere a "Download App" / "Join Waitlist" button exists (Hero, Footer, mobile menu, StickyCTA) → open the dialog instead of navigating to `/coming-soon` or a dedicated waitlist route.
+  - Keep `/coming-soon` reachable but no longer the primary CTA target.
+5. Add new feature badge to the Energy Calculator, LumiVolt, Finance pages so new users can easily know all the new features that has been added to the website. There should also be occasional popups telling users to try out a new feature so they can be aware.
+
+## Technical notes (non-user-facing)
+
+- Migration is one file: extend trigger fn, backfill roles, drop stray customer rows for the two superadmins, add `site_cache_bust` row + `backups_log` table (with GRANTs + admin-only RLS) + optional `pg_cron` schedule.
+- Edge functions: `bootstrap-superadmin` (one-shot, callable by admin only), `backup-to-drive`, `purge-cache`.
+- No new external secrets. Google Drive uses the existing connector; Paystack + Lovable AI already configured.
+- AuthContext gets a `rolesLoaded` boolean; `RequireRole` blocks render until both `!loading && rolesLoaded`.
+
+## Out of scope
+
+- No visual redesign beyond the merged subscription page.
+- Finance, LumiVolt content, checkout flow — untouched.
