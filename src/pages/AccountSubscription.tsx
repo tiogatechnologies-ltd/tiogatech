@@ -5,11 +5,60 @@ import { useAuth } from "@/contexts/AuthContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
-import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, MessageCircle, Check } from "lucide-react";
+import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, MessageCircle, Check, Building2, Star } from "lucide-react";
 
-const WA_STARTER = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to subscribe to AI Starter (₦2,500/mo, 20 credits).");
-const WA_BUSINESS = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like a custom AI credit pack. My monthly usage is around: ");
-const WA_CANCEL = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
+const WA = "https://wa.me/2348178000023?text=";
+const WA_STARTER = WA + encodeURIComponent("Hi Tioga, I'd like to subscribe to the Starters AI plan (₦2,500/mo, 20 credits).");
+const WA_BUSINESS = WA + encodeURIComponent("Hi Tioga, I'd like to subscribe to the Businesses AI plan (₦12,000/mo, 120 credits).");
+const WA_CUSTOM = WA + encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ");
+const WA_CANCEL = WA + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
+
+type PlanTier = { id: string; name: string; bestFor: string; price: string; period: string; credits: string; icon: any; ring: string; accent: string; badge?: string; features: string[]; cta: string; href: string };
+const TIERS: PlanTier[] = [
+  {
+    id: "starter",
+    name: "Starters",
+    bestFor: "Homeowners & DIY planners",
+    price: "₦2,500",
+    period: "/mo",
+    credits: "20 AI credits",
+    icon: Zap,
+    ring: "border-border",
+    accent: "from-emerald-500/10 to-transparent",
+    features: ["20 AI assessments / month", "Full sizing report + BoM PDF", "Personalised package match", "Email support (24h)", "Cancel anytime"],
+    cta: "Subscribe via WhatsApp",
+    href: WA_STARTER,
+  },
+  {
+    id: "business",
+    name: "Businesses",
+    bestFor: "Installers, SMEs & multi-site",
+    price: "₦12,000",
+    period: "/mo",
+    credits: "120 AI credits",
+    icon: Building2,
+    ring: "border-primary shadow-[var(--shadow-elevated)]",
+    accent: "from-primary/15 to-transparent",
+    badge: "Most popular",
+    features: ["120 AI assessments / month", "Team seats (up to 3)", "Installer dashboard + CSV export", "Priority engineer review", "WhatsApp support (4h)"],
+    cta: "Subscribe via WhatsApp",
+    href: WA_BUSINESS,
+  },
+  {
+    id: "custom",
+    name: "Custom",
+    bestFor: "Agencies, EPCs & enterprise",
+    price: "Let's talk",
+    period: "",
+    credits: "Unlimited team seats",
+    icon: Crown,
+    ring: "border-accent",
+    accent: "from-accent/20 to-transparent",
+    features: ["Choose your monthly credit pack", "Unlimited team seats", "Dedicated engineer review", "API access & SSO", "SLA + named account manager"],
+    cta: "Build my plan",
+    href: WA_CUSTOM,
+  },
+];
 
 
 interface UsageRow {
