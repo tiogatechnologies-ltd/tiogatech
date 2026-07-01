@@ -13,6 +13,7 @@ import {
   Cpu,
   ShieldCheck,
   ArrowRight,
+  ArrowLeft,
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
@@ -71,12 +72,25 @@ const EnergyCalculator = () => {
           <Calculator size={16} /> Start calculating
         </a>
         <Link
+          to="/lumivolt"
+          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15"
+        >
+          <ArrowLeft size={16} /> Back to LumiVolt
+        </Link>
+        <Link
           to="/packages"
           className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15"
         >
           See ready-made packages <ArrowRight size={16} />
         </Link>
       </PageHero>
+
+      {/* Sticky back-to-LumiVolt link */}
+      <div className="section-container mt-4">
+        <Link to="/lumivolt" className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:underline">
+          <ArrowLeft size={14} /> Back to LumiVolt
+        </Link>
+      </div>
 
       {/* How it works */}
       <section className="section-padding bg-background">

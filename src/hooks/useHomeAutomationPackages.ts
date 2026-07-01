@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { cacheKey } from "@/lib/cache";
 import bgAscentia from "@/assets/feature-control-panel.jpg";
 import bgSprout from "@/assets/offer-automation.jpg";
 import bgIbiza from "@/assets/hero-smart-home.jpg";
@@ -30,7 +31,7 @@ export type HomeAutomationPackage = {
   image: string;
 };
 
-const CACHE_KEY = "tioga:home_automation:v2";
+const CACHE_KEY = cacheKey("home_automation");
 const decorate = (rows: any[]): HomeAutomationPackage[] =>
   rows.map((p) => ({ ...p, image: IMAGE_BY_TIER[p.tier] ?? bgAscentia })) as HomeAutomationPackage[];
 

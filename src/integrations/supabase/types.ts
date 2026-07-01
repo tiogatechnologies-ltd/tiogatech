@@ -354,6 +354,45 @@ export type Database = {
         }
         Relationships: []
       }
+      backups_log: {
+        Row: {
+          created_at: string
+          drive_file_id: string | null
+          drive_web_link: string | null
+          error_message: string | null
+          filename: string
+          id: string
+          size_bytes: number | null
+          status: string
+          tables_count: number | null
+          triggered_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          drive_file_id?: string | null
+          drive_web_link?: string | null
+          error_message?: string | null
+          filename: string
+          id?: string
+          size_bytes?: number | null
+          status?: string
+          tables_count?: number | null
+          triggered_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          drive_file_id?: string | null
+          drive_web_link?: string | null
+          error_message?: string | null
+          filename?: string
+          id?: string
+          size_bytes?: number | null
+          status?: string
+          tables_count?: number | null
+          triggered_by?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author: string

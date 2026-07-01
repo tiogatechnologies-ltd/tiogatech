@@ -20,6 +20,7 @@ interface AuthContextType {
   isStaff: boolean;
   isAffiliate: boolean;
   loading: boolean;
+  rolesLoaded: boolean;
   hasRole: (role: AppRole) => boolean;
   hasAnyRole: (roles: AppRole[]) => boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
@@ -37,6 +38,7 @@ const AuthContext = createContext<AuthContextType>({
   isStaff: false,
   isAffiliate: false,
   loading: true,
+  rolesLoaded: false,
   hasRole: () => false,
   hasAnyRole: () => false,
   signIn: async () => ({ error: null }),
@@ -53,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [roles, setRoles] = useState<AppRole[]>([]);
   const [loading, setLoading] = useState(true);
+  const [rolesLoaded, setRolesLoaded] = useState(false);
 
   const loadUserData = useCallback(async (userId: string) => {
     try {
@@ -60,12 +63,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         supabase.from("user_roles").select("role").eq("user_id", userId),
         supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
       ]);
-      if (rolesRes.data) setRoles(rolesRes.data.map((r: any) => r.role as AppRole));
+      setRoles(rolesRes.data ? rolesRes.data.map((r: any) => r.role as AppRole) : []);
       if (profileRes.data) setProfile(profileRes.data as Profile);
     } catch (err) {
       console.error("Failed to load user data:", err);
       setRoles([]);
       setProfile(null);
+    } finally {
+      setRolesLoaded(true);
     }
   }, []);
 
@@ -82,9 +87,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const u = session?.user ?? null;
         setUser(u);
         if (u) await loadUserData(u.id);
+        else setRolesLoaded(true);
       } catch (err: any) {
         console.warn("Auth init failed, clearing session:", err?.message);
         await supabase.auth.signOut().catch(() => {});
+        setRolesLoaded(true);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -100,6 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         setRoles([]);
         setProfile(null);
+        setRolesLoaded(true);
       }
       if (event === "TOKEN_REFRESHED" || event === "SIGNED_IN" || event === "SIGNED_OUT") {
         setLoading(false);
@@ -160,7 +168,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAffiliate = roles.includes("affiliate");
 
   return (
-    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, hasRole, hasAnyRole, signIn, signUp, signInWithGoogle, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, rolesLoaded, hasRole, hasAnyRole, signIn, signUp, signInWithGoogle, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

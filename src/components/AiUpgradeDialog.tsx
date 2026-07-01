@@ -16,17 +16,17 @@ const AiUpgradeDialog = ({ open, onOpenChange }: Props) => (
         <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary inline-flex items-center justify-center mb-2"><Zap size={20} /></div>
         <DialogTitle className="font-display text-xl">You've used your 3 free analyses</DialogTitle>
         <DialogDescription>
-          Upgrade to <strong className="text-foreground">AI Starter</strong> for unlimited solar assessments and full engineering reports.
+          Upgrade to <strong className="text-foreground">AI Starter</strong> for 20 monthly credits and full engineering reports.
         </DialogDescription>
       </DialogHeader>
 
       <div className="rounded-2xl border border-primary/30 bg-primary/5 p-5 my-2">
         <div className="flex items-baseline gap-2">
           <span className="font-display text-3xl font-bold">₦2,500</span>
-          <span className="text-sm text-muted-foreground">/month</span>
+          <span className="text-sm text-muted-foreground">/month · 20 credits</span>
         </div>
         <ul className="mt-3 space-y-1.5 text-sm">
-          <li className="flex items-start gap-2"><Check className="text-primary mt-0.5 shrink-0" size={14} />Unlimited AI assessments</li>
+          <li className="flex items-start gap-2"><Check className="text-primary mt-0.5 shrink-0" size={14} />20 AI assessments per month</li>
           <li className="flex items-start gap-2"><Check className="text-primary mt-0.5 shrink-0" size={14} />Full engineering reports + PDF</li>
           <li className="flex items-start gap-2"><Check className="text-primary mt-0.5 shrink-0" size={14} />Bill of materials and package match</li>
         </ul>

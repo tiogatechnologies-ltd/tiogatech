@@ -61,12 +61,13 @@ const LumiVolt = () => {
         backgroundImage={bgResidential}
         backgroundAlt="Modern Nigerian home with rooftop solar at golden hour"
       >
-        <Link
-          to="/coming-soon"
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new CustomEvent("tioga:open-waitlist"))}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
         >
           <Download size={16} /> Download App
-        </Link>
+        </button>
       </PageHero>
 
       {/* Project Overview */}
@@ -455,12 +456,13 @@ const LumiVolt = () => {
                 </li>
               ))}
             </ul>
-            <Link
-              to="/coming-soon"
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("tioga:open-waitlist"))}
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
             >
               <Download size={16} /> Download App
-            </Link>
+            </button>
           </div>
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Looking for smart locks, lighting and home automation? Visit{" "}

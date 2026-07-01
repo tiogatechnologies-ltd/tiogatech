@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { cacheKey } from "@/lib/cache";
 
 export interface BlogPost {
   id: string;
@@ -20,8 +21,8 @@ export interface BlogPost {
   updated_at: string;
 }
 
-const LIST_CACHE = "tioga:blog_posts:v2";
-const POST_CACHE = (slug: string) => `tioga:blog_post:v2:${slug}`;
+const LIST_CACHE = cacheKey("blog_posts");
+const POST_CACHE = (slug: string) => cacheKey(`blog_post:${slug}`);
 
 export const useBlogPosts = () => {
   const [posts, setPosts] = useState<BlogPost[]>(() => {
