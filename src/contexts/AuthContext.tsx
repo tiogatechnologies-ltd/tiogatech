@@ -88,8 +88,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(u);
         if (u) await loadUserData(u.id);
         else setRolesLoaded(true);
+      } catch (err: any) {
         console.warn("Auth init failed, clearing session:", err?.message);
         await supabase.auth.signOut().catch(() => {});
+        setRolesLoaded(true);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -105,6 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         setRoles([]);
         setProfile(null);
+        setRolesLoaded(true);
       }
       if (event === "TOKEN_REFRESHED" || event === "SIGNED_IN" || event === "SIGNED_OUT") {
         setLoading(false);
@@ -165,7 +168,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAffiliate = roles.includes("affiliate");
 
   return (
-    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, hasRole, hasAnyRole, signIn, signUp, signInWithGoogle, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, rolesLoaded, hasRole, hasAnyRole, signIn, signUp, signInWithGoogle, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );
