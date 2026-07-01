@@ -512,4 +512,77 @@ const AdminSettings = () => {
   );
 };
 
+// ---- Cache purge card ----
+function CachePurgeCard() {
+  const [busy, setBusy] = useState(false);
+  const purge = async () => {
+    setBusy(true);
+    try {
+      const at = await bumpGlobalCache();
+      toast.success("Cache cleared. All visitors will fetch fresh data within 60s.");
+    } catch (e: any) {
+      toast.error(e?.message || "Could not clear cache");
+    } finally { setBusy(false); }
+  };
+  return (
+    <Card title="Website cache" desc="Force every browser to fetch fresh blog posts, packages and landing content.">
+      <button onClick={purge} disabled={busy} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-60">
+        {busy ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+        {busy ? "Clearing…" : "Clear website cache"}
+      </button>
+    </Card>
+  );
+}
+
+// ---- Google Drive backup card ----
+function GoogleDriveBackupCard() {
+  const [busy, setBusy] = useState(false);
+  const [rows, setRows] = useState<any[]>([]);
+  const load = async () => {
+    const { data } = await supabase.from("backups_log" as any).select("*").order("created_at", { ascending: false }).limit(10);
+    setRows((data as any[]) || []);
+  };
+  useEffect(() => { load(); }, []);
+  const run = async () => {
+    setBusy(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("backup-to-drive");
+      if (error) throw error;
+      toast.success("Backup uploaded to Google Drive");
+      load();
+    } catch (e: any) {
+      toast.error(e?.message || "Backup failed");
+    } finally { setBusy(false); }
+  };
+  return (
+    <Card title="Google Drive backups" desc="Full JSON snapshot of the database uploaded to the Tioga Drive account.">
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <button onClick={run} disabled={busy} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-60">
+          {busy ? <Loader2 size={14} className="animate-spin" /> : <CloudUpload size={14} />}
+          {busy ? "Backing up…" : "Backup now"}
+        </button>
+        <span className="text-xs text-muted-foreground">Uses the connected Google Drive account. Files land in the "Tioga Backups" folder.</span>
+      </div>
+      {rows.length === 0 ? (
+        <p className="text-xs text-muted-foreground">No backups yet.</p>
+      ) : (
+        <ul className="divide-y divide-border text-sm rounded-xl border border-border overflow-hidden">
+          {rows.map((r) => (
+            <li key={r.id} className="px-3 py-2.5 flex items-center gap-2">
+              <span className={`h-1.5 w-1.5 rounded-full ${r.status === "success" ? "bg-emerald-500" : "bg-destructive"}`} />
+              <div className="min-w-0 flex-1">
+                <div className="font-medium truncate">{r.filename}</div>
+                <div className="text-[11px] text-muted-foreground">{new Date(r.created_at).toLocaleString()} · {r.tables_count || 0} tables · {r.size_bytes ? Math.round(r.size_bytes / 1024) + " KB" : "—"}</div>
+              </div>
+              {r.drive_web_link && (
+                <a href={r.drive_web_link} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">Open <ExternalLink size={11} /></a>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </Card>
+  );
+}
+
 export default AdminSettings;
