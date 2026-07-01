@@ -234,49 +234,71 @@ const AccountSubscription = () => {
             </div>
           )}
 
-          {/* Plan comparison / upgrade */}
-          {!hasActiveSub && (
-            <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/5 to-transparent p-5 sm:p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <Zap size={18} className="text-primary" />
-                <h2 className="font-display font-bold">Upgrade your AI plan</h2>
-              </div>
-              <p className="text-xs text-muted-foreground mb-4">Pick a credit pack that matches how you use Tioga AI.</p>
-              <div className="grid md:grid-cols-2 gap-3">
-                <div className="rounded-2xl border-2 border-primary bg-background p-5 relative">
-                  <span className="absolute -top-2.5 left-4 inline-flex px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">Most popular</span>
-                  <div className="flex items-center gap-2 mb-1"><Zap size={16} className="text-primary" /><h3 className="font-display font-bold">AI Starter</h3></div>
-                  <div className="flex items-baseline gap-1 mb-3">
-                    <span className="font-display text-2xl font-bold">₦2,500</span>
-                    <span className="text-xs text-muted-foreground">/month · 20 credits</span>
-                  </div>
-                  <ul className="text-xs space-y-1.5 mb-4">
-                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> 20 AI credits per month</li>
-                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Full engineering reports + PDF</li>
-                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Bill of materials breakdown</li>
-                  </ul>
-                  <a href={WA_STARTER} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground px-4 py-2.5 text-sm font-semibold">
-                    <MessageCircle size={13} /> Activate via WhatsApp
-                  </a>
-                </div>
-                <div className="rounded-2xl border border-border bg-background p-5">
-                  <div className="flex items-center gap-2 mb-1"><Crown size={16} className="text-amber-600" /><h3 className="font-display font-bold">AI Custom</h3></div>
-                  <div className="flex items-baseline gap-1 mb-3">
-                    <span className="font-display text-2xl font-bold">Custom</span>
-                    <span className="text-xs text-muted-foreground">credit pack</span>
-                  </div>
-                  <ul className="text-xs space-y-1.5 mb-4">
-                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Everything in Starter</li>
-                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Choose your monthly credit volume</li>
-                    <li className="flex gap-1.5"><Check size={12} className="text-primary mt-0.5 shrink-0" /> Priority engineer review</li>
-                  </ul>
-                  <a href={WA_BUSINESS} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
-                    <MessageCircle size={13} /> Build my plan
-                  </a>
-                </div>
-              </div>
+          {/* Full 3-tier plan grid — merged from the standalone AI pricing page */}
+          <div className="rounded-3xl border border-border bg-card p-5 sm:p-7">
+            <div className="flex items-center gap-2 mb-1">
+              <Sparkles size={18} className="text-primary" />
+              <h2 className="font-display font-bold">{hasActiveSub ? "Compare & change plan" : "Choose your AI plan"}</h2>
             </div>
-          )}
+            <p className="text-xs text-muted-foreground mb-5">
+              Every account starts with <strong className="text-foreground">3 free AI assessments</strong>. Upgrade only when you need more.
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {TIERS.map((p) => {
+                const Icon = p.icon;
+                const isCurrent = hasActiveSub && sub?.plan === p.id;
+                return (
+                  <div key={p.id} className={`relative rounded-2xl border bg-background overflow-hidden flex flex-col ${p.ring}`}>
+                    <div className={`absolute inset-x-0 top-0 h-24 bg-gradient-to-b ${p.accent} pointer-events-none`} />
+                    {p.badge && (
+                      <span className="absolute top-3 right-3 inline-flex px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">
+                        {p.badge}
+                      </span>
+                    )}
+                    {isCurrent && (
+                      <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 text-[10px] font-bold uppercase tracking-widest">
+                        <Star size={10} /> Current
+                      </span>
+                    )}
+                    <div className="relative p-5 flex flex-col flex-1">
+                      <div className="w-11 h-11 rounded-2xl bg-background border border-border inline-flex items-center justify-center mb-3 text-primary">
+                        <Icon size={20} />
+                      </div>
+                      <h3 className="font-display text-lg font-bold">{p.name}</h3>
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">{p.bestFor}</p>
+                      <div className="mt-3 flex items-baseline gap-1">
+                        <span className="font-display text-2xl font-bold">{p.price}</span>
+                        <span className="text-xs text-muted-foreground">{p.period}</span>
+                      </div>
+                      <p className="mt-0.5 text-xs font-semibold text-primary">{p.credits}</p>
+                      <div className="my-3 h-px bg-border" />
+                      <ul className="space-y-1.5 text-xs flex-1">
+                        {p.features.map((f) => (
+                          <li key={f} className="flex items-start gap-1.5">
+                            <Check className="text-primary mt-0.5 shrink-0" size={12} />
+                            <span className="text-foreground/90">{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <a
+                        href={p.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold ${isCurrent ? "border border-border bg-background hover:bg-muted" : "bg-primary text-primary-foreground hover:brightness-110"}`}
+                      >
+                        <MessageCircle size={13} /> {isCurrent ? "Manage on WhatsApp" : p.cta}
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <p className="mt-5 text-[11px] text-muted-foreground text-center">
+              Plans are activated by our sales team after payment confirmation (bank transfer or Paystack). Activation within 1 business hour.
+            </p>
+          </div>
 
 
 
