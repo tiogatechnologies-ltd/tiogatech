@@ -20,6 +20,7 @@ interface AuthContextType {
   isStaff: boolean;
   isAffiliate: boolean;
   loading: boolean;
+  rolesLoaded: boolean;
   hasRole: (role: AppRole) => boolean;
   hasAnyRole: (roles: AppRole[]) => boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
