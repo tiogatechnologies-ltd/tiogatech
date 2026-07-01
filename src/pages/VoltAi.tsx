@@ -48,12 +48,13 @@ const VoltAi = () => {
         backgroundImage={bgAutomation}
         backgroundAlt="Hand interacting with futuristic smart home control interface"
       >
-        <Link
-          to="/coming-soon"
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new CustomEvent("tioga:open-waitlist"))}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
         >
           <Download size={16} /> Download App
-        </Link>
+        </button>
       </PageHero>
 
       {/* Pillars */}
@@ -149,12 +150,13 @@ const VoltAi = () => {
               Tell us your space and we will design a VoltAi setup that fits, then install and tune it for you.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <Link
-                to="/coming-soon"
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent("tioga:open-waitlist"))}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
               >
                 <Download size={16} /> Download App
-              </Link>
+              </button>
               <Link
                 to="/lumivolt"
                 className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted ios-press"

@@ -19,6 +19,9 @@ import { CartProvider } from "@/contexts/CartContext";
 import PreloadCritical from "@/components/PreloadCritical";
 import DeferredMount from "@/components/DeferredMount";
 import EnergyCalculatorDialog from "@/components/EnergyCalculatorDialog";
+import WaitlistDialog from "@/components/WaitlistDialog";
+import { useEffect } from "react";
+import { initCacheBustCheck } from "@/lib/cache";
 
 import Index from "./pages/Index.tsx";
 
@@ -122,6 +125,7 @@ const Admin = ({ children, adminOnly = false }: { children: React.ReactNode; adm
 );
 
 const PageTracker = () => { usePageTracker(); return null; };
+const CacheBoot = () => { useEffect(() => { initCacheBustCheck(); }, []); return null; };
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -155,6 +159,8 @@ const AnimatedRoutes = () => {
           <Route path="/solar-assessment" element={<RouteFade><SolarAssessment /></RouteFade>} />
           <Route path="/solar-assessment/:id/full" element={<RouteFade><SolarAssessmentReport /></RouteFade>} />
           <Route path="/ai-pricing" element={<RouteFade><Pricing /></RouteFade>} />
+          <Route path="/pricing" element={<Navigate to="/ai-pricing" replace />} />
+          <Route path="/subscription" element={<Navigate to="/account/subscription" replace />} />
           
           <Route path="/account/assessments" element={<RequireRole><AccountAssessments /></RequireRole>} />
           <Route path="/account/subscription" element={<RequireRole><AccountSubscription /></RequireRole>} />
@@ -225,6 +231,7 @@ const App = () => (
         <AuthProvider>
           <CartProvider>
             <PageTracker />
+            <CacheBoot />
             <PreloadCritical />
             <ScrollToTop />
             <SmoothScroll />
@@ -232,6 +239,7 @@ const App = () => (
             <AutoReveal />
             <LeadFormHost />
             <EnergyCalculatorDialog />
+            <WaitlistDialog />
             <Suspense fallback={null}>
               <CartDrawer />
               <DeferredMount delay={2500}>
