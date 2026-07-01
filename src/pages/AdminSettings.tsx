@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
-import { Search, Save, Building2, Phone, Wallet, Share2, Search as SearchIcon, Sparkles, Truck, ShieldCheck, CreditCard, Bell, UserPlus, Mail, Image as ImageIcon, Plug, Database, FileSliders, Receipt, Tag, Users, ScrollText, Globe } from "lucide-react";
+import { Search, Save, Building2, Phone, Wallet, Share2, Search as SearchIcon, Sparkles, Truck, ShieldCheck, CreditCard, Bell, UserPlus, Mail, Image as ImageIcon, Plug, Database, FileSliders, Receipt, Tag, Users, ScrollText, Globe, RefreshCw, CloudUpload, ExternalLink, Loader2 } from "lucide-react";
+import { bumpGlobalCache } from "@/lib/cache";
 
 type Section = { id: string; label: string; icon: any; group: string; adminOnly?: boolean };
 
@@ -467,7 +468,11 @@ const AdminSettings = () => {
 
               {/* BACKUPS */}
               <section id="sec-backups" className="scroll-mt-24 space-y-4">
-                <header><h2 className="font-display text-xl font-bold">Backups & Exports</h2></header>
+                <header><h2 className="font-display text-xl font-bold">Backups & Cache</h2></header>
+
+                <CachePurgeCard />
+                <GoogleDriveBackupCard />
+
                 <Card title="Export data" desc="CSV downloads. Admin only.">
                   <div className="flex flex-wrap gap-2">
                     {[ "leads", "orders", "profiles", "newsletter_subscribers", "affiliates", "finance_applications"].map((t) => (
