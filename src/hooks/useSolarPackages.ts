@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { cacheKey } from "@/lib/cache";
 import { supabase } from "@/integrations/supabase/client";
 import bgSolarRoof from "@/assets/feature-solar-roof.jpg";
 import bgPanelCloseup from "@/assets/bg-panel-closeup.jpg";
@@ -47,7 +48,7 @@ export type SolarPackage = {
   image: string;
 };
 
-const CACHE_KEY = "tioga:solar_packages:v2";
+const CACHE_KEY = cacheKey("solar_packages");
 
 const decorate = (data: any[]): SolarPackage[] =>
   data.map((p, i) => ({ ...p, image: IMAGES[i % IMAGES.length] })) as SolarPackage[];

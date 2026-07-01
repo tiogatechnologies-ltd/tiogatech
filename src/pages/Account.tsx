@@ -186,11 +186,15 @@ const Account = () => {
                     <Mail size={12} /> {user?.email}
                   </div>
                   <div className="flex flex-wrap gap-1.5 mt-2">
-                    {(roles.length === 0 ? ["customer"] : roles).map((r) => (
-                      <span key={r} className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
-                        {r}
-                      </span>
-                    ))}
+                    {(() => {
+                      const rank: Record<string, number> = { admin: 0, staff: 1, engineer: 2, affiliate: 3, customer: 4, user: 5 };
+                      const display = (roles.length === 0 ? ["customer"] : [...roles]).sort((a, b) => (rank[a] ?? 9) - (rank[b] ?? 9));
+                      return display.map((r) => (
+                        <span key={r} className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                          {r}
+                        </span>
+                      ));
+                    })()}
                   </div>
                 </div>
               </div>

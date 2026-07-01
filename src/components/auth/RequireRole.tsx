@@ -14,13 +14,16 @@ const FullPageLoader = () => (
 );
 
 export const RequireRole = ({ children, roles, redirectTo = "/auth" }: Props) => {
-  const { user, hasAnyRole, loading } = useAuth();
+  const { user, hasAnyRole, loading, rolesLoaded } = useAuth();
   const location = useLocation();
 
   if (loading) return <FullPageLoader />;
   if (!user) return <Navigate to={redirectTo} state={{ from: location.pathname }} replace />;
-  if (roles && roles.length > 0 && !hasAnyRole(roles)) {
-    return <Navigate to="/" replace />;
+  // Wait for roles to load before deciding on role-gated routes to avoid a
+  // brief admin -> customer flash that redirected admins away from /admin.
+  if (roles && roles.length > 0) {
+    if (!rolesLoaded) return <FullPageLoader />;
+    if (!hasAnyRole(roles)) return <Navigate to="/" replace />;
   }
   return <>{children}</>;
 };

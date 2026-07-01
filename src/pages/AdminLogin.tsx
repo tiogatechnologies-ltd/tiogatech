@@ -5,7 +5,7 @@ import { ShieldCheck, LogIn } from "lucide-react";
 import AdminSEO from "@/components/AdminSEO";
 
 const AdminLogin = () => {
-  const { signIn, loading, isStaff, user } = useAuth();
+  const { signIn, loading, isStaff, user, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,8 +48,10 @@ const AdminLogin = () => {
       setSubmitting(false);
       return;
     }
-    // Auth state change will trigger re-render, then redirect
+    // Force role reload so first render already sees admin role.
+    await refreshProfile();
     setSubmitting(false);
+    navigate("/admin", { replace: true });
   };
 
   return (

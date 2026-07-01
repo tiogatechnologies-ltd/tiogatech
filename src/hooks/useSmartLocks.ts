@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { cacheKey } from "@/lib/cache";
 import bgElite from "@/assets/bg-smartlock-elite.jpg";
 import bgApex from "@/assets/bg-smartlock-apex.jpg";
 import bgPro from "@/assets/bg-smartlock-pro.jpg";
@@ -36,7 +37,7 @@ const pickImage = (item: { category: string; series: string }) => {
   return bgBase;
 };
 
-const CACHE_KEY = "tioga:smart_locks:v2";
+const CACHE_KEY = cacheKey("smart_locks");
 
 export const useSmartLocks = () => {
   const [items, setItems] = useState<SmartLock[]>(() => {
