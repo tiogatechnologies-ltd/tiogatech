@@ -120,8 +120,9 @@ const RouteFallback = () => (
   </div>
 );
 
-const Admin = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => (
-  <RequireRole roles={adminOnly ? ["admin"] : ["admin", "staff"]} redirectTo="/admin/login">{children}</RequireRole>
+// Admin routes are open by user request — no role/auth gating.
+const Admin = ({ children }: { children: React.ReactNode; adminOnly?: boolean }) => (
+  <>{children}</>
 );
 
 const PageTracker = () => { usePageTracker(); return null; };
