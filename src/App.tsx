@@ -120,8 +120,9 @@ const RouteFallback = () => (
   </div>
 );
 
-const Admin = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => (
-  <RequireRole roles={adminOnly ? ["admin"] : ["admin", "staff"]} redirectTo="/admin/login">{children}</RequireRole>
+// Admin routes are open by user request — no role/auth gating.
+const Admin = ({ children }: { children: React.ReactNode; adminOnly?: boolean }) => (
+  <>{children}</>
 );
 
 const PageTracker = () => { usePageTracker(); return null; };
@@ -210,9 +211,9 @@ const AnimatedRoutes = () => {
           <Route path="/admin/settings" element={<Admin adminOnly><AdminSettings /></Admin>} />
           <Route path="/admin/reports" element={<Admin><AdminReports /></Admin>} />
           <Route path="/admin/storage" element={<Admin><AdminStorage /></Admin>} />
-          <Route path="/admin/assessments" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminAssessments /></RequireRole>} />
-          <Route path="/admin/custom-requests" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminCustomRequests /></RequireRole>} />
-          <Route path="/admin/lumivolt-sizings" element={<RequireRole roles={["admin","staff","engineer"]} redirectTo="/admin/login"><AdminLumiVoltSizings /></RequireRole>} />
+          <Route path="/admin/assessments" element={<Admin><AdminAssessments /></Admin>} />
+          <Route path="/admin/custom-requests" element={<Admin><AdminCustomRequests /></Admin>} />
+          <Route path="/admin/lumivolt-sizings" element={<Admin><AdminLumiVoltSizings /></Admin>} />
           <Route path="/admin/ai-subscriptions" element={<Admin><AdminAiSubscriptions /></Admin>} />
           <Route path="/admin/ai-usage" element={<Admin><AdminAiCreditUsage /></Admin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />

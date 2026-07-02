@@ -198,9 +198,16 @@ const Account = () => {
                   </div>
                 </div>
               </div>
-              <button onClick={signOut} className="inline-flex items-center gap-2 text-xs sm:text-sm rounded-full border border-border bg-background px-3 sm:px-4 py-2 hover:bg-muted">
-                <LogOut size={14} /> Sign out
-              </button>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                {["inememmanuel@gmail.com", "tiogatechnologies@gmail.com"].includes((user?.email || "").toLowerCase()) && (
+                  <Link to="/admin" className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm rounded-full bg-primary px-3 sm:px-4 py-2 font-semibold text-primary-foreground hover:brightness-110">
+                    <ShieldCheck size={14} /> Open Admin Dashboard
+                  </Link>
+                )}
+                <button onClick={signOut} className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm rounded-full border border-border bg-background px-3 sm:px-4 py-2 hover:bg-muted">
+                  <LogOut size={14} /> Sign out
+                </button>
+              </div>
             </div>
           </div>
 
