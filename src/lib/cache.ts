@@ -6,7 +6,7 @@
 import { supabase } from "@/integrations/supabase/client";
 
 // Bump this whenever we change the cache shape on disk.
-export const CACHE_VERSION = "v3";
+export const CACHE_VERSION = "v4";
 
 const LOCAL_KEY = "tioga.cacheBust";
 
