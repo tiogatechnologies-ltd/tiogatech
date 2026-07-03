@@ -3,32 +3,34 @@ import { supabase } from "@/integrations/supabase/client";
 
 type LandingContent = Record<string, any>;
 
-let cache: Record<string, LandingContent> | null = null;
+let inflight: Promise<Record<string, LandingContent>> | null = null;
 
 export function useLandingContent(sectionKey: string) {
-  const [content, setContent] = useState<LandingContent | null>(cache?.[sectionKey] ?? null);
-  const [loading, setLoading] = useState(!cache);
+  const [content, setContent] = useState<LandingContent | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (cache) {
-      setContent(cache[sectionKey] ?? null);
-      setLoading(false);
-      return;
-    }
-    const fetch = async () => {
-      const { data } = await supabase.from("landing_content").select("*");
+    let cancelled = false;
+    const fetch = async (): Promise<Record<string, LandingContent>> => {
+      if (inflight) return inflight;
+      inflight = supabase.from("landing_content").select("*").then(({ data }) => {
       const map: Record<string, LandingContent> = {};
       (data ?? []).forEach((row: any) => { map[row.section_key] = row.content; });
-      cache = map;
+        return map;
+      }).finally(() => { inflight = null; });
+      return inflight;
+    };
+    fetch().then((map) => {
+      if (cancelled) return;
       setContent(map[sectionKey] ?? null);
       setLoading(false);
-    };
-    fetch();
+    });
+    return () => { cancelled = true; };
   }, [sectionKey]);
 
   return { content, loading };
 }
 
 export function invalidateLandingCache() {
-  cache = null;
+  inflight = null;
 }

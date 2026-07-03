@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { cacheKey } from "@/lib/cache";
 import bgElite from "@/assets/bg-smartlock-elite.jpg";
 import bgApex from "@/assets/bg-smartlock-apex.jpg";
 import bgPro from "@/assets/bg-smartlock-pro.jpg";
@@ -37,22 +36,9 @@ const pickImage = (item: { category: string; series: string }) => {
   return bgBase;
 };
 
-const CACHE_KEY = cacheKey("smart_locks");
-
 export const useSmartLocks = () => {
-  const [items, setItems] = useState<SmartLock[]>(() => {
-    try {
-      const raw = sessionStorage.getItem(CACHE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) {
-          return parsed.map((p: any) => ({ ...p, image: pickImage(p) })) as SmartLock[];
-        }
-      }
-    } catch {}
-    return [];
-  });
-  const [loading, setLoading] = useState(() => items.length === 0);
+  const [items, setItems] = useState<SmartLock[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
@@ -69,7 +55,6 @@ export const useSmartLocks = () => {
       }
       if (data) {
         setItems((data as any[]).map((p) => ({ ...p, image: pickImage(p) })) as SmartLock[]);
-        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch {}
       }
       setLoading(false);
     };

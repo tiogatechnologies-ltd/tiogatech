@@ -21,7 +21,8 @@ import DeferredMount from "@/components/DeferredMount";
 import EnergyCalculatorDialog from "@/components/EnergyCalculatorDialog";
 import WaitlistDialog from "@/components/WaitlistDialog";
 import { useEffect } from "react";
-import { initCacheBustCheck } from "@/lib/cache";
+import { consumeUpdatedNotice, initCacheBustCheck } from "@/lib/cache";
+import { toast } from "sonner";
 
 import Index from "./pages/Index.tsx";
 
@@ -126,7 +127,13 @@ const Admin = ({ children }: { children: React.ReactNode; adminOnly?: boolean })
 );
 
 const PageTracker = () => { usePageTracker(); return null; };
-const CacheBoot = () => { useEffect(() => { initCacheBustCheck(); }, []); return null; };
+const CacheBoot = () => {
+  useEffect(() => {
+    if (consumeUpdatedNotice()) toast.info("Site updated", { description: "The latest Tioga content is now loaded." });
+    initCacheBustCheck();
+  }, []);
+  return null;
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();

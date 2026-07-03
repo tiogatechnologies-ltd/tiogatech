@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { cacheKey } from "@/lib/cache";
 
 export interface BlogPost {
   id: string;
@@ -21,21 +20,9 @@ export interface BlogPost {
   updated_at: string;
 }
 
-const LIST_CACHE = cacheKey("blog_posts");
-const POST_CACHE = (slug: string) => cacheKey(`blog_post:${slug}`);
-
 export const useBlogPosts = () => {
-  const [posts, setPosts] = useState<BlogPost[]>(() => {
-    try {
-      const raw = sessionStorage.getItem(LIST_CACHE);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) return parsed as BlogPost[];
-      }
-    } catch {}
-    return [];
-  });
-  const [loading, setLoading] = useState(() => posts.length === 0);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,7 +39,6 @@ export const useBlogPosts = () => {
       }
       if (data) {
         setPosts(data as BlogPost[]);
-        try { sessionStorage.setItem(LIST_CACHE, JSON.stringify(data)); } catch {}
       }
       setLoading(false);
     };
@@ -64,15 +50,8 @@ export const useBlogPosts = () => {
 };
 
 export const useBlogPost = (slug: string | undefined) => {
-  const [post, setPost] = useState<BlogPost | null>(() => {
-    if (!slug) return null;
-    try {
-      const raw = sessionStorage.getItem(POST_CACHE(slug));
-      if (raw) return JSON.parse(raw) as BlogPost;
-    } catch {}
-    return null;
-  });
-  const [loading, setLoading] = useState(() => !post);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
@@ -93,7 +72,6 @@ export const useBlogPost = (slug: string | undefined) => {
       if (!data && !error) setNotFound(true);
       if (data) {
         setPost(data as BlogPost);
-        try { sessionStorage.setItem(POST_CACHE(slug), JSON.stringify(data)); } catch {}
       }
       setLoading(false);
     };
