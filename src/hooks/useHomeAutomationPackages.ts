@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { cacheKey } from "@/lib/cache";
+import { fetchFreshRows } from "@/lib/freshContent";
 import bgAscentia from "@/assets/feature-control-panel.jpg";
 import bgSprout from "@/assets/offer-automation.jpg";
 import bgIbiza from "@/assets/hero-smart-home.jpg";
@@ -31,31 +30,19 @@ export type HomeAutomationPackage = {
   image: string;
 };
 
-const CACHE_KEY = cacheKey("home_automation");
 const decorate = (rows: any[]): HomeAutomationPackage[] =>
   rows.map((p) => ({ ...p, image: IMAGE_BY_TIER[p.tier] ?? bgAscentia })) as HomeAutomationPackage[];
 
 export const useHomeAutomationPackages = () => {
-  const [packages, setPackages] = useState<HomeAutomationPackage[]>(() => {
-    try {
-      const raw = sessionStorage.getItem(CACHE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) return decorate(parsed);
-      }
-    } catch {}
-    return [];
-  });
-  const [loading, setLoading] = useState(() => packages.length === 0);
+  const [packages, setPackages] = useState<HomeAutomationPackage[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
     const run = async (attempt = 0): Promise<void> => {
-      const { data, error } = await supabase
-        .from("home_automation_packages" as any)
-        .select("*")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
+      const { data, error } = await fetchFreshRows<any>(
+        "home_automation_packages?select=*&is_active=eq.true&order=sort_order.asc",
+      );
       if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
@@ -63,7 +50,6 @@ export const useHomeAutomationPackages = () => {
       }
       if (data) {
         setPackages(decorate(data as any[]));
-        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch {}
       }
       setLoading(false);
     };

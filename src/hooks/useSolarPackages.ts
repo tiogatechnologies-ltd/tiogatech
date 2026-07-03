@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { cacheKey } from "@/lib/cache";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchFreshRows } from "@/lib/freshContent";
 import bgSolarRoof from "@/assets/feature-solar-roof.jpg";
 import bgPanelCloseup from "@/assets/bg-panel-closeup.jpg";
 import bgRooftopInstall from "@/assets/bg-rooftop-install.jpg";
@@ -48,32 +47,19 @@ export type SolarPackage = {
   image: string;
 };
 
-const CACHE_KEY = cacheKey("solar_packages");
-
 const decorate = (data: any[]): SolarPackage[] =>
   data.map((p, i) => ({ ...p, image: IMAGES[i % IMAGES.length] })) as SolarPackage[];
 
 export const useSolarPackages = () => {
-  const [packages, setPackages] = useState<SolarPackage[]>(() => {
-    try {
-      const raw = sessionStorage.getItem(CACHE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) return decorate(parsed);
-      }
-    } catch {}
-    return [];
-  });
-  const [loading, setLoading] = useState(() => packages.length === 0);
+  const [packages, setPackages] = useState<SolarPackage[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
     const fetchOnce = async (attempt = 0): Promise<void> => {
-      const { data, error } = await supabase
-        .from("solar_packages" as any)
-        .select("*")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
+      const { data, error } = await fetchFreshRows<any>(
+        "solar_packages?select=*&is_active=eq.true&order=sort_order.asc",
+      );
       if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
@@ -81,9 +67,6 @@ export const useSolarPackages = () => {
       }
       if (data) {
         setPackages(decorate(data as any[]));
-        try {
-          sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
-        } catch {}
       }
       setLoading(false);
     };

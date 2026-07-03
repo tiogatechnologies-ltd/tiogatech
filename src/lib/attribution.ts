@@ -1,7 +1,7 @@
 // Captures affiliate code + UTM params from URL once and persists them in
 // localStorage so any lead form submitted later can be attributed correctly.
 
-const STORAGE_KEY = "_tid_attr";
+const STORAGE_KEY = "tioga_attribution_v1";
 
 export type Attribution = {
   affiliate_code?: string | null;

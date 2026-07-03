@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { cacheKey } from "@/lib/cache";
+import { fetchFreshRows, fetchFreshSingle } from "@/lib/freshContent";
 
 export interface BlogPost {
   id: string;
@@ -21,30 +20,16 @@ export interface BlogPost {
   updated_at: string;
 }
 
-const LIST_CACHE = cacheKey("blog_posts");
-const POST_CACHE = (slug: string) => cacheKey(`blog_post:${slug}`);
-
 export const useBlogPosts = () => {
-  const [posts, setPosts] = useState<BlogPost[]>(() => {
-    try {
-      const raw = sessionStorage.getItem(LIST_CACHE);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) return parsed as BlogPost[];
-      }
-    } catch {}
-    return [];
-  });
-  const [loading, setLoading] = useState(() => posts.length === 0);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
     const fetchPosts = async (attempt = 0): Promise<void> => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .eq("published", true)
-        .order("published_at", { ascending: false });
+      const { data, error } = await fetchFreshRows<BlogPost>(
+        "blog_posts?select=*&published=eq.true&order=published_at.desc",
+      );
       if (cancelled) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
@@ -52,7 +37,6 @@ export const useBlogPosts = () => {
       }
       if (data) {
         setPosts(data as BlogPost[]);
-        try { sessionStorage.setItem(LIST_CACHE, JSON.stringify(data)); } catch {}
       }
       setLoading(false);
     };
@@ -64,27 +48,17 @@ export const useBlogPosts = () => {
 };
 
 export const useBlogPost = (slug: string | undefined) => {
-  const [post, setPost] = useState<BlogPost | null>(() => {
-    if (!slug) return null;
-    try {
-      const raw = sessionStorage.getItem(POST_CACHE(slug));
-      if (raw) return JSON.parse(raw) as BlogPost;
-    } catch {}
-    return null;
-  });
-  const [loading, setLoading] = useState(() => !post);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
     let cancelled = false;
     const fetchOne = async (attempt = 0): Promise<void> => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .eq("slug", slug)
-        .eq("published", true)
-        .maybeSingle();
+      const { data, error } = await fetchFreshSingle<BlogPost>(
+        `blog_posts?select=*&slug=eq.${encodeURIComponent(slug)}&published=eq.true&limit=1`,
+      );
       if (cancelled) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
@@ -93,7 +67,6 @@ export const useBlogPost = (slug: string | undefined) => {
       if (!data && !error) setNotFound(true);
       if (data) {
         setPost(data as BlogPost);
-        try { sessionStorage.setItem(POST_CACHE(slug), JSON.stringify(data)); } catch {}
       }
       setLoading(false);
     };

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { cacheKey } from "@/lib/cache";
+import { fetchFreshRows } from "@/lib/freshContent";
 import bgElite from "@/assets/bg-smartlock-elite.jpg";
 import bgApex from "@/assets/bg-smartlock-apex.jpg";
 import bgPro from "@/assets/bg-smartlock-pro.jpg";
@@ -37,31 +36,16 @@ const pickImage = (item: { category: string; series: string }) => {
   return bgBase;
 };
 
-const CACHE_KEY = cacheKey("smart_locks");
-
 export const useSmartLocks = () => {
-  const [items, setItems] = useState<SmartLock[]>(() => {
-    try {
-      const raw = sessionStorage.getItem(CACHE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) {
-          return parsed.map((p: any) => ({ ...p, image: pickImage(p) })) as SmartLock[];
-        }
-      }
-    } catch {}
-    return [];
-  });
-  const [loading, setLoading] = useState(() => items.length === 0);
+  const [items, setItems] = useState<SmartLock[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
     const run = async (attempt = 0): Promise<void> => {
-      const { data, error } = await supabase
-        .from("smart_locks" as any)
-        .select("*")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
+      const { data, error } = await fetchFreshRows<any>(
+        "smart_locks?select=*&is_active=eq.true&order=sort_order.asc",
+      );
       if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
@@ -69,7 +53,6 @@ export const useSmartLocks = () => {
       }
       if (data) {
         setItems((data as any[]).map((p) => ({ ...p, image: pickImage(p) })) as SmartLock[]);
-        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch {}
       }
       setLoading(false);
     };
