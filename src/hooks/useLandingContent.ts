@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchFreshRows } from "@/lib/freshContent";
 
 type LandingContent = Record<string, any>;
 
@@ -13,7 +13,7 @@ export function useLandingContent(sectionKey: string) {
     let cancelled = false;
     const fetch = async (): Promise<Record<string, LandingContent>> => {
       if (inflight) return inflight;
-      inflight = Promise.resolve(supabase.from("landing_content").select("*")).then(({ data }) => {
+      inflight = fetchFreshRows<any>("landing_content?select=*").then(({ data }) => {
         const map: Record<string, LandingContent> = {};
         (data ?? []).forEach((row: any) => { map[row.section_key] = row.content; });
         return map;

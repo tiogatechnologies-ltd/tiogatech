@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchFreshRows, fetchFreshSingle } from "@/lib/freshContent";
 
 export interface BlogPost {
   id: string;
@@ -27,11 +27,9 @@ export const useBlogPosts = () => {
   useEffect(() => {
     let cancelled = false;
     const fetchPosts = async (attempt = 0): Promise<void> => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .eq("published", true)
-        .order("published_at", { ascending: false });
+      const { data, error } = await fetchFreshRows<BlogPost>(
+        "blog_posts?select=*&published=eq.true&order=published_at.desc",
+      );
       if (cancelled) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
@@ -58,12 +56,9 @@ export const useBlogPost = (slug: string | undefined) => {
     if (!slug) return;
     let cancelled = false;
     const fetchOne = async (attempt = 0): Promise<void> => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .eq("slug", slug)
-        .eq("published", true)
-        .maybeSingle();
+      const { data, error } = await fetchFreshSingle<BlogPost>(
+        `blog_posts?select=*&slug=eq.${encodeURIComponent(slug)}&published=eq.true&limit=1`,
+      );
       if (cancelled) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));

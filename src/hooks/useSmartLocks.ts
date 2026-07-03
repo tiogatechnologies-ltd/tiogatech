@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchFreshRows } from "@/lib/freshContent";
 import bgElite from "@/assets/bg-smartlock-elite.jpg";
 import bgApex from "@/assets/bg-smartlock-apex.jpg";
 import bgPro from "@/assets/bg-smartlock-pro.jpg";
@@ -43,11 +43,9 @@ export const useSmartLocks = () => {
   useEffect(() => {
     let active = true;
     const run = async (attempt = 0): Promise<void> => {
-      const { data, error } = await supabase
-        .from("smart_locks" as any)
-        .select("*")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
+      const { data, error } = await fetchFreshRows<any>(
+        "smart_locks?select=*&is_active=eq.true&order=sort_order.asc",
+      );
       if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
