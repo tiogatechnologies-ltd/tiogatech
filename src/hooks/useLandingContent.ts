@@ -13,9 +13,9 @@ export function useLandingContent(sectionKey: string) {
     let cancelled = false;
     const fetch = async (): Promise<Record<string, LandingContent>> => {
       if (inflight) return inflight;
-      inflight = supabase.from("landing_content").select("*").then(({ data }) => {
-      const map: Record<string, LandingContent> = {};
-      (data ?? []).forEach((row: any) => { map[row.section_key] = row.content; });
+      inflight = Promise.resolve(supabase.from("landing_content").select("*")).then(({ data }) => {
+        const map: Record<string, LandingContent> = {};
+        (data ?? []).forEach((row: any) => { map[row.section_key] = row.content; });
         return map;
       }).finally(() => { inflight = null; });
       return inflight;
