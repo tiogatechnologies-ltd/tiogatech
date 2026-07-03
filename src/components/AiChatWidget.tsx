@@ -3,7 +3,7 @@ import { MessageCircle, X, Send, Loader2, ExternalLink, RotateCcw } from "lucide
 import ReactMarkdown from "react-markdown";
 
 const ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-chat`;
-const STORAGE_KEY = "tioga.ai-chat.v2";
+const STORAGE_KEY = "tioga_ai_chat_v2";
 
 type Msg = { id: string; role: "user" | "assistant"; text: string; tool_events?: any[] };
 

@@ -12,7 +12,7 @@ import { trackConversion } from "@/lib/tracking";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 
 const trackProductClick = (productId: string) => {
-  const sessionId = sessionStorage.getItem("_tid_session") || "unknown";
+  const sessionId = sessionStorage.getItem("tioga_session_id") || "unknown";
   supabase.from("product_clicks").insert({ product_id: productId, session_id: sessionId }).then(() => {});
 };
 import {
@@ -343,17 +343,7 @@ const Catalog = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Gate: products are only accessible after completing the personalized quote form.
-  // Without form state or unlock flag, show the Coming Soon screen.
-  const unlocked = typeof window !== "undefined" && sessionStorage.getItem("_tid_catalog_unlocked") === "1";
   const hasState = !!location.state;
-  const showComingSoon = !unlocked && !hasState;
-
-  useEffect(() => {
-    if (hasState) sessionStorage.setItem("_tid_catalog_unlocked", "1");
-  }, [hasState]);
-
-  if (showComingSoon) return <ComingSoonStore />;
 
   const state = location.state as {
     products?: string[];

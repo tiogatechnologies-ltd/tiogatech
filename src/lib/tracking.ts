@@ -1,10 +1,10 @@
 import { supabase } from "@/integrations/supabase/client";
 
 function getSessionId(): string {
-  let sid = sessionStorage.getItem("_tid_session");
+  let sid = sessionStorage.getItem("tioga_session_id");
   if (!sid) {
     sid = crypto.randomUUID();
-    sessionStorage.setItem("_tid_session", sid);
+    sessionStorage.setItem("tioga_session_id", sid);
   }
   return sid;
 }
