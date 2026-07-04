@@ -98,7 +98,9 @@ const PLANS: Plan[] = [
 
 const Pricing = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [sub, setSub] = useState<any>(null);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -107,6 +109,21 @@ const Pricing = () => {
       setSub(data);
     })();
   }, [user]);
+
+  const handleSubscribe = async (p: Plan) => {
+    if (p.id === "custom" || p.amount === 0) {
+      window.open(WA_CUSTOM, "_blank", "noopener,noreferrer");
+      return;
+    }
+    if (!user?.email) {
+      navigate("/auth", { state: { from: "/ai-pricing" } });
+      return;
+    }
+    setLoadingPlan(p.id);
+    const err = await startAiSubscription({ plan: p.id, amountNgn: p.amount, email: user.email, userId: user.id });
+    setLoadingPlan(null);
+    if (err) toast.error(err);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -184,14 +201,14 @@ const Pricing = () => {
                       ))}
                     </ul>
 
-                    <a
-                      href={p.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all active:scale-[0.98]"
+                    <button
+                      onClick={() => handleSubscribe(p)}
+                      disabled={loadingPlan === p.id}
+                      className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all active:scale-[0.98] disabled:opacity-60"
                     >
-                      <MessageCircle size={14} /> {p.cta}
-                    </a>
+                      {loadingPlan === p.id ? <Loader2 size={14} className="animate-spin" /> : p.id === "custom" ? <MessageCircle size={14} /> : null}
+                      {p.cta}
+                    </button>
                   </div>
                 </div>
               );
