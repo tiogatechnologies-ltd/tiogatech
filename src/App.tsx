@@ -55,6 +55,7 @@ const Account = lazy(() => import("./pages/Account.tsx"));
 const Checkout = lazy(() => import("./pages/Checkout.tsx"));
 const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess.tsx"));
 const AffiliateDashboard = lazy(() => import("./pages/AffiliateDashboard.tsx"));
+const DashboardRouter = lazy(() => import("./pages/DashboardRouter.tsx"));
 
 const AdminLogin = lazy(() => import("./pages/AdminLogin.tsx"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup.tsx"));
@@ -121,9 +122,11 @@ const RouteFallback = () => (
   </div>
 );
 
-// Admin routes are open by user request — no role/auth gating.
-const Admin = ({ children }: { children: React.ReactNode; adminOnly?: boolean }) => (
-  <>{children}</>
+// Admin routes are role-gated using the user_roles table (admin/staff/engineer).
+const Admin = ({ children, adminOnly }: { children: React.ReactNode; adminOnly?: boolean }) => (
+  <RequireRole roles={adminOnly ? ["admin"] : ["admin", "staff", "engineer"]} redirectTo="/admin/login">
+    {children}
+  </RequireRole>
 );
 
 const PageTracker = () => { usePageTracker(); return null; };
@@ -178,6 +181,7 @@ const AnimatedRoutes = () => {
           <Route path="/login" element={<Navigate to="/auth" replace />} />
           <Route path="/signup" element={<Navigate to="/auth?mode=signup" replace />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/dashboard" element={<DashboardRouter />} />
           <Route path="/account" element={<RequireRole><Account /></RequireRole>} />
           <Route path="/account/finance" element={<RequireRole><AccountFinance /></RequireRole>} />
           <Route path="/checkout" element={<Checkout />} />
