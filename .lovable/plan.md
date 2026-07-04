@@ -1,61 +1,63 @@
-## Priority 1 — Admin access (permanent fix)
+## Plan: Fix identified issues + global inconsistencies
 
-**Problem:** `inememmanuel@gmail.com` and `tiogatechnologies@gmail.com` sometimes show as "customer" and get blocked from `/admin`. Existing trigger only covers verified `@tiogatechnologies.com` domain + `inememmanuel@gmail.com`, and only fires on future auth events — it doesn't heal existing rows or the second Gmail address.
+### 1. Remove Google login
+- Remove Google button + `handleGoogle` from `src/pages/Auth.tsx` and the `signInWithGoogle` usage from `src/components/AccountButton.tsx`/anywhere else.
+- Strip `signInWithGoogle` from `AuthContext.tsx` (keep interface tidy).
+- Disable Google provider via `configure_social_auth` (`disable_providers: ["google"]`).
 
-**Fix:**
+### 2. Admin accounts showing as "customer"
+Root cause: `handle_new_user()` trigger inserts `customer` role for every new signup, and the profile badge shows the first role in the array. Admins retain both `admin` + `customer`.
+- Data fix: DELETE `customer` rows from `user_roles` for users who also have `admin` or `staff`.
+- Trigger fix: update `handle_new_user()` to skip inserting `customer` when a role already exists (idempotent) — already partially handled by `grant_admin_for_verified_tioga_email`, but that runs on email confirm; ensure it also removes `customer` (it does). Add a safeguard: prefer highest-priority role in UI.
+- Frontend fix: in `AccountButton.tsx` and profile/dashboard displays, compute a single `primaryRole` = admin > staff > engineer > affiliate > customer, and render that.
 
-1. **Migration** — extend `grant_admin_for_verified_tioga_email()` to also match `tiogatechnologies@gmail.com` (exact address). Backfill: `INSERT INTO user_roles(user_id,'admin') SELECT id FROM auth.users WHERE lower(email) IN (...) OR lower(split_part(email,'@',2))='tiogatechnologies.com' ON CONFLICT DO NOTHING`. Also **remove** the stray `'customer'` row for these accounts so the UI badge is correct.
-2. **Password reset** — reset `inememmanuel@gmail.com` password to `emma2013e` via a one-off admin edge function call (`supabase.auth.admin.updateUserById`) invoked from a new `bootstrap-superadmin` edge function that runs the backfill + password set. Safe because it's guarded by service role and hardcoded email allowlist.
-3. **RequireRole race** — `AuthContext.loadUserData` runs async after `setUser`; roles can briefly be `[]` causing `<Navigate to="/">`. Change `RequireRole` to also wait for a `rolesLoaded` flag (new state in AuthContext set true after `loadUserData` resolves), not just `loading`.
-4. **AdminLogin** — after successful `signIn`, explicitly `await refreshProfile()` before navigating to `/admin` so the first render already has roles.
-5. **Account page role badge** — show highest role (admin > staff > affiliate > customer) instead of first one, so admins never display as "customer". [inememmanuel@gmail.com](mailto:inememmanuel@gmail.com) must always be seen as an admin.
+### 3. Subscribe button text
+- `src/pages/AccountSubscription.tsx`: change `cta: "Subscribe via WhatsApp"` → `"Subscribe"` for both plans; change the button label logic (line 290) to render `"Manage plan"` / `"Subscribe"` instead of WhatsApp copy; swap `MessageCircle` icon for a neutral one; ensure `onClick` calls the Paystack init flow (already wired via `AiUpgradeDialog`) and never opens `wa.me`.
 
-## Priority 2 — Cache issues (users can't see blog/packages)
+### 4. Duplicate "Back to LumiVolt" on Energy Calculator
+- `src/pages/EnergyCalculator.tsx` renders the link twice (lines 78 & 91). Remove one — keep the top-of-page one inside the hero, drop the second.
 
-**Root cause:** SWR layer stores in `sessionStorage` keyed by hook name with no version key. When a migration republishes posts or toggles `published`, stale clients keep serving the old empty payload until the tab is closed.
+### 5. Role-based dashboards
+- Create a `/dashboard` route that inspects `roles` and redirects:
+  - admin/staff → `/admin`
+  - affiliate → `/affiliate`
+  - engineer → `/admin/assessments` (review queue)
+  - customer → `/account`
+- Update post-login redirect in `Auth.tsx` to use this single entry point.
+- In `AccountButton.tsx` menu, show role-appropriate quick links only (hide "My AI assessments" for pure affiliates, etc.).
+- No new role tables — reuse existing `user_roles` + `has_role`.
 
-**Fix:**
+### 6. Flex Lease-to-Own submission failing
+- Audit `src/pages/FinanceApply.tsx` submit handler: check the insert into `finance_applications`, storage upload to `finance-docs`, and any RLS policy on INSERT for authenticated users.
+- Add try/catch with `toast.error(err.message)` and a visible inline error state.
+- Verify the file-upload path uses `${user.id}/...` to satisfy storage RLS.
+- If the RLS policy is missing an INSERT rule scoped to `auth.uid() = user_id`, add a migration.
 
-1. Add a global `CACHE_VERSION` constant (bumped per deploy via Vite `__BUILD_ID__` define). All SWR hooks (`useBlog`, `useSolarPackages`, `useSmartLocks`, `useHomeAutomationPackages`, `useLandingContent`) prefix their sessionStorage key with the build id; stale versions are ignored and purged.
-2. Add a lightweight `site_cache_bust` row in `site_settings` (single row, `updated_at`). On app boot, fetch it once; if newer than local `lastBust`, clear all `tioga:` sessionStorage keys.
-3. New **Admin Settings → "Clear website cache" button** that:
-  - Bumps `site_cache_bust.updated_at = now()` (all clients invalidate on next load).
-  - Calls a new `purge-cache` edge function that: touches the row, and pings `/` with a cache-buster to warm the CDN.
-  - Also clears local admin's own storage.
-4. Show a small toast "All visitors will fetch fresh data within 60s".
-5. Add explicit empty/error/retry state to `Blog.tsx` and `Packages.tsx` so a transient empty fetch no longer looks like "nothing exists".
+### Global scan — additional inconsistencies I'll fix in the same pass
+- **Stale role list**: `AppRole` type includes `"user"` which doesn't exist in the enum — remove.
+- **`AccountButton` "Staff dashboard"** links to `/admin` even for non-admin staff without permission gates — align with role redirect map.
+- **`Auth.tsx` post-login** ignores `staff`, `engineer` — route them via new `/dashboard`.
+- **WhatsApp copy leak** in `FinanceApply.tsx` line 211 — reword to "…via email or your account page."
+- **`AdminLayout.can()` currently returns `true`** (from earlier "remove restrictions" turn) — restore role-gated nav so non-admin staff don't see admin-only items. Keep the two seed admins fully unrestricted through role, not email hardcoding.
+- **`Account.tsx`** hardcoded email check for the "Open Admin Dashboard" button — replace with `isAdmin` check.
 
-## Priority 3 — Google Drive backup
+### Technical section
+Files to edit:
+- `src/pages/Auth.tsx`, `src/contexts/AuthContext.tsx`, `src/components/AccountButton.tsx`
+- `src/pages/AccountSubscription.tsx`
+- `src/pages/EnergyCalculator.tsx`
+- `src/pages/FinanceApply.tsx`
+- `src/pages/Account.tsx`
+- `src/components/admin/AdminLayout.tsx`
+- `src/App.tsx` (new `/dashboard` route)
+Files to create:
+- `src/pages/DashboardRouter.tsx`
+Backend:
+- Migration: cleanup duplicate customer rows for admin/staff users; ensure `finance_applications` + `finance-docs` bucket have correct INSERT policies scoped to `auth.uid()`.
+- `configure_social_auth` to disable Google.
 
-1. Use existing `google_drive` connector (already wired) — no new secret needed.
-2. New edge function `backup-to-drive`:
-  - Dumps key tables to JSON via `service_role` (`profiles`, `orders`, `order_items`, `products`, `solar_packages`, `home_automation_packages`, `smart_locks`, `blog_posts`, `leads`, `finance_applications`, `solar_assessments`, `lumivolt_sizings`, `newsletter_subscribers`, `affiliates`, `user_roles`, `landing_content`, `careers`, `career_applications`).
-  - Zips into a single `tioga-backup-YYYY-MM-DD.json` (JSON per table).
-  - Uploads to Drive via connector gateway multipart upload into a `Tioga Backups` folder (created if missing).
-3. **Admin Settings → "Backups" card:**
-  - "Backup now" button → invokes function, shows Drive file link on success.
-  - Schedule toggle → `pg_cron` daily 02:00 WAT.
-  - Table listing last 10 backups (new `backups_log` table: filename, drive_file_id, size, created_at, status).
+### Out of scope (confirm if you want these too)
+- Redesigning the customer dashboard content itself (only routing/gating changes here).
+- Building a new "Engineer" workspace UI (currently routes to existing assessments review).
 
-## Priority 4 — Routing & UX fixes
-
-1. **Pricing route:** wherever code links to the "2 plans" page (`AccountSubscription`, `AiUpgradeDialog`, AI chat upsell), change every `/pricing` / `/subscription` upgrade link to `/ai-pricing` (the 3-tier page). Audit: `AccountSubscription.tsx`, `AiChatWidget.tsx`, `AiUpgradeDialog.tsx`, Account.tsx CTA.
-2. **Merge Pricing with AccountSubscription:** delete standalone `/subscription` page content; make `AccountSubscription` embed the 3-tier pricing grid (Starters/Businesses/Custom) plus the user's current plan card, credits meter, usage history, and "Manage" actions. Redirect old `/subscription` → `/account/subscription`. Keep `/ai-pricing` as the public marketing route that shows the same tier grid without the user-scoped panels.
-3. **Energy Calculator → LumiVolt back button:** add a top-of-page "← Back to LumiVolt" link on `EnergyCalculator.tsx` (and inside the popup dialog footer).
-4. **Waitlist as popup:**
-  - Convert `AppWaitlistForm` into a Dialog-wrapped `WaitlistDialog` (pattern from `EnergyCalculatorDialog`).
-  - Everywhere a "Download App" / "Join Waitlist" button exists (Hero, Footer, mobile menu, StickyCTA) → open the dialog instead of navigating to `/coming-soon` or a dedicated waitlist route.
-  - Keep `/coming-soon` reachable but no longer the primary CTA target.
-5. Add new feature badge to the Energy Calculator, LumiVolt, Finance pages so new users can easily know all the new features that has been added to the website. There should also be occasional popups telling users to try out a new feature so they can be aware.
-
-## Technical notes (non-user-facing)
-
-- Migration is one file: extend trigger fn, backfill roles, drop stray customer rows for the two superadmins, add `site_cache_bust` row + `backups_log` table (with GRANTs + admin-only RLS) + optional `pg_cron` schedule.
-- Edge functions: `bootstrap-superadmin` (one-shot, callable by admin only), `backup-to-drive`, `purge-cache`.
-- No new external secrets. Google Drive uses the existing connector; Paystack + Lovable AI already configured.
-- AuthContext gets a `rolesLoaded` boolean; `RequireRole` blocks render until both `!loading && rolesLoaded`.
-
-## Out of scope
-
-- No visual redesign beyond the merged subscription page.
-- Finance, LumiVolt content, checkout flow — untouched.
+Approve and I'll implement in one build pass.
