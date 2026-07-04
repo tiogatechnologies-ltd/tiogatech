@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Check, MessageCircle, Sparkles, Zap, Crown, Building2, ArrowRight, Star } from "lucide-react";
+import { startAiSubscription, type AiPlanId } from "@/lib/subscribe";
+import { toast } from "sonner";
+import { Check, Sparkles, Zap, Crown, Building2, ArrowRight, Star, Loader2, MessageCircle } from "lucide-react";
 
-const WA = "https://wa.me/2348178000023?text=";
+const WA_CUSTOM = "https://wa.me/2348178000023?text=" + encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ");
 
 type Plan = {
-  id: string;
+  id: AiPlanId;
   name: string;
   bestFor: string;
   price: string;
+  amount: number; // NGN — 0 means "contact sales"
   period: string;
   credits: string;
   icon: any;
@@ -22,8 +25,6 @@ type Plan = {
   badge?: string;
   features: string[];
   cta: string;
-  href: string;
-  external: boolean;
 };
 
 const PLANS: Plan[] = [
@@ -32,6 +33,7 @@ const PLANS: Plan[] = [
     name: "Starters",
     bestFor: "Homeowners & DIY planners",
     price: "₦2,500",
+    amount: 2500,
     period: "/month",
     credits: "20 AI credits",
     icon: Zap,
@@ -45,15 +47,14 @@ const PLANS: Plan[] = [
       "Unused credits roll over 30 days",
       "Cancel anytime",
     ],
-    cta: "Subscribe via WhatsApp",
-    href: `${WA}${encodeURIComponent("Hi Tioga, I'd like to subscribe to the Starters AI plan (₦2,500/mo, 20 credits).")}`,
-    external: true,
+    cta: "Subscribe",
   },
   {
     id: "business",
     name: "Businesses",
     bestFor: "Installers, SMEs & multi-site",
     price: "₦12,000",
+    amount: 12000,
     period: "/month",
     credits: "120 AI credits",
     icon: Building2,
@@ -69,15 +70,14 @@ const PLANS: Plan[] = [
       "Monthly performance insights",
       "Priority WhatsApp support (4h)",
     ],
-    cta: "Subscribe via WhatsApp",
-    href: `${WA}${encodeURIComponent("Hi Tioga, I'd like to subscribe to the Businesses AI plan (₦12,000/mo, 120 credits).")}`,
-    external: true,
+    cta: "Subscribe",
   },
   {
     id: "custom",
     name: "Custom",
     bestFor: "Agencies, EPCs & enterprise",
     price: "Let's talk",
+    amount: 0,
     period: "",
     credits: "Unlimited team seats",
     icon: Crown,
@@ -92,9 +92,7 @@ const PLANS: Plan[] = [
       "SLA + named account manager",
       "Procurement-friendly invoicing",
     ],
-    cta: "Build my plan",
-    href: `${WA}${encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ")}`,
-    external: true,
+    cta: "Talk to sales",
   },
 ];
 
