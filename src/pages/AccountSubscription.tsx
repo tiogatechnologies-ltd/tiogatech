@@ -26,7 +26,7 @@ const TIERS: PlanTier[] = [
     ring: "border-border",
     accent: "from-emerald-500/10 to-transparent",
     features: ["20 AI assessments / month", "Full sizing report + BoM PDF", "Personalised package match", "Email support (24h)", "Cancel anytime"],
-    cta: "Subscribe via WhatsApp",
+    cta: "Subscribe",
     href: WA_STARTER,
   },
   {
@@ -41,7 +41,7 @@ const TIERS: PlanTier[] = [
     accent: "from-primary/15 to-transparent",
     badge: "Most popular",
     features: ["120 AI assessments / month", "Team seats (up to 3)", "Installer dashboard + CSV export", "Priority engineer review", "WhatsApp support (4h)"],
-    cta: "Subscribe via WhatsApp",
+    cta: "Subscribe",
     href: WA_BUSINESS,
   },
   {
@@ -281,14 +281,12 @@ const AccountSubscription = () => {
                           </li>
                         ))}
                       </ul>
-                      <a
-                        href={p.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <Link
+                        to="/ai-pricing"
                         className={`mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold ${isCurrent ? "border border-border bg-background hover:bg-muted" : "bg-primary text-primary-foreground hover:brightness-110"}`}
                       >
-                        <MessageCircle size={13} /> {isCurrent ? "Manage on WhatsApp" : p.cta}
-                      </a>
+                        {isCurrent ? "Manage plan" : p.cta}
+                      </Link>
                     </div>
                   </div>
                 );

@@ -1,13 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Link } from "react-router-dom";
-import { Zap, MessageCircle, ArrowRight, Check } from "lucide-react";
+import { Zap, ArrowRight, Check } from "lucide-react";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-const WA = "https://wa.me/2348000000000?text=" + encodeURIComponent("Hi Tioga, I'd like to subscribe to AI Starter (₦2,500/mo) to continue running solar assessments.");
 
 const AiUpgradeDialog = ({ open, onOpenChange }: Props) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
@@ -33,11 +31,19 @@ const AiUpgradeDialog = ({ open, onOpenChange }: Props) => (
       </div>
 
       <div className="space-y-2">
-        <a href={WA} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110">
-          <MessageCircle size={14} /> Activate via WhatsApp
-        </a>
-        <Link to="/ai-pricing" onClick={() => onOpenChange(false)} className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-5 py-3 text-sm font-semibold hover:bg-muted">
-          See all plans <ArrowRight size={14} />
+        <Link
+          to="/ai-pricing"
+          onClick={() => onOpenChange(false)}
+          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110"
+        >
+          Subscribe now <ArrowRight size={14} />
+        </Link>
+        <Link
+          to="/ai-pricing"
+          onClick={() => onOpenChange(false)}
+          className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-5 py-3 text-sm font-semibold hover:bg-muted"
+        >
+          See all plans
         </Link>
       </div>
     </DialogContent>

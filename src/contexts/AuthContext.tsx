@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, useCallback, ReactNode 
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
-export type AppRole = "admin" | "staff" | "affiliate" | "customer" | "user" | "engineer";
+export type AppRole = "admin" | "staff" | "affiliate" | "customer" | "engineer";
 
 interface Profile {
   id: string;
@@ -25,7 +25,6 @@ interface AuthContextType {
   hasAnyRole: (roles: AppRole[]) => boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: string | null }>;
-  signInWithGoogle: () => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -43,7 +42,6 @@ const AuthContext = createContext<AuthContextType>({
   hasAnyRole: () => false,
   signIn: async () => ({ error: null }),
   signUp: async () => ({ error: null }),
-  signInWithGoogle: async () => ({ error: null }),
   signOut: async () => {},
   refreshProfile: async () => {},
 });
@@ -143,15 +141,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: null };
   };
 
-  const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}/` },
-    });
-    if (error) return { error: error.message };
-    return { error: null };
-  };
-
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
@@ -168,7 +157,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAffiliate = roles.includes("affiliate");
 
   return (
-    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, rolesLoaded, hasRole, hasAnyRole, signIn, signUp, signInWithGoogle, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, rolesLoaded, hasRole, hasAnyRole, signIn, signUp, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

@@ -80,43 +80,78 @@ const FinanceApply = () => {
     setDocPath(path); toast.success("Document uploaded");
   };
 
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const submit = async () => {
+    setSubmitError(null);
     if (!form.consent) return toast.error("Please consent to the terms");
-    if (!form.full_name || !form.email || !form.phone) return toast.error("Fill required fields");
+    if (!form.full_name?.trim() || !form.email?.trim() || !form.phone?.trim()) return toast.error("Fill your name, email and phone");
     if (!form.total_amount_ngn || Number(form.total_amount_ngn) < 1_000_000) return toast.error("Minimum financed amount is ₦1,000,000");
+
     setSubmitting(true);
-    const { data, error } = await supabase.from("finance_applications").insert({
-      user_id: user?.id || null,
-      full_name: form.full_name, email: form.email, phone: form.phone,
-      address: form.address, state: form.state, city: form.city,
-      date_of_birth: form.date_of_birth || null,
-      occupation: form.occupation, employer: form.employer,
-      monthly_income_ngn: form.monthly_income_ngn ? Number(form.monthly_income_ngn) : null,
-      id_type: form.id_type, id_number: form.id_number, id_document_url: docPath,
-      next_of_kin_name: form.next_of_kin_name, next_of_kin_phone: form.next_of_kin_phone,
-      item_name: form.item_name,
-      total_amount_ngn: breakdown.total,
-      deposit_ngn: breakdown.deposit,
-      financed_ngn: breakdown.financed,
-      months: breakdown.tenure_months,
-      monthly_payment_ngn: breakdown.monthly_payment,
-      interest_rate_pct: breakdown.interest_rate,
-      insurance_fee_ngn: breakdown.insurance_fee,
-      management_fee_ngn: breakdown.management_fee,
-      total_repayment_ngn: breakdown.total_repayment,
-      package_slug: packageSlug || null,
-      assessment_id: assessmentId,
-      consent: form.consent,
-    } as any).select("id").maybeSingle();
-    setSubmitting(false);
-    if (error) return toast.error(error.message);
-
     try {
-      await supabase.functions.invoke("notify-new-lead", { body: { source: "finance_application", application_id: data?.id, full_name: form.full_name, email: form.email, phone: form.phone, summary: `${form.item_name} · ${formatNGN(breakdown.total)} · ${breakdown.tenure_months}mo` } });
-    } catch { /* non-fatal */ }
+      const payload: Record<string, any> = {
+        user_id: user?.id ?? null,
+        full_name: form.full_name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        address: form.address || null,
+        state: form.state,
+        city: form.city || null,
+        date_of_birth: form.date_of_birth || null,
+        occupation: form.occupation || null,
+        employer: form.employer || null,
+        monthly_income_ngn: form.monthly_income_ngn ? Number(form.monthly_income_ngn) : null,
+        id_type: form.id_type,
+        id_number: form.id_number || null,
+        id_document_url: docPath,
+        next_of_kin_name: form.next_of_kin_name || null,
+        next_of_kin_phone: form.next_of_kin_phone || null,
+        item_name: form.item_name || "Flex Lease-to-Own",
+        total_amount_ngn: breakdown.total,
+        deposit_ngn: breakdown.deposit,
+        financed_ngn: breakdown.financed,
+        months: breakdown.tenure_months,
+        monthly_payment_ngn: breakdown.monthly_payment,
+        interest_rate_pct: breakdown.interest_rate,
+        insurance_fee_ngn: breakdown.insurance_fee,
+        management_fee_ngn: breakdown.management_fee,
+        total_repayment_ngn: breakdown.total_repayment,
+        package_slug: packageSlug || null,
+        assessment_id: assessmentId,
+        consent: form.consent,
+      };
 
-    toast.success("Application submitted! We'll contact you within 24 hours.");
-    navigate(`/account/finance`);
+      const { data, error } = await supabase
+        .from("finance_applications")
+        .insert(payload as any)
+        .select("id")
+        .maybeSingle();
+
+      if (error) throw error;
+
+      try {
+        await supabase.functions.invoke("notify-new-lead", {
+          body: {
+            source: "finance_application",
+            application_id: data?.id,
+            full_name: payload.full_name,
+            email: payload.email,
+            phone: payload.phone,
+            summary: `${payload.item_name} · ${formatNGN(breakdown.total)} · ${breakdown.tenure_months}mo`,
+          },
+        });
+      } catch { /* non-fatal */ }
+
+      toast.success("Application submitted! We'll contact you within 24 hours.");
+      navigate(`/account/finance`);
+    } catch (e: any) {
+      const msg = e?.message || "Failed to submit application. Please try again.";
+      setSubmitError(msg);
+      toast.error(msg);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -208,7 +243,7 @@ const FinanceApply = () => {
                     </label>
                     {docPath && <span className="text-xs text-green-600">✓ Uploaded</span>}
                   </div>
-                  <p className="text-[11px] text-muted-foreground mt-1.5">You can upload additional documents to our team via WhatsApp after submission.</p>
+                  <p className="text-[11px] text-muted-foreground mt-1.5">You can upload additional documents from your account page after submission.</p>
                 </div>
                 <Field label="Next of kin / guarantor name" value={form.next_of_kin_name} onChange={(v) => setForm({ ...form, next_of_kin_name: v })} />
                 <Field label="Next of kin / guarantor phone" value={form.next_of_kin_phone} onChange={(v) => setForm({ ...form, next_of_kin_phone: v })} />
@@ -240,6 +275,11 @@ const FinanceApply = () => {
                 <span>I confirm the information provided is accurate and consent to Tioga Technologies and its bank partner verifying my identity, income, and creditworthiness. I agree to the financing terms including insurance and management fees.</span>
               </label>
               <div className="text-xs text-muted-foreground flex items-start gap-2"><ShieldCheck size={14} className="text-primary mt-0.5 shrink-0" />Your documents are stored in a private, encrypted bucket. Only Tioga admin and our bank partner can view them.</div>
+              {submitError && (
+                <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                  {submitError}
+                </div>
+              )}
               <div className="flex gap-2">
                 <button onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl border border-border font-semibold">Back</button>
                 <button onClick={submit} disabled={submitting || !form.consent} className="flex-1 bg-primary text-primary-foreground py-3 rounded-xl font-semibold flex items-center justify-center gap-2 disabled:opacity-50">{submitting ? <Loader2 size={16} className="animate-spin" /> : null}Submit application</button>
