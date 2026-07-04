@@ -187,21 +187,23 @@ const Account = () => {
                   </div>
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {(() => {
-                      const rank: Record<string, number> = { admin: 0, staff: 1, engineer: 2, affiliate: 3, customer: 4, user: 5 };
-                      const display = (roles.length === 0 ? ["customer"] : [...roles]).sort((a, b) => (rank[a] ?? 9) - (rank[b] ?? 9));
-                      return display.map((r) => (
-                        <span key={r} className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
-                          {r}
+                      const rank: Record<string, number> = { admin: 0, staff: 1, engineer: 2, affiliate: 3, customer: 4 };
+                      // Show only the highest-priority role so admins never appear as "customer".
+                      const sorted = (roles.length === 0 ? ["customer"] : [...roles]).sort((a, b) => (rank[a] ?? 9) - (rank[b] ?? 9));
+                      const primary = sorted[0];
+                      return (
+                        <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                          {primary}
                         </span>
-                      ));
+                      );
                     })()}
                   </div>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                {["inememmanuel@gmail.com", "tiogatechnologies@gmail.com"].includes((user?.email || "").toLowerCase()) && (
+                {(isAdmin || isStaff) && (
                   <Link to="/admin" className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm rounded-full bg-primary px-3 sm:px-4 py-2 font-semibold text-primary-foreground hover:brightness-110">
-                    <ShieldCheck size={14} /> Open Admin Dashboard
+                    <ShieldCheck size={14} /> Open {isAdmin ? "Admin" : "Staff"} Dashboard
                   </Link>
                 )}
                 <button onClick={signOut} className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm rounded-full border border-border bg-background px-3 sm:px-4 py-2 hover:bg-muted">

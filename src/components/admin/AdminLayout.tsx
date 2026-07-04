@@ -112,8 +112,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Admin is fully open — show every nav item regardless of auth state.
-  const can = (_required?: AppRole[]) => true;
+  // Role-based nav visibility. Admin sees everything; others see items whose
+  // `roles` list matches at least one of their roles (or items with no restriction).
+  const can = (required?: AppRole[]) => {
+    if (!required || required.length === 0) return true;
+    if (isAdmin) return true;
+    return required.some((r) => roles.includes(r));
+  };
 
   const visibleGroups = navGroups
     .filter((g) => can(g.roles))

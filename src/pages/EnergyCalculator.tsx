@@ -85,13 +85,6 @@ const EnergyCalculator = () => {
         </Link>
       </PageHero>
 
-      {/* Sticky back-to-LumiVolt link */}
-      <div className="section-container mt-4">
-        <Link to="/lumivolt" className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:underline">
-          <ArrowLeft size={14} /> Back to LumiVolt
-        </Link>
-      </div>
-
       {/* How it works */}
       <section className="section-padding bg-background">
         <div className="section-container">
