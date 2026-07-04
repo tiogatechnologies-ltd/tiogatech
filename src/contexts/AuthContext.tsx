@@ -26,7 +26,6 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
-  signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
 
@@ -142,15 +141,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: null };
   };
 
-  const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}/` },
-    });
-    if (error) return { error: error.message };
-    return { error: null };
-  };
-
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
@@ -167,7 +157,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAffiliate = roles.includes("affiliate");
 
   return (
-    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, rolesLoaded, hasRole, hasAnyRole, signIn, signUp, signInWithGoogle, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, rolesLoaded, hasRole, hasAnyRole, signIn, signUp, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );
