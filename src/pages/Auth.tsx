@@ -18,7 +18,7 @@ const signUpSchema = z.object({
 });
 
 const Auth = () => {
-  const { user, loading, isAdmin, isAffiliate, signIn, signUp, signInWithGoogle } = useAuth();
+  const { user, loading, isAdmin, isStaff, isAffiliate, hasRole, signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -34,13 +34,14 @@ const Auth = () => {
 
   useEffect(() => {
     if (!loading && user) {
-      // Redirect based on role
+      // Role-based redirect (single source of truth: user_roles table).
       if (from) navigate(from, { replace: true });
-      else if (isAdmin) navigate("/admin", { replace: true });
+      else if (isAdmin || isStaff) navigate("/admin", { replace: true });
+      else if (hasRole("engineer")) navigate("/admin/assessments", { replace: true });
       else if (isAffiliate) navigate("/affiliate", { replace: true });
       else navigate("/account", { replace: true });
     }
-  }, [user, loading, isAdmin, isAffiliate, navigate, from]);
+  }, [user, loading, isAdmin, isStaff, isAffiliate, hasRole, navigate, from]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
