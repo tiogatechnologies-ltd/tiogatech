@@ -275,6 +275,11 @@ const FinanceApply = () => {
                 <span>I confirm the information provided is accurate and consent to Tioga Technologies and its bank partner verifying my identity, income, and creditworthiness. I agree to the financing terms including insurance and management fees.</span>
               </label>
               <div className="text-xs text-muted-foreground flex items-start gap-2"><ShieldCheck size={14} className="text-primary mt-0.5 shrink-0" />Your documents are stored in a private, encrypted bucket. Only Tioga admin and our bank partner can view them.</div>
+              {submitError && (
+                <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                  {submitError}
+                </div>
+              )}
               <div className="flex gap-2">
                 <button onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl border border-border font-semibold">Back</button>
                 <button onClick={submit} disabled={submitting || !form.consent} className="flex-1 bg-primary text-primary-foreground py-3 rounded-xl font-semibold flex items-center justify-center gap-2 disabled:opacity-50">{submitting ? <Loader2 size={16} className="animate-spin" /> : null}Submit application</button>
