@@ -24,7 +24,7 @@ const secondaryLinks = [
 
 const productSubLinks = [
   { label: "Packages", to: "/packages" },
-  { label: "Retail", to: "/catalog" },
+  { label: "Retail", to: "/coming-soon" },
   { label: "Energy Calculator", to: "/energy-calculator" },
   { label: "VoltAi", to: "/voltai" },
 ];
