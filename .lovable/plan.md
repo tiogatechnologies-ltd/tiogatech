@@ -1,63 +1,54 @@
-## Plan: Fix identified issues + global inconsistencies
+# Plan: Site-wide UX + Finance fixes
 
-### 1. Remove Google login
-- Remove Google button + `handleGoogle` from `src/pages/Auth.tsx` and the `signInWithGoogle` usage from `src/components/AccountButton.tsx`/anywhere else.
-- Strip `signInWithGoogle` from `AuthContext.tsx` (keep interface tidy).
-- Disable Google provider via `configure_social_auth` (`disable_providers: ["google"]`).
+## 1. Dialogs — click-outside to close
+Audit all custom modals (non-Radix). Radix Dialog/Sheet/Drawer already close on outside click. Focus:
+- `EnergyCalculatorDialog.tsx` — already closes on backdrop click (verify).
+- `AiUpgradeDialog.tsx`, `AffiliateApplicationDialog.tsx`, `CareerApplicationDialog.tsx`, `CustomSolutionDialog.tsx`, `WaitlistDialog.tsx`, `LeadForm.tsx`, `ImageLightbox.tsx`, `CartDrawer.tsx`, `AiChatWidget.tsx` — ensure backdrop `onClick={close}` + inner `stopPropagation`. Patch any that don't.
 
-### 2. Admin accounts showing as "customer"
-Root cause: `handle_new_user()` trigger inserts `customer` role for every new signup, and the profile badge shows the first role in the array. Admins retain both `admin` + `customer`.
-- Data fix: DELETE `customer` rows from `user_roles` for users who also have `admin` or `staff`.
-- Trigger fix: update `handle_new_user()` to skip inserting `customer` when a role already exists (idempotent) — already partially handled by `grant_admin_for_verified_tioga_email`, but that runs on email confirm; ensure it also removes `customer` (it does). Add a safeguard: prefer highest-priority role in UI.
-- Frontend fix: in `AccountButton.tsx` and profile/dashboard displays, compute a single `primaryRole` = admin > staff > engineer > affiliate > customer, and render that.
+## 2. Energy Calculator — "Quick Add Common Appliance"
+In `LumiVoltSizer.tsx` (used in `/energy-calculator` and the dialog), add a "Quick Add Common Appliance" section listing chips from `src/data/applianceWatts.ts` grouped by category, each showing name + avg watts. Click adds it to the selected list.
 
-### 3. Subscribe button text
-- `src/pages/AccountSubscription.tsx`: change `cta: "Subscribe via WhatsApp"` → `"Subscribe"` for both plans; change the button label logic (line 290) to render `"Manage plan"` / `"Subscribe"` instead of WhatsApp copy; swap `MessageCircle` icon for a neutral one; ensure `onClick` calls the Paystack init flow (already wired via `AiUpgradeDialog`) and never opens `wa.me`.
+## 3. Retail page → Coming Soon
+Header hamburger "Retail" link → route to `/coming-soon` (existing `ComingSoon.tsx`) OR wrap Retail route to render ComingSoon. Update `MegaMenu.tsx` / `SiteHeader.tsx` link.
 
-### 4. Duplicate "Back to LumiVolt" on Energy Calculator
-- `src/pages/EnergyCalculator.tsx` renders the link twice (lines 78 & 91). Remove one — keep the top-of-page one inside the hero, drop the second.
+## 4. "Browse categories" → Packages
+Locate the "Browse categories" CTA (likely in `Catalog.tsx` or Hero). Change link to `/packages`.
 
-### 5. Role-based dashboards
-- Create a `/dashboard` route that inspects `roles` and redirects:
-  - admin/staff → `/admin`
-  - affiliate → `/affiliate`
-  - engineer → `/admin/assessments` (review queue)
-  - customer → `/account`
-- Update post-login redirect in `Auth.tsx` to use this single entry point.
-- In `AccountButton.tsx` menu, show role-appropriate quick links only (hide "My AI assessments" for pure affiliates, etc.).
-- No new role tables — reuse existing `user_roles` + `has_role`.
+## 5. Finance page — Easy Flex rebrand + rate correction
+- Rename "Flex Lease-to-Own" → "Easy Flex" everywhere (`Finance.tsx`, `FinanceApply.tsx`, `FlexiblePaymentButton.tsx` tooltip, `AccountFinance.tsx` copy, nav labels).
+- Verify `src/lib/financeCalc.ts` tiers match: 1M–5M @ 9%, 5M–7.5M @ 15%, 7.6M+ @ 25% — already correct (tier max 7.5M then 7.5M+). Confirm and adjust boundaries so 7.5M–7.6M gap doesn't fall to 25%; set tier2 max=7_500_000, tier3 min=7_500_001. Already matches — no change needed. Just ensure Finance.tsx displays these values from config.
+- Add **Requirements** sections on Finance page:
+  - "For Imperium Lease-to-Own Customers" (bullet list — will use current standard requirements copy from FinanceApply's document list).
+  - "For SMEs" (bullet list — CAC cert, 6 mo bank statement, etc.).
 
-### 6. Flex Lease-to-Own submission failing
-- Audit `src/pages/FinanceApply.tsx` submit handler: check the insert into `finance_applications`, storage upload to `finance-docs`, and any RLS policy on INSERT for authenticated users.
-- Add try/catch with `toast.error(err.message)` and a visible inline error state.
-- Verify the file-upload path uses `${user.id}/...` to satisfy storage RLS.
-- If the RLS policy is missing an INSERT rule scoped to `auth.uid() = user_id`, add a migration.
+## 6. Flexible Payment popup
+On product cards, clicking `FlexiblePaymentButton` currently navigates to `/finance`. Change to open a modal (new `FlexiblePaymentDialog.tsx`) showing:
+- Mini plan calculator (reuse `calcPlan` + tenure selector)
+- Interest tier table
+- **Eligibility** as a `<details>` dropdown
+- "Visit full Finance page" button → `/finance`
+Keep prop signature (itemName, price, etc.) so no caller changes needed.
 
-### Global scan — additional inconsistencies I'll fix in the same pass
-- **Stale role list**: `AppRole` type includes `"user"` which doesn't exist in the enum — remove.
-- **`AccountButton` "Staff dashboard"** links to `/admin` even for non-admin staff without permission gates — align with role redirect map.
-- **`Auth.tsx` post-login** ignores `staff`, `engineer` — route them via new `/dashboard`.
-- **WhatsApp copy leak** in `FinanceApply.tsx` line 211 — reword to "…via email or your account page."
-- **`AdminLayout.can()` currently returns `true`** (from earlier "remove restrictions" turn) — restore role-gated nav so non-admin staff don't see admin-only items. Keep the two seed admins fully unrestricted through role, not email hardcoding.
-- **`Account.tsx`** hardcoded email check for the "Open Admin Dashboard" button — replace with `isAdmin` check.
+## 7. "Talk to an expert" → /contact
+Find all "Talk to an expert" / "Talk to expert" CTAs (grep). Point every href/link to `/contact`.
 
-### Technical section
-Files to edit:
-- `src/pages/Auth.tsx`, `src/contexts/AuthContext.tsx`, `src/components/AccountButton.tsx`
-- `src/pages/AccountSubscription.tsx`
-- `src/pages/EnergyCalculator.tsx`
-- `src/pages/FinanceApply.tsx`
-- `src/pages/Account.tsx`
-- `src/components/admin/AdminLayout.tsx`
-- `src/App.tsx` (new `/dashboard` route)
-Files to create:
-- `src/pages/DashboardRouter.tsx`
-Backend:
-- Migration: cleanup duplicate customer rows for admin/staff users; ensure `finance_applications` + `finance-docs` bucket have correct INSERT policies scoped to `auth.uid()`.
-- `configure_social_auth` to disable Google.
+## 8. Finance page cleanup
+- Remove "Get an AI assessment" button.
+- Remove entire "Ready to own your power?" section (final CTA block).
 
-### Out of scope (confirm if you want these too)
-- Redesigning the customer dashboard content itself (only routing/gating changes here).
-- Building a new "Engineer" workspace UI (currently routes to existing assessments review).
+## 9. Careers page — 3 featured, "See more" reveals rest
+In `Career.tsx` / `Jobs.tsx`: slice openings to first 3, add "See more openings" button that reveals the rest (client state).
 
-Approve and I'll implement in one build pass.
+## 10. Affiliate page — replace yellow
+In `AffiliateDashboard.tsx` (+ any affiliate marketing pages), swap yellow (`bg-yellow-*`, `text-yellow-*`, or Solar Gold `#FFD700` used as text on light bg) for a readable token — `text-primary` / `bg-accent` / a darker amber (`text-amber-700 dark:text-amber-300`).
+
+## Files touched (approx)
+Edits: `LumiVoltSizer.tsx`, `MegaMenu.tsx`/`SiteHeader.tsx`, `App.tsx` (Retail route), `Catalog.tsx`/Hero (Browse categories), `Finance.tsx`, `FinanceApply.tsx`, `FlexiblePaymentButton.tsx`, `AccountFinance.tsx`, `Career.tsx`, `AffiliateDashboard.tsx`, misc dialog components.
+New: `src/components/FlexiblePaymentDialog.tsx`.
+No DB changes.
+
+## Questions before I start
+1. **"Talk to an expert"** — should it navigate to `/contact` (static form) or open the existing lead-form popup pre-filled? You said Contact page — I'll use `/contact`. Confirm.
+2. **Requirements copy** — do you have the exact bullet lists for "Imperium Lease-to-Own Customers" and "SMEs"? If not, I'll draft standard ones (valid ID, 6-month bank statement, proof of address, employment letter / CAC + business account for SMEs) and you can revise.
+3. **Retail** — turn the route into Coming Soon page, or just link the menu item to `/coming-soon`? I'll do both (route + link) unless you object.
+4. **Affiliate yellow** — replace with brand green (`primary`) or a muted amber? I'll default to `primary` for CTAs and `amber-700` for accents.
