@@ -94,7 +94,7 @@ const Finance = () => {
       <SEO title="Lease-to-Own Solar Financing in Nigeria" description="Own your solar system with 30% down and flexible 3, 6, 12 or 24 month monthly repayments. Bank-partner financing for homes and businesses across Nigeria." path="/finance" />
       <SiteHeader />
       <PageHero
-        eyebrow={c.eyebrow || "Tioga Flex Lease-to-Own"}
+        eyebrow={c.eyebrow || "Tioga Easy Flex"}
         title={c.title || "Own your solar system without paying upfront"}
         subtitle={c.subtitle || "Start with 30% deposit, then spread the rest over 3, 6, 12 or 24 fixed monthly payments. Bank-partner financing, professional installation, and insurance included."}
         backgroundImage={heroFinance}
@@ -106,7 +106,7 @@ const Finance = () => {
           <div className="section-container py-4 flex items-center gap-3 flex-wrap">
             <Sparkles className="text-accent-foreground shrink-0" size={18} />
             <p className="text-sm text-foreground flex-1 min-w-0">
-              Setting up Flex Lease-to-Own for <strong>{itemName}</strong>
+              Setting up Easy Flex for <strong>{itemName}</strong>
               {presetAmount > 0 && <> at <strong>{formatNGN(presetAmount)}</strong></>}.
             </p>
             <Link to={`/finance/apply?item=${encodeURIComponent(itemName)}&amount=${presetAmount || amount}&months=${tenures[0]}${presetPackage ? `&package=${presetPackage}` : ""}`} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">
@@ -121,7 +121,7 @@ const Finance = () => {
         <div className="section-container max-w-6xl">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3"><Calculator size={22} /></div>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">Flex repayment calculator</h2>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">Easy Flex repayment calculator</h2>
             <p className="mt-3 text-muted-foreground">Enter any project cost to see your deposit, interest tier, and monthly payment across all 4 plan lengths.</p>
           </div>
 
@@ -160,7 +160,7 @@ const Finance = () => {
                       <li className="flex items-start gap-1.5"><Check className="text-primary mt-0.5 shrink-0" size={12} />Deposit: {formatNGN(p.deposit)}</li>
                       <li className="flex items-start gap-1.5"><Check className="text-primary mt-0.5 shrink-0" size={12} />Total: {formatNGN(p.total_repayment)}</li>
                     </ul>
-                    <Link to={`/finance/apply?item=${encodeURIComponent(itemName || "Tioga Flex Plan")}&amount=${amount}&months=${p.tenure_months}${presetPackage ? `&package=${presetPackage}` : ""}`}
+                    <Link to={`/finance/apply?item=${encodeURIComponent(itemName || "Easy Flex Plan")}&amount=${amount}&months=${p.tenure_months}${presetPackage ? `&package=${presetPackage}` : ""}`}
                       className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground hover:brightness-110">
                       Apply <ArrowRight size={12} />
                     </Link>
