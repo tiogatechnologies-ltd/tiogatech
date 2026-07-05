@@ -171,9 +171,9 @@ const Finance = () => {
           </div>
 
           <div className="text-center mt-8 flex flex-wrap items-center justify-center gap-3">
-            <button onClick={() => openLeadForm("finance_calculator")} className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-muted">
+            <Link to="/contact" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-muted">
               Talk to an expert
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -243,6 +243,36 @@ const Finance = () => {
         </div>
       </section>
 
+      {/* REQUIREMENTS: Imperium + SMEs */}
+      <section className="section-padding">
+        <div className="section-container max-w-5xl">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-display font-bold">Application requirements</h2>
+            <p className="text-muted-foreground mt-2">Pick the track that matches you and have these ready.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-5">
+            <div className="rounded-3xl border border-border bg-card p-6">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Track 1</p>
+              <h3 className="text-xl font-display font-bold mb-4">Imperium Lease-to-Own customers</h3>
+              <ul className="space-y-2.5 text-sm">
+                {imperiumRequirements.map((r) => (
+                  <li key={r} className="flex items-start gap-2"><Check className="text-primary mt-0.5 shrink-0" size={16} /><span>{r}</span></li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-3xl border border-border bg-card p-6">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Track 2</p>
+              <h3 className="text-xl font-display font-bold mb-4">SMEs</h3>
+              <ul className="space-y-2.5 text-sm">
+                {smeRequirements.map((r) => (
+                  <li key={r} className="flex items-start gap-2"><Check className="text-primary mt-0.5 shrink-0" size={16} /><span>{r}</span></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* TRUST */}
       <section className="section-padding">
         <div className="section-container">
@@ -253,7 +283,7 @@ const Finance = () => {
               <ShieldCheck className="text-gold mb-4" size={36} />
               <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight mb-3">Your investment is protected</h2>
               <p className="opacity-90 leading-relaxed">
-                Every Flex plan includes 2% insurance, professional installation, and ongoing maintenance. Your system is covered for the full repayment period and beyond.
+                Every Easy Flex plan includes 2% insurance, professional installation, and ongoing maintenance. Your system is covered for the full repayment period and beyond.
               </p>
             </div>
           </div>
