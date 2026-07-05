@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroFinance from "@/assets/feature-tablet-monitor.jpg";
