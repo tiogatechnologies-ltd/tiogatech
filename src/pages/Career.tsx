@@ -221,22 +221,7 @@ const Career = () => {
           <p className="mt-3 text-muted-foreground">A snapshot of our most-needed roles right now.</p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-          {openRoles.slice(0, 2).map((job, i) => (
-            <JobCard key={job.id || job.title} job={job} index={i} onApply={setSelectedJob} />
-          ))}
-        </div>
-
-        {openRoles.length > 2 && (
-          <div className="text-center mt-10">
-            <Link
-              to="/careers/jobs"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
-            >
-              See more <ArrowRight size={16} />
-            </Link>
-          </div>
-        )}
+        <FeaturedRoles openRoles={openRoles} onApply={setSelectedJob} />
       </div>
     </section>
 
@@ -246,14 +231,14 @@ const Career = () => {
     {/* Affiliate program */}
     <section id="affiliate" className="section-padding">
       <div className="section-container max-w-5xl">
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-card to-gold/10 p-8 sm:p-12">
-          <div className="absolute -top-16 -right-16 w-64 h-64 bg-gold/20 rounded-full blur-3xl" />
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-card to-primary/5 p-8 sm:p-12">
+          <div className="absolute -top-16 -right-16 w-64 h-64 bg-primary/15 rounded-full blur-3xl" />
           <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
           <div className="relative grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-3 py-1 mb-4">
-                <Share2 size={14} className="text-gold" />
-                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-gold">New — Affiliate Program</span>
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 mb-4">
+                <Share2 size={14} className="text-primary" />
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary">New — Affiliate Program</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip mb-4">
                 Refer customers. Earn naira.
@@ -273,7 +258,7 @@ const Career = () => {
                   <p className="text-[11px] text-muted-foreground">unique code + UTM</p>
                 </div>
                 <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
-                  <TrendingUp className="text-gold mb-2" size={18} />
+                  <TrendingUp className="text-primary mb-2" size={18} />
                   <p className="text-xs font-bold text-foreground">60-day window</p>
                   <p className="text-[11px] text-muted-foreground">long attribution</p>
                 </div>
@@ -357,6 +342,31 @@ const Career = () => {
 
     <SiteFooter />
   </div>
+  );
+};
+
+const FeaturedRoles = ({ openRoles, onApply }: { openRoles: Job[]; onApply: (job: Job) => void }) => {
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? openRoles : openRoles.slice(0, 3);
+  return (
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+        {visible.map((job, i) => (
+          <JobCard key={job.id || job.title} job={job} index={i} onApply={onApply} />
+        ))}
+      </div>
+      {openRoles.length > 3 && !showAll && (
+        <div className="text-center mt-10">
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
+          >
+            See more openings <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 

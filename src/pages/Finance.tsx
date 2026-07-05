@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import heroFinance from "@/assets/feature-tablet-monitor.jpg";
@@ -31,6 +31,28 @@ const eligibility = [
   "Employment letter or registered business / income verification",
   "BVN / NIN verification",
   "Guarantor information (where applicable)",
+];
+
+const imperiumRequirements = [
+  "Completed Imperium Lease-to-Own application form",
+  "Valid government-issued ID (NIN, passport, driver's license or voter's card)",
+  "Two recent passport photographs",
+  "Proof of address (utility bill, rental agreement or LGA letter — not older than 3 months)",
+  "6 months personal bank statement",
+  "Employment / income letter, or evidence of steady income for self-employed applicants",
+  "One credible guarantor with a valid ID and proof of address",
+  "30% deposit on the total system cost",
+];
+
+const smeRequirements = [
+  "Completed Easy Flex SME application form",
+  "CAC certificate of incorporation and Memart",
+  "Board resolution / partners' consent authorising the facility",
+  "6 months corporate bank statement",
+  "Valid ID of the two signatories / directors and proof of business address",
+  "Company profile and last 12 months management accounts (where available)",
+  "Personal guarantee of a director or a corporate guarantor",
+  "30% deposit on the total system cost",
 ];
 
 const faqs = [
@@ -72,7 +94,7 @@ const Finance = () => {
       <SEO title="Lease-to-Own Solar Financing in Nigeria" description="Own your solar system with 30% down and flexible 3, 6, 12 or 24 month monthly repayments. Bank-partner financing for homes and businesses across Nigeria." path="/finance" />
       <SiteHeader />
       <PageHero
-        eyebrow={c.eyebrow || "Tioga Flex Lease-to-Own"}
+        eyebrow={c.eyebrow || "Tioga Easy Flex"}
         title={c.title || "Own your solar system without paying upfront"}
         subtitle={c.subtitle || "Start with 30% deposit, then spread the rest over 3, 6, 12 or 24 fixed monthly payments. Bank-partner financing, professional installation, and insurance included."}
         backgroundImage={heroFinance}
@@ -84,7 +106,7 @@ const Finance = () => {
           <div className="section-container py-4 flex items-center gap-3 flex-wrap">
             <Sparkles className="text-accent-foreground shrink-0" size={18} />
             <p className="text-sm text-foreground flex-1 min-w-0">
-              Setting up Flex Lease-to-Own for <strong>{itemName}</strong>
+              Setting up Easy Flex for <strong>{itemName}</strong>
               {presetAmount > 0 && <> at <strong>{formatNGN(presetAmount)}</strong></>}.
             </p>
             <Link to={`/finance/apply?item=${encodeURIComponent(itemName)}&amount=${presetAmount || amount}&months=${tenures[0]}${presetPackage ? `&package=${presetPackage}` : ""}`} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">
@@ -99,7 +121,7 @@ const Finance = () => {
         <div className="section-container max-w-6xl">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3"><Calculator size={22} /></div>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">Flex repayment calculator</h2>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">Easy Flex repayment calculator</h2>
             <p className="mt-3 text-muted-foreground">Enter any project cost to see your deposit, interest tier, and monthly payment across all 4 plan lengths.</p>
           </div>
 
@@ -138,7 +160,7 @@ const Finance = () => {
                       <li className="flex items-start gap-1.5"><Check className="text-primary mt-0.5 shrink-0" size={12} />Deposit: {formatNGN(p.deposit)}</li>
                       <li className="flex items-start gap-1.5"><Check className="text-primary mt-0.5 shrink-0" size={12} />Total: {formatNGN(p.total_repayment)}</li>
                     </ul>
-                    <Link to={`/finance/apply?item=${encodeURIComponent(itemName || "Tioga Flex Plan")}&amount=${amount}&months=${p.tenure_months}${presetPackage ? `&package=${presetPackage}` : ""}`}
+                    <Link to={`/finance/apply?item=${encodeURIComponent(itemName || "Easy Flex Plan")}&amount=${amount}&months=${p.tenure_months}${presetPackage ? `&package=${presetPackage}` : ""}`}
                       className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground hover:brightness-110">
                       Apply <ArrowRight size={12} />
                     </Link>
@@ -149,9 +171,9 @@ const Finance = () => {
           </div>
 
           <div className="text-center mt-8 flex flex-wrap items-center justify-center gap-3">
-            <button onClick={() => openLeadForm("finance_calculator")} className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-muted">
+            <Link to="/contact" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-muted">
               Talk to an expert
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -221,6 +243,36 @@ const Finance = () => {
         </div>
       </section>
 
+      {/* REQUIREMENTS: Imperium + SMEs */}
+      <section className="section-padding">
+        <div className="section-container max-w-5xl">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-display font-bold">Application requirements</h2>
+            <p className="text-muted-foreground mt-2">Pick the track that matches you and have these ready.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-5">
+            <div className="rounded-3xl border border-border bg-card p-6">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Track 1</p>
+              <h3 className="text-xl font-display font-bold mb-4">Imperium Lease-to-Own customers</h3>
+              <ul className="space-y-2.5 text-sm">
+                {imperiumRequirements.map((r) => (
+                  <li key={r} className="flex items-start gap-2"><Check className="text-primary mt-0.5 shrink-0" size={16} /><span>{r}</span></li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-3xl border border-border bg-card p-6">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Track 2</p>
+              <h3 className="text-xl font-display font-bold mb-4">SMEs</h3>
+              <ul className="space-y-2.5 text-sm">
+                {smeRequirements.map((r) => (
+                  <li key={r} className="flex items-start gap-2"><Check className="text-primary mt-0.5 shrink-0" size={16} /><span>{r}</span></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* TRUST */}
       <section className="section-padding">
         <div className="section-container">
@@ -231,7 +283,7 @@ const Finance = () => {
               <ShieldCheck className="text-gold mb-4" size={36} />
               <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight mb-3">Your investment is protected</h2>
               <p className="opacity-90 leading-relaxed">
-                Every Flex plan includes 2% insurance, professional installation, and ongoing maintenance. Your system is covered for the full repayment period and beyond.
+                Every Easy Flex plan includes 2% insurance, professional installation, and ongoing maintenance. Your system is covered for the full repayment period and beyond.
               </p>
             </div>
           </div>
@@ -242,7 +294,7 @@ const Finance = () => {
       {/* FAQ */}
       <section className="section-padding bg-muted/30">
         <div className="section-container max-w-3xl">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-center mb-10">Flex Lease-to-Own FAQ</h2>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-center mb-10">Easy Flex FAQ</h2>
           <div className="space-y-3">
             {faqs.map((f) => (
               <details key={f.q} className="group rounded-2xl border border-border bg-card p-5 open:shadow-[var(--shadow-card)]">
@@ -256,20 +308,6 @@ const Finance = () => {
         </div>
       </section>
 
-      <section className="section-padding">
-        <div className="section-container text-center">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-3">Ready to own your power?</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-7">Start with a free assessment, then apply for Flex Lease-to-Own in under 5 minutes.</p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link to="/solar-assessment" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20">
-              Get an AI assessment <ArrowRight size={16} />
-            </Link>
-            <button onClick={() => openLeadForm("page_cta")} className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold hover:bg-muted">
-              Free consultation
-            </button>
-          </div>
-        </div>
-      </section>
 
       <SiteFooter />
     </div>

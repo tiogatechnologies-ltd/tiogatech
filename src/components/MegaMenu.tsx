@@ -12,9 +12,9 @@ const productHubs = [
   },
   {
     name: "Retail",
-    tag: "Browse catalog",
-    desc: "Individual devices, panels, locks, cameras and more. Order on WhatsApp.",
-    to: "/catalog",
+    tag: "Coming soon",
+    desc: "Our online retail store is launching soon. Browse packages in the meantime.",
+    to: "/coming-soon",
     icon: Store,
   },
   {

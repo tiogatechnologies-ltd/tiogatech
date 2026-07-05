@@ -307,8 +307,14 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
   const animClass = direction === "left" ? "animate-slide-left" : "animate-slide-right";
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-foreground/40 backdrop-blur-sm px-0 sm:px-4">
-      <div className="bg-card rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+    <div
+      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-foreground/40 backdrop-blur-sm px-0 sm:px-4"
+      onClick={() => { handleReset(); onClose(); }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-card rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
+      >
         <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
             {step >= 0 ? `Step ${step + 1} of ${totalSteps}` : "Get Started"}

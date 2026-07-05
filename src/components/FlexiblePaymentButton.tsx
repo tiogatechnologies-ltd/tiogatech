@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { Wallet } from "lucide-react";
+import FlexiblePaymentDialog from "@/components/FlexiblePaymentDialog";
 
 interface Props {
   itemName?: string;
@@ -11,26 +12,32 @@ interface Props {
 }
 
 /**
- * Small CTA linking to the Finance page, optionally pre-filling the
- * calculator with the item's price and name via query params.
+ * CTA that opens a mini Easy Flex calculator + eligibility popup with a
+ * link to the full Finance page.
  */
 const FlexiblePaymentButton = ({ itemName, itemType, itemId, price, className = "", compact = false }: Props) => {
-  const params = new URLSearchParams();
-  if (itemName) params.set("item", itemName);
-  if (itemType) params.set("type", itemType);
-  if (itemId) params.set("id", itemId);
-  if (price) params.set("amount", String(price));
-  const to = `/finance${params.toString() ? `?${params.toString()}` : ""}`;
+  const [open, setOpen] = useState(false);
 
   return (
-    <Link
-      to={to}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent-foreground px-3 py-1.5 text-[11px] font-semibold hover:bg-accent/20 hover:border-accent/60 transition-all ${compact ? "" : "w-full"} ${className}`}
-      title="Pay 30% now, spread the rest"
-    >
-      <Wallet size={12} />
-      Flexible Payment
-    </Link>
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className={`inline-flex items-center justify-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent-foreground px-3 py-1.5 text-[11px] font-semibold hover:bg-accent/20 hover:border-accent/60 transition-all ${compact ? "" : "w-full"} ${className}`}
+        title="Pay 30% now, spread the rest — Easy Flex"
+      >
+        <Wallet size={12} />
+        Easy Flex
+      </button>
+      <FlexiblePaymentDialog
+        open={open}
+        onOpenChange={setOpen}
+        itemName={itemName}
+        itemType={itemType}
+        itemId={itemId}
+        price={price}
+      />
+    </>
   );
 };
 

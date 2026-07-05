@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
-import { Plus, Trash2, HelpCircle, Save, Sun, Plug, BatteryCharging, Cpu, Calculator, Printer, ArrowLeft, Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import { Plus, Trash2, HelpCircle, Save, Sun, Plug, BatteryCharging, Cpu, Calculator, Printer, ArrowLeft, Eye, EyeOff, CheckCircle2, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { applianceDatabase } from "@/data/applianceWatts";
 
 type Row = { id: string; name: string; qty: number; watts: number; hours: number };
 
@@ -231,6 +232,35 @@ const LumiVoltSizer = () => {
       >
         <Plus size={16} /> Add Appliance
       </button>
+
+      {/* Quick Add Common Appliance */}
+      <div className="rounded-2xl border border-border bg-muted/30 p-3">
+        <div className="flex items-center gap-1.5 mb-2">
+          <Zap size={14} className="text-primary" />
+          <p className="text-xs font-semibold text-foreground">Quick Add Common Appliance</p>
+        </div>
+        <p className="text-[11px] text-muted-foreground mb-3">Tap any item below to add it with typical wattage.</p>
+        <div className="flex flex-wrap gap-1.5 max-h-52 overflow-y-auto">
+          {applianceDatabase.map((a) => (
+            <button
+              key={a.name}
+              type="button"
+              onClick={() =>
+                setRows((rs) => [
+                  ...rs,
+                  { id: crypto.randomUUID(), name: a.name, qty: 1, watts: a.avgWatts, hours: 4 },
+                ])
+              }
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-1 text-[11px] hover:border-primary/50 hover:bg-primary/5 transition-colors"
+              title={`${a.avgWatts}W (typical)`}
+            >
+              <span>{a.icon}</span>
+              <span className="font-medium text-foreground">{a.name}</span>
+              <span className="text-muted-foreground">· {a.avgWatts}W</span>
+            </button>
+          ))}
+        </div>
+      </div>
 
       <p className="text-xs text-muted-foreground text-center">
         💡 Tip: Use the wattage on your appliance label for accurate sizing.
