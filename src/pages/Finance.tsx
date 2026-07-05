@@ -33,6 +33,28 @@ const eligibility = [
   "Guarantor information (where applicable)",
 ];
 
+const imperiumRequirements = [
+  "Completed Imperium Lease-to-Own application form",
+  "Valid government-issued ID (NIN, passport, driver's license or voter's card)",
+  "Two recent passport photographs",
+  "Proof of address (utility bill, rental agreement or LGA letter — not older than 3 months)",
+  "6 months personal bank statement",
+  "Employment / income letter, or evidence of steady income for self-employed applicants",
+  "One credible guarantor with a valid ID and proof of address",
+  "30% deposit on the total system cost",
+];
+
+const smeRequirements = [
+  "Completed Easy Flex SME application form",
+  "CAC certificate of incorporation and Memart",
+  "Board resolution / partners' consent authorising the facility",
+  "6 months corporate bank statement",
+  "Valid ID of the two signatories / directors and proof of business address",
+  "Company profile and last 12 months management accounts (where available)",
+  "Personal guarantee of a director or a corporate guarantor",
+  "30% deposit on the total system cost",
+];
+
 const faqs = [
   { q: "How is interest calculated?", a: "Interest is set by our bank partner using three loan tiers: 9% (₦1m to ₦5m), 15% (₦5m to ₦7.5m), and 25% (above ₦7.5m). A 2% insurance fee and 1% management fee are added on top." },
   { q: "Which plan length should I choose?", a: "3 and 6 month plans clear faster with lower total cost. 12 and 24 month plans give you the smallest monthly payment. Pick whichever fits your cash flow." },
