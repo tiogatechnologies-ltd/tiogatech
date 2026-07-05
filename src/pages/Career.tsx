@@ -231,14 +231,14 @@ const Career = () => {
     {/* Affiliate program */}
     <section id="affiliate" className="section-padding">
       <div className="section-container max-w-5xl">
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-card to-gold/10 p-8 sm:p-12">
-          <div className="absolute -top-16 -right-16 w-64 h-64 bg-gold/20 rounded-full blur-3xl" />
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-card to-primary/5 p-8 sm:p-12">
+          <div className="absolute -top-16 -right-16 w-64 h-64 bg-primary/15 rounded-full blur-3xl" />
           <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
           <div className="relative grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-3 py-1 mb-4">
-                <Share2 size={14} className="text-gold" />
-                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-gold">New — Affiliate Program</span>
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 mb-4">
+                <Share2 size={14} className="text-primary" />
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary">New — Affiliate Program</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip mb-4">
                 Refer customers. Earn naira.
@@ -258,7 +258,7 @@ const Career = () => {
                   <p className="text-[11px] text-muted-foreground">unique code + UTM</p>
                 </div>
                 <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
-                  <TrendingUp className="text-gold mb-2" size={18} />
+                  <TrendingUp className="text-primary mb-2" size={18} />
                   <p className="text-xs font-bold text-foreground">60-day window</p>
                   <p className="text-[11px] text-muted-foreground">long attribution</p>
                 </div>
