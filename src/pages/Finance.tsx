@@ -294,7 +294,7 @@ const Finance = () => {
       {/* FAQ */}
       <section className="section-padding bg-muted/30">
         <div className="section-container max-w-3xl">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-center mb-10">Flex Lease-to-Own FAQ</h2>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-center mb-10">Easy Flex FAQ</h2>
           <div className="space-y-3">
             {faqs.map((f) => (
               <details key={f.q} className="group rounded-2xl border border-border bg-card p-5 open:shadow-[var(--shadow-card)]">
@@ -308,20 +308,6 @@ const Finance = () => {
         </div>
       </section>
 
-      <section className="section-padding">
-        <div className="section-container text-center">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-3">Ready to own your power?</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-7">Start with a free assessment, then apply for Flex Lease-to-Own in under 5 minutes.</p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link to="/solar-assessment" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20">
-              Get an AI assessment <ArrowRight size={16} />
-            </Link>
-            <button onClick={() => openLeadForm("page_cta")} className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold hover:bg-muted">
-              Free consultation
-            </button>
-          </div>
-        </div>
-      </section>
 
       <SiteFooter />
     </div>
