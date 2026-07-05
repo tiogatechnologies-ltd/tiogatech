@@ -345,4 +345,29 @@ const Career = () => {
   );
 };
 
+const FeaturedRoles = ({ openRoles, onApply }: { openRoles: Job[]; onApply: (job: Job) => void }) => {
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? openRoles : openRoles.slice(0, 3);
+  return (
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+        {visible.map((job, i) => (
+          <JobCard key={job.id || job.title} job={job} index={i} onApply={onApply} />
+        ))}
+      </div>
+      {openRoles.length > 3 && !showAll && (
+        <div className="text-center mt-10">
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
+          >
+            See more openings <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
+
 export default Career;
