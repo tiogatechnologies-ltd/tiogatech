@@ -221,22 +221,7 @@ const Career = () => {
           <p className="mt-3 text-muted-foreground">A snapshot of our most-needed roles right now.</p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-          {openRoles.slice(0, 2).map((job, i) => (
-            <JobCard key={job.id || job.title} job={job} index={i} onApply={setSelectedJob} />
-          ))}
-        </div>
-
-        {openRoles.length > 2 && (
-          <div className="text-center mt-10">
-            <Link
-              to="/careers/jobs"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
-            >
-              See more <ArrowRight size={16} />
-            </Link>
-          </div>
-        )}
+        <FeaturedRoles openRoles={openRoles} onApply={setSelectedJob} />
       </div>
     </section>
 

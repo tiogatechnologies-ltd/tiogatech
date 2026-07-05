@@ -107,7 +107,7 @@ const FinanceApply = () => {
         id_document_url: docPath,
         next_of_kin_name: form.next_of_kin_name || null,
         next_of_kin_phone: form.next_of_kin_phone || null,
-        item_name: form.item_name || "Flex Lease-to-Own",
+        item_name: form.item_name || "Easy Flex",
         total_amount_ngn: breakdown.total,
         deposit_ngn: breakdown.deposit,
         financed_ngn: breakdown.financed,
@@ -156,11 +156,11 @@ const FinanceApply = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Apply for Flex Lease-to-Own — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 3, 6, 12 or 24 month repayments, bank-partner approval." />
+      <SEO title="Apply for Easy Flex — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 3, 6, 12 or 24 month repayments, bank-partner approval." />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8">
           <button onClick={() => navigate(-1)} className="text-sm text-muted-foreground mb-4">← Back</button>
-          <h1 className="font-display text-2xl sm:text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary shrink-0" /> Flex Lease-to-Own Application</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary shrink-0" /> Easy Flex Application</h1>
           <p className="text-sm text-muted-foreground mt-2">30% deposit, then 3, 6, 12 or 24 fixed monthly installments. Decision within 24 hours.</p>
         </div>
 
