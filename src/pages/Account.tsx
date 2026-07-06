@@ -451,7 +451,7 @@ const Account = () => {
                       <li key={a.id} className="py-3 flex items-center justify-between gap-3">
                         <div className="min-w-0">
                           <p className="text-sm font-semibold text-foreground truncate flex items-center gap-1"><MapPin size={12} /> {a.location || "Assessment"}</p>
-                          <p className="text-xs text-muted-foreground capitalize">{a.system_type?.replace(/_/g, " ") || "Solar"}</p>
+                          <p className="text-xs text-muted-foreground capitalize">Solar</p>
                           <p className="text-[10px] text-muted-foreground mt-0.5">{new Date(a.created_at).toLocaleDateString()}</p>
                         </div>
                         <div className="text-right shrink-0 flex flex-col items-end gap-1">
