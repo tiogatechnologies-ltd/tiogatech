@@ -15,14 +15,14 @@ Deno.serve(async (req) => {
 
   const { data: upcoming } = await supabase
     .from("finance_schedules")
-    .select("id, application_id, installment_number, due_date, amount_ngn, status, finance_applications!inner(full_name, email, phone)")
+    .select("id, application_id, installment_no, due_date, amount_ngn, status, finance_applications!inner(full_name, email, phone)")
     .in("status", ["pending", "due"])
     .gte("due_date", today.toISOString().slice(0,10))
     .lte("due_date", in3.toISOString().slice(0,10));
 
   const { data: overdue } = await supabase
     .from("finance_schedules")
-    .select("id, application_id, installment_number, due_date, amount_ngn, status, finance_applications!inner(full_name, email, phone)")
+    .select("id, application_id, installment_no, due_date, amount_ngn, status, finance_applications!inner(full_name, email, phone)")
     .in("status", ["pending", "due", "overdue"])
     .lt("due_date", today.toISOString().slice(0,10));
 
@@ -33,9 +33,9 @@ Deno.serve(async (req) => {
     const app = s.finance_applications;
     if (!app?.email) continue;
     const subject = s.kind === "overdue"
-      ? `Overdue installment #${s.installment_number} — please pay`
-      : `Reminder: installment #${s.installment_number} due ${s.due_date}`;
-    const body = `Hi ${app.full_name?.split(" ")[0] || "there"},\n\nYour finance installment #${s.installment_number} of ₦${Number(s.amount_ngn).toLocaleString()} is ${s.kind === "overdue" ? "overdue" : `due on ${s.due_date}`}.\n\nView and pay: https://tiogatechnologies.com/account/finance\n\nThe Tioga Team`;
+      ? `Overdue installment #${s.installment_no} — please pay`
+      : `Reminder: installment #${s.installment_no} due ${s.due_date}`;
+    const body = `Hi ${app.full_name?.split(" ")[0] || "there"},\n\nYour finance installment #${s.installment_no} of ₦${Number(s.amount_ngn).toLocaleString()} is ${s.kind === "overdue" ? "overdue" : `due on ${s.due_date}`}.\n\nView and pay: https://tiogatechnologies.com/account/finance\n\nThe Tioga Team`;
 
     try {
       await supabase.functions.invoke("send-gmail", { body: { to: app.email, subject, text: body } });
