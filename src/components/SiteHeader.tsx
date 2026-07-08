@@ -246,7 +246,13 @@ const SiteHeader = () => {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
+        <>
+          <div
+            className="lg:hidden fixed inset-0 top-16 bg-black/40 z-30 animate-fade-in"
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="lg:hidden relative z-40 border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
           <nav className="section-container py-4 flex flex-col gap-1">
             <NavLink
               to="/"
