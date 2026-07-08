@@ -5,6 +5,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import RelatedPosts from "@/components/RelatedPosts";
+import SharePost from "@/components/SharePost";
 import { useBlogPost } from "@/hooks/useBlog";
 import { Calendar, Clock, ArrowLeft, Loader2, User } from "lucide-react";
 
@@ -88,6 +89,12 @@ const BlogPost = () => {
             <span className="inline-flex items-center gap-1.5"><Clock size={14} /> {post.read_minutes} min read</span>
           </div>
 
+          <SharePost
+            url={`https://tiogatechnologies.com/blog/${post.slug}`}
+            title={post.title}
+            className="mt-5"
+          />
+
           {post.cover_image_url && (
             <img
               src={post.cover_image_url}
@@ -115,6 +122,13 @@ const BlogPost = () => {
                 return c;
               })()}
             </ReactMarkdown>
+          </div>
+
+          <div className="mt-10 pt-6 border-t border-border">
+            <SharePost
+              url={`https://tiogatechnologies.com/blog/${post.slug}`}
+              title={post.title}
+            />
           </div>
 
         </div>

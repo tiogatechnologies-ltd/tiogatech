@@ -81,6 +81,14 @@ const SiteHeader = () => {
     };
   }, [productsDesktopOpen]);
 
+  // Close mobile menu on Escape
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const openProducts = () => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
     setProductsDesktopOpen(true);
@@ -238,7 +246,13 @@ const SiteHeader = () => {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
+        <>
+          <div
+            className="lg:hidden fixed inset-0 top-16 bg-black/40 z-30 animate-fade-in"
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="lg:hidden relative z-40 border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
           <nav className="section-container py-4 flex flex-col gap-1">
             <NavLink
               to="/"
@@ -304,7 +318,8 @@ const SiteHeader = () => {
               <MessageCircle size={14} /> WhatsApp
             </a>
           </nav>
-        </div>
+          </div>
+        </>
       )}
     </header>
   );

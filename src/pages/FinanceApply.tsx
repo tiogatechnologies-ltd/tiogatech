@@ -201,6 +201,7 @@ const FinanceApply = () => {
                 <Row label="Management (1%)" value={formatNGN(breakdown.management_fee)} muted />
                 <div className="pt-2 border-t border-border">
                   <Row label="Total repayment" value={formatNGN(breakdown.total_repayment)} bold />
+                  <Row label="Total cost (deposit + repayment)" value={formatNGN(breakdown.deposit + breakdown.total_repayment)} bold />
                 </div>
                 <div className="pt-2 border-t border-border flex justify-between font-display text-base font-bold">
                   <span>Monthly</span><span className="text-primary">{formatNGN(breakdown.monthly_payment)}</span>
@@ -264,7 +265,8 @@ const FinanceApply = () => {
                 <Row label="Deposit upfront" value={formatNGN(breakdown.deposit)} muted />
                 <Row label="Interest rate" value={`${(breakdown.interest_rate * 100).toFixed(0)}%`} muted />
                 <Row label="Insurance + management" value={formatNGN(breakdown.insurance_fee + breakdown.management_fee)} muted />
-                <Row label="Total repayment" value={formatNGN(breakdown.total_repayment)} />
+                <Row label="Total repayment" value={formatNGN(breakdown.total_repayment)} bold />
+                <Row label="Total cost (deposit + repayment)" value={formatNGN(breakdown.deposit + breakdown.total_repayment)} bold />
                 <div className="pt-2 border-t border-border flex justify-between font-display text-base font-bold">
                   <span>Monthly × {breakdown.tenure_months}</span>
                   <span className="text-primary">{formatNGN(breakdown.monthly_payment)}</span>

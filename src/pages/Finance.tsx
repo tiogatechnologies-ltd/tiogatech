@@ -140,8 +140,9 @@ const Finance = () => {
                 <Row label={`Interest tier (${(primary.interest_rate * 100).toFixed(0)}%)`} value={formatNGN(primary.interest_amount)} muted />
                 <Row label="Insurance (2%)" value={formatNGN(primary.insurance_fee)} muted />
                 <Row label="Management (1%)" value={formatNGN(primary.management_fee)} muted />
-                <div className="pt-2 border-t border-border">
+                <div className="pt-2 border-t border-border space-y-2">
                   <Row label="Total repayment" value={formatNGN(primary.total_repayment)} bold />
+                  <Row label="Total cost (deposit + repayment)" value={formatNGN(primary.deposit + primary.total_repayment)} bold />
                 </div>
               </div>
             </div>

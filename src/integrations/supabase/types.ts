@@ -813,6 +813,8 @@ export type Database = {
           notes: string | null
           occupation: string | null
           package_slug: string | null
+          paystack_authorization_code: string | null
+          paystack_customer_code: string | null
           phone: string
           rejection_reason: string | null
           reviewer_id: string | null
@@ -853,6 +855,8 @@ export type Database = {
           notes?: string | null
           occupation?: string | null
           package_slug?: string | null
+          paystack_authorization_code?: string | null
+          paystack_customer_code?: string | null
           phone: string
           rejection_reason?: string | null
           reviewer_id?: string | null
@@ -893,6 +897,8 @@ export type Database = {
           notes?: string | null
           occupation?: string | null
           package_slug?: string | null
+          paystack_authorization_code?: string | null
+          paystack_customer_code?: string | null
           phone?: string
           rejection_reason?: string | null
           reviewer_id?: string | null
@@ -974,12 +980,17 @@ export type Database = {
         Row: {
           amount_ngn: number
           application_id: string
+          auto_charge_status: string | null
           created_at: string
           due_date: string
           id: string
           installment_no: number
+          is_deposit: boolean
+          last_charge_error: string | null
           paid_at: string | null
           paid_reference: string | null
+          payment_reference: string | null
+          payment_url: string | null
           proof_url: string | null
           reminded_at: string | null
           status: Database["public"]["Enums"]["finance_inst_status"]
@@ -988,12 +999,17 @@ export type Database = {
         Insert: {
           amount_ngn: number
           application_id: string
+          auto_charge_status?: string | null
           created_at?: string
           due_date: string
           id?: string
           installment_no: number
+          is_deposit?: boolean
+          last_charge_error?: string | null
           paid_at?: string | null
           paid_reference?: string | null
+          payment_reference?: string | null
+          payment_url?: string | null
           proof_url?: string | null
           reminded_at?: string | null
           status?: Database["public"]["Enums"]["finance_inst_status"]
@@ -1002,12 +1018,17 @@ export type Database = {
         Update: {
           amount_ngn?: number
           application_id?: string
+          auto_charge_status?: string | null
           created_at?: string
           due_date?: string
           id?: string
           installment_no?: number
+          is_deposit?: boolean
+          last_charge_error?: string | null
           paid_at?: string | null
           paid_reference?: string | null
+          payment_reference?: string | null
+          payment_url?: string | null
           proof_url?: string | null
           reminded_at?: string | null
           status?: Database["public"]["Enums"]["finance_inst_status"]
@@ -1610,6 +1631,60 @@ export type Database = {
           user_agent?: string | null
         }
         Relationships: []
+      }
+      payment_events: {
+        Row: {
+          amount_ngn: number | null
+          application_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          provider: string
+          raw: Json | null
+          reference: string
+          schedule_id: string | null
+          status: string
+        }
+        Insert: {
+          amount_ngn?: number | null
+          application_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          provider?: string
+          raw?: Json | null
+          reference: string
+          schedule_id?: string | null
+          status: string
+        }
+        Update: {
+          amount_ngn?: number | null
+          application_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          provider?: string
+          raw?: Json | null
+          reference?: string
+          schedule_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_events_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "finance_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_events_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "finance_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       product_clicks: {
         Row: {
