@@ -72,18 +72,31 @@ const AccountFinance = () => {
                 <div className="border-t border-border p-5">
                   <p className="text-xs font-semibold uppercase text-muted-foreground mb-3 flex items-center gap-2"><Calendar size={12} />Repayment schedule</p>
                   <div className="space-y-1.5">
-                    {schedules[a.id].map((s) => (
-                      <div key={s.id} className="flex items-center justify-between text-sm p-2.5 rounded-lg bg-muted/40">
-                        <div className="flex items-center gap-3">
-                          {s.status === "paid" ? <CheckCircle2 size={16} className="text-green-600" /> : <div className={`h-3 w-3 rounded-full ${s.status === "overdue" ? "bg-red-500" : "bg-blue-400"}`} />}
-                          <span>#{s.installment_no} · {new Date(s.due_date).toLocaleDateString()}</span>
+                    {schedules[a.id].map((s) => {
+                      const isUnpaid = s.status !== "paid" && s.status !== "waived";
+                      const needsManual = isUnpaid && (s.auto_charge_status === "manual_required" || s.is_deposit || !!s.payment_url);
+                      const label = s.is_deposit ? "Deposit" : `#${s.installment_no}`;
+                      return (
+                        <div key={s.id} className="flex items-center justify-between text-sm p-2.5 rounded-lg bg-muted/40 flex-wrap gap-2">
+                          <div className="flex items-center gap-3">
+                            {s.status === "paid" ? <CheckCircle2 size={16} className="text-green-600" /> : <div className={`h-3 w-3 rounded-full ${s.status === "overdue" ? "bg-red-500" : "bg-blue-400"}`} />}
+                            <span>{label} · {new Date(s.due_date).toLocaleDateString()}</span>
+                          </div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-semibold">₦{Number(s.amount_ngn).toLocaleString()}</span>
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full capitalize ${s.status === "paid" ? "bg-green-100 text-green-700" : s.status === "overdue" ? "bg-red-100 text-red-700" : "bg-muted text-muted-foreground"}`}>{s.status}</span>
+                            {isUnpaid && needsManual && (
+                              <button onClick={() => payNow(s.id, s.payment_url)} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110">
+                                Pay Now
+                              </button>
+                            )}
+                            {isUnpaid && !needsManual && s.auto_charge_status === "scheduled" && (
+                              <span className="text-[10px] text-muted-foreground">Auto-pay on {new Date(s.due_date).toLocaleDateString()}</span>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold">₦{Number(s.amount_ngn).toLocaleString()}</span>
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full capitalize ${s.status === "paid" ? "bg-green-100 text-green-700" : s.status === "overdue" ? "bg-red-100 text-red-700" : "bg-muted text-muted-foreground"}`}>{s.status}</span>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
