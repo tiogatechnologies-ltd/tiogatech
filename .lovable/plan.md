@@ -1,54 +1,82 @@
-# Plan: Site-wide UX + Finance fixes
+## Part 1 — Finance auto-payment system (largest change)
 
-## 1. Dialogs — click-outside to close
-Audit all custom modals (non-Radix). Radix Dialog/Sheet/Drawer already close on outside click. Focus:
-- `EnergyCalculatorDialog.tsx` — already closes on backdrop click (verify).
-- `AiUpgradeDialog.tsx`, `AffiliateApplicationDialog.tsx`, `CareerApplicationDialog.tsx`, `CustomSolutionDialog.tsx`, `WaitlistDialog.tsx`, `LeadForm.tsx`, `ImageLightbox.tsx`, `CartDrawer.tsx`, `AiChatWidget.tsx` — ensure backdrop `onClick={close}` + inner `stopPropagation`. Patch any that don't.
+**Note:** I checked the codebase — there is no existing `payment_events` table and no Silicon Edge HMAC pattern in this project (that must live in a different workspace). I'll create it fresh following Paystack's standard HMAC-SHA512 signature check. Flag: confirm this is OK.
 
-## 2. Energy Calculator — "Quick Add Common Appliance"
-In `LumiVoltSizer.tsx` (used in `/energy-calculator` and the dialog), add a "Quick Add Common Appliance" section listing chips from `src/data/applianceWatts.ts` grouped by category, each showing name + avg watts. Click adds it to the selected list.
+### Database migration
+- Add `payment_events` table: `id`, `provider` (default 'paystack'), `event_type`, `reference` (unique), `schedule_id` (fk `finance_schedules`), `application_id` (fk `finance_applications`), `status` (`success|failed|pending`), `amount_ngn`, `raw` jsonb, `created_at`. RLS: users read own (via application), service_role all.
+- Add columns to `finance_schedules`: `payment_url text`, `payment_reference text`, `auto_charge_status text` (`scheduled|attempting|failed|manual_required`), `last_charge_error text`.
+- Add column to `finance_applications`: `paystack_authorization_code text` (stored as-is; Paystack auth codes are opaque tokens, not raw card data — encryption at rest is provided by Supabase). Add `paystack_customer_code text`.
+- Trigger on `finance_applications`: when `status` transitions to `approved`, generate deposit row + N monthly rows in `finance_schedules` using existing `deposit_ngn`, `monthly_payment_ngn`, `months`, `created_at + i months` due dates. Idempotent (skip if rows exist).
 
-## 3. Retail page → Coming Soon
-Header hamburger "Retail" link → route to `/coming-soon` (existing `ComingSoon.tsx`) OR wrap Retail route to render ComingSoon. Update `MegaMenu.tsx` / `SiteHeader.tsx` link.
+### Edge functions
+- **`generate-payment-link`** (POST `{schedule_id}`): auth-required, verifies user owns the app OR is admin. Checks `payment_events` for success — returns existing url if paid. Calls Paystack `/transaction/initialize` with schedule amount, stores `authorization_url` + `reference` on the row, returns them.
+- **`paystack-webhook`** (public, no JWT): verifies HMAC-SHA512 using `PAYSTACK_SECRET_KEY`. On `charge.success`: idempotent insert into `payment_events` (unique reference), marks matching `finance_schedules` paid, and on the first successful payment for an application stores `authorization.authorization_code` on `finance_applications`.
+- **`auto-charge-due`** (invoked by cron, service-role only): finds schedules unpaid & due within 3 days; for each, tries `/transaction/charge_authorization` with stored auth code. Success → mark paid + payment_events. Failure or missing code → call generate-payment-link internally, set `auto_charge_status='manual_required'`.
 
-## 4. "Browse categories" → Packages
-Locate the "Browse categories" CTA (likely in `Catalog.tsx` or Hero). Change link to `/packages`.
+### Cron
+- `pg_cron` daily 09:00 Africa/Lagos → `net.http_post` to `auto-charge-due` with service-role auth header (via `insert` tool, not migration, per rules).
 
-## 5. Finance page — Easy Flex rebrand + rate correction
-- Rename "Flex Lease-to-Own" → "Easy Flex" everywhere (`Finance.tsx`, `FinanceApply.tsx`, `FlexiblePaymentButton.tsx` tooltip, `AccountFinance.tsx` copy, nav labels).
-- Verify `src/lib/financeCalc.ts` tiers match: 1M–5M @ 9%, 5M–7.5M @ 15%, 7.6M+ @ 25% — already correct (tier max 7.5M then 7.5M+). Confirm and adjust boundaries so 7.5M–7.6M gap doesn't fall to 25%; set tier2 max=7_500_000, tier3 min=7_500_001. Already matches — no change needed. Just ensure Finance.tsx displays these values from config.
-- Add **Requirements** sections on Finance page:
-  - "For Imperium Lease-to-Own Customers" (bullet list — will use current standard requirements copy from FinanceApply's document list).
-  - "For SMEs" (bullet list — CAC cert, 6 mo bank statement, etc.).
+### Frontend (AccountFinance.tsx)
+- For each application's next unpaid schedule row: show due date + amount. If `payment_url` set OR it's the first installment unpaid → "Pay Now" button (links to `payment_url`, or triggers `generate-payment-link` first). Else → "Auto-pay scheduled for [date]".
 
-## 6. Flexible Payment popup
-On product cards, clicking `FlexiblePaymentButton` currently navigates to `/finance`. Change to open a modal (new `FlexiblePaymentDialog.tsx`) showing:
-- Mini plan calculator (reuse `calcPlan` + tenure selector)
-- Interest tier table
-- **Eligibility** as a `<details>` dropdown
-- "Visit full Finance page" button → `/finance`
-Keep prop signature (itemName, price, etc.) so no caller changes needed.
+### Secrets required
+- `PAYSTACK_SECRET_KEY` (already present ✓)
+- Webhook URL to register in Paystack dashboard: I'll surface the URL after deploy.
 
-## 7. "Talk to an expert" → /contact
-Find all "Talk to an expert" / "Talk to expert" CTAs (grep). Point every href/link to `/contact`.
+---
 
-## 8. Finance page cleanup
-- Remove "Get an AI assessment" button.
-- Remove entire "Ready to own your power?" section (final CTA block).
+## Part 2 — Plan review "Total cost" line
 
-## 9. Careers page — 3 featured, "See more" reveals rest
-In `Career.tsx` / `Jobs.tsx`: slice openings to first 3, add "See more openings" button that reveals the rest (client state).
+In `src/pages/FinanceApply.tsx` (line 203 and 267 area) and `src/pages/Finance.tsx` (line 144), insert a new `<Row>` right after "Total repayment" and before "Monthly":
+- Label: `Total cost (deposit + repayment)`
+- Value: `formatNGN(breakdown.deposit + breakdown.total_repayment)`
+- `bold` prop, no color emphasis (matches "Total repayment" styling).
 
-## 10. Affiliate page — replace yellow
-In `AffiliateDashboard.tsx` (+ any affiliate marketing pages), swap yellow (`bg-yellow-*`, `text-yellow-*`, or Solar Gold `#FFD700` used as text on light bg) for a readable token — `text-primary` / `bg-accent` / a darker amber (`text-amber-700 dark:text-amber-300`).
+No changes to `financeCalc.ts` — purely derived display.
 
-## Files touched (approx)
-Edits: `LumiVoltSizer.tsx`, `MegaMenu.tsx`/`SiteHeader.tsx`, `App.tsx` (Retail route), `Catalog.tsx`/Hero (Browse categories), `Finance.tsx`, `FinanceApply.tsx`, `FlexiblePaymentButton.tsx`, `AccountFinance.tsx`, `Career.tsx`, `AffiliateDashboard.tsx`, misc dialog components.
-New: `src/components/FlexiblePaymentDialog.tsx`.
-No DB changes.
+---
 
-## Questions before I start
-1. **"Talk to an expert"** — should it navigate to `/contact` (static form) or open the existing lead-form popup pre-filled? You said Contact page — I'll use `/contact`. Confirm.
-2. **Requirements copy** — do you have the exact bullet lists for "Imperium Lease-to-Own Customers" and "SMEs"? If not, I'll draft standard ones (valid ID, 6-month bank statement, proof of address, employment letter / CAC + business account for SMEs) and you can revise.
-3. **Retail** — turn the route into Coming Soon page, or just link the menu item to `/coming-soon`? I'll do both (route + link) unless you object.
-4. **Affiliate yellow** — replace with brand green (`primary`) or a muted amber? I'll default to `primary` for CTAs and `amber-700` for accents.
+## Part 3 — Blog share component
+
+New `src/components/SharePost.tsx` (reusable):
+- Props: `url`, `title`.
+- Buttons: X, Facebook, LinkedIn, WhatsApp — each `window.open()` to native share intent URL.
+- "Copy link" → `navigator.clipboard.writeText(url)` + sonner toast "Link copied".
+
+Drop into `src/pages/BlogPost.tsx` right after the meta row (below author/date/read-time) and again at the bottom of the article.
+
+---
+
+## Part 4 — Global click-outside + Escape audit
+
+Radix Dialog/Sheet/Drawer components already handle both — no change needed for shadcn dialogs.
+
+Custom overlays to audit and fix if missing:
+- `EnergyCalculatorDialog.tsx` ✓ already correct
+- `ImageLightbox.tsx` ✓ already correct
+- `LeadForm.tsx` ✓ already fixed previously
+- `AiChatWidget.tsx`, `CartDrawer.tsx`, `WaitlistDialog.tsx`, `CustomSolutionDialog.tsx`, `AffiliateApplicationDialog.tsx`, `CareerApplicationDialog.tsx`, `FlexiblePaymentDialog.tsx`, `AiUpgradeDialog.tsx` — check each; add backdrop `onClick={close}` + Escape listener where missing.
+
+Mobile hamburger menu (`SiteHeader.tsx` / `MegaMenu.tsx`): add backdrop overlay that closes the menu on tap; ensure Escape key closes it.
+
+I'll only flag confirmation dialogs (destructive delete confirms) — those should stay click-locked.
+
+---
+
+## Part 5 — Smooth scroll audit
+
+Root cause candidates:
+- `SmoothScroll.tsx` (Lenis) intercepts wheel events globally. Lenis by default supports keyboard scroll but sometimes breaks Page Down/Space when a container has `overflow: hidden`. I'll verify Lenis config allows keyboard and doesn't block inner scrollables.
+- Audit for `overflow: hidden` on root wrappers in `App.tsx`, `index.css`, and page containers. Ensure `body`/`html` allow natural scroll.
+- Add `data-lenis-prevent` attribute to inner scroll containers (cart drawer, dialogs, admin sidebars) that need their own scroll.
+
+Fix: keep Lenis but verify no `overflow: hidden` on `<main>` or route wrappers; ensure keyboard scroll works by not calling `preventDefault` on key events.
+
+---
+
+## Files touched
+
+**New:** `supabase/functions/generate-payment-link/index.ts`, `supabase/functions/paystack-webhook/index.ts`, `supabase/functions/auto-charge-due/index.ts`, `src/components/SharePost.tsx`, 1 migration, 1 insert (cron).
+**Edited:** `src/pages/FinanceApply.tsx`, `src/pages/Finance.tsx`, `src/pages/AccountFinance.tsx`, `src/pages/BlogPost.tsx`, `src/components/SmoothScroll.tsx`, plus click-outside fixes on any custom dialogs missing them.
+
+Approve to proceed, or tell me which parts to skip / do first.
