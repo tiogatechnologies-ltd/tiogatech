@@ -8,3 +8,12 @@ verify_jwt = false
 
 [functions.backup-to-drive]
 verify_jwt = true
+
+[functions.paystack-webhook]
+verify_jwt = false
+
+[functions.generate-payment-link]
+verify_jwt = true
+
+[functions.auto-charge-due]
+verify_jwt = false
