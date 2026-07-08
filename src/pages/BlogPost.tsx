@@ -124,6 +124,13 @@ const BlogPost = () => {
             </ReactMarkdown>
           </div>
 
+          <div className="mt-10 pt-6 border-t border-border">
+            <SharePost
+              url={`https://tiogatechnologies.com/blog/${post.slug}`}
+              title={post.title}
+            />
+          </div>
+
         </div>
       </article>
 
