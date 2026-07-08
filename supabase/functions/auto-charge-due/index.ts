@@ -6,11 +6,14 @@ Deno.serve(async (req) => {
   const SECRET = Deno.env.get("PAYSTACK_SECRET_KEY");
   const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
   const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const CRON_SECRET = Deno.env.get("CRON_SHARED_SECRET");
   if (!SECRET) return json({ error: "not configured" }, 500);
 
-  // Only service_role may call this
+  // Only service_role OR the cron shared secret may call this
   const authHeader = req.headers.get("Authorization");
-  if (authHeader !== `Bearer ${SERVICE_KEY}`) return json({ error: "unauthorized" }, 401);
+  const cronHeader = req.headers.get("x-cron-secret");
+  const isAuthed = authHeader === `Bearer ${SERVICE_KEY}` || (CRON_SECRET && cronHeader === CRON_SECRET);
+  if (!isAuthed) return json({ error: "unauthorized" }, 401);
 
   const admin = createClient(SUPABASE_URL, SERVICE_KEY);
   const in3Days = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
