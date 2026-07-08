@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.generate_finance_schedule_on_approval() FROM PUBLIC, anon, authenticated;
