@@ -5,6 +5,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import RelatedPosts from "@/components/RelatedPosts";
+import SharePost from "@/components/SharePost";
 import { useBlogPost } from "@/hooks/useBlog";
 import { Calendar, Clock, ArrowLeft, Loader2, User } from "lucide-react";
 
