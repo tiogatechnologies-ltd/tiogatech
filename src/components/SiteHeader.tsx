@@ -81,6 +81,14 @@ const SiteHeader = () => {
     };
   }, [productsDesktopOpen]);
 
+  // Close mobile menu on Escape
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const openProducts = () => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
     setProductsDesktopOpen(true);
