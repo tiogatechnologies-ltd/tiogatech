@@ -88,6 +88,12 @@ const BlogPost = () => {
             <span className="inline-flex items-center gap-1.5"><Clock size={14} /> {post.read_minutes} min read</span>
           </div>
 
+          <SharePost
+            url={`https://tiogatechnologies.com/blog/${post.slug}`}
+            title={post.title}
+            className="mt-5"
+          />
+
           {post.cover_image_url && (
             <img
               src={post.cover_image_url}
