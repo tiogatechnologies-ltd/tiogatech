@@ -318,7 +318,8 @@ const SiteHeader = () => {
               <MessageCircle size={14} /> WhatsApp
             </a>
           </nav>
-        </div>
+          </div>
+        </>
       )}
     </header>
   );
