@@ -201,6 +201,7 @@ const FinanceApply = () => {
                 <Row label="Management (1%)" value={formatNGN(breakdown.management_fee)} muted />
                 <div className="pt-2 border-t border-border">
                   <Row label="Total repayment" value={formatNGN(breakdown.total_repayment)} bold />
+                  <Row label="Total cost (deposit + repayment)" value={formatNGN(breakdown.deposit + breakdown.total_repayment)} bold />
                 </div>
                 <div className="pt-2 border-t border-border flex justify-between font-display text-base font-bold">
                   <span>Monthly</span><span className="text-primary">{formatNGN(breakdown.monthly_payment)}</span>
