@@ -26,6 +26,18 @@ const AccountFinance = () => {
     })();
   }, [user]);
 
+  const payNow = async (scheduleId: string, existingUrl: string | null) => {
+    if (existingUrl) { window.location.href = existingUrl; return; }
+    const { data, error } = await supabase.functions.invoke("generate-payment-link", { body: { schedule_id: scheduleId } });
+    if (error || !data?.authorization_url) {
+      const msg = (error as any)?.message || data?.error || "Could not create payment link";
+      const { toast } = await import("sonner");
+      toast.error(msg);
+      return;
+    }
+    window.location.href = data.authorization_url;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SEO title="My Flexible Payment Plans — Tioga" description="View and manage your flexible payment applications and installments." />
