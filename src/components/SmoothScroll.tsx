@@ -23,8 +23,47 @@ const SmoothScroll = () => {
     };
     raf = requestAnimationFrame(loop);
 
+    // Keyboard scroll support (arrow keys, PageUp/Down, Space, Home/End)
+    const isTypingTarget = (el: EventTarget | null) => {
+      if (!(el instanceof HTMLElement)) return false;
+      const tag = el.tagName;
+      return (
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "SELECT" ||
+        el.isContentEditable ||
+        el.closest("[data-lenis-prevent]") !== null
+      );
+    };
+
+    const onKey = (e: KeyboardEvent) => {
+      if (isTypingTarget(e.target)) return;
+      const vh = window.innerHeight;
+      let delta = 0;
+      switch (e.key) {
+        case "ArrowDown": delta = 80; break;
+        case "ArrowUp": delta = -80; break;
+        case "PageDown": delta = vh * 0.9; break;
+        case "PageUp": delta = -vh * 0.9; break;
+        case " ": delta = e.shiftKey ? -vh * 0.9 : vh * 0.9; break;
+        case "Home":
+          e.preventDefault();
+          lenis.scrollTo(0);
+          return;
+        case "End":
+          e.preventDefault();
+          lenis.scrollTo(document.documentElement.scrollHeight);
+          return;
+        default: return;
+      }
+      e.preventDefault();
+      lenis.scrollTo(lenis.scroll + delta);
+    };
+    window.addEventListener("keydown", onKey, { passive: false });
+
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener("keydown", onKey);
       lenis.destroy();
     };
   }, []);
