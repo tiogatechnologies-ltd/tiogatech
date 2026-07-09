@@ -66,9 +66,10 @@ Deno.serve(async (req) => {
     const { data: paid } = await admin.from("payment_events").select("id").eq("schedule_id", scheduleId).eq("status", "success").maybeSingle();
     if (paid) return json({ error: "Installment already paid" }, 409);
 
-    if (sched.payment_url && sched.payment_reference) {
+    if (!force && sched.payment_url && sched.payment_reference) {
       return json({ authorization_url: sched.payment_url, reference: sched.payment_reference, reused: true });
     }
+
 
     const reference = `tioga_fs_${scheduleId.slice(0, 8)}_${Date.now()}`;
     const r = await fetch("https://api.paystack.co/transaction/initialize", {
