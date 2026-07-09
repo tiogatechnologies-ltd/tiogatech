@@ -416,21 +416,40 @@ const Account = () => {
                   </div>
                 ) : (
                   <ul className="divide-y divide-border">
-                    {finance.map((f) => (
-                      <li key={f.id} className="py-3 flex items-center justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-foreground truncate">{f.item_name}</p>
-                          <p className="text-xs text-muted-foreground">{f.months} months · {formatNGN(f.monthly_payment_ngn)}/mo</p>
-                          <p className="text-[10px] text-muted-foreground mt-0.5">{new Date(f.created_at).toLocaleDateString()}</p>
-                        </div>
-                        <div className="text-right shrink-0">
-                          <p className="text-sm font-bold text-foreground">{formatNGN(f.total_amount_ngn)}</p>
-                          <StatusPill status={f.status} />
-                        </div>
-                      </li>
-                    ))}
+                    {finance.map((f) => {
+                      const canPay = f.status === "approved" || f.status === "active";
+                      const payNow = async () => {
+                        const t = toast.loading("Preparing payment link…");
+                        const { data, error } = await supabase.functions.invoke("generate-payment-link", { body: { application_id: f.id } });
+                        toast.dismiss(t);
+                        if (error || !data?.authorization_url) {
+                          toast.error((error as any)?.message || data?.error || "Could not create payment link");
+                          return;
+                        }
+                        window.location.href = data.authorization_url;
+                      };
+                      return (
+                        <li key={f.id} className="py-3 flex items-center justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-foreground truncate">{f.item_name}</p>
+                            <p className="text-xs text-muted-foreground">{f.months} months · {formatNGN(f.monthly_payment_ngn)}/mo</p>
+                            <p className="text-[10px] text-muted-foreground mt-0.5">{new Date(f.created_at).toLocaleDateString()}</p>
+                          </div>
+                          <div className="text-right shrink-0 flex flex-col items-end gap-1.5">
+                            <p className="text-sm font-bold text-foreground">{formatNGN(f.total_amount_ngn)}</p>
+                            <StatusPill status={f.status} />
+                            {canPay && (
+                              <button onClick={payNow} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center gap-1">
+                                Pay next installment <ExternalLink size={11} />
+                              </button>
+                            )}
+                          </div>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
+
               </SectionCard>
 
               <SectionCard
