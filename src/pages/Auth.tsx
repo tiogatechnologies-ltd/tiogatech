@@ -146,6 +146,10 @@ const Auth = () => {
                   <span className="text-[11px] uppercase tracking-wide text-muted-foreground">or</span>
                   <div className="flex-1 h-px bg-border" />
                 </div>
+                <div className="grid grid-cols-2 gap-2 mb-5 p-1 rounded-xl bg-muted">
+                  <button onClick={() => setTab("signin")} className={`py-2 rounded-lg text-sm font-semibold transition-all ${tab === "signin" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}>Sign in</button>
+                  <button onClick={() => setTab("signup")} className={`py-2 rounded-lg text-sm font-semibold transition-all ${tab === "signup" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}>Sign up</button>
+                </div>
               </>
             )}
 
