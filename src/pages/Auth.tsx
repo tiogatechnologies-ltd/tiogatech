@@ -85,6 +85,18 @@ const Auth = () => {
     setTab("signin");
   };
 
+  const handleGoogle = async () => {
+    setError(null);
+    setSubmitting(true);
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
+    if (result.error) {
+      setError(result.error instanceof Error ? result.error.message : String(result.error));
+      setSubmitting(false);
+    }
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col">
