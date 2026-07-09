@@ -16,8 +16,10 @@ Deno.serve(async (req) => {
     if (!SECRET) return json({ error: "Paystack not configured" }, 500);
 
     const body = await req.json().catch(() => ({}));
-    const scheduleId: string | undefined = body?.schedule_id;
-    if (!scheduleId) return json({ error: "schedule_id required" }, 400);
+    let scheduleId: string | undefined = body?.schedule_id;
+    const applicationId: string | undefined = body?.application_id;
+    const force: boolean = !!body?.force;
+    if (!scheduleId && !applicationId) return json({ error: "schedule_id or application_id required" }, 400);
 
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
 
@@ -34,6 +36,21 @@ Deno.serve(async (req) => {
       requesterId = ud.user?.id ?? null;
       if (!requesterId) return json({ error: "unauthorized" }, 401);
     }
+
+    // Auto-pick next unpaid schedule for application if no schedule_id
+    if (!scheduleId && applicationId) {
+      const { data: next } = await admin
+        .from("finance_schedules")
+        .select("id")
+        .eq("application_id", applicationId)
+        .not("status", "in", "(paid,waived)")
+        .order("installment_no", { ascending: true })
+        .limit(1)
+        .maybeSingle();
+      if (!next) return json({ error: "No unpaid installments remaining" }, 404);
+      scheduleId = next.id;
+    }
+
 
     const { data: sched, error: sErr } = await admin
       .from("finance_schedules")
