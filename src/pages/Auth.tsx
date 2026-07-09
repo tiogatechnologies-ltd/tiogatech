@@ -85,10 +85,10 @@ const Auth = () => {
     setTab("signin");
   };
 
-  const handleGoogle = async () => {
+  const handleOAuth = async (provider: "google" | "apple") => {
     setError(null);
     setSubmitting(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
+    const result = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: window.location.origin,
     });
     if (result.error) {
@@ -96,6 +96,8 @@ const Auth = () => {
       setSubmitting(false);
     }
   };
+
+
 
 
   return (
