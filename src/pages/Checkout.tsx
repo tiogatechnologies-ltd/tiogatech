@@ -35,9 +35,15 @@ const Checkout = () => {
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [delivery, setDelivery] = useState<"ship" | "pickup">("ship");
-  const [payment, setPayment] = useState<"bank_transfer" | "whatsapp" | "paystack">("bank_transfer");
+  const [payment, setPayment] = useState<"bank_transfer" | "whatsapp" | "paystack" | "flexible">("paystack");
   const [billingSame, setBillingSame] = useState(true);
   const [discountCode, setDiscountCode] = useState("");
+
+  // Flexible plan state
+  const [flexMonths, setFlexMonths] = useState<number>(6);
+  const [flexMode, setFlexMode] = useState<"manual" | "auto_debit">("manual");
+  const [flexConsent, setFlexConsent] = useState(false);
+  const [financeConfig, setFinanceConfig] = useState<FinanceConfig>(DEFAULT_FINANCE_CONFIG);
 
   const [form, setForm] = useState({
     email: user?.email || "",
