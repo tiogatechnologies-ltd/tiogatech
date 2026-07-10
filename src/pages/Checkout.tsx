@@ -93,6 +93,50 @@ const Checkout = () => {
     const parsed = schema.safeParse(form);
     if (!parsed.success) { toast.error(parsed.error.errors[0].message); return; }
 
+    // Flexible payment plan → create a finance_applications row (admin-approved before any charge)
+    if (payment === "flexible") {
+      if (total < 1_000_000) { toast.error("Flexible payment requires a total of at least ₦1,000,000."); return; }
+      if (flexMode === "auto_debit" && !flexConsent) { toast.error("Please confirm the direct-debit authorization to continue."); return; }
+      setSubmitting(true);
+      const payload: Record<string, any> = {
+        user_id: user?.id ?? null,
+        full_name: `${form.first_name} ${form.last_name}`.trim(),
+        email: form.email,
+        phone: form.phone,
+        address: form.address,
+        state: form.state,
+        city: form.city,
+        item_name: items.map((i) => i.name).join(", ").slice(0, 200) || "Cart order",
+        total_amount_ngn: flexBreakdown.total,
+        deposit_ngn: flexBreakdown.deposit,
+        financed_ngn: flexBreakdown.financed,
+        months: flexBreakdown.tenure_months,
+        monthly_payment_ngn: flexBreakdown.monthly_payment,
+        interest_rate_pct: flexBreakdown.interest_rate,
+        insurance_fee_ngn: flexBreakdown.insurance_fee,
+        management_fee_ngn: flexBreakdown.management_fee,
+        total_repayment_ngn: flexBreakdown.total_repayment,
+        consent: true,
+        direct_debit_consent: flexMode === "auto_debit" ? flexConsent : false,
+        consent_timestamp: flexMode === "auto_debit" ? new Date().toISOString() : null,
+        effective_payment_method: flexMode,
+        is_asset_financing: true,
+      };
+      const { data: appRow, error: appErr } = await supabase.from("finance_applications").insert(payload as any).select("id").maybeSingle();
+      setSubmitting(false);
+      if (appErr) { toast.error(appErr.message); return; }
+      try {
+        await supabase.functions.invoke("notify-new-lead", {
+          body: { source: "checkout_flexible", application_id: appRow?.id, full_name: payload.full_name, email: payload.email, phone: payload.phone, summary: `${payload.item_name} · ${formNGN(total)} · ${flexMonths}mo · ${flexMode}` },
+        });
+      } catch { /* non-fatal */ }
+      trackConversion("cart_checkout_lead", { item_count: count, payment_method: "flexible" });
+      clear();
+      toast.success("Application submitted! We'll review and reach out within 24 hours.");
+      navigate("/account/finance");
+      return;
+    }
+
     setSubmitting(true);
     const shippingAddress = {
       first_name: form.first_name, last_name: form.last_name,
