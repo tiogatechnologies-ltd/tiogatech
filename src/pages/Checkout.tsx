@@ -8,6 +8,8 @@ import SEO from "@/components/SEO";
 import { toast } from "sonner";
 import { z } from "zod";
 import { trackConversion } from "@/lib/tracking";
+import DirectDebitConsent from "@/components/DirectDebitConsent";
+import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 
 const WHATSAPP = "2348178000023";
 
@@ -33,9 +35,15 @@ const Checkout = () => {
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [delivery, setDelivery] = useState<"ship" | "pickup">("ship");
-  const [payment, setPayment] = useState<"bank_transfer" | "whatsapp" | "paystack">("bank_transfer");
+  const [payment, setPayment] = useState<"bank_transfer" | "whatsapp" | "paystack" | "flexible">("paystack");
   const [billingSame, setBillingSame] = useState(true);
   const [discountCode, setDiscountCode] = useState("");
+
+  // Flexible plan state
+  const [flexMonths, setFlexMonths] = useState<number>(6);
+  const [flexMode, setFlexMode] = useState<"manual" | "auto_debit">("manual");
+  const [flexConsent, setFlexConsent] = useState(false);
+  const [financeConfig, setFinanceConfig] = useState<FinanceConfig>(DEFAULT_FINANCE_CONFIG);
 
   const [form, setForm] = useState({
     email: user?.email || "",
@@ -65,6 +73,14 @@ const Checkout = () => {
     return subtotal > 0 ? 6000 : 0;
   }, [subtotal, delivery]);
   const total = subtotal + shippingFee;
+  const flexBreakdown = useMemo(() => calcPlan(total, flexMonths, financeConfig), [total, flexMonths, financeConfig]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from("site_settings").select("value").eq("key", "finance").maybeSingle();
+      if (data?.value) setFinanceConfig(normalizeFinanceConfig(data.value as any));
+    })();
+  }, []);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -76,6 +92,50 @@ const Checkout = () => {
     if (items.length === 0) { toast.error("Your cart is empty"); return; }
     const parsed = schema.safeParse(form);
     if (!parsed.success) { toast.error(parsed.error.errors[0].message); return; }
+
+    // Flexible payment plan → create a finance_applications row (admin-approved before any charge)
+    if (payment === "flexible") {
+      if (total < 1_000_000) { toast.error("Flexible payment requires a total of at least ₦1,000,000."); return; }
+      if (flexMode === "auto_debit" && !flexConsent) { toast.error("Please confirm the direct-debit authorization to continue."); return; }
+      setSubmitting(true);
+      const payload: Record<string, any> = {
+        user_id: user?.id ?? null,
+        full_name: `${form.first_name} ${form.last_name}`.trim(),
+        email: form.email,
+        phone: form.phone,
+        address: form.address,
+        state: form.state,
+        city: form.city,
+        item_name: items.map((i) => i.name).join(", ").slice(0, 200) || "Cart order",
+        total_amount_ngn: flexBreakdown.total,
+        deposit_ngn: flexBreakdown.deposit,
+        financed_ngn: flexBreakdown.financed,
+        months: flexBreakdown.tenure_months,
+        monthly_payment_ngn: flexBreakdown.monthly_payment,
+        interest_rate_pct: flexBreakdown.interest_rate,
+        insurance_fee_ngn: flexBreakdown.insurance_fee,
+        management_fee_ngn: flexBreakdown.management_fee,
+        total_repayment_ngn: flexBreakdown.total_repayment,
+        consent: true,
+        direct_debit_consent: flexMode === "auto_debit" ? flexConsent : false,
+        consent_timestamp: flexMode === "auto_debit" ? new Date().toISOString() : null,
+        effective_payment_method: flexMode,
+        is_asset_financing: true,
+      };
+      const { data: appRow, error: appErr } = await supabase.from("finance_applications").insert(payload as any).select("id").maybeSingle();
+      setSubmitting(false);
+      if (appErr) { toast.error(appErr.message); return; }
+      try {
+        await supabase.functions.invoke("notify-new-lead", {
+          body: { source: "checkout_flexible", application_id: appRow?.id, full_name: payload.full_name, email: payload.email, phone: payload.phone, summary: `${payload.item_name} · ${formNGN(total)} · ${flexMonths}mo · ${flexMode}` },
+        });
+      } catch { /* non-fatal */ }
+      trackConversion("cart_checkout_lead", { item_count: count, payment_method: "flexible" });
+      clear();
+      toast.success("Application submitted! We'll review and reach out within 24 hours.");
+      navigate("/account/finance");
+      return;
+    }
 
     setSubmitting(true);
     const shippingAddress = {
@@ -243,6 +303,16 @@ const Checkout = () => {
             <h2 className="text-lg font-display font-bold text-foreground mb-1">Payment</h2>
             <p className="text-xs text-muted-foreground mb-3">All transactions are secure. <Lock size={10} className="inline" /></p>
             <div className="space-y-2">
+              {/* 1. Card / Paystack (default, fully automated) */}
+              <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                <input type="radio" checked={payment === "paystack"} onChange={() => setPayment("paystack")} className="mt-1" />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Paystack</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Recommended</span></div>
+                  <p className="text-xs text-muted-foreground mt-1">Pay securely with debit card, bank transfer or USSD via Paystack. Instant confirmation.</p>
+                </div>
+              </label>
+
+              {/* 2. Bank Transfer */}
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "bank_transfer" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                 <input type="radio" checked={payment === "bank_transfer"} onChange={() => setPayment("bank_transfer")} className="mt-1" />
                 <div className="flex-1">
@@ -250,27 +320,65 @@ const Checkout = () => {
                   <p className="text-xs text-muted-foreground mt-1">Receive our bank details after placing the order. Send payment confirmation to seal the order.</p>
                 </div>
               </label>
+
+              {/* 3. Flexible payment plan */}
+              <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "flexible" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                <input type="radio" checked={payment === "flexible"} onChange={() => setPayment("flexible")} className="mt-1" />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2"><Wallet size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Flexible payment plan</span></div>
+                  <p className="text-xs text-muted-foreground mt-1">Pay 30% deposit today, then spread the balance across 3, 6 or 12 months. Minimum ₦1,000,000.</p>
+                </div>
+              </label>
+              {payment === "flexible" && (
+                <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 space-y-3 ml-2">
+                  {total < 1_000_000 && (
+                    <p className="text-xs text-destructive">Flexible payment requires a total of at least ₦1,000,000. Your cart total is {formNGN(total)}.</p>
+                  )}
+                  <div>
+                    <p className="text-xs font-semibold text-foreground mb-2">Repayment length</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[3, 6, 12].map((m) => (
+                        <button key={m} type="button" onClick={() => setFlexMonths(m)} className={`p-2.5 rounded-lg border text-sm font-semibold ${flexMonths === m ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground hover:bg-muted"}`}>
+                          {m} months
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-background border border-border p-3 text-xs space-y-1">
+                    <div className="flex justify-between"><span className="text-muted-foreground">Deposit (30%) today</span><span className="font-semibold">{formNGN(flexBreakdown.deposit)}</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Financed balance</span><span className="font-semibold">{formNGN(flexBreakdown.financed)}</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Interest ({(flexBreakdown.interest_rate * 100).toFixed(0)}%)</span><span className="font-semibold">{formNGN(flexBreakdown.interest_amount)}</span></div>
+                    <div className="flex justify-between pt-1 border-t border-border"><span className="text-foreground font-semibold">Monthly × {flexMonths}</span><span className="font-display font-bold text-primary">{formNGN(flexBreakdown.monthly_payment)}</span></div>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    ✓ Liquidate anytime — pay only this month's interest + remaining principal. <strong>No prepayment penalty.</strong>
+                  </p>
+                  <div>
+                    <p className="text-xs font-semibold text-foreground mb-2">Payment style</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button type="button" onClick={() => setFlexMode("manual")} className={`p-2.5 rounded-lg border text-xs font-semibold ${flexMode === "manual" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground"}`}>
+                        Manual installments
+                      </button>
+                      <button type="button" onClick={() => setFlexMode("auto_debit")} className={`p-2.5 rounded-lg border text-xs font-semibold ${flexMode === "auto_debit" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground"}`}>
+                        Auto-debit my card
+                      </button>
+                    </div>
+                  </div>
+                  {flexMode === "auto_debit" && (
+                    <DirectDebitConsent checked={flexConsent} onChange={setFlexConsent} amountLabel={formNGN(flexBreakdown.monthly_payment)} />
+                  )}
+                  <p className="text-[11px] text-muted-foreground">Your application is reviewed within 24 hours before any charge is initiated.</p>
+                </div>
+              )}
+
+              {/* 4. WhatsApp — human-assisted fallback */}
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "whatsapp" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                 <input type="radio" checked={payment === "whatsapp"} onChange={() => setPayment("whatsapp")} className="mt-1" />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2"><MessageCircle size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">WhatsApp Confirmation</span></div>
-                  <p className="text-xs text-muted-foreground mt-1">Place the order and complete payment over WhatsApp with our sales team.</p>
+                  <div className="flex items-center gap-2"><MessageCircle size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">WhatsApp assistance</span></div>
+                  <p className="text-xs text-muted-foreground mt-1">Prefer a human? Place the order and finish payment over WhatsApp with our sales team.</p>
                 </div>
               </label>
-              <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                <input type="radio" checked={payment === "paystack"} onChange={() => setPayment("paystack")} className="mt-1" />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Paystack</span></div>
-                  <p className="text-xs text-muted-foreground mt-1">Pay securely with debit card, bank transfer or USSD via Paystack.</p>
-                </div>
-              </label>
-              <Link to="/finance" className="flex items-start gap-3 rounded-xl border border-dashed border-accent/50 bg-accent/5 p-4 hover:bg-accent/10 transition-colors">
-                <Wallet size={16} className="text-accent-foreground mt-0.5" />
-                <div className="flex-1">
-                  <p className="font-semibold text-sm text-foreground">Need a flexible payment plan?</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Spread payments over 3, 6 or 12 months. Learn how it works →</p>
-                </div>
-              </Link>
             </div>
           </section>
 

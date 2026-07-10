@@ -6,6 +6,7 @@ import SEO from "@/components/SEO";
 import { Wallet, ArrowRight, Loader2, ShieldCheck, Upload, Check } from "lucide-react";
 import { toast } from "sonner";
 import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
+import DirectDebitConsent from "@/components/DirectDebitConsent";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
 
@@ -46,6 +47,8 @@ const FinanceApply = () => {
     months: monthsParam as number,
     consent: false,
   });
+  const [paymentMode, setPaymentMode] = useState<"manual" | "auto_debit">("manual");
+  const [ddConsent, setDdConsent] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -87,6 +90,7 @@ const FinanceApply = () => {
     if (!form.consent) return toast.error("Please consent to the terms");
     if (!form.full_name?.trim() || !form.email?.trim() || !form.phone?.trim()) return toast.error("Fill your name, email and phone");
     if (!form.total_amount_ngn || Number(form.total_amount_ngn) < 1_000_000) return toast.error("Minimum financed amount is ₦1,000,000");
+    if (paymentMode === "auto_debit" && !ddConsent) return toast.error("Please confirm the direct-debit authorization");
 
     setSubmitting(true);
     try {
@@ -120,6 +124,10 @@ const FinanceApply = () => {
         package_slug: packageSlug || null,
         assessment_id: assessmentId,
         consent: form.consent,
+        direct_debit_consent: paymentMode === "auto_debit" ? ddConsent : false,
+        consent_timestamp: paymentMode === "auto_debit" ? new Date().toISOString() : null,
+        effective_payment_method: paymentMode,
+        is_asset_financing: true,
       };
 
       const { data, error } = await supabase
@@ -272,6 +280,17 @@ const FinanceApply = () => {
                   <span className="text-primary">{formatNGN(breakdown.monthly_payment)}</span>
                 </div>
               </div>
+              <div>
+                <p className="text-xs font-semibold text-foreground mb-2">Payment style</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button type="button" onClick={() => setPaymentMode("manual")} className={`p-2.5 rounded-lg border text-xs font-semibold ${paymentMode === "manual" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground"}`}>Manual installments</button>
+                  <button type="button" onClick={() => setPaymentMode("auto_debit")} className={`p-2.5 rounded-lg border text-xs font-semibold ${paymentMode === "auto_debit" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground"}`}>Auto-debit my card</button>
+                </div>
+              </div>
+              {paymentMode === "auto_debit" && (
+                <DirectDebitConsent checked={ddConsent} onChange={setDdConsent} amountLabel={formatNGN(breakdown.monthly_payment)} />
+              )}
+              <p className="text-[11px] text-muted-foreground">✓ Liquidate anytime — pay only this month's interest + remaining principal. No prepayment penalty.</p>
               <label className="flex items-start gap-2 text-sm">
                 <input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1" />
                 <span>I confirm the information provided is accurate and consent to Tioga Technologies and its bank partner verifying my identity, income, and creditworthiness. I agree to the financing terms including insurance and management fees.</span>

@@ -677,6 +677,60 @@ export type Database = {
         }
         Relationships: []
       }
+      debit_retry_queue: {
+        Row: {
+          application_id: string
+          attempt_number: number
+          created_at: string
+          id: string
+          last_error: string | null
+          max_attempts: number
+          schedule_id: string
+          scheduled_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          application_id: string
+          attempt_number?: number
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          max_attempts?: number
+          schedule_id: string
+          scheduled_date: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string
+          attempt_number?: number
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          max_attempts?: number
+          schedule_id?: string
+          scheduled_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "debit_retry_queue_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "finance_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "debit_retry_queue_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "finance_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       discount_redemptions: {
         Row: {
           amount_discounted: number
@@ -782,6 +836,57 @@ export type Database = {
         }
         Relationships: []
       }
+      due_date_overrides: {
+        Row: {
+          application_id: string
+          created_at: string
+          id: string
+          installment_no: number
+          new_due_date: string
+          original_due_date: string
+          overridden_by: string | null
+          reason: string | null
+          schedule_id: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          id?: string
+          installment_no: number
+          new_due_date: string
+          original_due_date: string
+          overridden_by?: string | null
+          reason?: string | null
+          schedule_id: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          id?: string
+          installment_no?: number
+          new_due_date?: string
+          original_due_date?: string
+          overridden_by?: string | null
+          reason?: string | null
+          schedule_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "due_date_overrides_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "finance_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "due_date_overrides_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "finance_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       finance_applications: {
         Row: {
           address: string
@@ -789,9 +894,14 @@ export type Database = {
           assessment_id: string | null
           city: string | null
           consent: boolean
+          consent_ip: string | null
+          consent_timestamp: string | null
           created_at: string
           date_of_birth: string | null
+          deadline_date: string | null
           deposit_ngn: number
+          direct_debit_consent: boolean
+          effective_payment_method: string
           email: string
           employer: string | null
           financed_ngn: number
@@ -802,11 +912,14 @@ export type Database = {
           id_type: string | null
           insurance_fee_ngn: number | null
           interest_rate_pct: number | null
+          is_asset_financing: boolean
           item_name: string
           item_reference: string | null
           management_fee_ngn: number | null
           monthly_income_ngn: number | null
+          monthly_interest_ngn: number | null
           monthly_payment_ngn: number
+          monthly_principal_ngn: number | null
           months: number
           next_of_kin_name: string | null
           next_of_kin_phone: string | null
@@ -821,6 +934,7 @@ export type Database = {
           state: string | null
           status: Database["public"]["Enums"]["finance_app_status"]
           total_amount_ngn: number
+          total_interest_ngn: number | null
           total_repayment_ngn: number | null
           updated_at: string
           user_id: string | null
@@ -831,9 +945,14 @@ export type Database = {
           assessment_id?: string | null
           city?: string | null
           consent?: boolean
+          consent_ip?: string | null
+          consent_timestamp?: string | null
           created_at?: string
           date_of_birth?: string | null
+          deadline_date?: string | null
           deposit_ngn?: number
+          direct_debit_consent?: boolean
+          effective_payment_method?: string
           email: string
           employer?: string | null
           financed_ngn: number
@@ -844,11 +963,14 @@ export type Database = {
           id_type?: string | null
           insurance_fee_ngn?: number | null
           interest_rate_pct?: number | null
+          is_asset_financing?: boolean
           item_name: string
           item_reference?: string | null
           management_fee_ngn?: number | null
           monthly_income_ngn?: number | null
+          monthly_interest_ngn?: number | null
           monthly_payment_ngn: number
+          monthly_principal_ngn?: number | null
           months: number
           next_of_kin_name?: string | null
           next_of_kin_phone?: string | null
@@ -863,6 +985,7 @@ export type Database = {
           state?: string | null
           status?: Database["public"]["Enums"]["finance_app_status"]
           total_amount_ngn: number
+          total_interest_ngn?: number | null
           total_repayment_ngn?: number | null
           updated_at?: string
           user_id?: string | null
@@ -873,9 +996,14 @@ export type Database = {
           assessment_id?: string | null
           city?: string | null
           consent?: boolean
+          consent_ip?: string | null
+          consent_timestamp?: string | null
           created_at?: string
           date_of_birth?: string | null
+          deadline_date?: string | null
           deposit_ngn?: number
+          direct_debit_consent?: boolean
+          effective_payment_method?: string
           email?: string
           employer?: string | null
           financed_ngn?: number
@@ -886,11 +1014,14 @@ export type Database = {
           id_type?: string | null
           insurance_fee_ngn?: number | null
           interest_rate_pct?: number | null
+          is_asset_financing?: boolean
           item_name?: string
           item_reference?: string | null
           management_fee_ngn?: number | null
           monthly_income_ngn?: number | null
+          monthly_interest_ngn?: number | null
           monthly_payment_ngn?: number
+          monthly_principal_ngn?: number | null
           months?: number
           next_of_kin_name?: string | null
           next_of_kin_phone?: string | null
@@ -905,6 +1036,7 @@ export type Database = {
           state?: string | null
           status?: Database["public"]["Enums"]["finance_app_status"]
           total_amount_ngn?: number
+          total_interest_ngn?: number | null
           total_repayment_ngn?: number | null
           updated_at?: string
           user_id?: string | null
@@ -987,6 +1119,8 @@ export type Database = {
           installment_no: number
           is_deposit: boolean
           last_charge_error: string | null
+          original_due_date: string | null
+          override_reason: string | null
           paid_at: string | null
           paid_reference: string | null
           payment_reference: string | null
@@ -1006,6 +1140,8 @@ export type Database = {
           installment_no: number
           is_deposit?: boolean
           last_charge_error?: string | null
+          original_due_date?: string | null
+          override_reason?: string | null
           paid_at?: string | null
           paid_reference?: string | null
           payment_reference?: string | null
@@ -1025,6 +1161,8 @@ export type Database = {
           installment_no?: number
           is_deposit?: boolean
           last_charge_error?: string | null
+          original_due_date?: string | null
+          override_reason?: string | null
           paid_at?: string | null
           paid_reference?: string | null
           payment_reference?: string | null
@@ -1639,6 +1777,7 @@ export type Database = {
           created_at: string
           event_type: string
           id: string
+          paystack_event_id: string | null
           provider: string
           raw: Json | null
           reference: string
@@ -1651,6 +1790,7 @@ export type Database = {
           created_at?: string
           event_type: string
           id?: string
+          paystack_event_id?: string | null
           provider?: string
           raw?: Json | null
           reference: string
@@ -1663,6 +1803,7 @@ export type Database = {
           created_at?: string
           event_type?: string
           id?: string
+          paystack_event_id?: string | null
           provider?: string
           raw?: Json | null
           reference?: string
