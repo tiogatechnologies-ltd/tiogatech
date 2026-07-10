@@ -1,82 +1,83 @@
-## Part 1 — Finance auto-payment system (largest change)
+## Scope
 
-**Note:** I checked the codebase — there is no existing `payment_events` table and no Silicon Edge HMAC pattern in this project (that must live in a different workspace). I'll create it fresh following Paystack's standard HMAC-SHA512 signature check. Flag: confirm this is OK.
+Extend the existing finance system (`finance_applications`, `finance_schedules`, `finance_payments`, `payment_events` + `paystack-webhook`, `auto-charge-due`, `generate-payment-link`, `approve-finance`) to cover: direct-debit consent + tokenization, auto-debit retry queue, admin due-date overrides, early liquidation, and a real "Flexible payment plan" option on the checkout page. No parallel `payment_plans`/`enrollments` tables — I'll add columns to what exists. No "access_on_enrollment" gating (physical goods only).
 
-### Database migration
-- Add `payment_events` table: `id`, `provider` (default 'paystack'), `event_type`, `reference` (unique), `schedule_id` (fk `finance_schedules`), `application_id` (fk `finance_applications`), `status` (`success|failed|pending`), `amount_ngn`, `raw` jsonb, `created_at`. RLS: users read own (via application), service_role all.
-- Add columns to `finance_schedules`: `payment_url text`, `payment_reference text`, `auto_charge_status text` (`scheduled|attempting|failed|manual_required`), `last_charge_error text`.
-- Add column to `finance_applications`: `paystack_authorization_code text` (stored as-is; Paystack auth codes are opaque tokens, not raw card data — encryption at rest is provided by Supabase). Add `paystack_customer_code text`.
-- Trigger on `finance_applications`: when `status` transitions to `approved`, generate deposit row + N monthly rows in `finance_schedules` using existing `deposit_ngn`, `monthly_payment_ngn`, `months`, `created_at + i months` due dates. Idempotent (skip if rows exist).
+## 1. Schema additions (single migration)
 
-### Edge functions
-- **`generate-payment-link`** (POST `{schedule_id}`): auth-required, verifies user owns the app OR is admin. Checks `payment_events` for success — returns existing url if paid. Calls Paystack `/transaction/initialize` with schedule amount, stores `authorization_url` + `reference` on the row, returns them.
-- **`paystack-webhook`** (public, no JWT): verifies HMAC-SHA512 using `PAYSTACK_SECRET_KEY`. On `charge.success`: idempotent insert into `payment_events` (unique reference), marks matching `finance_schedules` paid, and on the first successful payment for an application stores `authorization.authorization_code` on `finance_applications`.
-- **`auto-charge-due`** (invoked by cron, service-role only): finds schedules unpaid & due within 3 days; for each, tries `/transaction/charge_authorization` with stored auth code. Success → mark paid + payment_events. Failure or missing code → call generate-payment-link internally, set `auto_charge_status='manual_required'`.
+**`finance_applications`** — add:
+- `direct_debit_consent` bool, `consent_timestamp` timestamptz, `consent_ip` text
+- `effective_payment_method` text (`manual` | `auto_debit` | `fallback_manual`)
+- `is_asset_financing` bool (default true — solar/hardware today)
+- `monthly_principal_ngn`, `monthly_interest_ngn`, `total_interest_ngn` numeric (populated on approval)
+- `deadline_date` date (nullable; reserved for future non-asset plans, no revocation logic wired now)
 
-### Cron
-- `pg_cron` daily 09:00 Africa/Lagos → `net.http_post` to `auto-charge-due` with service-role auth header (via `insert` tool, not migration, per rules).
+**`finance_schedules`** — add:
+- `original_due_date` date (backfill from `due_date`)
+- `override_reason` text (nullable)
 
-### Frontend (AccountFinance.tsx)
-- For each application's next unpaid schedule row: show due date + amount. If `payment_url` set OR it's the first installment unpaid → "Pay Now" button (links to `payment_url`, or triggers `generate-payment-link` first). Else → "Auto-pay scheduled for [date]".
+**New `debit_retry_queue`** — `id`, `schedule_id` FK, `application_id` FK, `scheduled_date`, `attempt_number` int, `max_attempts` int default 3, `status` (`pending`/`success`/`failed`/`abandoned`/`fallback_sent`), `last_error`, timestamps. RLS: service role only; admins SELECT via `has_role(auth.uid(),'admin')`.
 
-### Secrets required
-- `PAYSTACK_SECRET_KEY` (already present ✓)
-- Webhook URL to register in Paystack dashboard: I'll surface the URL after deploy.
+**New `due_date_overrides`** — `id`, `schedule_id`, `application_id`, `installment_no`, `original_due_date`, `new_due_date`, `reason`, `overridden_by` (uuid), `created_at`. RLS: service role only; admins SELECT via `has_role`.
 
----
+Every new table gets: `GRANT` block (service_role ALL, authenticated SELECT only where policy allows), `ENABLE RLS`, then policies. Existing `payment_events` idempotency: add unique index on `(provider, reference, event_type)` if not present, plus a `paystack_event_id` column mirroring Paystack's event id for stronger dedupe.
 
-## Part 2 — Plan review "Total cost" line
+Trigger update: extend `generate_finance_schedule_on_approval` to also compute and store `monthly_principal_ngn` / `monthly_interest_ngn` / `total_interest_ngn` on the application row.
 
-In `src/pages/FinanceApply.tsx` (line 203 and 267 area) and `src/pages/Finance.tsx` (line 144), insert a new `<Row>` right after "Total repayment" and before "Monthly":
-- Label: `Total cost (deposit + repayment)`
-- Value: `formatNGN(breakdown.deposit + breakdown.total_repayment)`
-- `bold` prop, no color emphasis (matches "Total repayment" styling).
+## 2. Edge functions
 
-No changes to `financeCalc.ts` — purely derived display.
+- **`generate-payment-link`** (existing) — no change beyond already-added `force` + auto-pick-next.
+- **`approve-finance`** (existing) — extend to write the amortization fields; if `effective_payment_method='auto_debit'` and consent present, initialize Paystack `charge` with `channels:['card']` for tokenization on the deposit, then enqueue installments into `debit_retry_queue` with `scheduled_date = due_date`.
+- **`paystack-webhook`** (existing) — add: idempotency guard on `paystack_event_id`; on first successful auto-debit charge, store `paystack_authorization_code` **only if `authorization.reusable === true`**, else set `effective_payment_method='fallback_manual'` and call `generate-payment-link` for the next installment; handle `charge.failed` (log + increment retry attempt); handle `refund.processed` (decrement `installments_paid`-equivalent via schedule status revert + reactivate).
+- **`auto-charge-due`** (existing daily cron) — rewrite to consume `debit_retry_queue`. On Paystack `send_otp` response, mark `fallback_sent`, generate a manual link, do not retry silently. After `max_attempts` failures, mark the application `overdue` (existing status enum already includes it via schedule status; add `overdue` handling on application if missing).
+- **`check-overdue-and-deadlines`** (new daily cron) — marks schedules `overdue` where `due_date < today` and `status IN ('upcoming','due')`; no access revocation (per user).
+- **`admin-override-due-date`** (new) — admin-only (verify `has_role`); inserts into `due_date_overrides` and updates `finance_schedules.due_date`, preserving `original_due_date`.
+- **`calculate-liquidation`** (new) — returns `{ installments_paid, outstanding_principal, this_month_interest, payoff_amount }` using `outstanding_principal = financed_amount − (installments_paid × monthly_principal)` and `payoff_amount = monthly_interest + outstanding_principal`.
+- **`liquidate-finance`** (new) — validates ownership, calls `calculate-liquidation`, calls `generate-payment-link` with the payoff amount + `metadata.liquidation:true`; webhook handler on `charge.success` with that flag marks application `status='completed'` and remaining schedules `paid`.
 
----
+Cron: `auto-charge-due` (already daily) + new `check-overdue-and-deadlines` daily via pg_cron using `CRON_SHARED_SECRET`.
 
-## Part 3 — Blog share component
+## 3. Checkout page (`src/pages/Checkout.tsx`)
 
-New `src/components/SharePost.tsx` (reusable):
-- Props: `url`, `title`.
-- Buttons: X, Facebook, LinkedIn, WhatsApp — each `window.open()` to native share intent URL.
-- "Copy link" → `navigator.clipboard.writeText(url)` + sonner toast "Link copied".
+- Default `payment` state → `"paystack"` (not `bank_transfer`).
+- Reorder methods: **Card/Paystack → Bank Transfer → Flexible Plan → WhatsApp** (WhatsApp copy reframed as human-assisted fallback).
+- Convert the "Need a flexible payment plan?" banner into a real 4th radio option `"flexible"`. When selected, expand inline:
+  - Duration selector (3/6/12 months) using existing `site_settings.finance` rates.
+  - Live-computed deposit (30%) + monthly repayment via `src/lib/financeCalc.ts`.
+  - Copy: "Liquidate anytime — pay only this month's interest + remaining principal. No prepayment penalty."
+  - Sub-choice: Manual installments vs Auto-debit. Auto-debit reveals the consent component (Section 4) and requires it checked to submit.
+- Submit for `flexible`: create a `finance_applications` row (status `pending`) instead of an order, then navigate to `/account/finance` with a success toast. (Approval remains admin-gated so nothing auto-charges without review.)
 
-Drop into `src/pages/BlogPost.tsx` right after the meta row (below author/date/read-time) and again at the bottom of the article.
+## 4. Direct-debit consent component (`src/components/DirectDebitConsent.tsx`)
 
----
+Checkbox + disclosure copy exactly as specified (Paystack PCI-DSS, per-charge amount, 24h reminder, non-reusable-card fallback, cancel via tiogatechnologies@gmail.com without cancelling debt). Rendered in Checkout flexible flow and in `FinanceApply.tsx` when auto-debit is chosen. Consent state + timestamp + IP (client-provided placeholder; real IP captured server-side in `approve-finance`) written to the application row.
 
-## Part 4 — Global click-outside + Escape audit
+## 5. Liquidation UI (`src/pages/AccountFinance.tsx` and `src/pages/Account.tsx`)
 
-Radix Dialog/Sheet/Drawer components already handle both — no change needed for shadcn dialogs.
+For each active/approved asset-financing application, add "Liquidate Now" button → opens dialog → calls `calculate-liquidation`, shows the 4-line breakdown, "Confirm & Pay" calls `liquidate-finance` and redirects to the Paystack authorization URL.
 
-Custom overlays to audit and fix if missing:
-- `EnergyCalculatorDialog.tsx` ✓ already correct
-- `ImageLightbox.tsx` ✓ already correct
-- `LeadForm.tsx` ✓ already fixed previously
-- `AiChatWidget.tsx`, `CartDrawer.tsx`, `WaitlistDialog.tsx`, `CustomSolutionDialog.tsx`, `AffiliateApplicationDialog.tsx`, `CareerApplicationDialog.tsx`, `FlexiblePaymentDialog.tsx`, `AiUpgradeDialog.tsx` — check each; add backdrop `onClick={close}` + Escape listener where missing.
+## 6. Terms & Conditions (`src/pages/Terms.tsx`)
 
-Mobile hamburger menu (`SiteHeader.tsx` / `MegaMenu.tsx`): add backdrop overlay that closes the menu on tap; ensure Escape key closes it.
+Add Section 8 (Installment Payments & Direct Debit Authorization, 8.1–8.10) + 8.11 early liquidation clause (that month's interest + outstanding principal, no prepayment penalty).
 
-I'll only flag confirmation dialogs (destructive delete confirms) — those should stay click-locked.
+## 7. Security
 
----
+`PAYSTACK_SECRET_KEY` already exists as an edge-function secret — no code changes there. Verify no client bundle or committed file references it (grep during implementation).
 
-## Part 5 — Smooth scroll audit
+## Build order
 
-Root cause candidates:
-- `SmoothScroll.tsx` (Lenis) intercepts wheel events globally. Lenis by default supports keyboard scroll but sometimes breaks Page Down/Space when a container has `overflow: hidden`. I'll verify Lenis config allows keyboard and doesn't block inner scrollables.
-- Audit for `overflow: hidden` on root wrappers in `App.tsx`, `index.css`, and page containers. Ensure `body`/`html` allow natural scroll.
-- Add `data-lenis-prevent` attribute to inner scroll containers (cart drawer, dialogs, admin sidebars) that need their own scroll.
+1. Migration (schema + RLS + trigger update + indexes).
+2. Update `paystack-webhook`, `approve-finance`, `auto-charge-due`; add `check-overdue-and-deadlines`, `admin-override-due-date`, `calculate-liquidation`, `liquidate-finance`.
+3. Schedule new cron job.
+4. `DirectDebitConsent` component.
+5. Checkout revamp (reorder, default, flexible option, consent wiring).
+6. `FinanceApply.tsx` — surface auto-debit + consent.
+7. `AccountFinance.tsx` / `Account.tsx` — Liquidate Now dialog.
+8. `Terms.tsx` — Section 8 + 8.11.
+9. Grep for hardcoded Paystack key; typecheck.
 
-Fix: keep Lenis but verify no `overflow: hidden` on `<main>` or route wrappers; ensure keyboard scroll works by not calling `preventDefault` on key events.
+## Not in scope
 
----
-
-## Files touched
-
-**New:** `supabase/functions/generate-payment-link/index.ts`, `supabase/functions/paystack-webhook/index.ts`, `supabase/functions/auto-charge-due/index.ts`, `src/components/SharePost.tsx`, 1 migration, 1 insert (cron).
-**Edited:** `src/pages/FinanceApply.tsx`, `src/pages/Finance.tsx`, `src/pages/AccountFinance.tsx`, `src/pages/BlogPost.tsx`, `src/components/SmoothScroll.tsx`, plus click-outside fixes on any custom dialogs missing them.
-
-Approve to proceed, or tell me which parts to skip / do first.
+- No parallel `payment_plans`/`enrollments` tables.
+- No `access_granted` gating (physical products only; overdue is a follow-up flag on the schedule, not a lockout).
+- No non-asset-financing plans wired end-to-end (columns exist for future use).
+- Admin UI for `admin-override-due-date` is API-only in this pass; a UI can follow.
