@@ -61,7 +61,38 @@ const AccountFinance = () => {
                   <h2 className="font-display font-bold">{a.item_name}</h2>
                   <p className="text-xs text-muted-foreground">Applied {new Date(a.created_at).toLocaleDateString()} · {a.months} month plan</p>
                 </div>
-                <span className={`text-xs px-2 py-1 rounded-full capitalize ${a.status === "active" ? "bg-green-100 text-green-700" : a.status === "rejected" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"}`}>{a.status.replace("_", " ")}</span>
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs px-2 py-1 rounded-full capitalize ${a.status === "active" ? "bg-green-100 text-green-700" : a.status === "rejected" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"}`}>{a.status.replace("_", " ")}</span>
+                  {(a.status === "approved" || a.status === "active") && a.is_asset_financing && (
+                    <button
+                      onClick={async () => {
+                        const { toast } = await import("sonner");
+                        const t = toast.loading("Calculating payoff…");
+                        const { data: q, error: qErr } = await supabase.functions.invoke("calculate-liquidation", { body: { application_id: a.id } });
+                        toast.dismiss(t);
+                        if (qErr || (q as any)?.error) { toast.error((qErr as any)?.message || (q as any)?.error || "Could not calculate payoff"); return; }
+                        const q2: any = q;
+                        const ok = window.confirm(
+                          `Liquidate ${a.item_name}?\n\n` +
+                          `Installments paid: ${q2.installments_paid} of ${q2.installments_total}\n` +
+                          `Outstanding principal: ₦${Number(q2.outstanding_principal).toLocaleString()}\n` +
+                          `This month's interest: ₦${Number(q2.this_month_interest).toLocaleString()}\n` +
+                          `Total payoff: ₦${Number(q2.payoff_amount).toLocaleString()}\n\n` +
+                          `Proceed to pay?`
+                        );
+                        if (!ok) return;
+                        const t2 = toast.loading("Preparing payoff link…");
+                        const { data: pay, error: pErr } = await supabase.functions.invoke("liquidate-finance", { body: { application_id: a.id } });
+                        toast.dismiss(t2);
+                        if (pErr || !(pay as any)?.authorization_url) { toast.error((pErr as any)?.message || (pay as any)?.error || "Could not create payoff link"); return; }
+                        window.location.href = (pay as any).authorization_url;
+                      }}
+                      className="text-xs font-semibold px-3 py-1 rounded-full border border-primary text-primary hover:bg-primary/10"
+                    >
+                      Liquidate Now
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="p-5 grid sm:grid-cols-3 gap-3 text-sm">
                 <div><p className="text-[10px] uppercase text-muted-foreground">Total</p><p className="font-semibold">₦{Number(a.total_amount_ngn).toLocaleString()}</p></div>
