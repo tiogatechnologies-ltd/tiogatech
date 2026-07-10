@@ -73,6 +73,14 @@ const Checkout = () => {
     return subtotal > 0 ? 6000 : 0;
   }, [subtotal, delivery]);
   const total = subtotal + shippingFee;
+  const flexBreakdown = useMemo(() => calcPlan(total, flexMonths, financeConfig), [total, flexMonths, financeConfig]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from("site_settings").select("value").eq("key", "finance").maybeSingle();
+      if (data?.value) setFinanceConfig(normalizeFinanceConfig(data.value as any));
+    })();
+  }, []);
 
   useEffect(() => {
     if (items.length === 0) {
