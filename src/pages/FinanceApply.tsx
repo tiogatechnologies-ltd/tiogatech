@@ -124,6 +124,10 @@ const FinanceApply = () => {
         package_slug: packageSlug || null,
         assessment_id: assessmentId,
         consent: form.consent,
+        direct_debit_consent: paymentMode === "auto_debit" ? ddConsent : false,
+        consent_timestamp: paymentMode === "auto_debit" ? new Date().toISOString() : null,
+        effective_payment_method: paymentMode,
+        is_asset_financing: true,
       };
 
       const { data, error } = await supabase
