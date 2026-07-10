@@ -61,14 +61,59 @@ Deno.serve(async (req) => {
         status: "paid", paid_at: new Date().toISOString(), paid_reference: j.data.reference,
         auto_charge_status: null, last_charge_error: null,
       }).eq("id", row.id);
+      await admin.from("debit_retry_queue").update({ status: "success" })
+        .eq("schedule_id", row.id).eq("status", "pending");
       results.push({ id: row.id, action: "auto_charged" });
     } else {
       const errMsg = j?.data?.gateway_response || j?.message || "charge failed";
-      await admin.from("finance_schedules").update({
-        auto_charge_status: "manual_required", last_charge_error: errMsg,
-      }).eq("id", row.id);
-      await ensureManualLink(row.id);
-      results.push({ id: row.id, action: "manual_fallback", error: errMsg });
+      const needsOtp = String(j?.data?.status || "").toLowerCase() === "send_otp"
+        || /otp|authentication/i.test(errMsg);
+
+      // Track retry attempts
+      const { data: retryRow } = await admin.from("debit_retry_queue")
+        .select("id, attempt_number, max_attempts")
+        .eq("schedule_id", row.id).eq("status", "pending").maybeSingle();
+      const nextAttempt = (retryRow?.attempt_number ?? 0) + 1;
+      const maxAttempts = retryRow?.max_attempts ?? 3;
+
+      if (needsOtp) {
+        // Card requires bank OTP — fall back to manual link immediately.
+        await admin.from("finance_applications").update({
+          effective_payment_method: "fallback_manual",
+        }).eq("id", row.application_id);
+        if (retryRow) {
+          await admin.from("debit_retry_queue").update({
+            status: "fallback_sent", attempt_number: nextAttempt, last_error: errMsg,
+          }).eq("id", retryRow.id);
+        }
+        await admin.from("finance_schedules").update({
+          auto_charge_status: "manual_required", last_charge_error: errMsg,
+        }).eq("id", row.id);
+        await ensureManualLink(row.id);
+        results.push({ id: row.id, action: "otp_fallback", error: errMsg });
+      } else if (nextAttempt >= maxAttempts) {
+        if (retryRow) {
+          await admin.from("debit_retry_queue").update({
+            status: "abandoned", attempt_number: nextAttempt, last_error: errMsg,
+          }).eq("id", retryRow.id);
+        }
+        await admin.from("finance_schedules").update({
+          status: "overdue", auto_charge_status: "manual_required", last_charge_error: errMsg,
+        }).eq("id", row.id);
+        await ensureManualLink(row.id);
+        results.push({ id: row.id, action: "abandoned_after_max_attempts", error: errMsg });
+      } else {
+        if (retryRow) {
+          await admin.from("debit_retry_queue").update({
+            attempt_number: nextAttempt, last_error: errMsg,
+          }).eq("id", retryRow.id);
+        }
+        await admin.from("finance_schedules").update({
+          auto_charge_status: "manual_required", last_charge_error: errMsg,
+        }).eq("id", row.id);
+        await ensureManualLink(row.id);
+        results.push({ id: row.id, action: "manual_fallback", error: errMsg, attempt: nextAttempt });
+      }
     }
   }
 
