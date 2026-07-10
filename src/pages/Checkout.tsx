@@ -8,6 +8,8 @@ import SEO from "@/components/SEO";
 import { toast } from "sonner";
 import { z } from "zod";
 import { trackConversion } from "@/lib/tracking";
+import DirectDebitConsent from "@/components/DirectDebitConsent";
+import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 
 const WHATSAPP = "2348178000023";
 
