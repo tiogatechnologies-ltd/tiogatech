@@ -90,7 +90,7 @@ const Account = () => {
     (async () => {
       const tasks: any[] = [
         supabase.from("orders").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
-        supabase.from("finance_applications").select("id,item_name,status,monthly_payment_ngn,months,total_amount_ngn,created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
+        supabase.from("finance_applications").select("id,item_name,status,monthly_payment_ngn,months,total_amount_ngn,is_asset_financing,created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
         supabase.from("solar_assessments").select("id,location,status,created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
         supabase.from("ai_subscriptions").select("*").eq("user_id", user.id).maybeSingle(),
         supabase.from("assessment_credits").select("*").eq("user_id", user.id).maybeSingle(),
