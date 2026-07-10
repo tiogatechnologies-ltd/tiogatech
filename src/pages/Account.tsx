@@ -418,6 +418,7 @@ const Account = () => {
                   <ul className="divide-y divide-border">
                     {finance.map((f) => {
                       const canPay = f.status === "approved" || f.status === "active";
+                      const canLiquidate = canPay && f.is_asset_financing;
                       const payNow = async () => {
                         const t = toast.loading("Preparing payment link…");
                         const { data, error } = await supabase.functions.invoke("generate-payment-link", { body: { application_id: f.id } });
@@ -427,6 +428,27 @@ const Account = () => {
                           return;
                         }
                         window.location.href = data.authorization_url;
+                      };
+                      const liquidate = async () => {
+                        const t = toast.loading("Calculating payoff…");
+                        const { data: q, error: qErr } = await supabase.functions.invoke("calculate-liquidation", { body: { application_id: f.id } });
+                        toast.dismiss(t);
+                        if (qErr || (q as any)?.error) { toast.error((qErr as any)?.message || (q as any)?.error || "Could not calculate payoff"); return; }
+                        const q2: any = q;
+                        const ok = window.confirm(
+                          `Liquidate ${f.item_name}?\n\n` +
+                          `Installments paid: ${q2.installments_paid} of ${q2.installments_total}\n` +
+                          `Outstanding principal: ${formatNGN(q2.outstanding_principal)}\n` +
+                          `This month's interest: ${formatNGN(q2.this_month_interest)}\n` +
+                          `Total payoff: ${formatNGN(q2.payoff_amount)}\n\n` +
+                          `Proceed to pay?`
+                        );
+                        if (!ok) return;
+                        const t2 = toast.loading("Preparing payoff link…");
+                        const { data: pay, error: pErr } = await supabase.functions.invoke("liquidate-finance", { body: { application_id: f.id } });
+                        toast.dismiss(t2);
+                        if (pErr || !(pay as any)?.authorization_url) { toast.error((pErr as any)?.message || (pay as any)?.error || "Could not create payoff link"); return; }
+                        window.location.href = (pay as any).authorization_url;
                       };
                       return (
                         <li key={f.id} className="py-3 flex items-center justify-between gap-3">
@@ -441,6 +463,11 @@ const Account = () => {
                             {canPay && (
                               <button onClick={payNow} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center gap-1">
                                 Pay next installment <ExternalLink size={11} />
+                              </button>
+                            )}
+                            {canLiquidate && (
+                              <button onClick={liquidate} className="text-[11px] font-semibold px-3 py-1 rounded-full border border-primary text-primary hover:bg-primary/10">
+                                Liquidate Now
                               </button>
                             )}
                           </div>
