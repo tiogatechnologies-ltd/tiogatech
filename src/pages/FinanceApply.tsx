@@ -280,6 +280,17 @@ const FinanceApply = () => {
                   <span className="text-primary">{formatNGN(breakdown.monthly_payment)}</span>
                 </div>
               </div>
+              <div>
+                <p className="text-xs font-semibold text-foreground mb-2">Payment style</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button type="button" onClick={() => setPaymentMode("manual")} className={`p-2.5 rounded-lg border text-xs font-semibold ${paymentMode === "manual" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground"}`}>Manual installments</button>
+                  <button type="button" onClick={() => setPaymentMode("auto_debit")} className={`p-2.5 rounded-lg border text-xs font-semibold ${paymentMode === "auto_debit" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground"}`}>Auto-debit my card</button>
+                </div>
+              </div>
+              {paymentMode === "auto_debit" && (
+                <DirectDebitConsent checked={ddConsent} onChange={setDdConsent} amountLabel={formatNGN(breakdown.monthly_payment)} />
+              )}
+              <p className="text-[11px] text-muted-foreground">✓ Liquidate anytime — pay only this month's interest + remaining principal. No prepayment penalty.</p>
               <label className="flex items-start gap-2 text-sm">
                 <input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1" />
                 <span>I confirm the information provided is accurate and consent to Tioga Technologies and its bank partner verifying my identity, income, and creditworthiness. I agree to the financing terms including insurance and management fees.</span>
