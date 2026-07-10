@@ -90,6 +90,7 @@ const FinanceApply = () => {
     if (!form.consent) return toast.error("Please consent to the terms");
     if (!form.full_name?.trim() || !form.email?.trim() || !form.phone?.trim()) return toast.error("Fill your name, email and phone");
     if (!form.total_amount_ngn || Number(form.total_amount_ngn) < 1_000_000) return toast.error("Minimum financed amount is ₦1,000,000");
+    if (paymentMode === "auto_debit" && !ddConsent) return toast.error("Please confirm the direct-debit authorization");
 
     setSubmitting(true);
     try {
