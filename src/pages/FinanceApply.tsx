@@ -47,6 +47,8 @@ const FinanceApply = () => {
     months: monthsParam as number,
     consent: false,
   });
+  const [paymentMode, setPaymentMode] = useState<"manual" | "auto_debit">("manual");
+  const [ddConsent, setDdConsent] = useState(false);
 
   useEffect(() => {
     (async () => {
