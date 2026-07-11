@@ -171,7 +171,7 @@ Return JSON ONLY in this schema:
       share_token,
     }).eq("id", assessment_id);
 
-    if (!hasSub) {
+    if (!bypassCredits) {
       await admin.from("assessment_credits").update({
         used_credits: (credits?.used_credits ?? 0) + 1,
       }).eq("user_id", userId);
@@ -184,11 +184,11 @@ Return JSON ONLY in this schema:
       assessment_id,
       source: "solar-assessment",
       description: `${assessment.recommendation?.inverter_kva || "?"}kVA · ${assessment.recommendation?.battery_kwh || "?"}kWh report · ${assessment.location || "Nigeria"}`,
-      used_free_credit: !hasSub,
-      subscription_plan: hasSub ? "starter_or_business" : null,
+      used_free_credit: !bypassCredits,
+      subscription_plan: isPrivileged ? "admin_unlimited" : hasSub ? "starter_or_business" : null,
     });
 
-    return new Response(JSON.stringify({ full_report, share_token, credits_remaining: hasSub ? null : available - 1, subscription_active: hasSub }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ full_report, share_token, credits_remaining: bypassCredits ? null : available - 1, subscription_active: hasSub, admin_unlimited: isPrivileged }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
     console.error("solar-assess error", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
