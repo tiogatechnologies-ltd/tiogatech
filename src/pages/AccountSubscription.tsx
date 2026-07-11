@@ -78,7 +78,8 @@ const FEATURE_LABEL: Record<string, { label: string; icon: any }> = {
 };
 
 const AccountSubscription = () => {
-  const { user } = useAuth();
+  const { user, isAdmin, isStaff } = useAuth();
+  const adminUnlimited = isAdmin || isStaff;
   const [credits, setCredits] = useState<any>(null);
   const [sub, setSub] = useState<any>(null);
   const [usage, setUsage] = useState<UsageRow[]>([]);
