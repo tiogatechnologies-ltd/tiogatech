@@ -1,83 +1,89 @@
 ## Scope
 
-Extend the existing finance system (`finance_applications`, `finance_schedules`, `finance_payments`, `payment_events` + `paystack-webhook`, `auto-charge-due`, `generate-payment-link`, `approve-finance`) to cover: direct-debit consent + tokenization, auto-debit retry queue, admin due-date overrides, early liquidation, and a real "Flexible payment plan" option on the checkout page. No parallel `payment_plans`/`enrollments` tables — I'll add columns to what exists. No "access_on_enrollment" gating (physical goods only).
+Six fixes across the Easy Flex payment flow, header layout, admin AI limits, monthly credit renewal, and the solar_assessments share-token RLS vulnerability.
 
-## 1. Schema additions (single migration)
+---
 
-**`finance_applications`** — add:
-- `direct_debit_consent` bool, `consent_timestamp` timestamptz, `consent_ip` text
-- `effective_payment_method` text (`manual` | `auto_debit` | `fallback_manual`)
-- `is_asset_financing` bool (default true — solar/hardware today)
-- `monthly_principal_ngn`, `monthly_interest_ngn`, `total_interest_ngn` numeric (populated on approval)
-- `deadline_date` date (nullable; reserved for future non-asset plans, no revocation logic wired now)
+## 1. Easy Flex: enforce deposit-first, then installments
 
-**`finance_schedules`** — add:
-- `original_due_date` date (backfill from `due_date`)
-- `override_reason` text (nullable)
+**Problem:** Users can currently attempt installments before the 30% deposit is paid.
 
-**New `debit_retry_queue`** — `id`, `schedule_id` FK, `application_id` FK, `scheduled_date`, `attempt_number` int, `max_attempts` int default 3, `status` (`pending`/`success`/`failed`/`abandoned`/`fallback_sent`), `last_error`, timestamps. RLS: service role only; admins SELECT via `has_role(auth.uid(),'admin')`.
+**Changes:**
+- **`generate-payment-link` edge function** — before returning/generating a link for installment `n ≥ 1`, verify the deposit row (`installment_no = 0`) for that application has `status = 'paid'`. If not, return 409 with `deposit_required: true` and the deposit's own payment link (auto-generate if missing).
+- **`AccountFinance.tsx` / `Account.tsx`** — for each application, sort schedules by `installment_no`. Show the **deposit row first** with a prominent "Pay Deposit" CTA. Lock all installment "Pay Now" buttons (disabled + tooltip "Pay deposit first") until deposit `status = 'paid'`. After the deposit is paid, unlock installment 1; keep installments 2+ locked until their `due_date` is within the payment window or user chooses "Pay early".
+- **`approve-finance`** — no auto-charge of installments until deposit is confirmed paid (webhook already flips application to `active` on first paid schedule; ensure the retry queue's first entry is installment 1, not 0, and is only enqueued after deposit success).
+- **`paystack-webhook`** — when the deposit (installment 0) is marked paid, enqueue installment 1 into `debit_retry_queue` (if auto-debit) so auto-charge only begins post-deposit.
 
-**New `due_date_overrides`** — `id`, `schedule_id`, `application_id`, `installment_no`, `original_due_date`, `new_due_date`, `reason`, `overridden_by` (uuid), `created_at`. RLS: service role only; admins SELECT via `has_role`.
+## 2. Easy Flex: dedicated Paystack payment page per installment (like screenshot)
 
-Every new table gets: `GRANT` block (service_role ALL, authenticated SELECT only where policy allows), `ENABLE RLS`, then policies. Existing `payment_events` idempotency: add unique index on `(provider, reference, event_type)` if not present, plus a `paystack_event_id` column mirroring Paystack's event id for stronger dedupe.
+**Problem:** Currently we call `transaction/initialize` which is a one-time checkout URL. The screenshot shows a **Paystack Payment Page** (persistent, branded, `paystack.shop/pay/...`) that customers can revisit and that tracks all payments against one page.
 
-Trigger update: extend `generate_finance_schedule_on_approval` to also compute and store `monthly_principal_ngn` / `monthly_interest_ngn` / `total_interest_ngn` on the application row.
+**Changes:**
+- **`generate-payment-link`** — switch to Paystack **Payment Pages API** (`POST https://api.paystack.co/page`) per installment:
+  - `name`: `"Tioga Easy Flex — {item_name} — Installment {n}/{months}"` (or "Deposit" for #0)
+  - `amount`: fixed installment amount in kobo
+  - `description`: due date + application ref
+  - `slug`: `tioga-ef-{application_id_short}-{installment_no}` (unique, stable, reusable)
+  - `metadata`: `{ schedule_id, application_id, installment_no }`
+  - `redirect_url`: `https://tiogatechnologies.com/account/finance?paid={schedule_id}`
+  - Store returned `page.slug` + full URL (`https://paystack.com/pay/{slug}`) in `finance_schedules.payment_url` and `payment_reference`.
+  - Reuse existing page on subsequent calls (idempotent — check for existing `payment_url` before creating a new page).
+- **Webhook** — already handles `charge.success` with metadata; verify Payment Pages fire the same event (they do, with `metadata` preserved).
+- **UI copy** — "Open Paystack Payment Page" instead of "Pay Now", with a copy-link button so admin/customer can share/re-open.
 
-## 2. Edge functions
+## 3. Header not showing on Account, AI Plan & Credits, and other authenticated pages
 
-- **`generate-payment-link`** (existing) — no change beyond already-added `force` + auto-pick-next.
-- **`approve-finance`** (existing) — extend to write the amortization fields; if `effective_payment_method='auto_debit'` and consent present, initialize Paystack `charge` with `channels:['card']` for tokenization on the deposit, then enqueue installments into `debit_retry_queue` with `scheduled_date = due_date`.
-- **`paystack-webhook`** (existing) — add: idempotency guard on `paystack_event_id`; on first successful auto-debit charge, store `paystack_authorization_code` **only if `authorization.reusable === true`**, else set `effective_payment_method='fallback_manual'` and call `generate-payment-link` for the next installment; handle `charge.failed` (log + increment retry attempt); handle `refund.processed` (decrement `installments_paid`-equivalent via schedule status revert + reactivate).
-- **`auto-charge-due`** (existing daily cron) — rewrite to consume `debit_retry_queue`. On Paystack `send_otp` response, mark `fallback_sent`, generate a manual link, do not retry silently. After `max_attempts` failures, mark the application `overdue` (existing status enum already includes it via schedule status; add `overdue` handling on application if missing).
-- **`check-overdue-and-deadlines`** (new daily cron) — marks schedules `overdue` where `due_date < today` and `status IN ('upcoming','due')`; no access revocation (per user).
-- **`admin-override-due-date`** (new) — admin-only (verify `has_role`); inserts into `due_date_overrides` and updates `finance_schedules.due_date`, preserving `original_due_date`.
-- **`calculate-liquidation`** (new) — returns `{ installments_paid, outstanding_principal, this_month_interest, payoff_amount }` using `outstanding_principal = financed_amount − (installments_paid × monthly_principal)` and `payoff_amount = monthly_interest + outstanding_principal`.
-- **`liquidate-finance`** (new) — validates ownership, calls `calculate-liquidation`, calls `generate-payment-link` with the payoff amount + `metadata.liquidation:true`; webhook handler on `charge.success` with that flag marks application `status='completed'` and remaining schedules `paid`.
+**Problem:** `SiteHeader` is missing or overlapped on `/account`, `/account/subscription` (AI plan & credits), and related pages — content sits under a transparent/absent header with no top margin.
 
-Cron: `auto-charge-due` (already daily) + new `check-overdue-and-deadlines` daily via pg_cron using `CRON_SHARED_SECRET`.
+**Changes:**
+- Audit these pages for missing `<SiteHeader />` or wrong layout wrapper: `Account.tsx`, `AccountFinance.tsx`, `AccountAssessments.tsx`, `AccountSubscription.tsx`, `AffiliateDashboard.tsx`, `DashboardRouter.tsx`, `FinanceApply.tsx`, `SolarAssessment.tsx`, `SolarAssessmentReport.tsx`.
+- Ensure each renders `<SiteHeader />` at top and applies the standard top padding (`pt-24` / matching header height class used elsewhere) so content clears the fixed header.
+- Confirm the header's `z-index` and `bg` tokens make it visible over these pages' backgrounds.
 
-## 3. Checkout page (`src/pages/Checkout.tsx`)
+## 4. Admin unlimited AI usage
 
-- Default `payment` state → `"paystack"` (not `bank_transfer`).
-- Reorder methods: **Card/Paystack → Bank Transfer → Flexible Plan → WhatsApp** (WhatsApp copy reframed as human-assisted fallback).
-- Convert the "Need a flexible payment plan?" banner into a real 4th radio option `"flexible"`. When selected, expand inline:
-  - Duration selector (3/6/12 months) using existing `site_settings.finance` rates.
-  - Live-computed deposit (30%) + monthly repayment via `src/lib/financeCalc.ts`.
-  - Copy: "Liquidate anytime — pay only this month's interest + remaining principal. No prepayment penalty."
-  - Sub-choice: Manual installments vs Auto-debit. Auto-debit reveals the consent component (Section 4) and requires it checked to submit.
-- Submit for `flexible`: create a `finance_applications` row (status `pending`) instead of an order, then navigate to `/account/finance` with a success toast. (Approval remains admin-gated so nothing auto-charges without review.)
+**Problem:** Admins are capped at the same 3-credit free tier as customers.
 
-## 4. Direct-debit consent component (`src/components/DirectDebitConsent.tsx`)
+**Changes:**
+- **`ai-chat` / `ai-recommend` / `ai-solar-size` / any AI edge function that checks `assessment_credits` or `ai_credit_usage`** — at the top of the credit check, call `has_role(user_id, 'admin')`. If true, skip the credit deduction and cap entirely (log usage to `ai_credit_usage` with a flag `is_admin: true` for auditing, but do not decrement).
+- **Frontend `AccountSubscription.tsx`** — if current user has admin role, show "Unlimited (Admin)" instead of credit balance.
 
-Checkbox + disclosure copy exactly as specified (Paystack PCI-DSS, per-charge amount, 24h reminder, non-reusable-card fallback, cancel via tiogatechnologies@gmail.com without cancelling debt). Rendered in Checkout flexible flow and in `FinanceApply.tsx` when auto-debit is chosen. Consent state + timestamp + IP (client-provided placeholder; real IP captured server-side in `approve-finance`) written to the application row.
+## 5. Monthly automatic renewal of the 3 free credits for all users
 
-## 5. Liquidation UI (`src/pages/AccountFinance.tsx` and `src/pages/Account.tsx`)
+**Problem:** Free 3 credits are granted once at signup and never refill.
 
-For each active/approved asset-financing application, add "Liquidate Now" button → opens dialog → calls `calculate-liquidation`, shows the 4-line breakdown, "Confirm & Pay" calls `liquidate-finance` and redirects to the Paystack authorization URL.
+**Changes:**
+- Add `assessment_credits.last_reset_at timestamptz` (migration).
+- **New edge function `reset-monthly-free-credits`** — for every row in `assessment_credits`, if `last_reset_at` is null or older than the start of the current month, set `total_credits = GREATEST(total_credits, 3)` (top up to at least 3, never reduce paid credits) and `last_reset_at = date_trunc('month', now())`. Skip users with active paid AI subscriptions (they have their own quotas).
+- **pg_cron** — schedule daily at 02:00 UTC using `CRON_SHARED_SECRET`; the function itself is idempotent so daily execution is safe and self-heals missed days.
 
-## 6. Terms & Conditions (`src/pages/Terms.tsx`)
+## 6. Solar assessments share-token RLS vulnerability
 
-Add Section 8 (Installment Payments & Direct Debit Authorization, 8.1–8.10) + 8.11 early liquidation clause (that month's interest + outstanding principal, no prepayment penalty).
+**Problem:** `USING (share_token IS NOT NULL)` exposes every shared assessment to any anonymous visitor.
 
-## 7. Security
+**Fix (edge function approach — safer than JWT claims for public share links):**
+- **Migration** — drop the vulnerable policy. Replace with `USING (false)` for anon on the sensitive columns path (deny all direct anon SELECT).
+- **New edge function `get-shared-assessment`** — accepts `{ share_token }`, uses service role, queries `solar_assessments WHERE share_token = $1 AND share_token IS NOT NULL LIMIT 1`, returns only the fields intended for public sharing (strip `email`, `phone` unless the customer opted in; keep `full_name`, `location`, `daily_kwh`, `monthly_bill_ngn`, `full_report`).
+- **`SolarAssessmentReport.tsx`** — when accessed via a `?token=...` param (public/shared view), call the edge function instead of querying the table directly. Authenticated owner view keeps using the existing owner RLS policy.
 
-`PAYSTACK_SECRET_KEY` already exists as an edge-function secret — no code changes there. Verify no client bundle or committed file references it (grep during implementation).
+---
 
-## Build order
+## Technical Notes
 
-1. Migration (schema + RLS + trigger update + indexes).
-2. Update `paystack-webhook`, `approve-finance`, `auto-charge-due`; add `check-overdue-and-deadlines`, `admin-override-due-date`, `calculate-liquidation`, `liquidate-finance`.
-3. Schedule new cron job.
-4. `DirectDebitConsent` component.
-5. Checkout revamp (reorder, default, flexible option, consent wiring).
-6. `FinanceApply.tsx` — surface auto-debit + consent.
-7. `AccountFinance.tsx` / `Account.tsx` — Liquidate Now dialog.
-8. `Terms.tsx` — Section 8 + 8.11.
-9. Grep for hardcoded Paystack key; typecheck.
+- Paystack Payment Pages docs: `POST /page` returns `{ status, message, data: { id, name, slug, ... } }`. Public URL = `https://paystack.com/pay/{slug}`. Webhook `charge.success` events from a Payment Page include the page's metadata.
+- `has_role` security-definer function already exists (`public.has_role(uuid, app_role)`).
+- Monthly reset uses `GREATEST` so it never wipes purchased credits — only tops up the free floor.
+- Share-token fix uses an edge function rather than JWT claim comparison because share links are opened by unauthenticated visitors and can't carry a JWT claim from Supabase auth.
 
-## Not in scope
+## Build Order
 
-- No parallel `payment_plans`/`enrollments` tables.
-- No `access_granted` gating (physical products only; overdue is a follow-up flag on the schedule, not a lockout).
-- No non-asset-financing plans wired end-to-end (columns exist for future use).
-- Admin UI for `admin-override-due-date` is API-only in this pass; a UI can follow.
+1. Migration: `assessment_credits.last_reset_at`, drop + replace `solar_assessments` public share policy.
+2. Edge functions: rewrite `generate-payment-link` (Payment Pages + deposit guard), new `get-shared-assessment`, new `reset-monthly-free-credits`, patch AI functions for admin bypass, patch `paystack-webhook` to enqueue installment 1 after deposit.
+3. pg_cron: schedule monthly credit reset.
+4. Frontend: `AccountFinance.tsx` / `Account.tsx` deposit-gating UI + "Open Paystack Page" button; `SolarAssessmentReport.tsx` public path via edge function; `AccountSubscription.tsx` admin unlimited badge; header/padding audit on all authenticated pages.
+5. Typecheck.
+
+## Not in Scope
+
+- No change to the Paystack tokenized auto-debit flow beyond gating on deposit success.
+- No change to admin approval workflow for finance applications.
