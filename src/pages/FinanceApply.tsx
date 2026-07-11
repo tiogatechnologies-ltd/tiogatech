@@ -163,9 +163,11 @@ const FinanceApply = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO title="Apply for Easy Flex — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 3, 6, 12 or 24 month repayments, bank-partner approval." />
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <SiteHeader />
+      <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
+
         <div className="mb-8">
           <button onClick={() => navigate(-1)} className="text-sm text-muted-foreground mb-4">← Back</button>
           <h1 className="font-display text-2xl sm:text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary shrink-0" /> Easy Flex Application</h1>
