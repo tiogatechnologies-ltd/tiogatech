@@ -98,7 +98,10 @@ const SiteHeader = () => {
     closeTimer.current = window.setTimeout(() => setProductsDesktopOpen(false), 140);
   };
 
-  const onDark = !scrolled && !open;
+  // Only allow transparent-over-dark on the landing route. Every other page has a
+  // light body background — a transparent header would look invisible over it.
+  const isLanding = location.pathname === "/";
+  const onDark = isLanding && !scrolled && !open;
 
   const handleAiClick = () => { openLeadForm("ai_badge"); };
 
