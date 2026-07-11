@@ -291,6 +291,7 @@ export type Database = {
       assessment_credits: {
         Row: {
           created_at: string
+          last_reset_at: string | null
           purchased_credits: number
           total_credits: number
           updated_at: string
@@ -299,6 +300,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          last_reset_at?: string | null
           purchased_credits?: number
           total_credits?: number
           updated_at?: string
@@ -307,6 +309,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          last_reset_at?: string | null
           purchased_credits?: number
           total_credits?: number
           updated_at?: string
@@ -2317,6 +2320,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      reset_monthly_free_credits: { Args: never; Returns: number }
     }
     Enums: {
       ai_plan: "free" | "starter" | "business"
