@@ -150,9 +150,10 @@ const Account = () => {
 
   const activeSub = aiSub?.status === "active" && (aiSub?.plan === "starter" || aiSub?.plan === "business") &&
     (!aiSub.expires_at || new Date(aiSub.expires_at) > new Date());
+  const adminUnlimited = isAdmin || isStaff;
   const totalCredits = credits ? (credits.total_credits || 0) + (credits.purchased_credits || 0) : 3;
   const usedCredits = credits?.used_credits || 0;
-  const remainingCredits = Math.max(0, totalCredits - usedCredits);
+  const remainingCredits = adminUnlimited ? Infinity : Math.max(0, totalCredits - usedCredits);
 
   const activeFinance = finance.find((f) => f.status === "approved" || f.status === "active");
   const totalSpent = useMemo(
