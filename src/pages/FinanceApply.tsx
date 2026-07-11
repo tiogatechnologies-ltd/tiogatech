@@ -7,6 +7,7 @@ import { Wallet, ArrowRight, Loader2, ShieldCheck, Upload, Check } from "lucide-
 import { toast } from "sonner";
 import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 import DirectDebitConsent from "@/components/DirectDebitConsent";
+import SiteHeader from "@/components/SiteHeader";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
 
@@ -163,9 +164,11 @@ const FinanceApply = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO title="Apply for Easy Flex — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 3, 6, 12 or 24 month repayments, bank-partner approval." />
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <SiteHeader />
+      <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
+
         <div className="mb-8">
           <button onClick={() => navigate(-1)} className="text-sm text-muted-foreground mb-4">← Back</button>
           <h1 className="font-display text-2xl sm:text-3xl font-bold flex items-center gap-2"><Wallet className="text-primary shrink-0" /> Easy Flex Application</h1>

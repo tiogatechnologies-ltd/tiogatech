@@ -150,9 +150,10 @@ const Account = () => {
 
   const activeSub = aiSub?.status === "active" && (aiSub?.plan === "starter" || aiSub?.plan === "business") &&
     (!aiSub.expires_at || new Date(aiSub.expires_at) > new Date());
+  const adminUnlimited = isAdmin || isStaff;
   const totalCredits = credits ? (credits.total_credits || 0) + (credits.purchased_credits || 0) : 3;
   const usedCredits = credits?.used_credits || 0;
-  const remainingCredits = Math.max(0, totalCredits - usedCredits);
+  const remainingCredits = adminUnlimited ? Infinity : Math.max(0, totalCredits - usedCredits);
 
   const activeFinance = finance.find((f) => f.status === "approved" || f.status === "active");
   const totalSpent = useMemo(
@@ -171,7 +172,7 @@ const Account = () => {
     <div className="min-h-screen flex flex-col">
       <SEO title="My Account — Tioga" description="Manage your Tioga profile, orders, financing, AI credits and role-specific dashboards." path="/account" />
       <SiteHeader />
-      <main className="flex-1 py-8 sm:py-10 px-4 bg-muted/30">
+      <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* Header card */}
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-6">
@@ -217,8 +218,8 @@ const Account = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <StatTile icon={ShoppingBag} label="Orders" value={orders.length} hint={`${formatNGN(totalSpent)} lifetime`} />
             <StatTile icon={Wallet} label="Active finance" value={activeFinance ? formatNGN(activeFinance.monthly_payment_ngn) + "/mo" : "—"} hint={activeFinance ? `${activeFinance.months} months` : "No active plan"} accent="bg-amber-500/10 text-amber-600" />
-            <StatTile icon={Sun} label="AI assessments" value={assessments.length} hint={`${remainingCredits} free credit${remainingCredits === 1 ? "" : "s"} left`} accent="bg-blue-500/10 text-blue-600" />
-            <StatTile icon={Zap} label="AI plan" value={activeSub ? (aiSub.plan === "business" ? "Business" : "Starter") : "Free"} hint={activeSub ? "Unlimited" : `${usedCredits}/${totalCredits} used`} accent={activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"} />
+            <StatTile icon={Sun} label="AI assessments" value={assessments.length} hint={adminUnlimited ? "Unlimited (Admin)" : `${remainingCredits} free credit${remainingCredits === 1 ? "" : "s"} left`} accent="bg-blue-500/10 text-blue-600" />
+            <StatTile icon={Zap} label="AI plan" value={adminUnlimited ? "Unlimited" : activeSub ? (aiSub.plan === "business" ? "Business" : "Starter") : "Free"} hint={adminUnlimited ? "Admin access" : activeSub ? "Unlimited" : `${usedCredits}/${totalCredits} used`} accent={adminUnlimited || activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"} />
           </div>
 
           {/* Role spotlight cards */}
@@ -308,19 +309,19 @@ const Account = () => {
           )}
 
           {/* AI plan summary */}
-          <div className={`rounded-3xl border p-5 sm:p-6 ${activeSub ? "border-primary/40 bg-primary/5" : "border-border bg-card"}`}>
+          <div className={`rounded-3xl border p-5 sm:p-6 ${adminUnlimited || activeSub ? "border-primary/40 bg-primary/5" : "border-border bg-card"}`}>
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3 min-w-0">
-                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  {activeSub ? (aiSub.plan === "business" ? <Crown size={20} /> : <Zap size={20} />) : <Sparkles size={20} />}
+                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${adminUnlimited || activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                  {adminUnlimited ? <Crown size={20} /> : activeSub ? (aiSub.plan === "business" ? <Crown size={20} /> : <Zap size={20} />) : <Sparkles size={20} />}
                 </div>
                 <div className="min-w-0">
                   <div className="text-[10px] uppercase tracking-wider text-muted-foreground">AI Energy Intelligence</div>
                   <div className="font-display text-lg font-bold capitalize">
-                    {activeSub ? `AI ${aiSub.plan}` : "Free Starter — 3 analyses"}
+                    {adminUnlimited ? "Admin — Unlimited AI" : activeSub ? `AI ${aiSub.plan}` : "Free Starter — 3 analyses / month"}
                   </div>
-                  {!activeSub && (
-                    <div className="text-xs text-muted-foreground mt-1">{remainingCredits} of {totalCredits} free analyses remaining</div>
+                  {!adminUnlimited && !activeSub && (
+                    <div className="text-xs text-muted-foreground mt-1">{remainingCredits} of {totalCredits} free analyses remaining this month · auto-renews monthly</div>
                   )}
                   {activeSub && aiSub.expires_at && (
                     <div className="text-xs text-muted-foreground mt-1">Renews/expires {new Date(aiSub.expires_at).toLocaleDateString()}</div>
@@ -331,7 +332,7 @@ const Account = () => {
                 Manage AI plan <ExternalLink size={12} />
               </Link>
             </div>
-            {!activeSub && (
+            {!adminUnlimited && !activeSub && (
               <div className="mt-4">
                 <div className="h-2 rounded-full bg-muted overflow-hidden">
                   <div className="h-full bg-primary transition-all" style={{ width: `${totalCredits ? Math.min(100, (usedCredits / totalCredits) * 100) : 0}%` }} />

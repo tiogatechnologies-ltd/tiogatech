@@ -84,7 +84,7 @@ const SolarAssessment = () => {
       <div className="min-h-screen flex flex-col">
         <SEO title="Your Solar Recommendation - Tioga Technologies" description="AI-generated solar system recommendation tailored to your home and usage." path="/solar-assessment" />
         <SiteHeader />
-        <main className="flex-1 py-12 px-4 bg-muted/30">
+        <main className="flex-1 pt-24 sm:pt-28 pb-12 px-4 bg-muted/30">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 text-primary mb-3"><Sun size={26} /></div>
@@ -132,7 +132,7 @@ const SolarAssessment = () => {
     <div className="min-h-screen flex flex-col">
       <SEO title="Free Solar Assessment - Tioga Technologies" description="Get a personalized solar system recommendation based on your home appliances and energy usage. Free instant analysis for Nigerian homes." path="/solar-assessment" />
       <SiteHeader />
-      <main className="flex-1 py-10 px-4 bg-muted/30">
+      <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-6">
             <h1 className="text-3xl sm:text-4xl font-display font-bold">Solar Energy Assessment</h1>

@@ -35,7 +35,7 @@ const AccountAssessments = () => {
     <div className="min-h-screen flex flex-col">
       <SEO title="My Solar Assessments - Tioga" description="Your saved solar assessments and reports." path="/account/assessments" />
       <SiteHeader />
-      <main className="flex-1 py-10 px-4 bg-muted/30">
+      <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl sm:text-3xl font-display font-bold">My Solar Assessments</h1>
