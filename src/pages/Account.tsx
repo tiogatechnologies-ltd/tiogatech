@@ -218,8 +218,8 @@ const Account = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <StatTile icon={ShoppingBag} label="Orders" value={orders.length} hint={`${formatNGN(totalSpent)} lifetime`} />
             <StatTile icon={Wallet} label="Active finance" value={activeFinance ? formatNGN(activeFinance.monthly_payment_ngn) + "/mo" : "—"} hint={activeFinance ? `${activeFinance.months} months` : "No active plan"} accent="bg-amber-500/10 text-amber-600" />
-            <StatTile icon={Sun} label="AI assessments" value={assessments.length} hint={`${remainingCredits} free credit${remainingCredits === 1 ? "" : "s"} left`} accent="bg-blue-500/10 text-blue-600" />
-            <StatTile icon={Zap} label="AI plan" value={activeSub ? (aiSub.plan === "business" ? "Business" : "Starter") : "Free"} hint={activeSub ? "Unlimited" : `${usedCredits}/${totalCredits} used`} accent={activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"} />
+            <StatTile icon={Sun} label="AI assessments" value={assessments.length} hint={adminUnlimited ? "Unlimited (Admin)" : `${remainingCredits} free credit${remainingCredits === 1 ? "" : "s"} left`} accent="bg-blue-500/10 text-blue-600" />
+            <StatTile icon={Zap} label="AI plan" value={adminUnlimited ? "Unlimited" : activeSub ? (aiSub.plan === "business" ? "Business" : "Starter") : "Free"} hint={adminUnlimited ? "Admin access" : activeSub ? "Unlimited" : `${usedCredits}/${totalCredits} used`} accent={adminUnlimited || activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"} />
           </div>
 
           {/* Role spotlight cards */}
