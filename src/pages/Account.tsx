@@ -309,19 +309,19 @@ const Account = () => {
           )}
 
           {/* AI plan summary */}
-          <div className={`rounded-3xl border p-5 sm:p-6 ${activeSub ? "border-primary/40 bg-primary/5" : "border-border bg-card"}`}>
+          <div className={`rounded-3xl border p-5 sm:p-6 ${adminUnlimited || activeSub ? "border-primary/40 bg-primary/5" : "border-border bg-card"}`}>
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3 min-w-0">
-                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  {activeSub ? (aiSub.plan === "business" ? <Crown size={20} /> : <Zap size={20} />) : <Sparkles size={20} />}
+                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${adminUnlimited || activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                  {adminUnlimited ? <Crown size={20} /> : activeSub ? (aiSub.plan === "business" ? <Crown size={20} /> : <Zap size={20} />) : <Sparkles size={20} />}
                 </div>
                 <div className="min-w-0">
                   <div className="text-[10px] uppercase tracking-wider text-muted-foreground">AI Energy Intelligence</div>
                   <div className="font-display text-lg font-bold capitalize">
-                    {activeSub ? `AI ${aiSub.plan}` : "Free Starter — 3 analyses"}
+                    {adminUnlimited ? "Admin — Unlimited AI" : activeSub ? `AI ${aiSub.plan}` : "Free Starter — 3 analyses / month"}
                   </div>
-                  {!activeSub && (
-                    <div className="text-xs text-muted-foreground mt-1">{remainingCredits} of {totalCredits} free analyses remaining</div>
+                  {!adminUnlimited && !activeSub && (
+                    <div className="text-xs text-muted-foreground mt-1">{remainingCredits} of {totalCredits} free analyses remaining this month · auto-renews monthly</div>
                   )}
                   {activeSub && aiSub.expires_at && (
                     <div className="text-xs text-muted-foreground mt-1">Renews/expires {new Date(aiSub.expires_at).toLocaleDateString()}</div>
@@ -332,7 +332,7 @@ const Account = () => {
                 Manage AI plan <ExternalLink size={12} />
               </Link>
             </div>
-            {!activeSub && (
+            {!adminUnlimited && !activeSub && (
               <div className="mt-4">
                 <div className="h-2 rounded-full bg-muted overflow-hidden">
                   <div className="h-full bg-primary transition-all" style={{ width: `${totalCredits ? Math.min(100, (usedCredits / totalCredits) * 100) : 0}%` }} />
