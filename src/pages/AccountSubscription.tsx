@@ -130,18 +130,21 @@ const AccountSubscription = () => {
           </div>
 
           {/* Plan card */}
-          <div className={`rounded-3xl border p-6 ${hasActiveSub ? "border-primary/40 bg-primary/5" : "border-border bg-card"}`}>
+          <div className={`rounded-3xl border p-6 ${adminUnlimited || hasActiveSub ? "border-primary/40 bg-primary/5" : "border-border bg-card"}`}>
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${hasActiveSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  {hasActiveSub ? (sub.plan === "business" ? <Crown size={22} /> : <Zap size={22} />) : <Sparkles size={22} />}
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${adminUnlimited || hasActiveSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                  {adminUnlimited ? <Crown size={22} /> : hasActiveSub ? (sub.plan === "business" ? <Crown size={22} /> : <Zap size={22} />) : <Sparkles size={22} />}
                 </div>
                 <div>
                   <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Current plan</div>
                   <div className="font-display text-xl font-bold capitalize">
-                    {hasActiveSub ? `AI ${sub.plan}` : "Free Starter"}
+                    {adminUnlimited ? "Admin — Unlimited" : hasActiveSub ? `AI ${sub.plan}` : "Free Starter"}
                   </div>
-                  {hasActiveSub && (
+                  {adminUnlimited && (
+                    <div className="text-xs text-muted-foreground mt-0.5">Unlimited AI usage for admins and staff. Your team never runs out of credits.</div>
+                  )}
+                  {!adminUnlimited && hasActiveSub && (
                     <div className="text-xs text-muted-foreground mt-0.5">
                       ₦{Number(sub.monthly_price_ngn || 2500).toLocaleString()}/month
                       {sub.expires_at ? ` · renews/expires ${new Date(sub.expires_at).toLocaleDateString()}` : " · no expiry"}
@@ -149,11 +152,11 @@ const AccountSubscription = () => {
                   )}
                 </div>
               </div>
-              {!hasActiveSub ? (
+              {!adminUnlimited && !hasActiveSub ? (
                 <Link to="/ai-pricing" className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground">
                   Upgrade plan <ArrowRight size={14} />
                 </Link>
-              ) : (
+              ) : !adminUnlimited && hasActiveSub ? (
                 <div className="flex flex-col items-end gap-2">
                   <Link to="/ai-pricing" className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
                     Manage plan
@@ -162,20 +165,20 @@ const AccountSubscription = () => {
                     Pause or cancel
                   </a>
                 </div>
-              )}
+              ) : null}
             </div>
 
-            {!hasActiveSub && (
+            {!adminUnlimited && !hasActiveSub && (
               <div className="mt-6">
                 <div className="flex justify-between text-xs mb-2">
-                  <span className="text-muted-foreground">Free analyses used</span>
-                  <span className="font-semibold">{used} of {total} · {remaining} left</span>
+                  <span className="text-muted-foreground">Free analyses this month</span>
+                  <span className="font-semibold">{used} of {total} used · {remaining} left · auto-renews monthly</span>
                 </div>
                 <div className="h-2 rounded-full bg-muted overflow-hidden">
                   <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
                 </div>
                 {remaining === 0 && (
-                  <p className="text-xs text-destructive mt-2">You've used all your free analyses. Upgrade to AI Starter (₦2,500/mo · 20 credits) to keep generating reports.</p>
+                  <p className="text-xs text-destructive mt-2">You've used all your free analyses. They refresh at the start of every month, or upgrade to AI Starter (₦2,500/mo · 20 credits) for more now.</p>
                 )}
               </div>
             )}
