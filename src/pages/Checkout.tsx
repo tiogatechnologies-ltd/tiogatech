@@ -196,7 +196,8 @@ const Checkout = () => {
         toast.error((init.data as any)?.error || "Could not start Paystack checkout. Try another method.");
         return;
       }
-      clear();
+      // NOTE: Do NOT clear the cart here. Cart is cleared only after the webhook
+      // confirms charge.success OR the success page verifies payment_status = 'paid'.
       window.location.href = (init.data as any).authorization_url;
       return;
     }
@@ -207,7 +208,7 @@ const Checkout = () => {
       window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank", "noopener,noreferrer");
     }
 
-    clear();
+    // Cart is NOT cleared here — only cleared after verified payment success.
     setSubmitting(false);
     navigate(`/checkout/success?order=${orderNumber}&method=${payment}`);
   };
