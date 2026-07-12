@@ -35,7 +35,7 @@ const Checkout = () => {
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [delivery, setDelivery] = useState<"ship" | "pickup">("ship");
-  const [payment, setPayment] = useState<"bank_transfer" | "whatsapp" | "paystack" | "flexible">("paystack");
+  const [payment, setPayment] = useState<"whatsapp" | "paystack" | "flexible">("paystack");
   const [billingSame, setBillingSame] = useState(true);
   const [discountCode, setDiscountCode] = useState("");
 
