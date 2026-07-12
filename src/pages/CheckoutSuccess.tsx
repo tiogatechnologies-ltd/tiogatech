@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle2, Package, MessageCircle, Loader2, AlertCircle } from "lucide-react";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
+import { useCart } from "@/contexts/CartContext";
 
 type Verify = { status: "idle" | "checking" | "success" | "failed"; amount?: number | null };
 
@@ -12,6 +13,7 @@ const CheckoutSuccess = () => {
   const method = params.get("method");
   const reference = params.get("reference") || params.get("trxref");
   const [verify, setVerify] = useState<Verify>({ status: "idle" });
+  const { clear } = useCart();
 
   useEffect(() => {
     if (method !== "paystack" || !reference) return;
@@ -21,9 +23,11 @@ const CheckoutSuccess = () => {
       .then(({ data, error }) => {
         const ok = !error && (data as any)?.success;
         setVerify({ status: ok ? "success" : "failed", amount: (data as any)?.amount_ngn });
+        // ONLY clear the cart when payment is verified as successful.
+        if (ok) clear();
       })
       .catch(() => setVerify({ status: "failed" }));
-  }, [method, reference]);
+  }, [method, reference, clear]);
 
   return (
     <div className="min-h-screen grid place-items-center bg-muted/30 px-4 py-10">
