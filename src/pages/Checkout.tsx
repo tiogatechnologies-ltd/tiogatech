@@ -307,19 +307,12 @@ const Checkout = () => {
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                 <input type="radio" checked={payment === "paystack"} onChange={() => setPayment("paystack")} className="mt-1" />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Paystack</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Recommended</span></div>
+                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Bank Transfer</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Recommended</span></div>
                   <p className="text-xs text-muted-foreground mt-1">Pay securely with debit card, bank transfer or USSD via Paystack. Instant confirmation.</p>
                 </div>
               </label>
 
-              {/* 2. Bank Transfer */}
-              <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "bank_transfer" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                <input type="radio" checked={payment === "bank_transfer"} onChange={() => setPayment("bank_transfer")} className="mt-1" />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2"><Building2 size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Bank Transfer</span></div>
-                  <p className="text-xs text-muted-foreground mt-1">Receive our bank details after placing the order. Send payment confirmation to seal the order.</p>
-                </div>
-              </label>
+
 
               {/* 3. Flexible payment plan */}
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "flexible" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
