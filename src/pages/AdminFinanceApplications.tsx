@@ -4,7 +4,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { Wallet, Check, X, Loader2, FileText } from "lucide-react";
 import { toast } from "sonner";
 
-interface App { id: string; full_name: string; email: string; phone: string; item_name: string; total_amount_ngn: number; deposit_ngn: number; financed_ngn: number; months: number; monthly_payment_ngn: number; status: string; rejection_reason: string | null; created_at: string; address: string; state: string | null; city: string | null; occupation: string | null; monthly_income_ngn: number | null; id_document_url: string | null; interest_rate_pct: number | null; insurance_fee_ngn: number | null; management_fee_ngn: number | null; total_repayment_ngn: number | null; package_slug: string | null; assessment_id: string | null; }
+interface App { id: string; full_name: string; email: string; phone: string; item_name: string; total_amount_ngn: number; deposit_ngn: number; financed_ngn: number; months: number; monthly_payment_ngn: number; status: string; rejection_reason: string | null; created_at: string; address: string; state: string | null; city: string | null; occupation: string | null; monthly_income_ngn: number | null; id_document_url: string | null; interest_rate_pct: number | null; insurance_fee_ngn: number | null; management_fee_ngn: number | null; total_repayment_ngn: number | null; package_slug: string | null; assessment_id: string | null; id_number: string | null; date_of_birth: string | null; next_of_kin_name: string | null; next_of_kin_phone: string | null; notes: string | null; employer: string | null; effective_payment_method: string | null; is_asset_financing: boolean | null; direct_debit_consent: boolean | null; }
 
 const STATUS_TABS = ["pending", "under_review", "active", "completed", "rejected"] as const;
 
@@ -97,9 +97,17 @@ const AdminFinanceApplications = () => {
                 <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Deposit</p><p className="font-semibold">₦{Number(selected.deposit_ngn).toLocaleString()}</p></div>
                 <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Plan</p><p className="font-semibold">{selected.months} × ₦{Number(selected.monthly_payment_ngn).toLocaleString()}</p></div>
                 <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Occupation</p><p>{selected.occupation || "—"}</p></div>
+                <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Employer</p><p>{selected.employer || "—"}</p></div>
                 <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Monthly income</p><p>{selected.monthly_income_ngn ? `₦${Number(selected.monthly_income_ngn).toLocaleString()}` : "—"}</p></div>
+                <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Date of birth</p><p>{selected.date_of_birth || "—"}</p></div>
+                <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">ID number</p><p className="font-mono text-xs">{selected.id_number || "—"}</p></div>
+                <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Next of kin</p><p>{selected.next_of_kin_name || "—"}{selected.next_of_kin_phone ? ` · ${selected.next_of_kin_phone}` : ""}</p></div>
+                <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Payment method</p><p className="capitalize">{(selected.effective_payment_method || "manual").replace("_", " ")}{selected.direct_debit_consent ? " · consented" : ""}</p></div>
                 <div className="p-3 rounded-lg bg-muted/40 sm:col-span-2"><p className="text-[10px] uppercase text-muted-foreground">Address</p><p>{selected.address}, {selected.city}, {selected.state}</p></div>
+                {selected.notes && <div className="p-3 rounded-lg bg-muted/40 sm:col-span-2"><p className="text-[10px] uppercase text-muted-foreground">Applicant notes</p><p className="whitespace-pre-wrap">{selected.notes}</p></div>}
               </div>
+
+
 
               <div className="rounded-lg border border-border p-4 space-y-2 text-sm">
                 <p className="text-xs font-semibold uppercase text-muted-foreground mb-1">Lease-to-Own breakdown</p>

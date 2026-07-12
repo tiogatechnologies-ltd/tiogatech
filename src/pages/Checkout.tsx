@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronUp, Lock, MessageCircle, CreditCard, Building2, Wallet, Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
+import { ChevronDown, ChevronUp, Lock, MessageCircle, CreditCard, Wallet, Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
 import SEO from "@/components/SEO";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -35,7 +35,7 @@ const Checkout = () => {
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [delivery, setDelivery] = useState<"ship" | "pickup">("ship");
-  const [payment, setPayment] = useState<"bank_transfer" | "whatsapp" | "paystack" | "flexible">("paystack");
+  const [payment, setPayment] = useState<"whatsapp" | "paystack" | "flexible">("paystack");
   const [billingSame, setBillingSame] = useState(true);
   const [discountCode, setDiscountCode] = useState("");
 
@@ -196,7 +196,8 @@ const Checkout = () => {
         toast.error((init.data as any)?.error || "Could not start Paystack checkout. Try another method.");
         return;
       }
-      clear();
+      // NOTE: Do NOT clear the cart here. Cart is cleared only after the webhook
+      // confirms charge.success OR the success page verifies payment_status = 'paid'.
       window.location.href = (init.data as any).authorization_url;
       return;
     }
@@ -207,7 +208,7 @@ const Checkout = () => {
       window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank", "noopener,noreferrer");
     }
 
-    clear();
+    // Cart is NOT cleared here — only cleared after verified payment success.
     setSubmitting(false);
     navigate(`/checkout/success?order=${orderNumber}&method=${payment}`);
   };
@@ -307,19 +308,12 @@ const Checkout = () => {
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                 <input type="radio" checked={payment === "paystack"} onChange={() => setPayment("paystack")} className="mt-1" />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Paystack</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Recommended</span></div>
+                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Bank Transfer</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Recommended</span></div>
                   <p className="text-xs text-muted-foreground mt-1">Pay securely with debit card, bank transfer or USSD via Paystack. Instant confirmation.</p>
                 </div>
               </label>
 
-              {/* 2. Bank Transfer */}
-              <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "bank_transfer" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                <input type="radio" checked={payment === "bank_transfer"} onChange={() => setPayment("bank_transfer")} className="mt-1" />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2"><Building2 size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Bank Transfer</span></div>
-                  <p className="text-xs text-muted-foreground mt-1">Receive our bank details after placing the order. Send payment confirmation to seal the order.</p>
-                </div>
-              </label>
+
 
               {/* 3. Flexible payment plan */}
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "flexible" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>

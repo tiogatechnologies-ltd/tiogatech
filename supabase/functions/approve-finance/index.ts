@@ -26,16 +26,40 @@ Deno.serve(async (req) => {
 
     const months = Number(app.months);
     const monthly = Number(app.monthly_payment_ngn);
-    const start = new Date();
-    const rows = [];
-    for (let i = 1; i <= months; i++) {
-      const d = new Date(start);
-      d.setMonth(d.getMonth() + i);
-      rows.push({ application_id, installment_no: i, due_date: d.toISOString().slice(0, 10), amount_ngn: monthly, status: "upcoming" });
+
+    // Set status to 'approved' first — this fires the DB trigger
+    // (generate_finance_schedule_on_approval) which creates BOTH the deposit row
+    // (installment 0, is_deposit=true) AND all monthly installment rows with the
+    // correct amounts/dates. We then transition to 'active' so the customer
+    // dashboard picks it up.
+    const nowIso = new Date().toISOString();
+    const { error: approveErr } = await admin
+      .from("finance_applications")
+      .update({ status: "approved", approved_at: nowIso, reviewer_id: u.user.id })
+      .eq("id", application_id);
+    if (approveErr) {
+      return new Response(JSON.stringify({ error: approveErr.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
-    await admin.from("finance_schedules").delete().eq("application_id", application_id);
-    await admin.from("finance_schedules").insert(rows);
-    await admin.from("finance_applications").update({ status: "active", approved_at: new Date().toISOString(), reviewer_id: u.user.id }).eq("id", application_id);
+
+    // Defensive: if trigger produced no schedule (disabled/missing), synthesise one.
+    const { count: schedCount } = await admin
+      .from("finance_schedules")
+      .select("id", { count: "exact", head: true })
+      .eq("application_id", application_id);
+    if (!schedCount || schedCount === 0) {
+      const start = new Date();
+      const rows: any[] = [];
+      if (Number(app.deposit_ngn) > 0) {
+        rows.push({ application_id, installment_no: 0, due_date: start.toISOString().slice(0, 10), original_due_date: start.toISOString().slice(0, 10), amount_ngn: Number(app.deposit_ngn), status: "due", is_deposit: true, auto_charge_status: "manual_required" });
+      }
+      for (let i = 1; i <= months; i++) {
+        const d = new Date(start); d.setMonth(d.getMonth() + i);
+        rows.push({ application_id, installment_no: i, due_date: d.toISOString().slice(0, 10), original_due_date: d.toISOString().slice(0, 10), amount_ngn: monthly, status: "upcoming", is_deposit: false, auto_charge_status: i === 1 ? "manual_required" : "scheduled" });
+      }
+      await admin.from("finance_schedules").insert(rows);
+    }
+
+    await admin.from("finance_applications").update({ status: "active" }).eq("id", application_id);
     await admin.rpc("log_audit", { _action: "finance.approve", _entity: "finance_applications", _entity_id: application_id, _diff: { months, monthly } as any });
     return new Response(JSON.stringify({ ok: true, status: "active", installments: months }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
