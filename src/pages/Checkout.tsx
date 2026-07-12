@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronUp, Lock, MessageCircle, CreditCard, Building2, Wallet, Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
+import { ChevronDown, ChevronUp, Lock, MessageCircle, CreditCard, Wallet, Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
 import SEO from "@/components/SEO";
 import { toast } from "sonner";
 import { z } from "zod";
