@@ -105,6 +105,9 @@ const AdminFinanceApplications = () => {
                 <div className="p-3 rounded-lg bg-muted/40"><p className="text-[10px] uppercase text-muted-foreground">Payment method</p><p className="capitalize">{(selected.effective_payment_method || "manual").replace("_", " ")}{selected.direct_debit_consent ? " · consented" : ""}</p></div>
                 <div className="p-3 rounded-lg bg-muted/40 sm:col-span-2"><p className="text-[10px] uppercase text-muted-foreground">Address</p><p>{selected.address}, {selected.city}, {selected.state}</p></div>
                 {selected.notes && <div className="p-3 rounded-lg bg-muted/40 sm:col-span-2"><p className="text-[10px] uppercase text-muted-foreground">Applicant notes</p><p className="whitespace-pre-wrap">{selected.notes}</p></div>}
+              </div>
+
+
 
               <div className="rounded-lg border border-border p-4 space-y-2 text-sm">
                 <p className="text-xs font-semibold uppercase text-muted-foreground mb-1">Lease-to-Own breakdown</p>
