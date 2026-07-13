@@ -380,20 +380,6 @@ const Checkout = () => {
             </div>
           </section>
 
-          {/* Billing address */}
-          <section>
-            <h2 className="text-sm font-bold text-foreground mb-2">Billing address</h2>
-            <div className="space-y-2">
-              <label className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer ${billingSame ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                <input type="radio" checked={billingSame} onChange={() => setBillingSame(true)} />
-                <span className="text-sm">Same as shipping address</span>
-              </label>
-              <label className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer ${!billingSame ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                <input type="radio" checked={!billingSame} onChange={() => setBillingSame(false)} />
-                <span className="text-sm">Use a different billing address</span>
-              </label>
-            </div>
-          </section>
 
           <button onClick={submit} disabled={submitting || items.length === 0} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-foreground text-background py-4 text-base font-bold hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
             {submitting ? <Loader2 size={16} className="animate-spin" /> : <Lock size={14} />}
