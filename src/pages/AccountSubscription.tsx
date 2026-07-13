@@ -111,6 +111,17 @@ const AccountSubscription = () => {
     })();
   }, [user]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("pay") === "success") {
+      toast.success("Payment received — your plan is being activated. Credits will appear within a minute.");
+      // Clean URL
+      window.history.replaceState({}, "", "/account/subscription");
+    }
+  }, []);
+
+
+
   const total = credits ? (credits.total_credits || 0) + (credits.purchased_credits || 0) : 3;
   const used = credits?.used_credits || 0;
   const remaining = Math.max(0, total - used);
