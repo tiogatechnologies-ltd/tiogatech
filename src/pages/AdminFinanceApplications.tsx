@@ -43,6 +43,20 @@ const AdminFinanceApplications = () => {
     setSelected(null); load();
   };
 
+  const del = async () => {
+    if (!selected) return;
+    if (!confirm(`Delete application from ${selected.full_name}? This also removes its schedules and payments and cannot be undone.`)) return;
+    setWorking(true);
+    await supabase.from("finance_schedules").delete().eq("application_id", selected.id);
+    await supabase.from("finance_payments").delete().eq("application_id", selected.id);
+    const { error } = await supabase.from("finance_applications").delete().eq("id", selected.id);
+    setWorking(false);
+    if (error) return toast.error(error.message);
+    toast.success("Application deleted");
+    setSelected(null); load();
+  };
+
+
   const filtered = rows.filter((r) => r.status === tab);
 
   return (
