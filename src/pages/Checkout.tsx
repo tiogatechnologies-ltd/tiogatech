@@ -36,7 +36,6 @@ const Checkout = () => {
   const [submitting, setSubmitting] = useState(false);
   const [delivery, setDelivery] = useState<"ship" | "pickup">("ship");
   const [payment, setPayment] = useState<"whatsapp" | "paystack" | "flexible">("paystack");
-  const [billingSame, setBillingSame] = useState(true);
   const [discountCode, setDiscountCode] = useState("");
 
   // Flexible plan state
@@ -52,7 +51,7 @@ const Checkout = () => {
     address: "",
     apartment: "",
     city: "",
-    state: "Lagos",
+    state: "FCT - Abuja",
     postal: "",
     phone: "",
   });
@@ -67,11 +66,16 @@ const Checkout = () => {
   }, [user, profile]); // eslint-disable-line
 
   const subtotal = useMemo(() => items.reduce((s, i) => s + ((i.numericPrice || 0) * i.quantity), 0), [items]);
+  // Free delivery only in Abuja (FCT) and Jos (Plateau) — our office locations. Elsewhere: ₦15,000 flat.
+  const isFreeDeliveryState = (s: string) => {
+    const v = (s || "").toLowerCase();
+    return v.includes("abuja") || v.includes("fct") || v.includes("plateau") || v.includes("jos");
+  };
   const shippingFee = useMemo(() => {
     if (delivery === "pickup") return 0;
-    if (subtotal >= 500000) return 0;
-    return subtotal > 0 ? 6000 : 0;
-  }, [subtotal, delivery]);
+    if (subtotal <= 0) return 0;
+    return isFreeDeliveryState(form.state) ? 0 : 15000;
+  }, [subtotal, delivery, form.state]);
   const total = subtotal + shippingFee;
   const flexBreakdown = useMemo(() => calcPlan(total, flexMonths, financeConfig), [total, flexMonths, financeConfig]);
 
