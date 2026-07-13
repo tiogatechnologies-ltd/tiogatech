@@ -291,15 +291,19 @@ const Checkout = () => {
             )}
           </section>
 
-          {/* Shipping method */}
+          {/* Delivery method */}
           {delivery === "ship" && (
             <section>
-              <h2 className="text-sm font-bold text-foreground mb-2">Shipping method</h2>
+              <h2 className="text-sm font-bold text-foreground mb-2">Delivery method</h2>
               <div className="rounded-xl border border-primary bg-primary/5 p-4 flex items-center justify-between text-sm">
-                <span className="font-semibold text-foreground">Standard Shipping</span>
+                <span className="font-semibold text-foreground">{isFreeDeliveryState(form.state) ? "Local delivery" : "Standard delivery"}</span>
                 <span className={shippingFee === 0 ? "text-primary font-bold" : "text-foreground font-bold"}>{shippingFee === 0 ? "FREE" : formNGN(shippingFee)}</span>
               </div>
-              {shippingFee === 0 && subtotal > 0 && <p className="text-[11px] text-muted-foreground mt-1">Free shipping on orders ₦500,000 and above.</p>}
+              <p className="text-[11px] text-muted-foreground mt-1">
+                {isFreeDeliveryState(form.state)
+                  ? "Free local delivery — you're in one of our office cities (Abuja / Jos)."
+                  : "Flat ₦15,000 delivery fee outside Abuja and Jos. Select an Abuja or Plateau address to qualify for free delivery."}
+              </p>
             </section>
           )}
 
