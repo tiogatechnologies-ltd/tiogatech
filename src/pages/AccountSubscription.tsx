@@ -5,15 +5,15 @@ import { useAuth } from "@/contexts/AuthContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
-import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, MessageCircle, Check, Building2, Star } from "lucide-react";
+import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, Check, Building2, Star, Loader2 } from "lucide-react";
+import { startAiSubscription, type AiPlanId } from "@/lib/subscribe";
+import { toast } from "sonner";
 
 const WA = "https://wa.me/2348178000023?text=";
-const WA_STARTER = WA + encodeURIComponent("Hi Tioga, I'd like to subscribe to the Starters AI plan (₦2,500/mo, 20 credits).");
-const WA_BUSINESS = WA + encodeURIComponent("Hi Tioga, I'd like to subscribe to the Businesses AI plan (₦12,000/mo, 120 credits).");
 const WA_CUSTOM = WA + encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ");
 const WA_CANCEL = WA + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
 
-type PlanTier = { id: string; name: string; bestFor: string; price: string; period: string; credits: string; icon: any; ring: string; accent: string; badge?: string; features: string[]; cta: string; href: string };
+type PlanTier = { id: AiPlanId; name: string; bestFor: string; price: string; period: string; credits: string; amountNgn: number; icon: any; ring: string; accent: string; badge?: string; features: string[]; cta: string; href?: string };
 const TIERS: PlanTier[] = [
   {
     id: "starter",
@@ -22,12 +22,12 @@ const TIERS: PlanTier[] = [
     price: "₦2,500",
     period: "/mo",
     credits: "20 AI credits",
+    amountNgn: 2500,
     icon: Zap,
     ring: "border-border",
     accent: "from-emerald-500/10 to-transparent",
     features: ["20 AI assessments / month", "Full sizing report + BoM PDF", "Personalised package match", "Email support (24h)", "Cancel anytime"],
     cta: "Subscribe",
-    href: WA_STARTER,
   },
   {
     id: "business",
@@ -36,13 +36,13 @@ const TIERS: PlanTier[] = [
     price: "₦12,000",
     period: "/mo",
     credits: "120 AI credits",
+    amountNgn: 12000,
     icon: Building2,
     ring: "border-primary shadow-[var(--shadow-elevated)]",
     accent: "from-primary/15 to-transparent",
     badge: "Most popular",
     features: ["120 AI assessments / month", "Team seats (up to 3)", "Installer dashboard + CSV export", "Priority engineer review", "WhatsApp support (4h)"],
     cta: "Subscribe",
-    href: WA_BUSINESS,
   },
   {
     id: "custom",
@@ -51,6 +51,7 @@ const TIERS: PlanTier[] = [
     price: "Let's talk",
     period: "",
     credits: "Unlimited team seats",
+    amountNgn: 0,
     icon: Crown,
     ring: "border-accent",
     accent: "from-accent/20 to-transparent",
@@ -59,6 +60,7 @@ const TIERS: PlanTier[] = [
     href: WA_CUSTOM,
   },
 ];
+
 
 
 interface UsageRow {
@@ -84,6 +86,15 @@ const AccountSubscription = () => {
   const [sub, setSub] = useState<any>(null);
   const [usage, setUsage] = useState<UsageRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [subscribing, setSubscribing] = useState<AiPlanId | null>(null);
+
+  const subscribe = async (tier: PlanTier) => {
+    if (tier.id === "custom") { window.open(tier.href || WA_CUSTOM, "_blank", "noopener,noreferrer"); return; }
+    if (!user?.email) { toast.error("Please sign in first."); return; }
+    setSubscribing(tier.id);
+    const err = await startAiSubscription({ plan: tier.id, amountNgn: tier.amountNgn, email: user.email, userId: user.id });
+    if (err) { toast.error(err); setSubscribing(null); }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -99,6 +110,17 @@ const AccountSubscription = () => {
       setLoading(false);
     })();
   }, [user]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("pay") === "success") {
+      toast.success("Payment received — your plan is being activated. Credits will appear within a minute.");
+      // Clean URL
+      window.history.replaceState({}, "", "/account/subscription");
+    }
+  }, []);
+
+
 
   const total = credits ? (credits.total_credits || 0) + (credits.purchased_credits || 0) : 3;
   const used = credits?.used_credits || 0;
@@ -285,12 +307,19 @@ const AccountSubscription = () => {
                           </li>
                         ))}
                       </ul>
-                      <Link
-                        to="/ai-pricing"
-                        className={`mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold ${isCurrent ? "border border-border bg-background hover:bg-muted" : "bg-primary text-primary-foreground hover:brightness-110"}`}
-                      >
-                        {isCurrent ? "Manage plan" : p.cta}
-                      </Link>
+                      {isCurrent ? (
+                        <button disabled className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold border border-border bg-background text-foreground opacity-70 cursor-default">
+                          <Star size={12} /> Current plan
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => subscribe(p)}
+                          disabled={subscribing === p.id}
+                          className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold bg-primary text-primary-foreground hover:brightness-110 disabled:opacity-60"
+                        >
+                          {subscribing === p.id ? <><Loader2 size={12} className="animate-spin" /> Redirecting…</> : p.cta}
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
@@ -298,7 +327,7 @@ const AccountSubscription = () => {
             </div>
 
             <p className="mt-5 text-[11px] text-muted-foreground text-center">
-              Plans are activated by our sales team after payment confirmation (bank transfer or Paystack). Activation within 1 business hour.
+              Pay securely with card or bank transfer via Paystack — your plan activates automatically the moment payment is confirmed. Custom plans are quoted by our team on WhatsApp.
             </p>
           </div>
 
