@@ -48,6 +48,39 @@ Deno.serve(async (req) => {
 
   // charge.success handling
   if (type === "charge.success" && status === "success") {
+    // 0) AI subscription activation (purpose: ai_subscription)
+    if (metadata?.purpose === "ai_subscription" && metadata?.user_id) {
+      const plan = (metadata?.plan === "business" ? "business" : "starter") as "starter" | "business";
+      const monthly = amountNgn ?? (plan === "business" ? 12000 : 2500);
+      const expires_at = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+      const { data: existing } = await admin.from("ai_subscriptions").select("id").eq("user_id", metadata.user_id).maybeSingle();
+      const payload = {
+        user_id: metadata.user_id,
+        plan,
+        status: "active" as const,
+        monthly_price_ngn: monthly,
+        started_at: new Date().toISOString(),
+        expires_at,
+        notes: `Paystack ${reference}`,
+      };
+      if (existing?.id) await admin.from("ai_subscriptions").update(payload).eq("id", existing.id);
+      else await admin.from("ai_subscriptions").insert(payload);
+
+      // Top up purchased credits so counters reflect the plan immediately
+      const creditsPack = plan === "business" ? 120 : 20;
+      const { data: cRow } = await admin.from("assessment_credits").select("id, purchased_credits").eq("user_id", metadata.user_id).maybeSingle();
+      if (cRow?.id) {
+        await admin.from("assessment_credits").update({
+          purchased_credits: (Number(cRow.purchased_credits) || 0) + creditsPack,
+          updated_at: new Date().toISOString(),
+        }).eq("id", cRow.id);
+      } else {
+        await admin.from("assessment_credits").insert({ user_id: metadata.user_id, total_credits: 3, purchased_credits: creditsPack });
+      }
+      return new Response("ok", { status: 200 });
+    }
+
+
     // 1) Liquidation payoff
     if (isLiquidation && applicationId) {
       await admin.from("finance_schedules").update({
