@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Wallet, Check, X, Loader2, FileText } from "lucide-react";
+import { Wallet, Check, X, Loader2, FileText, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface App { id: string; full_name: string; email: string; phone: string; item_name: string; total_amount_ngn: number; deposit_ngn: number; financed_ngn: number; months: number; monthly_payment_ngn: number; status: string; rejection_reason: string | null; created_at: string; address: string; state: string | null; city: string | null; occupation: string | null; monthly_income_ngn: number | null; id_document_url: string | null; interest_rate_pct: number | null; insurance_fee_ngn: number | null; management_fee_ngn: number | null; total_repayment_ngn: number | null; package_slug: string | null; assessment_id: string | null; id_number: string | null; date_of_birth: string | null; next_of_kin_name: string | null; next_of_kin_phone: string | null; notes: string | null; employer: string | null; effective_payment_method: string | null; is_asset_financing: boolean | null; direct_debit_consent: boolean | null; }
@@ -42,6 +42,20 @@ const AdminFinanceApplications = () => {
     toast.success(approve ? "Application approved + schedule generated" : "Application rejected");
     setSelected(null); load();
   };
+
+  const del = async () => {
+    if (!selected) return;
+    if (!confirm(`Delete application from ${selected.full_name}? This also removes its schedules and payments and cannot be undone.`)) return;
+    setWorking(true);
+    await supabase.from("finance_schedules").delete().eq("application_id", selected.id);
+    await supabase.from("finance_payments").delete().eq("application_id", selected.id);
+    const { error } = await supabase.from("finance_applications").delete().eq("id", selected.id);
+    setWorking(false);
+    if (error) return toast.error(error.message);
+    toast.success("Application deleted");
+    setSelected(null); load();
+  };
+
 
   const filtered = rows.filter((r) => r.status === tab);
 
@@ -123,7 +137,15 @@ const AdminFinanceApplications = () => {
                 {selected.assessment_id && <a href={`/admin/assessments`} className="text-[11px] text-primary hover:underline inline-block pt-1">View source solar assessment →</a>}
               </div>
 
-              {docUrl && <a href={docUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-primary"><FileText size={14} />View ID document</a>}
+              {selected.id_document_url ? (
+                docUrl ? (
+                  <a href={docUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-primary hover:underline"><FileText size={14} />View uploaded ID / supporting document</a>
+                ) : (
+                  <p className="text-xs text-muted-foreground inline-flex items-center gap-2"><Loader2 size={12} className="animate-spin" />Generating secure document link…</p>
+                )
+              ) : (
+                <p className="text-xs text-muted-foreground italic">No document uploaded by applicant.</p>
+              )}
 
               {selected.status === "pending" && (
                 <div className="flex gap-2 pt-3 border-t border-border">
@@ -131,6 +153,10 @@ const AdminFinanceApplications = () => {
                   <button onClick={() => act(true)} disabled={working} className="flex-1 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50">{working ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}Approve & generate schedule</button>
                 </div>
               )}
+
+              <div className="flex justify-end pt-3 border-t border-border">
+                <button onClick={del} disabled={working} className="px-4 py-2 rounded-lg border border-red-300 text-red-600 text-sm font-semibold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-950/20 disabled:opacity-50"><Trash2 size={14} />Delete application</button>
+              </div>
 
               {selected.rejection_reason && <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-300 text-sm">Reason: {selected.rejection_reason}</div>}
             </div>

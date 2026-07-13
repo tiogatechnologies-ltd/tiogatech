@@ -36,7 +36,6 @@ const Checkout = () => {
   const [submitting, setSubmitting] = useState(false);
   const [delivery, setDelivery] = useState<"ship" | "pickup">("ship");
   const [payment, setPayment] = useState<"whatsapp" | "paystack" | "flexible">("paystack");
-  const [billingSame, setBillingSame] = useState(true);
   const [discountCode, setDiscountCode] = useState("");
 
   // Flexible plan state
@@ -52,7 +51,7 @@ const Checkout = () => {
     address: "",
     apartment: "",
     city: "",
-    state: "Lagos",
+    state: "FCT - Abuja",
     postal: "",
     phone: "",
   });
@@ -67,11 +66,16 @@ const Checkout = () => {
   }, [user, profile]); // eslint-disable-line
 
   const subtotal = useMemo(() => items.reduce((s, i) => s + ((i.numericPrice || 0) * i.quantity), 0), [items]);
+  // Free delivery only in Abuja (FCT) and Jos (Plateau) — our office locations. Elsewhere: ₦15,000 flat.
+  const isFreeDeliveryState = (s: string) => {
+    const v = (s || "").toLowerCase();
+    return v.includes("abuja") || v.includes("fct") || v.includes("plateau") || v.includes("jos");
+  };
   const shippingFee = useMemo(() => {
     if (delivery === "pickup") return 0;
-    if (subtotal >= 500000) return 0;
-    return subtotal > 0 ? 6000 : 0;
-  }, [subtotal, delivery]);
+    if (subtotal <= 0) return 0;
+    return isFreeDeliveryState(form.state) ? 0 : 15000;
+  }, [subtotal, delivery, form.state]);
   const total = subtotal + shippingFee;
   const flexBreakdown = useMemo(() => calcPlan(total, flexMonths, financeConfig), [total, flexMonths, financeConfig]);
 
@@ -158,7 +162,7 @@ const Checkout = () => {
         subtotal,
         total,
         shipping_address: shippingAddress,
-        billing_address: billingSame ? shippingAddress : null,
+        billing_address: shippingAddress,
         user_id: user?.id || null,
         discount_code: discountCode || null,
         items: items.map((i) => ({
@@ -254,8 +258,8 @@ const Checkout = () => {
           <section>
             <h2 className="text-lg font-display font-bold text-foreground mb-3">Delivery</h2>
             <div className="grid grid-cols-2 gap-2 mb-3">
-              <button onClick={() => setDelivery("ship")} className={`rounded-xl border p-3 text-sm font-semibold ${delivery === "ship" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>Ship</button>
-              <button onClick={() => setDelivery("pickup")} className={`rounded-xl border p-3 text-sm font-semibold ${delivery === "pickup" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>Pickup (Lagos)</button>
+              <button onClick={() => setDelivery("ship")} className={`rounded-xl border p-3 text-sm font-semibold ${delivery === "ship" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>Deliver to me</button>
+              <button onClick={() => setDelivery("pickup")} className={`rounded-xl border p-3 text-sm font-semibold ${delivery === "pickup" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>Pickup (Jos / Abuja)</button>
             </div>
             {delivery === "ship" && (
               <div className="space-y-2.5">
@@ -277,7 +281,7 @@ const Checkout = () => {
             )}
             {delivery === "pickup" && (
               <div className="rounded-xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
-                Pick up at our Lagos office. We'll text you when your order is ready.
+                Pick up at our Jos or Abuja office. We'll text you when your order is ready and share the address.
                 <div className="grid grid-cols-2 gap-2.5 mt-3">
                   <input value={form.first_name} onChange={(e) => setF("first_name", e.target.value)} placeholder="First name" className="rounded-xl border border-border bg-background px-4 py-3 text-sm" />
                   <input value={form.last_name} onChange={(e) => setF("last_name", e.target.value)} placeholder="Last name" className="rounded-xl border border-border bg-background px-4 py-3 text-sm" />
@@ -287,15 +291,19 @@ const Checkout = () => {
             )}
           </section>
 
-          {/* Shipping method */}
+          {/* Delivery method */}
           {delivery === "ship" && (
             <section>
-              <h2 className="text-sm font-bold text-foreground mb-2">Shipping method</h2>
+              <h2 className="text-sm font-bold text-foreground mb-2">Delivery method</h2>
               <div className="rounded-xl border border-primary bg-primary/5 p-4 flex items-center justify-between text-sm">
-                <span className="font-semibold text-foreground">Standard Shipping</span>
+                <span className="font-semibold text-foreground">{isFreeDeliveryState(form.state) ? "Local delivery" : "Standard delivery"}</span>
                 <span className={shippingFee === 0 ? "text-primary font-bold" : "text-foreground font-bold"}>{shippingFee === 0 ? "FREE" : formNGN(shippingFee)}</span>
               </div>
-              {shippingFee === 0 && subtotal > 0 && <p className="text-[11px] text-muted-foreground mt-1">Free shipping on orders ₦500,000 and above.</p>}
+              <p className="text-[11px] text-muted-foreground mt-1">
+                {isFreeDeliveryState(form.state)
+                  ? "Free local delivery — you're in one of our office cities (Abuja / Jos)."
+                  : "Flat ₦15,000 delivery fee outside Abuja and Jos. Select an Abuja or Plateau address to qualify for free delivery."}
+              </p>
             </section>
           )}
 
@@ -376,20 +384,6 @@ const Checkout = () => {
             </div>
           </section>
 
-          {/* Billing address */}
-          <section>
-            <h2 className="text-sm font-bold text-foreground mb-2">Billing address</h2>
-            <div className="space-y-2">
-              <label className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer ${billingSame ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                <input type="radio" checked={billingSame} onChange={() => setBillingSame(true)} />
-                <span className="text-sm">Same as shipping address</span>
-              </label>
-              <label className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer ${!billingSame ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                <input type="radio" checked={!billingSame} onChange={() => setBillingSame(false)} />
-                <span className="text-sm">Use a different billing address</span>
-              </label>
-            </div>
-          </section>
 
           <button onClick={submit} disabled={submitting || items.length === 0} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-foreground text-background py-4 text-base font-bold hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
             {submitting ? <Loader2 size={16} className="animate-spin" /> : <Lock size={14} />}
@@ -430,7 +424,7 @@ const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDi
     </div>
     <div className="pt-3 space-y-1.5 text-sm border-t border-border">
       <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="font-semibold text-foreground">{formNGN(subtotal)}</span></div>
-      <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span className="font-semibold text-foreground">{shippingFee === 0 ? "FREE" : formNGN(shippingFee)}</span></div>
+      <div className="flex justify-between"><span className="text-muted-foreground">Delivery</span><span className="font-semibold text-foreground">{shippingFee === 0 ? "FREE" : formNGN(shippingFee)}</span></div>
       <div className="flex justify-between pt-2 border-t border-border"><span className="font-display font-bold text-base text-foreground">Total</span><span className="font-display font-bold text-xl text-foreground">{formNGN(total)}</span></div>
     </div>
   </div>
