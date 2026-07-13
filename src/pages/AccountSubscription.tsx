@@ -13,7 +13,7 @@ const WA = "https://wa.me/2348178000023?text=";
 const WA_CUSTOM = WA + encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ");
 const WA_CANCEL = WA + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
 
-type PlanTier = { id: string; name: string; bestFor: string; price: string; period: string; credits: string; icon: any; ring: string; accent: string; badge?: string; features: string[]; cta: string; href: string };
+type PlanTier = { id: AiPlanId; name: string; bestFor: string; price: string; period: string; credits: string; amountNgn: number; icon: any; ring: string; accent: string; badge?: string; features: string[]; cta: string; href?: string };
 const TIERS: PlanTier[] = [
   {
     id: "starter",
@@ -22,12 +22,12 @@ const TIERS: PlanTier[] = [
     price: "₦2,500",
     period: "/mo",
     credits: "20 AI credits",
+    amountNgn: 2500,
     icon: Zap,
     ring: "border-border",
     accent: "from-emerald-500/10 to-transparent",
     features: ["20 AI assessments / month", "Full sizing report + BoM PDF", "Personalised package match", "Email support (24h)", "Cancel anytime"],
     cta: "Subscribe",
-    href: WA_STARTER,
   },
   {
     id: "business",
@@ -36,13 +36,13 @@ const TIERS: PlanTier[] = [
     price: "₦12,000",
     period: "/mo",
     credits: "120 AI credits",
+    amountNgn: 12000,
     icon: Building2,
     ring: "border-primary shadow-[var(--shadow-elevated)]",
     accent: "from-primary/15 to-transparent",
     badge: "Most popular",
     features: ["120 AI assessments / month", "Team seats (up to 3)", "Installer dashboard + CSV export", "Priority engineer review", "WhatsApp support (4h)"],
     cta: "Subscribe",
-    href: WA_BUSINESS,
   },
   {
     id: "custom",
@@ -51,6 +51,7 @@ const TIERS: PlanTier[] = [
     price: "Let's talk",
     period: "",
     credits: "Unlimited team seats",
+    amountNgn: 0,
     icon: Crown,
     ring: "border-accent",
     accent: "from-accent/20 to-transparent",
@@ -59,6 +60,7 @@ const TIERS: PlanTier[] = [
     href: WA_CUSTOM,
   },
 ];
+
 
 
 interface UsageRow {
