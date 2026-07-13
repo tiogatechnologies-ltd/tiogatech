@@ -162,7 +162,7 @@ const Checkout = () => {
         subtotal,
         total,
         shipping_address: shippingAddress,
-        billing_address: billingSame ? shippingAddress : null,
+        billing_address: shippingAddress,
         user_id: user?.id || null,
         discount_code: discountCode || null,
         items: items.map((i) => ({
