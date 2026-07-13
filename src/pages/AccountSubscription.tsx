@@ -5,11 +5,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
-import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, MessageCircle, Check, Building2, Star } from "lucide-react";
+import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, Check, Building2, Star, Loader2 } from "lucide-react";
+import { startAiSubscription, type AiPlanId } from "@/lib/subscribe";
+import { toast } from "sonner";
 
 const WA = "https://wa.me/2348178000023?text=";
-const WA_STARTER = WA + encodeURIComponent("Hi Tioga, I'd like to subscribe to the Starters AI plan (₦2,500/mo, 20 credits).");
-const WA_BUSINESS = WA + encodeURIComponent("Hi Tioga, I'd like to subscribe to the Businesses AI plan (₦12,000/mo, 120 credits).");
 const WA_CUSTOM = WA + encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ");
 const WA_CANCEL = WA + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
 
