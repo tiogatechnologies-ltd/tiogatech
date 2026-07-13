@@ -258,8 +258,8 @@ const Checkout = () => {
           <section>
             <h2 className="text-lg font-display font-bold text-foreground mb-3">Delivery</h2>
             <div className="grid grid-cols-2 gap-2 mb-3">
-              <button onClick={() => setDelivery("ship")} className={`rounded-xl border p-3 text-sm font-semibold ${delivery === "ship" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>Ship</button>
-              <button onClick={() => setDelivery("pickup")} className={`rounded-xl border p-3 text-sm font-semibold ${delivery === "pickup" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>Pickup (Lagos)</button>
+              <button onClick={() => setDelivery("ship")} className={`rounded-xl border p-3 text-sm font-semibold ${delivery === "ship" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>Deliver to me</button>
+              <button onClick={() => setDelivery("pickup")} className={`rounded-xl border p-3 text-sm font-semibold ${delivery === "pickup" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>Pickup (Jos / Abuja)</button>
             </div>
             {delivery === "ship" && (
               <div className="space-y-2.5">
