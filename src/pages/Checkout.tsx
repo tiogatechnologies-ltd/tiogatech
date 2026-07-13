@@ -424,7 +424,7 @@ const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDi
     </div>
     <div className="pt-3 space-y-1.5 text-sm border-t border-border">
       <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="font-semibold text-foreground">{formNGN(subtotal)}</span></div>
-      <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span className="font-semibold text-foreground">{shippingFee === 0 ? "FREE" : formNGN(shippingFee)}</span></div>
+      <div className="flex justify-between"><span className="text-muted-foreground">Delivery</span><span className="font-semibold text-foreground">{shippingFee === 0 ? "FREE" : formNGN(shippingFee)}</span></div>
       <div className="flex justify-between pt-2 border-t border-border"><span className="font-display font-bold text-base text-foreground">Total</span><span className="font-display font-bold text-xl text-foreground">{formNGN(total)}</span></div>
     </div>
   </div>
