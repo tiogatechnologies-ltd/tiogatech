@@ -281,7 +281,7 @@ const Checkout = () => {
             )}
             {delivery === "pickup" && (
               <div className="rounded-xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
-                Pick up at our Lagos office. We'll text you when your order is ready.
+                Pick up at our Jos or Abuja office. We'll text you when your order is ready and share the address.
                 <div className="grid grid-cols-2 gap-2.5 mt-3">
                   <input value={form.first_name} onChange={(e) => setF("first_name", e.target.value)} placeholder="First name" className="rounded-xl border border-border bg-background px-4 py-3 text-sm" />
                   <input value={form.last_name} onChange={(e) => setF("last_name", e.target.value)} placeholder="Last name" className="rounded-xl border border-border bg-background px-4 py-3 text-sm" />
