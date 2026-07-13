@@ -86,6 +86,15 @@ const AccountSubscription = () => {
   const [sub, setSub] = useState<any>(null);
   const [usage, setUsage] = useState<UsageRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [subscribing, setSubscribing] = useState<AiPlanId | null>(null);
+
+  const subscribe = async (tier: PlanTier) => {
+    if (tier.id === "custom") { window.open(tier.href || WA_CUSTOM, "_blank", "noopener,noreferrer"); return; }
+    if (!user?.email) { toast.error("Please sign in first."); return; }
+    setSubscribing(tier.id);
+    const err = await startAiSubscription({ plan: tier.id, amountNgn: tier.amountNgn, email: user.email, userId: user.id });
+    if (err) { toast.error(err); setSubscribing(null); }
+  };
 
   useEffect(() => {
     if (!user) return;
