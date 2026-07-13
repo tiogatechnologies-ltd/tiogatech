@@ -296,12 +296,19 @@ const AccountSubscription = () => {
                           </li>
                         ))}
                       </ul>
-                      <Link
-                        to="/ai-pricing"
-                        className={`mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold ${isCurrent ? "border border-border bg-background hover:bg-muted" : "bg-primary text-primary-foreground hover:brightness-110"}`}
-                      >
-                        {isCurrent ? "Manage plan" : p.cta}
-                      </Link>
+                      {isCurrent ? (
+                        <button disabled className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold border border-border bg-background text-foreground opacity-70 cursor-default">
+                          <Star size={12} /> Current plan
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => subscribe(p)}
+                          disabled={subscribing === p.id}
+                          className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold bg-primary text-primary-foreground hover:brightness-110 disabled:opacity-60"
+                        >
+                          {subscribing === p.id ? <><Loader2 size={12} className="animate-spin" /> Redirecting…</> : p.cta}
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
@@ -309,7 +316,7 @@ const AccountSubscription = () => {
             </div>
 
             <p className="mt-5 text-[11px] text-muted-foreground text-center">
-              Plans are activated by our sales team after payment confirmation (bank transfer or Paystack). Activation within 1 business hour.
+              Pay securely with card or bank transfer via Paystack — your plan activates automatically the moment payment is confirmed. Custom plans are quoted by our team on WhatsApp.
             </p>
           </div>
 
