@@ -126,7 +126,7 @@ const AccountFinance = () => {
                   <div className="p-5 grid sm:grid-cols-3 gap-3 text-sm">
                     <div><p className="text-[10px] uppercase text-muted-foreground">Total</p><p className="font-semibold">₦{Number(a.total_amount_ngn).toLocaleString()}</p></div>
                     <div><p className="text-[10px] uppercase text-muted-foreground">Monthly</p><p className="font-semibold text-primary">₦{Number(a.monthly_payment_ngn).toLocaleString()}</p></div>
-                    <div><p className="text-[10px] uppercase text-muted-foreground">Deposit</p><p className={`font-semibold ${depositPaid ? "text-emerald-600" : ""}`}>₦{Number(a.deposit_ngn).toLocaleString()}{depositPaid ? " · Paid" : ""}</p></div>
+                    <div><p className="text-[10px] uppercase text-muted-foreground">Deposit</p><p className={`font-semibold ${depositPaid ? "text-emerald-600" : "text-muted-foreground"}`}>₦{Number(a.deposit_ngn).toLocaleString()} · {depositLabel}</p></div>
                   </div>
 
                   {!depositPaid && (a.status === "approved" || a.status === "active") && (
