@@ -42,6 +42,11 @@ const CartDrawer = () => {
   };
 
   const goWhatsApp = () => {
+    if (!user) {
+      saveDraft("cart_checkout_form", form);
+      window.location.href = authHref("/checkout", "signup");
+      return;
+    }
     const msg = encodeURIComponent(buildMessage());
     trackConversion("cart_checkout_whatsapp", { item_count: count });
     window.open(`https://wa.me/${WHATSAPP}?text=${msg}`, "_blank", "noopener,noreferrer");
@@ -51,6 +56,11 @@ const CartDrawer = () => {
   };
 
   const submitLead = async () => {
+    if (!user) {
+      saveDraft("cart_checkout_form", form);
+      window.location.href = authHref("/checkout", "signup");
+      return;
+    }
     const parsed = leadSchema.safeParse(form);
     if (!parsed.success) { toast.error("Please complete required fields"); return; }
     setSubmitting(true);
