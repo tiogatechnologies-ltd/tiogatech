@@ -31,6 +31,13 @@ const AiChatWidget = () => {
   const send = async (override?: string) => {
     const text = (override ?? input).trim();
     if (!text || loading) return;
+  const send = async (override?: string) => {
+    const text = (override ?? input).trim();
+    if (!text || loading) return;
+    if (needsAuth) {
+      try { sessionStorage.setItem("draft:ai_chat_pending", text); } catch {}
+      return;
+    }
     setInput("");
     const userMsg: Msg = { id: `u${Date.now()}`, role: "user", text };
     const history = [...messages, userMsg];
