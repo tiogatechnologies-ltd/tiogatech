@@ -51,6 +51,24 @@ const FinanceApply = () => {
   const [paymentMode, setPaymentMode] = useState<"manual" | "auto_debit">("manual");
   const [ddConsent, setDdConsent] = useState(false);
 
+  // Gate: guests must sign in before applying. Preserve form + query params.
+  useEffect(() => {
+    if (!authLoading && !user) {
+      import("@/lib/authGate").then(({ saveDraft }) => saveDraft("finance_apply", form));
+      const nextUrl = "/finance/apply" + (window.location.search || "");
+      navigate(`/auth?mode=signup&next=${encodeURIComponent(nextUrl)}`, { replace: true });
+    }
+  }, [authLoading, user]); // eslint-disable-line
+
+  // Restore draft after auth (persist across every change too)
+  useEffect(() => {
+    if (!user) return;
+    import("@/lib/authGate").then(({ loadDraft, clearDraft }) => {
+      const d = loadDraft<any>("finance_apply");
+      if (d) { setForm((f) => ({ ...f, ...d })); clearDraft("finance_apply"); }
+    });
+  }, [user]);
+
   useEffect(() => {
     (async () => {
       const { data } = await supabase.from("site_settings").select("value").eq("key", "finance").maybeSingle();
