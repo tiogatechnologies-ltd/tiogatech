@@ -1,89 +1,89 @@
-## Scope
+## 1. Fix premature "Paid" deposit status
 
-Six fixes across the Easy Flex payment flow, header layout, admin AI limits, monthly credit renewal, and the solar_assessments share-token RLS vulnerability.
+**File:** `src/pages/AccountFinance.tsx` (line 85)
 
----
+Current logic:
 
-## 1. Easy Flex: enforce deposit-first, then installments
+```ts
+const depositPaid = !deposit || deposit.status === "paid";
+```
 
-**Problem:** Users can currently attempt installments before the 30% deposit is paid.
+The `!deposit` fallback marks the deposit as Paid whenever no deposit schedule row exists yet (pending/unapproved applications). Change to strict check:
 
-**Changes:**
-- **`generate-payment-link` edge function** — before returning/generating a link for installment `n ≥ 1`, verify the deposit row (`installment_no = 0`) for that application has `status = 'paid'`. If not, return 409 with `deposit_required: true` and the deposit's own payment link (auto-generate if missing).
-- **`AccountFinance.tsx` / `Account.tsx`** — for each application, sort schedules by `installment_no`. Show the **deposit row first** with a prominent "Pay Deposit" CTA. Lock all installment "Pay Now" buttons (disabled + tooltip "Pay deposit first") until deposit `status = 'paid'`. After the deposit is paid, unlock installment 1; keep installments 2+ locked until their `due_date` is within the payment window or user chooses "Pay early".
-- **`approve-finance`** — no auto-charge of installments until deposit is confirmed paid (webhook already flips application to `active` on first paid schedule; ensure the retry queue's first entry is installment 1, not 0, and is only enqueued after deposit success).
-- **`paystack-webhook`** — when the deposit (installment 0) is marked paid, enqueue installment 1 into `debit_retry_queue` (if auto-debit) so auto-charge only begins post-deposit.
+```ts
+const depositPaid = !!deposit && deposit.status === "paid";
+```
 
-## 2. Easy Flex: dedicated Paystack payment page per installment (like screenshot)
+Also update the deposit summary rendering (line ~128) so pending applications show "Pending" instead of "Paid", and only show "Paid" when there's a real paid schedule row (which is only written by `paystack-webhook` on `charge.success`). For applications with no deposit row yet, show "Awaiting approval" or nothing.
 
-**Problem:** Currently we call `transaction/initialize` which is a one-time checkout URL. The screenshot shows a **Paystack Payment Page** (persistent, branded, `paystack.shop/pay/...`) that customers can revisit and that tracks all payments against one page.
+No backend change needed — the webhook already correctly gates `status = 'paid'` on the real `charge.success` event.
 
-**Changes:**
-- **`generate-payment-link`** — switch to Paystack **Payment Pages API** (`POST https://api.paystack.co/page`) per installment:
-  - `name`: `"Tioga Easy Flex — {item_name} — Installment {n}/{months}"` (or "Deposit" for #0)
-  - `amount`: fixed installment amount in kobo
-  - `description`: due date + application ref
-  - `slug`: `tioga-ef-{application_id_short}-{installment_no}` (unique, stable, reusable)
-  - `metadata`: `{ schedule_id, application_id, installment_no }`
-  - `redirect_url`: `https://tiogatechnologies.com/account/finance?paid={schedule_id}`
-  - Store returned `page.slug` + full URL (`https://paystack.com/pay/{slug}`) in `finance_schedules.payment_url` and `payment_reference`.
-  - Reuse existing page on subsequent calls (idempotent — check for existing `payment_url` before creating a new page).
-- **Webhook** — already handles `charge.success` with metadata; verify Payment Pages fire the same event (they do, with `metadata` preserved).
-- **UI copy** — "Open Paystack Payment Page" instead of "Pay Now", with a copy-link button so admin/customer can share/re-open.
+## 2. Auth gate for core features + preserve in-progress data
 
-## 3. Header not showing on Account, AI Plan & Credits, and other authenticated pages
+Add a lightweight auth-required pattern that redirects guests to `/auth` and returns them afterward with any partial input restored.
 
-**Problem:** `SiteHeader` is missing or overlapped on `/account`, `/account/subscription` (AI plan & credits), and related pages — content sits under a transparent/absent header with no top margin.
+**New helper:** `src/lib/authGate.ts`
 
-**Changes:**
-- Audit these pages for missing `<SiteHeader />` or wrong layout wrapper: `Account.tsx`, `AccountFinance.tsx`, `AccountAssessments.tsx`, `AccountSubscription.tsx`, `AffiliateDashboard.tsx`, `DashboardRouter.tsx`, `FinanceApply.tsx`, `SolarAssessment.tsx`, `SolarAssessmentReport.tsx`.
-- Ensure each renders `<SiteHeader />` at top and applies the standard top padding (`pt-24` / matching header height class used elsewhere) so content clears the fixed header.
-- Confirm the header's `z-index` and `bg` tokens make it visible over these pages' backgrounds.
+- `saveDraft(key, data)` → `sessionStorage.setItem("draft:"+key, JSON.stringify(data))`
+- `loadDraft(key)` and `clearDraft(key)`
+- `requireAuth(user, opts)` → if no user, save draft + `navigate("/auth?next=" + encodeURIComponent(location.pathname + location.search))`.
 
-## 4. Admin unlimited AI usage
+**Auth page (`src/pages/Auth.tsx`):** honor `?next=` param, redirect back on successful sign-in / sign-up.
 
-**Problem:** Admins are capped at the same 3-credit free tier as customers.
+**Gate these entry points** (redirect if guest, saving form/cart context):
 
-**Changes:**
-- **`ai-chat` / `ai-recommend` / `ai-solar-size` / any AI edge function that checks `assessment_credits` or `ai_credit_usage`** — at the top of the credit check, call `has_role(user_id, 'admin')`. If true, skip the credit deduction and cap entirely (log usage to `ai_credit_usage` with a flag `is_admin: true` for auditing, but do not decrement).
-- **Frontend `AccountSubscription.tsx`** — if current user has admin role, show "Unlimited (Admin)" instead of credit balance.
+- `src/pages/Checkout.tsx` — on mount if `!user`, save cart+form draft and redirect.
+- `src/components/CartDrawer.tsx` — "Send Order" button: gate quick-order submit.
+- `src/pages/FinanceApply.tsx` — on mount, gate; persist current form step to sessionStorage on every change; restore after auth.
+- `src/components/AiChatWidget.tsx` — on first open or first send, if `!user`, show a friendly inline prompt ("Sign up free to chat with Volt AI") with Sign in / Sign up buttons linking to `/auth?next=<current>`. Keep the draft message queued.
+- `src/pages/SolarAssessment.tsx` — gate the "Run assessment" submit (assessment already partially gated; extend to guests entering data).
 
-## 5. Monthly automatic renewal of the 3 free credits for all users
+The prompt UX: a small modal / inline card, not a hard error. Copy: "Create a free account to continue. Your details are saved."
 
-**Problem:** Free 3 credits are granted once at signup and never refill.
+## 3. Remove "Pay Online" from Quick Order (CartDrawer)
 
-**Changes:**
-- Add `assessment_credits.last_reset_at timestamptz` (migration).
-- **New edge function `reset-monthly-free-credits`** — for every row in `assessment_credits`, if `last_reset_at` is null or older than the start of the current month, set `total_credits = GREATEST(total_credits, 3)` (top up to at least 3, never reduce paid credits) and `last_reset_at = date_trunc('month', now())`. Skip users with active paid AI subscriptions (they have their own quotas).
-- **pg_cron** — schedule daily at 02:00 UTC using `CRON_SHARED_SECRET`; the function itself is idempotent so daily execution is safe and self-heals missed days.
+**File:** `src/components/CartDrawer.tsx` (lines ~156–172, ~196–210)
 
-## 6. Solar assessments share-token RLS vulnerability
+- Change grid from `grid-cols-3` to `grid-cols-2`.
+- Delete the third button ("Pay Online / Paystack — soon") and the `mode === "paystack"` disabled-button branch.
+- Keep only WhatsApp and Callback.
 
-**Problem:** `USING (share_token IS NOT NULL)` exposes every shared assessment to any anonymous visitor.
+**Clarification on unification:** The screenshot is the **CartDrawer "Quick order" flow** (opened from the cart drawer's "Quick order (WhatsApp / callback)" button), which is separate from the full `/checkout` page (`src/pages/Checkout.tsx`) that already handles Card/Paystack, Bank Transfer, Easy Flex, delivery/pickup, etc. They're intentionally distinct: the full checkout is the primary flow (surfaced as "Proceed to Checkout"), and quick-order is a low-friction fallback for users who prefer WhatsApp/callback. **Recommendation:** keep them distinct as-is — the quick-order flow is genuinely useful on mobile for buyers who don't want to fill the full form. Removing the non-functional Paystack option is enough. If you'd rather collapse quick-order into the main checkout entirely, say so and I'll remove the CartDrawer checkout step and route both buttons to `/checkout`.
 
-**Fix (edge function approach — safer than JWT claims for public share links):**
-- **Migration** — drop the vulnerable policy. Replace with `USING (false)` for anon on the sensitive columns path (deny all direct anon SELECT).
-- **New edge function `get-shared-assessment`** — accepts `{ share_token }`, uses service role, queries `solar_assessments WHERE share_token = $1 AND share_token IS NOT NULL LIMIT 1`, returns only the fields intended for public sharing (strip `email`, `phone` unless the customer opted in; keep `full_name`, `location`, `daily_kwh`, `monthly_bill_ngn`, `full_report`).
-- **`SolarAssessmentReport.tsx`** — when accessed via a `?token=...` param (public/shared view), call the edge function instead of querying the table directly. Authenticated owner view keeps using the existing owner RLS policy.
+&nbsp;
 
----
+I'd agree with keeping them separate — a low-friction WhatsApp/callback option is genuinely useful for mobile buyers who don't want to fill the full form, and merging them would remove that convenience for no real benefit. I'd just reply to Lovable confirming: "Keep them distinct as recommended, just remove the Pay Online button."
 
-## Technical Notes
+## 4. Mobile responsiveness on account/finance cards
 
-- Paystack Payment Pages docs: `POST /page` returns `{ status, message, data: { id, name, slug, ... } }`. Public URL = `https://paystack.com/pay/{slug}`. Webhook `charge.success` events from a Payment Page include the page's metadata.
-- `has_role` security-definer function already exists (`public.has_role(uuid, app_role)`).
-- Monthly reset uses `GREATEST` so it never wipes purchased credits — only tops up the free floor.
-- Share-token fix uses an edge function rather than JWT claim comparison because share links are opened by unauthenticated visitors and can't carry a JWT claim from Supabase auth.
+**Root cause (from screenshot):** The AccountFinance card rows put labels and green pill buttons on the same row without wrapping; on narrow viewports the buttons and totals overflow off-screen.
 
-## Build Order
+**Files to audit and fix:**
 
-1. Migration: `assessment_credits.last_reset_at`, drop + replace `solar_assessments` public share policy.
-2. Edge functions: rewrite `generate-payment-link` (Payment Pages + deposit guard), new `get-shared-assessment`, new `reset-monthly-free-credits`, patch AI functions for admin bypass, patch `paystack-webhook` to enqueue installment 1 after deposit.
-3. pg_cron: schedule monthly credit reset.
-4. Frontend: `AccountFinance.tsx` / `Account.tsx` deposit-gating UI + "Open Paystack Page" button; `SolarAssessmentReport.tsx` public path via edge function; `AccountSubscription.tsx` admin unlimited badge; header/padding audit on all authenticated pages.
-5. Typecheck.
+- `src/pages/AccountFinance.tsx` — application card header, deposit/monthly/total summary grid, and the schedule row buttons ("Pay next installment", "Liquidate"). Apply:
+  - `flex-wrap gap-2` on action rows
+  - Full-width buttons on `sm:` breakpoint down (`w-full sm:w-auto`)
+  - `min-w-0` + `truncate` on price labels only where safe; otherwise allow wrap
+  - Ensure the outer `<main>` uses `px-4` (it does) and cards use `overflow-hidden` without fixed widths
+- `src/pages/Account.tsx` — the "Flexible payment" summary section shown in screenshot 3 (buttons cut off).
+- `src/pages/AccountAssessments.tsx`, `src/pages/AccountSubscription.tsx`, `src/pages/AffiliateDashboard.tsx` — quick pass for the same pattern (button rows next to totals).
 
-## Not in Scope
+Global fix pattern:
 
-- No change to the Paystack tokenized auto-debit flow beyond gating on deposit success.
-- No change to admin approval workflow for finance applications.
+```tsx
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+  <div className="min-w-0">…totals…</div>
+  <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+    <button className="w-full sm:w-auto …">Pay next installment</button>
+    <button className="w-full sm:w-auto …">Liquidate</button>
+  </div>
+</div>
+```
+
+No new dependencies. No DB migrations. All changes are frontend except the AccountFinance depositPaid logic tweak (also frontend).
+
+## Verification
+
+- Run Playwright at 375px width against `/account/finance` after fixes → screenshot to confirm no horizontal overflow and deposit shows "Pending" for a pending application.
+- Manual: sign out, click AI widget → sign-in prompt appears; sign in via `/auth?next=…` → returns to widget with draft message intact.
+- Cart drawer quick-order → only 2 options visible.
