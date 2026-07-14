@@ -30,7 +30,7 @@ const schema = z.object({
 const Checkout = () => {
   const navigate = useNavigate();
   const { items, count, clear } = useCart();
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
 
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
