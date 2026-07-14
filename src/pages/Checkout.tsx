@@ -58,11 +58,11 @@ const Checkout = () => {
 
   // Gate: guests must sign in before checkout (preserve form + cart).
   useEffect(() => {
-    if (user === null) {
+    if (!authLoading && !user) {
       import("@/lib/authGate").then(({ saveDraft }) => saveDraft("checkout", form));
       navigate(`/auth?mode=signup&next=${encodeURIComponent("/checkout")}`, { replace: true });
     }
-  }, [user]); // eslint-disable-line
+  }, [authLoading, user]); // eslint-disable-line
 
   useEffect(() => {
     // Restore any draft saved before auth redirect
