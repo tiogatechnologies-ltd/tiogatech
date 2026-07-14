@@ -154,12 +154,12 @@ const AccountFinance = () => {
                                 {s.status === "paid" ? <CheckCircle2 size={16} className="text-green-600" /> : locked ? <Lock size={14} className="text-muted-foreground" /> : <div className={`h-3 w-3 rounded-full ${s.status === "overdue" ? "bg-red-500" : isDeposit ? "bg-amber-500" : "bg-blue-400"}`} />}
                                 <span className="font-medium">{label} · {new Date(s.due_date).toLocaleDateString()}</span>
                               </div>
-                              <div className="flex items-center gap-2 flex-wrap">
+                              <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto justify-end">
                                 <span className="font-semibold">₦{Number(s.amount_ngn).toLocaleString()}</span>
                                 <span className={`text-[10px] px-2 py-0.5 rounded-full capitalize ${s.status === "paid" ? "bg-green-100 text-green-700" : s.status === "overdue" ? "bg-red-100 text-red-700" : "bg-muted text-muted-foreground"}`}>{s.status}</span>
                                 {isUnpaid && !locked && (
                                   <>
-                                    <button onClick={() => openPaymentPage(s.id, s.payment_url)} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center gap-1">
+                                    <button onClick={() => openPaymentPage(s.id, s.payment_url)} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center gap-1 whitespace-nowrap">
                                       <ExternalLink size={11} /> Open Paystack Page
                                     </button>
                                     <button onClick={() => copyLink(s.id, s.payment_url)} title="Copy payment link" className="text-[11px] px-2 py-1 rounded-full border border-border hover:bg-muted inline-flex items-center gap-1">
