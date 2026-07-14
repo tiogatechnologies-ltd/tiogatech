@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, Wallet } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
+import { saveDraft, authHref } from "@/lib/authGate";
+import AuthGatePrompt from "@/components/AuthGatePrompt";
 import { toast } from "sonner";
 import { z } from "zod";
 
