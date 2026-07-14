@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, CreditCard, Wallet } from "lucide-react";
+import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, Wallet } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
+import { saveDraft, authHref } from "@/lib/authGate";
+import AuthGatePrompt from "@/components/AuthGatePrompt";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -18,9 +21,10 @@ const leadSchema = z.object({
 });
 
 const CartDrawer = () => {
+  const { user } = useAuth();
   const { items, open, setOpen, remove, updateQty, clear, count } = useCart();
   const [step, setStep] = useState<"cart" | "checkout">("cart");
-  const [mode, setMode] = useState<"whatsapp" | "lead" | "paystack">("whatsapp");
+  const [mode, setMode] = useState<"whatsapp" | "lead">("whatsapp");
   const [form, setForm] = useState({ full_name: "", phone: "", email: "", location: "" });
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -38,6 +42,11 @@ const CartDrawer = () => {
   };
 
   const goWhatsApp = () => {
+    if (!user) {
+      saveDraft("cart_checkout_form", form);
+      window.location.href = authHref("/checkout", "signup");
+      return;
+    }
     const msg = encodeURIComponent(buildMessage());
     trackConversion("cart_checkout_whatsapp", { item_count: count });
     window.open(`https://wa.me/${WHATSAPP}?text=${msg}`, "_blank", "noopener,noreferrer");
@@ -47,6 +56,11 @@ const CartDrawer = () => {
   };
 
   const submitLead = async () => {
+    if (!user) {
+      saveDraft("cart_checkout_form", form);
+      window.location.href = authHref("/checkout", "signup");
+      return;
+    }
     const parsed = leadSchema.safeParse(form);
     if (!parsed.success) { toast.error("Please complete required fields"); return; }
     setSubmitting(true);
@@ -151,9 +165,17 @@ const CartDrawer = () => {
         ) : (
           <>
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
+              {!user && (
+                <AuthGatePrompt
+                  title="Sign in to place your order"
+                  description="Create a free account so we can track your order and follow up. Your details are saved."
+                  next="/checkout"
+                  compact
+                />
+              )}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">How would you like to order?</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <button onClick={() => setMode("whatsapp")} className={`rounded-xl border p-3 text-left ${mode === "whatsapp" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                     <MessageCircle size={16} className="text-primary mb-1" />
                     <p className="text-xs font-bold text-foreground">WhatsApp</p>
@@ -163,11 +185,6 @@ const CartDrawer = () => {
                     <Send size={16} className="text-primary mb-1" />
                     <p className="text-xs font-bold text-foreground">Callback</p>
                     <p className="text-[10px] text-muted-foreground">We call back</p>
-                  </button>
-                  <button onClick={() => setMode("paystack")} className={`rounded-xl border p-3 text-left relative ${mode === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                    <CreditCard size={16} className="text-primary mb-1" />
-                    <p className="text-xs font-bold text-foreground">Pay Online</p>
-                    <p className="text-[10px] text-muted-foreground">Paystack — soon</p>
                   </button>
                 </div>
               </div>
@@ -192,14 +209,6 @@ const CartDrawer = () => {
               {mode === "whatsapp" ? (
                 <button onClick={goWhatsApp} className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all">
                   <MessageCircle size={14} /> Send Order on WhatsApp
-                </button>
-              ) : mode === "paystack" ? (
-                <button
-                  disabled
-                  title="Online payment will be enabled once Paystack is configured."
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground opacity-60 cursor-not-allowed"
-                >
-                  <CreditCard size={14} /> Pay with Paystack (coming soon)
                 </button>
               ) : (
                 <button onClick={submitLead} disabled={submitting} className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all disabled:opacity-60">

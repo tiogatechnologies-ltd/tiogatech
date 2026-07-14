@@ -30,7 +30,7 @@ const schema = z.object({
 const Checkout = () => {
   const navigate = useNavigate();
   const { items, count, clear } = useCart();
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
 
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -55,6 +55,22 @@ const Checkout = () => {
     postal: "",
     phone: "",
   });
+
+  // Gate: guests must sign in before checkout (preserve form + cart).
+  useEffect(() => {
+    if (!authLoading && !user) {
+      import("@/lib/authGate").then(({ saveDraft }) => saveDraft("checkout", form));
+      navigate(`/auth?mode=signup&next=${encodeURIComponent("/checkout")}`, { replace: true });
+    }
+  }, [authLoading, user]); // eslint-disable-line
+
+  useEffect(() => {
+    // Restore any draft saved before auth redirect
+    import("@/lib/authGate").then(({ loadDraft, clearDraft }) => {
+      const d = loadDraft<any>("checkout");
+      if (d && user) { setForm((f) => ({ ...f, ...d })); clearDraft("checkout"); }
+    });
+  }, [user]);
 
   useEffect(() => {
     if (user && !form.email) setForm((f) => ({ ...f, email: user.email || "" }));

@@ -452,22 +452,22 @@ const Account = () => {
                         window.location.href = (pay as any).authorization_url;
                       };
                       return (
-                        <li key={f.id} className="py-3 flex items-center justify-between gap-3">
-                          <div className="min-w-0">
+                        <li key={f.id} className="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                          <div className="min-w-0 flex-1">
                             <p className="text-sm font-semibold text-foreground truncate">{f.item_name}</p>
                             <p className="text-xs text-muted-foreground">{f.months} months · {formatNGN(f.monthly_payment_ngn)}/mo</p>
                             <p className="text-[10px] text-muted-foreground mt-0.5">{new Date(f.created_at).toLocaleDateString()}</p>
                           </div>
-                          <div className="text-right shrink-0 flex flex-col items-end gap-1.5">
+                          <div className="flex flex-row sm:flex-col sm:items-end items-center gap-2 flex-wrap sm:shrink-0">
                             <p className="text-sm font-bold text-foreground">{formatNGN(f.total_amount_ngn)}</p>
                             <StatusPill status={f.status} />
                             {canPay && (
-                              <button onClick={payNow} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center gap-1">
+                              <button onClick={payNow} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center gap-1 whitespace-nowrap">
                                 Pay next installment <ExternalLink size={11} />
                               </button>
                             )}
                             {canLiquidate && (
-                              <button onClick={liquidate} className="text-[11px] font-semibold px-3 py-1 rounded-full border border-primary text-primary hover:bg-primary/10">
+                              <button onClick={liquidate} className="text-[11px] font-semibold px-3 py-1 rounded-full border border-primary text-primary hover:bg-primary/10 whitespace-nowrap">
                                 Liquidate Now
                               </button>
                             )}

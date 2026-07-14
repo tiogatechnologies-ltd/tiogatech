@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { MessageCircle, X, Send, Loader2, ExternalLink, RotateCcw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { useAuth } from "@/contexts/AuthContext";
+import AuthGatePrompt from "@/components/AuthGatePrompt";
 
 const ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-chat`;
 const STORAGE_KEY = "tioga_ai_chat_v2";
@@ -13,12 +15,14 @@ const loadInitial = (): Msg[] => {
 };
 
 const AiChatWidget = () => {
+  const { user, loading: authLoading } = useAuth();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Msg[]>(loadInitial);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
+  const needsAuth = !authLoading && !user;
 
   useEffect(() => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); } catch {} }, [messages]);
   useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 50); }, [open]);
@@ -27,6 +31,10 @@ const AiChatWidget = () => {
   const send = async (override?: string) => {
     const text = (override ?? input).trim();
     if (!text || loading) return;
+    if (needsAuth) {
+      try { sessionStorage.setItem("draft:ai_chat_pending", text); } catch {}
+      return;
+    }
     setInput("");
     const userMsg: Msg = { id: `u${Date.now()}`, role: "user", text };
     const history = [...messages, userMsg];
@@ -84,7 +92,15 @@ const AiChatWidget = () => {
           </header>
 
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-muted/20">
-            {messages.length === 0 && (
+            {needsAuth && (
+              <AuthGatePrompt
+                title="Sign in to chat with Volt"
+                description="Volt is free — create an account to start chatting. We'll bring you right back here."
+                next={window.location.pathname + window.location.search}
+                compact
+              />
+            )}
+            {!needsAuth && messages.length === 0 && (
               <div className="text-sm text-muted-foreground space-y-3">
                 <p className="font-medium text-foreground">Hi 👋 I'm Volt. I can help with:</p>
                 <ul className="space-y-1.5">
@@ -156,11 +172,12 @@ const AiChatWidget = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
-              placeholder="Ask about solar, packages, financing…"
+              placeholder={needsAuth ? "Sign in above to start chatting…" : "Ask about solar, packages, financing…"}
               rows={1}
-              className="flex-1 resize-none rounded-xl border border-border bg-muted/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 max-h-32"
+              disabled={needsAuth}
+              className="flex-1 resize-none rounded-xl border border-border bg-muted/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 max-h-32 disabled:opacity-60"
             />
-            <button type="submit" disabled={loading || !input.trim()} className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-40 hover:bg-primary/90">
+            <button type="submit" disabled={loading || !input.trim() || needsAuth} className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-40 hover:bg-primary/90">
               {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
             </button>
           </form>

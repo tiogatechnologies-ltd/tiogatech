@@ -24,7 +24,8 @@ const Auth = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const initialTab = (params.get("mode") as Tab) || "signin";
-  const from = (location.state as any)?.from as string | undefined;
+  const nextParam = params.get("next");
+  const from = nextParam || ((location.state as any)?.from as string | undefined);
 
   const [tab, setTab] = useState<Tab>(initialTab);
   const [email, setEmail] = useState("");

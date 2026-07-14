@@ -82,7 +82,8 @@ const AccountFinance = () => {
             apps.map((a) => {
               const list = (schedules[a.id] || []).slice().sort((x, y) => x.installment_no - y.installment_no);
               const deposit = list.find((s) => s.is_deposit || s.installment_no === 0);
-              const depositPaid = !deposit || deposit.status === "paid";
+              const depositPaid = !!deposit && deposit.status === "paid";
+              const depositLabel = !deposit ? "Awaiting approval" : depositPaid ? "Paid" : "Pending";
               return (
                 <div key={a.id} className="rounded-2xl border border-border bg-card overflow-hidden">
                   <div className="p-5 border-b border-border flex items-start justify-between flex-wrap gap-3">
@@ -125,7 +126,7 @@ const AccountFinance = () => {
                   <div className="p-5 grid sm:grid-cols-3 gap-3 text-sm">
                     <div><p className="text-[10px] uppercase text-muted-foreground">Total</p><p className="font-semibold">₦{Number(a.total_amount_ngn).toLocaleString()}</p></div>
                     <div><p className="text-[10px] uppercase text-muted-foreground">Monthly</p><p className="font-semibold text-primary">₦{Number(a.monthly_payment_ngn).toLocaleString()}</p></div>
-                    <div><p className="text-[10px] uppercase text-muted-foreground">Deposit</p><p className={`font-semibold ${depositPaid ? "text-emerald-600" : ""}`}>₦{Number(a.deposit_ngn).toLocaleString()}{depositPaid ? " · Paid" : ""}</p></div>
+                    <div><p className="text-[10px] uppercase text-muted-foreground">Deposit</p><p className={`font-semibold ${depositPaid ? "text-emerald-600" : "text-muted-foreground"}`}>₦{Number(a.deposit_ngn).toLocaleString()} · {depositLabel}</p></div>
                   </div>
 
                   {!depositPaid && (a.status === "approved" || a.status === "active") && (
@@ -153,12 +154,12 @@ const AccountFinance = () => {
                                 {s.status === "paid" ? <CheckCircle2 size={16} className="text-green-600" /> : locked ? <Lock size={14} className="text-muted-foreground" /> : <div className={`h-3 w-3 rounded-full ${s.status === "overdue" ? "bg-red-500" : isDeposit ? "bg-amber-500" : "bg-blue-400"}`} />}
                                 <span className="font-medium">{label} · {new Date(s.due_date).toLocaleDateString()}</span>
                               </div>
-                              <div className="flex items-center gap-2 flex-wrap">
+                              <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto justify-end">
                                 <span className="font-semibold">₦{Number(s.amount_ngn).toLocaleString()}</span>
                                 <span className={`text-[10px] px-2 py-0.5 rounded-full capitalize ${s.status === "paid" ? "bg-green-100 text-green-700" : s.status === "overdue" ? "bg-red-100 text-red-700" : "bg-muted text-muted-foreground"}`}>{s.status}</span>
                                 {isUnpaid && !locked && (
                                   <>
-                                    <button onClick={() => openPaymentPage(s.id, s.payment_url)} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center gap-1">
+                                    <button onClick={() => openPaymentPage(s.id, s.payment_url)} className="text-[11px] font-semibold px-3 py-1 rounded-full bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center gap-1 whitespace-nowrap">
                                       <ExternalLink size={11} /> Open Paystack Page
                                     </button>
                                     <button onClick={() => copyLink(s.id, s.payment_url)} title="Copy payment link" className="text-[11px] px-2 py-1 rounded-full border border-border hover:bg-muted inline-flex items-center gap-1">
