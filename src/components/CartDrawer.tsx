@@ -165,6 +165,14 @@ const CartDrawer = () => {
         ) : (
           <>
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
+              {!user && (
+                <AuthGatePrompt
+                  title="Sign in to place your order"
+                  description="Create a free account so we can track your order and follow up. Your details are saved."
+                  next="/checkout"
+                  compact
+                />
+              )}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">How would you like to order?</p>
                 <div className="grid grid-cols-2 gap-2">
