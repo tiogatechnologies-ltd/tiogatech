@@ -188,14 +188,6 @@ const CartDrawer = () => {
                 <button onClick={goWhatsApp} className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all">
                   <MessageCircle size={14} /> Send Order on WhatsApp
                 </button>
-              ) : mode === "paystack" ? (
-                <button
-                  disabled
-                  title="Online payment will be enabled once Paystack is configured."
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground opacity-60 cursor-not-allowed"
-                >
-                  <CreditCard size={14} /> Pay with Paystack (coming soon)
-                </button>
               ) : (
                 <button onClick={submitLead} disabled={submitting} className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all disabled:opacity-60">
                   {submitting ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
