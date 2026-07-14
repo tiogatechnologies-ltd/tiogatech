@@ -92,7 +92,14 @@ const AiChatWidget = () => {
           </header>
 
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-muted/20">
-            {messages.length === 0 && (
+            {needsAuth && (
+              <AuthGatePrompt
+                title="Sign in to chat with Volt"
+                description="Volt is free — create an account to start chatting. We'll bring you right back here."
+                next={window.location.pathname + window.location.search}
+                compact
+              />
+            )}
               <div className="text-sm text-muted-foreground space-y-3">
                 <p className="font-medium text-foreground">Hi 👋 I'm Volt. I can help with:</p>
                 <ul className="space-y-1.5">
