@@ -100,6 +100,7 @@ const AiChatWidget = () => {
                 compact
               />
             )}
+            {!needsAuth && messages.length === 0 && (
               <div className="text-sm text-muted-foreground space-y-3">
                 <p className="font-medium text-foreground">Hi 👋 I'm Volt. I can help with:</p>
                 <ul className="space-y-1.5">
