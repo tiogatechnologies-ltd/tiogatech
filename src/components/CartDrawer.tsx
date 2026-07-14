@@ -153,7 +153,7 @@ const CartDrawer = () => {
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">How would you like to order?</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <button onClick={() => setMode("whatsapp")} className={`rounded-xl border p-3 text-left ${mode === "whatsapp" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                     <MessageCircle size={16} className="text-primary mb-1" />
                     <p className="text-xs font-bold text-foreground">WhatsApp</p>
@@ -163,11 +163,6 @@ const CartDrawer = () => {
                     <Send size={16} className="text-primary mb-1" />
                     <p className="text-xs font-bold text-foreground">Callback</p>
                     <p className="text-[10px] text-muted-foreground">We call back</p>
-                  </button>
-                  <button onClick={() => setMode("paystack")} className={`rounded-xl border p-3 text-left relative ${mode === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                    <CreditCard size={16} className="text-primary mb-1" />
-                    <p className="text-xs font-bold text-foreground">Pay Online</p>
-                    <p className="text-[10px] text-muted-foreground">Paystack — soon</p>
                   </button>
                 </div>
               </div>
