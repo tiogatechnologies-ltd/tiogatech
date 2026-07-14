@@ -21,6 +21,7 @@ const leadSchema = z.object({
 });
 
 const CartDrawer = () => {
+  const { user } = useAuth();
   const { items, open, setOpen, remove, updateQty, clear, count } = useCart();
   const [step, setStep] = useState<"cart" | "checkout">("cart");
   const [mode, setMode] = useState<"whatsapp" | "lead">("whatsapp");
