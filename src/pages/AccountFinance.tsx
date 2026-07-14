@@ -82,7 +82,8 @@ const AccountFinance = () => {
             apps.map((a) => {
               const list = (schedules[a.id] || []).slice().sort((x, y) => x.installment_no - y.installment_no);
               const deposit = list.find((s) => s.is_deposit || s.installment_no === 0);
-              const depositPaid = !deposit || deposit.status === "paid";
+              const depositPaid = !!deposit && deposit.status === "paid";
+              const depositLabel = !deposit ? "Awaiting approval" : depositPaid ? "Paid" : "Pending";
               return (
                 <div key={a.id} className="rounded-2xl border border-border bg-card overflow-hidden">
                   <div className="p-5 border-b border-border flex items-start justify-between flex-wrap gap-3">
