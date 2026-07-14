@@ -14,7 +14,7 @@ const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Be
 const FinanceApply = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
 
   const itemName = params.get("item") || "";
   const amount = Number(params.get("amount") || 0);
