@@ -56,6 +56,22 @@ const Checkout = () => {
     phone: "",
   });
 
+  // Gate: guests must sign in before checkout (preserve form + cart).
+  useEffect(() => {
+    if (user === null) {
+      import("@/lib/authGate").then(({ saveDraft }) => saveDraft("checkout", form));
+      navigate(`/auth?mode=signup&next=${encodeURIComponent("/checkout")}`, { replace: true });
+    }
+  }, [user]); // eslint-disable-line
+
+  useEffect(() => {
+    // Restore any draft saved before auth redirect
+    import("@/lib/authGate").then(({ loadDraft, clearDraft }) => {
+      const d = loadDraft<any>("checkout");
+      if (d && user) { setForm((f) => ({ ...f, ...d })); clearDraft("checkout"); }
+    });
+  }, [user]);
+
   useEffect(() => {
     if (user && !form.email) setForm((f) => ({ ...f, email: user.email || "" }));
     if (profile?.full_name && !form.first_name) {
