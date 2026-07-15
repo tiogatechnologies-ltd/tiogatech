@@ -156,7 +156,7 @@ const AdminAnalytics = () => {
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
-  }, []);
+  }, [period]);
 
   const filterByPeriod = <T extends { created_at: string }>(items: T[]) => {
     if (period === 0) return items;
