@@ -96,16 +96,43 @@ const AdminAnalytics = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
-      const [leadsRes, productsRes, pvRes, clicksRes, perfRes] = await Promise.all([
+      // Cutoff: fetch last 180 days (or all-time when period=0) — avoids PostgREST's 1000-row default cap
+      const since = new Date();
+      since.setDate(since.getDate() - 180);
+      const sinceIso = since.toISOString();
+
+      // Page-through page_views to bypass 1000-row default
+      const fetchAllPageViews = async () => {
+        const all: PageView[] = [];
+        const pageSize = 1000;
+        let from = 0;
+        // hard cap to avoid runaway (up to 20k rows)
+        for (let i = 0; i < 20; i++) {
+          let q = supabase
+            .from("page_views")
+            .select("id, session_id, page_path, device_type, created_at")
+            .order("created_at", { ascending: false })
+            .range(from, from + pageSize - 1);
+          if (period !== 0) q = q.gte("created_at", sinceIso);
+          const { data, error } = await q;
+          if (error || !data || data.length === 0) break;
+          all.push(...(data as PageView[]));
+          if (data.length < pageSize) break;
+          from += pageSize;
+        }
+        return all.reverse();
+      };
+
+      const [leadsRes, productsRes, pvAll, clicksRes, perfRes] = await Promise.all([
         supabase.from("leads").select("*").order("created_at", { ascending: true }),
         supabase.from("products").select("id, name, category, series, price, is_active"),
-        supabase.from("page_views").select("id, session_id, page_path, device_type, created_at").order("created_at", { ascending: true }),
-        supabase.from("product_clicks").select("product_id, created_at").order("created_at", { ascending: false }).limit(500),
+        fetchAllPageViews(),
+        supabase.from("product_clicks").select("product_id, created_at").order("created_at", { ascending: false }).limit(1000),
         supabase.from("conversions").select("id, event_type, page_path, metadata, created_at").in("event_type", ["vitals", "error"]).order("created_at", { ascending: false }).limit(2000),
       ]);
       setLeads((leadsRes.data as Lead[]) ?? []);
       setProducts((productsRes.data as Product[]) ?? []);
-      setPageViews((pvRes.data as PageView[]) ?? []);
+      setPageViews(pvAll);
       setPerfEvents((perfRes.data as ConversionRow[]) ?? []);
 
       // Enrich clicks with product names
@@ -117,6 +144,7 @@ const AdminAnalytics = () => {
       setProductClicks(enrichedClicks);
       setLoading(false);
     };
+
     fetchAll();
 
     // Realtime for leads
@@ -128,7 +156,7 @@ const AdminAnalytics = () => {
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
-  }, []);
+  }, [period]);
 
   const filterByPeriod = <T extends { created_at: string }>(items: T[]) => {
     if (period === 0) return items;
