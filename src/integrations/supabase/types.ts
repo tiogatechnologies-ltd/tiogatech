@@ -1744,10 +1744,17 @@ export type Database = {
           created_at: string
           device_type: string | null
           id: string
+          is_new_session: boolean
+          landing_path: string | null
           page_path: string
           referrer: string | null
           session_id: string
           user_agent: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           city?: string | null
@@ -1755,10 +1762,17 @@ export type Database = {
           created_at?: string
           device_type?: string | null
           id?: string
+          is_new_session?: boolean
+          landing_path?: string | null
           page_path: string
           referrer?: string | null
           session_id: string
           user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           city?: string | null
@@ -1766,10 +1780,17 @@ export type Database = {
           created_at?: string
           device_type?: string | null
           id?: string
+          is_new_session?: boolean
+          landing_path?: string | null
           page_path?: string
           referrer?: string | null
           session_id?: string
           user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: []
       }

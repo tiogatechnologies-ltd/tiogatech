@@ -1,89 +1,81 @@
-## 1. Fix premature "Paid" deposit status
+## Analytics overhaul plan
 
-**File:** `src/pages/AccountFinance.tsx` (line 85)
+### 1. New tracking (starts recording from ship time forward)
 
-Current logic:
+**Schema additions to `page_views`** — capture attribution on every hit:
+- `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content` (text)
+- `landing_path` (text, first path of session)
+- `is_new_session` (bool)
 
-```ts
-const depositPaid = !deposit || deposit.status === "paid";
-```
+**Client instrumentation** (`usePageTracker` + `src/lib/tracking.ts`):
+- Read UTMs from `location.search` and persist to `sessionStorage` for the session
+- Track first page of session as `landing_path` + flag session as new (first hit)
+- **Scroll depth** — fire `conversions` events at 25/50/75/100 % once per page
+- **Session duration** — on `visibilitychange:hidden` / `pagehide`, send accumulated active-time as a `session_end` conversion
+- **Checkout funnel** — new events `checkout_view`, `checkout_step` ({step: contact|delivery|payment}), `checkout_paid` in `Checkout.tsx`
+- **AI chat** — `ai_chat_open`, `ai_chat_message` in `AiChatWidget.tsx`
+- **Calculator / sizer** — `energy_calculator_submit`, `lumivolt_sizer_submit`
+- **Product view** — fire from product detail / catalog card open
 
-The `!deposit` fallback marks the deposit as Paid whenever no deposit schedule row exists yet (pending/unapproved applications). Change to strict check:
+All events reuse the existing `conversions` table (event_type + metadata).
 
-```ts
-const depositPaid = !!deposit && deposit.status === "paid";
-```
+### 2. Lead analytics audit — fixes to `AdminAnalytics`
 
-Also update the deposit summary rendering (line ~128) so pending applications show "Pending" instead of "Paid", and only show "Paid" when there's a real paid schedule row (which is only written by `paystack-webhook` on `charge.success`). For applications with no deposit row yet, show "Awaiting approval" or nothing.
+| Issue found | Fix |
+|---|---|
+| `parseBudget` strips currency but breaks on ranges like "500K-1M" | Parse midpoints for range strings, keep single-value logic |
+| Conversion rate treats only `status='converted'` as won, ignores `closed` | Rate = converted / total; add separate "closed lost" metric |
+| Location parsing uses second-to-last comma segment — miscounts single-word cities | Normalize with a small city map (Lagos, Abuja, PH, Jos, etc.) + fallback |
+| No dedup by phone/email — a repeated submission double-counts | Add "unique leads" KPI counting distinct phone+email |
+| `source` fallback lumps all "website_form" — missing UTM breakdown | Cross-reference `utm_source`/`utm_medium`/`utm_campaign` columns already on `leads` |
+| Growth vs previous period uses period=0 as 0-baseline | Skip growth pill when period=0 (All time) |
 
-No backend change needed — the webhook already correctly gates `status = 'paid'` on the real `charge.success` event.
+### 3. New tabs on `/admin/analytics`
 
-## 2. Auth gate for core features + preserve in-progress data
+Reworked tab bar: **Overview · Leads · Revenue · Traffic · Funnels · Performance**
 
-Add a lightweight auth-required pattern that redirects guests to `/auth` and returns them afterward with any partial input restored.
+**Overview** — top-line KPIs across all domains + 30-day trend spark.
 
-**New helper:** `src/lib/authGate.ts`
+**Revenue** (new)
+- Gross revenue (paid orders only), net revenue (minus discounts), pending revenue
+- AOV, orders count, paid vs pending vs cancelled split
+- Top 10 products by revenue (from `order_items` × parsed `price_label`)
+- Revenue by state (from `shipping_address` → state), payment method, source
+- Discount usage: redemptions, total discounted, top codes
+- Daily revenue trend chart
 
-- `saveDraft(key, data)` → `sessionStorage.setItem("draft:"+key, JSON.stringify(data))`
-- `loadDraft(key)` and `clearDraft(key)`
-- `requireAuth(user, opts)` → if no user, save draft + `navigate("/auth?next=" + encodeURIComponent(location.pathname + location.search))`.
+**Traffic** (expanded)
+- Sessions, page views, unique visitors, pages/session, avg session duration, bounce rate
+- New vs returning sessions
+- Top sources / referrers, top UTM campaigns
+- Top landing pages, top exit pages
+- Country / city map list, device split
+- Traffic trend (daily/weekly)
 
-**Auth page (`src/pages/Auth.tsx`):** honor `?next=` param, redirect back on successful sign-in / sign-up.
+**Funnels** (new)
+- Site funnel: Sessions → Product views → Cart adds → Checkout views → Paid orders (with drop-off %)
+- Assessment funnel: Assessment starts → Basic completes → Full unlocks → Subscribes
+- Lead funnel: Landing → Lead form open → Lead submitted → Contacted → Converted
 
-**Gate these entry points** (redirect if guest, saving form/cart context):
+**Leads** — audited existing charts, add UTM/campaign breakdown card.
 
-- `src/pages/Checkout.tsx` — on mount if `!user`, save cart+form draft and redirect.
-- `src/components/CartDrawer.tsx` — "Send Order" button: gate quick-order submit.
-- `src/pages/FinanceApply.tsx` — on mount, gate; persist current form step to sessionStorage on every change; restore after auth.
-- `src/components/AiChatWidget.tsx` — on first open or first send, if `!user`, show a friendly inline prompt ("Sign up free to chat with Volt AI") with Sign in / Sign up buttons linking to `/auth?next=<current>`. Keep the draft message queued.
-- `src/pages/SolarAssessment.tsx` — gate the "Run assessment" submit (assessment already partially gated; extend to guests entering data).
+**Performance** — unchanged (LCP/INP/CLS + errors).
 
-The prompt UX: a small modal / inline card, not a hard error. Copy: "Create a free account to continue. Your details are saved."
+### 4. Data-fetch fixes
+- Paginate `orders`, `order_items`, `conversions` past PostgREST's 1k cap (same pattern already applied to `page_views`)
+- Server-side date filter by selected period on every big query
 
-## 3. Remove "Pay Online" from Quick Order (CartDrawer)
+### Technical notes
+- New tracking events use existing `conversions` insert policy (bounds are already length-checked). Add `event_type` values to the `ConversionEvent` union in `src/lib/tracking.ts`.
+- Bounce = sessions with exactly 1 page_view AND no conversion event.
+- Avg session duration = median of `session_end.metadata.duration_ms` (median, not mean, to resist outliers).
+- New vs returning = based on whether session_id has a stored `first_seen` in a new `visitor_sessions` view derived from `page_views` (`min(created_at) < 24h ago` = new).
+- Landing page = row in `page_views` where `is_new_session=true`.
 
-**File:** `src/components/CartDrawer.tsx` (lines ~156–172, ~196–210)
-
-- Change grid from `grid-cols-3` to `grid-cols-2`.
-- Delete the third button ("Pay Online / Paystack — soon") and the `mode === "paystack"` disabled-button branch.
-- Keep only WhatsApp and Callback.
-
-**Clarification on unification:** The screenshot is the **CartDrawer "Quick order" flow** (opened from the cart drawer's "Quick order (WhatsApp / callback)" button), which is separate from the full `/checkout` page (`src/pages/Checkout.tsx`) that already handles Card/Paystack, Bank Transfer, Easy Flex, delivery/pickup, etc. They're intentionally distinct: the full checkout is the primary flow (surfaced as "Proceed to Checkout"), and quick-order is a low-friction fallback for users who prefer WhatsApp/callback. **Recommendation:** keep them distinct as-is — the quick-order flow is genuinely useful on mobile for buyers who don't want to fill the full form. Removing the non-functional Paystack option is enough. If you'd rather collapse quick-order into the main checkout entirely, say so and I'll remove the CartDrawer checkout step and route both buttons to `/checkout`.
-
-&nbsp;
-
-I'd agree with keeping them separate — a low-friction WhatsApp/callback option is genuinely useful for mobile buyers who don't want to fill the full form, and merging them would remove that convenience for no real benefit. I'd just reply to Lovable confirming: "Keep them distinct as recommended, just remove the Pay Online button."
-
-## 4. Mobile responsiveness on account/finance cards
-
-**Root cause (from screenshot):** The AccountFinance card rows put labels and green pill buttons on the same row without wrapping; on narrow viewports the buttons and totals overflow off-screen.
-
-**Files to audit and fix:**
-
-- `src/pages/AccountFinance.tsx` — application card header, deposit/monthly/total summary grid, and the schedule row buttons ("Pay next installment", "Liquidate"). Apply:
-  - `flex-wrap gap-2` on action rows
-  - Full-width buttons on `sm:` breakpoint down (`w-full sm:w-auto`)
-  - `min-w-0` + `truncate` on price labels only where safe; otherwise allow wrap
-  - Ensure the outer `<main>` uses `px-4` (it does) and cards use `overflow-hidden` without fixed widths
-- `src/pages/Account.tsx` — the "Flexible payment" summary section shown in screenshot 3 (buttons cut off).
-- `src/pages/AccountAssessments.tsx`, `src/pages/AccountSubscription.tsx`, `src/pages/AffiliateDashboard.tsx` — quick pass for the same pattern (button rows next to totals).
-
-Global fix pattern:
-
-```tsx
-<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-  <div className="min-w-0">…totals…</div>
-  <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-    <button className="w-full sm:w-auto …">Pay next installment</button>
-    <button className="w-full sm:w-auto …">Liquidate</button>
-  </div>
-</div>
-```
-
-No new dependencies. No DB migrations. All changes are frontend except the AccountFinance depositPaid logic tweak (also frontend).
-
-## Verification
-
-- Run Playwright at 375px width against `/account/finance` after fixes → screenshot to confirm no horizontal overflow and deposit shows "Pending" for a pending application.
-- Manual: sign out, click AI widget → sign-in prompt appears; sign in via `/auth?next=…` → returns to widget with draft message intact.
-- Cart drawer quick-order → only 2 options visible.
+### Files touched
+- `supabase/migrations/*` — add columns to `page_views`
+- `src/hooks/usePageTracker.ts` — UTMs, landing, new-session flag, scroll depth, session duration
+- `src/lib/tracking.ts` — expand `ConversionEvent` union, add helpers
+- `supabase/functions/track-pageview/index.ts` — persist new columns
+- `src/pages/Checkout.tsx`, `src/components/AiChatWidget.tsx`, `src/components/EnergyCalculatorDialog.tsx`, `src/components/LumiVoltSizer.tsx`, `src/pages/Catalog.tsx` — event calls
+- `src/pages/AdminAnalytics.tsx` — full rewrite of tabs + charts + fetchers

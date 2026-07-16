@@ -3,6 +3,7 @@ import { MessageCircle, X, Send, Loader2, ExternalLink, RotateCcw } from "lucide
 import ReactMarkdown from "react-markdown";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthGatePrompt from "@/components/AuthGatePrompt";
+import { trackConversion } from "@/lib/tracking";
 
 const ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-chat`;
 const STORAGE_KEY = "tioga_ai_chat_v2";
@@ -40,6 +41,7 @@ const AiChatWidget = () => {
     const history = [...messages, userMsg];
     setMessages(history);
     setLoading(true);
+    trackConversion("ai_chat_message", { chars: text.length });
     try {
       const payload = history.map((m) => ({ id: m.id, role: m.role, parts: [{ type: "text", text: m.text }] }));
       const r = await fetch(ENDPOINT, {
@@ -63,7 +65,7 @@ const AiChatWidget = () => {
     <>
       {!open && (
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => { setOpen(true); trackConversion("ai_chat_open"); }}
           aria-label="Open AI assistant"
           className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40 h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-2xl shadow-primary/40 flex items-center justify-center hover:scale-105 transition-transform"
         >

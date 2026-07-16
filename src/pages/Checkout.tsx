@@ -72,6 +72,12 @@ const Checkout = () => {
     });
   }, [user]);
 
+  // Fire checkout_view once per mount (only for authed users actually on the page)
+  useEffect(() => {
+    if (user) trackConversion("checkout_view", { item_count: items.length });
+    // eslint-disable-next-line
+  }, [user]);
+
   useEffect(() => {
     if (user && !form.email) setForm((f) => ({ ...f, email: user.email || "" }));
     if (profile?.full_name && !form.first_name) {
@@ -198,6 +204,7 @@ const Checkout = () => {
     }
     const orderNumber = (data as any)?.order_number || "";
     trackConversion("cart_checkout_lead", { item_count: count, order_number: orderNumber });
+    trackConversion("checkout_step", { step: "payment", method: payment, total });
 
     if (payment === "paystack") {
       // Launch Paystack hosted checkout
