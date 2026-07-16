@@ -41,6 +41,7 @@ const AiChatWidget = () => {
     const history = [...messages, userMsg];
     setMessages(history);
     setLoading(true);
+    trackConversion("ai_chat_message", { chars: text.length });
     try {
       const payload = history.map((m) => ({ id: m.id, role: m.role, parts: [{ type: "text", text: m.text }] }));
       const r = await fetch(ENDPOINT, {
