@@ -204,6 +204,7 @@ const Checkout = () => {
     }
     const orderNumber = (data as any)?.order_number || "";
     trackConversion("cart_checkout_lead", { item_count: count, order_number: orderNumber });
+    trackConversion("checkout_step", { step: "payment", method: payment, total });
 
     if (payment === "paystack") {
       // Launch Paystack hosted checkout
