@@ -21,7 +21,11 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { session_id, page_path, referrer, user_agent } = await req.json();
+    const {
+      session_id, page_path, referrer, user_agent,
+      utm_source, utm_medium, utm_campaign, utm_term, utm_content,
+      landing_path, is_new_session,
+    } = await req.json();
 
     if (!session_id || !page_path) {
       return new Response(JSON.stringify({ error: "session_id and page_path required" }), {
@@ -66,6 +70,7 @@ serve(async (req) => {
     }
 
     const device_type = user_agent ? parseDeviceType(user_agent) : null;
+    const clip = (v: unknown, n = 128) => (typeof v === "string" && v.length ? v.slice(0, n) : null);
 
     await supabase.from("page_views").insert({
       session_id,
@@ -73,6 +78,13 @@ serve(async (req) => {
       referrer: referrer || null,
       user_agent: user_agent || null,
       device_type,
+      utm_source: clip(utm_source),
+      utm_medium: clip(utm_medium),
+      utm_campaign: clip(utm_campaign),
+      utm_term: clip(utm_term),
+      utm_content: clip(utm_content),
+      landing_path: clip(landing_path, 256),
+      is_new_session: Boolean(is_new_session),
     });
 
     return new Response(JSON.stringify({ success: true }), {
