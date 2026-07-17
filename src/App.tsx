@@ -253,6 +253,7 @@ const App = () => (
             <LeadFormHost />
             <EnergyCalculatorDialog />
             <WaitlistDialog />
+            <FeatureHighlightPopup />
             <Suspense fallback={null}>
               <CartDrawer />
               <DeferredMount delay={2500}>
