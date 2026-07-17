@@ -20,6 +20,7 @@ import PreloadCritical from "@/components/PreloadCritical";
 import DeferredMount from "@/components/DeferredMount";
 import EnergyCalculatorDialog from "@/components/EnergyCalculatorDialog";
 import WaitlistDialog from "@/components/WaitlistDialog";
+import FeatureHighlightPopup from "@/components/FeatureHighlightPopup";
 import { useEffect } from "react";
 import { consumeUpdatedNotice, initCacheBustCheck } from "@/lib/cache";
 import { toast } from "sonner";
@@ -252,6 +253,7 @@ const App = () => (
             <LeadFormHost />
             <EnergyCalculatorDialog />
             <WaitlistDialog />
+            <FeatureHighlightPopup />
             <Suspense fallback={null}>
               <CartDrawer />
               <DeferredMount delay={2500}>
