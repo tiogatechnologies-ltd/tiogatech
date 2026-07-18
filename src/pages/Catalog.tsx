@@ -713,11 +713,14 @@ const Catalog = () => {
             <ArrowLeft size={14} /> Back to Home
           </button>
           <h1 className="text-xl sm:text-3xl font-display font-bold leading-tight">
-            {userName ? `${userName}, here is` : "Here is"} what we{" "}
-            <span className="text-accent">recommend for you</span>
+            {hasState ? (
+              <>{userName ? `${userName}, here is` : "Here is"} what we <span className="text-accent">recommend for you</span></>
+            ) : (
+              <>Shop the <span className="text-accent">Tioga Store</span></>
+            )}
           </h1>
           <p className="text-sm text-secondary-foreground/70">
-            Carefully selected solutions tailored to your request.
+            {hasState ? "Carefully selected solutions tailored to your request." : "Solar, smart locks, home automation & security — curated for Nigerian homes and businesses."}
           </p>
           {totalWatts ? (
             <div className="flex items-center gap-2 text-xs bg-secondary-foreground/10 rounded-lg px-3 py-2 w-fit">
@@ -727,6 +730,7 @@ const Catalog = () => {
           ) : null}
         </div>
       </div>
+
 
       {/* AI Recommendation Banner */}
       {(aiLoading || aiRec) && (
