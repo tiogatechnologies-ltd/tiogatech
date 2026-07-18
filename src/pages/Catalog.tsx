@@ -265,7 +265,15 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery, marketingBad
           </button>
         )}
 
-        <p className="text-sm font-bold text-accent">{product.price ?? "Price on request"}</p>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <p className="text-sm font-bold text-accent">{product.price ?? "Price on request"}</p>
+          {interestCount && interestCount > 0 ? (
+            <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Flame size={10} className="text-orange-500" /> {interestCount >= 10 ? `${interestCount}+ interested` : `${interestCount} interested`}
+            </span>
+          ) : null}
+        </div>
+
 
         <div className="mt-auto space-y-2">
           <div className="grid grid-cols-2 gap-2">
