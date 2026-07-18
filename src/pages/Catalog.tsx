@@ -772,33 +772,158 @@ const Catalog = () => {
       )}
 
       <div className="section-container py-6 sm:py-10 space-y-6">
-        {/* Category tabs */}
-        {!loading && availableCategories.length > 1 && (
-          <div className="space-y-3">
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => { setActiveCategory(null); setActiveSeries(null); }}
-                className={`text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${!activeCategory ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-              >
-                All ({allProducts.length})
-              </button>
-              {availableCategories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => { setActiveCategory(activeCategory === cat ? null : cat); setActiveSeries(null); }}
-                  className={`text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${activeCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-                >
-                  {CATEGORY_LABELS[cat] || cat} ({allProducts.filter(p => p.category === cat).length})
-                </button>
-              ))}
+        {/* Sticky toolbar */}
+        {!loading && (
+          <div className="sticky top-16 sm:top-20 z-20 -mx-4 sm:mx-0 px-4 sm:px-0 py-3 bg-background/85 backdrop-blur-md border-b border-border/60 space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1 min-w-0">
+                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search solar, locks, cameras…"
+                  className="pl-9 h-10 bg-card"
+                />
+              </div>
+              <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-10 gap-1.5 shrink-0">
+                    <SlidersHorizontal size={14} />
+                    <span className="hidden xs:inline">Filters</span>
+                    {activeFilterCount > 0 && (
+                      <span className="ml-0.5 rounded-full bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 font-bold">{activeFilterCount}</span>
+                    )}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>Filter products</SheetTitle>
+                  </SheetHeader>
+                  <div className="space-y-6 py-6">
+                    <div>
+                      <p className="text-sm font-semibold mb-2">Category</p>
+                      <div className="space-y-2">
+                        {availableCategories.map((c) => (
+                          <label key={c} className="flex items-center gap-2 text-sm cursor-pointer">
+                            <Checkbox
+                              checked={selectedCategoriesFilter.includes(c)}
+                              onCheckedChange={(v) =>
+                                setSelectedCategoriesFilter((prev) => (v ? [...prev, c] : prev.filter((x) => x !== c)))
+                              }
+                            />
+                            {CATEGORY_LABELS[c] || c}
+                            <span className="text-xs text-muted-foreground">({allProducts.filter((p) => p.category === c).length})</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold mb-2">Tier</p>
+                      <div className="space-y-2">
+                        {(["premium", "mid", "affordable", "entry"] as const).map((t) => (
+                          <label key={t} className="flex items-center gap-2 text-sm cursor-pointer">
+                            <Checkbox
+                              checked={selectedTiers.includes(t)}
+                              onCheckedChange={(v) =>
+                                setSelectedTiers((prev) => (v ? [...prev, t] : prev.filter((x) => x !== t)))
+                              }
+                            />
+                            {tierLabels[t]}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold mb-2">Price range</p>
+                      <div className="space-y-2">
+                        {PRICE_BUCKETS.map((b) => (
+                          <label key={b.key} className="flex items-center gap-2 text-sm cursor-pointer">
+                            <Checkbox
+                              checked={selectedPriceBuckets.includes(b.key)}
+                              onCheckedChange={(v) =>
+                                setSelectedPriceBuckets((prev) => (v ? [...prev, b.key] : prev.filter((x) => x !== b.key)))
+                              }
+                            />
+                            {b.label}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <SheetFooter className="gap-2 sm:gap-2 flex-row">
+                    <Button variant="outline" onClick={clearAllFilters} className="flex-1">Clear all</Button>
+                    <Button onClick={() => setFilterOpen(false)} className="flex-1">Show {filteredProducts.length} results</Button>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+              <Select value={sortKey} onValueChange={(v) => setSortKey(v as SortKey)}>
+                <SelectTrigger className="h-10 w-[130px] sm:w-[160px] bg-card shrink-0">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="recommended">Recommended</SelectItem>
+                  <SelectItem value="price-asc">Lowest price</SelectItem>
+                  <SelectItem value="price-desc">Highest price</SelectItem>
+                  <SelectItem value="newest">Newest</SelectItem>
+                  <SelectItem value="name">Name A–Z</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            {/* Series sub-filter */}
-            {availableSeries.length > 3 && (
+            {/* Category pills */}
+            {availableCategories.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto snap-x scrollbar-hide -mx-1 px-1 pb-0.5">
+                <button
+                  onClick={() => { setActiveCategory(null); setActiveSeries(null); }}
+                  className={`shrink-0 snap-start text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${!activeCategory ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                >
+                  All ({allProducts.length})
+                </button>
+                {availableCategories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => { setActiveCategory(activeCategory === cat ? null : cat); setActiveSeries(null); }}
+                    className={`shrink-0 snap-start text-xs px-3 py-1.5 rounded-full border transition-colors font-medium whitespace-nowrap ${activeCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                  >
+                    {CATEGORY_LABELS[cat] || cat} ({allProducts.filter((p) => p.category === cat).length})
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Active filter chips */}
+            {activeFilterCount > 0 && (
               <div className="flex flex-wrap gap-1.5">
+                {search.trim() && (
+                  <button onClick={() => setSearch("")} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
+                    "{search}" <X size={11} />
+                  </button>
+                )}
+                {selectedCategoriesFilter.map((c) => (
+                  <button key={`c-${c}`} onClick={() => setSelectedCategoriesFilter((p) => p.filter((x) => x !== c))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
+                    {CATEGORY_LABELS[c] || c} <X size={11} />
+                  </button>
+                ))}
+                {selectedTiers.map((t) => (
+                  <button key={`t-${t}`} onClick={() => setSelectedTiers((p) => p.filter((x) => x !== t))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
+                    {tierLabels[t]} <X size={11} />
+                  </button>
+                ))}
+                {selectedPriceBuckets.map((k) => (
+                  <button key={`p-${k}`} onClick={() => setSelectedPriceBuckets((p) => p.filter((x) => x !== k))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
+                    {PRICE_BUCKETS.find((b) => b.key === k)?.label} <X size={11} />
+                  </button>
+                ))}
+                <button onClick={clearAllFilters} className="text-[11px] px-2 py-1 rounded-full text-primary hover:underline font-medium">Clear all</button>
+              </div>
+            )}
+
+            {/* Series sub-filter (only when a specific category is active) */}
+            {activeCategory && availableSeries.length > 3 && (
+              <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
                 <button
                   onClick={() => setActiveSeries(null)}
-                  className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${!activeSeries ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                  className={`shrink-0 text-[11px] px-2.5 py-1 rounded-full border transition-colors ${!activeSeries ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
                 >
                   All Series
                 </button>
@@ -806,7 +931,7 @@ const Catalog = () => {
                   <button
                     key={series}
                     onClick={() => setActiveSeries(activeSeries === series ? null : series)}
-                    className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${activeSeries === series ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                    className={`shrink-0 text-[11px] px-2.5 py-1 rounded-full border transition-colors whitespace-nowrap ${activeSeries === series ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
                   >
                     {series} ({count})
                   </button>
@@ -817,19 +942,88 @@ const Catalog = () => {
         )}
 
         {loading ? (
-          <div className="text-center py-20">
-            <div className="animate-pulse text-muted-foreground">Loading recommendations...</div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="rounded-2xl border border-border bg-card overflow-hidden">
+                <div className="h-32 sm:h-40 bg-muted animate-pulse" />
+                <div className="p-3 space-y-2">
+                  <div className="h-3 w-2/3 bg-muted rounded animate-pulse" />
+                  <div className="h-2 w-full bg-muted rounded animate-pulse" />
+                  <div className="h-2 w-1/2 bg-muted rounded animate-pulse" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <>
+            {/* Marketing rails (browse mode only) */}
+            {showRails && (
+              <div className="space-y-8">
+                {[
+                  { key: "topRecommended", title: "Top Recommended", icon: Star, items: rails.topRecommended, iconClass: "text-accent" },
+                  { key: "bestSellers", title: "Best Sellers", icon: Flame, items: rails.bestSellers, iconClass: "text-orange-500" },
+                  { key: "lowest", title: "Lowest Prices", icon: Tag, items: rails.lowest, iconClass: "text-emerald-600" },
+                  { key: "newest", title: "New Arrivals", icon: TrendingUp, items: rails.newest, iconClass: "text-blue-600" },
+                  { key: "bundles", title: "Bundle & Save", icon: PackageOpen, items: rails.bundles, iconClass: "text-primary" },
+                ].filter((r) => r.items.length > 0).map((rail) => {
+                  const Icon = rail.icon;
+                  return (
+                    <div key={rail.key}>
+                      <div className="flex items-center justify-between mb-3">
+                        <h2 className="text-base sm:text-lg font-display font-bold text-foreground flex items-center gap-2">
+                          <Icon size={18} className={rail.iconClass} /> {rail.title}
+                        </h2>
+                        <button
+                          onClick={() => {
+                            if (rail.key === "lowest") setSortKey("price-asc");
+                            else if (rail.key === "newest") setSortKey("newest");
+                            document.getElementById("all-products")?.scrollIntoView({ behavior: "smooth" });
+                          }}
+                          className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                        >
+                          See all <ArrowRight size={12} />
+                        </button>
+                      </div>
+                      <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-2">
+                        {rail.items.map((p) => (
+                          <div key={p.id} className="snap-start shrink-0 w-[220px] sm:w-[240px]">
+                            <ProductCard
+                              product={p}
+                              isRecommended={isRecommended(p)}
+                              pickNumber={getPickNumber(p)}
+                              gallery={galleryByProduct[p.id]}
+                              marketingBadges={badgesByProduct[p.id]}
+                              interestCount={clickCounts[p.id]}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="border-t border-border pt-4">
+                  <h2 className="text-lg sm:text-xl font-display font-bold text-foreground">Browse everything</h2>
+                  <p className="text-xs text-muted-foreground mt-1">{allProducts.length} products across every category.</p>
+                </div>
+              </div>
+            )}
+
             {/* Product count */}
-            <p className="text-xs text-muted-foreground">
-              Showing {((currentPage - 1) * PRODUCTS_PER_PAGE) + 1} to {Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length)} of {filteredProducts.length} products
+            <p id="all-products" className="text-xs text-muted-foreground scroll-mt-32">
+              Showing {filteredProducts.length === 0 ? 0 : ((currentPage - 1) * PRODUCTS_PER_PAGE) + 1} to {Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length)} of {filteredProducts.length} products
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {paginatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} pickNumber={getPickNumber(p)} gallery={galleryByProduct[p.id]} />
+                <ProductCard
+                  key={p.id}
+                  product={p}
+                  isRecommended={isRecommended(p)}
+                  pickNumber={getPickNumber(p)}
+                  gallery={galleryByProduct[p.id]}
+                  marketingBadges={badgesByProduct[p.id]}
+                  interestCount={clickCounts[p.id]}
+                />
               ))}
             </div>
 
@@ -839,7 +1033,7 @@ const Catalog = () => {
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
-                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
                     />
                   </PaginationItem>
@@ -862,7 +1056,7 @@ const Catalog = () => {
                   )}
                   <PaginationItem>
                     <PaginationNext
-                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                       className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
                     />
                   </PaginationItem>
@@ -873,14 +1067,18 @@ const Catalog = () => {
             {filteredProducts.length === 0 && (
               <div className="text-center py-20 space-y-4">
                 <p className="text-muted-foreground">No products matched your selection.</p>
-                <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
-                  <MessageCircle size={16} /> Chat with us
-                </a>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <Button variant="outline" onClick={clearAllFilters}>Reset filters</Button>
+                  <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground">
+                    <MessageCircle size={16} /> Chat with us
+                  </a>
+                </div>
               </div>
             )}
           </>
         )}
       </div>
+
 
       {/* Sticky bottom */}
       <div className="fixed bottom-0 inset-x-0 z-50 bg-card/90 backdrop-blur-lg border-t border-border py-3 px-4">
