@@ -1,81 +1,73 @@
-## Analytics overhaul plan
+## Goal
+Rebuild the `/catalog` page (browse view — when there's no AI recommendation state) into a modern, Shopify-style storefront: clean category browsing, filters tucked behind buttons, marketing-driven product rails, and a tidy responsive grid. Preserve the existing AI-recommendation flow (the version rendered when users arrive from the guided lead form with `location.state`) — only revamp the general browse experience.
 
-### 1. New tracking (starts recording from ship time forward)
+## Scope
+- File: `src/pages/Catalog.tsx` (browse mode only)
+- Reuse existing `ProductCard`, cart, tracking, and Supabase product fetch — no schema or business-logic changes.
+- Zero backend changes.
 
-**Schema additions to `page_views`** — capture attribution on every hit:
-- `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content` (text)
-- `landing_path` (text, first path of session)
-- `is_new_session` (bool)
+## New Browse Layout
 
-**Client instrumentation** (`usePageTracker` + `src/lib/tracking.ts`):
-- Read UTMs from `location.search` and persist to `sessionStorage` for the session
-- Track first page of session as `landing_path` + flag session as new (first hit)
-- **Scroll depth** — fire `conversions` events at 25/50/75/100 % once per page
-- **Session duration** — on `visibilitychange:hidden` / `pagehide`, send accumulated active-time as a `session_end` conversion
-- **Checkout funnel** — new events `checkout_view`, `checkout_step` ({step: contact|delivery|payment}), `checkout_paid` in `Checkout.tsx`
-- **AI chat** — `ai_chat_open`, `ai_chat_message` in `AiChatWidget.tsx`
-- **Calculator / sizer** — `energy_calculator_submit`, `lumivolt_sizer_submit`
-- **Product view** — fire from product detail / catalog card open
+### 1. Sticky top toolbar (below site header)
+- Search input (filters by name/description/features/tags — client-side).
+- "Filters" button → opens a shadcn `Sheet` (slides from right on desktop, bottom on mobile) containing:
+  - Category checkboxes (Solar, Smart Locks, Smart Home, CCTV)
+  - Tier checkboxes (Premium, Mid-tier, Affordable, Entry)
+  - Series dropdown (populated from data)
+  - Price bucket (Under ₦500k / ₦500k–₦1M / ₦1M–₦3M / ₦3M+ / Price on request)
+  - "Clear all" + "Show N results" footer buttons
+- Sort dropdown: Recommended · Lowest price · Highest price · Newest · Name A–Z.
+- Active-filter chips row (dismissible) directly under the toolbar.
 
-All events reuse the existing `conversions` table (event_type + metadata).
+### 2. Category pill nav
+- Horizontal scrollable pills: "All", "Solar", "Smart Locks", "Smart Home", "CCTV", each with icon + count.
+- Sticks under toolbar on scroll; snap-scroll on mobile.
 
-### 2. Lead analytics audit — fixes to `AdminAnalytics`
+### 3. Marketing rails (only shown on "All" view, hidden when a filter/category is active)
+Horizontal scroll rails, each 1–1.5 cards wide on mobile, 3–4 on desktop:
+- **⭐ Top Recommended** — products tagged `recommended` or top-tier picks per category (curated by tier=premium + featured tag fallback).
+- **🔥 Best Sellers** — highest `product_clicks` count (already tracked); fallback to a static curated list if empty.
+- **💰 Lowest Prices** — cheapest 8 items with a real numeric price.
+- **✨ New Arrivals** — most recent by `created_at`.
+- **🎁 Bundle & Save** — items where `tags` includes `combo` or `series` includes "Combo".
 
-| Issue found | Fix |
-|---|---|
-| `parseBudget` strips currency but breaks on ranges like "500K-1M" | Parse midpoints for range strings, keep single-value logic |
-| Conversion rate treats only `status='converted'` as won, ignores `closed` | Rate = converted / total; add separate "closed lost" metric |
-| Location parsing uses second-to-last comma segment — miscounts single-word cities | Normalize with a small city map (Lagos, Abuja, PH, Jos, etc.) + fallback |
-| No dedup by phone/email — a repeated submission double-counts | Add "unique leads" KPI counting distinct phone+email |
-| `source` fallback lumps all "website_form" — missing UTM breakdown | Cross-reference `utm_source`/`utm_medium`/`utm_campaign` columns already on `leads` |
-| Growth vs previous period uses period=0 as 0-baseline | Skip growth pill when period=0 (All time) |
+Each rail: title + "See all →" link that pre-applies the equivalent filter/sort.
 
-### 3. New tabs on `/admin/analytics`
+### 4. Product grid
+- Responsive grid: 2 cols on mobile, 3 on tablet, 4 on desktop (`grid-cols-2 sm:grid-cols-3 lg:grid-cols-4`).
+- Cards get lightweight marketing badges layered onto the existing `ProductCard` (top-left corner):
+  - "Best Seller" (top 10% clicks)
+  - "Great Value" (lowest 25% priced within its category)
+  - "New" (created within last 30 days)
+  - "Popular Pick" (premium tier)
+- Add a subtle "N sold this week" style social-proof line using rounded click counts (e.g. "12+ interested this week"). Keep it soft, no fake data — only shows when clicks > 0.
+- Grouped section headers when no filter is active: cards render in category sections with sticky mini-headers ("Solar Products · 24 items").
 
-Reworked tab bar: **Overview · Leads · Revenue · Traffic · Funnels · Performance**
+### 5. Empty & loading states
+- Skeleton cards while fetching (6 shimmer tiles).
+- Empty state: friendly illustration + "Reset filters" CTA when no matches.
 
-**Overview** — top-line KPIs across all domains + 30-day trend spark.
+### 6. Mobile polish
+- Sticky bottom "Filters (3)" floating button on mobile as a secondary trigger for the sheet.
+- Cart button already in header; ensure toolbar collapses cleanly under 375px.
+- Touch targets ≥ 44px; horizontal rails use `snap-x snap-mandatory`.
 
-**Revenue** (new)
-- Gross revenue (paid orders only), net revenue (minus discounts), pending revenue
-- AOV, orders count, paid vs pending vs cancelled split
-- Top 10 products by revenue (from `order_items` × parsed `price_label`)
-- Revenue by state (from `shipping_address` → state), payment method, source
-- Discount usage: redemptions, total discounted, top codes
-- Daily revenue trend chart
+## Preserved behavior
+- Guided-form arrival (`location.state.products`) still shows AI recommendation section + curated picks first, then the new browse grid below.
+- `ProductCard`, cart add, tracking, WhatsApp chat, FlexiblePaymentButton unchanged.
+- Pagination retained at the bottom of the flat grid view (15/page).
+- SEO, `SiteHeader`, `SiteFooter`, `ImageLightbox` unchanged.
 
-**Traffic** (expanded)
-- Sessions, page views, unique visitors, pages/session, avg session duration, bounce rate
-- New vs returning sessions
-- Top sources / referrers, top UTM campaigns
-- Top landing pages, top exit pages
-- Country / city map list, device split
-- Traffic trend (daily/weekly)
+## Technical notes
+- Extract browse-mode UI into a `CatalogBrowse` component inside `Catalog.tsx` (or a new `src/components/catalog/` folder with `FilterSheet.tsx`, `CategoryPills.tsx`, `MarketingRail.tsx`, `ProductBadges.tsx`).
+- Use existing shadcn `Sheet`, `Select`, `Checkbox`, `Badge`, `ScrollArea`, `Input`.
+- All colors via semantic tokens (`primary`, `accent`, `muted`, `card`) — no hard-coded hex.
+- Client-side filtering/sorting only (data already fetched); memoize derived rails and filtered lists.
+- Marketing badges computed once via `useMemo` over `allProducts`.
 
-**Funnels** (new)
-- Site funnel: Sessions → Product views → Cart adds → Checkout views → Paid orders (with drop-off %)
-- Assessment funnel: Assessment starts → Basic completes → Full unlocks → Subscribes
-- Lead funnel: Landing → Lead form open → Lead submitted → Contacted → Converted
+## Out of scope
+- Product detail pages, wishlist, reviews, price editing.
+- Any change to AI recommendation logic.
+- Server-side pagination or new DB columns.
 
-**Leads** — audited existing charts, add UTM/campaign breakdown card.
-
-**Performance** — unchanged (LCP/INP/CLS + errors).
-
-### 4. Data-fetch fixes
-- Paginate `orders`, `order_items`, `conversions` past PostgREST's 1k cap (same pattern already applied to `page_views`)
-- Server-side date filter by selected period on every big query
-
-### Technical notes
-- New tracking events use existing `conversions` insert policy (bounds are already length-checked). Add `event_type` values to the `ConversionEvent` union in `src/lib/tracking.ts`.
-- Bounce = sessions with exactly 1 page_view AND no conversion event.
-- Avg session duration = median of `session_end.metadata.duration_ms` (median, not mean, to resist outliers).
-- New vs returning = based on whether session_id has a stored `first_seen` in a new `visitor_sessions` view derived from `page_views` (`min(created_at) < 24h ago` = new).
-- Landing page = row in `page_views` where `is_new_session=true`.
-
-### Files touched
-- `supabase/migrations/*` — add columns to `page_views`
-- `src/hooks/usePageTracker.ts` — UTMs, landing, new-session flag, scroll depth, session duration
-- `src/lib/tracking.ts` — expand `ConversionEvent` union, add helpers
-- `supabase/functions/track-pageview/index.ts` — persist new columns
-- `src/pages/Checkout.tsx`, `src/components/AiChatWidget.tsx`, `src/components/EnergyCalculatorDialog.tsx`, `src/components/LumiVoltSizer.tsx`, `src/pages/Catalog.tsx` — event calls
-- `src/pages/AdminAnalytics.tsx` — full rewrite of tabs + charts + fetchers
+Confirm and I'll implement.
