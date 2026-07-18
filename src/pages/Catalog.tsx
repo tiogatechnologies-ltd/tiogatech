@@ -119,7 +119,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   cctv: "CCTV & Security",
 };
 
-const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product: Product; isRecommended?: boolean; pickNumber?: number; gallery?: string[] }) => {
+const ProductCard = ({ product, isRecommended, pickNumber, gallery, marketingBadges, interestCount }: { product: Product; isRecommended?: boolean; pickNumber?: number; gallery?: string[]; marketingBadges?: string[]; interestCount?: number }) => {
   const [expanded, setExpanded] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
