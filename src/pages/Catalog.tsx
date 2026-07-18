@@ -431,6 +431,14 @@ const Catalog = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeSeries, setActiveSeries] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
+  const [selectedPriceBuckets, setSelectedPriceBuckets] = useState<string[]>([]);
+  const [selectedCategoriesFilter, setSelectedCategoriesFilter] = useState<string[]>([]);
+  const [sortKey, setSortKey] = useState<SortKey>("recommended");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [clickCounts, setClickCounts] = useState<Record<string, number>>({});
+
 
   // Determine the primary category from form
   const primaryCategory = useMemo(() => {
