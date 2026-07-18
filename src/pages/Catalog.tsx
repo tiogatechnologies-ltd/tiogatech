@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2, Expand, ShoppingBag } from "lucide-react";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2, Expand, ShoppingBag, Search, SlidersHorizontal, X, Flame, TrendingUp, Tag, PackageOpen, Star, ArrowRight } from "lucide-react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import ImageLightbox from "@/components/ImageLightbox";
 import SiteHeader from "@/components/SiteHeader";
@@ -10,6 +10,11 @@ import SEO from "@/components/SEO";
 import { useCart } from "@/contexts/CartContext";
 import { trackConversion } from "@/lib/tracking";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("tioga_session_id") || "unknown";
@@ -27,6 +32,26 @@ import {
 
 const WHATSAPP = "https://wa.me/2348178000023";
 const PRODUCTS_PER_PAGE = 15;
+
+// Parse "₦450,000" / "450000" / "Price on request" to a number (NaN if unknown)
+const parsePriceNaira = (price?: string | null): number => {
+  if (!price) return NaN;
+  const cleaned = price.replace(/[^\d.]/g, "");
+  if (!cleaned) return NaN;
+  const n = parseFloat(cleaned);
+  return isFinite(n) && n > 0 ? n : NaN;
+};
+
+const PRICE_BUCKETS: { key: string; label: string; test: (n: number) => boolean }[] = [
+  { key: "u500", label: "Under ₦500k", test: (n) => n > 0 && n < 500_000 },
+  { key: "500-1m", label: "₦500k – ₦1M", test: (n) => n >= 500_000 && n < 1_000_000 },
+  { key: "1m-3m", label: "₦1M – ₦3M", test: (n) => n >= 1_000_000 && n < 3_000_000 },
+  { key: "3m+", label: "₦3M+", test: (n) => n >= 3_000_000 },
+  { key: "request", label: "Price on request", test: (n) => !isFinite(n) || n <= 0 },
+];
+
+type SortKey = "recommended" | "price-asc" | "price-desc" | "newest" | "name";
+
 
 interface Product {
   id: string;
