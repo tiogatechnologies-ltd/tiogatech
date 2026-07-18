@@ -464,7 +464,7 @@ const Catalog = () => {
     const fetchProducts = async () => {
       const { data } = await supabase
         .from("products")
-        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications, tags")
+        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications, tags, created_at")
         .in("category", targetCategories)
         .eq("is_active", true)
         .order("sort_order");
@@ -478,20 +478,34 @@ const Catalog = () => {
       // Fetch gallery images for these products
       if (results.length) {
         const ids = results.map((p) => p.id);
-        const { data: imgs } = await (supabase as any)
-          .from("product_images")
-          .select("product_id, url, sort_order, is_primary")
-          .in("product_id", ids)
-          .order("is_primary", { ascending: false })
-          .order("sort_order", { ascending: true });
+        const [imgsRes, clicksRes] = await Promise.all([
+          (supabase as any)
+            .from("product_images")
+            .select("product_id, url, sort_order, is_primary")
+            .in("product_id", ids)
+            .order("is_primary", { ascending: false })
+            .order("sort_order", { ascending: true }),
+          (supabase as any)
+            .from("product_clicks")
+            .select("product_id")
+            .in("product_id", ids)
+            .limit(5000),
+        ]);
         const map: Record<string, string[]> = {};
-        ((imgs as any[]) ?? []).forEach((row) => {
+        ((imgsRes.data as any[]) ?? []).forEach((row) => {
           if (!map[row.product_id]) map[row.product_id] = [];
           map[row.product_id].push(row.url);
         });
         setGalleryByProduct(map);
+
+        const counts: Record<string, number> = {};
+        ((clicksRes.data as any[]) ?? []).forEach((row) => {
+          counts[row.product_id] = (counts[row.product_id] || 0) + 1;
+        });
+        setClickCounts(counts);
       }
     };
+
     fetchProducts();
   }, []);
 
