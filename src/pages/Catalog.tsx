@@ -66,7 +66,9 @@ interface Product {
   image_url: string | null;
   specifications: Record<string, string> | null;
   tags: string[] | null;
+  created_at?: string;
 }
+
 
 interface AIRecommendation {
   recommendedProducts: string[];
