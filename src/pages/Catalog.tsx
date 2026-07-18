@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2, Expand, ShoppingBag } from "lucide-react";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2, Expand, ShoppingBag, Search, SlidersHorizontal, X, Flame, TrendingUp, Tag, PackageOpen, Star, ArrowRight } from "lucide-react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import ImageLightbox from "@/components/ImageLightbox";
 import SiteHeader from "@/components/SiteHeader";
@@ -10,6 +10,11 @@ import SEO from "@/components/SEO";
 import { useCart } from "@/contexts/CartContext";
 import { trackConversion } from "@/lib/tracking";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("tioga_session_id") || "unknown";
@@ -28,6 +33,26 @@ import {
 const WHATSAPP = "https://wa.me/2348178000023";
 const PRODUCTS_PER_PAGE = 15;
 
+// Parse "₦450,000" / "450000" / "Price on request" to a number (NaN if unknown)
+const parsePriceNaira = (price?: string | null): number => {
+  if (!price) return NaN;
+  const cleaned = price.replace(/[^\d.]/g, "");
+  if (!cleaned) return NaN;
+  const n = parseFloat(cleaned);
+  return isFinite(n) && n > 0 ? n : NaN;
+};
+
+const PRICE_BUCKETS: { key: string; label: string; test: (n: number) => boolean }[] = [
+  { key: "u500", label: "Under ₦500k", test: (n) => n > 0 && n < 500_000 },
+  { key: "500-1m", label: "₦500k – ₦1M", test: (n) => n >= 500_000 && n < 1_000_000 },
+  { key: "1m-3m", label: "₦1M – ₦3M", test: (n) => n >= 1_000_000 && n < 3_000_000 },
+  { key: "3m+", label: "₦3M+", test: (n) => n >= 3_000_000 },
+  { key: "request", label: "Price on request", test: (n) => !isFinite(n) || n <= 0 },
+];
+
+type SortKey = "recommended" | "price-asc" | "price-desc" | "newest" | "name";
+
+
 interface Product {
   id: string;
   name: string;
@@ -41,7 +66,9 @@ interface Product {
   image_url: string | null;
   specifications: Record<string, string> | null;
   tags: string[] | null;
+  created_at?: string;
 }
+
 
 interface AIRecommendation {
   recommendedProducts: string[];
@@ -92,7 +119,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   cctv: "CCTV & Security",
 };
 
-const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product: Product; isRecommended?: boolean; pickNumber?: number; gallery?: string[] }) => {
+const ProductCard = ({ product, isRecommended, pickNumber, gallery, marketingBadges, interestCount }: { product: Product; isRecommended?: boolean; pickNumber?: number; gallery?: string[]; marketingBadges?: string[]; interestCount?: number }) => {
   const [expanded, setExpanded] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -147,6 +174,24 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
           <span className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-card/80 backdrop-blur text-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             <Expand size={13} />
           </span>
+          {marketingBadges && marketingBadges.length > 0 && (
+            <div className="absolute top-1.5 left-1.5 flex flex-col gap-1 max-w-[70%]">
+              {marketingBadges.slice(0, 2).map((b) => {
+                const styles: Record<string, string> = {
+                  "Best Seller": "bg-orange-500 text-white",
+                  "Great Value": "bg-emerald-600 text-white",
+                  "New": "bg-blue-600 text-white",
+                  "Popular Pick": "bg-accent text-accent-foreground",
+                };
+                return (
+                  <span key={b} className={`text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shadow-sm ${styles[b] || "bg-primary text-primary-foreground"}`}>
+                    {b}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+
           {allImages.length > 1 && (
             <>
               <button
@@ -220,7 +265,15 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery }: { product:
           </button>
         )}
 
-        <p className="text-sm font-bold text-accent">{product.price ?? "Price on request"}</p>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <p className="text-sm font-bold text-accent">{product.price ?? "Price on request"}</p>
+          {interestCount && interestCount > 0 ? (
+            <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Flame size={10} className="text-orange-500" /> {interestCount >= 10 ? `${interestCount}+ interested` : `${interestCount} interested`}
+            </span>
+          ) : null}
+        </div>
+
 
         <div className="mt-auto space-y-2">
           <div className="grid grid-cols-2 gap-2">
@@ -378,6 +431,14 @@ const Catalog = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeSeries, setActiveSeries] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
+  const [selectedPriceBuckets, setSelectedPriceBuckets] = useState<string[]>([]);
+  const [selectedCategoriesFilter, setSelectedCategoriesFilter] = useState<string[]>([]);
+  const [sortKey, setSortKey] = useState<SortKey>("recommended");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [clickCounts, setClickCounts] = useState<Record<string, number>>({});
+
 
   // Determine the primary category from form
   const primaryCategory = useMemo(() => {
@@ -403,7 +464,7 @@ const Catalog = () => {
     const fetchProducts = async () => {
       const { data } = await supabase
         .from("products")
-        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications, tags")
+        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications, tags, created_at")
         .in("category", targetCategories)
         .eq("is_active", true)
         .order("sort_order");
@@ -417,20 +478,34 @@ const Catalog = () => {
       // Fetch gallery images for these products
       if (results.length) {
         const ids = results.map((p) => p.id);
-        const { data: imgs } = await (supabase as any)
-          .from("product_images")
-          .select("product_id, url, sort_order, is_primary")
-          .in("product_id", ids)
-          .order("is_primary", { ascending: false })
-          .order("sort_order", { ascending: true });
+        const [imgsRes, clicksRes] = await Promise.all([
+          (supabase as any)
+            .from("product_images")
+            .select("product_id, url, sort_order, is_primary")
+            .in("product_id", ids)
+            .order("is_primary", { ascending: false })
+            .order("sort_order", { ascending: true }),
+          (supabase as any)
+            .from("product_clicks")
+            .select("product_id")
+            .in("product_id", ids)
+            .limit(5000),
+        ]);
         const map: Record<string, string[]> = {};
-        ((imgs as any[]) ?? []).forEach((row) => {
+        ((imgsRes.data as any[]) ?? []).forEach((row) => {
           if (!map[row.product_id]) map[row.product_id] = [];
           map[row.product_id].push(row.url);
         });
         setGalleryByProduct(map);
+
+        const counts: Record<string, number> = {};
+        ((clicksRes.data as any[]) ?? []).forEach((row) => {
+          counts[row.product_id] = (counts[row.product_id] || 0) + 1;
+        });
+        setClickCounts(counts);
       }
     };
+
     fetchProducts();
   }, []);
 
@@ -477,29 +552,109 @@ const Catalog = () => {
     return cats;
   }, [allProducts]);
 
+  // Marketing badge computation
+  const badgesByProduct = useMemo(() => {
+    if (!allProducts.length) return {} as Record<string, string[]>;
+    const now = Date.now();
+    const clickList = Object.values(clickCounts);
+    const sortedClicks = [...clickList].sort((a, b) => b - a);
+    const bestSellerThreshold = sortedClicks[Math.floor(sortedClicks.length * 0.1)] ?? Infinity;
+
+    // Per-category price quartiles for "Great Value"
+    const byCat: Record<string, number[]> = {};
+    for (const p of allProducts) {
+      const n = parsePriceNaira(p.price);
+      if (isFinite(n) && n > 0) {
+        if (!byCat[p.category]) byCat[p.category] = [];
+        byCat[p.category].push(n);
+      }
+    }
+    const q1ByCat: Record<string, number> = {};
+    for (const k of Object.keys(byCat)) {
+      const s = byCat[k].sort((a, b) => a - b);
+      q1ByCat[k] = s[Math.floor(s.length * 0.25)] ?? 0;
+    }
+
+    const map: Record<string, string[]> = {};
+    for (const p of allProducts) {
+      const badges: string[] = [];
+      const clicks = clickCounts[p.id] || 0;
+      if (clicks >= 3 && clicks >= bestSellerThreshold && bestSellerThreshold !== Infinity) badges.push("Best Seller");
+      const n = parsePriceNaira(p.price);
+      if (isFinite(n) && q1ByCat[p.category] && n <= q1ByCat[p.category]) badges.push("Great Value");
+      if (p.created_at) {
+        const ageDays = (now - new Date(p.created_at).getTime()) / (1000 * 60 * 60 * 24);
+        if (ageDays <= 30) badges.push("New");
+      }
+      if (p.tier === "premium" && !badges.includes("Best Seller")) badges.push("Popular Pick");
+      map[p.id] = badges;
+    }
+    return map;
+  }, [allProducts, clickCounts]);
+
+  // Marketing rails (only meaningful in browse mode)
+  const rails = useMemo(() => {
+    const withPrice = allProducts.filter((p) => {
+      const n = parsePriceNaira(p.price);
+      return isFinite(n) && n > 0;
+    });
+    return {
+      topRecommended: allProducts.filter((p) => p.tier === "premium" || (p.tags || []).includes("recommended")).slice(0, 10),
+      bestSellers: [...allProducts].sort((a, b) => (clickCounts[b.id] || 0) - (clickCounts[a.id] || 0)).filter((p) => (clickCounts[p.id] || 0) > 0).slice(0, 10),
+      lowest: [...withPrice].sort((a, b) => parsePriceNaira(a.price) - parsePriceNaira(b.price)).slice(0, 10),
+      newest: [...allProducts].sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()).slice(0, 10),
+      bundles: allProducts.filter((p) => (p.tags || []).includes("combo") || (p.series || "").toLowerCase().includes("combo") || (p.series || "").toLowerCase().includes("suite")).slice(0, 10),
+    };
+  }, [allProducts, clickCounts]);
+
   // Filter products
   const filteredProducts = useMemo(() => {
     let filtered = allProducts;
-    if (activeCategory) {
-      filtered = filtered.filter(p => p.category === activeCategory);
-    }
-    if (activeSeries) {
-      filtered = filtered.filter(p => (p.series || p.category) === activeSeries);
-    }
-    // Sort: recommended first, ordered by pick number
-    if (aiRec?.recommendedProducts?.length) {
-      filtered.sort((a, b) => {
-        const aP = getPickNumber(a) || 999;
-        const bP = getPickNumber(b) || 999;
-        return aP - bP;
+    if (activeCategory) filtered = filtered.filter((p) => p.category === activeCategory);
+    if (activeSeries) filtered = filtered.filter((p) => (p.series || p.category) === activeSeries);
+    if (selectedCategoriesFilter.length) filtered = filtered.filter((p) => selectedCategoriesFilter.includes(p.category));
+    if (selectedTiers.length) filtered = filtered.filter((p) => selectedTiers.includes(p.tier));
+    if (selectedPriceBuckets.length) {
+      filtered = filtered.filter((p) => {
+        const n = parsePriceNaira(p.price);
+        return selectedPriceBuckets.some((k) => PRICE_BUCKETS.find((b) => b.key === k)?.test(n));
       });
     }
-    return filtered;
-  }, [allProducts, activeCategory, activeSeries, aiRec]);
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      filtered = filtered.filter((p) =>
+        p.name.toLowerCase().includes(q) ||
+        (p.description || "").toLowerCase().includes(q) ||
+        (p.series || "").toLowerCase().includes(q) ||
+        (p.features || []).some((f) => f.toLowerCase().includes(q)) ||
+        (p.tags || []).some((t) => t.toLowerCase().includes(q))
+      );
+    }
+
+    const arr = [...filtered];
+    if (sortKey === "price-asc") arr.sort((a, b) => (parsePriceNaira(a.price) || Infinity) - (parsePriceNaira(b.price) || Infinity));
+    else if (sortKey === "price-desc") arr.sort((a, b) => (parsePriceNaira(b.price) || -1) - (parsePriceNaira(a.price) || -1));
+    else if (sortKey === "newest") arr.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+    else if (sortKey === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
+    else if (aiRec?.recommendedProducts?.length) {
+      arr.sort((a, b) => (getPickNumber(a) || 999) - (getPickNumber(b) || 999));
+    }
+    return arr;
+  }, [allProducts, activeCategory, activeSeries, aiRec, search, selectedTiers, selectedPriceBuckets, selectedCategoriesFilter, sortKey]);
+
+  const activeFilterCount =
+    selectedTiers.length + selectedPriceBuckets.length + selectedCategoriesFilter.length + (search.trim() ? 1 : 0);
+
+  const clearAllFilters = () => {
+    setSelectedTiers([]);
+    setSelectedPriceBuckets([]);
+    setSelectedCategoriesFilter([]);
+    setSearch("");
+  };
 
   // Series within active category
   const availableSeries = useMemo(() => {
-    const source = activeCategory ? allProducts.filter(p => p.category === activeCategory) : allProducts;
+    const source = activeCategory ? allProducts.filter((p) => p.category === activeCategory) : allProducts;
     const seriesMap: Record<string, number> = {};
     for (const p of source) {
       const key = p.series || p.category;
@@ -515,8 +670,11 @@ const Catalog = () => {
     currentPage * PRODUCTS_PER_PAGE
   );
 
+  const showRails = !hasState && !activeCategory && !activeSeries && activeFilterCount === 0 && sortKey === "recommended";
+
   // Reset page on filter change
-  useEffect(() => { setCurrentPage(1); }, [activeCategory, activeSeries]);
+  useEffect(() => { setCurrentPage(1); }, [activeCategory, activeSeries, search, selectedTiers, selectedPriceBuckets, selectedCategoriesFilter, sortKey]);
+
 
   const getPageNumbers = () => {
     const pages: (number | "ellipsis")[] = [];
@@ -555,11 +713,14 @@ const Catalog = () => {
             <ArrowLeft size={14} /> Back to Home
           </button>
           <h1 className="text-xl sm:text-3xl font-display font-bold leading-tight">
-            {userName ? `${userName}, here is` : "Here is"} what we{" "}
-            <span className="text-accent">recommend for you</span>
+            {hasState ? (
+              <>{userName ? `${userName}, here is` : "Here is"} what we <span className="text-accent">recommend for you</span></>
+            ) : (
+              <>Shop the <span className="text-accent">Tioga Store</span></>
+            )}
           </h1>
           <p className="text-sm text-secondary-foreground/70">
-            Carefully selected solutions tailored to your request.
+            {hasState ? "Carefully selected solutions tailored to your request." : "Solar, smart locks, home automation & security — curated for Nigerian homes and businesses."}
           </p>
           {totalWatts ? (
             <div className="flex items-center gap-2 text-xs bg-secondary-foreground/10 rounded-lg px-3 py-2 w-fit">
@@ -569,6 +730,7 @@ const Catalog = () => {
           ) : null}
         </div>
       </div>
+
 
       {/* AI Recommendation Banner */}
       {(aiLoading || aiRec) && (
@@ -610,33 +772,158 @@ const Catalog = () => {
       )}
 
       <div className="section-container py-6 sm:py-10 space-y-6">
-        {/* Category tabs */}
-        {!loading && availableCategories.length > 1 && (
-          <div className="space-y-3">
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => { setActiveCategory(null); setActiveSeries(null); }}
-                className={`text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${!activeCategory ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-              >
-                All ({allProducts.length})
-              </button>
-              {availableCategories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => { setActiveCategory(activeCategory === cat ? null : cat); setActiveSeries(null); }}
-                  className={`text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${activeCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-                >
-                  {CATEGORY_LABELS[cat] || cat} ({allProducts.filter(p => p.category === cat).length})
-                </button>
-              ))}
+        {/* Sticky toolbar */}
+        {!loading && (
+          <div className="sticky top-16 sm:top-20 z-20 -mx-4 sm:mx-0 px-4 sm:px-0 py-3 bg-background/85 backdrop-blur-md border-b border-border/60 space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1 min-w-0">
+                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search solar, locks, cameras…"
+                  className="pl-9 h-10 bg-card"
+                />
+              </div>
+              <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-10 gap-1.5 shrink-0">
+                    <SlidersHorizontal size={14} />
+                    <span className="hidden xs:inline">Filters</span>
+                    {activeFilterCount > 0 && (
+                      <span className="ml-0.5 rounded-full bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 font-bold">{activeFilterCount}</span>
+                    )}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>Filter products</SheetTitle>
+                  </SheetHeader>
+                  <div className="space-y-6 py-6">
+                    <div>
+                      <p className="text-sm font-semibold mb-2">Category</p>
+                      <div className="space-y-2">
+                        {availableCategories.map((c) => (
+                          <label key={c} className="flex items-center gap-2 text-sm cursor-pointer">
+                            <Checkbox
+                              checked={selectedCategoriesFilter.includes(c)}
+                              onCheckedChange={(v) =>
+                                setSelectedCategoriesFilter((prev) => (v ? [...prev, c] : prev.filter((x) => x !== c)))
+                              }
+                            />
+                            {CATEGORY_LABELS[c] || c}
+                            <span className="text-xs text-muted-foreground">({allProducts.filter((p) => p.category === c).length})</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold mb-2">Tier</p>
+                      <div className="space-y-2">
+                        {(["premium", "mid", "affordable", "entry"] as const).map((t) => (
+                          <label key={t} className="flex items-center gap-2 text-sm cursor-pointer">
+                            <Checkbox
+                              checked={selectedTiers.includes(t)}
+                              onCheckedChange={(v) =>
+                                setSelectedTiers((prev) => (v ? [...prev, t] : prev.filter((x) => x !== t)))
+                              }
+                            />
+                            {tierLabels[t]}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold mb-2">Price range</p>
+                      <div className="space-y-2">
+                        {PRICE_BUCKETS.map((b) => (
+                          <label key={b.key} className="flex items-center gap-2 text-sm cursor-pointer">
+                            <Checkbox
+                              checked={selectedPriceBuckets.includes(b.key)}
+                              onCheckedChange={(v) =>
+                                setSelectedPriceBuckets((prev) => (v ? [...prev, b.key] : prev.filter((x) => x !== b.key)))
+                              }
+                            />
+                            {b.label}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <SheetFooter className="gap-2 sm:gap-2 flex-row">
+                    <Button variant="outline" onClick={clearAllFilters} className="flex-1">Clear all</Button>
+                    <Button onClick={() => setFilterOpen(false)} className="flex-1">Show {filteredProducts.length} results</Button>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+              <Select value={sortKey} onValueChange={(v) => setSortKey(v as SortKey)}>
+                <SelectTrigger className="h-10 w-[130px] sm:w-[160px] bg-card shrink-0">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="recommended">Recommended</SelectItem>
+                  <SelectItem value="price-asc">Lowest price</SelectItem>
+                  <SelectItem value="price-desc">Highest price</SelectItem>
+                  <SelectItem value="newest">Newest</SelectItem>
+                  <SelectItem value="name">Name A–Z</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            {/* Series sub-filter */}
-            {availableSeries.length > 3 && (
+            {/* Category pills */}
+            {availableCategories.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto snap-x scrollbar-hide -mx-1 px-1 pb-0.5">
+                <button
+                  onClick={() => { setActiveCategory(null); setActiveSeries(null); }}
+                  className={`shrink-0 snap-start text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${!activeCategory ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                >
+                  All ({allProducts.length})
+                </button>
+                {availableCategories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => { setActiveCategory(activeCategory === cat ? null : cat); setActiveSeries(null); }}
+                    className={`shrink-0 snap-start text-xs px-3 py-1.5 rounded-full border transition-colors font-medium whitespace-nowrap ${activeCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                  >
+                    {CATEGORY_LABELS[cat] || cat} ({allProducts.filter((p) => p.category === cat).length})
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Active filter chips */}
+            {activeFilterCount > 0 && (
               <div className="flex flex-wrap gap-1.5">
+                {search.trim() && (
+                  <button onClick={() => setSearch("")} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
+                    "{search}" <X size={11} />
+                  </button>
+                )}
+                {selectedCategoriesFilter.map((c) => (
+                  <button key={`c-${c}`} onClick={() => setSelectedCategoriesFilter((p) => p.filter((x) => x !== c))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
+                    {CATEGORY_LABELS[c] || c} <X size={11} />
+                  </button>
+                ))}
+                {selectedTiers.map((t) => (
+                  <button key={`t-${t}`} onClick={() => setSelectedTiers((p) => p.filter((x) => x !== t))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
+                    {tierLabels[t]} <X size={11} />
+                  </button>
+                ))}
+                {selectedPriceBuckets.map((k) => (
+                  <button key={`p-${k}`} onClick={() => setSelectedPriceBuckets((p) => p.filter((x) => x !== k))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
+                    {PRICE_BUCKETS.find((b) => b.key === k)?.label} <X size={11} />
+                  </button>
+                ))}
+                <button onClick={clearAllFilters} className="text-[11px] px-2 py-1 rounded-full text-primary hover:underline font-medium">Clear all</button>
+              </div>
+            )}
+
+            {/* Series sub-filter (only when a specific category is active) */}
+            {activeCategory && availableSeries.length > 3 && (
+              <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
                 <button
                   onClick={() => setActiveSeries(null)}
-                  className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${!activeSeries ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                  className={`shrink-0 text-[11px] px-2.5 py-1 rounded-full border transition-colors ${!activeSeries ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
                 >
                   All Series
                 </button>
@@ -644,7 +931,7 @@ const Catalog = () => {
                   <button
                     key={series}
                     onClick={() => setActiveSeries(activeSeries === series ? null : series)}
-                    className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${activeSeries === series ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
+                    className={`shrink-0 text-[11px] px-2.5 py-1 rounded-full border transition-colors whitespace-nowrap ${activeSeries === series ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
                   >
                     {series} ({count})
                   </button>
@@ -655,19 +942,88 @@ const Catalog = () => {
         )}
 
         {loading ? (
-          <div className="text-center py-20">
-            <div className="animate-pulse text-muted-foreground">Loading recommendations...</div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="rounded-2xl border border-border bg-card overflow-hidden">
+                <div className="h-32 sm:h-40 bg-muted animate-pulse" />
+                <div className="p-3 space-y-2">
+                  <div className="h-3 w-2/3 bg-muted rounded animate-pulse" />
+                  <div className="h-2 w-full bg-muted rounded animate-pulse" />
+                  <div className="h-2 w-1/2 bg-muted rounded animate-pulse" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <>
+            {/* Marketing rails (browse mode only) */}
+            {showRails && (
+              <div className="space-y-8">
+                {[
+                  { key: "topRecommended", title: "Top Recommended", icon: Star, items: rails.topRecommended, iconClass: "text-accent" },
+                  { key: "bestSellers", title: "Best Sellers", icon: Flame, items: rails.bestSellers, iconClass: "text-orange-500" },
+                  { key: "lowest", title: "Lowest Prices", icon: Tag, items: rails.lowest, iconClass: "text-emerald-600" },
+                  { key: "newest", title: "New Arrivals", icon: TrendingUp, items: rails.newest, iconClass: "text-blue-600" },
+                  { key: "bundles", title: "Bundle & Save", icon: PackageOpen, items: rails.bundles, iconClass: "text-primary" },
+                ].filter((r) => r.items.length > 0).map((rail) => {
+                  const Icon = rail.icon;
+                  return (
+                    <div key={rail.key}>
+                      <div className="flex items-center justify-between mb-3">
+                        <h2 className="text-base sm:text-lg font-display font-bold text-foreground flex items-center gap-2">
+                          <Icon size={18} className={rail.iconClass} /> {rail.title}
+                        </h2>
+                        <button
+                          onClick={() => {
+                            if (rail.key === "lowest") setSortKey("price-asc");
+                            else if (rail.key === "newest") setSortKey("newest");
+                            document.getElementById("all-products")?.scrollIntoView({ behavior: "smooth" });
+                          }}
+                          className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                        >
+                          See all <ArrowRight size={12} />
+                        </button>
+                      </div>
+                      <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-2">
+                        {rail.items.map((p) => (
+                          <div key={p.id} className="snap-start shrink-0 w-[220px] sm:w-[240px]">
+                            <ProductCard
+                              product={p}
+                              isRecommended={isRecommended(p)}
+                              pickNumber={getPickNumber(p)}
+                              gallery={galleryByProduct[p.id]}
+                              marketingBadges={badgesByProduct[p.id]}
+                              interestCount={clickCounts[p.id]}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="border-t border-border pt-4">
+                  <h2 className="text-lg sm:text-xl font-display font-bold text-foreground">Browse everything</h2>
+                  <p className="text-xs text-muted-foreground mt-1">{allProducts.length} products across every category.</p>
+                </div>
+              </div>
+            )}
+
             {/* Product count */}
-            <p className="text-xs text-muted-foreground">
-              Showing {((currentPage - 1) * PRODUCTS_PER_PAGE) + 1} to {Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length)} of {filteredProducts.length} products
+            <p id="all-products" className="text-xs text-muted-foreground scroll-mt-32">
+              Showing {filteredProducts.length === 0 ? 0 : ((currentPage - 1) * PRODUCTS_PER_PAGE) + 1} to {Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length)} of {filteredProducts.length} products
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {paginatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} isRecommended={isRecommended(p)} pickNumber={getPickNumber(p)} gallery={galleryByProduct[p.id]} />
+                <ProductCard
+                  key={p.id}
+                  product={p}
+                  isRecommended={isRecommended(p)}
+                  pickNumber={getPickNumber(p)}
+                  gallery={galleryByProduct[p.id]}
+                  marketingBadges={badgesByProduct[p.id]}
+                  interestCount={clickCounts[p.id]}
+                />
               ))}
             </div>
 
@@ -677,7 +1033,7 @@ const Catalog = () => {
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
-                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
                     />
                   </PaginationItem>
@@ -700,7 +1056,7 @@ const Catalog = () => {
                   )}
                   <PaginationItem>
                     <PaginationNext
-                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                       className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
                     />
                   </PaginationItem>
@@ -711,14 +1067,18 @@ const Catalog = () => {
             {filteredProducts.length === 0 && (
               <div className="text-center py-20 space-y-4">
                 <p className="text-muted-foreground">No products matched your selection.</p>
-                <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
-                  <MessageCircle size={16} /> Chat with us
-                </a>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <Button variant="outline" onClick={clearAllFilters}>Reset filters</Button>
+                  <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground">
+                    <MessageCircle size={16} /> Chat with us
+                  </a>
+                </div>
               </div>
             )}
           </>
         )}
       </div>
+
 
       {/* Sticky bottom */}
       <div className="fixed bottom-0 inset-x-0 z-50 bg-card/90 backdrop-blur-lg border-t border-border py-3 px-4">

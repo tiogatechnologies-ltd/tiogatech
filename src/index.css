@@ -335,3 +335,7 @@ html.lenis, html.lenis body { height: auto; }
   }
   body { padding-bottom: env(safe-area-inset-bottom); }
 }
+
+/* Hide scrollbar utility (Catalog horizontal rails, filter chips) */
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
