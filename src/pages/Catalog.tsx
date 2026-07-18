@@ -174,6 +174,24 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery, marketingBad
           <span className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-card/80 backdrop-blur text-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             <Expand size={13} />
           </span>
+          {marketingBadges && marketingBadges.length > 0 && (
+            <div className="absolute top-1.5 left-1.5 flex flex-col gap-1 max-w-[70%]">
+              {marketingBadges.slice(0, 2).map((b) => {
+                const styles: Record<string, string> = {
+                  "Best Seller": "bg-orange-500 text-white",
+                  "Great Value": "bg-emerald-600 text-white",
+                  "New": "bg-blue-600 text-white",
+                  "Popular Pick": "bg-accent text-accent-foreground",
+                };
+                return (
+                  <span key={b} className={`text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shadow-sm ${styles[b] || "bg-primary text-primary-foreground"}`}>
+                    {b}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+
           {allImages.length > 1 && (
             <>
               <button
