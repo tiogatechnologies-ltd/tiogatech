@@ -552,29 +552,109 @@ const Catalog = () => {
     return cats;
   }, [allProducts]);
 
+  // Marketing badge computation
+  const badgesByProduct = useMemo(() => {
+    if (!allProducts.length) return {} as Record<string, string[]>;
+    const now = Date.now();
+    const clickList = Object.values(clickCounts);
+    const sortedClicks = [...clickList].sort((a, b) => b - a);
+    const bestSellerThreshold = sortedClicks[Math.floor(sortedClicks.length * 0.1)] ?? Infinity;
+
+    // Per-category price quartiles for "Great Value"
+    const byCat: Record<string, number[]> = {};
+    for (const p of allProducts) {
+      const n = parsePriceNaira(p.price);
+      if (isFinite(n) && n > 0) {
+        if (!byCat[p.category]) byCat[p.category] = [];
+        byCat[p.category].push(n);
+      }
+    }
+    const q1ByCat: Record<string, number> = {};
+    for (const k of Object.keys(byCat)) {
+      const s = byCat[k].sort((a, b) => a - b);
+      q1ByCat[k] = s[Math.floor(s.length * 0.25)] ?? 0;
+    }
+
+    const map: Record<string, string[]> = {};
+    for (const p of allProducts) {
+      const badges: string[] = [];
+      const clicks = clickCounts[p.id] || 0;
+      if (clicks >= 3 && clicks >= bestSellerThreshold && bestSellerThreshold !== Infinity) badges.push("Best Seller");
+      const n = parsePriceNaira(p.price);
+      if (isFinite(n) && q1ByCat[p.category] && n <= q1ByCat[p.category]) badges.push("Great Value");
+      if (p.created_at) {
+        const ageDays = (now - new Date(p.created_at).getTime()) / (1000 * 60 * 60 * 24);
+        if (ageDays <= 30) badges.push("New");
+      }
+      if (p.tier === "premium" && !badges.includes("Best Seller")) badges.push("Popular Pick");
+      map[p.id] = badges;
+    }
+    return map;
+  }, [allProducts, clickCounts]);
+
+  // Marketing rails (only meaningful in browse mode)
+  const rails = useMemo(() => {
+    const withPrice = allProducts.filter((p) => {
+      const n = parsePriceNaira(p.price);
+      return isFinite(n) && n > 0;
+    });
+    return {
+      topRecommended: allProducts.filter((p) => p.tier === "premium" || (p.tags || []).includes("recommended")).slice(0, 10),
+      bestSellers: [...allProducts].sort((a, b) => (clickCounts[b.id] || 0) - (clickCounts[a.id] || 0)).filter((p) => (clickCounts[p.id] || 0) > 0).slice(0, 10),
+      lowest: [...withPrice].sort((a, b) => parsePriceNaira(a.price) - parsePriceNaira(b.price)).slice(0, 10),
+      newest: [...allProducts].sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()).slice(0, 10),
+      bundles: allProducts.filter((p) => (p.tags || []).includes("combo") || (p.series || "").toLowerCase().includes("combo") || (p.series || "").toLowerCase().includes("suite")).slice(0, 10),
+    };
+  }, [allProducts, clickCounts]);
+
   // Filter products
   const filteredProducts = useMemo(() => {
     let filtered = allProducts;
-    if (activeCategory) {
-      filtered = filtered.filter(p => p.category === activeCategory);
-    }
-    if (activeSeries) {
-      filtered = filtered.filter(p => (p.series || p.category) === activeSeries);
-    }
-    // Sort: recommended first, ordered by pick number
-    if (aiRec?.recommendedProducts?.length) {
-      filtered.sort((a, b) => {
-        const aP = getPickNumber(a) || 999;
-        const bP = getPickNumber(b) || 999;
-        return aP - bP;
+    if (activeCategory) filtered = filtered.filter((p) => p.category === activeCategory);
+    if (activeSeries) filtered = filtered.filter((p) => (p.series || p.category) === activeSeries);
+    if (selectedCategoriesFilter.length) filtered = filtered.filter((p) => selectedCategoriesFilter.includes(p.category));
+    if (selectedTiers.length) filtered = filtered.filter((p) => selectedTiers.includes(p.tier));
+    if (selectedPriceBuckets.length) {
+      filtered = filtered.filter((p) => {
+        const n = parsePriceNaira(p.price);
+        return selectedPriceBuckets.some((k) => PRICE_BUCKETS.find((b) => b.key === k)?.test(n));
       });
     }
-    return filtered;
-  }, [allProducts, activeCategory, activeSeries, aiRec]);
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      filtered = filtered.filter((p) =>
+        p.name.toLowerCase().includes(q) ||
+        (p.description || "").toLowerCase().includes(q) ||
+        (p.series || "").toLowerCase().includes(q) ||
+        (p.features || []).some((f) => f.toLowerCase().includes(q)) ||
+        (p.tags || []).some((t) => t.toLowerCase().includes(q))
+      );
+    }
+
+    const arr = [...filtered];
+    if (sortKey === "price-asc") arr.sort((a, b) => (parsePriceNaira(a.price) || Infinity) - (parsePriceNaira(b.price) || Infinity));
+    else if (sortKey === "price-desc") arr.sort((a, b) => (parsePriceNaira(b.price) || -1) - (parsePriceNaira(a.price) || -1));
+    else if (sortKey === "newest") arr.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+    else if (sortKey === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
+    else if (aiRec?.recommendedProducts?.length) {
+      arr.sort((a, b) => (getPickNumber(a) || 999) - (getPickNumber(b) || 999));
+    }
+    return arr;
+  }, [allProducts, activeCategory, activeSeries, aiRec, search, selectedTiers, selectedPriceBuckets, selectedCategoriesFilter, sortKey]);
+
+  const activeFilterCount =
+    selectedTiers.length + selectedPriceBuckets.length + selectedCategoriesFilter.length + (search.trim() ? 1 : 0);
+
+  const clearAllFilters = () => {
+    setSelectedTiers([]);
+    setSelectedPriceBuckets([]);
+    setSelectedCategoriesFilter([]);
+    setSearch("");
+  };
 
   // Series within active category
   const availableSeries = useMemo(() => {
-    const source = activeCategory ? allProducts.filter(p => p.category === activeCategory) : allProducts;
+    const source = activeCategory ? allProducts.filter((p) => p.category === activeCategory) : allProducts;
     const seriesMap: Record<string, number> = {};
     for (const p of source) {
       const key = p.series || p.category;
@@ -590,8 +670,11 @@ const Catalog = () => {
     currentPage * PRODUCTS_PER_PAGE
   );
 
+  const showRails = !hasState && !activeCategory && !activeSeries && activeFilterCount === 0 && sortKey === "recommended";
+
   // Reset page on filter change
-  useEffect(() => { setCurrentPage(1); }, [activeCategory, activeSeries]);
+  useEffect(() => { setCurrentPage(1); }, [activeCategory, activeSeries, search, selectedTiers, selectedPriceBuckets, selectedCategoriesFilter, sortKey]);
+
 
   const getPageNumbers = () => {
     const pages: (number | "ellipsis")[] = [];
