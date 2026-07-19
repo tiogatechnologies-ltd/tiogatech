@@ -10,6 +10,7 @@ interface App { id: string; full_name: string; email: string; phone: string; ite
 const STATUS_TABS = ["pending", "under_review", "active", "completed", "rejected"] as const;
 
 const AdminFinanceApplications = () => {
+  const { can } = usePermissions();
   const [rows, setRows] = useState<App[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<typeof STATUS_TABS[number]>("pending");
