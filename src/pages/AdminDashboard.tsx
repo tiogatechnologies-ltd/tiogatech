@@ -198,6 +198,9 @@ const AdminDashboard = () => {
     { label: "New customers 7d", value: stats.newCustomers7d, icon: Users, accent: "text-primary", href: "/admin/customers" },
   ] : [], [stats]);
 
+  // Engineers don't need the sales dashboard — send them to their workspace.
+  if (primaryRole === "engineer") return <Navigate to="/admin/assessments" replace />;
+
   return (
     <AdminLayout>
       <AdminSEO title="Dashboard" />
