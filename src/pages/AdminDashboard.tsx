@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Package, Users, TrendingUp, Clock, ShoppingBag, Wallet, AlertTriangle,
@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminSEO from "@/components/AdminSEO";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePermissions } from "@/hooks/usePermissions";
 
 const NGN = (n: number) => `₦${(n || 0).toLocaleString("en-NG", { maximumFractionDigits: 0 })}`;
 const STATUS_COLORS: Record<string, string> = {
@@ -47,6 +48,7 @@ interface TopProduct { name: string; revenue: number; qty: number; }
 
 const AdminDashboard = () => {
   const { isAdmin } = useAuth();
+  const { primaryRole } = usePermissions();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashStats | null>(null);
   const [trend, setTrend] = useState<TrendPoint[]>([]);
@@ -195,6 +197,9 @@ const AdminDashboard = () => {
     { label: "Low-stock SKUs", value: stats.lowStockCount, icon: Package, accent: stats.lowStockCount > 0 ? "text-destructive" : "text-muted-foreground", href: "/admin/inventory" },
     { label: "New customers 7d", value: stats.newCustomers7d, icon: Users, accent: "text-primary", href: "/admin/customers" },
   ] : [], [stats]);
+
+  // Engineers don't need the sales dashboard — send them to their workspace.
+  if (primaryRole === "engineer") return <Navigate to="/admin/assessments" replace />;
 
   return (
     <AdminLayout>

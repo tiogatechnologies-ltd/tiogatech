@@ -3,12 +3,14 @@ import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Wallet, Check, X, Loader2, FileText, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { usePermissions } from "@/hooks/usePermissions";
 
 interface App { id: string; full_name: string; email: string; phone: string; item_name: string; total_amount_ngn: number; deposit_ngn: number; financed_ngn: number; months: number; monthly_payment_ngn: number; status: string; rejection_reason: string | null; created_at: string; address: string; state: string | null; city: string | null; occupation: string | null; monthly_income_ngn: number | null; id_document_url: string | null; interest_rate_pct: number | null; insurance_fee_ngn: number | null; management_fee_ngn: number | null; total_repayment_ngn: number | null; package_slug: string | null; assessment_id: string | null; id_number: string | null; date_of_birth: string | null; next_of_kin_name: string | null; next_of_kin_phone: string | null; notes: string | null; employer: string | null; effective_payment_method: string | null; is_asset_financing: boolean | null; direct_debit_consent: boolean | null; }
 
 const STATUS_TABS = ["pending", "under_review", "active", "completed", "rejected"] as const;
 
 const AdminFinanceApplications = () => {
+  const { can } = usePermissions();
   const [rows, setRows] = useState<App[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<typeof STATUS_TABS[number]>("pending");
@@ -147,16 +149,21 @@ const AdminFinanceApplications = () => {
                 <p className="text-xs text-muted-foreground italic">No document uploaded by applicant.</p>
               )}
 
-              {selected.status === "pending" && (
+              {selected.status === "pending" && can("finance.approve") && (
                 <div className="flex gap-2 pt-3 border-t border-border">
                   <button onClick={() => act(false)} disabled={working} className="flex-1 px-4 py-2.5 rounded-lg border border-border text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50"><X size={14} />Reject</button>
                   <button onClick={() => act(true)} disabled={working} className="flex-1 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50">{working ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}Approve & generate schedule</button>
                 </div>
               )}
+              {selected.status === "pending" && !can("finance.approve") && (
+                <p className="text-xs text-muted-foreground italic pt-3 border-t border-border">Only administrators can approve or reject finance applications.</p>
+              )}
 
-              <div className="flex justify-end pt-3 border-t border-border">
-                <button onClick={del} disabled={working} className="px-4 py-2 rounded-lg border border-red-300 text-red-600 text-sm font-semibold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-950/20 disabled:opacity-50"><Trash2 size={14} />Delete application</button>
-              </div>
+              {can("finance.delete") && (
+                <div className="flex justify-end pt-3 border-t border-border">
+                  <button onClick={del} disabled={working} className="px-4 py-2 rounded-lg border border-red-300 text-red-600 text-sm font-semibold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-950/20 disabled:opacity-50"><Trash2 size={14} />Delete application</button>
+                </div>
+              )}
 
               {selected.rejection_reason && <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-300 text-sm">Reason: {selected.rejection_reason}</div>}
             </div>
