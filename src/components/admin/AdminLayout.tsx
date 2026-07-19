@@ -23,9 +23,10 @@ type NavGroup = { label: string; roles?: AppRole[]; items: NavItem[] };
 const navGroups: NavGroup[] = [
   {
     label: "Overview",
+    roles: ["admin", "staff"],
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
-      { label: "Analytics", icon: BarChart3, path: "/admin/analytics", children: [
+      { label: "Analytics", icon: BarChart3, path: "/admin/analytics", roles: ["admin", "staff"], children: [
         { label: "Overview", path: "/admin/analytics?tab=overview" },
         { label: "Revenue", path: "/admin/analytics?tab=revenue" },
         { label: "Traffic", path: "/admin/analytics?tab=traffic" },
@@ -36,6 +37,7 @@ const navGroups: NavGroup[] = [
   },
   {
     label: "Sales",
+    roles: ["admin", "staff"],
     items: [
       { label: "Orders", icon: ShoppingBag, path: "/admin/orders", children: [
         { label: "All Orders", path: "/admin/orders" },
@@ -54,6 +56,7 @@ const navGroups: NavGroup[] = [
   },
   {
     label: "Finance",
+    roles: ["admin", "staff"],
     items: [
       { label: "Applications", icon: Wallet, path: "/admin/finance/applications" },
       { label: "Schedules", icon: Calendar, path: "/admin/finance/schedules" },
@@ -70,12 +73,13 @@ const navGroups: NavGroup[] = [
       ] },
       { label: "LumiVolt Sizings", icon: Calculator, path: "/admin/lumivolt-sizings" },
       { label: "Custom Requests", icon: FileText, path: "/admin/custom-requests" },
-      { label: "AI Subscriptions", icon: Zap, path: "/admin/ai-subscriptions", roles: ["admin", "staff"] },
+      { label: "AI Subscriptions", icon: Zap, path: "/admin/ai-subscriptions", roles: ["admin"] },
       { label: "AI Credit Usage", icon: BarChart3, path: "/admin/ai-usage", roles: ["admin", "staff"] },
     ],
   },
   {
     label: "Catalog",
+    roles: ["admin", "staff"],
     items: [
       { label: "Products", icon: Package, path: "/admin/products", children: [
         { label: "All Products", path: "/admin/products" },
@@ -88,9 +92,10 @@ const navGroups: NavGroup[] = [
   },
   {
     label: "Content",
+    roles: ["admin", "staff"],
     items: [
       { label: "Blog", icon: Newspaper, path: "/admin/blog" },
-      { label: "Landing Sections", icon: Layout, path: "/admin/landing", children: [
+      { label: "Landing Sections", icon: Layout, path: "/admin/landing", roles: ["admin"], children: [
         { label: "Landing Sections", path: "/admin/landing" },
         { label: "Static Pages", path: "/admin/content" },
       ] },
@@ -99,6 +104,7 @@ const navGroups: NavGroup[] = [
   },
   {
     label: "Marketing",
+    roles: ["admin", "staff"],
     items: [
       { label: "Newsletter", icon: Send, path: "/admin/newsletter" },
       { label: "Email", icon: Mail, path: "/admin/email" },
@@ -115,15 +121,17 @@ const navGroups: NavGroup[] = [
   },
   {
     label: "Careers",
+    roles: ["admin", "staff"],
     items: [
-      { label: "Job Listings", icon: Briefcase, path: "/admin/careers" },
+      { label: "Job Listings", icon: Briefcase, path: "/admin/careers", roles: ["admin"] },
       { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
     ],
   },
   {
     label: "Tools",
+    roles: ["admin", "staff", "engineer"],
     items: [
-      { label: "Reports", icon: FileText, path: "/admin/reports" },
+      { label: "Reports", icon: FileText, path: "/admin/reports", roles: ["admin", "staff"] },
       { label: "Media Library", icon: Layout, path: "/admin/storage" },
     ],
   },
