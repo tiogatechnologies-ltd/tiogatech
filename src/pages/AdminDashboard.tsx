@@ -48,6 +48,7 @@ interface TopProduct { name: string; revenue: number; qty: number; }
 
 const AdminDashboard = () => {
   const { isAdmin } = useAuth();
+  const { primaryRole } = usePermissions();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashStats | null>(null);
   const [trend, setTrend] = useState<TrendPoint[]>([]);
