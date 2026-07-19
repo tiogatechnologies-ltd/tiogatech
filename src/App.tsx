@@ -123,9 +123,10 @@ const RouteFallback = () => (
   </div>
 );
 
-// Admin routes are role-gated using the user_roles table (admin/staff/engineer).
-const Admin = ({ children, adminOnly }: { children: React.ReactNode; adminOnly?: boolean }) => (
-  <RequireRole roles={adminOnly ? ["admin"] : ["admin", "staff", "engineer"]} redirectTo="/admin/login">
+// Admin routes are role-gated using the user_roles table.
+// `roles` defaults to all admin surfaces; pass a narrower list to scope by role.
+const Admin = ({ children, roles }: { children: React.ReactNode; roles?: ("admin" | "staff" | "engineer")[] }) => (
+  <RequireRole roles={roles ?? ["admin", "staff", "engineer"]} redirectTo="/admin/login">
     {children}
   </RequireRole>
 );
