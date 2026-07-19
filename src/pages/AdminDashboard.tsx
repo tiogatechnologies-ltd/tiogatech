@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Package, Users, TrendingUp, Clock, ShoppingBag, Wallet, AlertTriangle,
@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminSEO from "@/components/AdminSEO";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePermissions } from "@/hooks/usePermissions";
 
 const NGN = (n: number) => `₦${(n || 0).toLocaleString("en-NG", { maximumFractionDigits: 0 })}`;
 const STATUS_COLORS: Record<string, string> = {
