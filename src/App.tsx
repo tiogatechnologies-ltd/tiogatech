@@ -104,6 +104,7 @@ const Pricing = lazy(() => import("./pages/Pricing.tsx"));
 const AccountSubscription = lazy(() => import("./pages/AccountSubscription.tsx"));
 const AdminAiSubscriptions = lazy(() => import("./pages/AdminAiSubscriptions.tsx"));
 const AdminAiCreditUsage = lazy(() => import("./pages/AdminAiCreditUsage.tsx"));
+const AdminSupportTickets = lazy(() => import("./pages/AdminSupportTickets.tsx"));
 const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
 const queryClient = new QueryClient({
@@ -229,6 +230,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/lumivolt-sizings" element={<Admin><AdminLumiVoltSizings /></Admin>} />
           <Route path="/admin/ai-subscriptions" element={<Admin roles={["admin"]}><AdminAiSubscriptions /></Admin>} />
           <Route path="/admin/ai-usage" element={<Admin roles={["admin", "staff"]}><AdminAiCreditUsage /></Admin>} />
+          <Route path="/admin/tickets" element={<Admin roles={["admin", "staff"]}><AdminSupportTickets /></Admin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
       </Suspense>
