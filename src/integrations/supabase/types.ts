@@ -2291,6 +2291,54 @@ export type Database = {
         }
         Relationships: []
       }
+      support_tickets: {
+        Row: {
+          channel: string
+          conversation_context: string | null
+          created_at: string
+          id: string
+          message: string
+          resolved_at: string | null
+          status: string
+          subject: string | null
+          ticket_number: string
+          updated_at: string
+          user_contact: string
+          user_id: string | null
+          user_name: string
+        }
+        Insert: {
+          channel?: string
+          conversation_context?: string | null
+          created_at?: string
+          id?: string
+          message: string
+          resolved_at?: string | null
+          status?: string
+          subject?: string | null
+          ticket_number?: string
+          updated_at?: string
+          user_contact: string
+          user_id?: string | null
+          user_name: string
+        }
+        Update: {
+          channel?: string
+          conversation_context?: string | null
+          created_at?: string
+          id?: string
+          message?: string
+          resolved_at?: string | null
+          status?: string
+          subject?: string | null
+          ticket_number?: string
+          updated_at?: string
+          user_contact?: string
+          user_id?: string | null
+          user_name?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string

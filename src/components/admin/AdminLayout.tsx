@@ -50,6 +50,7 @@ const navGroups: NavGroup[] = [
         { label: "Segments", path: "/admin/customers?view=segments" },
       ] },
       { label: "Leads", icon: Users, path: "/admin/leads" },
+      { label: "Support Tickets", icon: FileText, path: "/admin/tickets" },
       { label: "Discounts", icon: Tag, path: "/admin/discounts" },
       { label: "App Waitlist", icon: Smartphone, path: "/admin/waitlist" },
     ],

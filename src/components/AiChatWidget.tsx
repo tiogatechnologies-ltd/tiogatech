@@ -50,7 +50,7 @@ const AiChatWidget = () => {
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ messages: payload }),
+        body: JSON.stringify({ messages: payload, user: user ? { id: user.id, email: user.email } : null }),
       });
       const j = await r.json();
       setMessages((m) => [...m, { id: `a${Date.now()}`, role: "assistant", text: j.text || j.error || "Sorry, something went wrong.", tool_events: j.tool_events || [] }]);
