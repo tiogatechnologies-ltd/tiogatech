@@ -61,6 +61,7 @@ const DashboardRouter = lazy(() => import("./pages/DashboardRouter.tsx"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin.tsx"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup.tsx"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard.tsx"));
+const StaffDashboard = lazy(() => import("./pages/StaffDashboard.tsx"));
 const AdminProducts = lazy(() => import("./pages/AdminProducts.tsx"));
 const AdminLeads = lazy(() => import("./pages/AdminLeads.tsx"));
 const AdminSettings = lazy(() => import("./pages/AdminSettings.tsx"));
