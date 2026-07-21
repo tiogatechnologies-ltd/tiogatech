@@ -169,11 +169,11 @@ const StaffDashboard = () => {
             {recentOrders.map((o) => (
               <Link key={o.id} to={`/admin/orders?id=${o.id}`} className="flex items-center justify-between py-2 border-t border-border first:border-t-0 hover:bg-muted/40 -mx-2 px-2 rounded">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold truncate">{o.customer_name || "Guest"}</p>
+                  <p className="text-sm font-semibold truncate">{o.full_name || "Guest"}</p>
                   <p className="text-[11px] text-muted-foreground">{new Date(o.created_at).toLocaleString()}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-mono">{NGN(Number(o.total_ngn || 0))}</p>
+                  <p className="text-sm font-mono">{NGN(Number(o.total || 0))}</p>
                   <Badge variant="outline" className="text-[10px]">{o.payment_status}</Badge>
                 </div>
               </Link>

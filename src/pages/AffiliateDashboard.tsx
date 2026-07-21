@@ -28,7 +28,7 @@ const AffiliateDashboard = () => {
         const [{ data: p }, { data: l }, { data: o }] = await Promise.all([
           supabase.from("affiliate_payouts").select("*").eq("affiliate_id", aff.id).order("created_at", { ascending: false }),
           supabase.from("leads").select("id,full_name,status,created_at,products").eq("affiliate_code", aff.code).order("created_at", { ascending: false }).limit(500),
-          supabase.from("orders").select("id,total_ngn,payment_status,created_at,affiliate_code").eq("affiliate_code", aff.code).order("created_at", { ascending: false }).limit(500),
+          supabase.from("orders").select("id,total,payment_status,created_at,affiliate_code").eq("affiliate_code", aff.code).order("created_at", { ascending: false }).limit(500),
         ]);
         setPayouts(p || []);
         setLeads(l || []);
@@ -43,7 +43,7 @@ const AffiliateDashboard = () => {
 
   const stats = useMemo(() => {
     const paidOrders = orders.filter((o) => o.payment_status === "paid");
-    const revenue = paidOrders.reduce((s, o) => s + Number(o.total_ngn || 0), 0);
+    const revenue = paidOrders.reduce((s, o) => s + Number(o.total || 0), 0);
     const commissionEarned = revenue * (rate / 100);
     const paidOut = payouts.filter((p) => p.status === "paid").reduce((s, p) => s + Number(p.amount || 0), 0);
     const pending = Math.max(0, commissionEarned - paidOut);
@@ -72,7 +72,7 @@ const AffiliateDashboard = () => {
     });
     orders.filter((o) => o.payment_status === "paid").forEach((o) => {
       const k = new Date(o.created_at).toISOString().slice(0, 10);
-      if (days[k]) days[k].revenue += Number(o.total_ngn || 0);
+      if (days[k]) days[k].revenue += Number(o.total || 0);
     });
     return Object.values(days);
   }, [leads, orders]);
