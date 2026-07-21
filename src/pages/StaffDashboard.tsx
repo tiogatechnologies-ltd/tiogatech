@@ -111,7 +111,7 @@ const StaffDashboard = () => {
 
   return (
     <AdminLayout>
-      <AdminSEO title="Staff Dashboard" description="Daily operational overview for the Tioga staff team." />
+      <AdminSEO title="Staff Dashboard" />
       <div className="p-4 md:p-8 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
