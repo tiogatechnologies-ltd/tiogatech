@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Loader2, Search, RefreshCw } from "lucide-react";
+import { Loader2, Search, RefreshCw, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 
 type Ticket = {
@@ -34,12 +34,21 @@ const STATUS_STYLE: Record<Ticket["status"], string> = {
   closed: "bg-gray-100 text-gray-600 border-gray-200",
 };
 
+type SortKey = "ticket_number" | "user_name" | "status" | "channel" | "created_at";
+type SortDir = "asc" | "desc";
+
+const PAGE_SIZE = 25;
+const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s || "");
+
 const AdminSupportTickets = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selected, setSelected] = useState<Ticket | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey>("created_at");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
+  const [page, setPage] = useState(1);
 
   const load = async () => {
     setLoading(true);
@@ -47,7 +56,7 @@ const AdminSupportTickets = () => {
       .from("support_tickets" as any)
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(500);
+      .limit(1000);
     if (error) toast.error(error.message);
     setTickets((data as any) || []);
     setLoading(false);
@@ -55,29 +64,89 @@ const AdminSupportTickets = () => {
 
   useEffect(() => { load(); }, []);
 
+  const notifyStatusChange = async (ticket: Ticket, newStatus: Ticket["status"]) => {
+    if (!isEmail(ticket.user_contact)) return;
+    try {
+      await supabase.functions.invoke("send-gmail", {
+        body: {
+          recipients: [ticket.user_contact],
+          subject: `Update on your support ticket ${ticket.ticket_number}`,
+          message:
+            `Hi ${ticket.user_name || "there"},\n\n` +
+            `Your support ticket ${ticket.ticket_number} status is now: ${newStatus.replace("_", " ").toUpperCase()}.\n\n` +
+            `Subject: ${ticket.subject || ticket.message.slice(0, 80)}\n\n` +
+            `Our team will keep you posted. Reply to this email if you need to add anything.\n\n— Tioga Technologies Support`,
+          from_name: "Tioga Technologies Support",
+        },
+      });
+    } catch (e) {
+      console.warn("notify failed", e);
+    }
+  };
+
   const updateStatus = async (id: string, status: Ticket["status"]) => {
+    const prev = tickets.find((t) => t.id === id);
     const patch: any = { status };
     if (status === "resolved" || status === "closed") patch.resolved_at = new Date().toISOString();
     else patch.resolved_at = null;
     const { error } = await supabase.from("support_tickets" as any).update(patch).eq("id", id);
     if (error) return toast.error(error.message);
     toast.success("Status updated");
-    setTickets((prev) => prev.map((t) => (t.id === id ? { ...t, ...patch } : t)));
+    setTickets((p) => p.map((t) => (t.id === id ? { ...t, ...patch } : t)));
     if (selected?.id === id) setSelected({ ...selected, ...patch });
+    if (prev && prev.status !== status) {
+      notifyStatusChange(prev, status).then(() => {
+        if (isEmail(prev.user_contact)) toast.message("Customer notified by email");
+      });
+    }
   };
 
-  const filtered = tickets.filter((t) => {
-    if (statusFilter !== "all" && t.status !== statusFilter) return false;
-    if (!query) return true;
-    const q = query.toLowerCase();
-    return [t.ticket_number, t.user_name, t.user_contact, t.subject, t.message]
-      .filter(Boolean).some((s) => s!.toLowerCase().includes(q));
-  });
+  const toggleSort = (key: SortKey) => {
+    if (sortKey === key) setSortDir(sortDir === "asc" ? "desc" : "asc");
+    else { setSortKey(key); setSortDir(key === "created_at" ? "desc" : "asc"); }
+    setPage(1);
+  };
+
+  const filtered = useMemo(() => {
+    let list = tickets.filter((t) => {
+      if (statusFilter !== "all" && t.status !== statusFilter) return false;
+      if (!query) return true;
+      const q = query.toLowerCase();
+      return [t.ticket_number, t.user_name, t.user_contact, t.subject, t.message]
+        .filter(Boolean).some((s) => s!.toLowerCase().includes(q));
+    });
+    const dir = sortDir === "asc" ? 1 : -1;
+    list = [...list].sort((a, b) => {
+      const av = (a[sortKey] ?? "") as any;
+      const bv = (b[sortKey] ?? "") as any;
+      if (sortKey === "created_at") return (new Date(av).getTime() - new Date(bv).getTime()) * dir;
+      return String(av).localeCompare(String(bv)) * dir;
+    });
+    return list;
+  }, [tickets, statusFilter, query, sortKey, sortDir]);
+
+  useEffect(() => { setPage(1); }, [query, statusFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const pageSafe = Math.min(page, totalPages);
+  const paged = filtered.slice((pageSafe - 1) * PAGE_SIZE, pageSafe * PAGE_SIZE);
 
   const counts = tickets.reduce((acc, t) => {
     acc[t.status] = (acc[t.status] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
+
+  const SortIcon = ({ k }: { k: SortKey }) => {
+    if (sortKey !== k) return <ArrowUpDown size={12} className="opacity-40" />;
+    return sortDir === "asc" ? <ArrowUp size={12} /> : <ArrowDown size={12} />;
+  };
+  const Th = ({ k, label, className = "" }: { k: SortKey; label: string; className?: string }) => (
+    <th className={`text-left px-4 py-3 ${className}`}>
+      <button onClick={() => toggleSort(k)} className="inline-flex items-center gap-1 hover:text-foreground">
+        {label} <SortIcon k={k} />
+      </button>
+    </th>
+  );
 
   return (
     <AdminLayout>
@@ -120,39 +189,74 @@ const AdminSupportTickets = () => {
           {loading ? (
             <div className="p-10 flex justify-center"><Loader2 className="animate-spin text-muted-foreground" /></div>
           ) : filtered.length === 0 ? (
-            <div className="p-10 text-center text-sm text-muted-foreground">No tickets yet.</div>
+            <div className="p-10 text-center text-sm text-muted-foreground">No tickets match your filters.</div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
-                  <tr>
-                    <th className="text-left px-4 py-3">Ticket</th>
-                    <th className="text-left px-4 py-3">Customer</th>
-                    <th className="text-left px-4 py-3 hidden md:table-cell">Subject</th>
-                    <th className="text-left px-4 py-3">Status</th>
-                    <th className="text-left px-4 py-3 hidden sm:table-cell">Channel</th>
-                    <th className="text-left px-4 py-3">Created</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map((t) => (
-                    <tr key={t.id} onClick={() => setSelected(t)} className="border-t border-border hover:bg-muted/40 cursor-pointer">
-                      <td className="px-4 py-3 font-mono text-xs">{t.ticket_number}</td>
-                      <td className="px-4 py-3">
-                        <div className="font-medium">{t.user_name}</div>
-                        <div className="text-xs text-muted-foreground">{t.user_contact}</div>
-                      </td>
-                      <td className="px-4 py-3 hidden md:table-cell max-w-xs truncate">{t.subject || t.message}</td>
-                      <td className="px-4 py-3">
-                        <Badge variant="outline" className={STATUS_STYLE[t.status]}>{t.status.replace("_", " ")}</Badge>
-                      </td>
-                      <td className="px-4 py-3 hidden sm:table-cell capitalize">{t.channel}</td>
-                      <td className="px-4 py-3 text-xs text-muted-foreground">{format(new Date(t.created_at), "MMM d, HH:mm")}</td>
+            <>
+              {/* Desktop table */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <Th k="ticket_number" label="Ticket" />
+                      <Th k="user_name" label="Customer" />
+                      <th className="text-left px-4 py-3">Subject</th>
+                      <Th k="status" label="Status" />
+                      <Th k="channel" label="Channel" />
+                      <Th k="created_at" label="Created" />
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {paged.map((t) => (
+                      <tr key={t.id} onClick={() => setSelected(t)} className="border-t border-border hover:bg-muted/40 cursor-pointer">
+                        <td className="px-4 py-3 font-mono text-xs">{t.ticket_number}</td>
+                        <td className="px-4 py-3">
+                          <div className="font-medium">{t.user_name}</div>
+                          <div className="text-xs text-muted-foreground">{t.user_contact}</div>
+                        </td>
+                        <td className="px-4 py-3 max-w-xs truncate">{t.subject || t.message}</td>
+                        <td className="px-4 py-3">
+                          <Badge variant="outline" className={STATUS_STYLE[t.status]}>{t.status.replace("_", " ")}</Badge>
+                        </td>
+                        <td className="px-4 py-3 capitalize">{t.channel}</td>
+                        <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">{format(new Date(t.created_at), "MMM d, HH:mm")}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile cards */}
+              <div className="md:hidden divide-y divide-border">
+                {paged.map((t) => (
+                  <button key={t.id} onClick={() => setSelected(t)} className="w-full text-left p-4 hover:bg-muted/40">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="font-mono text-xs">{t.ticket_number}</span>
+                      <Badge variant="outline" className={STATUS_STYLE[t.status]}>{t.status.replace("_", " ")}</Badge>
+                    </div>
+                    <div className="font-medium text-sm">{t.user_name}</div>
+                    <div className="text-xs text-muted-foreground truncate">{t.user_contact}</div>
+                    <div className="text-xs mt-1 line-clamp-2">{t.subject || t.message}</div>
+                    <div className="text-[11px] text-muted-foreground mt-1">{format(new Date(t.created_at), "MMM d, HH:mm")} · {t.channel}</div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              <div className="flex items-center justify-between px-4 py-3 border-t border-border text-sm">
+                <span className="text-muted-foreground">
+                  {(pageSafe - 1) * PAGE_SIZE + 1}–{Math.min(pageSafe * PAGE_SIZE, filtered.length)} of {filtered.length}
+                </span>
+                <div className="flex items-center gap-1">
+                  <Button variant="outline" size="sm" disabled={pageSafe <= 1} onClick={() => setPage(pageSafe - 1)}>
+                    <ChevronLeft size={14} />
+                  </Button>
+                  <span className="px-2 text-xs">Page {pageSafe} / {totalPages}</span>
+                  <Button variant="outline" size="sm" disabled={pageSafe >= totalPages} onClick={() => setPage(pageSafe + 1)}>
+                    <ChevronRight size={14} />
+                  </Button>
+                </div>
+              </div>
+            </>
           )}
         </Card>
       </div>
@@ -162,7 +266,7 @@ const AdminSupportTickets = () => {
           {selected && (
             <>
               <DialogHeader>
-                <DialogTitle className="flex items-center gap-3">
+                <DialogTitle className="flex items-center gap-3 flex-wrap">
                   <span className="font-mono text-sm">{selected.ticket_number}</span>
                   <Badge variant="outline" className={STATUS_STYLE[selected.status]}>{selected.status.replace("_", " ")}</Badge>
                 </DialogTitle>
@@ -188,7 +292,9 @@ const AdminSupportTickets = () => {
                 )}
 
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">Update status</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Update status {isEmail(selected.user_contact) && <span className="text-emerald-600">· customer will be emailed</span>}
+                  </p>
                   <Select value={selected.status} onValueChange={(v) => updateStatus(selected.id, v as Ticket["status"])}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
