@@ -196,6 +196,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/setup" element={<AdminSetup />} />
           <Route path="/admin" element={<Admin><AdminDashboard /></Admin>} />
+          <Route path="/staff" element={<Admin roles={["admin", "staff"]}><StaffDashboard /></Admin>} />
           <Route path="/admin/products" element={<Admin roles={["admin", "staff"]}><AdminProducts /></Admin>} />
           <Route path="/admin/inventory" element={<Admin roles={["admin", "staff"]}><AdminInventory /></Admin>} />
           <Route path="/admin/leads" element={<Admin roles={["admin", "staff"]}><AdminLeads /></Admin>} />
