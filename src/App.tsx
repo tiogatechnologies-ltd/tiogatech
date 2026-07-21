@@ -61,6 +61,7 @@ const DashboardRouter = lazy(() => import("./pages/DashboardRouter.tsx"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin.tsx"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup.tsx"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard.tsx"));
+const StaffDashboard = lazy(() => import("./pages/StaffDashboard.tsx"));
 const AdminProducts = lazy(() => import("./pages/AdminProducts.tsx"));
 const AdminLeads = lazy(() => import("./pages/AdminLeads.tsx"));
 const AdminSettings = lazy(() => import("./pages/AdminSettings.tsx"));
@@ -195,6 +196,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/setup" element={<AdminSetup />} />
           <Route path="/admin" element={<Admin><AdminDashboard /></Admin>} />
+          <Route path="/staff" element={<Admin roles={["admin", "staff"]}><StaffDashboard /></Admin>} />
           <Route path="/admin/products" element={<Admin roles={["admin", "staff"]}><AdminProducts /></Admin>} />
           <Route path="/admin/inventory" element={<Admin roles={["admin", "staff"]}><AdminInventory /></Admin>} />
           <Route path="/admin/leads" element={<Admin roles={["admin", "staff"]}><AdminLeads /></Admin>} />
