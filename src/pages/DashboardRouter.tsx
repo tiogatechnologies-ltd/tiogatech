@@ -17,7 +17,8 @@ const DashboardRouter = () => {
   if (loading || (user && !rolesLoaded)) return <Loader />;
   if (!user) return <Navigate to="/auth" replace />;
 
-  if (isAdmin || isStaff) return <Navigate to="/admin" replace />;
+  if (isAdmin) return <Navigate to="/admin" replace />;
+  if (isStaff) return <Navigate to="/staff" replace />;
   if (hasRole("engineer")) return <Navigate to="/admin/assessments" replace />;
   if (isAffiliate) return <Navigate to="/affiliate" replace />;
   return <Navigate to="/account" replace />;
