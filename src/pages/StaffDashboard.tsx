@@ -70,7 +70,7 @@ const StaffDashboard = () => {
       setStats({
         ordersToday: orders.filter((o) => o.created_at >= t0).length,
         ordersPending: orders.filter((o) => o.status === "new" || o.status === "pending" || o.payment_status === "pending").length,
-        revenueToday: orders.filter((o) => o.created_at >= t0 && o.payment_status === "paid").reduce((s, o) => s + Number(o.total_ngn || 0), 0),
+        revenueToday: orders.filter((o) => o.created_at >= t0 && o.payment_status === "paid").reduce((s, o) => s + Number(o.total || 0), 0),
         leadsToday: leads.filter((l) => l.created_at >= t0).length,
         leadsNew: leads.filter((l) => l.status === "new").length,
         ticketsOpen: tickets.filter((t) => t.status === "open").length,
