@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { AlertTriangle, Package, Plus, Minus, History, Search } from "lucide-react";
 import { format } from "date-fns";
 
-interface Product { id: string; name: string; stock: number | null; low_stock_threshold: number | null; price_ngn: number | null; is_active: boolean; }
+interface Product { id: string; name: string; stock_qty: number | null; low_stock_threshold: number | null; price_ngn: number | null; is_active: boolean; }
 interface Movement { id: string; product_id: string; delta: number; reason: string; note: string | null; created_at: string; }
 
 const REASONS = ["restock", "sale", "return", "adjustment", "damage", "transfer"];
@@ -22,7 +22,7 @@ const AdminInventory = () => {
   const load = async () => {
     setLoading(true);
     const [{ data: p }, { data: m }] = await Promise.all([
-      supabase.from("products").select("id, name, stock, low_stock_threshold, price_ngn, is_active").order("name"),
+      supabase.from("products").select("id, name, stock_qty, low_stock_threshold, price_ngn, is_active").order("name"),
       supabase.from("product_stock_movements").select("*").order("created_at", { ascending: false }).limit(200),
     ]);
     setProducts((p || []) as any);
@@ -34,7 +34,7 @@ const AdminInventory = () => {
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
     return products.filter((p) => {
-      const s = Number(p.stock ?? 0);
+      const s = Number(p.stock_qty ?? 0);
       const t = Number(p.low_stock_threshold ?? 5);
       if (filter === "low" && !(s > 0 && s <= t)) return false;
       if (filter === "out" && s !== 0) return false;
@@ -46,7 +46,7 @@ const AdminInventory = () => {
   const stats = useMemo(() => {
     let low = 0, out = 0, units = 0;
     products.forEach((p) => {
-      const s = Number(p.stock ?? 0);
+      const s = Number(p.stock_qty ?? 0);
       const t = Number(p.low_stock_threshold ?? 5);
       units += s;
       if (s === 0) out++; else if (s <= t) low++;
@@ -115,7 +115,7 @@ const AdminInventory = () => {
                 {loading ? <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">Loading…</td></tr> :
                 filtered.length === 0 ? <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">No products match</td></tr> :
                 filtered.map((p) => {
-                  const s = Number(p.stock ?? 0);
+                  const s = Number(p.stock_qty ?? 0);
                   const t = Number(p.low_stock_threshold ?? 5);
                   const status = s === 0 ? "out" : s <= t ? "low" : "ok";
                   return (
@@ -148,7 +148,7 @@ const AdminInventory = () => {
         <div className="fixed inset-0 z-50 bg-foreground/40 flex items-center justify-center p-4" onClick={() => setAdjust(null)}>
           <div className="bg-card border border-border rounded-2xl max-w-md w-full p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-display text-lg font-bold">Adjust stock</h3>
-            <p className="text-sm text-muted-foreground">{adjust.product.name} — current: <strong>{adjust.product.stock ?? 0}</strong></p>
+            <p className="text-sm text-muted-foreground">{adjust.product.name} — current: <strong>{adjust.product.stock_qty ?? 0}</strong></p>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-semibold">Change (+ / -)</label>
@@ -166,7 +166,7 @@ const AdminInventory = () => {
               <input value={adjust.note} onChange={(e) => setAdjust({ ...adjust, note: e.target.value })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm mt-1" placeholder="PO number, supplier, etc." />
             </div>
             <div className="rounded-lg bg-muted/40 p-3 text-xs text-muted-foreground">
-              New stock will be <strong className="text-foreground">{Math.max(0, Number(adjust.product.stock ?? 0) + (adjust.delta || 0))}</strong>
+              New stock will be <strong className="text-foreground">{Math.max(0, Number(adjust.product.stock_qty ?? 0) + (adjust.delta || 0))}</strong>
             </div>
             <div className="flex justify-end gap-2">
               <button onClick={() => setAdjust(null)} className="px-4 py-2 rounded-lg border border-border text-sm">Cancel</button>
