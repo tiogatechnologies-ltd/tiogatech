@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -7,7 +8,13 @@ import { Loader2, Eye, X, Save } from "lucide-react";
 const AdminAssessments = () => {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<string>("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filter = searchParams.get("tier") || "all";
+  const setFilter = (f: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (f === "all") next.delete("tier"); else next.set("tier", f);
+    setSearchParams(next, { replace: true });
+  };
   const [selected, setSelected] = useState<any | null>(null);
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");

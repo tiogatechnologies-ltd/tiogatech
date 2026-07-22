@@ -74,12 +74,14 @@ async function runTool(name: string, args: any) {
 
 // Lightweight LLM-based escalation intent classifier.
 // Falls back to keyword match if the classifier call fails.
+// Only escalate on EXPLICIT requests for human/ticket. Product questions must NOT trigger.
 const ESCALATION_KEYWORDS = [
-  "human", "agent", "live agent", "real person", "ticket", "escalate", "escalation",
-  "support team", "customer service", "not resolved", "isn't resolved", "isnt resolved",
-  "not working", "doesn't work", "doesnt work", "complaint", "speak to someone",
-  "talk to someone", "talk to a person", "file a complaint", "raise a ticket",
-  "open a ticket", "need human", "need help from", "unresolved",
+  "speak to a human", "speak to human", "talk to a human", "talk to human",
+  "speak to an agent", "talk to an agent", "live agent", "real person",
+  "human support", "human agent", "need a human", "get me a human",
+  "create a ticket", "create ticket", "open a ticket", "open ticket",
+  "raise a ticket", "file a ticket", "log a ticket", "escalate this",
+  "escalate to", "file a complaint",
 ];
 
 function keywordEscalation(text: string): boolean {
@@ -88,6 +90,8 @@ function keywordEscalation(text: string): boolean {
 }
 
 async function classifyEscalation(userText: string, priorText: string): Promise<boolean> {
+  // Fast path: only run classifier when explicit keywords are present.
+  if (!keywordEscalation(userText)) return false;
   try {
     const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -96,22 +100,20 @@ async function classifyEscalation(userText: string, priorText: string): Promise<
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: `Classify the user's latest message. Reply with exactly one word: "escalate" or "continue".
-Choose "escalate" ONLY if the user clearly wants a human/support agent, wants to open a support ticket, is reporting an unresolved problem, is frustrated with the bot, or asks to be contacted by a real person about an issue.
-Otherwise reply "continue".` },
+Reply "escalate" ONLY when the user EXPLICITLY asks to be connected to a human/live agent, or explicitly asks to open/create/file a support ticket, or explicitly asks to escalate.
+Reply "continue" for ALL product questions, recommendations, pricing, financing, troubleshooting, "not working"/"doesn't work" descriptions, complaints about products, or any other normal help request — even if the user sounds frustrated. When in doubt, reply "continue".` },
           { role: "user", content: `Prior context (may be empty):\n${priorText}\n\nLatest user message:\n${userText}` },
         ],
         temperature: 0,
         max_tokens: 3,
       }),
     });
-    if (!r.ok) return keywordEscalation(userText);
+    if (!r.ok) return false;
     const j = await r.json();
     const out = (j.choices?.[0]?.message?.content || "").toLowerCase().trim();
-    if (out.startsWith("escalate")) return true;
-    if (out.startsWith("continue")) return false;
-    return keywordEscalation(userText);
+    return out.startsWith("escalate");
   } catch {
-    return keywordEscalation(userText);
+    return false;
   }
 }
 
@@ -194,7 +196,7 @@ Use tools when helpful:
 - start_consultation to capture a lead
 - handoff_to_whatsapp to connect to a human
 
-If a user asks for a live agent, human, or to open a support ticket, do NOT attempt to answer — a separate escalation handler already creates a support ticket.
+If a user EXPLICITLY asks for a live agent, human, or to open a support ticket, do NOT attempt to answer — a separate escalation handler already creates a support ticket. For all other questions (including product troubleshooting, "not working" issues, recommendations, pricing) answer helpfully.
 
 Contact: WhatsApp ${contact.whatsapp || "+234 817 800 0023"} · email ${contact.email || "sales@tiogatechnologies.com"}.
 

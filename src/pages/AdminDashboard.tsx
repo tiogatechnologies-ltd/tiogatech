@@ -79,7 +79,7 @@ const AdminDashboard = () => {
         supabase.from("profiles").select("id", { count: "exact", head: true }).gte("created_at", weekAgo.toISOString()),
         supabase.from("finance_schedules").select("id", { count: "exact", head: true }).in("status", ["upcoming", "due"]),
         supabase.from("finance_schedules").select("id", { count: "exact", head: true }).eq("status", "overdue"),
-        supabase.from("products").select("id, name, stock, low_stock_threshold").lte("stock", 5).order("stock", { ascending: true }).limit(8),
+        supabase.from("products").select("id, name, stock_qty, low_stock_threshold").lte("stock_qty", 5).order("stock_qty", { ascending: true }).limit(8),
         supabase.from("newsletter_subscribers").select("id", { count: "exact", head: true }).eq("confirmed", true).eq("unsubscribed", false),
         supabase.from("products").select("id", { count: "exact", head: true }),
         supabase.from("orders").select("created_at, total, status").gte("created_at", month.toISOString()),
@@ -148,7 +148,7 @@ const AdminDashboard = () => {
       ].sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime()).slice(0, 10);
       setActivity(acts);
 
-      setLowStock((lowStockRows.data ?? []).map((p: any) => ({ id: p.id, name: p.name, stock: p.stock ?? 0, threshold: p.low_stock_threshold ?? 5 })));
+      setLowStock((lowStockRows.data ?? []).map((p: any) => ({ id: p.id, name: p.name, stock: p.stock_qty ?? 0, threshold: p.low_stock_threshold ?? 5 })));
 
       // Top products (by quantity sold)
       const tp = new Map<string, { revenue: number; qty: number }>();

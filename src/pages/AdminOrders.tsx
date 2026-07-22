@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -42,7 +43,13 @@ const AdminOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const statusFilter = searchParams.get("status") || "all";
+  const setStatusFilter = (s: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (s === "all") next.delete("status"); else next.set("status", s);
+    setSearchParams(next, { replace: true });
+  };
   const [expanded, setExpanded] = useState<string | null>(null);
   const [itemsById, setItemsById] = useState<Record<string, OrderItem[]>>({});
 

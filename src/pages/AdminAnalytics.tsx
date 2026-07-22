@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from "recharts";
@@ -120,7 +121,16 @@ const AdminAnalytics = () => {
   const [perfEvents, setPerfEvents] = useState<ConversionRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState(30);
-  const [activeTab, setActiveTab] = useState<"leads" | "revenue" | "traffic" | "funnels" | "products" | "performance">("leads");
+  const [searchParams, setSearchParams] = useSearchParams();
+  type TabKey = "leads" | "revenue" | "traffic" | "funnels" | "products" | "performance";
+  const validTabs: TabKey[] = ["leads", "revenue", "traffic", "funnels", "products", "performance"];
+  const urlTab = searchParams.get("tab") as TabKey | null;
+  const activeTab: TabKey = urlTab && validTabs.includes(urlTab) ? urlTab : "leads";
+  const setActiveTab = (t: TabKey) => {
+    const next = new URLSearchParams(searchParams);
+    next.set("tab", t);
+    setSearchParams(next, { replace: true });
+  };
 
   useEffect(() => {
     const fetchAll = async () => {

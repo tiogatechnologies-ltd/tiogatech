@@ -48,8 +48,8 @@ const StaffDashboard = () => {
         supabase.from("orders").select("id,total,status,payment_status,created_at,full_name,phone").gte("created_at", since14).order("created_at", { ascending: false }).limit(500),
         supabase.from("leads").select("id,full_name,phone,location,status,created_at,source").gte("created_at", since14).order("created_at", { ascending: false }).limit(500),
         supabase.from("support_tickets" as any).select("id,ticket_number,user_name,user_contact,subject,message,status,created_at").in("status", ["open", "in_progress"]).order("created_at", { ascending: false }).limit(20),
-        supabase.from("solar_assessments").select("id,status").eq("status", "pending").limit(1000),
-        supabase.from("custom_solution_requests").select("id,status").eq("status", "open").limit(1000),
+        supabase.from("solar_assessments").select("id,status").in("status", ["basic", "full"]).limit(1000),
+        supabase.from("custom_solution_requests").select("id,status").in("status", ["new", "contacted"]).limit(1000),
       ]);
 
       const orders = ordersRes.data || [];

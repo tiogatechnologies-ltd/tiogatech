@@ -27,11 +27,12 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
       { label: "Analytics", icon: BarChart3, path: "/admin/analytics", roles: ["admin", "staff"], children: [
-        { label: "Overview", path: "/admin/analytics?tab=overview" },
+        { label: "Leads", path: "/admin/analytics?tab=leads" },
         { label: "Revenue", path: "/admin/analytics?tab=revenue" },
         { label: "Traffic", path: "/admin/analytics?tab=traffic" },
         { label: "Funnels", path: "/admin/analytics?tab=funnels" },
-        { label: "Leads", path: "/admin/analytics?tab=leads" },
+        { label: "Products", path: "/admin/analytics?tab=products" },
+        { label: "Performance", path: "/admin/analytics?tab=performance" },
       ] },
     ],
   },
@@ -41,14 +42,12 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Orders", icon: ShoppingBag, path: "/admin/orders", children: [
         { label: "All Orders", path: "/admin/orders" },
-        { label: "Pending", path: "/admin/orders?status=pending" },
-        { label: "Paid", path: "/admin/orders?status=paid" },
+        { label: "New", path: "/admin/orders?status=new" },
+        { label: "Confirmed", path: "/admin/orders?status=confirmed" },
+        { label: "Fulfilled", path: "/admin/orders?status=fulfilled" },
         { label: "Cancelled", path: "/admin/orders?status=cancelled" },
       ] },
-      { label: "Customers", icon: Users, path: "/admin/customers", children: [
-        { label: "All Customers", path: "/admin/customers" },
-        { label: "Segments", path: "/admin/customers?view=segments" },
-      ] },
+      { label: "Customers", icon: Users, path: "/admin/customers" },
       { label: "Leads", icon: Users, path: "/admin/leads" },
       { label: "Support Tickets", icon: FileText, path: "/admin/tickets" },
       { label: "Discounts", icon: Tag, path: "/admin/discounts" },
