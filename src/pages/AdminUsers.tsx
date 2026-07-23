@@ -128,6 +128,7 @@ const AdminUsers = () => {
                     <th className="px-4 py-3 hidden md:table-cell">Joined</th>
                     <th className="px-4 py-3 hidden lg:table-cell">Last Sign In</th>
                     <th className="px-4 py-3">Roles</th>
+                    <th className="px-4 py-3">Custom Role</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -152,6 +153,19 @@ const AdminUsers = () => {
                             );
                           })}
                         </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <select
+                          value={userCustom[u.id] ?? ""}
+                          onChange={(e) => setCustomFor(u.id, e.target.value)}
+                          className="text-xs px-2 py-1.5 rounded-lg border border-border bg-background"
+                          disabled={customRoles.length === 0}
+                        >
+                          <option value="">— none —</option>
+                          {customRoles.map((c) => (
+                            <option key={c.key} value={c.key}>{c.label}</option>
+                          ))}
+                        </select>
                       </td>
                     </tr>
                   ))}
