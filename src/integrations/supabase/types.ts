@@ -576,6 +576,27 @@ export type Database = {
         }
         Relationships: []
       }
+      custom_roles: {
+        Row: {
+          base_role: Database["public"]["Enums"]["app_role"]
+          created_at: string
+          key: string
+          label: string
+        }
+        Insert: {
+          base_role: Database["public"]["Enums"]["app_role"]
+          created_at?: string
+          key: string
+          label: string
+        }
+        Update: {
+          base_role?: Database["public"]["Enums"]["app_role"]
+          created_at?: string
+          key?: string
+          label?: string
+        }
+        Relationships: []
+      }
       custom_solution_requests: {
         Row: {
           admin_notes: string | null
@@ -2052,6 +2073,27 @@ export type Database = {
         }
         Relationships: []
       }
+      role_page_permissions: {
+        Row: {
+          allowed: boolean
+          page_key: string
+          role_key: string
+          updated_at: string
+        }
+        Insert: {
+          allowed?: boolean
+          page_key: string
+          role_key: string
+          updated_at?: string
+        }
+        Update: {
+          allowed?: boolean
+          page_key?: string
+          role_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           id: string
@@ -2338,6 +2380,32 @@ export type Database = {
           user_name?: string
         }
         Relationships: []
+      }
+      user_custom_roles: {
+        Row: {
+          created_at: string
+          custom_role_key: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          custom_role_key: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          custom_role_key?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_custom_roles_custom_role_key_fkey"
+            columns: ["custom_role_key"]
+            isOneToOne: false
+            referencedRelation: "custom_roles"
+            referencedColumns: ["key"]
+          },
+        ]
       }
       user_roles: {
         Row: {
