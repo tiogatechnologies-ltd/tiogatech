@@ -17,25 +17,52 @@ interface UserRow {
   roles: string[];
 }
 
+interface CustomRole { key: string; label: string; base_role: string }
+
 const AdminUsers = () => {
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | AppRole>("all");
+  const [customRoles, setCustomRoles] = useState<CustomRole[]>([]);
+  const [userCustom, setUserCustom] = useState<Record<string, string>>({});
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase.functions.invoke("list-users");
-    if (error) {
-      toast.error(error.message || "Failed to load users");
+    const [usersRes, crRes, ucrRes] = await Promise.all([
+      supabase.functions.invoke("list-users"),
+      supabase.from("custom_roles").select("*"),
+      supabase.from("user_custom_roles").select("user_id, custom_role_key"),
+    ]);
+    if (usersRes.error) {
+      toast.error(usersRes.error.message || "Failed to load users");
       setUsers([]);
     } else {
-      setUsers(((data as any)?.users ?? []) as UserRow[]);
+      setUsers(((usersRes.data as any)?.users ?? []) as UserRow[]);
     }
+    setCustomRoles((crRes.data as CustomRole[]) ?? []);
+    const map: Record<string, string> = {};
+    (ucrRes.data ?? []).forEach((r: any) => { map[r.user_id] = r.custom_role_key; });
+    setUserCustom(map);
     setLoading(false);
   };
 
   useEffect(() => { load(); }, []);
+
+  const setCustomFor = async (userId: string, key: string) => {
+    if (!key) {
+      const { error } = await supabase.from("user_custom_roles").delete().eq("user_id", userId);
+      if (error) return toast.error(error.message);
+      toast.success("Custom role cleared");
+    } else {
+      const { error } = await supabase
+        .from("user_custom_roles")
+        .upsert({ user_id: userId, custom_role_key: key }, { onConflict: "user_id" });
+      if (error) return toast.error(error.message);
+      toast.success("Custom role assigned");
+    }
+    load();
+  };
 
   const toggleRole = async (userId: string, role: AppRole, currentlyHas: boolean) => {
     if (currentlyHas) {
@@ -101,6 +128,7 @@ const AdminUsers = () => {
                     <th className="px-4 py-3 hidden md:table-cell">Joined</th>
                     <th className="px-4 py-3 hidden lg:table-cell">Last Sign In</th>
                     <th className="px-4 py-3">Roles</th>
+                    <th className="px-4 py-3">Custom Role</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -125,6 +153,19 @@ const AdminUsers = () => {
                             );
                           })}
                         </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <select
+                          value={userCustom[u.id] ?? ""}
+                          onChange={(e) => setCustomFor(u.id, e.target.value)}
+                          className="text-xs px-2 py-1.5 rounded-lg border border-border bg-background"
+                          disabled={customRoles.length === 0}
+                        >
+                          <option value="">— none —</option>
+                          {customRoles.map((c) => (
+                            <option key={c.key} value={c.key}>{c.label}</option>
+                          ))}
+                        </select>
                       </td>
                     </tr>
                   ))}

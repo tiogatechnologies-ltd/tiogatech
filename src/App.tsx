@@ -106,6 +106,7 @@ const AccountSubscription = lazy(() => import("./pages/AccountSubscription.tsx")
 const AdminAiSubscriptions = lazy(() => import("./pages/AdminAiSubscriptions.tsx"));
 const AdminAiCreditUsage = lazy(() => import("./pages/AdminAiCreditUsage.tsx"));
 const AdminSupportTickets = lazy(() => import("./pages/AdminSupportTickets.tsx"));
+const AdminRoles = lazy(() => import("./pages/AdminRoles.tsx"));
 const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
 const queryClient = new QueryClient({
@@ -218,6 +219,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/affiliates/payouts" element={<Admin roles={["admin"]}><AdminAffiliatePayouts /></Admin>} />
           <Route path="/admin/affiliates/analytics" element={<Admin roles={["admin"]}><AdminAffiliateAnalytics /></Admin>} />
           <Route path="/admin/users" element={<Admin roles={["admin"]}><AdminUsers /></Admin>} />
+          <Route path="/admin/roles" element={<Admin roles={["admin"]}><AdminRoles /></Admin>} />
           <Route path="/admin/discounts" element={<Admin roles={["admin", "staff"]}><AdminDiscounts /></Admin>} />
           <Route path="/admin/customers" element={<Admin roles={["admin", "staff"]}><AdminCustomers /></Admin>} />
           <Route path="/admin/audit-log" element={<Admin roles={["admin"]}><AdminAuditLog /></Admin>} />

@@ -1,12 +1,15 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
+import usePagePermissions from "@/hooks/usePagePermissions";
+import { pageKeyForPath } from "@/lib/adminPages";
 import {
   LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout,
   Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone,
   Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag,
-  ScrollText, Calendar, Search, Calculator, Zap, Plus, Minus, Pin, PinOff,
+  ScrollText, Calendar, Search, Calculator, Zap, Plus, Minus, Pin, PinOff, ShieldCheck,
 } from "lucide-react";
+
 
 interface AdminLayoutProps { children: React.ReactNode; }
 
@@ -140,6 +143,7 @@ const navGroups: NavGroup[] = [
     roles: ["admin"],
     items: [
       { label: "Users & Roles", icon: UserRoundCheck, path: "/admin/users" },
+      { label: "Role Permissions", icon: ShieldCheck, path: "/admin/roles" },
       { label: "Audit Log", icon: ScrollText, path: "/admin/audit-log" },
       { label: "Settings", icon: Settings, path: "/admin/settings" },
     ],
@@ -172,6 +176,7 @@ const pathMatches = (target: string, current: string) => {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const { signOut, user, roles, isAdmin, loading } = useAuth();
+  const { canPath, loaded: permsLoaded } = usePagePermissions();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -183,11 +188,21 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     return required.some((r) => roles.includes(r));
   };
 
+  const allowPath = (path: string) => (isAdmin ? true : canPath(path));
+
   const visibleGroups = useMemo(() => navGroups
     .filter((g) => can(g.roles))
-    .map((g) => ({ ...g, items: g.items.filter((i) => can(i.roles)) }))
+    .map((g) => ({
+      ...g,
+      items: g.items
+        .filter((i) => can(i.roles))
+        .filter((i) => allowPath(i.path))
+        .map((i) => i.children
+          ? { ...i, children: i.children.filter((c) => allowPath(c.path)) }
+          : i),
+    }))
     .filter((g) => g.items.length > 0),
-    [isAdmin, roles.join(",")]
+    [isAdmin, roles.join(","), permsLoaded, canPath]
   );
 
   // Determine which group/item contains the active route
