@@ -1,12 +1,15 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
+import usePagePermissions from "@/hooks/usePagePermissions";
+import { pageKeyForPath } from "@/lib/adminPages";
 import {
   LayoutDashboard, Package, Users, Settings, LogOut, Menu, X, FileText, Layout,
   Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone,
   Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag,
-  ScrollText, Calendar, Search, Calculator, Zap, Plus, Minus, Pin, PinOff,
+  ScrollText, Calendar, Search, Calculator, Zap, Plus, Minus, Pin, PinOff, ShieldCheck,
 } from "lucide-react";
+
 
 interface AdminLayoutProps { children: React.ReactNode; }
 
