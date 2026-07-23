@@ -143,6 +143,7 @@ const navGroups: NavGroup[] = [
     roles: ["admin"],
     items: [
       { label: "Users & Roles", icon: UserRoundCheck, path: "/admin/users" },
+      { label: "Role Permissions", icon: ShieldCheck, path: "/admin/roles" },
       { label: "Audit Log", icon: ScrollText, path: "/admin/audit-log" },
       { label: "Settings", icon: Settings, path: "/admin/settings" },
     ],
