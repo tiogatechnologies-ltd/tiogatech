@@ -106,6 +106,7 @@ const AccountSubscription = lazy(() => import("./pages/AccountSubscription.tsx")
 const AdminAiSubscriptions = lazy(() => import("./pages/AdminAiSubscriptions.tsx"));
 const AdminAiCreditUsage = lazy(() => import("./pages/AdminAiCreditUsage.tsx"));
 const AdminSupportTickets = lazy(() => import("./pages/AdminSupportTickets.tsx"));
+const AdminRoles = lazy(() => import("./pages/AdminRoles.tsx"));
 const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
 const queryClient = new QueryClient({
