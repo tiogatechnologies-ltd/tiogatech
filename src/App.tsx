@@ -9,6 +9,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import RequireRole from "@/components/auth/RequireRole";
+import RequirePage from "@/components/auth/RequirePage";
+
 import { usePageTracker } from "@/hooks/usePageTracker";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
@@ -126,13 +128,15 @@ const RouteFallback = () => (
   </div>
 );
 
-// Admin routes are role-gated using the user_roles table.
+// Admin routes are role-gated using the user_roles table, then further scoped
+// by the admin-managed per-page permission matrix (role_page_permissions).
 // `roles` defaults to all admin surfaces; pass a narrower list to scope by role.
 const Admin = ({ children, roles }: { children: React.ReactNode; roles?: ("admin" | "staff" | "engineer")[] }) => (
   <RequireRole roles={roles ?? ["admin", "staff", "engineer"]} redirectTo="/admin/login">
-    {children}
+    <RequirePage>{children}</RequirePage>
   </RequireRole>
 );
+
 
 const PageTracker = () => { usePageTracker(); return null; };
 const CacheBoot = () => {
