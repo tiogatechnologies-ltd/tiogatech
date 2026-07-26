@@ -76,6 +76,7 @@ export const ADMIN_PAGES: AdminPage[] = [
 // Path -> page_key mapping used by the sidebar and route guard.
 export const PATH_TO_PAGE_KEY: Record<string, string> = {
   "/admin": "dashboard",
+  "/staff": "dashboard",
   "/admin/analytics": "analytics",
   "/admin/orders": "orders",
   "/admin/customers": "customers",

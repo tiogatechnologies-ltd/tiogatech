@@ -128,11 +128,13 @@ const RouteFallback = () => (
   </div>
 );
 
-// Admin routes are role-gated using the user_roles table, then further scoped
-// by the admin-managed per-page permission matrix (role_page_permissions).
-// `roles` defaults to all admin surfaces; pass a narrower list to scope by role.
-const Admin = ({ children, roles }: { children: React.ReactNode; roles?: ("admin" | "staff" | "engineer")[] }) => (
-  <RequireRole roles={roles ?? ["admin", "staff", "engineer"]} redirectTo="/admin/login">
+const ADMIN_BASE_ROLES: ("admin" | "staff" | "engineer" | "affiliate")[] = ["admin", "staff", "engineer", "affiliate"];
+
+// Admin routes are first limited to non-customer team roles, then every page is
+// enforced by the admin-managed permission matrix. The per-page matrix is the
+// source of truth, so direct URLs and bookmarked admin pages cannot bypass it.
+const Admin = ({ children }: { children: React.ReactNode; roles?: typeof ADMIN_BASE_ROLES }) => (
+  <RequireRole roles={ADMIN_BASE_ROLES} redirectTo="/admin/login">
     <RequirePage>{children}</RequirePage>
   </RequireRole>
 );
