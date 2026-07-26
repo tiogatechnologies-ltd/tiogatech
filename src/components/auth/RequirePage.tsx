@@ -16,7 +16,7 @@ const Loader = () => (
  */
 export const RequirePage = ({ pageKey, children }: { pageKey?: string; children: React.ReactNode }) => {
   const { isAdmin } = useAuth();
-  const { canPage, loaded } = usePagePermissions();
+  const { allowedPages, canPage, loaded } = usePagePermissions();
   const location = useLocation();
 
   if (isAdmin) return <>{children}</>;
@@ -26,8 +26,7 @@ export const RequirePage = ({ pageKey, children }: { pageKey?: string; children:
 
   if (!loaded) return <Loader />;
   if (!canPage(key)) {
-    // Avoid a redirect loop when the dashboard itself is revoked.
-    const fallback = key === "dashboard" ? "/dashboard" : "/admin";
+    const fallback = allowedPages.find((page) => page.key !== key)?.path ?? "/dashboard";
     return <Navigate to={fallback} state={{ blocked: location.pathname }} replace />;
   }
   return <>{children}</>;

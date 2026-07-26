@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
 import { ADMIN_PAGES, pageKeyForPath } from "@/lib/adminPages";
@@ -47,10 +47,10 @@ export const usePagePermissions = () => {
 
   useEffect(() => { load(); }, [load]);
 
-  const effectiveRoleKeys: string[] = [
+  const effectiveRoleKeys: string[] = useMemo(() => [
     ...roles.map((r) => r as string),
     ...(customRoleKey ? [customRoleKey] : []),
-  ];
+  ], [roles, customRoleKey]);
 
   const canPage = useCallback((pageKey: string): boolean => {
     if (isAdmin) return true;
@@ -69,7 +69,12 @@ export const usePagePermissions = () => {
     if (relevant.some((o) => o.allowed === true)) return true;
     if (relevant.some((o) => o.allowed === false)) return false;
     return baseline;
-  }, [isAdmin, roles, customBaseRole, customRoleKey, overrides, effectiveRoleKeys.join(",")]);
+  }, [isAdmin, roles, customBaseRole, overrides, effectiveRoleKeys]);
+
+  const allowedPages = useMemo(
+    () => ADMIN_PAGES.filter((page) => canPage(page.key)),
+    [canPage]
+  );
 
   const canPath = useCallback((path: string): boolean => {
     const key = pageKeyForPath(path);
@@ -77,7 +82,7 @@ export const usePagePermissions = () => {
     return canPage(key);
   }, [canPage]);
 
-  return { canPage, canPath, loaded: loaded && rolesLoaded, reload: load };
+  return { canPage, canPath, allowedPages, loaded: loaded && rolesLoaded, reload: load };
 };
 
 export default usePagePermissions;
