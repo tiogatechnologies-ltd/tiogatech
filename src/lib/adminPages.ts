@@ -80,9 +80,6 @@ export const PATH_TO_PAGE_KEY: Record<string, string> = Object.fromEntries([
   ["/staff", "dashboard"] as const,
 ]);
 
-export const pagePathForKey = (pageKey: string): string | null =>
-  ADMIN_PAGES.find((page) => page.key === pageKey)?.path ?? null;
-
 export const pageKeyForPath = (path: string): string | null => {
   const base = path.split("?")[0];
   return PATH_TO_PAGE_KEY[base] ?? null;
