@@ -128,11 +128,13 @@ const RouteFallback = () => (
   </div>
 );
 
-// Admin routes are role-gated using the user_roles table, then further scoped
-// by the admin-managed per-page permission matrix (role_page_permissions).
-// `roles` defaults to all admin surfaces; pass a narrower list to scope by role.
-const Admin = ({ children, roles }: { children: React.ReactNode; roles?: ("admin" | "staff" | "engineer")[] }) => (
-  <RequireRole roles={roles ?? ["admin", "staff", "engineer"]} redirectTo="/admin/login">
+const ADMIN_BASE_ROLES: ("admin" | "staff" | "engineer" | "affiliate")[] = ["admin", "staff", "engineer", "affiliate"];
+
+// Admin routes are first limited to non-customer team roles, then every page is
+// enforced by the admin-managed permission matrix. The per-page matrix is the
+// source of truth, so direct URLs and bookmarked admin pages cannot bypass it.
+const Admin = ({ children }: { children: React.ReactNode }) => (
+  <RequireRole roles={ADMIN_BASE_ROLES} redirectTo="/admin/login">
     <RequirePage>{children}</RequirePage>
   </RequireRole>
 );
@@ -201,44 +203,44 @@ const AnimatedRoutes = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/setup" element={<AdminSetup />} />
           <Route path="/admin" element={<Admin><AdminDashboard /></Admin>} />
-          <Route path="/staff" element={<Admin roles={["admin", "staff"]}><StaffDashboard /></Admin>} />
-          <Route path="/admin/products" element={<Admin roles={["admin", "staff"]}><AdminProducts /></Admin>} />
-          <Route path="/admin/inventory" element={<Admin roles={["admin", "staff"]}><AdminInventory /></Admin>} />
-          <Route path="/admin/leads" element={<Admin roles={["admin", "staff"]}><AdminLeads /></Admin>} />
-          <Route path="/admin/forms" element={<Admin roles={["admin"]}><AdminFormQuestions /></Admin>} />
-          <Route path="/admin/landing" element={<Admin roles={["admin"]}><AdminLandingPage /></Admin>} />
-          <Route path="/admin/content" element={<Admin roles={["admin"]}><AdminContent /></Admin>} />
-          <Route path="/admin/orders" element={<Admin roles={["admin", "staff"]}><AdminOrders /></Admin>} />
-          <Route path="/admin/email" element={<Admin roles={["admin", "staff"]}><AdminEmail /></Admin>} />
-          <Route path="/admin/analytics" element={<Admin roles={["admin", "staff"]}><AdminAnalytics /></Admin>} />
-          <Route path="/admin/careers" element={<Admin roles={["admin"]}><AdminCareers /></Admin>} />
-          <Route path="/admin/career-applications" element={<Admin roles={["admin", "staff"]}><AdminCareerApplications /></Admin>} />
-          <Route path="/admin/solar-packages" element={<Admin roles={["admin", "staff"]}><AdminSolarPackages /></Admin>} />
-          <Route path="/admin/smart-locks" element={<Admin roles={["admin", "staff"]}><AdminSmartLocks /></Admin>} />
-          <Route path="/admin/home-automation" element={<Admin roles={["admin", "staff"]}><AdminHomeAutomation /></Admin>} />
-          <Route path="/admin/waitlist" element={<Admin roles={["admin", "staff"]}><AdminWaitlist /></Admin>} />
-          <Route path="/admin/blog" element={<Admin roles={["admin", "staff"]}><AdminBlog /></Admin>} />
-          <Route path="/admin/newsletter" element={<Admin roles={["admin", "staff"]}><AdminNewsletter /></Admin>} />
-          <Route path="/admin/affiliates" element={<Admin roles={["admin"]}><AdminAffiliates /></Admin>} />
-          <Route path="/admin/affiliates/payouts" element={<Admin roles={["admin"]}><AdminAffiliatePayouts /></Admin>} />
-          <Route path="/admin/affiliates/analytics" element={<Admin roles={["admin"]}><AdminAffiliateAnalytics /></Admin>} />
-          <Route path="/admin/users" element={<Admin roles={["admin"]}><AdminUsers /></Admin>} />
-          <Route path="/admin/roles" element={<Admin roles={["admin"]}><AdminRoles /></Admin>} />
-          <Route path="/admin/discounts" element={<Admin roles={["admin", "staff"]}><AdminDiscounts /></Admin>} />
-          <Route path="/admin/customers" element={<Admin roles={["admin", "staff"]}><AdminCustomers /></Admin>} />
-          <Route path="/admin/audit-log" element={<Admin roles={["admin"]}><AdminAuditLog /></Admin>} />
+          <Route path="/staff" element={<Admin><StaffDashboard /></Admin>} />
+          <Route path="/admin/products" element={<Admin><AdminProducts /></Admin>} />
+          <Route path="/admin/inventory" element={<Admin><AdminInventory /></Admin>} />
+          <Route path="/admin/leads" element={<Admin><AdminLeads /></Admin>} />
+          <Route path="/admin/forms" element={<Admin><AdminFormQuestions /></Admin>} />
+          <Route path="/admin/landing" element={<Admin><AdminLandingPage /></Admin>} />
+          <Route path="/admin/content" element={<Admin><AdminContent /></Admin>} />
+          <Route path="/admin/orders" element={<Admin><AdminOrders /></Admin>} />
+          <Route path="/admin/email" element={<Admin><AdminEmail /></Admin>} />
+          <Route path="/admin/analytics" element={<Admin><AdminAnalytics /></Admin>} />
+          <Route path="/admin/careers" element={<Admin><AdminCareers /></Admin>} />
+          <Route path="/admin/career-applications" element={<Admin><AdminCareerApplications /></Admin>} />
+          <Route path="/admin/solar-packages" element={<Admin><AdminSolarPackages /></Admin>} />
+          <Route path="/admin/smart-locks" element={<Admin><AdminSmartLocks /></Admin>} />
+          <Route path="/admin/home-automation" element={<Admin><AdminHomeAutomation /></Admin>} />
+          <Route path="/admin/waitlist" element={<Admin><AdminWaitlist /></Admin>} />
+          <Route path="/admin/blog" element={<Admin><AdminBlog /></Admin>} />
+          <Route path="/admin/newsletter" element={<Admin><AdminNewsletter /></Admin>} />
+          <Route path="/admin/affiliates" element={<Admin><AdminAffiliates /></Admin>} />
+          <Route path="/admin/affiliates/payouts" element={<Admin><AdminAffiliatePayouts /></Admin>} />
+          <Route path="/admin/affiliates/analytics" element={<Admin><AdminAffiliateAnalytics /></Admin>} />
+          <Route path="/admin/users" element={<Admin><AdminUsers /></Admin>} />
+          <Route path="/admin/roles" element={<Admin><AdminRoles /></Admin>} />
+          <Route path="/admin/discounts" element={<Admin><AdminDiscounts /></Admin>} />
+          <Route path="/admin/customers" element={<Admin><AdminCustomers /></Admin>} />
+          <Route path="/admin/audit-log" element={<Admin><AdminAuditLog /></Admin>} />
           
-          <Route path="/admin/finance/applications" element={<Admin roles={["admin", "staff"]}><AdminFinanceApplications /></Admin>} />
-          <Route path="/admin/finance/schedules" element={<Admin roles={["admin", "staff"]}><AdminFinanceSchedules /></Admin>} />
-          <Route path="/admin/settings" element={<Admin roles={["admin"]}><AdminSettings /></Admin>} />
-          <Route path="/admin/reports" element={<Admin roles={["admin", "staff"]}><AdminReports /></Admin>} />
+          <Route path="/admin/finance/applications" element={<Admin><AdminFinanceApplications /></Admin>} />
+          <Route path="/admin/finance/schedules" element={<Admin><AdminFinanceSchedules /></Admin>} />
+          <Route path="/admin/settings" element={<Admin><AdminSettings /></Admin>} />
+          <Route path="/admin/reports" element={<Admin><AdminReports /></Admin>} />
           <Route path="/admin/storage" element={<Admin><AdminStorage /></Admin>} />
           <Route path="/admin/assessments" element={<Admin><AdminAssessments /></Admin>} />
           <Route path="/admin/custom-requests" element={<Admin><AdminCustomRequests /></Admin>} />
           <Route path="/admin/lumivolt-sizings" element={<Admin><AdminLumiVoltSizings /></Admin>} />
-          <Route path="/admin/ai-subscriptions" element={<Admin roles={["admin"]}><AdminAiSubscriptions /></Admin>} />
-          <Route path="/admin/ai-usage" element={<Admin roles={["admin", "staff"]}><AdminAiCreditUsage /></Admin>} />
-          <Route path="/admin/tickets" element={<Admin roles={["admin", "staff"]}><AdminSupportTickets /></Admin>} />
+          <Route path="/admin/ai-subscriptions" element={<Admin><AdminAiSubscriptions /></Admin>} />
+          <Route path="/admin/ai-usage" element={<Admin><AdminAiCreditUsage /></Admin>} />
+          <Route path="/admin/tickets" element={<Admin><AdminSupportTickets /></Admin>} />
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
       </Suspense>
