@@ -6,7 +6,7 @@ const ALLOWED: Record<string, string[]> = {
   leads: ["id", "full_name", "phone", "email", "location", "products", "budget", "status", "created_at"],
   orders: ["id", "order_number", "full_name", "phone", "email", "total", "status", "payment_status", "created_at"],
   profiles: ["id", "email", "full_name", "phone", "created_at"],
-  newsletter_subscribers: ["id", "email", "status", "created_at"],
+  newsletter_subscribers: ["id", "email", "full_name", "source", "confirmed", "unsubscribed", "created_at"],
   affiliates: ["id", "code", "full_name", "email", "phone", "commission_rate", "created_at"],
   finance_applications: ["id", "full_name", "email", "phone", "item_name", "total_amount_ngn", "months", "status", "created_at"],
 };
