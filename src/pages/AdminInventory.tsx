@@ -233,7 +233,22 @@ const AdminInventory = () => {
           </div>
         </div>
       )}
+
+      {bulkOpen && (
+        <div className="fixed inset-0 z-50 bg-foreground/40 flex items-center justify-center p-4" onClick={() => setBulkOpen(false)}>
+          <div className="bg-card border border-border rounded-2xl max-w-md w-full p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-display text-lg font-bold">Bulk low-stock threshold</h3>
+            <p className="text-sm text-muted-foreground">Applies to the <strong className="text-foreground">{filtered.length}</strong> product(s) currently shown by your search and filter.</p>
+            <input type="number" min={0} value={bulkThreshold} onChange={(e) => setBulkThreshold(e.target.value)} placeholder="e.g. 5" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setBulkOpen(false)} className="px-4 py-2 rounded-lg border border-border text-sm">Cancel</button>
+              <button onClick={applyBulkThreshold} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold">Apply</button>
+            </div>
+          </div>
+        </div>
+      )}
     </AdminLayout>
+
   );
 };
 
