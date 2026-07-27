@@ -33,7 +33,13 @@ Deno.serve(async (req) => {
     const { data: roles } = await admin.from("user_roles").select("role").eq("user_id", u.user.id);
     if (!(roles || []).some((r: any) => r.role === "admin" || r.role === "staff")) return new Response("Forbidden", { status: 403, headers: corsHeaders });
 
-    const { data } = await admin.from(table).select(cols.join(",")).order("created_at", { ascending: false }).limit(10000);
+    const from = url.searchParams.get("from");
+    const to = url.searchParams.get("to");
+    const isDate = (s: string | null) => !!s && /^\d{4}-\d{2}-\d{2}$/.test(s);
+    let q = admin.from(table).select(cols.join(",")).order("created_at", { ascending: false }).limit(10000);
+    if (isDate(from)) q = q.gte("created_at", `${from}T00:00:00Z`);
+    if (isDate(to)) q = q.lte("created_at", `${to}T23:59:59Z`);
+    const { data } = await q;
     const body = csv(data || [], cols);
     return new Response(body, { headers: { ...corsHeaders, "Content-Type": "text/csv", "Content-Disposition": `attachment; filename="${table}-${Date.now()}.csv"` } });
   } catch (e) {
