@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
-import { AlertTriangle, Package, Plus, Minus, History, Search } from "lucide-react";
+import { AlertTriangle, Package, Plus, Minus, History, Search, Download, SlidersHorizontal } from "lucide-react";
 import { format } from "date-fns";
 
-interface Product { id: string; name: string; stock_qty: number | null; low_stock_threshold: number | null; price_ngn: number | null; is_active: boolean; }
+interface Product { id: string; name: string; category: string | null; stock_qty: number | null; low_stock_threshold: number | null; price: string | null; is_active: boolean; }
 interface Movement { id: string; product_id: string; delta: number; reason: string; note: string | null; created_at: string; }
 
 const REASONS = ["restock", "sale", "return", "adjustment", "damage", "transfer"];
@@ -18,11 +18,13 @@ const AdminInventory = () => {
   const [filter, setFilter] = useState<"all" | "low" | "out">("all");
   const [adjust, setAdjust] = useState<{ product: Product; delta: number; reason: string; note: string } | null>(null);
   const [historyFor, setHistoryFor] = useState<Product | null>(null);
+  const [bulkOpen, setBulkOpen] = useState(false);
+  const [bulkThreshold, setBulkThreshold] = useState("");
 
   const load = async () => {
     setLoading(true);
     const [{ data: p }, { data: m }] = await Promise.all([
-      supabase.from("products").select("id, name, stock_qty, low_stock_threshold, price_ngn, is_active").order("name"),
+      supabase.from("products").select("id, name, category, stock_qty, low_stock_threshold, price, is_active").order("name"),
       supabase.from("product_stock_movements").select("*").order("created_at", { ascending: false }).limit(200),
     ]);
     setProducts((p || []) as any);
@@ -70,6 +72,35 @@ const AdminInventory = () => {
 
   const productMovements = (id: string) => movements.filter((m) => m.product_id === id);
 
+  const exportCsv = () => {
+    const header = ["Product", "Category", "Price", "Stock", "Threshold", "Status", "Active"];
+    const lines = filtered.map((p) => {
+      const s = Number(p.stock_qty ?? 0);
+      const t = Number(p.low_stock_threshold ?? 5);
+      const status = s === 0 ? "out" : s <= t ? "low" : "ok";
+      return [p.name, p.category ?? "", p.price ?? "", s, t, status, p.is_active ? "yes" : "no"]
+        .map((v) => `"${String(v).replace(/"/g, '""')}"`).join(",");
+    });
+    const blob = new Blob([[header.join(","), ...lines].join("\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `inventory-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+    toast.success("Inventory exported");
+  };
+
+  const applyBulkThreshold = async () => {
+    const value = parseInt(bulkThreshold || "", 10);
+    if (Number.isNaN(value) || value < 0) return toast.error("Enter a valid threshold");
+    const ids = filtered.map((p) => p.id);
+    if (!ids.length) return toast.error("No products in the current view");
+    const { error } = await supabase.from("products").update({ low_stock_threshold: value }).in("id", ids);
+    if (error) return toast.error(error.message);
+    toast.success(`Threshold set to ${value} on ${ids.length} product(s)`);
+    setBulkOpen(false); setBulkThreshold("");
+    load();
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -78,7 +109,12 @@ const AdminInventory = () => {
             <h1 className="font-display text-2xl font-bold">Inventory</h1>
             <p className="text-sm text-muted-foreground">Track stock levels, restocks, and movement history.</p>
           </div>
+          <div className="flex gap-2">
+            <button onClick={() => setBulkOpen(true)} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-semibold hover:bg-muted"><SlidersHorizontal size={14} />Bulk threshold</button>
+            <button onClick={exportCsv} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-semibold hover:bg-muted"><Download size={14} />Export CSV</button>
+          </div>
         </div>
+
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
@@ -197,7 +233,22 @@ const AdminInventory = () => {
           </div>
         </div>
       )}
+
+      {bulkOpen && (
+        <div className="fixed inset-0 z-50 bg-foreground/40 flex items-center justify-center p-4" onClick={() => setBulkOpen(false)}>
+          <div className="bg-card border border-border rounded-2xl max-w-md w-full p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-display text-lg font-bold">Bulk low-stock threshold</h3>
+            <p className="text-sm text-muted-foreground">Applies to the <strong className="text-foreground">{filtered.length}</strong> product(s) currently shown by your search and filter.</p>
+            <input type="number" min={0} value={bulkThreshold} onChange={(e) => setBulkThreshold(e.target.value)} placeholder="e.g. 5" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setBulkOpen(false)} className="px-4 py-2 rounded-lg border border-border text-sm">Cancel</button>
+              <button onClick={applyBulkThreshold} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold">Apply</button>
+            </div>
+          </div>
+        </div>
+      )}
     </AdminLayout>
+
   );
 };
 
