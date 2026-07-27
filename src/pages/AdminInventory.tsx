@@ -18,6 +18,8 @@ const AdminInventory = () => {
   const [filter, setFilter] = useState<"all" | "low" | "out">("all");
   const [adjust, setAdjust] = useState<{ product: Product; delta: number; reason: string; note: string } | null>(null);
   const [historyFor, setHistoryFor] = useState<Product | null>(null);
+  const [bulkOpen, setBulkOpen] = useState(false);
+  const [bulkThreshold, setBulkThreshold] = useState("");
 
   const load = async () => {
     setLoading(true);
