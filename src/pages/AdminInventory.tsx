@@ -22,7 +22,7 @@ const AdminInventory = () => {
   const load = async () => {
     setLoading(true);
     const [{ data: p }, { data: m }] = await Promise.all([
-      supabase.from("products").select("id, name, stock_qty, low_stock_threshold, price_ngn, is_active").order("name"),
+      supabase.from("products").select("id, name, category, stock_qty, low_stock_threshold, price, is_active").order("name"),
       supabase.from("product_stock_movements").select("*").order("created_at", { ascending: false }).limit(200),
     ]);
     setProducts((p || []) as any);
