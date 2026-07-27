@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
-import { AlertTriangle, Package, Plus, Minus, History, Search } from "lucide-react";
+import { AlertTriangle, Package, Plus, Minus, History, Search, Download, SlidersHorizontal } from "lucide-react";
 import { format } from "date-fns";
 
-interface Product { id: string; name: string; stock_qty: number | null; low_stock_threshold: number | null; price_ngn: number | null; is_active: boolean; }
+interface Product { id: string; name: string; category: string | null; stock_qty: number | null; low_stock_threshold: number | null; price: string | null; is_active: boolean; }
 interface Movement { id: string; product_id: string; delta: number; reason: string; note: string | null; created_at: string; }
 
 const REASONS = ["restock", "sale", "return", "adjustment", "damage", "transfer"];
