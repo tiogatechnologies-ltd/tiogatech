@@ -21,6 +21,7 @@ const trackProductClick = (productId: string) => {
   supabase.from("product_clicks").insert({ product_id: productId, session_id: sessionId }).then(() => {});
 };
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
+import { productPath } from "@/lib/productSlug";
 import {
   Pagination,
   PaginationContent,
@@ -232,7 +233,13 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery, marketingBad
 
       <div className="p-3 sm:p-4 flex-1 flex flex-col gap-2 sm:gap-3">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-display font-bold text-card-foreground text-sm sm:text-base leading-tight">{product.name}</h3>
+          <Link
+            to={productPath(product)}
+            onClick={() => trackProductClick(product.id)}
+            className="font-display font-bold text-card-foreground text-sm sm:text-base leading-tight hover:text-primary transition-colors"
+          >
+            {product.name}
+          </Link>
           <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap shrink-0 ${tierColors[product.tier] ?? tierColors.entry}`}>
             {tierLabels[product.tier] ?? product.tier}
           </span>
