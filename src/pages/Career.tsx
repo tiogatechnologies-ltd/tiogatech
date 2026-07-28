@@ -14,6 +14,7 @@ import bgSolarField from "@/assets/bg-commercial-solar.jpg";
 import bgLagosNight from "@/assets/bg-lagos-apartment.jpg";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { breadcrumbJsonLd } from "@/lib/seoSchema";
 
 const reasons = [
   {
@@ -44,7 +45,7 @@ const Career = () => {
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
   <div className="min-h-screen flex flex-col">
-    <SEO title="Careers at Tioga Technologies" description="Join the team building Nigeria's clean energy and smart automation infrastructure. Engineering, installation and operations roles in Jos and Lagos." path="/career" />
+    <SEO title="Careers at Tioga Technologies" description="Join the team building Nigeria's clean energy and smart automation infrastructure. Engineering, installation and operations roles in Jos and Lagos." path="/career" jsonLd={breadcrumbJsonLd([{ name: "Careers", path: "/career" }])} />
     <SiteHeader />
     <PageHero
       eyebrow={c.eyebrow || "Careers"}

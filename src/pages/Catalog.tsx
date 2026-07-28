@@ -21,6 +21,7 @@ const trackProductClick = (productId: string) => {
   supabase.from("product_clicks").insert({ product_id: productId, session_id: sessionId }).then(() => {});
 };
 import {
+import { breadcrumbJsonLd } from "@/lib/seoSchema";
   Pagination,
   PaginationContent,
   PaginationItem,
@@ -711,13 +712,13 @@ const Catalog = () => {
         title="Product Catalog — Solar, Locks & Automation"
         description="Browse 129+ solar inverters, batteries, STAMA smart locks and home automation products with filtering by category and budget."
         path="/catalog"
-        jsonLd={{
+        jsonLd={[breadcrumbJsonLd([{ name: "Catalog", path: "/catalog" }]), {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Tioga Product Catalog",
           description: "Full Tioga product catalog: solar inverters, batteries, smart locks, home automation.",
           url: "https://tiogatechnologies.com/catalog",
-        }}
+        }]}
       />
       <SiteHeader />
       <div className="bg-secondary text-secondary-foreground">

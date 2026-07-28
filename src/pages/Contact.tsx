@@ -11,6 +11,7 @@ import { toast } from "@/hooks/use-toast";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import SocialLinks from "@/components/SocialLinks";
 import { TELEGRAM_COMMUNITY_URL } from "@/components/TelegramWidget";
+import { breadcrumbJsonLd, contactPageJsonLd } from "@/lib/seoSchema";
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
@@ -52,6 +53,7 @@ const Contact = () => {
         title="Contact Tioga Technologies"
         description="Talk to Tioga Technologies about solar, smart locks or home automation. Call +234 903 596 6388, WhatsApp, or visit our Jos office."
         path="/contact"
+        jsonLd={[breadcrumbJsonLd([{ name: "Contact", path: "/contact" }]), contactPageJsonLd()]}
       />
       <SiteHeader />
       <PageHero
