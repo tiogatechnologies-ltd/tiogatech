@@ -428,10 +428,23 @@ const Catalog = () => {
   const [loading, setLoading] = useState(true);
   const [aiRec, setAiRec] = useState<AIRecommendation | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeCategory, setActiveCategory] = useState<string | null>(searchParams.get("category"));
   const [activeSeries, setActiveSeries] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchParams.get("q") ?? "");
+
+  // Keep ?q= and ?category= in the URL so searches/filters are shareable and the
+  // WebSite SearchAction advertised in JSON-LD actually lands on a filtered view.
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams);
+    if (search.trim()) next.set("q", search.trim()); else next.delete("q");
+    if (activeCategory) next.set("category", activeCategory); else next.delete("category");
+    if (next.toString() !== searchParams.toString()) {
+      setSearchParams(next, { replace: true });
+    }
+  }, [search, activeCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
   const [selectedPriceBuckets, setSelectedPriceBuckets] = useState<string[]>([]);
   const [selectedCategoriesFilter, setSelectedCategoriesFilter] = useState<string[]>([]);
