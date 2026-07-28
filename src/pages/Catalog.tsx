@@ -20,8 +20,8 @@ const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("tioga_session_id") || "unknown";
   supabase.from("product_clicks").insert({ product_id: productId, session_id: sessionId }).then(() => {});
 };
-import {
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
+import {
   Pagination,
   PaginationContent,
   PaginationItem,
