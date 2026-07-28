@@ -65,6 +65,30 @@ async function fetchBlogPosts() {
   }
 }
 
+async function fetchProducts() {
+  const env = readEnv();
+  const url = env.VITE_SUPABASE_URL || env.SUPABASE_URL;
+  const key = env.VITE_SUPABASE_PUBLISHABLE_KEY || env.SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) return [];
+  try {
+    const endpoint = `${url}/rest/v1/products?select=id,name,updated_at&is_active=eq.true&order=sort_order&limit=2000`;
+    const res = await fetch(endpoint, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+    if (!res.ok) {
+      console.warn(`[sitemap] product fetch failed (${res.status}); skipping product URLs`);
+      return [];
+    }
+    return await res.json();
+  } catch (err) {
+    console.warn("[sitemap] product fetch error; skipping product URLs:", err?.message ?? err);
+    return [];
+  }
+}
+
+// Mirrors src/lib/productSlug.ts so sitemap URLs match the app's routes exactly.
+const kebab = (input) =>
+  String(input).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
+const productSlug = (p) => `${kebab(p.name)}-${String(p.id).replace(/-/g, "").slice(0, 8)}`;
+
 function urlBlock({ loc, lastmod, changefreq, priority }) {
   return [
     "  <url>",
@@ -78,7 +102,7 @@ function urlBlock({ loc, lastmod, changefreq, priority }) {
     .join("\n");
 }
 
-const posts = await fetchBlogPosts();
+const [posts, products] = await Promise.all([fetchBlogPosts(), fetchProducts()]);
 
 const blocks = [
   // No <lastmod> for static routes: there is no authoritative per-page timestamp,
@@ -94,6 +118,14 @@ const blocks = [
       priority: "0.7",
     }),
   ),
+  ...products.map((p) =>
+    urlBlock({
+      loc: `${BASE_URL}/product/${escapeXml(productSlug(p))}`,
+      lastmod: p.updated_at ? new Date(p.updated_at).toISOString() : undefined,
+      changefreq: "weekly",
+      priority: "0.7",
+    }),
+  ),
 ];
 
 const xml = [
@@ -105,4 +137,4 @@ const xml = [
 ].join("\n");
 
 writeFileSync(resolve("public/sitemap.xml"), xml);
-console.log(`sitemap.xml written (${STATIC_ENTRIES.length} routes + ${posts.length} blog posts)`);
+console.log(`sitemap.xml written (${STATIC_ENTRIES.length} routes + ${posts.length} blog posts + ${products.length} products)`);
