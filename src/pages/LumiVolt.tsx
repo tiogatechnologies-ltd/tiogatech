@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import LumiVoltSizer from "@/components/LumiVoltSizer";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 
 const pillars = [
   { icon: Sun, title: "Rooftop Solar", desc: "Tier-1 panels sized for your roof and daily load, engineered for Nigerian sun hours." },
@@ -51,7 +52,7 @@ const LumiVolt = () => {
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="LumiVolt — Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with LumiVolt by Tioga Technologies." path="/lumivolt" />
+      <SEO title="LumiVolt — Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with LumiVolt by Tioga Technologies." path="/lumivolt" jsonLd={[breadcrumbJsonLd([{ name: "LumiVolt", path: "/lumivolt" }]), serviceJsonLd({ name: "LumiVolt Residential Solar Installation", description: "Off-grid, hybrid and grid-tie solar systems engineered, sized and installed for Nigerian homes, with lithium battery backup and 24/7 monitoring.", path: "/lumivolt", serviceType: "Solar power system installation" })]} />
       <SiteHeader />
 
       <PageHero

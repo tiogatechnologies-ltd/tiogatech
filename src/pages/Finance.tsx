@@ -15,6 +15,7 @@ import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { supabase } from "@/integrations/supabase/client";
 import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 
 const steps = [
   { n: 1, icon: MessageCircle, title: "Free Consultation", desc: "Talk to our experts about your energy needs and get a personalized assessment." },
@@ -91,7 +92,7 @@ const Finance = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Lease-to-Own Solar Financing in Nigeria" description="Own your solar system with 30% down and flexible 3, 6, 12 or 24 month monthly repayments. Bank-partner financing for homes and businesses across Nigeria." path="/finance" />
+      <SEO title="Lease-to-Own Solar Financing in Nigeria" description="Own your solar system with 30% down and flexible 3, 6, 12 or 24 month monthly repayments. Bank-partner financing for homes and businesses across Nigeria." path="/finance" jsonLd={[breadcrumbJsonLd([{ name: "Easy Flex Financing", path: "/finance" }]), serviceJsonLd({ name: "Tioga Easy Flex Solar Financing", description: "Lease-to-own solar financing in Nigeria: 30% deposit, then 3, 6, 12 or 24 fixed monthly repayments with installation and insurance included.", path: "/finance", serviceType: "Solar equipment financing" })]} />
       <SiteHeader />
       <PageHero
         eyebrow={c.eyebrow || "Tioga Easy Flex"}

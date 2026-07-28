@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import founderImage from "@/assets/founder-oluwatosin-gbolade.jpg";
+import { breadcrumbJsonLd, aboutPageJsonLd } from "@/lib/seoSchema";
 
 const pillars = [
   {
@@ -67,6 +68,7 @@ const About = () => {
      title="About Tioga Technologies"
      description="Tioga Technologies builds IoT infrastructure, embedded systems and renewable energy management platforms across Africa, from Jos to Lagos and beyond."
      path="/about"
+     jsonLd={[breadcrumbJsonLd([{ name: "About", path: "/about" }]), aboutPageJsonLd()]}
    />
    <SiteHeader />
     <PageHero

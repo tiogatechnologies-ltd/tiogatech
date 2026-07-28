@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2, Expand, ShoppingBag, Search, SlidersHorizontal, X, Flame, TrendingUp, Tag, PackageOpen, Star, ArrowRight } from "lucide-react";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,6 +20,8 @@ const trackProductClick = (productId: string) => {
   const sessionId = sessionStorage.getItem("tioga_session_id") || "unknown";
   supabase.from("product_clicks").insert({ product_id: productId, session_id: sessionId }).then(() => {});
 };
+import { breadcrumbJsonLd } from "@/lib/seoSchema";
+import { productPath } from "@/lib/productSlug";
 import {
   Pagination,
   PaginationContent,
@@ -231,7 +233,13 @@ const ProductCard = ({ product, isRecommended, pickNumber, gallery, marketingBad
 
       <div className="p-3 sm:p-4 flex-1 flex flex-col gap-2 sm:gap-3">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-display font-bold text-card-foreground text-sm sm:text-base leading-tight">{product.name}</h3>
+          <Link
+            to={productPath(product)}
+            onClick={() => trackProductClick(product.id)}
+            className="font-display font-bold text-card-foreground text-sm sm:text-base leading-tight hover:text-primary transition-colors"
+          >
+            {product.name}
+          </Link>
           <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap shrink-0 ${tierColors[product.tier] ?? tierColors.entry}`}>
             {tierLabels[product.tier] ?? product.tier}
           </span>
@@ -428,10 +436,23 @@ const Catalog = () => {
   const [loading, setLoading] = useState(true);
   const [aiRec, setAiRec] = useState<AIRecommendation | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeCategory, setActiveCategory] = useState<string | null>(searchParams.get("category"));
   const [activeSeries, setActiveSeries] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchParams.get("q") ?? "");
+
+  // Keep ?q= and ?category= in the URL so searches/filters are shareable and the
+  // WebSite SearchAction advertised in JSON-LD actually lands on a filtered view.
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams);
+    if (search.trim()) next.set("q", search.trim()); else next.delete("q");
+    if (activeCategory) next.set("category", activeCategory); else next.delete("category");
+    if (next.toString() !== searchParams.toString()) {
+      setSearchParams(next, { replace: true });
+    }
+  }, [search, activeCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
   const [selectedPriceBuckets, setSelectedPriceBuckets] = useState<string[]>([]);
   const [selectedCategoriesFilter, setSelectedCategoriesFilter] = useState<string[]>([]);
@@ -698,13 +719,13 @@ const Catalog = () => {
         title="Product Catalog — Solar, Locks & Automation"
         description="Browse 129+ solar inverters, batteries, STAMA smart locks and home automation products with filtering by category and budget."
         path="/catalog"
-        jsonLd={{
+        jsonLd={[breadcrumbJsonLd([{ name: "Catalog", path: "/catalog" }]), {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Tioga Product Catalog",
           description: "Full Tioga product catalog: solar inverters, batteries, smart locks, home automation.",
           url: "https://tiogatechnologies.com/catalog",
-        }}
+        }]}
       />
       <SiteHeader />
       <div className="bg-secondary text-secondary-foreground">

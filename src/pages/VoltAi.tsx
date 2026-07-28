@@ -9,6 +9,7 @@ import { Lock, Lightbulb, Camera, Wifi, Cpu, Mic, Smartphone, Zap, Shield, Arrow
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 
 const pillars = [
   { icon: Lock, title: "Smart Locks & Access", desc: "Keyless entry, fingerprint and remote unlock for doors, gates and offices." },
@@ -38,7 +39,7 @@ const VoltAi = () => {
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="VoltAi — Smart Home Automation by Tioga" description="Smart locks, lights, cameras and sensors orchestrated through one app. AI-powered home automation by Tioga Technologies, built for Nigeria." path="/voltai" />
+      <SEO title="VoltAi — Smart Home Automation by Tioga" description="Smart locks, lights, cameras and sensors orchestrated through one app. AI-powered home automation by Tioga Technologies, built for Nigeria." path="/voltai" jsonLd={[breadcrumbJsonLd([{ name: "VoltAi", path: "/voltai" }]), serviceJsonLd({ name: "VoltAi Smart Home Automation", description: "Smart locks, lighting, cameras and sensors installed and orchestrated through one app, designed to work alongside LumiVolt solar.", path: "/voltai", serviceType: "Home automation installation" })]} />
       <SiteHeader />
 
       <PageHero

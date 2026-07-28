@@ -10,6 +10,7 @@ import bgBundle from "@/assets/bg-bundle.jpg";
 import catSolar from "@/assets/cat-solar.jpg";
 import catLocks from "@/assets/cat-locks.jpg";
 import catAutomation from "@/assets/cat-automation.jpg";
+import { breadcrumbJsonLd } from "@/lib/seoSchema";
 
 const SolarPackagesSection = lazy(() => import("@/components/SolarPackagesSection"));
 const SmartLocksSection = lazy(() => import("@/components/SmartLocksSection"));
@@ -63,14 +64,14 @@ const Packages = () => {
         title="Packages — Solar, Locks & Automation"
         description="Curated solar packages (1KVA to 30KVA), STAMA smart locks, and Apex/Aura/Riviera home automation bundles. Installable next week."
         path="/packages"
-        jsonLd={{
+        jsonLd={[breadcrumbJsonLd([{ name: "Packages", path: "/packages" }]), {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Tioga Packages",
           description: "Curated solar, smart lock and home automation bundles for Nigerian homes and businesses.",
           url: "https://tiogatechnologies.com/packages",
           about: ["Solar inverter systems", "STAMA smart locks", "Home automation bundles"],
-        }}
+        }]}
       />
       <SiteHeader />
       <PageHero
