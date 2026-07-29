@@ -130,100 +130,143 @@ const AdminSettings = () => {
     return byGroup;
   }, [query]);
 
-  const scrollTo = (id: string) => {
+  const openSection = (id: string) => {
     setActive(id);
-    document.getElementById(`sec-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.getElementById("settings-panel")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   };
 
   const activeSection = SECTIONS.find((s) => s.id === active);
+  const paneCls = (id: string) => (id === active ? "space-y-4" : "hidden");
 
   return (
     <AdminLayout>
-      {/* Mobile section picker */}
-      <div className="lg:hidden mb-4 sticky top-14 z-20 -mx-4 px-4 py-2 bg-background/95 backdrop-blur border-b border-border">
-        <select
-          value={active}
-          onChange={(e) => scrollTo(e.target.value)}
-          className={`${inputClass} py-2.5 font-semibold`}
-          aria-label="Jump to section"
-        >
-          {Object.entries(groups).map(([group, items]) => (
-            <optgroup key={group} label={group}>
-              {items.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
-            </optgroup>
-          ))}
-        </select>
-      </div>
+      <div className="space-y-6 pb-24">
+        {/* Page header — matches the other admin pages */}
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h1 className="font-display text-2xl font-bold">Settings</h1>
+            <p className="text-sm text-muted-foreground">
+              Configure your storefront, commerce, communications and system preferences.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {dirty && (
+              <button
+                onClick={() => setData(original)}
+                className="px-4 py-2 rounded-xl border border-border text-sm font-semibold hover:bg-muted"
+              >
+                Discard
+              </button>
+            )}
+            <button
+              onClick={saveAll}
+              disabled={saving || !dirty}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-50"
+            >
+              <Save size={14} />
+              {saving ? "Saving…" : dirty ? "Save changes" : "Saved"}
+            </button>
+          </div>
+        </div>
 
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left rail — modern */}
-        <aside className="hidden lg:block lg:w-72 shrink-0">
-          <div className="lg:sticky lg:top-20 space-y-4">
-            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground">
-                  <FileSliders size={15} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-display font-bold leading-tight">Settings</p>
-                  <p className="text-[10px] text-muted-foreground truncate">{SECTIONS.length} sections</p>
+        {/* Mobile group + section picker */}
+        <div className="lg:hidden space-y-2">
+          <div className="relative">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search settings…"
+              className={`${inputClass} pl-9`}
+            />
+          </div>
+          <div className="-mx-4 px-4 overflow-x-auto">
+            <div className="flex gap-2 w-max pb-1">
+              {Object.entries(groups).flatMap(([group, items]) =>
+                items.map((s) => (
+                  <button
+                    key={s.id}
+                    onClick={() => openSection(s.id)}
+                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      active === s.id
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border bg-card text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <s.icon size={12} />
+                    {s.label}
+                  </button>
+                )),
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          {/* Left rail */}
+          <aside className="hidden lg:block lg:w-72 shrink-0">
+            <div className="lg:sticky lg:top-20 space-y-4">
+              <div className="rounded-2xl border border-border bg-card p-4">
+                <div className="relative">
+                  <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search settings…"
+                    className="w-full rounded-lg border border-border bg-background pl-8 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  />
                 </div>
               </div>
-              <div className="relative">
-                <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search settings…"
-                  className="w-full rounded-lg border border-border bg-background pl-8 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30"
-                />
-              </div>
+
+              <nav className="rounded-2xl border border-border bg-card p-2 space-y-3 max-h-[70vh] overflow-y-auto">
+                {Object.entries(groups).map(([group, items]) => (
+                  <div key={group}>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/70 px-3 pt-2 pb-1.5">{group}</p>
+                    <div className="space-y-0.5">
+                      {items.map((s) => {
+                        const isActive = active === s.id;
+                        return (
+                          <button
+                            key={s.id}
+                            onClick={() => openSection(s.id)}
+                            className={`group w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all ${
+                              isActive
+                                ? "bg-primary/10 text-primary font-semibold"
+                                : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                            }`}
+                          >
+                            <span className={`flex h-7 w-7 items-center justify-center rounded-md ${isActive ? "bg-primary/15" : "bg-muted/50 group-hover:bg-muted"}`}>
+                              <s.icon size={14} />
+                            </span>
+                            <span className="flex-1 text-left truncate">{s.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                {Object.keys(groups).length === 0 && (
+                  <p className="text-xs text-muted-foreground text-center py-6">No matches</p>
+                )}
+              </nav>
+            </div>
+          </aside>
+
+          {/* Content */}
+          <div id="settings-panel" className="flex-1 min-w-0 rounded-2xl border border-border bg-muted/20 p-4 sm:p-6 space-y-4">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              <span>{activeSection?.group}</span>
+              <span aria-hidden>/</span>
+              <span className="text-primary">{activeSection?.label}</span>
             </div>
 
-            <nav className="rounded-2xl border border-border bg-card p-2 space-y-3 max-h-[68vh] overflow-y-auto shadow-sm">
-              {Object.entries(groups).map(([group, items]) => (
-                <div key={group}>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/70 px-3 pt-2 pb-1.5">{group}</p>
-                  <div className="space-y-0.5">
-                    {items.map((s) => {
-                      const isActive = active === s.id;
-                      return (
-                        <button
-                          key={s.id}
-                          onClick={() => scrollTo(s.id)}
-                          className={`group w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all ${
-                            isActive
-                              ? "bg-gradient-to-r from-primary/15 to-primary/5 text-primary font-semibold shadow-sm"
-                              : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-                          }`}
-                        >
-                          <span className={`flex h-7 w-7 items-center justify-center rounded-md ${isActive ? "bg-primary/15" : "bg-muted/50 group-hover:bg-muted"}`}>
-                            <s.icon size={14} />
-                          </span>
-                          <span className="flex-1 text-left truncate">{s.label}</span>
-                          {isActive && <span className="h-1.5 w-1.5 rounded-full bg-primary" />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-              {Object.keys(groups).length === 0 && (
-                <p className="text-xs text-muted-foreground text-center py-6">No matches</p>
-              )}
-            </nav>
-          </div>
-        </aside>
-
-
-        {/* Content */}
-        <div className="flex-1 min-w-0 space-y-8 pb-32">
           {loading ? (
             <div className="text-center py-20 text-muted-foreground">Loading…</div>
           ) : (
             <>
               {/* GENERAL */}
-              <section id="sec-general" className="scroll-mt-24 space-y-4">
+              <section id="sec-general" className={paneCls("general")}>
                 <header><h2 className="font-display text-xl font-bold">General</h2><p className="text-xs text-muted-foreground">Core site identity and defaults.</p></header>
                 <Card title="Site identity">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -238,7 +281,7 @@ const AdminSettings = () => {
               </section>
 
               {/* BRANDING */}
-              <section id="sec-branding" className="scroll-mt-24 space-y-4">
+              <section id="sec-branding" className={paneCls("branding")}>
                 <header><h2 className="font-display text-xl font-bold">Branding</h2></header>
                 <Card title="Logo & visuals">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -251,7 +294,7 @@ const AdminSettings = () => {
               </section>
 
               {/* CONTACT */}
-              <section id="sec-contact" className="scroll-mt-24 space-y-4">
+              <section id="sec-contact" className={paneCls("contact")}>
                 <header><h2 className="font-display text-xl font-bold">Contact</h2></header>
                 <Card title="Customer-facing contact details">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -263,7 +306,7 @@ const AdminSettings = () => {
               </section>
 
               {/* SOCIAL */}
-              <section id="sec-social" className="scroll-mt-24 space-y-4">
+              <section id="sec-social" className={paneCls("social")}>
                 <header><h2 className="font-display text-xl font-bold">Social</h2></header>
                 <Card title="Social media handles">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -275,7 +318,7 @@ const AdminSettings = () => {
               </section>
 
               {/* SEO */}
-              <section id="sec-seo" className="scroll-mt-24 space-y-4">
+              <section id="sec-seo" className={paneCls("seo")}>
                 <header><h2 className="font-display text-xl font-bold">SEO & Tracking</h2></header>
                 <Card title="Search engine optimization">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -296,7 +339,7 @@ const AdminSettings = () => {
               </section>
 
               {/* PAYMENT */}
-              <section id="sec-payment" className="scroll-mt-24 space-y-4">
+              <section id="sec-payment" className={paneCls("payment")}>
                 <header><h2 className="font-display text-xl font-bold">Payments</h2></header>
                 <Card title="Paystack" desc="Public key only. Secret key is managed in backend secrets.">
                   <Field label="Paystack public key"><input className={inputClass} value={data.payment.paystack_public_key} onChange={(e) => set("payment", { paystack_public_key: e.target.value })} placeholder="pk_live_…" /></Field>
@@ -319,7 +362,7 @@ const AdminSettings = () => {
               </section>
 
               {/* FINANCE */}
-              <section id="sec-finance" className="scroll-mt-24 space-y-4">
+              <section id="sec-finance" className={paneCls("finance")}>
                 <header><h2 className="font-display text-xl font-bold">Flexible Payment</h2></header>
                 <Card title="Plan rates" desc="Markup applied per plan tenor.">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -341,7 +384,7 @@ const AdminSettings = () => {
               </section>
 
               {/* SHIPPING */}
-              <section id="sec-shipping" className="scroll-mt-24 space-y-4">
+              <section id="sec-shipping" className={paneCls("shipping")}>
                 <header><h2 className="font-display text-xl font-bold">Shipping & Pickup</h2></header>
                 <Card title="Rates and areas">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -355,7 +398,7 @@ const AdminSettings = () => {
               </section>
 
               {/* TAX */}
-              <section id="sec-tax" className="scroll-mt-24 space-y-4">
+              <section id="sec-tax" className={paneCls("tax")}>
                 <header><h2 className="font-display text-xl font-bold">Tax & Invoicing</h2></header>
                 <Card title="VAT & invoices">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -368,7 +411,7 @@ const AdminSettings = () => {
               </section>
 
               {/* DISCOUNTS */}
-              <section id="sec-discounts" className="scroll-mt-24 space-y-4">
+              <section id="sec-discounts" className={paneCls("discounts")}>
                 <header><h2 className="font-display text-xl font-bold">Discounts</h2><p className="text-xs text-muted-foreground">Manage codes in the Discounts page.</p></header>
                 <Card title="Behavior">
                   <div className="grid sm:grid-cols-2 gap-2">
@@ -379,7 +422,7 @@ const AdminSettings = () => {
               </section>
 
               {/* AFFILIATES */}
-              <section id="sec-affiliate" className="scroll-mt-24 space-y-4">
+              <section id="sec-affiliate" className={paneCls("affiliate")}>
                 <header><h2 className="font-display text-xl font-bold">Affiliates</h2></header>
                 <Card title="Program rules">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -393,7 +436,7 @@ const AdminSettings = () => {
               </section>
 
               {/* NOTIF */}
-              <section id="sec-notif" className="scroll-mt-24 space-y-4">
+              <section id="sec-notif" className={paneCls("notif")}>
                 <header><h2 className="font-display text-xl font-bold">Notifications</h2></header>
                 <Card title="Notification email">
                   <Field label="Notification email"><input className={inputClass} value={data.notif.notify_email} onChange={(e) => set("notif", { notify_email: e.target.value })} /></Field>
@@ -408,7 +451,7 @@ const AdminSettings = () => {
               </section>
 
               {/* EMAIL */}
-              <section id="sec-email" className="scroll-mt-24 space-y-4">
+              <section id="sec-email" className={paneCls("email")}>
                 <header><h2 className="font-display text-xl font-bold">Email & Templates</h2></header>
                 <Card title="Sender">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -420,7 +463,7 @@ const AdminSettings = () => {
               </section>
 
               {/* INTEGRATIONS */}
-              <section id="sec-integrations" className="scroll-mt-24 space-y-4">
+              <section id="sec-integrations" className={paneCls("integrations")}>
                 <header><h2 className="font-display text-xl font-bold">Integrations</h2></header>
                 <Card title="Connected services">
                   <div className="space-y-2">
@@ -439,7 +482,7 @@ const AdminSettings = () => {
               </section>
 
               {/* SECURITY */}
-              <section id="sec-security" className="scroll-mt-24 space-y-4">
+              <section id="sec-security" className={paneCls("security")}>
                 <header><h2 className="font-display text-xl font-bold">Security</h2></header>
                 <Card title="Authentication">
                   <div className="grid sm:grid-cols-2 gap-2">
@@ -455,7 +498,7 @@ const AdminSettings = () => {
               </section>
 
               {/* FEATURES */}
-              <section id="sec-features" className="scroll-mt-24 space-y-4">
+              <section id="sec-features" className={paneCls("features")}>
                 <header><h2 className="font-display text-xl font-bold">Feature Flags</h2></header>
                 <Card title="Toggle features">
                   <div className="grid sm:grid-cols-2 gap-2">
@@ -467,7 +510,7 @@ const AdminSettings = () => {
               </section>
 
               {/* BACKUPS */}
-              <section id="sec-backups" className="scroll-mt-24 space-y-4">
+              <section id="sec-backups" className={paneCls("backups")}>
                 <header><h2 className="font-display text-xl font-bold">Backups & Cache</h2></header>
 
                 <CachePurgeCard />
@@ -485,7 +528,7 @@ const AdminSettings = () => {
               </section>
 
               {/* ADMINS */}
-              <section id="sec-admins" className="scroll-mt-24 space-y-4">
+              <section id="sec-admins" className={paneCls("admins")}>
                 <header><h2 className="font-display text-xl font-bold">Admins</h2></header>
                 <Card title="Manage admin team" desc="Use Users & Roles for full RBAC.">
                   <a href="/admin/users" className="inline-block px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold">Open Users & Roles</a>
@@ -493,10 +536,11 @@ const AdminSettings = () => {
               </section>
             </>
           )}
+          </div>
         </div>
       </div>
 
-      {/* Sticky save bar */}
+      {/* Unsaved-changes bar */}
       {dirty && (
         <div className="fixed bottom-0 left-0 right-0 lg:left-64 z-30 bg-background/95 backdrop-blur-md border-t border-border px-4 py-3 flex items-center justify-between gap-3 shadow-lg">
           <p className="text-sm text-muted-foreground">You have unsaved changes</p>
