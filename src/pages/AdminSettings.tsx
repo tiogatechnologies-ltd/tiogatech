@@ -223,7 +223,7 @@ const AdminSettings = () => {
           ) : (
             <>
               {/* GENERAL */}
-              <section id="sec-general" className="scroll-mt-24 space-y-4">
+              <section id="sec-general" className={paneCls("general")}>
                 <header><h2 className="font-display text-xl font-bold">General</h2><p className="text-xs text-muted-foreground">Core site identity and defaults.</p></header>
                 <Card title="Site identity">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -238,7 +238,7 @@ const AdminSettings = () => {
               </section>
 
               {/* BRANDING */}
-              <section id="sec-branding" className="scroll-mt-24 space-y-4">
+              <section id="sec-branding" className={paneCls("branding")}>
                 <header><h2 className="font-display text-xl font-bold">Branding</h2></header>
                 <Card title="Logo & visuals">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -251,7 +251,7 @@ const AdminSettings = () => {
               </section>
 
               {/* CONTACT */}
-              <section id="sec-contact" className="scroll-mt-24 space-y-4">
+              <section id="sec-contact" className={paneCls("contact")}>
                 <header><h2 className="font-display text-xl font-bold">Contact</h2></header>
                 <Card title="Customer-facing contact details">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -263,7 +263,7 @@ const AdminSettings = () => {
               </section>
 
               {/* SOCIAL */}
-              <section id="sec-social" className="scroll-mt-24 space-y-4">
+              <section id="sec-social" className={paneCls("social")}>
                 <header><h2 className="font-display text-xl font-bold">Social</h2></header>
                 <Card title="Social media handles">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -275,7 +275,7 @@ const AdminSettings = () => {
               </section>
 
               {/* SEO */}
-              <section id="sec-seo" className="scroll-mt-24 space-y-4">
+              <section id="sec-seo" className={paneCls("seo")}>
                 <header><h2 className="font-display text-xl font-bold">SEO & Tracking</h2></header>
                 <Card title="Search engine optimization">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -296,7 +296,7 @@ const AdminSettings = () => {
               </section>
 
               {/* PAYMENT */}
-              <section id="sec-payment" className="scroll-mt-24 space-y-4">
+              <section id="sec-payment" className={paneCls("payment")}>
                 <header><h2 className="font-display text-xl font-bold">Payments</h2></header>
                 <Card title="Paystack" desc="Public key only. Secret key is managed in backend secrets.">
                   <Field label="Paystack public key"><input className={inputClass} value={data.payment.paystack_public_key} onChange={(e) => set("payment", { paystack_public_key: e.target.value })} placeholder="pk_live_…" /></Field>
@@ -319,7 +319,7 @@ const AdminSettings = () => {
               </section>
 
               {/* FINANCE */}
-              <section id="sec-finance" className="scroll-mt-24 space-y-4">
+              <section id="sec-finance" className={paneCls("finance")}>
                 <header><h2 className="font-display text-xl font-bold">Flexible Payment</h2></header>
                 <Card title="Plan rates" desc="Markup applied per plan tenor.">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -341,7 +341,7 @@ const AdminSettings = () => {
               </section>
 
               {/* SHIPPING */}
-              <section id="sec-shipping" className="scroll-mt-24 space-y-4">
+              <section id="sec-shipping" className={paneCls("shipping")}>
                 <header><h2 className="font-display text-xl font-bold">Shipping & Pickup</h2></header>
                 <Card title="Rates and areas">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -355,7 +355,7 @@ const AdminSettings = () => {
               </section>
 
               {/* TAX */}
-              <section id="sec-tax" className="scroll-mt-24 space-y-4">
+              <section id="sec-tax" className={paneCls("tax")}>
                 <header><h2 className="font-display text-xl font-bold">Tax & Invoicing</h2></header>
                 <Card title="VAT & invoices">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -368,7 +368,7 @@ const AdminSettings = () => {
               </section>
 
               {/* DISCOUNTS */}
-              <section id="sec-discounts" className="scroll-mt-24 space-y-4">
+              <section id="sec-discounts" className={paneCls("discounts")}>
                 <header><h2 className="font-display text-xl font-bold">Discounts</h2><p className="text-xs text-muted-foreground">Manage codes in the Discounts page.</p></header>
                 <Card title="Behavior">
                   <div className="grid sm:grid-cols-2 gap-2">
@@ -379,7 +379,7 @@ const AdminSettings = () => {
               </section>
 
               {/* AFFILIATES */}
-              <section id="sec-affiliate" className="scroll-mt-24 space-y-4">
+              <section id="sec-affiliate" className={paneCls("affiliate")}>
                 <header><h2 className="font-display text-xl font-bold">Affiliates</h2></header>
                 <Card title="Program rules">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -393,7 +393,7 @@ const AdminSettings = () => {
               </section>
 
               {/* NOTIF */}
-              <section id="sec-notif" className="scroll-mt-24 space-y-4">
+              <section id="sec-notif" className={paneCls("notif")}>
                 <header><h2 className="font-display text-xl font-bold">Notifications</h2></header>
                 <Card title="Notification email">
                   <Field label="Notification email"><input className={inputClass} value={data.notif.notify_email} onChange={(e) => set("notif", { notify_email: e.target.value })} /></Field>
@@ -408,7 +408,7 @@ const AdminSettings = () => {
               </section>
 
               {/* EMAIL */}
-              <section id="sec-email" className="scroll-mt-24 space-y-4">
+              <section id="sec-email" className={paneCls("email")}>
                 <header><h2 className="font-display text-xl font-bold">Email & Templates</h2></header>
                 <Card title="Sender">
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -420,7 +420,7 @@ const AdminSettings = () => {
               </section>
 
               {/* INTEGRATIONS */}
-              <section id="sec-integrations" className="scroll-mt-24 space-y-4">
+              <section id="sec-integrations" className={paneCls("integrations")}>
                 <header><h2 className="font-display text-xl font-bold">Integrations</h2></header>
                 <Card title="Connected services">
                   <div className="space-y-2">
@@ -439,7 +439,7 @@ const AdminSettings = () => {
               </section>
 
               {/* SECURITY */}
-              <section id="sec-security" className="scroll-mt-24 space-y-4">
+              <section id="sec-security" className={paneCls("security")}>
                 <header><h2 className="font-display text-xl font-bold">Security</h2></header>
                 <Card title="Authentication">
                   <div className="grid sm:grid-cols-2 gap-2">
@@ -455,7 +455,7 @@ const AdminSettings = () => {
               </section>
 
               {/* FEATURES */}
-              <section id="sec-features" className="scroll-mt-24 space-y-4">
+              <section id="sec-features" className={paneCls("features")}>
                 <header><h2 className="font-display text-xl font-bold">Feature Flags</h2></header>
                 <Card title="Toggle features">
                   <div className="grid sm:grid-cols-2 gap-2">
@@ -467,7 +467,7 @@ const AdminSettings = () => {
               </section>
 
               {/* BACKUPS */}
-              <section id="sec-backups" className="scroll-mt-24 space-y-4">
+              <section id="sec-backups" className={paneCls("backups")}>
                 <header><h2 className="font-display text-xl font-bold">Backups & Cache</h2></header>
 
                 <CachePurgeCard />
@@ -485,7 +485,7 @@ const AdminSettings = () => {
               </section>
 
               {/* ADMINS */}
-              <section id="sec-admins" className="scroll-mt-24 space-y-4">
+              <section id="sec-admins" className={paneCls("admins")}>
                 <header><h2 className="font-display text-xl font-bold">Admins</h2></header>
                 <Card title="Manage admin team" desc="Use Users & Roles for full RBAC.">
                   <a href="/admin/users" className="inline-block px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold">Open Users & Roles</a>
