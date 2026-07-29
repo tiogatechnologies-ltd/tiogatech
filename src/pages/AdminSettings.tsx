@@ -141,7 +141,7 @@ const AdminSettings = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 pb-24">
         {/* Page header — matches the other admin pages */}
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
