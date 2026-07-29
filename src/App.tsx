@@ -35,6 +35,7 @@ const TelegramWidget = lazy(() => import("@/components/TelegramWidget"));
 const About = lazy(() => import("./pages/About.tsx"));
 const Catalog = lazy(() => import("./pages/Catalog.tsx"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail.tsx"));
+const TrackOrder = lazy(() => import("./pages/TrackOrder.tsx"));
 const LumiVolt = lazy(() => import("./pages/LumiVolt.tsx"));
 const VoltAi = lazy(() => import("./pages/VoltAi.tsx"));
 const Finance = lazy(() => import("./pages/Finance.tsx"));
@@ -175,6 +176,7 @@ const AnimatedRoutes = () => {
           <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
           <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
           <Route path="/product/:slug" element={<RouteFade><ProductDetail /></RouteFade>} />
+          <Route path="/track" element={<RouteFade><TrackOrder /></RouteFade>} />
           <Route path="/finance/apply" element={<RouteFade><FinanceApply /></RouteFade>} />
           <Route path="/blog" element={<RouteFade><Blog /></RouteFade>} />
           <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />

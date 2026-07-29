@@ -66,7 +66,8 @@ const CheckoutSuccess = () => {
         )}
 
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <Link to="/account" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"><Package size={14} /> View my orders</Link>
+          <Link to={orderNumber ? `/track?order=${encodeURIComponent(orderNumber)}` : "/track"} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"><Package size={14} /> Track this order</Link>
+          <Link to="/account" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground">View my orders</Link>
           <a href="https://wa.me/2348178000023" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground"><MessageCircle size={14} /> Chat with us</a>
         </div>
       </div>

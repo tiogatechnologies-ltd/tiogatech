@@ -23,6 +23,7 @@ const STATIC_ENTRIES = [
   { path: "/career", changefreq: "weekly", priority: "0.6" },
   { path: "/careers/jobs", changefreq: "weekly", priority: "0.6" },
   { path: "/blog", changefreq: "daily", priority: "0.8" },
+  { path: "/track", changefreq: "monthly", priority: "0.5" },
   { path: "/privacy", changefreq: "yearly", priority: "0.3" },
   { path: "/terms", changefreq: "yearly", priority: "0.3" },
 ];

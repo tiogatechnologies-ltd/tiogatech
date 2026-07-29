@@ -26,6 +26,7 @@ const solutions = [
 ];
 
 const support = [
+  { label: "Track Your Order", to: "/track" },
   { label: "How It Works", to: "/#how-it-works" },
   { label: "FAQs", to: "/#faq" },
   { label: "Finance", to: "/finance" },
