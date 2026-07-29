@@ -17,3 +17,6 @@ verify_jwt = true
 
 [functions.auto-charge-due]
 verify_jwt = false
+
+[functions.track-order]
+verify_jwt = false
