@@ -536,10 +536,11 @@ const AdminSettings = () => {
               </section>
             </>
           )}
+          </div>
         </div>
       </div>
 
-      {/* Sticky save bar */}
+      {/* Unsaved-changes bar */}
       {dirty && (
         <div className="fixed bottom-0 left-0 right-0 lg:left-64 z-30 bg-background/95 backdrop-blur-md border-t border-border px-4 py-3 flex items-center justify-between gap-3 shadow-lg">
           <p className="text-sm text-muted-foreground">You have unsaved changes</p>
