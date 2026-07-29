@@ -176,6 +176,7 @@ const AnimatedRoutes = () => {
           <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
           <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
           <Route path="/product/:slug" element={<RouteFade><ProductDetail /></RouteFade>} />
+          <Route path="/track" element={<RouteFade><TrackOrder /></RouteFade>} />
           <Route path="/finance/apply" element={<RouteFade><FinanceApply /></RouteFade>} />
           <Route path="/blog" element={<RouteFade><Blog /></RouteFade>} />
           <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />
