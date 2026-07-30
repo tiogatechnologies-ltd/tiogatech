@@ -216,6 +216,14 @@ const Checkout = () => {
       return;
     }
     const orderNumber = (data as any)?.order_number || "";
+    // Remember this address so the next checkout is pre-filled.
+    if (user) {
+      supabase
+        .from("profiles")
+        .update({ default_address: { ...shippingAddress, email: form.email } } as any)
+        .eq("id", user.id)
+        .then(() => {});
+    }
     trackConversion("cart_checkout_lead", { item_count: count, order_number: orderNumber });
     trackConversion("checkout_step", { step: "payment", method: payment, total });
 
