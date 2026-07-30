@@ -5,31 +5,28 @@ import { toast } from "sonner";
 import { Search, Save, Building2, Phone, Wallet, Share2, Search as SearchIcon, Sparkles, Truck, ShieldCheck, CreditCard, Bell, UserPlus, Mail, Image as ImageIcon, Plug, Database, FileSliders, Receipt, Tag, Users, ScrollText, Globe, RefreshCw, CloudUpload, ExternalLink, Loader2 } from "lucide-react";
 import { bumpGlobalCache } from "@/lib/cache";
 
-type Section = { id: string; label: string; icon: any; group: string; adminOnly?: boolean };
+type Section = { id: string; label: string; icon: any; group: string; adminOnly?: boolean; members: string[]; keywords?: string };
 
+// Panes group one or more underlying `site_settings` keys. The storage keys are
+// unchanged — merging only affects how the panes are presented.
 const SECTIONS: Section[] = [
-  { id: "general", label: "General", icon: Building2, group: "Storefront" },
-  { id: "branding", label: "Branding", icon: ImageIcon, group: "Storefront" },
-  { id: "contact", label: "Contact", icon: Phone, group: "Storefront" },
-  { id: "social", label: "Social", icon: Share2, group: "Storefront" },
-  { id: "seo", label: "SEO & Tracking", icon: SearchIcon, group: "Storefront" },
+  { id: "general", label: "General", icon: Building2, group: "Storefront", members: ["general"], keywords: "site name tagline hero currency language" },
+  { id: "branding", label: "Branding & Social", icon: ImageIcon, group: "Storefront", members: ["branding", "social"], keywords: "logo favicon colour og image facebook instagram twitter linkedin tiktok youtube telegram" },
+  { id: "contact", label: "Contact", icon: Phone, group: "Storefront", members: ["contact"], keywords: "phone email address whatsapp business hours" },
+  { id: "seo", label: "SEO & Tracking", icon: SearchIcon, group: "Storefront", members: ["seo"], keywords: "meta analytics pixel tag manager verification robots" },
 
-  { id: "payment", label: "Payments", icon: CreditCard, group: "Commerce" },
-  { id: "finance", label: "Flexible Payment", icon: Wallet, group: "Commerce" },
-  { id: "shipping", label: "Shipping & Pickup", icon: Truck, group: "Commerce" },
-  { id: "tax", label: "Tax & Invoicing", icon: Receipt, group: "Commerce" },
-  { id: "discounts", label: "Discounts", icon: Tag, group: "Commerce" },
-  { id: "affiliate", label: "Affiliates", icon: Sparkles, group: "Commerce" },
+  { id: "payment", label: "Payments & Financing", icon: CreditCard, group: "Commerce", members: ["payment", "finance"], keywords: "paystack bank transfer card flexible payment easy flex deposit tenure interest" },
+  { id: "shipping", label: "Delivery & Tax", icon: Truck, group: "Commerce", members: ["shipping", "tax"], keywords: "delivery fee pickup shipping vat invoice" },
+  { id: "discounts", label: "Promotions", icon: Tag, group: "Commerce", members: ["discounts", "affiliate"], keywords: "discount coupon stacking affiliate commission payout cookie" },
 
-  { id: "notif", label: "Notifications", icon: Bell, group: "Comms" },
-  { id: "email", label: "Email & Templates", icon: Mail, group: "Comms" },
+  { id: "notif", label: "Notifications & Email", icon: Bell, group: "Comms", members: ["notif", "email"], keywords: "alerts digest from name sender template footer" },
 
-  { id: "integrations", label: "Integrations", icon: Plug, group: "System", adminOnly: true },
-  { id: "security", label: "Security", icon: ShieldCheck, group: "System", adminOnly: true },
-  { id: "features", label: "Feature Flags", icon: FileSliders, group: "System", adminOnly: true },
-  { id: "backups", label: "Backups & Exports", icon: Database, group: "System", adminOnly: true },
-  { id: "admins", label: "Admins", icon: UserPlus, group: "System", adminOnly: true },
+  { id: "integrations", label: "Integrations", icon: Plug, group: "System", adminOnly: true, members: ["integrations"], keywords: "gmail telegram whatsapp openai" },
+  { id: "security", label: "Security & Access", icon: ShieldCheck, group: "System", adminOnly: true, members: ["security", "admins"], keywords: "verification session timeout ip allowlist admins users roles" },
+  { id: "features", label: "Feature Flags", icon: FileSliders, group: "System", adminOnly: true, members: ["features"], keywords: "ai chat recommender sizing store toggle" },
+  { id: "backups", label: "Backups & Exports", icon: Database, group: "System", adminOnly: true, members: ["backups"], keywords: "backup retention export drive" },
 ];
+
 
 const defaults: Record<string, any> = {
   general: { site_name: "Tioga Technologies", tagline: "Powering Nigerian homes and businesses", hero_title: "Reliable Power. Smarter Living.", hero_subtitle: "Solar, smart home, and security solutions across Nigeria.", default_currency: "NGN", default_language: "en" },
