@@ -132,7 +132,6 @@ const AccountOrders = () => {
         title="My Orders — Tioga Technologies"
         description="View your full Tioga Technologies order history, track delivery progress and reorder past purchases."
         path="/account/orders"
-        noindex
       />
       <SiteHeader />
 
