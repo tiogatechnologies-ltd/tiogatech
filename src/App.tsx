@@ -105,6 +105,7 @@ const AccountAssessments = lazy(() => import("./pages/AccountAssessments.tsx"));
 
 const FinanceApply = lazy(() => import("./pages/FinanceApply.tsx"));
 const AccountFinance = lazy(() => import("./pages/AccountFinance.tsx"));
+const AccountOrders = lazy(() => import("./pages/AccountOrders.tsx"));
 const Pricing = lazy(() => import("./pages/Pricing.tsx"));
 const AccountSubscription = lazy(() => import("./pages/AccountSubscription.tsx"));
 const AdminAiSubscriptions = lazy(() => import("./pages/AdminAiSubscriptions.tsx"));
