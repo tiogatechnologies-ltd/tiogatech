@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
-import { Search, Save, Building2, Phone, Wallet, Share2, Search as SearchIcon, Sparkles, Truck, ShieldCheck, CreditCard, Bell, UserPlus, Mail, Image as ImageIcon, Plug, Database, FileSliders, Receipt, Tag, Users, ScrollText, Globe, RefreshCw, CloudUpload, ExternalLink, Loader2 } from "lucide-react";
+import { Search, Save, Building2, Phone, Search as SearchIcon, Truck, ShieldCheck, CreditCard, Bell, Image as ImageIcon, Plug, Database, FileSliders, Tag, Users, ScrollText, Globe, RefreshCw, CloudUpload, ExternalLink, Loader2 } from "lucide-react";
 import { bumpGlobalCache } from "@/lib/cache";
 
 type Section = { id: string; label: string; icon: any; group: string; adminOnly?: boolean; members: string[]; keywords?: string };
