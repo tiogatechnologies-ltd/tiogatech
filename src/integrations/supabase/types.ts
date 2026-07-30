@@ -2045,6 +2045,7 @@ export type Database = {
           account_type: string | null
           avatar_url: string | null
           created_at: string
+          default_address: Json | null
           email: string | null
           full_name: string | null
           id: string
@@ -2055,6 +2056,7 @@ export type Database = {
           account_type?: string | null
           avatar_url?: string | null
           created_at?: string
+          default_address?: Json | null
           email?: string | null
           full_name?: string | null
           id: string
@@ -2065,6 +2067,7 @@ export type Database = {
           account_type?: string | null
           avatar_url?: string | null
           created_at?: string
+          default_address?: Json | null
           email?: string | null
           full_name?: string | null
           id?: string

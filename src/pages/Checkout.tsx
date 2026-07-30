@@ -87,6 +87,19 @@ const Checkout = () => {
     if (profile?.phone && !form.phone) setForm((f) => ({ ...f, phone: profile.phone || "" }));
   }, [user, profile]); // eslint-disable-line
 
+  // Pre-fill the saved delivery address from the customer's profile (set on their last order).
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase.from("profiles").select("default_address").eq("id", user.id).maybeSingle();
+      const saved = (data as any)?.default_address;
+      if (cancelled || !saved) return;
+      setForm((f) => (f.address ? f : { ...f, ...saved, email: f.email || saved.email || "" }));
+    })();
+    return () => { cancelled = true; };
+  }, [user]);
+
   const subtotal = useMemo(() => items.reduce((s, i) => s + ((i.numericPrice || 0) * i.quantity), 0), [items]);
   // Free delivery only in Abuja (FCT) and Jos (Plateau) — our office locations. Elsewhere: ₦15,000 flat.
   const isFreeDeliveryState = (s: string) => {
@@ -203,6 +216,14 @@ const Checkout = () => {
       return;
     }
     const orderNumber = (data as any)?.order_number || "";
+    // Remember this address so the next checkout is pre-filled.
+    if (user) {
+      supabase
+        .from("profiles")
+        .update({ default_address: { ...shippingAddress, email: form.email } } as any)
+        .eq("id", user.id)
+        .then(() => {});
+    }
     trackConversion("cart_checkout_lead", { item_count: count, order_number: orderNumber });
     trackConversion("checkout_step", { step: "payment", method: payment, total });
 

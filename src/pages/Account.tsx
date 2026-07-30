@@ -373,7 +373,7 @@ const Account = () => {
               <SectionCard
                 title="Recent orders"
                 icon={Package}
-                action={<Link to="/catalog" className="text-xs text-primary font-semibold">Shop</Link>}
+                action={<Link to="/account/orders" className="text-xs text-primary font-semibold">View all</Link>}
               >
                 {loading ? (
                   <div className="text-sm text-muted-foreground py-6 text-center">Loading…</div>

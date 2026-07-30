@@ -105,6 +105,7 @@ const AccountAssessments = lazy(() => import("./pages/AccountAssessments.tsx"));
 
 const FinanceApply = lazy(() => import("./pages/FinanceApply.tsx"));
 const AccountFinance = lazy(() => import("./pages/AccountFinance.tsx"));
+const AccountOrders = lazy(() => import("./pages/AccountOrders.tsx"));
 const Pricing = lazy(() => import("./pages/Pricing.tsx"));
 const AccountSubscription = lazy(() => import("./pages/AccountSubscription.tsx"));
 const AdminAiSubscriptions = lazy(() => import("./pages/AdminAiSubscriptions.tsx"));
@@ -198,6 +199,7 @@ const AnimatedRoutes = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/dashboard" element={<DashboardRouter />} />
           <Route path="/account" element={<RequireRole><Account /></RequireRole>} />
+          <Route path="/account/orders" element={<RequireRole><AccountOrders /></RequireRole>} />
           <Route path="/account/finance" element={<RequireRole><AccountFinance /></RequireRole>} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
