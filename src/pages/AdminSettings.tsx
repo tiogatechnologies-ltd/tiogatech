@@ -121,7 +121,10 @@ const AdminSettings = () => {
   };
 
   const groups = useMemo(() => {
-    const filtered = SECTIONS.filter((s) => !query || s.label.toLowerCase().includes(query.toLowerCase()) || s.group.toLowerCase().includes(query.toLowerCase()));
+    const q = query.trim().toLowerCase();
+    const filtered = SECTIONS.filter(
+      (s) => !q || s.label.toLowerCase().includes(q) || s.group.toLowerCase().includes(q) || (s.keywords || "").includes(q),
+    );
     const byGroup: Record<string, Section[]> = {};
     filtered.forEach((s) => { (byGroup[s.group] = byGroup[s.group] || []).push(s); });
     return byGroup;
@@ -134,7 +137,9 @@ const AdminSettings = () => {
   };
 
   const activeSection = SECTIONS.find((s) => s.id === active);
-  const paneCls = (id: string) => (id === active ? "space-y-4" : "hidden");
+  // A pane can host several legacy sections; show every section that belongs to it.
+  const paneCls = (id: string) => (activeSection?.members.includes(id) ? "space-y-4" : "hidden");
+
 
   return (
     <AdminLayout>
