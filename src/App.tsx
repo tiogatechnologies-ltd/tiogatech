@@ -111,6 +111,7 @@ const AccountSubscription = lazy(() => import("./pages/AccountSubscription.tsx")
 const AdminAiSubscriptions = lazy(() => import("./pages/AdminAiSubscriptions.tsx"));
 const AdminAiCreditUsage = lazy(() => import("./pages/AdminAiCreditUsage.tsx"));
 const AdminSupportTickets = lazy(() => import("./pages/AdminSupportTickets.tsx"));
+const AdminReviews = lazy(() => import("./pages/AdminReviews.tsx"));
 const AdminRoles = lazy(() => import("./pages/AdminRoles.tsx"));
 const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
@@ -247,6 +248,8 @@ const AnimatedRoutes = () => {
           <Route path="/admin/ai-subscriptions" element={<Admin><AdminAiSubscriptions /></Admin>} />
           <Route path="/admin/ai-usage" element={<Admin><AdminAiCreditUsage /></Admin>} />
           <Route path="/admin/tickets" element={<Admin><AdminSupportTickets /></Admin>} />
+          <Route path="/admin/reviews" element={<Admin><AdminReviews /></Admin>} />
+
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>
       </Suspense>
