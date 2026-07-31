@@ -362,6 +362,8 @@ const AdminSupportTickets = () => {
                 <DialogTitle className="flex items-center gap-3 flex-wrap">
                   <span className="font-mono text-sm">{selected.ticket_number}</span>
                   <Badge variant="outline" className={STATUS_STYLE[selected.status]}>{selected.status.replace("_", " ")}</Badge>
+                  <Badge variant="outline" className={PRIORITY_STYLE[selected.priority || "normal"]}>{selected.priority || "normal"}</Badge>
+                  <AgeBadge t={selected} />
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4 text-sm">
