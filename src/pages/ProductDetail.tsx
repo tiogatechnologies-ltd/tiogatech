@@ -109,6 +109,15 @@ const ProductDetail = () => {
         category: categoryLabels[product.category] ?? product.category,
         ...(images[0] ? { image: [images[0]] } : {}),
         brand: { "@type": "Brand", name: product.series || "Tioga Technologies" },
+        ...(reviewStats.count > 0
+          ? {
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: reviewStats.average.toFixed(1),
+                reviewCount: reviewStats.count,
+              },
+            }
+          : {}),
         ...(product.specifications
           ? {
               additionalProperty: Object.entries(product.specifications).map(([name, value]) => ({
@@ -130,7 +139,7 @@ const ProductDetail = () => {
         },
       },
     ];
-  }, [product, images]);
+  }, [product, images, reviewStats]);
 
   if (loading) {
     return (
