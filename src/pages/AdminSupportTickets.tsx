@@ -22,10 +22,14 @@ type Ticket = {
   conversation_context: string | null;
   channel: string;
   status: "open" | "in_progress" | "resolved" | "closed";
+  assigned_to: string | null;
+  priority: "low" | "normal" | "high" | "urgent";
   created_at: string;
   updated_at: string;
   resolved_at: string | null;
 };
+
+type StaffMember = { id: string; name: string };
 
 const STATUS_STYLE: Record<Ticket["status"], string> = {
   open: "bg-red-100 text-red-700 border-red-200",
@@ -34,11 +38,39 @@ const STATUS_STYLE: Record<Ticket["status"], string> = {
   closed: "bg-gray-100 text-gray-600 border-gray-200",
 };
 
-type SortKey = "ticket_number" | "user_name" | "status" | "channel" | "created_at";
+const PRIORITY_STYLE: Record<string, string> = {
+  low: "bg-slate-100 text-slate-600 border-slate-200",
+  normal: "bg-sky-100 text-sky-700 border-sky-200",
+  high: "bg-orange-100 text-orange-700 border-orange-200",
+  urgent: "bg-red-100 text-red-700 border-red-200",
+};
+
+// Ageing / SLA: hours since creation for tickets that are still open.
+const ageHours = (t: Ticket) =>
+  (Date.now() - new Date(t.created_at).getTime()) / 36e5;
+
+const AgeBadge = ({ t }: { t: Ticket }) => {
+  const done = t.status === "resolved" || t.status === "closed";
+  const h = ageHours(t);
+  const label = h < 1 ? "<1h" : h < 24 ? `${Math.floor(h)}h` : `${Math.floor(h / 24)}d`;
+  const cls = done
+    ? "bg-gray-100 text-gray-500 border-gray-200"
+    : h >= 48
+    ? "bg-red-100 text-red-700 border-red-200"
+    : h >= 24
+    ? "bg-amber-100 text-amber-700 border-amber-200"
+    : "bg-emerald-100 text-emerald-700 border-emerald-200";
+  return <Badge variant="outline" className={cls}>{label}</Badge>;
+};
+
+type SortKey = "ticket_number" | "user_name" | "status" | "channel" | "created_at" | "priority";
 type SortDir = "asc" | "desc";
 
 const PAGE_SIZE = 25;
 const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s || "");
+
+const UNASSIGNED = "__unassigned__";
+
 
 const AdminSupportTickets = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
