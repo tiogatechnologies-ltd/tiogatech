@@ -1939,6 +1939,59 @@ export type Database = {
           },
         ]
       }
+      product_reviews: {
+        Row: {
+          admin_reply: string | null
+          author_name: string
+          body: string
+          created_at: string
+          id: string
+          product_id: string
+          rating: number
+          status: string
+          title: string | null
+          updated_at: string
+          user_id: string
+          verified_purchase: boolean
+        }
+        Insert: {
+          admin_reply?: string | null
+          author_name: string
+          body: string
+          created_at?: string
+          id?: string
+          product_id: string
+          rating: number
+          status?: string
+          title?: string | null
+          updated_at?: string
+          user_id: string
+          verified_purchase?: boolean
+        }
+        Update: {
+          admin_reply?: string | null
+          author_name?: string
+          body?: string
+          created_at?: string
+          id?: string
+          product_id?: string
+          rating?: number
+          status?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+          verified_purchase?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_stock_movements: {
         Row: {
           actor_id: string | null
@@ -2338,11 +2391,13 @@ export type Database = {
       }
       support_tickets: {
         Row: {
+          assigned_to: string | null
           channel: string
           conversation_context: string | null
           created_at: string
           id: string
           message: string
+          priority: string
           resolved_at: string | null
           status: string
           subject: string | null
@@ -2353,11 +2408,13 @@ export type Database = {
           user_name: string
         }
         Insert: {
+          assigned_to?: string | null
           channel?: string
           conversation_context?: string | null
           created_at?: string
           id?: string
           message: string
+          priority?: string
           resolved_at?: string | null
           status?: string
           subject?: string | null
@@ -2368,11 +2425,13 @@ export type Database = {
           user_name: string
         }
         Update: {
+          assigned_to?: string | null
           channel?: string
           conversation_context?: string | null
           created_at?: string
           id?: string
           message?: string
+          priority?: string
           resolved_at?: string | null
           status?: string
           subject?: string | null
