@@ -23,6 +23,7 @@ export const ADMIN_PAGES: AdminPage[] = [
   { key: "customers", label: "Customers", group: "Sales", path: "/admin/customers", defaultRoles: ["staff"] },
   { key: "leads", label: "Leads", group: "Sales", path: "/admin/leads", defaultRoles: ["staff"] },
   { key: "tickets", label: "Support Tickets", group: "Sales", path: "/admin/tickets", defaultRoles: ["staff"] },
+  { key: "reviews", label: "Product Reviews", group: "Sales", path: "/admin/reviews", defaultRoles: ["staff"] },
   { key: "discounts", label: "Discounts", group: "Sales", path: "/admin/discounts", defaultRoles: ["staff"] },
   { key: "waitlist", label: "App Waitlist", group: "Sales", path: "/admin/waitlist", defaultRoles: ["staff"] },
 

@@ -11,6 +11,7 @@ import { useCart } from "@/contexts/CartContext";
 import { trackConversion } from "@/lib/tracking";
 import { matchesSlug, productPath } from "@/lib/productSlug";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
+import ProductReviews from "@/components/ProductReviews";
 
 const WHATSAPP = "https://wa.me/2348178000023";
 
@@ -54,6 +55,7 @@ const ProductDetail = () => {
   const [images, setImages] = useState<string[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
+  const [reviewStats, setReviewStats] = useState({ count: 0, average: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -107,6 +109,15 @@ const ProductDetail = () => {
         category: categoryLabels[product.category] ?? product.category,
         ...(images[0] ? { image: [images[0]] } : {}),
         brand: { "@type": "Brand", name: product.series || "Tioga Technologies" },
+        ...(reviewStats.count > 0
+          ? {
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: reviewStats.average.toFixed(1),
+                reviewCount: reviewStats.count,
+              },
+            }
+          : {}),
         ...(product.specifications
           ? {
               additionalProperty: Object.entries(product.specifications).map(([name, value]) => ({
@@ -128,7 +139,7 @@ const ProductDetail = () => {
         },
       },
     ];
-  }, [product, images]);
+  }, [product, images, reviewStats]);
 
   if (loading) {
     return (
@@ -300,6 +311,10 @@ const ProductDetail = () => {
             )}
           </div>
         </section>
+
+        <ProductReviews productId={product.id} onStats={setReviewStats} />
+
+
 
         {related.length > 0 && (
           <section className="section-container pb-16">

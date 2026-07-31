@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.product_reviews_guard_fields() FROM PUBLIC, anon, authenticated;
