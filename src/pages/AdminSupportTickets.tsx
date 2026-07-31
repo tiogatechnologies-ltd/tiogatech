@@ -168,9 +168,13 @@ const AdminSupportTickets = () => {
     setPage(1);
   };
 
+  const PRIORITY_ORDER: Record<string, number> = { urgent: 0, high: 1, normal: 2, low: 3 };
+
   const filtered = useMemo(() => {
     let list = tickets.filter((t) => {
       if (statusFilter !== "all" && t.status !== statusFilter) return false;
+      if (assigneeFilter === UNASSIGNED && t.assigned_to) return false;
+      if (assigneeFilter !== "all" && assigneeFilter !== UNASSIGNED && t.assigned_to !== assigneeFilter) return false;
       if (!query) return true;
       const q = query.toLowerCase();
       return [t.ticket_number, t.user_name, t.user_contact, t.subject, t.message]
@@ -181,12 +185,15 @@ const AdminSupportTickets = () => {
       const av = (a[sortKey] ?? "") as any;
       const bv = (b[sortKey] ?? "") as any;
       if (sortKey === "created_at") return (new Date(av).getTime() - new Date(bv).getTime()) * dir;
+      if (sortKey === "priority")
+        return ((PRIORITY_ORDER[av] ?? 2) - (PRIORITY_ORDER[bv] ?? 2)) * dir;
       return String(av).localeCompare(String(bv)) * dir;
     });
     return list;
-  }, [tickets, statusFilter, query, sortKey, sortDir]);
+  }, [tickets, statusFilter, assigneeFilter, query, sortKey, sortDir]);
 
-  useEffect(() => { setPage(1); }, [query, statusFilter]);
+  useEffect(() => { setPage(1); }, [query, statusFilter, assigneeFilter]);
+
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageSafe = Math.min(page, totalPages);
