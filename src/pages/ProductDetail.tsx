@@ -11,6 +11,7 @@ import { useCart } from "@/contexts/CartContext";
 import { trackConversion } from "@/lib/tracking";
 import { matchesSlug, productPath } from "@/lib/productSlug";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
+import ProductReviews from "@/components/ProductReviews";
 
 const WHATSAPP = "https://wa.me/2348178000023";
 
@@ -54,6 +55,7 @@ const ProductDetail = () => {
   const [images, setImages] = useState<string[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
+  const [reviewStats, setReviewStats] = useState({ count: 0, average: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
