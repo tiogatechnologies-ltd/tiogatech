@@ -280,6 +280,9 @@ const AdminSupportTickets = () => {
                       <Th k="user_name" label="Customer" />
                       <th className="text-left px-4 py-3">Subject</th>
                       <Th k="status" label="Status" />
+                      <Th k="priority" label="Priority" />
+                      <th className="text-left px-4 py-3">Assignee</th>
+                      <th className="text-left px-4 py-3">Age</th>
                       <Th k="channel" label="Channel" />
                       <Th k="created_at" label="Created" />
                     </tr>
@@ -296,6 +299,11 @@ const AdminSupportTickets = () => {
                         <td className="px-4 py-3">
                           <Badge variant="outline" className={STATUS_STYLE[t.status]}>{t.status.replace("_", " ")}</Badge>
                         </td>
+                        <td className="px-4 py-3">
+                          <Badge variant="outline" className={PRIORITY_STYLE[t.priority || "normal"]}>{t.priority || "normal"}</Badge>
+                        </td>
+                        <td className="px-4 py-3 text-xs">{staffName(t.assigned_to)}</td>
+                        <td className="px-4 py-3"><AgeBadge t={t} /></td>
                         <td className="px-4 py-3 capitalize">{t.channel}</td>
                         <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">{format(new Date(t.created_at), "MMM d, HH:mm")}</td>
                       </tr>
@@ -310,8 +318,12 @@ const AdminSupportTickets = () => {
                   <button key={t.id} onClick={() => setSelected(t)} className="w-full text-left p-4 hover:bg-muted/40">
                     <div className="flex items-center justify-between gap-2 mb-1">
                       <span className="font-mono text-xs">{t.ticket_number}</span>
-                      <Badge variant="outline" className={STATUS_STYLE[t.status]}>{t.status.replace("_", " ")}</Badge>
+                      <div className="flex items-center gap-1">
+                        <AgeBadge t={t} />
+                        <Badge variant="outline" className={STATUS_STYLE[t.status]}>{t.status.replace("_", " ")}</Badge>
+                      </div>
                     </div>
+
                     <div className="font-medium text-sm">{t.user_name}</div>
                     <div className="text-xs text-muted-foreground truncate">{t.user_contact}</div>
                     <div className="text-xs mt-1 line-clamp-2">{t.subject || t.message}</div>
