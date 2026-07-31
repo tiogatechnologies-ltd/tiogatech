@@ -400,6 +400,39 @@ const AdminSupportTickets = () => {
                     </SelectContent>
                   </Select>
                 </div>
+
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Assignee</p>
+                    <Select
+                      value={selected.assigned_to || UNASSIGNED}
+                      onValueChange={(v) => patchTicket(selected.id, { assigned_to: v === UNASSIGNED ? null : v })}
+                    >
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value={UNASSIGNED}>Unassigned</SelectItem>
+                        {staff.map((s) => (
+                          <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Priority</p>
+                    <Select
+                      value={selected.priority || "normal"}
+                      onValueChange={(v) => patchTicket(selected.id, { priority: v as Ticket["priority"] })}
+                    >
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="low">Low</SelectItem>
+                        <SelectItem value="normal">Normal</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                        <SelectItem value="urgent">Urgent</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
             </>
           )}
