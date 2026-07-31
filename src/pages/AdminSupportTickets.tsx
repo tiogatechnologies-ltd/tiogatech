@@ -81,6 +81,8 @@ const AdminSupportTickets = () => {
   const [sortKey, setSortKey] = useState<SortKey>("created_at");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [page, setPage] = useState(1);
+  const [staff, setStaff] = useState<StaffMember[]>([]);
+  const [assigneeFilter, setAssigneeFilter] = useState<string>("all");
 
   const load = async () => {
     setLoading(true);
@@ -94,7 +96,34 @@ const AdminSupportTickets = () => {
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  const loadStaff = async () => {
+    const { data: roleRows } = await supabase
+      .from("user_roles")
+      .select("user_id, role")
+      .in("role", ["admin", "staff", "engineer"]);
+    const ids = Array.from(new Set(((roleRows as any) || []).map((r: any) => r.user_id))) as string[];
+    if (!ids.length) return setStaff([]);
+    const { data: profs } = await supabase.from("profiles").select("id, full_name, email").in("id", ids);
+    setStaff(
+      ids.map((id) => {
+        const p = ((profs as any) || []).find((x: any) => x.id === id);
+        return { id, name: p?.full_name || p?.email || id.slice(0, 8) };
+      }),
+    );
+  };
+
+  useEffect(() => { load(); loadStaff(); }, []);
+
+  const staffName = (id: string | null) => (id ? staff.find((s) => s.id === id)?.name || "Assigned" : "Unassigned");
+
+  const patchTicket = async (id: string, values: Partial<Ticket>) => {
+    const { error } = await supabase.from("support_tickets" as any).update(values).eq("id", id);
+    if (error) return toast.error(error.message);
+    setTickets((p) => p.map((t) => (t.id === id ? { ...t, ...values } as Ticket : t)));
+    setSelected((s) => (s && s.id === id ? ({ ...s, ...values } as Ticket) : s));
+    toast.success("Ticket updated");
+  };
+
 
   const notifyStatusChange = async (ticket: Ticket, newStatus: Ticket["status"]) => {
     if (!isEmail(ticket.user_contact)) return;
