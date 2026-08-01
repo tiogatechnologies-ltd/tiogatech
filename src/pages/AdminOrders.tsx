@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle, History } from "lucide-react";
+import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle, History, Send } from "lucide-react";
 import { format } from "date-fns";
 
 interface Order {
