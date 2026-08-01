@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
+import { sendMail } from "../_shared/mailer.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -36,24 +37,7 @@ interface OrderPayload {
 const ADMIN_EMAIL = "sales@tiogatechnologies.com";
 
 async function sendEmail(to: string, subject: string, html: string, text: string) {
-  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-  if (!LOVABLE_API_KEY) return { ok: false, error: "missing api key" };
-  try {
-    const res = await fetch("https://api.lovable.dev/v1/email/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
-      body: JSON.stringify({ to, subject, html, text, from: "Tioga Technologies <orders@tiogatechnologies.com>" }),
-    });
-    if (!res.ok) {
-      const t = await res.text();
-      console.error("email send failed", res.status, t);
-      return { ok: false, error: t };
-    }
-    return { ok: true };
-  } catch (e) {
-    console.error("email error", e);
-    return { ok: false, error: String(e) };
-  }
+  return await sendMail({ to, subject, html, text });
 }
 
 function itemsHtml(items: OrderItem[]) {
