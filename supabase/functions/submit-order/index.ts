@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
+import { sendMail } from "../_shared/mailer.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -36,24 +37,7 @@ interface OrderPayload {
 const ADMIN_EMAIL = "sales@tiogatechnologies.com";
 
 async function sendEmail(to: string, subject: string, html: string, text: string) {
-  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-  if (!LOVABLE_API_KEY) return { ok: false, error: "missing api key" };
-  try {
-    const res = await fetch("https://api.lovable.dev/v1/email/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
-      body: JSON.stringify({ to, subject, html, text, from: "Tioga Technologies <orders@tiogatechnologies.com>" }),
-    });
-    if (!res.ok) {
-      const t = await res.text();
-      console.error("email send failed", res.status, t);
-      return { ok: false, error: t };
-    }
-    return { ok: true };
-  } catch (e) {
-    console.error("email error", e);
-    return { ok: false, error: String(e) };
-  }
+  return await sendMail({ to, subject, html, text });
 }
 
 function itemsHtml(items: OrderItem[]) {
@@ -158,12 +142,13 @@ serve(async (req) => {
       <strong style="color:#111827;">Phone:</strong> ${escapeHtml(body.phone)}
     </div>
     <div style="margin-top:20px;text-align:center;">
+      <a href="https://tiogatechnologies.com/track?order=${encodeURIComponent(order.order_number)}" style="display:inline-block;background:#0d6b3f;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;margin-right:8px;">Track your order</a>
       <a href="https://wa.me/2348178000023" style="display:inline-block;background:#25D366;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">Chat with us on WhatsApp</a>
     </div>
     <p style="margin-top:24px;font-size:12px;color:#9ca3af;text-align:center;">Tioga Technologies · Solar, Smart Home, Security</p>
   </div>
 </div>`.trim();
-      const custText = `Order received — ${order.order_number}\n\nHi ${body.full_name},\n\nThanks for your order. We will contact you within 1 business day.\n\nItems:\n${items_summary}\n\nDelivery to: ${body.location}\nPhone: ${body.phone}\n\n— Tioga Technologies`;
+      const custText = `Order received — ${order.order_number}\n\nHi ${body.full_name},\n\nThanks for your order. We will contact you within 1 business day.\n\nItems:\n${items_summary}\n\nDelivery to: ${body.location}\nPhone: ${body.phone}\n\nTrack your order: https://tiogatechnologies.com/track?order=${order.order_number}\n\n— Tioga Technologies`;
       await sendEmail(body.email, `Order received — ${order.order_number}`, custHtml, custText);
     }
 

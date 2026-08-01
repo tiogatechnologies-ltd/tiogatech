@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
+import { sendMail } from "../_shared/mailer.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -74,18 +76,8 @@ serve(async (req) => {
 
     console.log("Sending email to:", to);
 
-    const response = await fetch("https://api.lovable.dev/v1/email/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
-      },
-      body: JSON.stringify({ to, subject, text: textBody, html: htmlBody }),
-    });
-
-    if (!response.ok) {
-      console.log("Email API response:", response.status, await response.text());
-    }
+    const result = await sendMail({ to, subject, html: htmlBody, text: textBody });
+    if (!result.ok) console.log("Lead notification email failed:", result.error);
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

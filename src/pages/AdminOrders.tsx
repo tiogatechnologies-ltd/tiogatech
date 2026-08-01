@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle, History } from "lucide-react";
+import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle, History, Send } from "lucide-react";
 import { format } from "date-fns";
 
 interface Order {
@@ -52,6 +52,21 @@ const AdminOrders = () => {
   };
   const [expanded, setExpanded] = useState<string | null>(null);
   const [itemsById, setItemsById] = useState<Record<string, OrderItem[]>>({});
+  const [resending, setResending] = useState<string | null>(null);
+
+  const resendEmail = async (orderId: string) => {
+    setResending(orderId);
+    try {
+      const { data, error } = await supabase.functions.invoke("resend-order-email", { body: { order_id: orderId } });
+      if (error) throw error;
+      if ((data as any)?.error) throw new Error((data as any).error);
+      toast.success(`Confirmation resent to ${(data as any)?.to || "customer"}`);
+    } catch (e: any) {
+      toast.error(e?.message || "Could not resend the confirmation email");
+    } finally {
+      setResending(null);
+    }
+  };
 
   const load = async () => {
     setLoading(true);
@@ -185,6 +200,16 @@ const AdminOrders = () => {
                         {STATUSES.map((s) => <option key={s} value={s} className="capitalize">{s}</option>)}
                       </select>
                       <a href={`https://wa.me/${o.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-green-500/10 text-green-600 hover:bg-green-500/20" title="WhatsApp"><MessageCircle size={14} /></a>
+                      {o.email && (
+                        <button
+                          onClick={() => resendEmail(o.id)}
+                          disabled={resending === o.id}
+                          className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 disabled:opacity-50"
+                          title="Resend order confirmation email"
+                        >
+                          {resending === o.id ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+                        </button>
+                      )}
                       <button onClick={() => toggleExpand(o.id)} className="p-2 rounded-lg hover:bg-muted text-muted-foreground" title={isOpen ? "Collapse" : "Expand"}>
                         {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                       </button>

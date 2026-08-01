@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+import { sendMail } from "../_shared/mailer.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -83,27 +85,19 @@ serve(async (req) => {
   </div>
 </div>`.trim();
 
-      fetch("https://api.lovable.dev/v1/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
-        body: JSON.stringify({
-          to: cleanEmail,
-          subject,
-          text: isConfirm ? `Confirm your subscription: ${confirmUrl}` : "You're already subscribed.",
-          html,
-        }),
+      sendMail({
+        to: cleanEmail,
+        subject,
+        text: isConfirm ? `Confirm your subscription: ${confirmUrl}` : "You're already subscribed.",
+        html,
       }).catch((e) => console.log("Confirm email failed:", e));
 
       if (isConfirm) {
-        fetch("https://api.lovable.dev/v1/email/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
-          body: JSON.stringify({
-            to: "sales@tiogatechnologies.com",
-            subject: `New newsletter signup (pending confirm): ${cleanEmail}`,
-            text: `${cleanName ?? "(no name)"} <${cleanEmail}> from ${cleanSource}.`,
-            html: `<p><strong>${cleanName ?? "(no name)"}</strong> &lt;${cleanEmail}&gt; signed up from <em>${cleanSource}</em>. Awaiting email confirmation.</p>`,
-          }),
+        sendMail({
+          to: "sales@tiogatechnologies.com",
+          subject: `New newsletter signup (pending confirm): ${cleanEmail}`,
+          text: `${cleanName ?? "(no name)"} <${cleanEmail}> from ${cleanSource}.`,
+          html: `<p><strong>${cleanName ?? "(no name)"}</strong> &lt;${cleanEmail}&gt; signed up from <em>${cleanSource}</em>. Awaiting email confirmation.</p>`,
         }).catch(() => {});
       }
     }
