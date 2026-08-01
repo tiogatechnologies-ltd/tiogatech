@@ -10,21 +10,16 @@ type Section = { id: string; label: string; icon: any; group: string; adminOnly?
 // Panes group one or more underlying `site_settings` keys. The storage keys are
 // unchanged — merging only affects how the panes are presented.
 const SECTIONS: Section[] = [
-  { id: "general", label: "General", icon: Building2, group: "Storefront", members: ["general"], keywords: "site name tagline hero currency language" },
-  { id: "branding", label: "Branding & Social", icon: ImageIcon, group: "Storefront", members: ["branding", "social"], keywords: "logo favicon colour og image facebook instagram twitter linkedin tiktok youtube telegram" },
-  { id: "contact", label: "Contact", icon: Phone, group: "Storefront", members: ["contact"], keywords: "phone email address whatsapp business hours" },
+  { id: "brand", label: "Brand & Contact", icon: Building2, group: "Storefront", members: ["general", "branding", "social", "contact"], keywords: "site name tagline hero currency language logo favicon colour og image facebook instagram twitter linkedin tiktok youtube telegram phone email address whatsapp business hours" },
   { id: "seo", label: "SEO & Tracking", icon: SearchIcon, group: "Storefront", members: ["seo"], keywords: "meta analytics pixel tag manager verification robots" },
 
   { id: "payment", label: "Payments & Financing", icon: CreditCard, group: "Commerce", members: ["payment", "finance"], keywords: "paystack bank transfer card flexible payment easy flex deposit tenure interest" },
-  { id: "shipping", label: "Delivery & Tax", icon: Truck, group: "Commerce", members: ["shipping", "tax"], keywords: "delivery fee pickup shipping vat invoice" },
-  { id: "discounts", label: "Promotions", icon: Tag, group: "Commerce", members: ["discounts", "affiliate"], keywords: "discount coupon stacking affiliate commission payout cookie" },
+  { id: "selling", label: "Delivery, Tax & Promotions", icon: Truck, group: "Commerce", members: ["shipping", "tax", "discounts", "affiliate"], keywords: "delivery fee pickup shipping vat invoice discount coupon stacking affiliate commission payout cookie" },
 
   { id: "notif", label: "Notifications & Email", icon: Bell, group: "Comms", members: ["notif", "email"], keywords: "alerts digest from name sender template footer" },
 
-  { id: "integrations", label: "Integrations", icon: Plug, group: "System", adminOnly: true, members: ["integrations"], keywords: "gmail telegram whatsapp openai" },
-  { id: "security", label: "Security & Access", icon: ShieldCheck, group: "System", adminOnly: true, members: ["security", "admins"], keywords: "verification session timeout ip allowlist admins users roles" },
-  { id: "features", label: "Feature Flags", icon: FileSliders, group: "System", adminOnly: true, members: ["features"], keywords: "ai chat recommender sizing store toggle" },
-  { id: "backups", label: "Backups & Exports", icon: Database, group: "System", adminOnly: true, members: ["backups"], keywords: "backup retention export drive" },
+  { id: "system", label: "System & Access", icon: ShieldCheck, group: "System", adminOnly: true, members: ["integrations", "security", "admins", "features", "backups"], keywords: "gmail telegram whatsapp openai verification session timeout ip allowlist admins users roles ai chat recommender sizing store toggle backup retention export drive" },
+
 ];
 
 
