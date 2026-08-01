@@ -52,6 +52,21 @@ const AdminOrders = () => {
   };
   const [expanded, setExpanded] = useState<string | null>(null);
   const [itemsById, setItemsById] = useState<Record<string, OrderItem[]>>({});
+  const [resending, setResending] = useState<string | null>(null);
+
+  const resendEmail = async (orderId: string) => {
+    setResending(orderId);
+    try {
+      const { data, error } = await supabase.functions.invoke("resend-order-email", { body: { order_id: orderId } });
+      if (error) throw error;
+      if ((data as any)?.error) throw new Error((data as any).error);
+      toast.success(`Confirmation resent to ${(data as any)?.to || "customer"}`);
+    } catch (e: any) {
+      toast.error(e?.message || "Could not resend the confirmation email");
+    } finally {
+      setResending(null);
+    }
+  };
 
   const load = async () => {
     setLoading(true);
