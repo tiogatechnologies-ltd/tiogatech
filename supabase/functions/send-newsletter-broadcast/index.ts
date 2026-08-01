@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+import { sendMail } from "../_shared/mailer.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -84,11 +86,7 @@ serve(async (req) => {
 </div>`.trim();
 
       try {
-        const r = await fetch("https://api.lovable.dev/v1/email/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
-          body: JSON.stringify({ to: s.email, subject, html: wrapped, text: subject }),
-        });
+        const r = await sendMail({ to: s.email, subject, html: wrapped, text: subject });
         if (r.ok) sent++;
       } catch (e) {
         console.log("Send failed for", s.email, e);
