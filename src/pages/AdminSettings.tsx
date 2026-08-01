@@ -88,7 +88,7 @@ const AdminSettings = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [query, setQuery] = useState("");
-  const [active, setActive] = useState("general");
+  const [active, setActive] = useState("brand");
 
   useEffect(() => {
     (async () => {
