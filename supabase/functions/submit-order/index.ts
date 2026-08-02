@@ -149,8 +149,42 @@ serve(async (req) => {
   </div>
 </div>`.trim();
       const custText = `Order received — ${order.order_number}\n\nHi ${body.full_name},\n\nThanks for your order. We will contact you within 1 business day.\n\nItems:\n${items_summary}\n\nDelivery to: ${body.location}\nPhone: ${body.phone}\n\nTrack your order: https://tiogatechnologies.com/track?order=${order.order_number}\n\n— Tioga Technologies`;
-      await sendEmail(body.email, `Order received — ${order.order_number}`, custHtml, custText);
+
+      // Preferred: branded order-confirmation template via the verified sender domain.
+      let confirmed = false;
+      try {
+        const { error: txErr } = await supabase.functions.invoke("send-transactional-email", {
+          body: {
+            templateName: "order-confirmation",
+            recipientEmail: body.email,
+            idempotencyKey: `order-confirmation-${order.id}`,
+            templateData: {
+              customerName: body.full_name,
+              orderNumber: order.order_number,
+              status: order.status,
+              items: body.items.map((i) => ({
+                name: i.product_name,
+                quantity: i.quantity,
+                priceLabel: i.price_label,
+              })),
+              itemsSummary: items_summary,
+              deliveryLocation: body.location,
+              phone: body.phone,
+              trackUrl: `https://tiogatechnologies.com/track?order=${encodeURIComponent(order.order_number)}`,
+            },
+          },
+        });
+        confirmed = !txErr;
+        if (txErr) console.error("transactional order email failed", txErr);
+      } catch (e) {
+        console.error("transactional order email error", e);
+      }
+
+      if (!confirmed) {
+        await sendEmail(body.email, `Order received — ${order.order_number}`, custHtml, custText);
+      }
     }
+
 
     // Admin alert
     const adminHtml = `
