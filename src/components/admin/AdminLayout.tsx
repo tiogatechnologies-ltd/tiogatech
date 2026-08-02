@@ -111,6 +111,7 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Newsletter", icon: Send, path: "/admin/newsletter" },
       { label: "Email", icon: Mail, path: "/admin/email" },
+      { label: "Email Delivery", icon: Mail, path: "/admin/email-status" },
     ],
   },
   {

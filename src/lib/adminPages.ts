@@ -54,6 +54,7 @@ export const ADMIN_PAGES: AdminPage[] = [
   // Marketing
   { key: "newsletter", label: "Newsletter", group: "Marketing", path: "/admin/newsletter", defaultRoles: ["staff"] },
   { key: "email", label: "Email", group: "Marketing", path: "/admin/email", defaultRoles: ["staff"] },
+  { key: "email_status", label: "Email Delivery", group: "Marketing", path: "/admin/email-status", defaultRoles: ["staff"] },
 
   // Affiliates
   { key: "affiliates", label: "Affiliates", group: "Affiliates", path: "/admin/affiliates", defaultRoles: [] },
