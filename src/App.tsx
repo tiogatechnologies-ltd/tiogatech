@@ -73,6 +73,8 @@ const AdminFormQuestions = lazy(() => import("./pages/AdminFormQuestions.tsx"));
 const AdminLandingPage = lazy(() => import("./pages/AdminLandingPage.tsx"));
 const AdminContent = lazy(() => import("./pages/AdminContent.tsx"));
 const AdminEmail = lazy(() => import("./pages/AdminEmail.tsx"));
+const AdminEmailStatus = lazy(() => import("./pages/AdminEmailStatus.tsx"));
+const Unsubscribe = lazy(() => import("./pages/Unsubscribe.tsx"));
 const AdminAnalytics = lazy(() => import("./pages/AdminAnalytics.tsx"));
 const AdminCareers = lazy(() => import("./pages/AdminCareers.tsx"));
 const AdminCareerApplications = lazy(() => import("./pages/AdminCareerApplications.tsx"));
@@ -184,6 +186,7 @@ const AnimatedRoutes = () => {
           <Route path="/blog/:slug" element={<RouteFade><BlogPost /></RouteFade>} />
           <Route path="/newsletter/confirm" element={<RouteFade><NewsletterConfirm /></RouteFade>} />
           <Route path="/newsletter/unsubscribe" element={<RouteFade><NewsletterUnsubscribe /></RouteFade>} />
+          <Route path="/unsubscribe" element={<RouteFade><Unsubscribe /></RouteFade>} />
           <Route path="/solar-assessment" element={<RouteFade><SolarAssessment /></RouteFade>} />
           <Route path="/solar-assessment/:id/full" element={<RouteFade><SolarAssessmentReport /></RouteFade>} />
           <Route path="/ai-pricing" element={<RouteFade><Pricing /></RouteFade>} />
@@ -219,6 +222,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/content" element={<Admin><AdminContent /></Admin>} />
           <Route path="/admin/orders" element={<Admin><AdminOrders /></Admin>} />
           <Route path="/admin/email" element={<Admin><AdminEmail /></Admin>} />
+          <Route path="/admin/email-status" element={<Admin><AdminEmailStatus /></Admin>} />
           <Route path="/admin/analytics" element={<Admin><AdminAnalytics /></Admin>} />
           <Route path="/admin/careers" element={<Admin><AdminCareers /></Admin>} />
           <Route path="/admin/career-applications" element={<Admin><AdminCareerApplications /></Admin>} />

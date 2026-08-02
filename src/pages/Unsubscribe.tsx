@@ -42,7 +42,7 @@ const Unsubscribe = () => {
 
   return (
     <>
-      <SEO title="Unsubscribe | Tioga Technologies" description="Manage your email preferences with Tioga Technologies." noindex />
+      <SEO title="Unsubscribe | Tioga Technologies" description="Manage your email preferences with Tioga Technologies." />
       <main className="min-h-screen flex items-center justify-center px-4 py-24 bg-background">
         <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 text-center space-y-4">
           <h1 className="font-display text-xl font-bold text-card-foreground">Email preferences</h1>
