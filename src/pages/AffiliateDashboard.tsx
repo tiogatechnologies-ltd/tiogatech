@@ -170,7 +170,7 @@ const AffiliateDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Affiliate Portal | Tioga Technologies" description="Track your referral links, leads, sales and payouts." noindex />
+      <SEO title="Affiliate Portal | Tioga Technologies" description="Track your referral links, leads, sales and payouts." />
       <SiteHeader />
 
       <main className="mx-auto max-w-7xl px-4 pb-20 pt-24 sm:px-6">
