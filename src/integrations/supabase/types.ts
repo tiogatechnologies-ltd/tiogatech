@@ -62,6 +62,173 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_link_clicks: {
+        Row: {
+          affiliate_id: string
+          country: string | null
+          created_at: string
+          device_type: string | null
+          id: string
+          link_id: string | null
+          referrer: string | null
+          session_id: string | null
+          slug: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          affiliate_id: string
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          link_id?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          slug?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          affiliate_id?: string
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          link_id?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          slug?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_link_clicks_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_link_clicks_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_links: {
+        Row: {
+          affiliate_id: string
+          created_at: string
+          destination_path: string
+          id: string
+          is_archived: boolean
+          label: string
+          slug: string
+          updated_at: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          affiliate_id: string
+          created_at?: string
+          destination_path?: string
+          id?: string
+          is_archived?: boolean
+          label: string
+          slug: string
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          affiliate_id?: string
+          created_at?: string
+          destination_path?: string
+          id?: string
+          is_archived?: boolean
+          label?: string
+          slug?: string
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_links_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_payout_requests: {
+        Row: {
+          admin_note: string | null
+          affiliate_id: string
+          amount: number
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          id: string
+          note: string | null
+          payout_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_note?: string | null
+          affiliate_id: string
+          amount: number
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          id?: string
+          note?: string | null
+          payout_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_note?: string | null
+          affiliate_id?: string
+          amount?: number
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          id?: string
+          note?: string | null
+          payout_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_payout_requests_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_payout_requests_payout_id_fkey"
+            columns: ["payout_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_payouts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       affiliate_payouts: {
         Row: {
           affiliate_id: string
@@ -1445,6 +1612,7 @@ export type Database = {
       leads: {
         Row: {
           affiliate_code: string | null
+          affiliate_link_slug: string | null
           appliances: string[] | null
           budget: string | null
           consent: boolean
@@ -1463,11 +1631,14 @@ export type Database = {
           status: string
           timeline: string | null
           utm_campaign: string | null
+          utm_content: string | null
           utm_medium: string | null
           utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           affiliate_code?: string | null
+          affiliate_link_slug?: string | null
           appliances?: string[] | null
           budget?: string | null
           consent?: boolean
@@ -1486,11 +1657,14 @@ export type Database = {
           status?: string
           timeline?: string | null
           utm_campaign?: string | null
+          utm_content?: string | null
           utm_medium?: string | null
           utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           affiliate_code?: string | null
+          affiliate_link_slug?: string | null
           appliances?: string[] | null
           budget?: string | null
           consent?: boolean
@@ -1509,8 +1683,10 @@ export type Database = {
           status?: string
           timeline?: string | null
           utm_campaign?: string | null
+          utm_content?: string | null
           utm_medium?: string | null
           utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: []
       }
@@ -1746,6 +1922,7 @@ export type Database = {
       orders: {
         Row: {
           affiliate_code: string | null
+          affiliate_link_slug: string | null
           billing_address: Json | null
           consent: boolean
           created_at: string
@@ -1779,6 +1956,7 @@ export type Database = {
         }
         Insert: {
           affiliate_code?: string | null
+          affiliate_link_slug?: string | null
           billing_address?: Json | null
           consent?: boolean
           created_at?: string
@@ -1812,6 +1990,7 @@ export type Database = {
         }
         Update: {
           affiliate_code?: string | null
+          affiliate_link_slug?: string | null
           billing_address?: Json | null
           consent?: boolean
           created_at?: string
@@ -2603,6 +2782,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      current_affiliate_id: { Args: never; Returns: string }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean

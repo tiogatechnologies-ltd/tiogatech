@@ -1,3 +1,4 @@
+import { attributionForOrder } from "@/lib/attribution";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
@@ -200,6 +201,7 @@ const Checkout = () => {
         billing_address: shippingAddress,
         user_id: user?.id || null,
         discount_code: discountCode || null,
+        ...attributionForOrder(),
         items: items.map((i) => ({
           product_name: i.name,
           product_type: i.type,
