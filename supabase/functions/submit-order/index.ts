@@ -32,6 +32,8 @@ interface OrderPayload {
   billing_address?: Record<string, unknown> | null;
   user_id?: string | null;
   discount_code?: string | null;
+  affiliate_code?: string | null;
+  affiliate_link_slug?: string | null;
 }
 
 const ADMIN_EMAIL = "sales@tiogatechnologies.com";
@@ -103,6 +105,8 @@ serve(async (req) => {
         billing_address: body.billing_address ?? null,
         user_id: body.user_id ?? null,
         discount_code: body.discount_code ?? null,
+        affiliate_code: body.affiliate_code ?? null,
+        affiliate_link_slug: body.affiliate_link_slug ?? null,
       })
       .select()
       .single();
