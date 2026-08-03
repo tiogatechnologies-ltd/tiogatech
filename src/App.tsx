@@ -36,6 +36,7 @@ const About = lazy(() => import("./pages/About.tsx"));
 const Catalog = lazy(() => import("./pages/Catalog.tsx"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail.tsx"));
 const TrackOrder = lazy(() => import("./pages/TrackOrder.tsx"));
+const ShortLink = lazy(() => import("./pages/ShortLink.tsx"));
 const LumiVolt = lazy(() => import("./pages/LumiVolt.tsx"));
 const VoltAi = lazy(() => import("./pages/VoltAi.tsx"));
 const Finance = lazy(() => import("./pages/Finance.tsx"));
