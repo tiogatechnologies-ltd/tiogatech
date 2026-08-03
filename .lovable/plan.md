@@ -1,55 +1,57 @@
-## What I verified this turn
+# Affiliate Portal: full link, tracking and payout dashboard
 
-I read `src/lib/adminPages.ts` (39 admin pages), `src/pages/AdminSettings.tsx` (18 setting sections), `src/pages/Account.tsx`, and searched the whole `src/` tree and `supabase/functions/` for reviews and wishlist code.
+## The core problem first
 
-**Confirmed present and working:** full storefront (catalog, PDPs at `/product/:slug`, cart, checkout with delivery rules, guest order tracking at `/track`), Easy Flex financing end-to-end, solar assessment + AI credits/subscriptions, blog, careers, affiliates, newsletter, support tickets, analytics, and per-role/per-page RBAC.
+The current affiliate dashboard is effectively broken for real affiliates. It reads the `affiliates`, `leads` and `orders` tables straight from the browser, but the access rules on all three are admin-only (orders are limited to a user's own orders). Only the payouts table has an affiliate rule. A signed-in affiliate therefore gets an empty page telling them they are "not an active affiliate yet".
 
-## Confirmed gaps
+So the first job is to serve the dashboard through a secure backend endpoint that verifies who the affiliate is and returns only their own data. Everything else is built on top of that.
 
-**Customer side**
-1. **No product reviews or ratings** — no table, no UI. Also blocks `AggregateRating` rich results in search.
-2. **No wishlist / save-for-later** — nothing in the codebase.
-3. **Account page shows only the 5 most recent orders** (`limit(5)` in `Account.tsx`) with no full order-history page, no per-order detail view, and no reorder action.
-4. **No saved delivery addresses** — customers retype their address on every checkout.
-5. **No self-service order cancellation or return/refund request** — the only path is WhatsApp/support ticket.
+## What affiliates get
 
-**Admin side**
-6. **No review moderation page** (needed only if #1 ships).
-7. **No content/SEO health panel** — nothing surfaces posts missing meta descriptions or products missing images/descriptions/prices.
-8. **Support tickets have no assignee field and no ageing/SLA indicator**, so triage across staff is manual.
-9. **No in-admin notification centre** — new orders, applications and tickets are only visible by opening each page.
+### 1. Overview
+- Clicks, leads, orders, conversion rate, referred revenue, commission earned, paid out, pending balance.
+- 30/90-day trend chart, plus a top-performing links table.
+- Their code, commission rate and account status.
 
-## Settings consolidation
+### 2. Link manager (the main addition)
+- Build a link: pick a landing page (home, catalog, a specific product, packages, finance, solar assessment, contact) and set `utm_source`, `utm_medium`, `utm_campaign`, plus optional `utm_term` and `utm_content`. The affiliate code is always attached automatically.
+- Save it with a nickname ("IG bio link", "WhatsApp status Jan").
+- Every saved link gets a short URL, `tiogatechnologies.com/r/<slug>`, that redirects to the full UTM link and records the click.
+- Downloadable QR code per link (PNG), generated in the browser.
+- Per-link stats: clicks, unique visitors, leads, orders, revenue, conversion rate.
+- Copy, rename, archive and delete links. Preset templates for Instagram, WhatsApp, Facebook, X, TikTok and email.
 
-Current 18 sections collapse to 12 without losing a single field — every existing settings key is kept, just regrouped under a merged pane with sub-headings:
+### 3. Referrals
+- Full list of referred leads (name, contact, product interest, status, date) and referred orders with values and payment status, filterable by date range and by which link brought them in. CSV export.
 
-```text
-Storefront   General · Branding & Social · Contact · SEO & Tracking
-Commerce     Payments & Financing   (Payments + Flexible Payment)
-             Delivery & Tax         (Shipping & Pickup + Tax & Invoicing)
-             Promotions             (Discounts + Affiliates)
-Comms        Notifications & Email  (Notifications + Email & Templates)
-System       Integrations · Security & Access (Security + Admins)
-             Feature Flags · Backups & Exports
-```
+### 4. Payouts, self-service
+- Payout history with statement links.
+- Editable payout details (method, bank/account info).
+- "Request payout" button once pending commission clears a minimum threshold; creates a request the admin sees in Admin → Affiliates → Payouts and approves or rejects.
 
-## Proposed work
+### 5. Resources
+- Their referral link and code, program terms, commission rate, and the 60-day attribution window explained.
 
-**Track 1 — Settings merge (small, do first)**
-Rewrite the `SECTIONS` array and pane markup in `AdminSettings.tsx` so merged panes render their former sections as labelled sub-cards. Keep the underlying `site_settings` keys (`payment`, `finance`, `shipping`, `tax`, …) unchanged so no migration or data change is needed, and keep the `adminOnly` flag on system panes.
-
-**Track 2 — Order history & account depth**
-Full `/account/orders` list with pagination and an order detail view reusing the `/track` timeline, a reorder button that repopulates the cart, and saved delivery addresses on the profile.
-
-**Track 3 — Reviews**
-`product_reviews` table (RLS: only verified purchasers write, public read of approved rows, GRANTs included), star UI plus review form on the PDP, `AggregateRating` JSON-LD, and an `/admin/reviews` moderation page wired into the RBAC page catalog.
-
-**Track 4 — Admin polish**
-Ticket assignee + ageing badges, and an SEO/content health panel listing incomplete products and posts.
+## Admin side
+- Admin → Affiliates gains a Links tab showing every affiliate's saved links with click and conversion counts.
+- Pending payout requests appear in the payouts view with approve/reject and payment reference entry.
 
 ## Technical notes
-- Track 1 is presentation-only — no backend or business-logic change.
-- Tracks 3 and 4 add tables/columns and therefore need migrations with explicit `GRANT`s and new entries in `src/lib/adminPages.ts` so role permissions cover the new pages.
-- Wishlist (#2) and returns (#5) are deliberately left out of the tracks above; say the word and I'll fold them in.
 
-Tell me which tracks to build — Track 1 alone is a clean first turn.
+**Database (new tables):**
+- `affiliate_links` — affiliate_id, slug (unique short code), label, destination path, utm_source/medium/campaign/term/content, is_archived, created_at. Affiliates read/write only their own rows; admins see all.
+- `affiliate_link_clicks` — link_id, affiliate_id, session_id, referrer, user_agent, device, country, created_at. Written by the redirect function only; readable by the owning affiliate and admins.
+- `affiliate_payout_requests` — affiliate_id, amount, status (pending/approved/rejected/paid), note, decided_by, timestamps. Affiliates insert and read their own; admins manage all.
+- Add `affiliate_link_slug` to `leads` and `orders` so a lead or sale can be traced to the exact link.
+- All tables get explicit grants and row-level rules; nothing new is exposed to anonymous users except the redirect path.
+
+**Edge functions:**
+- `affiliate-portal` — verifies the caller's session, resolves their affiliate record by email, and returns overview stats, links with metrics, referrals and payout data in one payload. All aggregation happens server-side, so the browser never needs privileged table access.
+- `affiliate-redirect` — public `GET /r/:slug`; logs the click, then 302s to the full destination URL with the affiliate code and UTM parameters attached. Bot user-agents are filtered out of click counts.
+- `affiliate-payout-request` — validates the requested amount against the real pending balance before creating a request.
+
+**Frontend:**
+- Rewrite `src/pages/AffiliateDashboard.tsx` as a tabbed portal (Overview, Links, Referrals, Payouts, Resources) with the existing card/rounded-3xl styling, sharing components under `src/components/affiliate/`.
+- Extend `src/lib/attribution.ts` to also capture `utm_term`, `utm_content` and the link slug, and persist the slug alongside the affiliate code for the same 60-day window so lead and order submissions carry it.
+- Add a `/r/:slug` route that immediately forwards to the redirect function, so short links work even when shared as site URLs.
+- QR codes generated client-side with the `qrcode` package.
