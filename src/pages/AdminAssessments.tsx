@@ -140,6 +140,9 @@ const AdminAssessments = () => {
               </select>
               <button onClick={save} disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"><Save size={14} /> {saving ? "Saving..." : "Save"}</button>
             </div>
+
+            <BriefWorkflow entityType="assessment" row={selected} onSaved={(patch) => { setSelected((s: any) => ({ ...s, ...patch })); setItems((its) => its.map((i) => (i.id === selected.id ? { ...i, ...patch } : i))); }} />
+
           </div>
         </div>
       )}
