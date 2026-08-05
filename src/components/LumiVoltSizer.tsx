@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Plus, Trash2, HelpCircle, Save, Sun, Plug, BatteryCharging, Cpu, Calculator, Printer, ArrowLeft, Eye, EyeOff, CheckCircle2, Zap } from "lucide-react";
+import { Plus, Trash2, HelpCircle, Save, Sun, Plug, BatteryCharging, Cpu, Calculator, Printer, ArrowLeft, Eye, EyeOff, CheckCircle2, Zap, Download, Share2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
