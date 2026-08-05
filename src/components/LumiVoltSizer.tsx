@@ -170,14 +170,38 @@ const LumiVoltSizer = () => {
   if (showResults) {
     return (
       <div className="space-y-5">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <button onClick={() => setShowResults(false)} className="inline-flex items-center gap-1.5 text-sm text-primary font-semibold">
             <ArrowLeft size={16} /> Back
           </button>
-          <button onClick={() => window.print()} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
-            <Printer size={16} /> Print
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button onClick={downloadPdf} className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors">
+              <Download size={14} /> Download PDF
+            </button>
+            <button onClick={shareWhatsApp} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:border-primary/40 transition-colors">
+              <Share2 size={14} /> Share
+            </button>
+            <button onClick={() => window.print()} className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
+              <Printer size={14} /> Print
+            </button>
+          </div>
         </div>
+
+        {shareToken && (
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-3 text-xs">
+            <p className="font-semibold text-foreground mb-1">Your saved report link</p>
+            <div className="flex items-center gap-2">
+              <code className="flex-1 truncate text-muted-foreground">{`${window.location.origin}/sizing/${shareToken}`}</code>
+              <button
+                onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/sizing/${shareToken}`); toast.success("Link copied"); }}
+                className="rounded-full border border-border bg-background px-2.5 py-1 font-semibold"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        )}
+
 
         <div>
           <h3 className="text-2xl font-display font-bold text-foreground no-clip">Your Solar System Summary</h3>
