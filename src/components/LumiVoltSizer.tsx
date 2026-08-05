@@ -4,6 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { applianceDatabase } from "@/data/applianceWatts";
+import { downloadReportPdf, whatsappShareUrl } from "@/lib/reportPdf";
+import { sizingToReport } from "@/lib/briefData";
+
 
 type Row = { id: string; name: string; qty: number; watts: number; hours: number };
 
