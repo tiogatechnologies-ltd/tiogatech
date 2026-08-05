@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AdminLayout from "@/components/admin/AdminLayout";
+import BriefWorkflow from "@/components/admin/BriefWorkflow";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Eye, X, Save } from "lucide-react";
+import { Loader2, Eye, X, Save, Download, Wrench } from "lucide-react";
+import { downloadReportPdf } from "@/lib/reportPdf";
+import { assessmentToReport, stageClass, stageLabel } from "@/lib/briefData";
+
 
 const AdminAssessments = () => {
   const [items, setItems] = useState<any[]>([]);
