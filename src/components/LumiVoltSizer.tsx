@@ -49,7 +49,10 @@ const LumiVoltSizer = () => {
   const [showResults, setShowResults] = useState(false);
   const [showBreakdown, setShowBreakdown] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [savedId, setSavedId] = useState<string | null>(null);
+  const [shareToken, setShareToken] = useState<string | null>(null);
   const [contact, setContact] = useState({ full_name: "", email: "", phone: "", location: "" });
+
 
   const dod = useMemo(() => BATTERY_TYPES.find((b) => b.value === batteryType)?.dod ?? 0.9, [batteryType]);
 
