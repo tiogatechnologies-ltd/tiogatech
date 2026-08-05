@@ -191,6 +191,8 @@ const AnimatedRoutes = () => {
           <Route path="/unsubscribe" element={<RouteFade><Unsubscribe /></RouteFade>} />
           <Route path="/solar-assessment" element={<RouteFade><SolarAssessment /></RouteFade>} />
           <Route path="/solar-assessment/:id/full" element={<RouteFade><SolarAssessmentReport /></RouteFade>} />
+          <Route path="/sizing/:token" element={<RouteFade><SizingReport /></RouteFade>} />
+
           <Route path="/ai-pricing" element={<RouteFade><Pricing /></RouteFade>} />
           <Route path="/pricing" element={<Navigate to="/ai-pricing" replace />} />
           <Route path="/subscription" element={<Navigate to="/account/subscription" replace />} />
