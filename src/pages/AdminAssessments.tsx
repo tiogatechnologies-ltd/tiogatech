@@ -82,7 +82,11 @@ const AdminAssessments = () => {
                     </td>
                     <td>{a.recommendation?.inverter_kva}kVA / {a.recommendation?.battery_kwh}kWh</td>
                     <td>{a.location}</td>
-                    <td><span className={`text-xs px-2 py-1 rounded ${a.status === "full" ? "bg-primary/20 text-primary" : a.status === "reviewed" ? "bg-green-100 text-green-700" : "bg-muted"}`}>{a.status}</span></td>
+                    <td className="space-x-1">
+                      <span className={`text-xs px-2 py-1 rounded ${a.status === "full" ? "bg-primary/20 text-primary" : a.status === "reviewed" ? "bg-green-100 text-green-700" : "bg-muted"}`}>{a.status}</span>
+                      <span className={`text-[10px] px-2 py-1 rounded-full border ${stageClass(a.pipeline_status)}`}>{stageLabel(a.pipeline_status)}</span>
+                    </td>
+
                     <td className="text-xs text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</td>
                     <td><button onClick={() => openDrawer(a)} className="p-2 text-primary"><Eye size={16} /></button></td>
                   </tr>
