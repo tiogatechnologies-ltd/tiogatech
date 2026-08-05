@@ -115,21 +115,34 @@ const AdminAssessments = () => {
             </div>
 
             <div>
-              <h3 className="font-semibold text-sm mb-1">Recommendation</h3>
-              <pre className="text-xs bg-muted/50 p-3 rounded overflow-x-auto">{JSON.stringify(selected.recommendation, null, 2)}</pre>
+              <h3 className="font-semibold text-sm mb-1">Recommended system</h3>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <Info label="Inverter" value={selected.recommendation?.inverter_kva ? `${selected.recommendation.inverter_kva} kVA` : "—"} />
+                <Info label="Battery" value={selected.recommendation?.battery_kwh ? `${selected.recommendation.battery_kwh} kWh` : "—"} />
+                <Info label="Panels" value={selected.recommendation ? `${selected.recommendation.panel_count} × ${selected.recommendation.panel_w} W` : "—"} />
+                <Info label="Backup" value={selected.recommendation?.backup_hours ? `${selected.recommendation.backup_hours} h` : "—"} />
+              </div>
             </div>
 
             <div>
               <h3 className="font-semibold text-sm mb-1">Appliances</h3>
-              <pre className="text-xs bg-muted/50 p-3 rounded overflow-x-auto max-h-48">{JSON.stringify(selected.appliances, null, 2)}</pre>
+              <div className="rounded-xl border border-border divide-y divide-border text-xs">
+                {Array.isArray(selected.appliances) && selected.appliances.length > 0 ? selected.appliances.map((a: any, i: number) => (
+                  <div key={i} className="px-3 py-2 flex items-center justify-between gap-2">
+                    <span>{a.name || "Appliance"} <span className="text-muted-foreground">· qty {a.qty ?? 1} · {a.watts}W · {a.hours ?? 0}h</span></span>
+                    <span className="font-semibold">{Math.round((Number(a.watts) || 0) * (Number(a.qty) || 1) * (Number(a.hours) || 0))} Wh</span>
+                  </div>
+                )) : <div className="px-3 py-2 text-muted-foreground">No appliances recorded.</div>}
+              </div>
             </div>
 
             {selected.full_report && (
               <details>
-                <summary className="cursor-pointer text-sm font-semibold">Full report JSON</summary>
+                <summary className="cursor-pointer text-sm font-semibold">Full engineering report (raw)</summary>
                 <pre className="text-xs bg-muted/50 p-3 rounded overflow-x-auto max-h-96 mt-2">{JSON.stringify(selected.full_report, null, 2)}</pre>
               </details>
             )}
+
 
             <div className="space-y-2">
               <label className="text-sm font-semibold">Engineer notes</label>
