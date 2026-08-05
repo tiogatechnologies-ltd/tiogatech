@@ -73,6 +73,37 @@ const LumiVoltSizer = () => {
 
   const canContinue = computed.dailyWh > 0;
 
+  const reportData = useMemo(() => sizingToReport({
+    id: savedId || "draft-0000",
+    full_name: user?.user_metadata?.full_name || contact.full_name,
+    email: user?.email || contact.email,
+    phone: contact.phone,
+    location: contact.location,
+    appliances: computed.breakdown,
+    total_load_w: computed.totalLoad,
+    daily_energy_wh: computed.dailyWh,
+    days_autonomy: days,
+    battery_voltage: voltage,
+    battery_type: BATTERY_TYPES.find((b) => b.value === batteryType)?.label || batteryType,
+    battery_dod: dod,
+    sunlight_hours: sun,
+    solar_panel_w: computed.solarPanelW,
+    recommended_panel_w: computed.recommendedPanelW,
+    inverter_w: computed.inverterW,
+    battery_ah: computed.batteryAh,
+    battery_kwh: computed.batteryWh / 1000,
+    charge_controller_a: computed.chargeCtrlA,
+    created_at: new Date().toISOString(),
+  }), [savedId, user, contact, computed, days, voltage, batteryType, dod, sun]);
+
+  const downloadPdf = () => downloadReportPdf(reportData, `tioga-solar-sizing-${reportData.reference}.pdf`);
+
+  const shareWhatsApp = () => {
+    const link = shareToken ? `${window.location.origin}/sizing/${shareToken}` : "";
+    const msg = `My Tioga solar sizing: ${(computed.dailyWh / 1000).toFixed(2)} kWh/day, ${Math.round(computed.recommendedPanelW).toLocaleString()}W panels, ${(computed.batteryWh / 1000).toFixed(2)}kWh battery, ${Math.round(computed.inverterW).toLocaleString()}W inverter.${link ? ` View the full report: ${link}` : ""}`;
+    window.open(whatsappShareUrl(msg), "_blank");
+  };
+
   const save = async () => {
     if (!canContinue) {
       toast.error("Add at least one appliance with watts and hours");
@@ -83,7 +114,8 @@ const LumiVoltSizer = () => {
       return;
     }
     setSaving(true);
-    const { error } = await supabase.from("lumivolt_sizings").insert({
+    const token = crypto.randomUUID().replace(/-/g, "");
+    const { data: inserted, error } = await supabase.from("lumivolt_sizings").insert({
       user_id: user?.id ?? null,
       full_name: user?.user_metadata?.full_name || contact.full_name || null,
       email: user?.email || contact.email || null,
@@ -103,12 +135,15 @@ const LumiVoltSizer = () => {
       battery_ah: computed.batteryAh,
       battery_kwh: computed.batteryWh / 1000,
       charge_controller_a: computed.chargeCtrlA,
-    });
+      share_token: token,
+    } as any).select("id").maybeSingle();
     setSaving(false);
     if (error) {
       toast.error("Could not save: " + error.message);
       return;
     }
+    setSavedId((inserted as any)?.id || null);
+    setShareToken(token);
     // Fire-and-forget admin notification
     try {
       await supabase.functions.invoke("notify-new-lead", {
@@ -124,6 +159,7 @@ const LumiVoltSizer = () => {
     } catch {}
     toast.success("Your sizing was saved. Our team will reach out.");
   };
+
 
   if (showResults) {
     return (
