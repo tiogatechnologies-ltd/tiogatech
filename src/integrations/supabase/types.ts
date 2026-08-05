@@ -623,6 +623,45 @@ export type Database = {
         }
         Relationships: []
       }
+      brief_events: {
+        Row: {
+          actor_email: string | null
+          actor_id: string | null
+          created_at: string
+          entity_id: string
+          entity_type: string
+          event_type: string
+          from_value: string | null
+          id: string
+          note: string | null
+          to_value: string | null
+        }
+        Insert: {
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          event_type: string
+          from_value?: string | null
+          id?: string
+          note?: string | null
+          to_value?: string | null
+        }
+        Update: {
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          event_type?: string
+          from_value?: string | null
+          id?: string
+          note?: string | null
+          to_value?: string | null
+        }
+        Relationships: []
+      }
       career_applications: {
         Row: {
           career_id: string | null
@@ -1703,13 +1742,20 @@ export type Database = {
           daily_energy_wh: number
           days_autonomy: number
           email: string | null
+          engineer_owner_id: string | null
           full_name: string | null
           id: string
+          internal_notes: string | null
           inverter_w: number | null
+          lead_id: string | null
           location: string | null
           notes: string | null
           phone: string | null
+          pipeline_status: string
           recommended_panel_w: number | null
+          revised: Json | null
+          sales_owner_id: string | null
+          share_token: string | null
           solar_panel_w: number | null
           source: string | null
           sunlight_hours: number
@@ -1729,13 +1775,20 @@ export type Database = {
           daily_energy_wh?: number
           days_autonomy?: number
           email?: string | null
+          engineer_owner_id?: string | null
           full_name?: string | null
           id?: string
+          internal_notes?: string | null
           inverter_w?: number | null
+          lead_id?: string | null
           location?: string | null
           notes?: string | null
           phone?: string | null
+          pipeline_status?: string
           recommended_panel_w?: number | null
+          revised?: Json | null
+          sales_owner_id?: string | null
+          share_token?: string | null
           solar_panel_w?: number | null
           source?: string | null
           sunlight_hours?: number
@@ -1755,13 +1808,20 @@ export type Database = {
           daily_energy_wh?: number
           days_autonomy?: number
           email?: string | null
+          engineer_owner_id?: string | null
           full_name?: string | null
           id?: string
+          internal_notes?: string | null
           inverter_w?: number | null
+          lead_id?: string | null
           location?: string | null
           notes?: string | null
           phone?: string | null
+          pipeline_status?: string
           recommended_panel_w?: number | null
+          revised?: Json | null
+          sales_owner_id?: string | null
+          share_token?: string | null
           solar_panel_w?: number | null
           source?: string | null
           sunlight_hours?: number
@@ -1769,7 +1829,15 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "lumivolt_sizings_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       newsletter_broadcasts: {
         Row: {
@@ -2507,9 +2575,11 @@ export type Database = {
           email: string
           engineer_id: string | null
           engineer_notes: string | null
+          engineer_owner_id: string | null
           full_name: string
           full_report: Json | null
           id: string
+          internal_notes: string | null
           is_full_unlocked: boolean
           lead_id: string | null
           location: string | null
@@ -2517,7 +2587,10 @@ export type Database = {
           occupants: number | null
           peak_load_w: number | null
           phone: string | null
+          pipeline_status: string
           recommendation: Json | null
+          revised: Json | null
+          sales_owner_id: string | null
           share_token: string | null
           status: string
           updated_at: string
@@ -2532,9 +2605,11 @@ export type Database = {
           email: string
           engineer_id?: string | null
           engineer_notes?: string | null
+          engineer_owner_id?: string | null
           full_name: string
           full_report?: Json | null
           id?: string
+          internal_notes?: string | null
           is_full_unlocked?: boolean
           lead_id?: string | null
           location?: string | null
@@ -2542,7 +2617,10 @@ export type Database = {
           occupants?: number | null
           peak_load_w?: number | null
           phone?: string | null
+          pipeline_status?: string
           recommendation?: Json | null
+          revised?: Json | null
+          sales_owner_id?: string | null
           share_token?: string | null
           status?: string
           updated_at?: string
@@ -2557,9 +2635,11 @@ export type Database = {
           email?: string
           engineer_id?: string | null
           engineer_notes?: string | null
+          engineer_owner_id?: string | null
           full_name?: string
           full_report?: Json | null
           id?: string
+          internal_notes?: string | null
           is_full_unlocked?: boolean
           lead_id?: string | null
           location?: string | null
@@ -2567,7 +2647,10 @@ export type Database = {
           occupants?: number | null
           peak_load_w?: number | null
           phone?: string | null
+          pipeline_status?: string
           recommendation?: Json | null
+          revised?: Json | null
+          sales_owner_id?: string | null
           share_token?: string | null
           status?: string
           updated_at?: string

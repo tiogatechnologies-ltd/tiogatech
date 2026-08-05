@@ -1,9 +1,12 @@
 import { useMemo, useState } from "react";
-import { Plus, Trash2, HelpCircle, Save, Sun, Plug, BatteryCharging, Cpu, Calculator, Printer, ArrowLeft, Eye, EyeOff, CheckCircle2, Zap } from "lucide-react";
+import { Plus, Trash2, HelpCircle, Save, Sun, Plug, BatteryCharging, Cpu, Calculator, Printer, ArrowLeft, Eye, EyeOff, CheckCircle2, Zap, Download, Share2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { applianceDatabase } from "@/data/applianceWatts";
+import { downloadReportPdf, whatsappShareUrl } from "@/lib/reportPdf";
+import { sizingToReport } from "@/lib/briefData";
+
 
 type Row = { id: string; name: string; qty: number; watts: number; hours: number };
 
@@ -49,7 +52,10 @@ const LumiVoltSizer = () => {
   const [showResults, setShowResults] = useState(false);
   const [showBreakdown, setShowBreakdown] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [savedId, setSavedId] = useState<string | null>(null);
+  const [shareToken, setShareToken] = useState<string | null>(null);
   const [contact, setContact] = useState({ full_name: "", email: "", phone: "", location: "" });
+
 
   const dod = useMemo(() => BATTERY_TYPES.find((b) => b.value === batteryType)?.dod ?? 0.9, [batteryType]);
 
@@ -73,6 +79,37 @@ const LumiVoltSizer = () => {
 
   const canContinue = computed.dailyWh > 0;
 
+  const reportData = useMemo(() => sizingToReport({
+    id: savedId || "draft-0000",
+    full_name: user?.user_metadata?.full_name || contact.full_name,
+    email: user?.email || contact.email,
+    phone: contact.phone,
+    location: contact.location,
+    appliances: computed.breakdown,
+    total_load_w: computed.totalLoad,
+    daily_energy_wh: computed.dailyWh,
+    days_autonomy: days,
+    battery_voltage: voltage,
+    battery_type: BATTERY_TYPES.find((b) => b.value === batteryType)?.label || batteryType,
+    battery_dod: dod,
+    sunlight_hours: sun,
+    solar_panel_w: computed.solarPanelW,
+    recommended_panel_w: computed.recommendedPanelW,
+    inverter_w: computed.inverterW,
+    battery_ah: computed.batteryAh,
+    battery_kwh: computed.batteryWh / 1000,
+    charge_controller_a: computed.chargeCtrlA,
+    created_at: new Date().toISOString(),
+  }), [savedId, user, contact, computed, days, voltage, batteryType, dod, sun]);
+
+  const downloadPdf = () => downloadReportPdf(reportData, `tioga-solar-sizing-${reportData.reference}.pdf`);
+
+  const shareWhatsApp = () => {
+    const link = shareToken ? `${window.location.origin}/sizing/${shareToken}` : "";
+    const msg = `My Tioga solar sizing: ${(computed.dailyWh / 1000).toFixed(2)} kWh/day, ${Math.round(computed.recommendedPanelW).toLocaleString()}W panels, ${(computed.batteryWh / 1000).toFixed(2)}kWh battery, ${Math.round(computed.inverterW).toLocaleString()}W inverter.${link ? ` View the full report: ${link}` : ""}`;
+    window.open(whatsappShareUrl(msg), "_blank");
+  };
+
   const save = async () => {
     if (!canContinue) {
       toast.error("Add at least one appliance with watts and hours");
@@ -83,7 +120,8 @@ const LumiVoltSizer = () => {
       return;
     }
     setSaving(true);
-    const { error } = await supabase.from("lumivolt_sizings").insert({
+    const token = crypto.randomUUID().replace(/-/g, "");
+    const { data: inserted, error } = await supabase.from("lumivolt_sizings").insert({
       user_id: user?.id ?? null,
       full_name: user?.user_metadata?.full_name || contact.full_name || null,
       email: user?.email || contact.email || null,
@@ -103,12 +141,15 @@ const LumiVoltSizer = () => {
       battery_ah: computed.batteryAh,
       battery_kwh: computed.batteryWh / 1000,
       charge_controller_a: computed.chargeCtrlA,
-    });
+      share_token: token,
+    } as any).select("id").maybeSingle();
     setSaving(false);
     if (error) {
       toast.error("Could not save: " + error.message);
       return;
     }
+    setSavedId((inserted as any)?.id || null);
+    setShareToken(token);
     // Fire-and-forget admin notification
     try {
       await supabase.functions.invoke("notify-new-lead", {
@@ -125,17 +166,42 @@ const LumiVoltSizer = () => {
     toast.success("Your sizing was saved. Our team will reach out.");
   };
 
+
   if (showResults) {
     return (
       <div className="space-y-5">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <button onClick={() => setShowResults(false)} className="inline-flex items-center gap-1.5 text-sm text-primary font-semibold">
             <ArrowLeft size={16} /> Back
           </button>
-          <button onClick={() => window.print()} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
-            <Printer size={16} /> Print
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button onClick={downloadPdf} className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors">
+              <Download size={14} /> Download PDF
+            </button>
+            <button onClick={shareWhatsApp} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:border-primary/40 transition-colors">
+              <Share2 size={14} /> Share
+            </button>
+            <button onClick={() => window.print()} className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
+              <Printer size={14} /> Print
+            </button>
+          </div>
         </div>
+
+        {shareToken && (
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-3 text-xs">
+            <p className="font-semibold text-foreground mb-1">Your saved report link</p>
+            <div className="flex items-center gap-2">
+              <code className="flex-1 truncate text-muted-foreground">{`${window.location.origin}/sizing/${shareToken}`}</code>
+              <button
+                onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/sizing/${shareToken}`); toast.success("Link copied"); }}
+                className="rounded-full border border-border bg-background px-2.5 py-1 font-semibold"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        )}
+
 
         <div>
           <h3 className="text-2xl font-display font-bold text-foreground no-clip">Your Solar System Summary</h3>

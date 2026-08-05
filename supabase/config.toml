@@ -38,3 +38,7 @@ verify_jwt = false
 
 [functions.affiliate-redirect]
 verify_jwt = false
+
+[functions.sizing-report]
+verify_jwt = false
+

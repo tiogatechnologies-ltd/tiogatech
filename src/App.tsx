@@ -38,6 +38,8 @@ const ProductDetail = lazy(() => import("./pages/ProductDetail.tsx"));
 const TrackOrder = lazy(() => import("./pages/TrackOrder.tsx"));
 const ShortLink = lazy(() => import("./pages/ShortLink.tsx"));
 const LumiVolt = lazy(() => import("./pages/LumiVolt.tsx"));
+const SizingReport = lazy(() => import("./pages/SizingReport.tsx"));
+
 const VoltAi = lazy(() => import("./pages/VoltAi.tsx"));
 const Finance = lazy(() => import("./pages/Finance.tsx"));
 const Contact = lazy(() => import("./pages/Contact.tsx"));
@@ -191,6 +193,8 @@ const AnimatedRoutes = () => {
           <Route path="/unsubscribe" element={<RouteFade><Unsubscribe /></RouteFade>} />
           <Route path="/solar-assessment" element={<RouteFade><SolarAssessment /></RouteFade>} />
           <Route path="/solar-assessment/:id/full" element={<RouteFade><SolarAssessmentReport /></RouteFade>} />
+          <Route path="/sizing/:token" element={<RouteFade><SizingReport /></RouteFade>} />
+
           <Route path="/ai-pricing" element={<RouteFade><Pricing /></RouteFade>} />
           <Route path="/pricing" element={<Navigate to="/ai-pricing" replace />} />
           <Route path="/subscription" element={<Navigate to="/account/subscription" replace />} />
