@@ -97,13 +97,20 @@ const AdminAssessments = () => {
       {selected && (
         <div className="fixed inset-0 z-50 flex justify-end bg-foreground/30" onClick={() => setSelected(null)}>
           <div className="w-full max-w-xl bg-background h-full overflow-y-auto p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start gap-3">
               <div>
                 <h2 className="font-display font-bold text-xl">{selected.full_name}</h2>
                 <p className="text-sm text-muted-foreground">{selected.email} • {selected.phone}</p>
+                <p className="text-xs text-muted-foreground">Ref AS-{String(selected.id).slice(0, 8).toUpperCase()}</p>
               </div>
               <button onClick={() => setSelected(null)}><X size={18} /></button>
             </div>
+
+            <div className="flex flex-wrap gap-2">
+              <button onClick={() => downloadReportPdf(assessmentToReport(selected), `tioga-assessment-${String(selected.id).slice(0, 8).toUpperCase()}.pdf`)} className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold"><Download size={14} /> Customer PDF</button>
+              <button onClick={() => downloadReportPdf(assessmentToReport(selected, { internal: true }), `tioga-brief-${String(selected.id).slice(0, 8).toUpperCase()}.pdf`)} className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground"><Wrench size={14} /> Engineering PDF</button>
+            </div>
+
 
             <div className="grid grid-cols-2 gap-2 text-xs">
               <Info label="Location" value={selected.location} />
