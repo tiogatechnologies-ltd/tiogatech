@@ -247,6 +247,12 @@ const AdminOrders = () => {
                           </ol>
                         </>
                       )}
+                      <OrderSerials
+                        orderId={o.id}
+                        orderEmail={o.email}
+                        items={(itemsById[o.id] || []).map((i) => ({ id: i.id, product_name: i.product_name, quantity: i.quantity }))}
+                      />
+
                     </div>
                   )}
                 </div>
