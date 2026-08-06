@@ -305,7 +305,7 @@ export function buildReportPdf(data: ReportData): jsPDF {
     table(body, head, {
       align: ["left", "center", "right", "right"],
       boldLast: s.total !== undefined,
-      widths: [92, 16, 34, 34],
+      widths: [84, 16, 36, 36],
     });
   }
 
