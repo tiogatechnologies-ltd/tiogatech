@@ -143,7 +143,17 @@ export function assessmentToReport(row: any, opts: { internal?: boolean } = {}):
 
   return {
     reference: `AS-${String(row.id).slice(0, 8).toUpperCase()}`,
+    documentLabel: opts.internal ? "Internal Engineering Brief" : "Solar Assessment Report",
+    title: opts.internal ? "Engineering brief — solar assessment" : "Your solar assessment report",
+    subtitle: `${inv.size_kva ?? rec.inverter_kva ?? "—"} kVA inverter · ${bat.capacity_kwh ?? rec.battery_kwh ?? "—"} kWh storage · ${sizing.panel_count ?? rec.panel_count ?? "—"} × ${sizing.panel_wattage ?? rec.panel_w ?? "—"} W panels`,
+    meta: [
+      { label: "Date", value: new Date(row.created_at || Date.now()).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" }) },
+      { label: "Client", value: row.full_name || "—" },
+      { label: "Scope", value: `${row.building_type || "Property"} assessment — ${row.location || "Nigeria"}` },
+    ],
+    callout: `This assessment covers a daily demand of ${row.daily_kwh ? Number(row.daily_kwh).toFixed(2) : "—"} kWh with a peak load of ${fmt(row.peak_load_w, "W")}. The recommended system is sized to carry the listed appliances with an estimated ${bat.backup_hours_estimate ?? rec.backup_hours ?? "—"} hours of backup. Quantities and cable runs are confirmed on site.`,
     customer: { full_name: row.full_name, email: row.email, phone: row.phone, location: row.location },
+
     createdAt: row.created_at,
     appliances: Array.isArray(row.appliances) ? row.appliances : [],
     summary,
