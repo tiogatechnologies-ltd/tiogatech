@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle, History, Send } from "lucide-react";
 import { format } from "date-fns";
+import OrderSerials from "@/components/admin/OrderSerials";
+
 
 interface Order {
   id: string;
