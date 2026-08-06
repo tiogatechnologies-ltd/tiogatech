@@ -524,6 +524,72 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_runs: {
+        Row: {
+          created_at: string
+          detail: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          idempotency_key: string | null
+          recipient: string | null
+          rule_key: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          idempotency_key?: string | null
+          recipient?: string | null
+          rule_key: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          detail?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          idempotency_key?: string | null
+          recipient?: string | null
+          rule_key?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      automation_settings: {
+        Row: {
+          category: string
+          config: Json
+          description: string | null
+          enabled: boolean
+          key: string
+          label: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          config?: Json
+          description?: string | null
+          enabled?: boolean
+          key: string
+          label: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          config?: Json
+          description?: string | null
+          enabled?: boolean
+          key?: string
+          label?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       backups_log: {
         Row: {
           created_at: string
@@ -957,6 +1023,82 @@ export type Database = {
             columns: ["schedule_id"]
             isOneToOne: false
             referencedRelation: "finance_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      device_serials: {
+        Row: {
+          created_at: string
+          customer_email: string | null
+          dispatched_at: string
+          id: string
+          notes: string | null
+          order_id: string | null
+          order_item_id: string | null
+          product_id: string | null
+          product_name: string
+          recorded_by: string | null
+          serial: string
+          status: string
+          updated_at: string
+          user_id: string | null
+          warranty_until: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_email?: string | null
+          dispatched_at?: string
+          id?: string
+          notes?: string | null
+          order_id?: string | null
+          order_item_id?: string | null
+          product_id?: string | null
+          product_name: string
+          recorded_by?: string | null
+          serial: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          warranty_until?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string | null
+          dispatched_at?: string
+          id?: string
+          notes?: string | null
+          order_id?: string | null
+          order_item_id?: string | null
+          product_id?: string | null
+          product_name?: string
+          recorded_by?: string | null
+          serial?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          warranty_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_serials_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "device_serials_order_item_id_fkey"
+            columns: ["order_item_id"]
+            isOneToOne: false
+            referencedRelation: "order_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "device_serials_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
@@ -2384,6 +2526,7 @@ export type Database = {
           tags: string[] | null
           tier: string
           updated_at: string
+          warranty_months: number
         }
         Insert: {
           best_for?: string
@@ -2404,6 +2547,7 @@ export type Database = {
           tags?: string[] | null
           tier?: string
           updated_at?: string
+          warranty_months?: number
         }
         Update: {
           best_for?: string
@@ -2424,6 +2568,7 @@ export type Database = {
           tags?: string[] | null
           tier?: string
           updated_at?: string
+          warranty_months?: number
         }
         Relationships: []
       }
@@ -2462,6 +2607,140 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      quotes: {
+        Row: {
+          accepted_at: string | null
+          assessment_id: string | null
+          created_at: string
+          created_by: string | null
+          customer_email: string | null
+          customer_location: string | null
+          customer_name: string
+          customer_phone: string | null
+          deposit_pct: number
+          discount: number
+          exclusions: string | null
+          id: string
+          intro: string | null
+          lead_id: string | null
+          notes: string[]
+          options_table: Json | null
+          parent_quote_id: string | null
+          quote_number: string
+          scope: string | null
+          sections: Json
+          sent_at: string | null
+          share_token: string
+          sizing_id: string | null
+          status: string
+          subtitle: string | null
+          subtotal: number
+          title: string
+          total: number
+          updated_at: string
+          user_id: string | null
+          valid_until: string | null
+          version: number
+        }
+        Insert: {
+          accepted_at?: string | null
+          assessment_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          customer_location?: string | null
+          customer_name: string
+          customer_phone?: string | null
+          deposit_pct?: number
+          discount?: number
+          exclusions?: string | null
+          id?: string
+          intro?: string | null
+          lead_id?: string | null
+          notes?: string[]
+          options_table?: Json | null
+          parent_quote_id?: string | null
+          quote_number: string
+          scope?: string | null
+          sections?: Json
+          sent_at?: string | null
+          share_token?: string
+          sizing_id?: string | null
+          status?: string
+          subtitle?: string | null
+          subtotal?: number
+          title?: string
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+          valid_until?: string | null
+          version?: number
+        }
+        Update: {
+          accepted_at?: string | null
+          assessment_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          customer_location?: string | null
+          customer_name?: string
+          customer_phone?: string | null
+          deposit_pct?: number
+          discount?: number
+          exclusions?: string | null
+          id?: string
+          intro?: string | null
+          lead_id?: string | null
+          notes?: string[]
+          options_table?: Json | null
+          parent_quote_id?: string | null
+          quote_number?: string
+          scope?: string | null
+          sections?: Json
+          sent_at?: string | null
+          share_token?: string
+          sizing_id?: string | null
+          status?: string
+          subtitle?: string | null
+          subtotal?: number
+          title?: string
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+          valid_until?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "solar_assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_parent_quote_id_fkey"
+            columns: ["parent_quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_sizing_id_fkey"
+            columns: ["sizing_id"]
+            isOneToOne: false
+            referencedRelation: "lumivolt_sizings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       role_page_permissions: {
         Row: {
@@ -2859,6 +3138,137 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      warranty_claim_events: {
+        Row: {
+          actor_email: string | null
+          actor_id: string | null
+          claim_id: string
+          created_at: string
+          event_type: string
+          from_value: string | null
+          id: string
+          note: string | null
+          to_value: string | null
+        }
+        Insert: {
+          actor_email?: string | null
+          actor_id?: string | null
+          claim_id: string
+          created_at?: string
+          event_type: string
+          from_value?: string | null
+          id?: string
+          note?: string | null
+          to_value?: string | null
+        }
+        Update: {
+          actor_email?: string | null
+          actor_id?: string | null
+          claim_id?: string
+          created_at?: string
+          event_type?: string
+          from_value?: string | null
+          id?: string
+          note?: string | null
+          to_value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranty_claim_events_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "warranty_claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      warranty_claims: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string | null
+          description: string
+          id: string
+          in_warranty: boolean
+          internal_notes: string | null
+          order_id: string | null
+          photo_urls: string[]
+          product_name: string | null
+          reason: string
+          resolution: string | null
+          resolved_at: string | null
+          rma_number: string
+          serial: string | null
+          serial_id: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_phone?: string | null
+          description: string
+          id?: string
+          in_warranty?: boolean
+          internal_notes?: string | null
+          order_id?: string | null
+          photo_urls?: string[]
+          product_name?: string | null
+          reason: string
+          resolution?: string | null
+          resolved_at?: string | null
+          rma_number?: string
+          serial?: string | null
+          serial_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string | null
+          description?: string
+          id?: string
+          in_warranty?: boolean
+          internal_notes?: string | null
+          order_id?: string | null
+          photo_urls?: string[]
+          product_name?: string | null
+          reason?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          rma_number?: string
+          serial?: string | null
+          serial_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranty_claims_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "warranty_claims_serial_id_fkey"
+            columns: ["serial_id"]
+            isOneToOne: false
+            referencedRelation: "device_serials"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

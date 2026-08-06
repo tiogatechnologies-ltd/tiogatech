@@ -66,11 +66,21 @@ export function sizingToReport(row: any, opts: { internal?: boolean } = {}): Rep
 
   return {
     reference: `SZ-${String(row.id).slice(0, 8).toUpperCase()}`,
+    documentLabel: opts.internal ? "Internal Engineering Brief" : "Solar Sizing Report",
+    title: opts.internal ? "Engineering brief — solar sizing" : "Your recommended solar system",
+    subtitle: `${fmt(effective(row, "inverter_w"), "W")} inverter · ${n(effective(row, "battery_kwh")) === null ? "—" : Number(effective(row, "battery_kwh")).toFixed(2) + " kWh"} storage · ${fmt(effective(row, "recommended_panel_w"), "W")} solar`,
+    meta: [
+      { label: "Date", value: new Date(row.created_at || Date.now()).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" }) },
+      { label: "Client", value: row.full_name || "—" },
+      { label: "Scope", value: "Self-service system sizing — indicative pending site survey" },
+    ],
+    callout: `Based on a total connected load of ${fmt(row.total_load_w, "W")} and a daily demand of ${(dailyWh / 1000).toFixed(2)} kWh, this design provides ${row.days_autonomy ?? 1} day(s) of autonomy using ${String(row.battery_type || "lithium")} storage at ${row.sunlight_hours ?? 5} peak sun hours per day. Final component selection and cable sizing are confirmed after a site survey.`,
     customer: { full_name: row.full_name, email: row.email, phone: row.phone, location: row.location },
     createdAt: row.created_at,
     appliances: Array.isArray(row.appliances) ? row.appliances : [],
     summary,
     system,
+
     sections: opts.internal
       ? [{
           title: "Workflow",
@@ -133,7 +143,17 @@ export function assessmentToReport(row: any, opts: { internal?: boolean } = {}):
 
   return {
     reference: `AS-${String(row.id).slice(0, 8).toUpperCase()}`,
+    documentLabel: opts.internal ? "Internal Engineering Brief" : "Solar Assessment Report",
+    title: opts.internal ? "Engineering brief — solar assessment" : "Your solar assessment report",
+    subtitle: `${inv.size_kva ?? rec.inverter_kva ?? "—"} kVA inverter · ${bat.capacity_kwh ?? rec.battery_kwh ?? "—"} kWh storage · ${sizing.panel_count ?? rec.panel_count ?? "—"} × ${sizing.panel_wattage ?? rec.panel_w ?? "—"} W panels`,
+    meta: [
+      { label: "Date", value: new Date(row.created_at || Date.now()).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" }) },
+      { label: "Client", value: row.full_name || "—" },
+      { label: "Scope", value: `${row.building_type || "Property"} assessment — ${row.location || "Nigeria"}` },
+    ],
+    callout: `This assessment covers a daily demand of ${row.daily_kwh ? Number(row.daily_kwh).toFixed(2) : "—"} kWh with a peak load of ${fmt(row.peak_load_w, "W")}. The recommended system is sized to carry the listed appliances with an estimated ${bat.backup_hours_estimate ?? rec.backup_hours ?? "—"} hours of backup. Quantities and cable runs are confirmed on site.`,
     customer: { full_name: row.full_name, email: row.email, phone: row.phone, location: row.location },
+
     createdAt: row.created_at,
     appliances: Array.isArray(row.appliances) ? row.appliances : [],
     summary,
