@@ -65,6 +65,9 @@ export const ADMIN_PAGES: AdminPage[] = [
   { key: "careers", label: "Job Listings", group: "Careers", path: "/admin/careers", defaultRoles: [] },
   { key: "career_applications", label: "Career Applications", group: "Careers", path: "/admin/career-applications", defaultRoles: ["staff"] },
 
+  { key: "quotes", label: "Quotations", group: "Sales", path: "/admin/quotes", defaultRoles: ["staff"] },
+  { key: "warranty", label: "Warranty & Returns", group: "Sales", path: "/admin/warranty", defaultRoles: ["staff"] },
+
   // Tools
   { key: "reports", label: "Reports", group: "Tools", path: "/admin/reports", defaultRoles: ["staff"] },
   { key: "storage", label: "Media Library", group: "Tools", path: "/admin/storage", defaultRoles: ["staff", "engineer"] },
@@ -73,6 +76,7 @@ export const ADMIN_PAGES: AdminPage[] = [
   { key: "users", label: "Users & Roles", group: "System", path: "/admin/users", defaultRoles: [] },
   { key: "roles", label: "Role Permissions", group: "System", path: "/admin/roles", defaultRoles: [] },
   { key: "audit_log", label: "Audit Log", group: "System", path: "/admin/audit-log", defaultRoles: [] },
+  { key: "automations", label: "Automations", group: "System", path: "/admin/automations", defaultRoles: [] },
   { key: "settings", label: "Settings", group: "System", path: "/admin/settings", defaultRoles: [] },
 ];
 

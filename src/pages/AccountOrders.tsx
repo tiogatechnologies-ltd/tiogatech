@@ -7,8 +7,10 @@ import SEO from "@/components/SEO";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { toast } from "sonner";
+import WarrantyClaimDialog from "@/components/WarrantyClaimDialog";
 import {
   Package,
+  ShieldCheck,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -52,6 +54,8 @@ const AccountOrders = () => {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [details, setDetails] = useState<Record<string, { items: any[]; history: any[] }>>({});
   const [detailLoading, setDetailLoading] = useState(false);
+  const [serials, setSerials] = useState<Record<string, any[]>>({});
+  const [claimSerial, setClaimSerial] = useState<any | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -85,11 +89,13 @@ const AccountOrders = () => {
     setExpanded(orderId);
     if (details[orderId]) return;
     setDetailLoading(true);
-    const [{ data: items }, { data: history }] = await Promise.all([
+    const [{ data: items }, { data: history }, { data: serialRows }] = await Promise.all([
       supabase.from("order_items").select("*").eq("order_id", orderId),
       supabase.from("order_status_history").select("*").eq("order_id", orderId).order("created_at"),
+      supabase.from("device_serials" as any).select("*").eq("order_id", orderId).order("created_at"),
     ]);
     setDetails((d) => ({ ...d, [orderId]: { items: items || [], history: history || [] } }));
+    setSerials((s) => ({ ...s, [orderId]: ((serialRows as any) || []) as any[] }));
     setDetailLoading(false);
   };
 
@@ -273,6 +279,39 @@ const AccountOrders = () => {
                           </div>
                         </div>
 
+                        {/* Serial numbers & warranty */}
+                        {!!(serials[o.id] || []).length && (
+                          <div>
+                            <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                              Serial numbers & warranty
+                            </p>
+                            <ul className="divide-y divide-border rounded-xl border border-border bg-card">
+                              {(serials[o.id] || []).map((sn: any) => {
+                                const inW = !sn.warranty_until || new Date(sn.warranty_until) >= new Date();
+                                return (
+                                  <li key={sn.id} className="flex flex-wrap items-center gap-3 px-3 py-2.5">
+                                    <div className="min-w-0 flex-1">
+                                      <p className="truncate text-sm font-semibold text-foreground">{sn.product_name}</p>
+                                      <p className="text-xs text-muted-foreground">
+                                        Serial {sn.serial}
+                                        {sn.warranty_until
+                                          ? ` · warranty ${inW ? "until" : "expired"} ${new Date(sn.warranty_until).toLocaleDateString("en-NG")}`
+                                          : ""}
+                                      </p>
+                                    </div>
+                                    <button
+                                      onClick={() => setClaimSerial(sn)}
+                                      className="inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-1.5 text-xs font-semibold hover:bg-muted"
+                                    >
+                                      <ShieldCheck size={13} /> Raise warranty claim
+                                    </button>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        )}
+
                         {/* Timeline */}
                         {!!d?.history?.length && (
                           <div>
@@ -343,6 +382,15 @@ const AccountOrders = () => {
           </div>
         )}
       </main>
+
+      {user && (
+        <WarrantyClaimDialog
+          serial={claimSerial}
+          open={!!claimSerial}
+          onOpenChange={(v) => !v && setClaimSerial(null)}
+          customer={{ id: user.id, email: user.email || "", name: (user.user_metadata as any)?.full_name, phone: null }}
+        />
+      )}
 
       <SiteFooter />
     </div>
