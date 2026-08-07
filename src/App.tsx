@@ -118,6 +118,9 @@ const AdminAiCreditUsage = lazy(() => import("./pages/AdminAiCreditUsage.tsx"));
 const AdminSupportTickets = lazy(() => import("./pages/AdminSupportTickets.tsx"));
 const AdminReviews = lazy(() => import("./pages/AdminReviews.tsx"));
 const AdminRoles = lazy(() => import("./pages/AdminRoles.tsx"));
+const AdminQuotes = lazy(() => import("./pages/AdminQuotes.tsx"));
+const AdminWarranty = lazy(() => import("./pages/AdminWarranty.tsx"));
+const AdminAutomations = lazy(() => import("./pages/AdminAutomations.tsx"));
 const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
 const queryClient = new QueryClient({
@@ -259,6 +262,9 @@ const AnimatedRoutes = () => {
           <Route path="/admin/ai-usage" element={<Admin><AdminAiCreditUsage /></Admin>} />
           <Route path="/admin/tickets" element={<Admin><AdminSupportTickets /></Admin>} />
           <Route path="/admin/reviews" element={<Admin><AdminReviews /></Admin>} />
+          <Route path="/admin/quotes" element={<Admin><AdminQuotes /></Admin>} />
+          <Route path="/admin/warranty" element={<Admin><AdminWarranty /></Admin>} />
+          <Route path="/admin/automations" element={<Admin><AdminAutomations /></Admin>} />
 
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>

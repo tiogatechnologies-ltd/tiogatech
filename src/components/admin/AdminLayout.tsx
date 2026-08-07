@@ -52,7 +52,9 @@ const navGroups: NavGroup[] = [
       ] },
       { label: "Customers", icon: Users, path: "/admin/customers" },
       { label: "Leads", icon: Users, path: "/admin/leads" },
+      { label: "Quotations", icon: FileText, path: "/admin/quotes" },
       { label: "Support Tickets", icon: FileText, path: "/admin/tickets" },
+      { label: "Warranty & Returns", icon: ShieldCheck, path: "/admin/warranty" },
       { label: "Discounts", icon: Tag, path: "/admin/discounts" },
       { label: "App Waitlist", icon: Smartphone, path: "/admin/waitlist" },
     ],
@@ -145,6 +147,7 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Users & Roles", icon: UserRoundCheck, path: "/admin/users" },
       { label: "Role Permissions", icon: ShieldCheck, path: "/admin/roles" },
+      { label: "Automations", icon: Zap, path: "/admin/automations" },
       { label: "Audit Log", icon: ScrollText, path: "/admin/audit-log" },
       { label: "Settings", icon: Settings, path: "/admin/settings" },
     ],
