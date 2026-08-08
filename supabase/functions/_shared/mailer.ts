@@ -44,22 +44,7 @@ export async function sendMail(opts: {
 
   if (!to || !to.includes("@")) return { ok: false, error: "invalid recipient" };
 
-  // 1) Managed email API
-  if (LOVABLE_API_KEY) {
-    try {
-      const res = await fetch("https://api.lovable.dev/v1/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
-        body: JSON.stringify({ to, subject, html, text, from: `${fromName} <${fromEmail}>` }),
-      });
-      if (res.ok) return { ok: true, via: "lovable" };
-      console.error("lovable email send failed", res.status, (await res.text()).slice(0, 300));
-    } catch (e) {
-      console.error("lovable email error", e);
-    }
-  }
-
-  // 2) Gmail connector fallback
+  // 1) Gmail connector (primary working transport)
   if (LOVABLE_API_KEY && GMAIL_KEY) {
     try {
       const res = await fetch(`${GMAIL_GATEWAY}/users/me/messages/send`, {
@@ -72,11 +57,26 @@ export async function sendMail(opts: {
         body: JSON.stringify({ raw: buildRaw(to, subject, html, fromName) }),
       });
       if (res.ok) return { ok: true, via: "gmail" };
-      const t = (await res.text()).slice(0, 300);
-      console.error("gmail send failed", res.status, t);
-      return { ok: false, error: `gmail ${res.status}: ${t}` };
+      console.error("gmail send failed", res.status, (await res.text()).slice(0, 300));
     } catch (e) {
       console.error("gmail error", e);
+    }
+  }
+
+  // 2) Managed email API fallback
+  if (LOVABLE_API_KEY) {
+    try {
+      const res = await fetch("https://api.lovable.dev/v1/email/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
+        body: JSON.stringify({ to, subject, html, text, from: `${fromName} <${fromEmail}>` }),
+      });
+      if (res.ok) return { ok: true, via: "lovable" };
+      const t = (await res.text()).slice(0, 300);
+      console.error("lovable email send failed", res.status, t);
+      return { ok: false, error: `lovable ${res.status}: ${t}` };
+    } catch (e) {
+      console.error("lovable email error", e);
       return { ok: false, error: String(e) };
     }
   }

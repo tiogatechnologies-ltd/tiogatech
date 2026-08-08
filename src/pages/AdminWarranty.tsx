@@ -49,13 +49,19 @@ const AdminWarranty = () => {
 
   const load = async () => {
     setLoading(true);
-    const [{ data, error }, { data: profiles }] = await Promise.all([
+    const [{ data, error }, { data: roleRows }] = await Promise.all([
       supabase.from("warranty_claims" as any).select("*").order("created_at", { ascending: false }).limit(500),
-      supabase.from("profiles").select("id,email").limit(500),
+      supabase.from("user_roles").select("user_id").in("role", ["admin", "staff", "engineer"]),
     ]);
     if (error) toast.error(error.message);
     setRows(((data as any) || []) as any[]);
-    setStaff((((profiles as any) || []) as any[]).map((p) => ({ id: p.id, email: p.email })));
+    const ids = Array.from(new Set(((roleRows as any[]) || []).map((r) => r.user_id)));
+    if (ids.length) {
+      const { data: profiles } = await supabase.from("profiles").select("id,email").in("id", ids);
+      setStaff((((profiles as any) || []) as any[]).map((p) => ({ id: p.id, email: p.email })));
+    } else {
+      setStaff([]);
+    }
     setLoading(false);
   };
 

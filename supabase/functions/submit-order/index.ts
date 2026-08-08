@@ -157,7 +157,7 @@ serve(async (req) => {
       // Preferred: branded order-confirmation template via the verified sender domain.
       let confirmed = false;
       try {
-        const { error: txErr } = await supabase.functions.invoke("send-transactional-email", {
+        const { data: txData, error: txErr } = await supabase.functions.invoke("send-transactional-email", {
           body: {
             templateName: "order-confirmation",
             recipientEmail: body.email,
@@ -178,8 +178,11 @@ serve(async (req) => {
             },
           },
         });
-        confirmed = !txErr;
+        // A 200 response can still mean "not sent" (e.g. suppressed recipient),
+        // so only treat an explicit success as delivered — otherwise fall back.
+        confirmed = !txErr && (txData as any)?.success !== false;
         if (txErr) console.error("transactional order email failed", txErr);
+        else if (!confirmed) console.warn("transactional order email not sent", (txData as any)?.reason);
       } catch (e) {
         console.error("transactional order email error", e);
       }
