@@ -157,7 +157,7 @@ serve(async (req) => {
       // Preferred: branded order-confirmation template via the verified sender domain.
       let confirmed = false;
       try {
-        const { error: txErr } = await supabase.functions.invoke("send-transactional-email", {
+        const { data: txData, error: txErr } = await supabase.functions.invoke("send-transactional-email", {
           body: {
             templateName: "order-confirmation",
             recipientEmail: body.email,
