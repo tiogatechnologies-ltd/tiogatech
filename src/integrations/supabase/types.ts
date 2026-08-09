@@ -3330,6 +3330,7 @@ export type Database = {
         }[]
       }
       reset_monthly_free_credits: { Args: never; Returns: number }
+      verified_email: { Args: never; Returns: string }
     }
     Enums: {
       ai_plan: "free" | "starter" | "business"
