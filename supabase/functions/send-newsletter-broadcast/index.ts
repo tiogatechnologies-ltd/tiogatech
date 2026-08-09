@@ -86,7 +86,7 @@ serve(async (req) => {
 </div>`.trim();
 
       try {
-        const r = await sendMail({ to: s.email, subject, html: wrapped, text: subject });
+        const r = await sendMail({ to: s.email, subject, html: wrapped, text: subject, sender: "noreply", label: "newsletter" });
         if (r.ok) sent++;
       } catch (e) {
         console.log("Send failed for", s.email, e);

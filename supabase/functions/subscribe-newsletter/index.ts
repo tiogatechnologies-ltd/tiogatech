@@ -90,6 +90,8 @@ serve(async (req) => {
         subject,
         text: isConfirm ? `Confirm your subscription: ${confirmUrl}` : "You're already subscribed.",
         html,
+        sender: "noreply",
+        label: "newsletter-confirm",
       }).catch((e) => console.log("Confirm email failed:", e));
 
       if (isConfirm) {
@@ -98,6 +100,9 @@ serve(async (req) => {
           subject: `New newsletter signup (pending confirm): ${cleanEmail}`,
           text: `${cleanName ?? "(no name)"} <${cleanEmail}> from ${cleanSource}.`,
           html: `<p><strong>${cleanName ?? "(no name)"}</strong> &lt;${cleanEmail}&gt; signed up from <em>${cleanSource}</em>. Awaiting email confirmation.</p>`,
+          sender: "sales",
+          label: "newsletter-signup-internal",
+          critical: true,
         }).catch(() => {});
       }
     }
