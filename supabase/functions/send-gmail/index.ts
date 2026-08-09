@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { sendMail, type SenderKey } from "../_shared/mailer.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -61,26 +62,24 @@ serve(async (req) => {
       <div style="background:#fff;border:1px solid #e5e7eb;border-top:none;padding:22px;border-radius:0 0 12px 12px;font-size:14px;color:#222;line-height:1.6;white-space:pre-wrap;">${message.replace(/</g, "&lt;")}</div>
     </div>`;
 
+    const allowed: SenderKey[] = ["noreply", "sales", "orders", "support", "finance"];
+    const requested = String(body.sender ?? "support") as SenderKey;
+    const sender: SenderKey = allowed.includes(requested) ? requested : "support";
+
     const results: { to: string; ok: boolean; error?: string }[] = [];
     for (const to of recipients) {
       try {
-        const raw = buildRaw({ to, subject, html, fromName: `${fromName} <me@gmail>` });
-        const r = await fetch(`${GATEWAY_URL}/users/me/messages/send`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${LOVABLE_API_KEY}`,
-            "X-Connection-Api-Key": GMAIL_KEY,
-          },
-          body: JSON.stringify({ raw }),
+        const r = await sendMail({
+          to,
+          subject,
+          html,
+          text: message,
+          sender,
+          fromName,
+          label: String(body.label ?? "admin-message"),
+          critical: body.critical !== false,
         });
-        const text = await r.text();
-        if (!r.ok) {
-          console.error("Gmail send failed", r.status, text);
-          results.push({ to, ok: false, error: `HTTP ${r.status}: ${text.slice(0, 200)}` });
-        } else {
-          results.push({ to, ok: true });
-        }
+        results.push(r.ok ? { to, ok: true } : { to, ok: false, error: r.error || r.reason });
       } catch (e) {
         results.push({ to, ok: false, error: (e as Error).message });
       }
