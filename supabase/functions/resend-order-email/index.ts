@@ -81,6 +81,9 @@ serve(async (req) => {
       subject: `Your order ${order.order_number} — Tioga Technologies`,
       html,
       text: `Order ${order.order_number}\nStatus: ${order.status}\n\n${order.items_summary}\n\nTrack: ${trackUrl}`,
+      sender: "orders",
+      label: "order-resend",
+      critical: true,
     });
 
     if (!result.ok) return json({ error: result.error || "Email failed" }, 502);

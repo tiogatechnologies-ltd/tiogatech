@@ -76,7 +76,7 @@ serve(async (req) => {
 
     console.log("Sending email to:", to);
 
-    const result = await sendMail({ to, subject, html: htmlBody, text: textBody });
+    const result = await sendMail({ to, subject, html: htmlBody, text: textBody, sender: "sales", label: "new-lead", critical: true });
     if (!result.ok) console.log("Lead notification email failed:", result.error);
 
     return new Response(JSON.stringify({ success: true }), {

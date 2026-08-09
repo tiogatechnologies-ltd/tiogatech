@@ -1,5 +1,7 @@
 // Daily cron job: emails customers about upcoming and overdue finance installments.
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
+import { sendMail } from "../_shared/mailer.ts";
+import { brandedEmail } from "../_shared/email-layout.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -37,8 +39,33 @@ Deno.serve(async (req) => {
       : `Reminder: installment #${s.installment_no} due ${s.due_date}`;
     const body = `Hi ${app.full_name?.split(" ")[0] || "there"},\n\nYour finance installment #${s.installment_no} of ₦${Number(s.amount_ngn).toLocaleString()} is ${s.kind === "overdue" ? "overdue" : `due on ${s.due_date}`}.\n\nView and pay: https://tiogatechnologies.com/account/finance\n\nThe Tioga Team`;
 
+    const html = brandedEmail({
+      title: subject,
+      intro: `Hi ${app.full_name?.split(" ")[0] || "there"},`,
+      paragraphs: [
+        `Your Easy Flex installment #${s.installment_no} of NGN ${Number(s.amount_ngn).toLocaleString()} is ${s.kind === "overdue" ? "overdue" : `due on ${s.due_date}`}.`,
+      ],
+      rows: [
+        ["Installment", `#${s.installment_no}`],
+        ["Amount", `NGN ${Number(s.amount_ngn).toLocaleString()}`],
+        ["Due date", String(s.due_date)],
+      ],
+      ctaLabel: "View & pay",
+      ctaUrl: "https://tiogatechnologies.com/account/finance",
+    });
+
     try {
-      await supabase.functions.invoke("send-gmail", { body: { to: app.email, subject, text: body } });
+      const r = await sendMail({
+        to: app.email,
+        subject,
+        html,
+        text: body,
+        sender: "finance",
+        label: s.kind === "overdue" ? "finance-overdue" : "finance-reminder",
+        idempotencyKey: `fin-${s.kind}-${s.id}-${s.due_date}`,
+        critical: true,
+      });
+      if (!r.ok) console.error("reminder email failed", s.id, r.error);
       sent++;
       if (s.kind === "overdue" && s.status !== "overdue") {
         await supabase.from("finance_schedules").update({ status: "overdue" }).eq("id", s.id);

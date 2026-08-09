@@ -39,7 +39,7 @@ interface OrderPayload {
 const ADMIN_EMAIL = "sales@tiogatechnologies.com";
 
 async function sendEmail(to: string, subject: string, html: string, text: string) {
-  return await sendMail({ to, subject, html, text });
+  return await sendMail({ to, subject, html, text, sender: "orders", label: "order-email", critical: true });
 }
 
 function itemsHtml(items: OrderItem[]) {
