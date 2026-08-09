@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.verified_email() FROM PUBLIC, anon;
