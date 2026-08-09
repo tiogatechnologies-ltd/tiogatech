@@ -105,13 +105,31 @@ const AdminOrders = () => {
     const { error } = await supabase.from("orders").update({ status }).eq("id", id);
     if (error) { toast.error("Could not update status"); return; }
     toast.success("Status updated");
+    const order = orders.find((o) => o.id === id);
     setOrders((p) => p.map((o) => (o.id === id ? { ...o, status } : o)));
+
+    // Notify the customer about the new status (branded orders@ sender).
+    if (order?.email) {
+      const trackUrl = `https://tiogatechnologies.com/track?order=${encodeURIComponent(order.order_number || "")}`;
+      supabase.functions.invoke("send-gmail", {
+        body: {
+          recipients: [order.email],
+          subject: `Order ${order.order_number} update — ${status}`,
+          message: `Hi ${(order.full_name || "there").split(" ")[0]},\n\nYour order ${order.order_number} is now: ${status}.\n\nTrack your order: ${trackUrl}\n\nThe Tioga Team`,
+          sender: "orders",
+          label: "order-status-update",
+          from_name: "Tioga Orders",
+        },
+      }).catch(() => {});
+    }
+
     // refresh timeline if this order is expanded
     if (expanded === id) {
       const { data: hist } = await supabase.from("order_status_history").select("id, from_status, to_status, created_at").eq("order_id", id).order("created_at", { ascending: false });
       setHistoryById((p) => ({ ...p, [id]: (hist || []) as any }));
     }
   };
+
 
   const deleteOrder = async (id: string) => {
     if (!confirm("Delete this order? This cannot be undone.")) return;
