@@ -34,9 +34,9 @@ serve(async (req) => {
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const GMAIL_KEY = Deno.env.get("GOOGLE_MAIL_API_KEY");
-    if (!LOVABLE_API_KEY || !GMAIL_KEY) {
-      return new Response(JSON.stringify({ error: "Gmail connector is not configured. Connect Google Mail in Lovable settings." }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
+    // Sending goes through the branded queue first; the Gmail connector is only
+    // a fallback, so it is no longer a hard requirement.
+    void LOVABLE_API_KEY; void GMAIL_KEY;
 
     const authHeader = req.headers.get("Authorization") ?? "";
     if (!authHeader) return new Response(JSON.stringify({ error: "Missing auth" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
