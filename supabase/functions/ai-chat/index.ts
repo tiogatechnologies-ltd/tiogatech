@@ -255,7 +255,21 @@ Keep answers to 1-3 short paragraphs unless asked for more.`;
       openaiMessages.push(msg);
       const calls = msg.tool_calls || [];
       if (!calls.length) {
-        return new Response(JSON.stringify({ text: msg.content || "", tool_events: toolEvents }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        const answer = msg.content || "";
+        const events = [...toolEvents];
+        let text = answer;
+        if (looksUnanswered(answer) && latestUserText) {
+          try {
+            const { userId, userName, userContact } = await identifyRequester(user);
+            const context = messages.slice(-10).map((m: any) => `${m.role}: ${(m.parts || []).map((p: any) => p.type === "text" ? p.text : "").join("")}`).join("\n");
+            const ticket = await createTicketFromChat({ userId, userName, userContact, message: latestUserText, conversationContext: `${context}\n\nassistant (unresolved): ${answer}`, reason: "Volt could not answer a customer question" });
+            text = `${answer ? answer + "\n\n" : ""}I couldn't fully answer that, so I've opened support ticket **${ticket.ticket_number}** and notified our team. Someone will reach out to you shortly.`;
+            events.push({ name: "create_support_ticket", args: {}, result: { ticket_number: ticket.ticket_number, id: ticket.id } });
+          } catch (e) {
+            console.error("auto ticket failed", e);
+          }
+        }
+        return new Response(JSON.stringify({ text, tool_events: events }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
       for (const c of calls) {
         const args = JSON.parse(c.function.arguments || "{}");
@@ -265,6 +279,7 @@ Keep answers to 1-3 short paragraphs unless asked for more.`;
       }
     }
     return new Response(JSON.stringify({ text: "Sorry, I got stuck. Try rephrasing?", tool_events: toolEvents }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
   } catch (e) {
     console.error("ai-chat error", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
