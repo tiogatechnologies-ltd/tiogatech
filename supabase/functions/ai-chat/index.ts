@@ -1,6 +1,7 @@
 // Site-wide AI chat assistant — simple JSON request/response with tool calling. v2
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "../_shared/ai-gateway.ts";
+import { notifyAdminsOfTicket } from "../_shared/support-notify.ts";
 
 const WHATSAPP = "2348178000023";
 const KEY = Deno.env.get("LOVABLE_API_KEY")!;
@@ -72,16 +73,16 @@ async function runTool(name: string, args: any) {
   return { error: "Unknown tool" };
 }
 
-// Lightweight LLM-based escalation intent classifier.
-// Falls back to keyword match if the classifier call fails.
-// Only escalate on EXPLICIT requests for human/ticket. Product questions must NOT trigger.
+// Escalation: explicit human/ticket requests, or questions Volt cannot answer.
 const ESCALATION_KEYWORDS = [
   "speak to a human", "speak to human", "talk to a human", "talk to human",
   "speak to an agent", "talk to an agent", "live agent", "real person",
   "human support", "human agent", "need a human", "get me a human",
+  "customer service", "customer care", "contact support", "speak to someone",
+  "talk to someone", "speak with staff", "talk to staff", "speak to a person",
   "create a ticket", "create ticket", "open a ticket", "open ticket",
   "raise a ticket", "file a ticket", "log a ticket", "escalate this",
-  "escalate to", "file a complaint",
+  "escalate to", "file a complaint", "make a complaint", "report an issue",
 ];
 
 function keywordEscalation(text: string): boolean {
@@ -90,8 +91,7 @@ function keywordEscalation(text: string): boolean {
 }
 
 async function classifyEscalation(userText: string, priorText: string): Promise<boolean> {
-  // Fast path: only run classifier when explicit keywords are present.
-  if (!keywordEscalation(userText)) return false;
+  if (keywordEscalation(userText)) return true;
   try {
     const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -100,8 +100,8 @@ async function classifyEscalation(userText: string, priorText: string): Promise<
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: `Classify the user's latest message. Reply with exactly one word: "escalate" or "continue".
-Reply "escalate" ONLY when the user EXPLICITLY asks to be connected to a human/live agent, or explicitly asks to open/create/file a support ticket, or explicitly asks to escalate.
-Reply "continue" for ALL product questions, recommendations, pricing, financing, troubleshooting, "not working"/"doesn't work" descriptions, complaints about products, or any other normal help request — even if the user sounds frustrated. When in doubt, reply "continue".` },
+Reply "escalate" when the user asks to be connected to a human/live agent/staff, asks to open a support ticket, files a complaint, or is repeating an unresolved problem after the assistant already failed to help.
+Reply "continue" for normal product questions, recommendations, pricing, financing and first-time troubleshooting. When in doubt, reply "continue".` },
           { role: "user", content: `Prior context (may be empty):\n${priorText}\n\nLatest user message:\n${userText}` },
         ],
         temperature: 0,
@@ -117,7 +117,23 @@ Reply "continue" for ALL product questions, recommendations, pricing, financing,
   }
 }
 
-async function createTicketFromChat(params: { userId?: string | null; userName: string; userContact: string; message: string; conversationContext: string; }) {
+// Detects an assistant answer that failed to actually help the user.
+const UNANSWERED_MARKERS = [
+  "i don't know", "i do not know", "i'm not sure", "i am not sure",
+  "i can't help", "i cannot help", "i'm unable", "i am unable",
+  "i don't have that information", "i do not have that information",
+  "i don't have access", "outside my knowledge", "i can't assist",
+  "i cannot assist", "i'm not able to", "i am not able to",
+  "sorry, i got stuck",
+];
+
+function looksUnanswered(text: string): boolean {
+  const t = (text || "").toLowerCase();
+  if (!t.trim()) return true;
+  return UNANSWERED_MARKERS.some((m) => t.includes(m));
+}
+
+async function createTicketFromChat(params: { userId?: string | null; userName: string; userContact: string; message: string; conversationContext: string; reason: string; }) {
   const { data, error } = await admin.from("support_tickets").insert({
     user_id: params.userId || null,
     user_name: params.userName.slice(0, 200),
@@ -129,6 +145,7 @@ async function createTicketFromChat(params: { userId?: string | null; userName: 
     status: "open",
   }).select("*").single();
   if (error) throw error;
+  notifyAdminsOfTicket(admin, data, { reason: params.reason }).catch((e) => console.error("admin alert failed", e));
   const webhook = Deno.env.get("SUPPORT_NOTIFY_WEBHOOK");
   if (webhook) {
     fetch(webhook, {
@@ -139,6 +156,24 @@ async function createTicketFromChat(params: { userId?: string | null; userName: 
   }
   return data;
 }
+
+async function identifyRequester(user: any) {
+  let userName = "Website visitor";
+  let userContact = "not provided";
+  let userId: string | null = null;
+  if (user?.id) {
+    userId = user.id;
+    const { data: prof } = await admin.from("profiles").select("full_name, email, phone").eq("id", user.id).maybeSingle();
+    if (prof) {
+      userName = prof.full_name || user.email || userName;
+      userContact = prof.email || user.email || prof.phone || userContact;
+    } else if (user.email) {
+      userName = user.email; userContact = user.email;
+    }
+  }
+  return { userId, userName, userContact };
+}
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -156,24 +191,12 @@ Deno.serve(async (req) => {
       const shouldEscalate = await classifyEscalation(latestUserText, priorText);
       if (shouldEscalate) {
         try {
-          // Try to identify the requester
-          let userName = "Website visitor";
-          let userContact = "not provided";
-          let userId: string | null = null;
-          if (user?.id) {
-            userId = user.id;
-            const { data: prof } = await admin.from("profiles").select("full_name, email, phone").eq("id", user.id).maybeSingle();
-            if (prof) {
-              userName = prof.full_name || user.email || userName;
-              userContact = prof.email || user.email || prof.phone || userContact;
-            } else if (user.email) {
-              userName = user.email; userContact = user.email;
-            }
-          }
+          const { userId, userName, userContact } = await identifyRequester(user);
           const context = messages.slice(-10).map((m: any) => `${m.role}: ${(m.parts || []).map((p: any) => p.type === "text" ? p.text : "").join("")}`).join("\n");
-          const ticket = await createTicketFromChat({ userId, userName, userContact, message: latestUserText, conversationContext: context });
-          const reply = `I've created support ticket **${ticket.ticket_number}** for you. Our team will follow up shortly on this issue. You can reference **${ticket.ticket_number}** any time you contact us again.\n\nWhile you wait, you can also reach us directly on WhatsApp at ${(await admin.from("site_settings").select("value").eq("key", "general").maybeSingle()).data?.value?.whatsapp || "+234 817 800 0023"}.`;
+          const ticket = await createTicketFromChat({ userId, userName, userContact, message: latestUserText, conversationContext: context, reason: "A customer asked to speak with our team" });
+          const reply = `I've created support ticket **${ticket.ticket_number}** for you. Our team has been notified and will reach out shortly. You can reference **${ticket.ticket_number}** any time you contact us again.\n\nWhile you wait, you can also reach us directly on WhatsApp at ${(await admin.from("site_settings").select("value").eq("key", "general").maybeSingle()).data?.value?.whatsapp || "+234 817 800 0023"}.`;
           return new Response(JSON.stringify({ text: reply, tool_events: [{ name: "create_support_ticket", args: {}, result: { ticket_number: ticket.ticket_number, id: ticket.id } }] }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
         } catch (e) {
           console.error("escalation ticket failed", e);
           // fall through to normal reply on failure
@@ -197,6 +220,7 @@ Use tools when helpful:
 - handoff_to_whatsapp to connect to a human
 
 If a user EXPLICITLY asks for a live agent, human, or to open a support ticket, do NOT attempt to answer — a separate escalation handler already creates a support ticket. For all other questions (including product troubleshooting, "not working" issues, recommendations, pricing) answer helpfully.
+If you genuinely cannot answer a question with the information you have, say plainly "I don't know" or "I can't help with that" instead of guessing — a support ticket is opened automatically when you do.
 
 Contact: WhatsApp ${contact.whatsapp || "+234 817 800 0023"} · email ${contact.email || "sales@tiogatechnologies.com"}.
 
@@ -233,7 +257,21 @@ Keep answers to 1-3 short paragraphs unless asked for more.`;
       openaiMessages.push(msg);
       const calls = msg.tool_calls || [];
       if (!calls.length) {
-        return new Response(JSON.stringify({ text: msg.content || "", tool_events: toolEvents }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        const answer = msg.content || "";
+        const events = [...toolEvents];
+        let text = answer;
+        if (looksUnanswered(answer) && latestUserText) {
+          try {
+            const { userId, userName, userContact } = await identifyRequester(user);
+            const context = messages.slice(-10).map((m: any) => `${m.role}: ${(m.parts || []).map((p: any) => p.type === "text" ? p.text : "").join("")}`).join("\n");
+            const ticket = await createTicketFromChat({ userId, userName, userContact, message: latestUserText, conversationContext: `${context}\n\nassistant (unresolved): ${answer}`, reason: "Volt could not answer a customer question" });
+            text = `${answer ? answer + "\n\n" : ""}I couldn't fully answer that, so I've opened support ticket **${ticket.ticket_number}** and notified our team. Someone will reach out to you shortly.`;
+            events.push({ name: "create_support_ticket", args: {}, result: { ticket_number: ticket.ticket_number, id: ticket.id } });
+          } catch (e) {
+            console.error("auto ticket failed", e);
+          }
+        }
+        return new Response(JSON.stringify({ text, tool_events: events }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
       for (const c of calls) {
         const args = JSON.parse(c.function.arguments || "{}");
@@ -243,6 +281,7 @@ Keep answers to 1-3 short paragraphs unless asked for more.`;
       }
     }
     return new Response(JSON.stringify({ text: "Sorry, I got stuck. Try rephrasing?", tool_events: toolEvents }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
   } catch (e) {
     console.error("ai-chat error", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });

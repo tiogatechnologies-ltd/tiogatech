@@ -4,38 +4,18 @@ import { createClient } from "npm:@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "../_shared/ai-gateway.ts";
 import { sendMail } from "../_shared/mailer.ts";
 import { brandedEmail } from "../_shared/email-layout.ts";
+import { notifyAdminsOfTicket } from "../_shared/support-notify.ts";
 
 const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-const SUPPORT_INBOX = Deno.env.get("SUPPORT_INBOX") || "support@tiogatechnologies.com";
-
 async function notifyByEmail(ticket: any) {
-  // 1) Internal alert to the support inbox
+  // 1) Alert every admin account (plus the support inbox)
   try {
-    await sendMail({
-      to: SUPPORT_INBOX,
-      subject: `New support ticket ${ticket.ticket_number}`,
-      html: brandedEmail({
-        title: `New support ticket ${ticket.ticket_number}`,
-        rows: [
-          ["From", ticket.user_name],
-          ["Contact", ticket.user_contact],
-          ["Channel", ticket.channel],
-          ["Subject", ticket.subject],
-        ],
-        paragraphs: [ticket.message],
-        ctaLabel: "Open in admin",
-        ctaUrl: "https://tiogatechnologies.com/admin/tickets",
-      }),
-      text: `New ticket ${ticket.ticket_number} from ${ticket.user_name} (${ticket.user_contact}): ${ticket.message}`,
-      sender: "support",
-      label: "ticket-created-internal",
-      idempotencyKey: `ticket-internal-${ticket.id}`,
-      critical: true,
-    });
+    await notifyAdminsOfTicket(admin, ticket);
   } catch (e) {
-    console.error("support inbox notify failed", e);
+    console.error("admin notify failed", e);
   }
+
 
   // 2) Acknowledgement to the customer when we have an email address
   const contact = String(ticket.user_contact || "");
