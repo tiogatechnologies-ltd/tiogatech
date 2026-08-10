@@ -5,7 +5,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 
-const FN_URL = "https://yqeayhukgjtbptblvmhd.supabase.co/functions/v1/unsubscribe-newsletter";
+const FN_URL = "https://xwxskzwceghftlcsbyyh.supabase.co/functions/v1/unsubscribe-newsletter";
 
 const NewsletterUnsubscribe = () => {
   const [params] = useSearchParams();
