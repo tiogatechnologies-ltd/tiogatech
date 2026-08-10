@@ -220,6 +220,7 @@ Use tools when helpful:
 - handoff_to_whatsapp to connect to a human
 
 If a user EXPLICITLY asks for a live agent, human, or to open a support ticket, do NOT attempt to answer — a separate escalation handler already creates a support ticket. For all other questions (including product troubleshooting, "not working" issues, recommendations, pricing) answer helpfully.
+If you genuinely cannot answer a question with the information you have, say plainly "I don't know" or "I can't help with that" instead of guessing — a support ticket is opened automatically when you do.
 
 Contact: WhatsApp ${contact.whatsapp || "+234 817 800 0023"} · email ${contact.email || "sales@tiogatechnologies.com"}.
 
