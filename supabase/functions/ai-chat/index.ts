@@ -1,6 +1,7 @@
 // Site-wide AI chat assistant — simple JSON request/response with tool calling. v2
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "../_shared/ai-gateway.ts";
+import { notifyAdminsOfTicket } from "../_shared/support-notify.ts";
 
 const WHATSAPP = "2348178000023";
 const KEY = Deno.env.get("LOVABLE_API_KEY")!;
