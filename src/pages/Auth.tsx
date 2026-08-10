@@ -89,11 +89,15 @@ const Auth = () => {
   const handleOAuth = async (provider: "google" | "apple") => {
     setError(null);
     setSubmitting(true);
-    const result = await lovable.auth.signInWithOAuth(provider, {
-      redirect_uri: window.location.origin,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: provider,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
     });
-    if (result.error) {
-      setError(result.error instanceof Error ? result.error.message : String(result.error));
+
+    if (error) {
+      setError(error.message);
       setSubmitting(false);
     }
   };
