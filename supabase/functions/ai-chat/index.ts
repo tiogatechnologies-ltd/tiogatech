@@ -190,24 +190,12 @@ Deno.serve(async (req) => {
       const shouldEscalate = await classifyEscalation(latestUserText, priorText);
       if (shouldEscalate) {
         try {
-          // Try to identify the requester
-          let userName = "Website visitor";
-          let userContact = "not provided";
-          let userId: string | null = null;
-          if (user?.id) {
-            userId = user.id;
-            const { data: prof } = await admin.from("profiles").select("full_name, email, phone").eq("id", user.id).maybeSingle();
-            if (prof) {
-              userName = prof.full_name || user.email || userName;
-              userContact = prof.email || user.email || prof.phone || userContact;
-            } else if (user.email) {
-              userName = user.email; userContact = user.email;
-            }
-          }
+          const { userId, userName, userContact } = await identifyRequester(user);
           const context = messages.slice(-10).map((m: any) => `${m.role}: ${(m.parts || []).map((p: any) => p.type === "text" ? p.text : "").join("")}`).join("\n");
-          const ticket = await createTicketFromChat({ userId, userName, userContact, message: latestUserText, conversationContext: context });
-          const reply = `I've created support ticket **${ticket.ticket_number}** for you. Our team will follow up shortly on this issue. You can reference **${ticket.ticket_number}** any time you contact us again.\n\nWhile you wait, you can also reach us directly on WhatsApp at ${(await admin.from("site_settings").select("value").eq("key", "general").maybeSingle()).data?.value?.whatsapp || "+234 817 800 0023"}.`;
+          const ticket = await createTicketFromChat({ userId, userName, userContact, message: latestUserText, conversationContext: context, reason: "A customer asked to speak with our team" });
+          const reply = `I've created support ticket **${ticket.ticket_number}** for you. Our team has been notified and will reach out shortly. You can reference **${ticket.ticket_number}** any time you contact us again.\n\nWhile you wait, you can also reach us directly on WhatsApp at ${(await admin.from("site_settings").select("value").eq("key", "general").maybeSingle()).data?.value?.whatsapp || "+234 817 800 0023"}.`;
           return new Response(JSON.stringify({ text: reply, tool_events: [{ name: "create_support_ticket", args: {}, result: { ticket_number: ticket.ticket_number, id: ticket.id } }] }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
         } catch (e) {
           console.error("escalation ticket failed", e);
           // fall through to normal reply on failure
