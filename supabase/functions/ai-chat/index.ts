@@ -72,16 +72,16 @@ async function runTool(name: string, args: any) {
   return { error: "Unknown tool" };
 }
 
-// Lightweight LLM-based escalation intent classifier.
-// Falls back to keyword match if the classifier call fails.
-// Only escalate on EXPLICIT requests for human/ticket. Product questions must NOT trigger.
+// Escalation: explicit human/ticket requests, or questions Volt cannot answer.
 const ESCALATION_KEYWORDS = [
   "speak to a human", "speak to human", "talk to a human", "talk to human",
   "speak to an agent", "talk to an agent", "live agent", "real person",
   "human support", "human agent", "need a human", "get me a human",
+  "customer service", "customer care", "contact support", "speak to someone",
+  "talk to someone", "speak with staff", "talk to staff", "speak to a person",
   "create a ticket", "create ticket", "open a ticket", "open ticket",
   "raise a ticket", "file a ticket", "log a ticket", "escalate this",
-  "escalate to", "file a complaint",
+  "escalate to", "file a complaint", "make a complaint", "report an issue",
 ];
 
 function keywordEscalation(text: string): boolean {
@@ -90,8 +90,7 @@ function keywordEscalation(text: string): boolean {
 }
 
 async function classifyEscalation(userText: string, priorText: string): Promise<boolean> {
-  // Fast path: only run classifier when explicit keywords are present.
-  if (!keywordEscalation(userText)) return false;
+  if (keywordEscalation(userText)) return true;
   try {
     const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -100,8 +99,8 @@ async function classifyEscalation(userText: string, priorText: string): Promise<
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: `Classify the user's latest message. Reply with exactly one word: "escalate" or "continue".
-Reply "escalate" ONLY when the user EXPLICITLY asks to be connected to a human/live agent, or explicitly asks to open/create/file a support ticket, or explicitly asks to escalate.
-Reply "continue" for ALL product questions, recommendations, pricing, financing, troubleshooting, "not working"/"doesn't work" descriptions, complaints about products, or any other normal help request — even if the user sounds frustrated. When in doubt, reply "continue".` },
+Reply "escalate" when the user asks to be connected to a human/live agent/staff, asks to open a support ticket, files a complaint, or is repeating an unresolved problem after the assistant already failed to help.
+Reply "continue" for normal product questions, recommendations, pricing, financing and first-time troubleshooting. When in doubt, reply "continue".` },
           { role: "user", content: `Prior context (may be empty):\n${priorText}\n\nLatest user message:\n${userText}` },
         ],
         temperature: 0,
@@ -117,7 +116,23 @@ Reply "continue" for ALL product questions, recommendations, pricing, financing,
   }
 }
 
-async function createTicketFromChat(params: { userId?: string | null; userName: string; userContact: string; message: string; conversationContext: string; }) {
+// Detects an assistant answer that failed to actually help the user.
+const UNANSWERED_MARKERS = [
+  "i don't know", "i do not know", "i'm not sure", "i am not sure",
+  "i can't help", "i cannot help", "i'm unable", "i am unable",
+  "i don't have that information", "i do not have that information",
+  "i don't have access", "outside my knowledge", "i can't assist",
+  "i cannot assist", "i'm not able to", "i am not able to",
+  "sorry, i got stuck",
+];
+
+function looksUnanswered(text: string): boolean {
+  const t = (text || "").toLowerCase();
+  if (!t.trim()) return true;
+  return UNANSWERED_MARKERS.some((m) => t.includes(m));
+}
+
+async function createTicketFromChat(params: { userId?: string | null; userName: string; userContact: string; message: string; conversationContext: string; reason: string; }) {
   const { data, error } = await admin.from("support_tickets").insert({
     user_id: params.userId || null,
     user_name: params.userName.slice(0, 200),
@@ -129,6 +144,7 @@ async function createTicketFromChat(params: { userId?: string | null; userName: 
     status: "open",
   }).select("*").single();
   if (error) throw error;
+  notifyAdminsOfTicket(admin, data, { reason: params.reason }).catch((e) => console.error("admin alert failed", e));
   const webhook = Deno.env.get("SUPPORT_NOTIFY_WEBHOOK");
   if (webhook) {
     fetch(webhook, {
@@ -139,6 +155,24 @@ async function createTicketFromChat(params: { userId?: string | null; userName: 
   }
   return data;
 }
+
+async function identifyRequester(user: any) {
+  let userName = "Website visitor";
+  let userContact = "not provided";
+  let userId: string | null = null;
+  if (user?.id) {
+    userId = user.id;
+    const { data: prof } = await admin.from("profiles").select("full_name, email, phone").eq("id", user.id).maybeSingle();
+    if (prof) {
+      userName = prof.full_name || user.email || userName;
+      userContact = prof.email || user.email || prof.phone || userContact;
+    } else if (user.email) {
+      userName = user.email; userContact = user.email;
+    }
+  }
+  return { userId, userName, userContact };
+}
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
