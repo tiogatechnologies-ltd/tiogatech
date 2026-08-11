@@ -105,17 +105,18 @@ const Auth = () => {
   const handleOAuth = async (provider: "google" | "apple") => {
     setError(null);
     setSubmitting(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: provider,
-      options: {
-       redirectTo: `${window.location.origin}/auth`,
-      },
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: `${window.location.origin}/auth`,
     });
 
-    if (error) {
-      setError(error.message);
+    if (result.error) {
+      setError(result.error.message);
       setSubmitting(false);
+      return;
     }
+    if (result.redirected) return;
+    navigate(from || "/", { replace: true });
+
   };
 
 
