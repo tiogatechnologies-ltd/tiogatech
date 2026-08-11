@@ -35,6 +35,21 @@ const Auth = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Safety net: if a session exists (e.g. after an OAuth round-trip) but the
+    // role-based redirect below hasn't fired, leave /auth anyway.
+    let timer: ReturnType<typeof setTimeout>;
+    const bounce = (session: unknown) => {
+      if (!session) return;
+      clearTimeout(timer);
+      timer = setTimeout(() => navigate(from || "/", { replace: true }), 1200);
+    };
+    supabase.auth.getSession().then(({ data: { session } }) => bounce(session));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => bounce(session));
+    return () => { clearTimeout(timer); subscription.unsubscribe(); };
+  }, [navigate, from]);
+
+
+  useEffect(() => {
     if (!loading && user) {
       // Role-based redirect (single source of truth: user_roles table).
       if (from) navigate(from, { replace: true });
@@ -44,6 +59,7 @@ const Auth = () => {
       else navigate("/account", { replace: true });
     }
   }, [user, loading, isAdmin, isStaff, isAffiliate, hasRole, navigate, from]);
+
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,17 +105,18 @@ const Auth = () => {
   const handleOAuth = async (provider: "google" | "apple") => {
     setError(null);
     setSubmitting(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: provider,
-      options: {
-       redirectTo: `${window.location.origin}/auth`,
-      },
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: `${window.location.origin}/auth`,
     });
 
-    if (error) {
-      setError(error.message);
+    if (result.error) {
+      setError(result.error.message);
       setSubmitting(false);
+      return;
     }
+    if (result.redirected) return;
+    navigate(from || "/", { replace: true });
+
   };
 
 
