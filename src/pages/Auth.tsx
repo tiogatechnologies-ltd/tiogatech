@@ -35,6 +35,17 @@ const Auth = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Catch a session that lands after an OAuth round-trip.
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) navigate(from || "/", { replace: true });
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) navigate(from || "/", { replace: true });
+    });
+    return () => subscription.unsubscribe();
+  }, [navigate, from]);
+
+  useEffect(() => {
     if (!loading && user) {
       // Role-based redirect (single source of truth: user_roles table).
       if (from) navigate(from, { replace: true });
@@ -44,6 +55,7 @@ const Auth = () => {
       else navigate("/account", { replace: true });
     }
   }, [user, loading, isAdmin, isStaff, isAffiliate, hasRole, navigate, from]);
+
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
