@@ -5,7 +5,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 
-const FN_URL = "https://xwxskzwceghftlcsbyyh.supabase.co/functions/v1/confirm-newsletter";
+const FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/confirm-newsletter`;
 
 const NewsletterConfirm = () => {
   const [params] = useSearchParams();
