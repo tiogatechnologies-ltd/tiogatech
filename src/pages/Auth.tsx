@@ -35,15 +35,19 @@ const Auth = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Catch a session that lands after an OAuth round-trip.
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate(from || "/", { replace: true });
-    });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) navigate(from || "/", { replace: true });
-    });
-    return () => subscription.unsubscribe();
+    // Safety net: if a session exists (e.g. after an OAuth round-trip) but the
+    // role-based redirect below hasn't fired, leave /auth anyway.
+    let timer: ReturnType<typeof setTimeout>;
+    const bounce = (session: unknown) => {
+      if (!session) return;
+      clearTimeout(timer);
+      timer = setTimeout(() => navigate(from || "/", { replace: true }), 1200);
+    };
+    supabase.auth.getSession().then(({ data: { session } }) => bounce(session));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => bounce(session));
+    return () => { clearTimeout(timer); subscription.unsubscribe(); };
   }, [navigate, from]);
+
 
   useEffect(() => {
     if (!loading && user) {
