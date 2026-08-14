@@ -32,9 +32,8 @@ const AdminEmail = () => {
         const { data } = await supabase.from("leads").select("id, full_name, email").order("created_at", { ascending: false });
         rows = (data || []).filter((d: any) => d.email).map((d: any) => ({ id: d.id, name: d.full_name, email: d.email, source: "lead" }));
       } else if (tab === "user") {
-        const { data } = await supabase.functions.invoke("list-users");
-        const users = ((data as any)?.users ?? []) as any[];
-        rows = users.filter((u) => u.email).map((u) => ({ id: u.id, name: u.full_name || u.email, email: u.email, source: "user" }));
+        const { data } = await supabase.from("profiles").select("id, full_name, email").order("created_at", { ascending: false });
+        rows = (data || []).filter((d: any) => d.email).map((d: any) => ({ id: d.id, name: d.full_name || d.email, email: d.email, source: "user" }));
       } else if (tab === "affiliate") {
         const { data } = await supabase.from("affiliates").select("id, full_name, email").order("created_at", { ascending: false });
         rows = (data || []).filter((d: any) => d.email).map((d: any) => ({ id: d.id, name: d.full_name, email: d.email, source: "affiliate" }));

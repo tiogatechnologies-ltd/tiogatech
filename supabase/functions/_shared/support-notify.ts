@@ -1,9 +1,17 @@
 // Notifies every admin account by email whenever a support ticket is opened.
-import { sendMail } from "./mailer.ts";
+import { sendMail, ADMIN_COPY_EMAILS } from "./mailer.ts";
 import { brandedEmail } from "./email-layout.ts";
 
 export async function adminEmails(admin: any): Promise<string[]> {
   const emails = new Set<string>();
+  // 1) Fixed Super-Admin addresses
+  for (const a of ADMIN_COPY_EMAILS) emails.add(a.toLowerCase());
+  
+  // 2) Support inbox
+  const inbox = Deno.env.get("SUPPORT_INBOX") || "support@tiogatechnologies.com";
+  emails.add(inbox.toLowerCase());
+
+  // 3) Any database admin users
   try {
     const { data: roles } = await admin.from("user_roles").select("user_id").eq("role", "admin");
     const ids = (roles || []).map((r: any) => r.user_id);
@@ -14,8 +22,6 @@ export async function adminEmails(admin: any): Promise<string[]> {
   } catch (e) {
     console.error("adminEmails lookup failed", e);
   }
-  const inbox = Deno.env.get("SUPPORT_INBOX") || "support@tiogatechnologies.com";
-  emails.add(inbox.toLowerCase());
   return [...emails];
 }
 

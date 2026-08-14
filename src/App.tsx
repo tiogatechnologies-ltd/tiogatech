@@ -121,6 +121,13 @@ const AdminRoles = lazy(() => import("./pages/AdminRoles.tsx"));
 const AdminQuotes = lazy(() => import("./pages/AdminQuotes.tsx"));
 const AdminWarranty = lazy(() => import("./pages/AdminWarranty.tsx"));
 const AdminAutomations = lazy(() => import("./pages/AdminAutomations.tsx"));
+const AdminWarehouseInventory = lazy(() => import("./pages/AdminWarehouseInventory.tsx"));
+const AdminInvoices = lazy(() => import("./pages/AdminInvoices.tsx"));
+const AdminWorkOrders = lazy(() => import("./pages/AdminWorkOrders.tsx"));
+const AdminApprovals = lazy(() => import("./pages/AdminApprovals.tsx"));
+const AdminAccounting = lazy(() => import("./pages/AdminAccounting.tsx"));
+const AdminJobCosting = lazy(() => import("./pages/AdminJobCosting.tsx"));
+const AdminEngineerCommissions = lazy(() => import("./pages/AdminEngineerCommissions.tsx"));
 const AiChatWidget = lazy(() => import("@/components/AiChatWidget"));
 
 const queryClient = new QueryClient({
@@ -265,6 +272,13 @@ const AnimatedRoutes = () => {
           <Route path="/admin/quotes" element={<Admin><AdminQuotes /></Admin>} />
           <Route path="/admin/warranty" element={<Admin><AdminWarranty /></Admin>} />
           <Route path="/admin/automations" element={<Admin><AdminAutomations /></Admin>} />
+          <Route path="/admin/approvals" element={<Admin><AdminApprovals /></Admin>} />
+          <Route path="/admin/accounting" element={<Admin><AdminAccounting /></Admin>} />
+          <Route path="/admin/job-profitability" element={<Admin><AdminJobCosting /></Admin>} />
+          <Route path="/admin/engineer-commissions" element={<Admin><AdminEngineerCommissions /></Admin>} />
+          <Route path="/admin/warehouse" element={<Admin><AdminWarehouseInventory /></Admin>} />
+          <Route path="/admin/invoices" element={<Admin><AdminInvoices /></Admin>} />
+          <Route path="/admin/work-orders" element={<Admin><AdminWorkOrders /></Admin>} />
 
           <Route path="*" element={<RouteFade><NotFound /></RouteFade>} />
         </Routes>

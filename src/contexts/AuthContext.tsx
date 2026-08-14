@@ -24,6 +24,7 @@ interface AuthContextType {
   hasRole: (role: AppRole) => boolean;
   hasAnyRole: (roles: AppRole[]) => boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signInWithGoogle: (redirectTo?: string) => Promise<{ error: string | null }>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -41,6 +42,7 @@ const AuthContext = createContext<AuthContextType>({
   hasRole: () => false,
   hasAnyRole: () => false,
   signIn: async () => ({ error: null }),
+  signInWithGoogle: async () => ({ error: null }),
   signUp: async () => ({ error: null }),
   signOut: async () => {},
   refreshProfile: async () => {},
@@ -128,6 +130,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: null };
   };
 
+  const signInWithGoogle = async (redirectTo?: string) => {
+    const targetUrl = redirectTo || `${window.location.origin}/auth`;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: targetUrl,
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
+      },
+    });
+    if (error) return { error: error.message };
+    return { error: null };
+  };
+
   const signUp = async (email: string, password: string, fullName?: string) => {
     const { error } = await supabase.auth.signUp({
       email,
@@ -157,7 +175,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAffiliate = roles.includes("affiliate");
 
   return (
-    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, rolesLoaded, hasRole, hasAnyRole, signIn, signUp, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, roles, isAdmin, isStaff, isAffiliate, loading, rolesLoaded, hasRole, hasAnyRole, signIn, signInWithGoogle, signUp, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

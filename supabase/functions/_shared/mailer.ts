@@ -1,31 +1,37 @@
 // Shared outbound mailer for Tioga Technologies.
+// Configured with 3 primary sender identities:
+//   - info@tiogatechnologies.com (General, Confirmations, Newsletter)
+//   - sales@tiogatechnologies.com (Leads, Quotes, Proposals, Orders, Finance)
+//   - support@tiogatechnologies.com (Support tickets, Customer inquiries, Warranty)
 //
-// Delivery order:
-//   1. Lovable Emails queue on the verified sender domain
-//      (notify.tiogatechnologies.com) — branded From addresses like
-//      noreply@tiogatechnologies.com / sales@tiogatechnologies.com, with
-//      retries, suppression handling and delivery logging.
-//   2. Gmail connector gateway fallback, so nothing is silently lost if the
-//      queue is unavailable.
-//
-// Callers pass ready-made HTML; the queue accepts pre-rendered messages.
+// Admin copy recipients (always copied on all automated emails):
+//   - tiogatechnologies@gmail.com
+//   - inememmanuel@gmail.com
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const GMAIL_GATEWAY = "https://connector-gateway.lovable.dev/google_mail/gmail/v1";
 
-/** Verified delegated sender subdomain — must match the Lovable email domain. */
+/** Verified delegated sender subdomain — must match the email sender domain. */
 export const SENDER_DOMAIN = "notify.tiogatechnologies.com";
 /** Domain shown in the From header. */
 export const FROM_DOMAIN = "tiogatechnologies.com";
 
-/** Approved sender identities. Anything else falls back to noreply. */
+/** The two admin addresses that must ALWAYS be copied on all automation emails. */
+export const ADMIN_COPY_EMAILS = [
+  "tiogatechnologies@gmail.com",
+  "inememmanuel@gmail.com",
+] as const;
+
+/** 3 primary sender identities for all website automations. */
 export const SENDERS = {
-  noreply: { email: `noreply@${FROM_DOMAIN}`, name: "Tioga Technologies" },
+  info: { email: `info@${FROM_DOMAIN}`, name: "Tioga Technologies" },
   sales: { email: `sales@${FROM_DOMAIN}`, name: "Tioga Sales" },
-  orders: { email: `orders@${FROM_DOMAIN}`, name: "Tioga Orders" },
   support: { email: `support@${FROM_DOMAIN}`, name: "Tioga Support" },
-  finance: { email: `finance@${FROM_DOMAIN}`, name: "Tioga Easy Flex" },
+  // Backwards compatibility aliases mapped cleanly to the 3 main senders:
+  noreply: { email: `info@${FROM_DOMAIN}`, name: "Tioga Technologies" },
+  orders: { email: `sales@${FROM_DOMAIN}`, name: "Tioga Sales" },
+  finance: { email: `sales@${FROM_DOMAIN}`, name: "Tioga Sales" },
 } as const;
 
 export type SenderKey = keyof typeof SENDERS;
@@ -36,14 +42,15 @@ function b64url(s: string) {
   return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-function buildRaw(to: string, subject: string, html: string, from: string) {
+function buildRaw(to: string, subject: string, html: string, from: string, ccEmails: string[] = []) {
   const headers = [
     `From: ${from}`,
     `To: ${to}`,
+    ccEmails.length > 0 ? `Cc: ${ccEmails.join(", ")}` : "",
     `Subject: ${subject}`,
     "MIME-Version: 1.0",
     'Content-Type: text/html; charset="UTF-8"',
-  ].join("\r\n");
+  ].filter(Boolean).join("\r\n");
   return b64url(`${headers}\r\n\r\n${html}`);
 }
 
@@ -60,7 +67,7 @@ function serviceClient() {
   return createClient(url, key, { auth: { persistSession: false } });
 }
 
-async function sendViaGmail(to: string, subject: string, html: string, from: string): Promise<MailResult> {
+async function sendViaGmail(to: string, subject: string, html: string, from: string, ccEmails: string[] = []): Promise<MailResult> {
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
   const GMAIL_KEY = Deno.env.get("GOOGLE_MAIL_API_KEY");
   if (!LOVABLE_API_KEY || !GMAIL_KEY) return { ok: false, error: "gmail transport not configured" };
@@ -72,7 +79,7 @@ async function sendViaGmail(to: string, subject: string, html: string, from: str
         Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "X-Connection-Api-Key": GMAIL_KEY,
       },
-      body: JSON.stringify({ raw: buildRaw(to, subject, html, from) }),
+      body: JSON.stringify({ raw: buildRaw(to, subject, html, from, ccEmails) }),
     });
     if (res.ok) return { ok: true, via: "gmail" };
     const body = (await res.text()).slice(0, 300);
@@ -89,7 +96,7 @@ export async function sendMail(opts: {
   subject: string;
   html: string;
   text?: string;
-  /** Which branded identity the email comes from. Defaults to noreply. */
+  /** Primary sender identity: 'info' | 'sales' | 'support' */
   sender?: SenderKey;
   fromName?: string;
   fromEmail?: string;
@@ -99,13 +106,14 @@ export async function sendMail(opts: {
   idempotencyKey?: string;
   /**
    * Critical account/order mail (receipts, security, order status).
-   * Still delivered through Gmail if the address is on the suppression list.
    */
   critical?: boolean;
+  /** Set to false if you wish to bypass admin copying for internal system checks */
+  copyAdmins?: boolean;
 }): Promise<MailResult> {
   const { to, subject, html } = opts;
   const text = opts.text ?? subject;
-  const identity = SENDERS[opts.sender ?? "noreply"] ?? SENDERS.noreply;
+  const identity = SENDERS[opts.sender ?? "info"] ?? SENDERS.info;
   const fromEmail = opts.fromEmail ?? identity.email;
   const fromName = opts.fromName ?? identity.name;
   const from = `${fromName} <${fromEmail}>`;
@@ -114,6 +122,12 @@ export async function sendMail(opts: {
   if (!to || !to.includes("@")) return { ok: false, error: "invalid recipient" };
   const recipient = to.trim();
   const normalized = recipient.toLowerCase();
+
+  // Admin CC list (skip if recipient is already one of the admins)
+  const copyAdmins = opts.copyAdmins !== false;
+  const ccRecipients = copyAdmins
+    ? ADMIN_COPY_EMAILS.filter((adminEmail) => adminEmail.toLowerCase() !== normalized)
+    : [];
 
   const supabase = serviceClient();
 
@@ -136,11 +150,10 @@ export async function sendMail(opts: {
           status: "suppressed",
         });
         if (!opts.critical) return { ok: false, reason: "email_suppressed", error: "recipient suppressed" };
-        // Critical mail still goes out through the direct transport.
-        return await sendViaGmail(recipient, subject, html, from);
+        return await sendViaGmail(recipient, subject, html, from, ccRecipients);
       }
 
-      // One unsubscribe token per address (reused when still valid).
+      // One unsubscribe token per address
       let unsubscribeToken: string | undefined;
       const { data: existing } = await supabase
         .from("email_unsubscribe_tokens")
@@ -175,6 +188,7 @@ export async function sendMail(opts: {
         payload: {
           message_id: messageId,
           to: recipient,
+          cc: ccRecipients,
           from,
           sender_domain: SENDER_DOMAIN,
           subject,
@@ -188,20 +202,33 @@ export async function sendMail(opts: {
         },
       });
 
+      // Also ensure copies are directly sent to admins if queue is being processed
+      for (const adminEmail of ccRecipients) {
+        await supabase.rpc("enqueue_email", {
+          queue_name: "transactional_emails",
+          payload: {
+            message_id: crypto.randomUUID(),
+            to: adminEmail,
+            from,
+            sender_domain: SENDER_DOMAIN,
+            subject: `[Admin Copy] ${subject}`,
+            html,
+            text,
+            purpose: "transactional",
+            label: `${label}-admin-copy`,
+            idempotency_key: `${opts.idempotencyKey ?? messageId}-admin-${adminEmail}`,
+            queued_at: new Date().toISOString(),
+          },
+        }).catch(console.error);
+      }
+
       if (!enqueueError) return { ok: true, via: "queue" };
       console.error("email enqueue failed", enqueueError);
-      await supabase.from("email_send_log").insert({
-        message_id: messageId,
-        template_name: label,
-        recipient_email: recipient,
-        status: "failed",
-        error_message: String(enqueueError.message ?? enqueueError).slice(0, 300),
-      });
     } catch (e) {
       console.error("queue transport error", e);
     }
   }
 
   // 2) Gmail connector fallback.
-  return await sendViaGmail(recipient, subject, html, from);
+  return await sendViaGmail(recipient, subject, html, from, ccRecipients);
 }

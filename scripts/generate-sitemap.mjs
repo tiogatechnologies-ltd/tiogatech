@@ -1,9 +1,7 @@
 // Runs before `vite dev` and `vite build` (predev/prebuild hooks); writes public/sitemap.xml.
-// Static routes are listed here; published blog posts are pulled from the database
-// so the sitemap never goes stale as content is published.
-
 import { writeFileSync, readFileSync, existsSync } from "fs";
 import { resolve } from "path";
+import { createClient } from "@supabase/supabase-js";
 
 const BASE_URL = "https://tiogatechnologies.com";
 
@@ -43,49 +41,49 @@ function readEnv() {
 const escapeXml = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-async function fetchBlogPosts() {
+function getClient() {
   const env = readEnv();
   const url = env.VITE_SUPABASE_URL || env.SUPABASE_URL;
   const key = env.VITE_SUPABASE_PUBLISHABLE_KEY || env.SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key) return [];
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
+
+async function fetchBlogPosts() {
+  const client = getClient();
+  if (!client) return [];
   try {
-    const nowIso = new Date().toISOString();
-    const endpoint =
-      `${url}/rest/v1/blog_posts?select=slug,updated_at,published_at` +
-      `&published=eq.true&published_at=lte.${encodeURIComponent(nowIso)}` +
-      `&order=published_at.desc&limit=1000`;
-    const res = await fetch(endpoint, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
-    if (!res.ok) {
-      console.warn(`[sitemap] blog fetch failed (${res.status}); writing static routes only`);
-      return [];
-    }
-    return await res.json();
-  } catch (err) {
-    console.warn("[sitemap] blog fetch error; writing static routes only:", err?.message ?? err);
+    const { data, error } = await client
+      .from("blog_posts")
+      .select("slug,updated_at,published_at")
+      .eq("published", true)
+      .order("published_at", { ascending: false })
+      .limit(1000);
+    if (error) return [];
+    return data || [];
+  } catch {
     return [];
   }
 }
 
 async function fetchProducts() {
-  const env = readEnv();
-  const url = env.VITE_SUPABASE_URL || env.SUPABASE_URL;
-  const key = env.VITE_SUPABASE_PUBLISHABLE_KEY || env.SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key) return [];
+  const client = getClient();
+  if (!client) return [];
   try {
-    const endpoint = `${url}/rest/v1/products?select=id,name,updated_at&is_active=eq.true&order=sort_order&limit=2000`;
-    const res = await fetch(endpoint, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
-    if (!res.ok) {
-      console.warn(`[sitemap] product fetch failed (${res.status}); skipping product URLs`);
-      return [];
-    }
-    return await res.json();
-  } catch (err) {
-    console.warn("[sitemap] product fetch error; skipping product URLs:", err?.message ?? err);
+    const { data, error } = await client
+      .from("products")
+      .select("id,name,updated_at")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .limit(2000);
+    if (error) return [];
+    return data || [];
+  } catch {
     return [];
   }
 }
 
-// Mirrors src/lib/productSlug.ts so sitemap URLs match the app's routes exactly.
+// Mirrors src/lib/productSlug.ts
 const kebab = (input) =>
   String(input).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
 const productSlug = (p) => `${kebab(p.name)}-${String(p.id).replace(/-/g, "").slice(0, 8)}`;
@@ -106,8 +104,6 @@ function urlBlock({ loc, lastmod, changefreq, priority }) {
 const [posts, products] = await Promise.all([fetchBlogPosts(), fetchProducts()]);
 
 const blocks = [
-  // No <lastmod> for static routes: there is no authoritative per-page timestamp,
-  // and a build-time date would be a meaningless signal to crawlers.
   ...STATIC_ENTRIES.map((e) =>
     urlBlock({ loc: `${BASE_URL}${e.path}`, changefreq: e.changefreq, priority: e.priority }),
   ),
@@ -138,4 +134,4 @@ const xml = [
 ].join("\n");
 
 writeFileSync(resolve("public/sitemap.xml"), xml);
-console.log(`sitemap.xml written (${STATIC_ENTRIES.length} routes + ${posts.length} blog posts + ${products.length} products)`);
+console.log(`sitemap.xml written (${STATIC_ENTRIES.length} static routes + ${posts.length} blog posts + ${products.length} products)`);

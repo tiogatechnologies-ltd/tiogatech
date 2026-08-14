@@ -52,24 +52,52 @@ export function usePageTracker() {
   const activeMs = useRef<number>(0);
   const lastActive = useRef<number>(Date.now());
 
+  // Web Vitals & Performance Observer
+  useEffect(() => {
+    if (typeof window === "undefined" || !("PerformanceObserver" in window)) return;
+    try {
+      // Largest Contentful Paint (LCP)
+      const lcpObserver = new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        if (lastEntry) {
+          trackConversion("vitals", { metric: "LCP", value: Math.round(lastEntry.startTime) });
+        }
+      });
+      lcpObserver.observe({ type: "largest-contentful-paint", buffered: true });
+
+      // Cumulative Layout Shift (CLS)
+      const clsObserver = new PerformanceObserver((entryList) => {
+        let clsVal = 0;
+        for (const entry of entryList.getEntries() as any[]) {
+          if (!entry.hadRecentInput) clsVal += entry.value;
+        }
+        if (clsVal > 0) {
+          trackConversion("vitals", { metric: "CLS", value: Number(clsVal.toFixed(3)) });
+        }
+      });
+      clsObserver.observe({ type: "layout-shift", buffered: true });
+
+      // Error Listener
+      const handleError = (e: ErrorEvent) => {
+        trackConversion("error", { message: e.message, filename: e.filename, lineno: e.lineno });
+      };
+      window.addEventListener("error", handleError);
+      return () => {
+        lcpObserver.disconnect();
+        clsObserver.disconnect();
+        window.removeEventListener("error", handleError);
+      };
+    } catch { /* ignored */ }
+  }, []);
+
   // Session end / duration flush
   useEffect(() => {
     const flush = () => {
       const dur = activeMs.current + Math.max(0, Date.now() - lastActive.current);
       if (dur < 2000) return; // ignore ultra-short bounces
       try {
-        const blob = new Blob(
-          [JSON.stringify({
-            session_id: getSessionId(),
-            event_type: "session_end",
-            page_path: window.location.pathname,
-            metadata: { duration_ms: dur, page_path: window.location.pathname },
-          })],
-          { type: "application/json" }
-        );
-        // Best-effort: use sendBeacon-style pattern via direct insert; on unload we can't await
         trackConversion("session_end", { duration_ms: dur });
-        void blob;
       } catch { /* noop */ }
     };
     const onVis = () => {
@@ -107,6 +135,7 @@ export function usePageTracker() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [location.pathname]);
 
+  // Page hit tracking
   useEffect(() => {
     const path = location.pathname;
     if (path.startsWith("/admin") || path === lastPath.current) return;
@@ -119,16 +148,17 @@ export function usePageTracker() {
     const utm = captureUtm();
     const { isNew, landing } = sessionMeta(path);
 
-    supabase.functions.invoke("track-pageview", {
-      body: {
-        session_id,
-        page_path: path,
-        referrer: document.referrer || null,
-        user_agent: navigator.userAgent,
-        landing_path: landing,
-        is_new_session: isNew,
-        ...utm,
-      },
-    }).catch(() => {});
+    // Direct database write to page_views table
+    supabase.from("page_views").insert({
+      session_id,
+      page_path: path,
+      referrer: document.referrer || null,
+      user_agent: navigator.userAgent,
+      landing_path: landing,
+      is_new_session: isNew,
+      utm_source: utm?.utm_source || null,
+      utm_medium: utm?.utm_medium || null,
+      utm_campaign: utm?.utm_campaign || null,
+    }).then(() => {}).catch(() => {});
   }, [location.pathname]);
 }

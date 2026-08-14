@@ -12,7 +12,7 @@ const SmoothScroll = () => {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       wheelMultiplier: 0.9,
       smoothWheel: true,
-      // @ts-ignore - older types
+      // @ts-expect-error - legacy lenis options
       smoothTouch: false,
     });
 

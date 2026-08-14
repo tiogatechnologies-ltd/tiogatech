@@ -92,16 +92,29 @@ const AdminSettings = () => {
 
   useEffect(() => {
     (async () => {
-      const { data: rows } = await supabase.from("site_settings").select("key, value");
-      const merged = { ...defaults };
-      (rows || []).forEach((r: any) => { merged[r.key] = r.key === "finance" ? normalizeFinanceSettings(r.value) : { ...defaults[r.key], ...(r.value || {}) }; });
-      setData(merged); setOriginal(merged); setLoading(false);
+      try {
+        const { data: rows } = await supabase.from("site_settings").select("key, value");
+        const merged = { ...defaults };
+        (rows || []).forEach((r: any) => {
+          if (r.key) {
+            merged[r.key] = r.key === "finance"
+              ? normalizeFinanceSettings(r.value)
+              : { ...(defaults[r.key] || {}), ...(r.value || {}) };
+          }
+        });
+        setData(merged);
+        setOriginal(merged);
+      } catch (err) {
+        console.error("Error loading settings:", err);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
   const dirty = useMemo(() => JSON.stringify(data) !== JSON.stringify(original), [data, original]);
 
-  const set = (section: string, patch: any) => setData((d) => ({ ...d, [section]: { ...d[section], ...patch } }));
+  const set = (section: string, patch: any) => setData((d) => ({ ...d, [section]: { ...(d[section] || {}), ...patch } }));
 
   const saveAll = async () => {
     setSaving(true);
@@ -575,15 +588,22 @@ function CachePurgeCard() {
   );
 }
 
-// ---- Google Drive backup card ----
 function GoogleDriveBackupCard() {
   const [busy, setBusy] = useState(false);
   const [rows, setRows] = useState<any[]>([]);
+  const [purging, setPurging] = useState(false);
+
   const load = async () => {
-    const { data } = await supabase.from("backups_log" as any).select("*").order("created_at", { ascending: false }).limit(10);
-    setRows((data as any[]) || []);
+    try {
+      const { data } = await supabase.from("backups_log" as any).select("*").order("created_at", { ascending: false }).limit(10);
+      setRows((data as any[]) || []);
+    } catch {
+      setRows([]);
+    }
   };
+
   useEffect(() => { load(); }, []);
+
   const run = async () => {
     setBusy(true);
     try {
@@ -593,36 +613,76 @@ function GoogleDriveBackupCard() {
       load();
     } catch (e: any) {
       toast.error(e?.message || "Backup failed");
-    } finally { setBusy(false); }
+    } finally {
+      setBusy(false);
+    }
   };
+
+  const handlePurge = async () => {
+    if (!confirm("Are you sure you want to purge all mock & test records? Real user accounts and genuine products will be preserved.")) return;
+    setPurging(true);
+    try {
+      const { purgeAllMockData } = await import("@/lib/purgeMockData");
+      const res = await purgeAllMockData();
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Purge failed");
+    } finally {
+      setPurging(false);
+    }
+  };
+
   return (
-    <Card title="Google Drive backups" desc="Full JSON snapshot of the database uploaded to the Tioga Drive account.">
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <button onClick={run} disabled={busy} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-60">
-          {busy ? <Loader2 size={14} className="animate-spin" /> : <CloudUpload size={14} />}
-          {busy ? "Backing up…" : "Backup now"}
-        </button>
-        <span className="text-xs text-muted-foreground">Uses the connected Google Drive account. Files land in the "Tioga Backups" folder.</span>
-      </div>
-      {rows.length === 0 ? (
-        <p className="text-xs text-muted-foreground">No backups yet.</p>
-      ) : (
-        <ul className="divide-y divide-border text-sm rounded-xl border border-border overflow-hidden">
-          {rows.map((r) => (
-            <li key={r.id} className="px-3 py-2.5 flex items-center gap-2">
-              <span className={`h-1.5 w-1.5 rounded-full ${r.status === "success" ? "bg-emerald-500" : "bg-destructive"}`} />
-              <div className="min-w-0 flex-1">
-                <div className="font-medium truncate">{r.filename}</div>
-                <div className="text-[11px] text-muted-foreground">{new Date(r.created_at).toLocaleString()} · {r.tables_count || 0} tables · {r.size_bytes ? Math.round(r.size_bytes / 1024) + " KB" : "—"}</div>
-              </div>
-              {r.drive_web_link && (
-                <a href={r.drive_web_link} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">Open <ExternalLink size={11} /></a>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </Card>
+    <div className="space-y-6">
+      <Card title="Google Drive backups" desc="Full JSON snapshot of the database uploaded to the Tioga Drive account.">
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <button onClick={run} disabled={busy} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-60">
+            {busy ? <Loader2 size={14} className="animate-spin" /> : <CloudUpload size={14} />}
+            {busy ? "Backing up…" : "Backup now"}
+          </button>
+          <span className="text-xs text-muted-foreground">Uses the connected Google Drive account. Files land in the "Tioga Backups" folder.</span>
+        </div>
+        {rows.length === 0 ? (
+          <p className="text-xs text-muted-foreground">No backups yet.</p>
+        ) : (
+          <ul className="divide-y divide-border text-sm rounded-xl border border-border overflow-hidden">
+            {rows.map((r) => (
+              <li key={r.id} className="px-3 py-2.5 flex items-center gap-2">
+                <span className={`h-1.5 w-1.5 rounded-full ${r.status === "success" ? "bg-emerald-500" : "bg-destructive"}`} />
+                <div className="min-w-0 flex-1">
+                  <div className="font-medium truncate">{r.filename}</div>
+                  <div className="text-[11px] text-muted-foreground">{new Date(r.created_at).toLocaleString()} · {r.tables_count || 0} tables · {r.size_bytes ? Math.round(r.size_bytes / 1024) + " KB" : "—"}</div>
+                </div>
+                {r.drive_web_link && (
+                  <a href={r.drive_web_link} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">Open <ExternalLink size={11} /></a>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+
+      <Card title="Database Maintenance & Test Data Purge" desc="Safely clean out automated test records (TEST invoices, mock work orders, test tickets) while keeping real users and genuine catalog items.">
+        <div className="flex flex-wrap items-center justify-between gap-3 p-2 bg-rose-500/5 rounded-2xl border border-rose-500/20">
+          <div>
+            <p className="text-sm font-bold text-foreground">Purge All Mock / QA Test Data</p>
+            <p className="text-xs text-muted-foreground">Deletes sample test records from all 24 database tables.</p>
+          </div>
+          <button
+            onClick={handlePurge}
+            disabled={purging}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-destructive text-destructive-foreground text-sm font-semibold hover:brightness-110 disabled:opacity-60"
+          >
+            {purging ? <Loader2 size={14} className="animate-spin" /> : <Database size={14} />}
+            {purging ? "Purging..." : "Purge All Mock Data"}
+          </button>
+        </div>
+      </Card>
+    </div>
   );
 }
 

@@ -188,7 +188,7 @@ const AdminProducts = () => {
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id); else next.add(id);
       return next;
     });
   };
@@ -260,7 +260,7 @@ const AdminProducts = () => {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border text-muted-foreground">
-                    <th className="px-4 py-3 w-8"><input type="checkbox" onChange={(e) => { e.target.checked ? setSelectedIds(new Set(filtered.map(p => p.id))) : setSelectedIds(new Set()); }} className="h-4 w-4 rounded accent-primary" /></th>
+                    <th className="px-4 py-3 w-8"><input type="checkbox" checked={selectedIds.size > 0 && selectedIds.size === filtered.length} onChange={(e) => { setSelectedIds(e.target.checked ? new Set(filtered.map(p => p.id)) : new Set()); }} className="h-4 w-4 rounded accent-primary" /></th>
                     <th className="text-left px-4 py-3 font-medium">Image</th>
                     <th className="text-left px-4 py-3 font-medium">Name</th>
                     <th className="text-left px-4 py-3 font-medium hidden sm:table-cell">Category</th>

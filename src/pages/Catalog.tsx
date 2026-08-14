@@ -490,7 +490,7 @@ const Catalog = () => {
         .eq("is_active", true)
         .order("sort_order");
 
-      let results = (data as Product[]) ?? [];
+      const results = (data as Product[]) ?? [];
       const tierOrder = getTierOrder(budget);
       results.sort((a, b) => tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier));
       setAllProducts(results);

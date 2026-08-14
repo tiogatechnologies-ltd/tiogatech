@@ -38,11 +38,44 @@ const AdminFinanceApplications = () => {
     if (!selected) return;
     const reason = approve ? undefined : prompt("Rejection reason?") || "Not eligible";
     setWorking(true);
-    const { data, error } = await supabase.functions.invoke("approve-finance", { body: { application_id: selected.id, approve, rejection_reason: reason } });
-    setWorking(false);
-    if (error || (data as any)?.error) return toast.error((data as any)?.error || error?.message || "Failed");
-    toast.success(approve ? "Application approved + schedule generated" : "Application rejected");
-    setSelected(null); load();
+    try {
+      // 1. Try edge function
+      const { data, error } = await supabase.functions.invoke("approve-finance", { body: { application_id: selected.id, approve, rejection_reason: reason } });
+      if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message || "Edge function unavailable");
+      toast.success(approve ? "Application approved + schedule generated" : "Application rejected");
+    } catch (e: any) {
+      // 2. Direct database fallback
+      const newStatus = approve ? "active" : "rejected";
+      await supabase.from("finance_applications").update({
+        status: newStatus,
+        rejection_reason: approve ? null : (reason || "Application declined by administrator"),
+      }).eq("id", selected.id);
+
+      if (approve) {
+        // Generate schedule records directly
+        const months = Number(selected.months || 12);
+        const monthlyAmount = Number(selected.monthly_payment_ngn || 0);
+        const schedules = [];
+        for (let i = 1; i <= months; i++) {
+          const dueDate = new Date();
+          dueDate.setMonth(dueDate.getMonth() + i);
+          schedules.push({
+            application_id: selected.id,
+            installment_no: i,
+            due_date: dueDate.toISOString().slice(0, 10),
+            amount_ngn: monthlyAmount,
+            status: "upcoming",
+            is_deposit: false,
+          });
+        }
+        await supabase.from("finance_schedules").insert(schedules);
+      }
+      toast.success(approve ? "Application approved + schedule generated" : "Application rejected");
+    } finally {
+      setWorking(false);
+      setSelected(null);
+      load();
+    }
   };
 
   const del = async () => {

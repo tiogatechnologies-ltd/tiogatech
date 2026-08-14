@@ -219,18 +219,18 @@ const SiteHeader = () => {
           <CartButton onDark={onDark} />
           <AccountButton onDark={onDark} />
           {/* AI Recommendation badge — always high-contrast */}
-          <button
+            <button
             type="button"
             onClick={handleAiClick}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 sm:px-4 py-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97] animate-ai-glow",
+              "inline-flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97] animate-ai-glow",
               "bg-gold text-midnight border-2 border-gold hover:brightness-110 shadow-lg shadow-gold/40",
             )}
-            aria-label="Open AI recommendation"
+            aria-label="Get a Quote and Make Enquiry"
           >
             <Sparkles size={13} className="fill-midnight" />
-            <span className="hidden xs:inline sm:inline">AI Recommend</span>
-            <span className="xs:hidden sm:hidden">AI</span>
+            <span className="hidden xs:inline sm:inline">Get a Quote</span>
+            <span className="xs:hidden sm:hidden">Quote</span>
           </button>
 
           <button
@@ -310,7 +310,7 @@ const SiteHeader = () => {
               onClick={handleAiClick}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-bold text-midnight shadow-md shadow-gold/40"
             >
-              <Sparkles size={14} className="fill-midnight" /> AI Recommend
+              <Sparkles size={14} className="fill-midnight" /> Get a Quote / Enquiry
             </button>
             <a
               href="https://wa.me/2348178000023"

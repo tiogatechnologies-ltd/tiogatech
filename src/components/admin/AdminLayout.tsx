@@ -8,6 +8,7 @@ import {
   Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone,
   Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag,
   ScrollText, Calendar, Search, Calculator, Zap, Plus, Minus, Pin, PinOff, ShieldCheck,
+  Building2, Wrench, BookOpen, TrendingUp, Award,
 } from "lucide-react";
 
 
@@ -25,131 +26,177 @@ type NavGroup = { label: string; roles?: AppRole[]; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
   {
-    label: "Overview",
+    label: "Overview & Analytics",
     roles: ["admin", "staff"],
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
-      { label: "Analytics", icon: BarChart3, path: "/admin/analytics", roles: ["admin", "staff"], children: [
-        { label: "Leads", path: "/admin/analytics?tab=leads" },
-        { label: "Revenue", path: "/admin/analytics?tab=revenue" },
-        { label: "Traffic", path: "/admin/analytics?tab=traffic" },
-        { label: "Funnels", path: "/admin/analytics?tab=funnels" },
-        { label: "Products", path: "/admin/analytics?tab=products" },
-        { label: "Performance", path: "/admin/analytics?tab=performance" },
-      ] },
+      {
+        label: "Analytics & Performance",
+        icon: BarChart3,
+        path: "/admin/analytics",
+        roles: ["admin", "staff"],
+        children: [
+          { label: "Leads Funnel", path: "/admin/analytics?tab=leads" },
+          { label: "Revenue Metrics", path: "/admin/analytics?tab=revenue" },
+          { label: "Site Traffic", path: "/admin/analytics?tab=traffic" },
+          { label: "Conversion Funnels", path: "/admin/analytics?tab=funnels" },
+          { label: "Product Trends", path: "/admin/analytics?tab=products" },
+          { label: "System Performance", path: "/admin/analytics?tab=performance" },
+        ],
+      },
+      { label: "Executive Reports", icon: FileText, path: "/admin/reports", roles: ["admin", "staff"] },
+      { label: "Approval Workflows", icon: ShieldCheck, path: "/admin/approvals", roles: ["admin", "staff"] },
     ],
   },
   {
-    label: "Sales",
-    roles: ["admin", "staff"],
-    items: [
-      { label: "Orders", icon: ShoppingBag, path: "/admin/orders", children: [
-        { label: "All Orders", path: "/admin/orders" },
-        { label: "New", path: "/admin/orders?status=new" },
-        { label: "Confirmed", path: "/admin/orders?status=confirmed" },
-        { label: "Fulfilled", path: "/admin/orders?status=fulfilled" },
-        { label: "Cancelled", path: "/admin/orders?status=cancelled" },
-      ] },
-      { label: "Customers", icon: Users, path: "/admin/customers" },
-      { label: "Leads", icon: Users, path: "/admin/leads" },
-      { label: "Quotations", icon: FileText, path: "/admin/quotes" },
-      { label: "Support Tickets", icon: FileText, path: "/admin/tickets" },
-      { label: "Warranty & Returns", icon: ShieldCheck, path: "/admin/warranty" },
-      { label: "Discounts", icon: Tag, path: "/admin/discounts" },
-      { label: "App Waitlist", icon: Smartphone, path: "/admin/waitlist" },
-    ],
-  },
-  {
-    label: "Finance",
-    roles: ["admin", "staff"],
-    items: [
-      { label: "Applications", icon: Wallet, path: "/admin/finance/applications" },
-      { label: "Schedules", icon: Calendar, path: "/admin/finance/schedules" },
-    ],
-  },
-  {
-    label: "Assessments",
+    label: "Products & Solutions",
     roles: ["admin", "staff", "engineer"],
     items: [
-      { label: "Solar Assessments", icon: Sun, path: "/admin/assessments", children: [
-        { label: "All", path: "/admin/assessments" },
-        { label: "Basic", path: "/admin/assessments?tier=basic" },
-        { label: "Full", path: "/admin/assessments?tier=full" },
-      ] },
-      { label: "LumiVolt Sizings", icon: Calculator, path: "/admin/lumivolt-sizings" },
-      { label: "Custom Requests", icon: FileText, path: "/admin/custom-requests" },
-      { label: "AI Subscriptions", icon: Zap, path: "/admin/ai-subscriptions", roles: ["admin"] },
-      { label: "AI Credit Usage", icon: BarChart3, path: "/admin/ai-usage", roles: ["admin", "staff"] },
+      {
+        label: "Product Catalog",
+        icon: Package,
+        path: "/admin/products",
+        children: [
+          { label: "All Products", path: "/admin/products" },
+          { label: "Inventory Stock", path: "/admin/inventory" },
+        ],
+      },
+      { label: "Solar Packages (3kVA–20kVA)", icon: Sun, path: "/admin/solar-packages" },
+      { label: "Smart Locks & Security", icon: Lock, path: "/admin/smart-locks" },
+      { label: "Home Automation Systems", icon: Home, path: "/admin/home-automation" },
+      {
+        label: "Solar Sizing & Audits",
+        icon: Calculator,
+        path: "/admin/lumivolt-sizings",
+        children: [
+          { label: "LumiVolt Sizings", path: "/admin/lumivolt-sizings" },
+          { label: "Solar Energy Assessments", path: "/admin/assessments" },
+          { label: "Custom Project Requests", path: "/admin/custom-requests" },
+        ],
+      },
     ],
   },
   {
-    label: "Catalog",
-    roles: ["admin", "staff"],
-    items: [
-      { label: "Products", icon: Package, path: "/admin/products", children: [
-        { label: "All Products", path: "/admin/products" },
-        { label: "Inventory", path: "/admin/inventory" },
-      ] },
-      { label: "Solar Packages", icon: Sun, path: "/admin/solar-packages" },
-      { label: "Smart Locks", icon: Lock, path: "/admin/smart-locks" },
-      { label: "Home Automation", icon: Home, path: "/admin/home-automation" },
-    ],
-  },
-  {
-    label: "Content",
-    roles: ["admin", "staff"],
-    items: [
-      { label: "Blog", icon: Newspaper, path: "/admin/blog" },
-      { label: "Landing Sections", icon: Layout, path: "/admin/landing", roles: ["admin"], children: [
-        { label: "Landing Sections", path: "/admin/landing" },
-        { label: "Static Pages", path: "/admin/content" },
-      ] },
-      { label: "Form Builder", icon: FileText, path: "/admin/forms", roles: ["admin"] },
-    ],
-  },
-  {
-    label: "Marketing",
-    roles: ["admin", "staff"],
-    items: [
-      { label: "Newsletter", icon: Send, path: "/admin/newsletter" },
-      { label: "Email", icon: Mail, path: "/admin/email" },
-      { label: "Email Delivery", icon: Mail, path: "/admin/email-status" },
-    ],
-  },
-  {
-    label: "Affiliates",
-    roles: ["admin"],
-    items: [
-      { label: "Affiliates", icon: Share2, path: "/admin/affiliates" },
-      { label: "Payouts", icon: Wallet, path: "/admin/affiliates/payouts" },
-      { label: "Analytics", icon: LineChart, path: "/admin/affiliates/analytics" },
-    ],
-  },
-  {
-    label: "Careers",
-    roles: ["admin", "staff"],
-    items: [
-      { label: "Job Listings", icon: Briefcase, path: "/admin/careers", roles: ["admin"] },
-      { label: "Applications", icon: UserRoundCheck, path: "/admin/career-applications" },
-    ],
-  },
-  {
-    label: "Tools",
+    label: "Supply Chain & Field ERP",
     roles: ["admin", "staff", "engineer"],
     items: [
-      { label: "Reports", icon: FileText, path: "/admin/reports", roles: ["admin", "staff"] },
-      { label: "Media Library", icon: Layout, path: "/admin/storage" },
+      { label: "Warehouses & Serial Registry", icon: Building2, path: "/admin/warehouse", roles: ["admin", "staff"] },
+      { label: "Work Orders & Field Dispatch", icon: Wrench, path: "/admin/work-orders", roles: ["admin", "staff", "engineer"] },
+      { label: "Warranty Claims & OEM RMA", icon: ShieldCheck, path: "/admin/warranty", roles: ["admin", "staff"] },
     ],
   },
   {
-    label: "System",
+    label: "Finance & Accounting",
+    roles: ["admin", "staff", "engineer"],
+    items: [
+      { label: "Invoices & VAT (FIRS)", icon: FileText, path: "/admin/invoices", roles: ["admin", "staff"] },
+      { label: "General Ledger & P&L", icon: BookOpen, path: "/admin/accounting", roles: ["admin", "staff"] },
+      { label: "Job Costing & Margins", icon: TrendingUp, path: "/admin/job-profitability", roles: ["admin", "staff"] },
+      { label: "Engineer HSE & Bonuses", icon: Award, path: "/admin/engineer-commissions", roles: ["admin", "staff", "engineer"] },
+      {
+        label: "Lease-to-Own Financing",
+        icon: Wallet,
+        path: "/admin/finance/applications",
+        roles: ["admin", "staff"],
+        children: [
+          { label: "Finance Applications", path: "/admin/finance/applications" },
+          { label: "Repayment Schedules", path: "/admin/finance/schedules" },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Sales, CRM & Affiliates",
+    roles: ["admin", "staff"],
+    items: [
+      {
+        label: "Orders & Fulfillment",
+        icon: ShoppingBag,
+        path: "/admin/orders",
+        children: [
+          { label: "All Orders", path: "/admin/orders" },
+          { label: "New Orders", path: "/admin/orders?status=new" },
+          { label: "Confirmed", path: "/admin/orders?status=confirmed" },
+          { label: "Fulfilled", path: "/admin/orders?status=fulfilled" },
+          { label: "Cancelled", path: "/admin/orders?status=cancelled" },
+        ],
+      },
+      { label: "CRM Leads Pipeline", icon: Users, path: "/admin/leads" },
+      { label: "Customer Directory", icon: Users, path: "/admin/customers" },
+      { label: "Quotations & Proposals", icon: FileText, path: "/admin/quotes" },
+      { label: "Support Tickets & SLA", icon: FileText, path: "/admin/tickets" },
+      { label: "Discounts & Promo Codes", icon: Tag, path: "/admin/discounts" },
+      { label: "Product Reviews", icon: Tag, path: "/admin/reviews" },
+      {
+        label: "Affiliate Program",
+        icon: Share2,
+        path: "/admin/affiliates",
+        roles: ["admin"],
+        children: [
+          { label: "Affiliate Partners", path: "/admin/affiliates" },
+          { label: "Commission Payouts", path: "/admin/affiliates/payouts" },
+          { label: "Partner Analytics", path: "/admin/affiliates/analytics" },
+        ],
+      },
+      { label: "Early Access Waitlist", icon: Smartphone, path: "/admin/waitlist" },
+    ],
+  },
+  {
+    label: "Marketing & Content",
+    roles: ["admin", "staff"],
+    items: [
+      { label: "Blog & Knowledge Base", icon: Newspaper, path: "/admin/blog" },
+      {
+        label: "Email & Newsletter Studio",
+        icon: Send,
+        path: "/admin/newsletter",
+        children: [
+          { label: "Newsletter Subscribers", path: "/admin/newsletter" },
+          { label: "Email Broadcasts", path: "/admin/email" },
+          { label: "Delivery Status Logs", path: "/admin/email-status" },
+        ],
+      },
+      {
+        label: "Careers & Recruitment",
+        icon: Briefcase,
+        path: "/admin/careers",
+        children: [
+          { label: "Job Listings", path: "/admin/careers" },
+          { label: "Candidate Applications", path: "/admin/career-applications" },
+        ],
+      },
+      {
+        label: "Landing & Web Pages",
+        icon: Layout,
+        path: "/admin/landing",
+        roles: ["admin"],
+        children: [
+          { label: "Landing Sections", path: "/admin/landing" },
+          { label: "Static Web Pages", path: "/admin/content" },
+          { label: "Form Builder", path: "/admin/forms" },
+        ],
+      },
+      { label: "Media & Cloud Storage", icon: Layout, path: "/admin/storage" },
+    ],
+  },
+  {
+    label: "Staff & Administration",
     roles: ["admin"],
     items: [
-      { label: "Users & Roles", icon: UserRoundCheck, path: "/admin/users" },
-      { label: "Role Permissions", icon: ShieldCheck, path: "/admin/roles" },
-      { label: "Automations", icon: Zap, path: "/admin/automations" },
-      { label: "Audit Log", icon: ScrollText, path: "/admin/audit-log" },
-      { label: "Settings", icon: Settings, path: "/admin/settings" },
+      { label: "Staff & User Management", icon: UserRoundCheck, path: "/admin/users" },
+      { label: "Role Permissions Matrix", icon: ShieldCheck, path: "/admin/roles" },
+      { label: "System Automations", icon: Zap, path: "/admin/automations" },
+      { label: "Audit Trail Log", icon: ScrollText, path: "/admin/audit-log" },
+      {
+        label: "AI Platform Usage",
+        icon: Zap,
+        path: "/admin/ai-subscriptions",
+        children: [
+          { label: "AI Subscriptions", path: "/admin/ai-subscriptions" },
+          { label: "Credit Consumption", path: "/admin/ai-usage" },
+        ],
+      },
+      { label: "Website & System Settings", icon: Settings, path: "/admin/settings" },
     ],
   },
 ];
@@ -265,13 +312,19 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   useEffect(() => { saveSet(LS_PINS, pins); }, [pins]);
 
   const toggleGroup = (label: string) => setOpenGroups((p) => {
-    const n = new Set(p); n.has(label) ? n.delete(label) : n.add(label); return n;
+    const n = new Set(p);
+    if (n.has(label)) n.delete(label); else n.add(label);
+    return n;
   });
   const toggleItem = (path: string) => setOpenItems((p) => {
-    const n = new Set(p); n.has(path) ? n.delete(path) : n.add(path); return n;
+    const n = new Set(p);
+    if (n.has(path)) n.delete(path); else n.add(path);
+    return n;
   });
   const togglePin = (path: string) => setPins((p) => {
-    const n = new Set(p); n.has(path) ? n.delete(path) : n.add(path); return n;
+    const n = new Set(p);
+    if (n.has(path)) n.delete(path); else n.add(path);
+    return n;
   });
 
   // Search filter — matches labels; auto-expand any group/item with a match.

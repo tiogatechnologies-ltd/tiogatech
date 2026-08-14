@@ -59,7 +59,7 @@ export const cctvProducts: Product[] = [
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
 
 export function getProductsForInterests(interests: ProductInterest[], budget?: string): Product[] {
-  let results: Product[] = [];
+  const results: Product[] = [];
 
   const solarInterests: ProductInterest[] = ["solar", "panels", "batteries", "full_solar"];
   if (interests.some((i) => solarInterests.includes(i))) results.push(...solarProducts);

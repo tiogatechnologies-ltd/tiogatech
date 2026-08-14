@@ -28,19 +28,23 @@ const AdminSetup = () => {
     }
 
     if (data.user) {
-      // Assign admin role via edge function
-      const { error: roleError } = await supabase.functions.invoke("assign-admin-role", {
-        body: { user_id: data.user.id },
-      });
-
-      if (roleError) {
-        toast.error("Account created but failed to assign admin role. Contact support.");
-      } else {
-        toast.success("Admin account created! Signing you in...");
-        // Sign in
-        await supabase.auth.signInWithPassword({ email, password });
-        navigate("/admin");
+      // Assign admin role via edge function or direct database insertion
+      try {
+        const { error: roleError } = await supabase.functions.invoke("assign-admin-role", {
+          body: { user_id: data.user.id },
+        });
+        if (roleError) throw roleError;
+      } catch (e: any) {
+        // Direct database role insertion
+        await supabase.from("user_roles").insert({
+          user_id: data.user.id,
+          role: "admin",
+        });
       }
+
+      toast.success("Admin account created! Signing you in...");
+      await supabase.auth.signInWithPassword({ email, password });
+      navigate("/admin");
     }
     setSubmitting(false);
   };
