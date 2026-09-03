@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Trash2, Eye, X, Download, Search, MessageCircle, Mail, Plus, Clock, UserPlus, Loader2 } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
+
+const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
 
 interface Lead {
@@ -115,7 +117,7 @@ const AdminLeads = () => {
   const addActivity = async () => {
     if (!viewing || !newNote.trim()) return;
     setAddingActivity(true);
-    const { error } = await supabase.from("lead_activities").insert({
+    const { error } = await db.from("lead_activities").insert({
       lead_id: viewing.id,
       user_id: user?.id ?? null,
       action_type: newAction,

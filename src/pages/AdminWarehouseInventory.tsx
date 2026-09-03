@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const db = supabase as any;
+
 interface Warehouse {
   id: string;
   name: string;
@@ -129,10 +131,10 @@ const AdminWarehouseInventory = () => {
     setLoading(true);
     try {
       const [wRes, iRes, sRes, tRes] = await Promise.all([
-        supabase.from("warehouses").select("*").order("name"),
-        supabase.from("inventory_items").select("*").order("created_at", { ascending: false }),
-        supabase.from("serial_numbers").select("*").order("created_at", { ascending: false }),
-        supabase.from("stock_transfers").select("*").order("created_at", { ascending: false }),
+        db.from("warehouses").select("*").order("name"),
+        db.from("inventory_items").select("*").order("created_at", { ascending: false }),
+        db.from("serial_numbers").select("*").order("created_at", { ascending: false }),
+        db.from("stock_transfers").select("*").order("created_at", { ascending: false }),
       ]);
 
       if (wRes.data) setWarehouses(wRes.data as Warehouse[]);
@@ -157,7 +159,7 @@ const AdminWarehouseInventory = () => {
       return;
     }
     try {
-      const { error } = await supabase.from("inventory_items").insert({
+      const { error } = await db.from("inventory_items").insert({
         product_name: newProductName.trim(),
         warehouse_id: newWarehouseId,
         quantity_on_hand: Number(newQuantity),
@@ -181,7 +183,7 @@ const AdminWarehouseInventory = () => {
       return;
     }
     try {
-      const { error } = await supabase.from("serial_numbers").insert({
+      const { error } = await db.from("serial_numbers").insert({
         serial_no: newSerialNo.trim().toUpperCase(),
         product_name: newSerialProduct.trim(),
         warehouse_id: newSerialWarehouse || null,
@@ -209,7 +211,7 @@ const AdminWarehouseInventory = () => {
     }
     try {
       const transferNo = `WAY-${new Date().toISOString().slice(2, 7).replace("-", "")}-${Math.floor(1000 + Math.random() * 9000)}`;
-      const { data, error } = await supabase.from("stock_transfers").insert({
+      const { data, error } = await db.from("stock_transfers").insert({
         transfer_no: transferNo,
         from_warehouse_id: transferFrom,
         to_warehouse_id: transferTo,
@@ -235,7 +237,7 @@ const AdminWarehouseInventory = () => {
     try {
       const updates: any = { status: newStatus };
       if (newStatus === "received") updates.received_at = new Date().toISOString();
-      const { error } = await supabase.from("stock_transfers").update(updates).eq("id", id);
+      const { error } = await db.from("stock_transfers").update(updates).eq("id", id);
       if (error) throw error;
       toast.success(`Transfer status updated to ${newStatus}`);
       fetchData();
