@@ -159,6 +159,9 @@ export function usePageTracker() {
       utm_source: utm?.utm_source || null,
       utm_medium: utm?.utm_medium || null,
       utm_campaign: utm?.utm_campaign || null,
-    }).then(() => {}).catch(() => {});
+    // The typed client returns a PromiseLike, so use the rejection handler on
+    // `then` instead of chaining Promise-only `catch` for this fire-and-forget
+    // analytics write.
+    }).then(() => undefined, () => undefined);
   }, [location.pathname]);
 }

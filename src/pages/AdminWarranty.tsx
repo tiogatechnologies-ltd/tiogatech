@@ -26,6 +26,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const db = supabase as any;
+
 const PIPELINE = [
   "submitted",
   "under_review",
@@ -163,7 +165,7 @@ const AdminWarranty = () => {
         status: "under_review",
       };
 
-      const { data, error } = await supabase.from("warranty_claims").insert([payload]).select().single();
+      const { data, error } = await db.from("warranty_claims").insert([payload]).select().single();
       if (error) throw error;
 
       toast.success(`OEM RMA Case #${rmaNumber} logged successfully!`);

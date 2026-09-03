@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const db = supabase as any;
+
 interface WorkOrderItem {
   product_name: string;
   quantity: number;
@@ -111,7 +113,7 @@ const AdminWorkOrders = () => {
   const fetchWorkOrders = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("work_orders")
         .select("*")
         .order("scheduled_date", { ascending: false });
@@ -168,7 +170,7 @@ const AdminWorkOrders = () => {
         customer_notes: customerNotes.trim() || null,
       };
 
-      const { data, error } = await supabase.from("work_orders").insert([payload]).select().single();
+      const { data, error } = await db.from("work_orders").insert([payload]).select().single();
       if (error) throw error;
 
       toast.success(`Work Order #${workOrderNo} dispatched successfully!`);
@@ -193,7 +195,7 @@ const AdminWorkOrders = () => {
         commissioned_at: new Date().toISOString(),
       };
 
-      const { error } = await supabase.from("work_orders").update(updates).eq("id", commissioningModal.id);
+      const { error } = await db.from("work_orders").update(updates).eq("id", commissioningModal.id);
       if (error) throw error;
 
       toast.success(`Work Order #${commissioningModal.work_order_no} officially commissioned!`);
@@ -206,7 +208,7 @@ const AdminWorkOrders = () => {
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
-      const { error } = await supabase.from("work_orders").update({ status: newStatus }).eq("id", id);
+      const { error } = await db.from("work_orders").update({ status: newStatus }).eq("id", id);
       if (error) throw error;
       toast.success(`Status updated to ${newStatus}`);
       fetchWorkOrders();

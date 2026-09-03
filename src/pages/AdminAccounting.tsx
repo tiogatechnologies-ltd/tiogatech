@@ -18,6 +18,11 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+// The accounting tables are supplied by the ERP migration, while the checked
+// in generated client types predate those tables. Keep the boundary local to
+// this page and retain the explicit UI row types below.
+const db = supabase as any;
+
 interface Account {
   id: string;
   code: string;
@@ -90,8 +95,8 @@ const AdminAccounting = () => {
     setLoading(true);
     try {
       const [accRes, jrnRes] = await Promise.all([
-        supabase.from("chart_of_accounts").select("*").order("code"),
-        supabase.from("journal_entries").select("*").order("entry_date", { ascending: false }),
+        db.from("chart_of_accounts").select("*").order("code"),
+        db.from("journal_entries").select("*").order("entry_date", { ascending: false }),
       ]);
       if (accRes.data) setAccounts(accRes.data as Account[]);
       if (jrnRes.data) setEntries(jrnRes.data as JournalEntry[]);
@@ -113,7 +118,7 @@ const AdminAccounting = () => {
       return;
     }
     try {
-      const { error } = await supabase.from("chart_of_accounts").insert({
+      const { error } = await db.from("chart_of_accounts").insert({
         code: newAccCode.trim(),
         name: newAccName.trim(),
         account_type: newAccType,
@@ -162,7 +167,7 @@ const AdminAccounting = () => {
 
     try {
       const entryNo = `JRN-${new Date().toISOString().slice(2, 7).replace("-", "")}-${Math.floor(1000 + Math.random() * 9000)}`;
-      const { data, error } = await supabase.from("journal_entries").insert({
+      const { data, error } = await db.from("journal_entries").insert({
         entry_no: entryNo,
         entry_date: jrnDate,
         reference_type: jrnRefType,
@@ -183,7 +188,7 @@ const AdminAccounting = () => {
           debit: Number(l.debit || 0),
           credit: Number(l.credit || 0),
         }));
-        await supabase.from("journal_entry_lines").insert(linesPayload);
+        await db.from("journal_entry_lines").insert(linesPayload);
       }
 
       toast.success(`Journal Entry #${entryNo} posted to General Ledger!`);

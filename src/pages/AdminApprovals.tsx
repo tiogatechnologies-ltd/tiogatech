@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const db = supabase as any;
+
 interface ApprovalRequest {
   id: string;
   request_no: string;
@@ -84,7 +86,7 @@ const AdminApprovals = () => {
   const fetchRequests = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("approval_requests")
         .select("*")
         .order("created_at", { ascending: false });
@@ -133,7 +135,7 @@ const AdminApprovals = () => {
         status: "pending",
       };
 
-      const { error } = await supabase.from("approval_requests").insert([payload]);
+      const { error } = await db.from("approval_requests").insert([payload]);
       if (error) throw error;
 
       toast.success(`Approval Request #${requestNo} submitted for ${tierLabels[tier]}!`);
@@ -148,7 +150,7 @@ const AdminApprovals = () => {
 
   const handleApprove = async (req: ApprovalRequest) => {
     try {
-      const { error } = await supabase.from("approval_requests").update({
+      const { error } = await db.from("approval_requests").update({
         status: "approved",
         approved_by_name: "Super Admin (Executive Authorization)",
         approved_at: new Date().toISOString(),
@@ -171,7 +173,7 @@ const AdminApprovals = () => {
     }
 
     try {
-      const { error } = await supabase.from("approval_requests").update({
+      const { error } = await db.from("approval_requests").update({
         status: "rejected",
         rejection_reason: rejectionReason.trim(),
         approved_by_name: "Super Admin (Action Taken)",

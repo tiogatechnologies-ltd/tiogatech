@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Download, Loader2, Mail, Trash2, Send, X } from "lucide-react";
 import { toast } from "sonner";
 
+const db = supabase as any;
+
 interface Subscriber {
   id: string;
   email: string;
@@ -91,7 +93,7 @@ const AdminNewsletter = () => {
       toast.success(`Broadcast sent to ${data?.sent ?? activeCount} subscribers`);
     } catch (e: any) {
       // Record broadcast directly into newsletter_broadcasts table
-      await supabase.from("newsletter_broadcasts").insert({
+      await db.from("newsletter_broadcasts").insert({
         subject,
         sent_count: activeCount,
       });

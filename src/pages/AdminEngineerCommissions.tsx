@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const db = supabase as any;
+
 interface Commission {
   id: string;
   engineer_name: string;
@@ -82,8 +84,8 @@ const AdminEngineerCommissions = () => {
     setLoading(true);
     try {
       const [commRes, certRes] = await Promise.all([
-        supabase.from("engineer_commissions").select("*").order("created_at", { ascending: false }),
-        supabase.from("engineer_certifications").select("*").order("expiry_date"),
+        db.from("engineer_commissions").select("*").order("created_at", { ascending: false }),
+        db.from("engineer_certifications").select("*").order("expiry_date"),
       ]);
       if (commRes.data) setCommissions(commRes.data as Commission[]);
       if (certRes.data) setCerts(certRes.data as Certification[]);
@@ -121,7 +123,7 @@ const AdminEngineerCommissions = () => {
         status: "accrued",
       };
 
-      const { error } = await supabase.from("engineer_commissions").insert([payload]);
+      const { error } = await db.from("engineer_commissions").insert([payload]);
       if (error) throw error;
 
       toast.success(`Commission of ₦${totalPayoutEst.toLocaleString()} accrued for ${engName}!`);
@@ -140,7 +142,7 @@ const AdminEngineerCommissions = () => {
       if (newStatus === "approved") updatePayload.approved_by = "Lead Project Director";
       if (newStatus === "paid") updatePayload.paid_at = new Date().toISOString();
 
-      const { error } = await supabase.from("engineer_commissions").update(updatePayload).eq("id", id);
+      const { error } = await db.from("engineer_commissions").update(updatePayload).eq("id", id);
       if (error) throw error;
 
       toast.success(`Commission marked as ${newStatus.toUpperCase()}`);
@@ -168,7 +170,7 @@ const AdminEngineerCommissions = () => {
         status: "active",
       };
 
-      const { error } = await supabase.from("engineer_certifications").insert([payload]);
+      const { error } = await db.from("engineer_certifications").insert([payload]);
       if (error) throw error;
 
       toast.success(`Certification registered for ${certEngName}!`);

@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const db = supabase as any;
+
 interface InvoiceItem {
   description: string;
   quantity: number;
@@ -93,7 +95,7 @@ const AdminInvoices = () => {
   const fetchInvoices = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("invoices")
         .select("*")
         .order("created_at", { ascending: false });
@@ -167,7 +169,7 @@ const AdminInvoices = () => {
         notes: notes.trim() || null,
       };
 
-      const { data, error } = await supabase.from("invoices").insert([invoicePayload]).select().single();
+      const { data, error } = await db.from("invoices").insert([invoicePayload]).select().single();
       if (error) throw error;
 
       toast.success(`${invoiceType.toUpperCase()} #${invoiceNo} created successfully!`);
@@ -181,7 +183,7 @@ const AdminInvoices = () => {
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
-      const { error } = await supabase.from("invoices").update({ status: newStatus }).eq("id", id);
+      const { error } = await db.from("invoices").update({ status: newStatus }).eq("id", id);
       if (error) throw error;
       toast.success(`Invoice status updated to ${newStatus}`);
       fetchInvoices();
@@ -196,7 +198,7 @@ const AdminInvoices = () => {
   const handleDeleteInvoice = async (id: string) => {
     if (!confirm("Are you sure you want to delete this invoice?")) return;
     try {
-      const { error } = await supabase.from("invoices").delete().eq("id", id);
+      const { error } = await db.from("invoices").delete().eq("id", id);
       if (error) throw error;
       toast.success("Invoice deleted");
       fetchInvoices();
