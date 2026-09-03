@@ -94,7 +94,7 @@ export async function purgeAllMockData(): Promise<{ success: boolean; results: P
 
     // Log the purge to audit_log
     const totalCount = results.reduce((sum, r) => sum + r.count, 0);
-      await supabase.from("audit_log").insert({
+    await db.from("audit_log").insert({
       actor_email: "admin@tiogatechnologies.com",
       action: "PURGE_MOCK_DATA",
       entity: "system",

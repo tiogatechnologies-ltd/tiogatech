@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const db = supabase as any;
+
 interface JobCostingRecord {
   id: string;
   job_no: string;
@@ -58,7 +60,7 @@ const AdminJobCosting = () => {
   const fetchJobs = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("job_costing_records")
         .select("*")
         .order("completed_date", { ascending: false });
@@ -103,7 +105,7 @@ const AdminJobCosting = () => {
         completed_date: completedDate,
       };
 
-      const { error } = await supabase.from("job_costing_records").insert([payload]);
+      const { error } = await db.from("job_costing_records").insert([payload]);
       if (error) throw error;
 
       toast.success(`Job Costing Record #${jobNo} created! Margin: ${grossMarginPercent.toFixed(1)}%`);

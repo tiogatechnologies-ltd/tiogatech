@@ -96,6 +96,7 @@ const AdminFinanceSchedules = () => {
 
       await supabase.from("due_date_overrides").insert({
         application_id: row.application_id,
+          schedule_id: row.id,
         installment_no: row.installment_no,
         original_due_date: row.original_due_date || row.due_date,
         new_due_date: newDate,
