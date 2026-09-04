@@ -328,7 +328,6 @@ html.lenis, html.lenis body { height: auto; }
   html, body { overflow-x: hidden; max-width: 100vw; }
   img, video, canvas, iframe { max-width: 100%; height: auto; }
   @media (max-width: 640px) {
-    button, [role="button"] { min-height: 40px; }
     /* iOS skips zoom-on-focus when font-size >= 16px */
     input, textarea, select { font-size: 16px; }
     h1, h2, h3 { word-wrap: break-word; overflow-wrap: anywhere; }
@@ -336,6 +335,17 @@ html.lenis, html.lenis body { height: auto; }
   body { padding-bottom: env(safe-area-inset-bottom); }
 }
 
-/* Hide scrollbar utility (Catalog horizontal rails, filter chips) */
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-.scrollbar-hide::-webkit-scrollbar { display: none; }
+/* Hide scrollbar utility across all browser engines */
+.scrollbar-hide,
+.scrollbar-none,
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}

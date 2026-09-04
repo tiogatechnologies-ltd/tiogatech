@@ -346,9 +346,9 @@ export const ProductDetail = () => {
             {/* Left Column: Image Gallery (Curved edges, filled frame & multi-angle thumbnails) */}
             <div className="lg:col-span-7 xl:col-span-7 lg:sticky lg:top-28 space-y-4">
               {/* Main Image Stage */}
+              {/* Main Image Stage */}
               <div
-                onClick={() => images.length && setLightbox(true)}
-                className="group relative aspect-[4/3] sm:aspect-square md:aspect-[4/3] w-full rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] cursor-zoom-in flex items-center justify-center p-6 sm:p-10 transition-all hover:border-primary/40"
+                className="group relative aspect-[4/3] sm:aspect-square md:aspect-[4/3] w-full rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] flex items-center justify-center p-4 sm:p-10 transition-all hover:border-primary/40"
               >
                 {images[activeIdx] ? (
                   <img
@@ -383,8 +383,8 @@ export const ProductDetail = () => {
                 </div>
 
                 {/* Live Viewers Top Right */}
-                <div className="absolute top-4 right-14 pointer-events-none">
-                  <span className="flex items-center gap-1 text-[11px] font-semibold bg-midnight/70 backdrop-blur-sm text-white px-2.5 py-1 rounded-full shadow">
+                <div className="absolute top-4 right-4 pointer-events-none">
+                  <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold bg-midnight/70 backdrop-blur-sm text-white px-2.5 py-1 rounded-full shadow">
                     <span className="relative flex h-1.5 w-1.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                       <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
@@ -396,8 +396,9 @@ export const ProductDetail = () => {
                 {/* Zoom Lightbox Trigger */}
                 <button
                   type="button"
+                  onClick={(e) => { e.stopPropagation(); if (images.length) setLightbox(true); }}
                   aria-label="Expand image"
-                  className="absolute bottom-4 right-4 p-2.5 rounded-2xl bg-background/90 backdrop-blur-md border border-border/80 text-muted-foreground hover:text-primary transition-all shadow-sm group-hover:bg-primary group-hover:text-primary-foreground"
+                  className="absolute bottom-4 right-4 p-2.5 rounded-2xl bg-background/90 backdrop-blur-md border border-border/80 text-muted-foreground hover:text-primary transition-all shadow-sm hover:bg-primary hover:text-primary-foreground active:scale-95"
                 >
                   <Maximize2 size={16} />
                 </button>

@@ -42,14 +42,15 @@ const ImageLightbox = ({ images, startIndex = 0, onClose, alt = "" }: Props) => 
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center animate-fade-in"
+      className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex items-center justify-center animate-fade-in p-4"
       onClick={onClose}
+      style={{ paddingTop: "max(1rem, env(safe-area-inset-top))", paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
     >
       <button
         type="button"
-        aria-label="Close"
+        aria-label="Close image preview"
         onClick={onClose}
-        className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center backdrop-blur-md"
+        className="absolute top-4 right-4 z-20 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center backdrop-blur-md border border-white/20 shadow-xl transition-transform active:scale-95"
       >
         <X size={20} />
       </button>
@@ -58,17 +59,17 @@ const ImageLightbox = ({ images, startIndex = 0, onClose, alt = "" }: Props) => 
         <>
           <button
             type="button"
-            aria-label="Previous"
+            aria-label="Previous image"
             onClick={(e) => { e.stopPropagation(); setIdx((i) => (i - 1 + images.length) % images.length); }}
-            className="absolute left-2 sm:left-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center backdrop-blur-md"
+            className="absolute left-3 sm:left-6 z-20 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center backdrop-blur-md border border-white/20 shadow-xl transition-transform active:scale-95"
           >
             <ChevronLeft size={22} />
           </button>
           <button
             type="button"
-            aria-label="Next"
+            aria-label="Next image"
             onClick={(e) => { e.stopPropagation(); setIdx((i) => (i + 1) % images.length); }}
-            className="absolute right-2 sm:right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center backdrop-blur-md"
+            className="absolute right-3 sm:right-6 z-20 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center backdrop-blur-md border border-white/20 shadow-xl transition-transform active:scale-95"
           >
             <ChevronRight size={22} />
           </button>
@@ -76,7 +77,7 @@ const ImageLightbox = ({ images, startIndex = 0, onClose, alt = "" }: Props) => 
       )}
 
       <div
-        className="max-w-[95vw] max-h-[88vh] flex items-center justify-center"
+        className="max-w-[92vw] max-h-[80vh] flex items-center justify-center"
         onClick={(e) => e.stopPropagation()}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
@@ -84,23 +85,22 @@ const ImageLightbox = ({ images, startIndex = 0, onClose, alt = "" }: Props) => 
         <img
           src={images[idx]}
           alt={alt}
-          className="max-w-full max-h-[88vh] object-contain rounded-lg shadow-2xl select-none"
+          className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl select-none"
           draggable={false}
         />
       </div>
 
       {images.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md">
-          {images.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Go to image ${i + 1}`}
-              onClick={(e) => { e.stopPropagation(); setIdx(i); }}
-              className={`h-1.5 rounded-full transition-all ${i === idx ? "w-5 bg-white" : "w-1.5 bg-white/50"}`}
-            />
-          ))}
-          <span className="ml-2 text-[11px] text-white/80 font-medium">{idx + 1}/{images.length}</span>
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 border border-white/20 backdrop-blur-md shadow-lg z-20">
+          <div className="flex items-center gap-1.5">
+            {images.map((_, i) => (
+              <span
+                key={i}
+                className={`block h-1.5 rounded-full transition-all duration-300 ${i === idx ? "w-6 bg-white" : "w-1.5 bg-white/40"}`}
+              />
+            ))}
+          </div>
+          <span className="text-[11px] text-white/90 font-mono font-semibold ml-1">{idx + 1}/{images.length}</span>
         </div>
       )}
     </div>

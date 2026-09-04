@@ -168,15 +168,15 @@ const Packages = () => {
 
       {/* Trust stats bar */}
       <div className="bg-primary text-primary-foreground">
-        <div className="section-container py-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="section-container py-3 sm:py-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
           {TRUST_STATS.map(({ icon: Icon, value, label }) => (
-            <div key={label} className="flex items-center gap-3">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary-foreground/15 shrink-0">
-                <Icon size={16} />
+            <div key={label} className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <span className="grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-xl bg-primary-foreground/15 shrink-0">
+                <Icon size={15} />
               </span>
-              <div>
-                <p className="text-lg font-display font-bold leading-none">{value}</p>
-                <p className="text-[11px] text-primary-foreground/70">{label}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-base sm:text-lg font-display font-bold leading-none">{value}</p>
+                <p className="text-[10px] sm:text-[11px] text-primary-foreground/80 leading-tight mt-0.5">{label}</p>
               </div>
             </div>
           ))}
@@ -185,15 +185,16 @@ const Packages = () => {
 
       {/* Promo banner */}
       <div className="bg-amber-500/10 border-b border-amber-500/20">
-        <div className="section-container py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400">
-            <Flame size={16} className="shrink-0" />
-            <span className="font-semibold">Mid-Month Bundle Deals — Up to 17% Off.</span>
+        <div className="section-container py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-amber-800 dark:text-amber-300 font-semibold min-w-0">
+            <Flame size={14} className="shrink-0 text-amber-600" />
+            <span className="truncate">Mid-Month Deals — Up to 17% Off</span>
             <span className="text-xs opacity-80 hidden sm:inline">Pre-engineered systems priced below individual component retail.</span>
           </div>
-          <div className="flex items-center gap-2 text-xs font-bold text-amber-700 dark:text-amber-400 shrink-0">
-            <Tag size={13} />
-            Code: <span className="font-mono bg-amber-500/20 px-2 py-0.5 rounded">TIOGA2026</span>
+          <div className="flex items-center gap-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 shrink-0 ml-auto sm:ml-0">
+            <Tag size={12} />
+            <span>Code:</span>
+            <span className="font-mono bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded text-[11px]">TIOGA2026</span>
           </div>
         </div>
       </div>
@@ -201,7 +202,7 @@ const Packages = () => {
       {/* Sticky category tab bar */}
       <div className="sticky top-[60px] z-30 bg-background/90 backdrop-blur-xl border-b border-border shadow-sm">
         <div className="section-container">
-          <div className="flex items-center gap-1 sm:gap-2 py-2 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1.5 sm:gap-2 py-2 overflow-x-auto scrollbar-hide no-scrollbar">
             {CATEGORIES.map((c) => {
               const Icon = c.icon;
               const isActive = active === c.key;

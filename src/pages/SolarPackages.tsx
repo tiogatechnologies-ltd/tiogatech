@@ -53,8 +53,8 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/40 to-transparent" />
 
         {/* Top-left badges */}
-        <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
-          <span className="text-[10px] uppercase tracking-wider font-bold bg-gold text-midnight px-2.5 py-1 rounded-full shadow-sm">
+        <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 flex-wrap max-w-[62%]">
+          <span className="text-[10px] uppercase tracking-wider font-bold bg-gold text-midnight px-2 py-0.5 rounded-full shadow-sm">
             #{pkg.package_number}
           </span>
           <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-500 text-white px-2.5 py-1 rounded-full shadow flex items-center gap-1">

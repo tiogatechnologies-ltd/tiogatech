@@ -219,35 +219,35 @@ const SiteHeader = () => {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           <CartButton onDark={onDark} />
           <AccountButton onDark={onDark} />
-          {/* AI Recommendation badge — always high-contrast */}
-            <button
+          {/* Quote button — clean, high-contrast, no fuzzy blur */}
+          <button
             type="button"
             onClick={handleAiClick}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97] animate-ai-glow",
-              "bg-gold text-midnight border-2 border-gold hover:brightness-110 shadow-lg shadow-gold/40",
+              "inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97]",
+              "bg-gold text-midnight border border-gold hover:brightness-105 shadow-sm",
             )}
             aria-label="Get a Quote and Make Enquiry"
           >
-            <Sparkles size={13} className="fill-midnight" />
-            <span className="hidden xs:inline sm:inline">Get a Quote</span>
-            <span className="xs:hidden sm:hidden">Quote</span>
+            <Sparkles size={12} className="fill-midnight shrink-0" />
+            <span className="hidden sm:inline">Get a Quote</span>
+            <span className="sm:hidden font-extrabold">Quote</span>
           </button>
 
           <button
             onClick={() => setOpen(!open)}
             className={cn(
-              "lg:hidden p-2 rounded-md transition-colors",
+              "lg:hidden p-1.5 sm:p-2 rounded-lg transition-colors",
               onDark
                 ? "text-primary-foreground hover:bg-primary-foreground/10"
                 : "text-foreground hover:bg-muted",
             )}
             aria-label="Toggle menu"
           >
-            {open ? <X size={22} /> : <Menu size={22} />}
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>

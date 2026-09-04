@@ -116,32 +116,27 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
         <div className="absolute inset-0 bg-gradient-to-t from-midnight/30 via-transparent to-transparent pointer-events-none" />
 
         {/* Left Badges (top-left stack) */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
-          {customBadge && (
-            <span className="px-2.5 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider shadow flex items-center gap-1">
-              <Sparkles size={11} /> {customBadge}
-            </span>
-          )}
-          {product.is_featured && !customBadge && (
-            <span className="px-2.5 py-1 rounded-full bg-gold text-midnight text-[10px] font-bold uppercase tracking-wider shadow">
-              Featured
-            </span>
-          )}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
           {pct && (
-            <span className="px-2.5 py-1 rounded-full bg-red-500 text-white text-[10px] font-extrabold uppercase tracking-wider shadow flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow flex items-center gap-1 w-fit">
               <TrendingDown size={10} /> Save {pct}%
             </span>
           )}
-          {product.brand && (
-            <span className="px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-semibold backdrop-blur-md">
-              {product.brand}
+          {customBadge && (
+            <span className="px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow flex items-center gap-1 w-fit">
+              <Sparkles size={10} /> {customBadge}
+            </span>
+          )}
+          {product.is_featured && !customBadge && !pct && (
+            <span className="px-2 py-0.5 rounded-full bg-gold text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow w-fit">
+              Featured
             </span>
           )}
         </div>
 
-        {/* Live Viewers (top-right) */}
-        <div className="absolute top-3 right-12 z-10 pointer-events-none">
-          <span className="flex items-center gap-1 text-[10px] font-semibold bg-midnight/70 backdrop-blur-sm text-white px-2 py-1 rounded-full shadow">
+        {/* Live Viewers (bottom-left overlay on image) */}
+        <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
+          <span className="flex items-center gap-1 text-[9px] sm:text-[10px] font-semibold bg-midnight/80 backdrop-blur-sm text-white px-2 py-0.5 rounded-full shadow-sm">
             <span className="relative flex h-1.5 w-1.5 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
@@ -271,11 +266,11 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
               </p>
               {/* Was Price (slashed) */}
               {wasPrice && savedAmount && (
-                <div className="flex items-center gap-2 mt-0.5">
+                <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
                   <span className="text-xs text-muted-foreground line-through">
                     ₦{Math.round(wasPrice).toLocaleString("en-NG")}
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
                     <Tag size={9} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
                   </span>
                 </div>

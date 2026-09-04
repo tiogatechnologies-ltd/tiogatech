@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Camera, Eye, Sun, HardDrive, Check, Sparkles, ShoppingBag, Cpu } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
@@ -296,22 +296,20 @@ export const CCTV = () => {
                       <Camera size={14} /> Add System to Cart
                     </button>
 
-                    <div className="flex items-center gap-2">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                       <button
                         onClick={() => openLeadForm(`cctv_${pkg.id}`)}
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border bg-muted/40 hover:bg-muted text-[11px] font-semibold text-foreground transition-colors"
+                        className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-border bg-muted/40 hover:bg-muted text-[11px] font-semibold text-foreground transition-colors"
                       >
                         <Sparkles size={12} /> Free Site Survey
                       </button>
-                      <div className="flex-1">
-                        <FlexiblePaymentButton
-                          itemName={pkg.name}
-                          itemType="package"
-                          itemId={pkg.id}
-                          price={pkg.price ?? undefined}
-                          className="w-full text-[11px] py-2 rounded-xl"
-                        />
-                      </div>
+                      <FlexiblePaymentButton
+                        itemName={pkg.name}
+                        itemType="package"
+                        itemId={pkg.id}
+                        price={pkg.price ?? undefined}
+                        className="w-full text-[11px] py-2.5 rounded-xl"
+                      />
                     </div>
                   </div>
                 </div>

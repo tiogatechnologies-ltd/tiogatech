@@ -211,16 +211,16 @@ const SmartLocksSection = () => {
           </p>
         </div>
 
-        <div className="mb-10 -mx-4 px-4 overflow-x-auto scrollbar-none">
+        <div className="mb-8 sm:mb-10 -mx-4 px-4 overflow-x-auto scrollbar-hide no-scrollbar pb-1">
           <div className="flex justify-start sm:justify-center min-w-max sm:mx-auto">
-            <div className="inline-flex p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
+            <div className="inline-flex p-1 sm:p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
               {TABS.map(({ key, label, icon: Icon }) => (
                 <button
                   key={key}
                   onClick={() => setTab(key)}
-                  className={`whitespace-nowrap px-3 sm:px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all inline-flex items-center gap-1.5 ${
+                  className={`whitespace-nowrap px-3.5 sm:px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all inline-flex items-center gap-1.5 ${
                     tab === key
-                      ? "bg-primary text-primary-foreground shadow"
+                      ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >

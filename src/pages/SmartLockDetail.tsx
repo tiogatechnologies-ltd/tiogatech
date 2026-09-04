@@ -194,44 +194,44 @@ export const SmartLockDetail = () => {
                 <img src={lock.image} alt={lock.name} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-midnight/20 to-transparent" />
 
-                <div className="absolute top-4 left-4 flex flex-col gap-2">
+                <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
                   {lock.model && (
-                    <span className="text-[11px] font-bold bg-gold text-midnight px-3 py-1 rounded-full shadow">{lock.model}</span>
+                    <span className="text-[10px] font-bold bg-gold text-midnight px-2.5 py-0.5 rounded-full shadow w-fit">{lock.model}</span>
                   )}
                   {pct && (
-                    <span className="flex items-center gap-1 text-[11px] font-extrabold bg-red-500 text-white px-3 py-1 rounded-full shadow">
-                      <TrendingDown size={11} /> Save {pct}%
+                    <span className="flex items-center gap-1 text-[10px] font-extrabold bg-red-500 text-white px-2.5 py-0.5 rounded-full shadow w-fit">
+                      <TrendingDown size={10} /> Save {pct}%
                     </span>
                   )}
                   {lock.badge && (
-                    <span className="text-[11px] font-bold bg-primary text-primary-foreground px-3 py-1 rounded-full shadow">{lock.badge}</span>
+                    <span className="text-[10px] font-bold bg-primary text-primary-foreground px-2.5 py-0.5 rounded-full shadow w-fit">{lock.badge}</span>
                   )}
                 </div>
 
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-midnight/70 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1.5 rounded-full">
-                  <span className="relative flex h-2 w-2">
+                <div className="absolute top-3.5 right-3.5 flex items-center gap-1 bg-midnight/75 backdrop-blur-sm text-white text-[10px] sm:text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                  <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
                   </span>
-                  {viewers} viewing now
+                  {viewers} viewing
                 </div>
 
-                <div className="absolute bottom-0 inset-x-0 p-5">
-                  <p className="text-[11px] uppercase tracking-widest text-white/70 mb-1">{categoryLabel}</p>
-                  <h1 className="text-xl sm:text-2xl font-display font-bold text-white leading-tight">{lock.name}</h1>
+                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5">
+                  <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{categoryLabel}</p>
+                  <h1 className="text-lg sm:text-2xl font-display font-bold text-white leading-tight">{lock.name}</h1>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {[
-                  { icon: ShieldCheck, label: "1-Year Warranty", sub: "Manufacturer Backed" },
+                  { icon: ShieldCheck, label: "1-Yr Warranty", sub: "Manufacturer Backed" },
                   { icon: Wrench, label: "Pro Install", sub: "Within 48h" },
-                  { icon: Zap, label: "Easy Setup", sub: "30-min install" },
+                  { icon: Zap, label: "Quick Setup", sub: "30-min install" },
                 ].map(({ icon: Icon, label, sub }) => (
-                  <div key={label} className="p-3 rounded-2xl bg-card border border-border flex flex-col items-center text-center gap-1">
-                    <Icon size={18} className="text-primary" />
-                    <span className="text-[11px] font-bold text-foreground">{label}</span>
-                    <span className="text-[10px] text-muted-foreground">{sub}</span>
+                  <div key={label} className="p-2.5 sm:p-3 rounded-2xl bg-card border border-border flex flex-col items-center text-center gap-1 min-w-0">
+                    <Icon size={16} className="text-primary shrink-0 sm:w-[18px] sm:h-[18px]" />
+                    <span className="text-[10px] sm:text-[11px] font-bold text-foreground truncate w-full">{label}</span>
+                    <span className="text-[9px] sm:text-[10px] text-muted-foreground truncate w-full">{sub}</span>
                   </div>
                 ))}
               </div>

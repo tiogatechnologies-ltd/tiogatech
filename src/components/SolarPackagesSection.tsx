@@ -67,8 +67,8 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/55 to-midnight/20" />
 
       {/* Top badges row */}
-      <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
-        <span className="text-[10px] uppercase tracking-[0.18em] font-bold bg-gold text-midnight px-2.5 py-1 rounded-full shadow">
+      <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 flex-wrap max-w-[62%]">
+        <span className="text-[10px] uppercase tracking-[0.18em] font-bold bg-gold text-midnight px-2 py-0.5 rounded-full shadow">
           #{p.package_number}
         </span>
         {/* Promo savings pill */}
