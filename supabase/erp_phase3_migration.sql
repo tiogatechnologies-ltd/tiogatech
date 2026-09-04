@@ -142,27 +142,39 @@ ALTER TABLE public.job_costing_records ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.engineer_commissions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.engineer_certifications ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.chart_of_accounts TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.journal_entries TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.journal_entry_lines TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.job_costing_records TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.engineer_commissions TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.engineer_certifications TO anon, authenticated, service_role;
+-- SECURITY NOTE (corrected): originally `USING (true)` for `anon,
+-- authenticated` - any visitor could read/write/delete the general ledger,
+-- journal entries and engineer commission/payroll data with no login.
+-- Chart of accounts and journal entries are admin-only (core accounting);
+-- job costing and engineer records are admin/staff.
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.chart_of_accounts TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.journal_entries TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.journal_entry_lines TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.job_costing_records TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.engineer_commissions TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.engineer_certifications TO authenticated;
+GRANT ALL ON TABLE public.chart_of_accounts, public.journal_entries, public.journal_entry_lines, public.job_costing_records, public.engineer_commissions, public.engineer_certifications TO service_role;
 
 DROP POLICY IF EXISTS "Allow full access on chart_of_accounts" ON public.chart_of_accounts;
-CREATE POLICY "Allow full access on chart_of_accounts" ON public.chart_of_accounts FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage chart_of_accounts fix" ON public.chart_of_accounts;
+CREATE POLICY "Admins manage chart_of_accounts fix" ON public.chart_of_accounts FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
 DROP POLICY IF EXISTS "Allow full access on journal_entries" ON public.journal_entries;
-CREATE POLICY "Allow full access on journal_entries" ON public.journal_entries FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage journal_entries fix" ON public.journal_entries;
+CREATE POLICY "Admins manage journal_entries fix" ON public.journal_entries FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
 DROP POLICY IF EXISTS "Allow full access on journal_entry_lines" ON public.journal_entry_lines;
-CREATE POLICY "Allow full access on journal_entry_lines" ON public.journal_entry_lines FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage journal_entry_lines fix" ON public.journal_entry_lines;
+CREATE POLICY "Admins manage journal_entry_lines fix" ON public.journal_entry_lines FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
 DROP POLICY IF EXISTS "Allow full access on job_costing_records" ON public.job_costing_records;
-CREATE POLICY "Allow full access on job_costing_records" ON public.job_costing_records FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage job_costing_records fix" ON public.job_costing_records;
+CREATE POLICY "Staff manage job_costing_records fix" ON public.job_costing_records FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on engineer_commissions" ON public.engineer_commissions;
-CREATE POLICY "Allow full access on engineer_commissions" ON public.engineer_commissions FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage engineer_commissions fix" ON public.engineer_commissions;
+CREATE POLICY "Staff manage engineer_commissions fix" ON public.engineer_commissions FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on engineer_certifications" ON public.engineer_certifications;
-CREATE POLICY "Allow full access on engineer_certifications" ON public.engineer_certifications FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage engineer_certifications fix" ON public.engineer_certifications;
+CREATE POLICY "Staff manage engineer_certifications fix" ON public.engineer_certifications FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));

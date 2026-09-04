@@ -159,39 +159,66 @@ ALTER TABLE public.automation_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.automation_runs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.profiles TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.user_roles TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.custom_roles TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.role_page_permissions TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.user_custom_roles TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.audit_log TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.automation_settings TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.automation_runs TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.site_settings TO anon, authenticated, service_role;
+-- SECURITY NOTE (corrected): the original version of this file granted
+-- `USING (true) WITH CHECK (true)` to `anon, authenticated` on every one of
+-- these tables - i.e. any visitor, logged in or not, could read AND write
+-- user_roles (grant themselves admin), profiles, audit_log, site_settings,
+-- etc. That was superseded by the properly role-scoped policies below and
+-- in full_schema_migration.sql, which is what the live database actually
+-- runs. Kept here, corrected, so this file is safe to ever re-run.
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.profiles TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.user_roles TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.custom_roles TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.role_page_permissions TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.user_custom_roles TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.audit_log TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.automation_settings TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.automation_runs TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.site_settings TO authenticated;
+GRANT ALL ON TABLE public.profiles, public.user_roles, public.custom_roles, public.role_page_permissions, public.user_custom_roles, public.audit_log, public.automation_settings, public.automation_runs, public.site_settings TO service_role;
 
 DROP POLICY IF EXISTS "Allow full access on profiles" ON public.profiles;
-CREATE POLICY "Allow full access on profiles" ON public.profiles FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Users read own profile" ON public.profiles;
+CREATE POLICY "Users read own profile" ON public.profiles FOR SELECT TO authenticated USING (id = auth.uid() OR public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
+DROP POLICY IF EXISTS "Users update own profile" ON public.profiles;
+CREATE POLICY "Users update own profile" ON public.profiles FOR UPDATE TO authenticated USING (id = auth.uid() OR public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (id = auth.uid() OR public.has_role(auth.uid(), 'admin'::app_role));
 
 DROP POLICY IF EXISTS "Allow full access on user_roles" ON public.user_roles;
-CREATE POLICY "Allow full access on user_roles" ON public.user_roles FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage user_roles" ON public.user_roles;
+CREATE POLICY "Admins manage user_roles" ON public.user_roles FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
 DROP POLICY IF EXISTS "Allow full access on custom_roles" ON public.custom_roles;
-CREATE POLICY "Allow full access on custom_roles" ON public.custom_roles FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage custom_roles fix" ON public.custom_roles;
+CREATE POLICY "Admins manage custom_roles fix" ON public.custom_roles FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
 DROP POLICY IF EXISTS "Allow full access on role_page_permissions" ON public.role_page_permissions;
-CREATE POLICY "Allow full access on role_page_permissions" ON public.role_page_permissions FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage role_page_permissions fix" ON public.role_page_permissions;
+CREATE POLICY "Admins manage role_page_permissions fix" ON public.role_page_permissions FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
 DROP POLICY IF EXISTS "Allow full access on user_custom_roles" ON public.user_custom_roles;
-CREATE POLICY "Allow full access on user_custom_roles" ON public.user_custom_roles FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage user_custom_roles fix" ON public.user_custom_roles;
+CREATE POLICY "Admins manage user_custom_roles fix" ON public.user_custom_roles FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
 DROP POLICY IF EXISTS "Allow full access on audit_log" ON public.audit_log;
-CREATE POLICY "Allow full access on audit_log" ON public.audit_log FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins read audit_log fix" ON public.audit_log;
+CREATE POLICY "Admins read audit_log fix" ON public.audit_log FOR SELECT TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
+DROP POLICY IF EXISTS "System inserts audit_log fix" ON public.audit_log;
+CREATE POLICY "System inserts audit_log fix" ON public.audit_log FOR INSERT TO authenticated WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on automation_settings" ON public.automation_settings;
-CREATE POLICY "Allow full access on automation_settings" ON public.automation_settings FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage automation_settings fix" ON public.automation_settings;
+CREATE POLICY "Admins manage automation_settings fix" ON public.automation_settings FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
+DROP POLICY IF EXISTS "Staff read automation_settings fix" ON public.automation_settings;
+CREATE POLICY "Staff read automation_settings fix" ON public.automation_settings FOR SELECT TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on automation_runs" ON public.automation_runs;
-CREATE POLICY "Allow full access on automation_runs" ON public.automation_runs FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage automation_runs fix" ON public.automation_runs;
+CREATE POLICY "Admins manage automation_runs fix" ON public.automation_runs FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
+DROP POLICY IF EXISTS "Staff read automation_runs fix" ON public.automation_runs;
+CREATE POLICY "Staff read automation_runs fix" ON public.automation_runs FOR SELECT TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on site_settings" ON public.site_settings;
-CREATE POLICY "Allow full access on site_settings" ON public.site_settings FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Admins manage site_settings fix" ON public.site_settings;
+CREATE POLICY "Admins manage site_settings fix" ON public.site_settings FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
+DROP POLICY IF EXISTS "Anyone reads site_settings fix" ON public.site_settings;
+CREATE POLICY "Anyone reads site_settings fix" ON public.site_settings FOR SELECT TO anon, authenticated USING (true);

@@ -162,8 +162,10 @@ const AdminUsers = () => {
 
         // Ensure role
         if (!editingUser.roles.includes(formRole)) {
-          await supabase.from("user_roles").delete().eq("user_id", editingUser.id);
-          await supabase.from("user_roles").insert({ user_id: editingUser.id, role: formRole });
+          const { error: delErr } = await supabase.from("user_roles").delete().eq("user_id", editingUser.id);
+          if (delErr) throw delErr;
+          const { error: insErr } = await supabase.from("user_roles").insert({ user_id: editingUser.id, role: formRole });
+          if (insErr) throw insErr;
         }
 
         toast.success(`Updated staff record for ${formName}`);
@@ -238,8 +240,10 @@ const AdminUsers = () => {
   const handleDeleteUser = async (userId: string, name: string) => {
     if (!confirm(`Are you sure you want to remove account "${name}"?`)) return;
     try {
-      await supabase.from("user_roles").delete().eq("user_id", userId);
-      await supabase.from("profiles").delete().eq("id", userId);
+      const { error: roleErr } = await supabase.from("user_roles").delete().eq("user_id", userId);
+      if (roleErr) throw roleErr;
+      const { error: profErr } = await supabase.from("profiles").delete().eq("id", userId);
+      if (profErr) throw profErr;
       toast.success("Account deleted successfully");
       loadUsers();
     } catch (err: any) {

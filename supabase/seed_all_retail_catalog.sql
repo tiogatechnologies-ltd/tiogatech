@@ -3,19 +3,26 @@
 -- ==========================================================
 
 -- Enable RLS and create public read policy for products
+-- SECURITY NOTE (corrected): "Public can view active products" originally
+-- checked `USING (true)` with no is_active filter - draft/inactive products
+-- were publicly visible. "Authenticated users can manage products" let ANY
+-- logged-in user (any customer account) edit or delete the catalog, not
+-- just admins. Both fixed to match what the live database actually runs.
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Public can view active products" ON public.products;
 CREATE POLICY "Public can view active products"
   ON public.products FOR SELECT
-  USING (true);
+  TO anon, authenticated
+  USING (is_active = true);
 
 DROP POLICY IF EXISTS "Authenticated users can manage products" ON public.products;
-CREATE POLICY "Authenticated users can manage products"
+DROP POLICY IF EXISTS "Admins full access on products fix" ON public.products;
+CREATE POLICY "Admins full access on products fix"
   ON public.products FOR ALL
   TO authenticated
-  USING (true)
-  WITH CHECK (true);
+  USING (public.has_role(auth.uid(), 'admin'::app_role))
+  WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
 -- Upsert All 35+ Products into products table
 INSERT INTO public.products (

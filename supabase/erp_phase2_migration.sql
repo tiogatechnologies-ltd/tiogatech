@@ -58,11 +58,27 @@ ALTER TABLE public.warranty_claims ADD COLUMN IF NOT EXISTS oem_rma_status TEXT 
 ALTER TABLE public.approval_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.warranty_claims ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.approval_requests TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.warranty_claims TO anon, authenticated, service_role;
+-- SECURITY NOTE (corrected): originally `USING (true)` for `anon,
+-- authenticated` - i.e. any visitor, logged in or not, could read/write/
+-- delete every approval request and warranty claim. Scoped to match the
+-- policies the live database actually runs: staff/admin manage everything,
+-- customers only see and create their own claims.
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.approval_requests TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.warranty_claims TO authenticated;
+GRANT ALL ON TABLE public.approval_requests, public.warranty_claims TO service_role;
 
 DROP POLICY IF EXISTS "Allow full access on approval_requests" ON public.approval_requests;
-CREATE POLICY "Allow full access on approval_requests" ON public.approval_requests FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage approval_requests fix" ON public.approval_requests;
+CREATE POLICY "Staff manage approval_requests fix" ON public.approval_requests FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on warranty_claims" ON public.warranty_claims;
-CREATE POLICY "Allow full access on warranty_claims" ON public.warranty_claims FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage claims" ON public.warranty_claims;
+CREATE POLICY "Staff manage claims" ON public.warranty_claims FOR ALL TO authenticated
+  USING (public.has_any_role(auth.uid(), ARRAY['admin'::app_role,'staff'::app_role,'engineer'::app_role]))
+  WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin'::app_role,'staff'::app_role,'engineer'::app_role]));
+DROP POLICY IF EXISTS "Customers view own claims" ON public.warranty_claims;
+CREATE POLICY "Customers view own claims" ON public.warranty_claims FOR SELECT TO authenticated
+  USING (user_id = auth.uid() OR lower(customer_email) = lower(COALESCE(auth.jwt() ->> 'email','')));
+DROP POLICY IF EXISTS "Customers create own claims" ON public.warranty_claims;
+CREATE POLICY "Customers create own claims" ON public.warranty_claims FOR INSERT TO authenticated
+  WITH CHECK (user_id = auth.uid() AND lower(customer_email) = lower(COALESCE(auth.jwt() ->> 'email','')));

@@ -71,28 +71,48 @@ CREATE TABLE IF NOT EXISTS public.product_bundles (
 );
 
 -- 5. RLS POLICIES FOR E-COMMERCE STORE
+-- SECURITY NOTE (corrected): "Admins can manage..." below originally checked
+-- `USING (true)` - despite the name, that let ANY authenticated user (not
+-- just admins) edit or delete every review/variant/banner/bundle, and
+-- "Public can submit reviews" let anon insert a review with any `status`,
+-- e.g. posting it as already 'approved' and bypassing moderation entirely.
+-- Rewritten to match the real role checks used elsewhere (has_any_role).
 ALTER TABLE public.product_reviews ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Public can view approved reviews" ON public.product_reviews;
 CREATE POLICY "Public can view approved reviews" ON public.product_reviews FOR SELECT TO anon, authenticated USING (status IN ('approved', 'featured'));
 DROP POLICY IF EXISTS "Public can submit reviews" ON public.product_reviews;
-CREATE POLICY "Public can submit reviews" ON public.product_reviews FOR INSERT TO anon, authenticated WITH CHECK (true);
+DROP POLICY IF EXISTS "Users submit own pending reviews fix" ON public.product_reviews;
+CREATE POLICY "Users submit own pending reviews fix" ON public.product_reviews FOR INSERT TO authenticated
+  WITH CHECK (user_id = auth.uid() AND status = 'pending');
 DROP POLICY IF EXISTS "Admins can manage all reviews" ON public.product_reviews;
-CREATE POLICY "Admins can manage all reviews" ON public.product_reviews FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage all reviews fix" ON public.product_reviews;
+CREATE POLICY "Staff manage all reviews fix" ON public.product_reviews FOR ALL TO authenticated
+  USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]))
+  WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 ALTER TABLE public.product_variants ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Public can view active variants" ON public.product_variants;
 CREATE POLICY "Public can view active variants" ON public.product_variants FOR SELECT TO anon, authenticated USING (is_active = true);
 DROP POLICY IF EXISTS "Admins can manage variants" ON public.product_variants;
-CREATE POLICY "Admins can manage variants" ON public.product_variants FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage variants fix" ON public.product_variants;
+CREATE POLICY "Staff manage variants fix" ON public.product_variants FOR ALL TO authenticated
+  USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]))
+  WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 ALTER TABLE public.store_banners ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Public can view active store banners" ON public.store_banners;
 CREATE POLICY "Public can view active store banners" ON public.store_banners FOR SELECT TO anon, authenticated USING (is_active = true);
 DROP POLICY IF EXISTS "Admins can manage store banners" ON public.store_banners;
-CREATE POLICY "Admins can manage store banners" ON public.store_banners FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage store banners fix" ON public.store_banners;
+CREATE POLICY "Staff manage store banners fix" ON public.store_banners FOR ALL TO authenticated
+  USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]))
+  WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 ALTER TABLE public.product_bundles ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Public can view active product bundles" ON public.product_bundles;
 CREATE POLICY "Public can view active product bundles" ON public.product_bundles FOR SELECT TO anon, authenticated USING (is_active = true);
 DROP POLICY IF EXISTS "Admins can manage product bundles" ON public.product_bundles;
-CREATE POLICY "Admins can manage product bundles" ON public.product_bundles FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage product bundles fix" ON public.product_bundles;
+CREATE POLICY "Staff manage product bundles fix" ON public.product_bundles FOR ALL TO authenticated
+  USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]))
+  WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));

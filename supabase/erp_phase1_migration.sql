@@ -143,28 +143,39 @@ ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.work_orders ENABLE ROW LEVEL SECURITY;
 
 -- Grant permissions to standard roles
-GRANT ALL ON TABLE public.warehouses TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.inventory_items TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.serial_numbers TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.stock_transfers TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.invoices TO anon, authenticated, service_role;
-GRANT ALL ON TABLE public.work_orders TO anon, authenticated, service_role;
+-- SECURITY NOTE (corrected): this originally granted `USING (true)` to
+-- `anon, authenticated` - i.e. any visitor could read/write warehouse
+-- inventory, invoices and work orders with no login at all. Scoped to
+-- admin/staff (internal ERP data), matching what the live database runs.
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.warehouses TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.inventory_items TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.serial_numbers TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.stock_transfers TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.invoices TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.work_orders TO authenticated;
+GRANT ALL ON TABLE public.warehouses, public.inventory_items, public.serial_numbers, public.stock_transfers, public.invoices, public.work_orders TO service_role;
 
--- Public RLS Policies
+-- Staff/admin-only RLS Policies
 DROP POLICY IF EXISTS "Allow full access on warehouses" ON public.warehouses;
-CREATE POLICY "Allow full access on warehouses" ON public.warehouses FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage warehouses fix" ON public.warehouses;
+CREATE POLICY "Staff manage warehouses fix" ON public.warehouses FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on inventory_items" ON public.inventory_items;
-CREATE POLICY "Allow full access on inventory_items" ON public.inventory_items FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage inventory_items fix" ON public.inventory_items;
+CREATE POLICY "Staff manage inventory_items fix" ON public.inventory_items FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on serial_numbers" ON public.serial_numbers;
-CREATE POLICY "Allow full access on serial_numbers" ON public.serial_numbers FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage serial_numbers fix" ON public.serial_numbers;
+CREATE POLICY "Staff manage serial_numbers fix" ON public.serial_numbers FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on stock_transfers" ON public.stock_transfers;
-CREATE POLICY "Allow full access on stock_transfers" ON public.stock_transfers FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage stock_transfers fix" ON public.stock_transfers;
+CREATE POLICY "Staff manage stock_transfers fix" ON public.stock_transfers FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on invoices" ON public.invoices;
-CREATE POLICY "Allow full access on invoices" ON public.invoices FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage invoices fix" ON public.invoices;
+CREATE POLICY "Staff manage invoices fix" ON public.invoices FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));
 
 DROP POLICY IF EXISTS "Allow full access on work_orders" ON public.work_orders;
-CREATE POLICY "Allow full access on work_orders" ON public.work_orders FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Staff manage work_orders fix" ON public.work_orders;
+CREATE POLICY "Staff manage work_orders fix" ON public.work_orders FOR ALL TO authenticated USING (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[])) WITH CHECK (public.has_any_role(auth.uid(), ARRAY['admin','staff']::app_role[]));

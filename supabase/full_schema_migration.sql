@@ -99,6 +99,15 @@ DROP POLICY IF EXISTS "Admins can read all roles" ON public.user_roles;
 CREATE POLICY "Admins can read all roles" ON public.user_roles FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin') OR user_id = auth.uid());
 
+-- BUGFIX: no INSERT/UPDATE/DELETE policy existed for user_roles anywhere in
+-- this schema, so with RLS enabled and no matching policy, ALL role writes
+-- were silently rejected - AdminUsers.tsx could never actually assign,
+-- change or remove anyone's role, even for a genuine admin.
+DROP POLICY IF EXISTS "Admins manage user roles" ON public.user_roles;
+CREATE POLICY "Admins manage user roles" ON public.user_roles FOR ALL TO authenticated
+  USING (public.has_role(auth.uid(), 'admin'::app_role))
+  WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
+
 -- Products table (replaces hardcoded data)
 CREATE TABLE IF NOT EXISTS public.products (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
