@@ -23,10 +23,13 @@ const secondaryLinks = [
 ];
 
 const productSubLinks = [
-  { label: "Packages", to: "/packages" },
-  { label: "Retail", to: "/coming-soon" },
+  { label: "Retail Hardware Store", to: "/retail" },
+  { label: "Solar Packages", to: "/packages?category=solar" },
+  { label: "Smart Locks (STAMA)", to: "/packages?category=locks" },
+  { label: "Home Automation", to: "/packages?category=automation" },
+  { label: "CCTV & Security", to: "/cctv" },
   { label: "Energy Calculator", to: "/energy-calculator" },
-  { label: "VoltAi", to: "/voltai" },
+  { label: "VoltAi Smart IoT", to: "/voltai" },
 ];
 
 // Open the lead form anywhere on the site by dispatching this event.

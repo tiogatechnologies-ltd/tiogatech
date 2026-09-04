@@ -17,12 +17,12 @@ const company = [
 ];
 
 const solutions = [
-  { label: "Packages", to: "/packages" },
-  { label: "Solar Inverters", to: "/catalog?cat=inverter" },
-  { label: "Solar Panels", to: "/catalog?cat=panels" },
-  { label: "Smart Locks", to: "/catalog?cat=smart-lock" },
-  { label: "CCTV", to: "/catalog?cat=cctv" },
-  { label: "Smart Lights", to: "/catalog?cat=smart-lights" },
+  { label: "Engineering Solutions", to: "/solutions" },
+  { label: "Solar Packages", to: "/solar-packages" },
+  { label: "Smart Locks (STAMA)", to: "/smart-locks" },
+  { label: "Home Automation", to: "/home-automation" },
+  { label: "CCTV & Security", to: "/cctv" },
+  { label: "Retail Store", to: "/retail" },
 ];
 
 const support = [

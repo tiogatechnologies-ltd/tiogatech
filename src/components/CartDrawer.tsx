@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
 import { saveDraft, authHref } from "@/lib/authGate";
 import AuthGatePrompt from "@/components/AuthGatePrompt";
+import { resolveProductImage } from "@/lib/productImages";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -120,7 +121,7 @@ const CartDrawer = () => {
               {items.map((i) => (
                 <div key={i.id} className="flex gap-3 rounded-2xl border border-border bg-card p-3">
                   {i.image ? (
-                    <img src={i.image} alt="" className="h-16 w-16 rounded-xl object-cover bg-muted shrink-0"  loading="lazy" decoding="async" />
+                    <img src={resolveProductImage(i.image, i.category)} alt="" className="h-16 w-16 rounded-xl object-contain bg-muted p-1 shrink-0" loading="lazy" decoding="async" />
                   ) : (
                     <div className="h-16 w-16 rounded-xl bg-muted shrink-0 grid place-items-center text-muted-foreground text-xs">
                       {i.type === "package" ? "Pkg" : "Item"}

@@ -1,1122 +1,956 @@
+import { useState, useEffect, useMemo } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { MessageCircle, ArrowLeft, ChevronDown, ChevronUp, Zap, Sparkles, Loader2, Expand, ShoppingBag, Search, SlidersHorizontal, X, Flame, TrendingUp, Tag, PackageOpen, Star, ArrowRight } from "lucide-react";
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import ImageLightbox from "@/components/ImageLightbox";
+import {
+  Search,
+  SlidersHorizontal,
+  Grid,
+  List,
+  Zap,
+  Battery,
+  Lock,
+  Home as HomeIcon,
+  Shield,
+  Truck,
+  RotateCcw,
+  Tag,
+  Award,
+  Loader2,
+  Heart,
+  Camera,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  ArrowLeft,
+  CheckCircle2,
+  Check,
+  ShoppingBag,
+  Sliders,
+  Filter,
+  ArrowRight,
+  Package,
+  Cpu,
+} from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import bgLagosNight from "@/assets/bg-lagos-skyline.jpg";
 import SEO from "@/components/SEO";
-import { useCart } from "@/contexts/CartContext";
-import { trackConversion } from "@/lib/tracking";
-import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import { ProductCard } from "@/components/retail/ProductCard";
+import { ProductFilterSidebar } from "@/components/retail/ProductFilterSidebar";
+import { QuickViewModal } from "@/components/retail/QuickViewModal";
+import { ProductCompareTray } from "@/components/retail/ProductCompareTray";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-const trackProductClick = (productId: string) => {
-  const sessionId = sessionStorage.getItem("tioga_session_id") || "unknown";
-  supabase.from("product_clicks").insert({ product_id: productId, session_id: sessionId }).then(() => {});
-};
+import { supabase } from "@/integrations/supabase/client";
+import { useWishlist } from "@/hooks/useWishlist";
+import { useCart } from "@/contexts/CartContext";
+import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
+import { inferBrand } from "@/lib/productBrand";
+import type { RetailProduct } from "@/types/retail";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
-import { productPath } from "@/lib/productSlug";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-  PaginationEllipsis,
-} from "@/components/ui/pagination";
+import { toast } from "sonner";
 
-const WHATSAPP = "https://wa.me/2348178000023";
-const PRODUCTS_PER_PAGE = 15;
-
-// Parse "₦450,000" / "450000" / "Price on request" to a number (NaN if unknown)
-const parsePriceNaira = (price?: string | null): number => {
-  if (!price) return NaN;
-  const cleaned = price.replace(/[^\d.]/g, "");
-  if (!cleaned) return NaN;
-  const n = parseFloat(cleaned);
-  return isFinite(n) && n > 0 ? n : NaN;
-};
-
-const PRICE_BUCKETS: { key: string; label: string; test: (n: number) => boolean }[] = [
-  { key: "u500", label: "Under ₦500k", test: (n) => n > 0 && n < 500_000 },
-  { key: "500-1m", label: "₦500k – ₦1M", test: (n) => n >= 500_000 && n < 1_000_000 },
-  { key: "1m-3m", label: "₦1M – ₦3M", test: (n) => n >= 1_000_000 && n < 3_000_000 },
-  { key: "3m+", label: "₦3M+", test: (n) => n >= 3_000_000 },
-  { key: "request", label: "Price on request", test: (n) => !isFinite(n) || n <= 0 },
-];
-
-type SortKey = "recommended" | "price-asc" | "price-desc" | "newest" | "name";
-
-
-interface Product {
-  id: string;
-  name: string;
-  category: string;
-  series: string | null;
-  description: string;
-  features: string[];
-  best_for: string;
-  price: string | null;
-  tier: string;
-  image_url: string | null;
-  specifications: Record<string, string> | null;
-  tags: string[] | null;
-  created_at?: string;
-}
-
+type SortOption = "ai-rank" | "featured" | "price-asc" | "price-desc" | "rating";
 
 interface AIRecommendation {
   recommendedProducts: string[];
   recommendedCombo?: string;
   reason: string;
-  budgetFit: string;
-  tip: string;
-  // legacy
-  recommendedPackage?: string;
-  alternativePackage?: string;
+  budgetFit?: string;
+  tip?: string;
 }
 
-const tierColors: Record<string, string> = {
-  premium: "bg-accent/15 text-accent-foreground border-accent/30",
-  mid: "bg-primary/10 text-primary border-primary/30",
-  affordable: "bg-muted text-muted-foreground border-border",
-  entry: "bg-background text-muted-foreground border-border",
-};
-
-const tierLabels: Record<string, string> = {
-  premium: "Premium",
-  mid: "Mid-tier",
-  affordable: "Affordable",
-  entry: "Entry Level",
-};
-
-function getTierOrder(budget?: string): string[] {
-  if (budget === "₦3M+" || budget === "₦1M to ₦3M") return ["premium", "mid", "affordable", "entry"];
-  if (budget === "Below ₦500k") return ["entry", "affordable", "mid", "premium"];
-  return ["mid", "premium", "affordable", "entry"];
-}
-
-// Map form interests to DB categories
-const CATEGORY_MAP: Record<string, string> = {
-  solar: "solar",
-  panels: "solar",
-  batteries: "solar",
-  full_solar: "solar",
-  smartlocks: "smart_locks",
-  smarthome: "smarthome",
-  cctv: "cctv",
-};
-
-const CATEGORY_LABELS: Record<string, string> = {
-  solar: "Solar Products",
-  smart_locks: "Smart Locks",
-  smarthome: "Smart Home",
-  cctv: "CCTV & Security",
-};
-
-const ProductCard = ({ product, isRecommended, pickNumber, gallery, marketingBadges, interestCount }: { product: Product; isRecommended?: boolean; pickNumber?: number; gallery?: string[]; marketingBadges?: string[]; interestCount?: number }) => {
-  const [expanded, setExpanded] = useState(false);
-  const [imgFailed, setImgFailed] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [lightbox, setLightbox] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const { add: addToCart } = useCart();
-  const waMsg = encodeURIComponent(`Hi, I am interested in the ${product.name}${product.price ? ` (${product.price})` : ""}`);
-  const isCombo = product.tags?.includes("combo") || product.series?.includes("Combo");
-
-  // Build a clean image list: prefer gallery, else fall back to product.image_url
-  const allImages = (gallery && gallery.length ? gallery : [product.image_url ?? ""])
-    .map((u) => (u ?? "").trim())
-    .filter(Boolean);
-  const hasImage = allImages.length > 0 && !imgFailed;
-  const safeIdx = Math.min(activeIdx, Math.max(0, allImages.length - 1));
-
-  const onTouchStart = (e: React.TouchEvent) => setTouchStart(e.touches[0].clientX);
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart == null || allImages.length < 2) return;
-    const dx = e.changedTouches[0].clientX - touchStart;
-    if (Math.abs(dx) > 40) {
-      if (dx < 0) setActiveIdx((i) => (i + 1) % allImages.length);
-      else setActiveIdx((i) => (i - 1 + allImages.length) % allImages.length);
-    }
-    setTouchStart(null);
-  };
-
-  return (
-    <div className={`rounded-2xl border shadow-sm hover:shadow-md transition-all duration-500 ios-ease overflow-hidden flex flex-col ${
-      isRecommended ? "border-primary ring-2 ring-primary/20" : "border-border"
-    } bg-card`}>
-      {isRecommended && (
-        <div className="bg-primary text-primary-foreground text-xs font-bold text-center py-1 flex items-center justify-center gap-1">
-          <Sparkles size={12} /> {isCombo ? "Recommended Package" : pickNumber ? `AI Pick #${pickNumber}` : "AI Recommended"}
-        </div>
-      )}
-      {hasImage && (
-        <div
-          className="relative h-32 sm:h-40 bg-muted overflow-hidden group cursor-zoom-in select-none"
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          onClick={() => setLightbox(true)}
-        >
-          <img
-            key={allImages[safeIdx]}
-            src={allImages[safeIdx]}
-            alt=""
-            onError={() => setImgFailed(true)}
-            draggable={false}
-            className="w-full h-full object-cover transition-opacity duration-500 ios-ease"
-          />
-          <span className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-card/80 backdrop-blur text-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <Expand size={13} />
-          </span>
-          {marketingBadges && marketingBadges.length > 0 && (
-            <div className="absolute top-1.5 left-1.5 flex flex-col gap-1 max-w-[70%]">
-              {marketingBadges.slice(0, 2).map((b) => {
-                const styles: Record<string, string> = {
-                  "Best Seller": "bg-orange-500 text-white",
-                  "Great Value": "bg-emerald-600 text-white",
-                  "New": "bg-blue-600 text-white",
-                  "Popular Pick": "bg-accent text-accent-foreground",
-                };
-                return (
-                  <span key={b} className={`text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shadow-sm ${styles[b] || "bg-primary text-primary-foreground"}`}>
-                    {b}
-                  </span>
-                );
-              })}
-            </div>
-          )}
-
-          {allImages.length > 1 && (
-            <>
-              <button
-                type="button"
-                aria-label="Previous image"
-                onClick={(e) => { e.stopPropagation(); setActiveIdx((i) => (i - 1 + allImages.length) % allImages.length); }}
-                className="absolute left-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-card/85 hover:bg-card text-foreground shadow-md flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
-              >
-                ‹
-              </button>
-              <button
-                type="button"
-                aria-label="Next image"
-                onClick={(e) => { e.stopPropagation(); setActiveIdx((i) => (i + 1) % allImages.length); }}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-card/85 hover:bg-card text-foreground shadow-md flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
-              >
-                ›
-              </button>
-              <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1 px-2 py-1 rounded-full bg-foreground/40 backdrop-blur-sm">
-                {allImages.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    aria-label={`Go to image ${i + 1}`}
-                    onClick={(e) => { e.stopPropagation(); setActiveIdx(i); }}
-                    className={`h-1.5 rounded-full transition-all ${i === safeIdx ? "w-4 bg-white" : "w-1.5 bg-white/60"}`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      )}
-      {lightbox && hasImage && (
-        <ImageLightbox images={allImages} startIndex={safeIdx} onClose={() => setLightbox(false)} alt={product.name} />
-      )}
-
-      <div className="p-3 sm:p-4 flex-1 flex flex-col gap-2 sm:gap-3">
-        <div className="flex items-start justify-between gap-2">
-          <Link
-            to={productPath(product)}
-            onClick={() => trackProductClick(product.id)}
-            className="font-display font-bold text-card-foreground text-sm sm:text-base leading-tight hover:text-primary transition-colors"
-          >
-            {product.name}
-          </Link>
-          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap shrink-0 ${tierColors[product.tier] ?? tierColors.entry}`}>
-            {tierLabels[product.tier] ?? product.tier}
-          </span>
-        </div>
-
-        <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">{product.description}</p>
-
-        <span className="text-xs font-medium text-primary">Best for: {product.best_for}</span>
-
-        {product.specifications && Object.keys(product.specifications).length > 0 && (
-          <div className="grid grid-cols-2 gap-1 text-[10px]">
-            {Object.entries(product.specifications).slice(0, expanded ? undefined : 2).map(([key, val]) => (
-              <div key={key} className="bg-muted/50 rounded px-1.5 py-0.5">
-                <span className="text-muted-foreground">{key}:</span> <span className="font-medium text-foreground">{val}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <ul className="text-xs text-muted-foreground space-y-1">
-          {product.features.slice(0, expanded ? undefined : 2).map((f) => (
-            <li key={f} className="flex items-start gap-1.5">
-              <span className="text-primary mt-0.5">•</span> {f}
-            </li>
-          ))}
-        </ul>
-
-        {(product.features.length > 2 || (product.specifications && Object.keys(product.specifications).length > 2)) && (
-          <button onClick={() => setExpanded(!expanded)} className="text-xs text-primary font-medium flex items-center gap-1">
-            {expanded ? <><ChevronUp size={12} /> Less</> : <><ChevronDown size={12} /> More details</>}
-          </button>
-        )}
-
-        <div className="flex items-center justify-between gap-2 flex-wrap">
-          <p className="text-sm font-bold text-accent">{product.price ?? "Price on request"}</p>
-          {interestCount && interestCount > 0 ? (
-            <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
-              <Flame size={10} className="text-orange-500" /> {interestCount >= 10 ? `${interestCount}+ interested` : `${interestCount} interested`}
-            </span>
-          ) : null}
-        </div>
-
-
-        <div className="mt-auto space-y-2">
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={() => {
-                addToCart({
-                  refId: product.id,
-                  type: "product",
-                  name: product.name,
-                  price: product.price,
-                  image: allImages[0] || product.image_url,
-                  category: product.category,
-                });
-                trackProductClick(product.id);
-                trackConversion("cart_add", { product_id: product.id, source: "catalog" });
-              }}
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-primary bg-primary/10 text-primary px-3 py-2.5 text-xs font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
-            >
-              <ShoppingBag size={13} /> Add to Cart
-            </button>
-            <a
-              href={`${WHATSAPP}?text=${waMsg}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackProductClick(product.id)}
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground hover:brightness-110 transition-all"
-            >
-              <MessageCircle size={13} /> Chat
-            </a>
-          </div>
-          <FlexiblePaymentButton itemName={product.name} itemType="product" itemId={product.id} />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ComingSoonStore = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="min-h-screen flex flex-col bg-secondary">
-      <SiteHeader />
-      <section className="relative flex-1 flex items-center justify-center overflow-hidden -mt-[64px] sm:-mt-[72px] pt-[64px] sm:pt-[72px]">
-        {/* Stock background image */}
-        <img
-          src={bgLagosNight}
-          alt=""
-          aria-hidden
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-secondary/70 to-secondary/95" />
-        {/* Animated gradient orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-primary/30 blur-3xl animate-blob" />
-          <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full bg-accent/25 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
-          <div className="absolute -bottom-40 left-1/3 w-[450px] h-[450px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
-        </div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,hsl(var(--secondary))_85%)]" />
-
-        <div className="relative section-container py-20 sm:py-28 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-gold/15 border border-gold/40 px-4 py-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-gold animate-fade-up">
-            <Sparkles size={13} className="fill-gold" /> Coming Soon
-          </div>
-          <h1 className="mt-6 text-4xl sm:text-6xl lg:text-7xl font-display font-bold text-primary-foreground tracking-[-0.02em] leading-[1.05] no-clip max-w-3xl mx-auto animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            The Tioga <span className="bg-gradient-to-r from-accent via-yellow-300 to-accent bg-clip-text text-transparent">Online Store</span> is launching soon.
-          </h1>
-          <p className="mt-5 text-base sm:text-lg text-primary-foreground/75 max-w-xl mx-auto animate-fade-up" style={{ animationDelay: "0.2s" }}>
-            We are putting the finishing touches on a curated catalog of solar, smart home, and security gear, complete with one-tap WhatsApp ordering.
-          </p>
-          <p className="mt-3 text-sm text-primary-foreground/60 max-w-xl mx-auto animate-fade-up" style={{ animationDelay: "0.25s" }}>
-            In the meantime, get an instant AI-tailored recommendation for your space.
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 animate-fade-up" style={{ animationDelay: "0.3s" }}>
-            <button
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent("tioga:open-lead-form", { detail: { source: "store_coming_soon" } }));
-              }}
-              className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3.5 text-sm font-bold text-midnight hover:brightness-110 active:scale-[0.97] transition-all shadow-xl shadow-gold/40"
-            >
-              <Sparkles size={15} className="fill-midnight" /> Get AI Recommendation
-            </button>
-            <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/25 bg-primary-foreground/5 backdrop-blur-md px-6 py-3.5 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 transition-all"
-            >
-              <MessageCircle size={15} /> Chat on WhatsApp
-            </a>
-          </div>
-
-          {/* Preview tiles */}
-          <div className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto animate-fade-up" style={{ animationDelay: "0.4s" }}>
-            {[
-              { label: "Solar Kits", emoji: "☀️" },
-              { label: "Smart Locks", emoji: "🔒" },
-              { label: "CCTV", emoji: "📷" },
-              { label: "Smart Lights", emoji: "💡" },
-            ].map((t) => (
-              <div key={t.label} className="rounded-2xl border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-md p-4 text-center">
-                <div className="text-2xl mb-1.5">{t.emoji}</div>
-                <p className="text-xs sm:text-sm font-semibold text-primary-foreground">{t.label}</p>
-                <p className="text-[10px] uppercase tracking-widest text-primary-foreground/50 mt-1">Soon</p>
-              </div>
-            ))}
-          </div>
-
-          <Link to="/" className="mt-10 inline-flex items-center gap-1.5 text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors animate-fade-up" style={{ animationDelay: "0.5s" }}>
-            <ArrowLeft size={14} /> Back to Home
-          </Link>
-        </div>
-      </section>
-      <SiteFooter />
-    </div>
-  );
-};
-
-const Catalog = () => {
+export const Catalog = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { add: addToCart } = useCart();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const state = (location.state || {}) as any;
 
-  const hasState = !!location.state;
+  // AI & Questionnaire State
+  const hasState = Boolean(state && (state.category || state.totalWatts || state.appliances || state.budget || state.fullName));
+  const userName = state.fullName || state.name || state.userName || "";
+  const totalWatts = state.totalWatts || 0;
+  const selectedAppliances = state.selectedAppliances || state.appliances || [];
+  const budget = state.budget || "";
+  const formContext = state.formContext || state;
 
-  const state = location.state as {
-    products?: string[];
-    budget?: string;
-    fullName?: string;
-    totalWatts?: number;
-    selectedAppliances?: { name: string; quantity: number; avgWatts: number }[];
-    formContext?: {
-      category?: string;
-      systemType?: string;
-      propertyType?: string;
-      usageDuration?: string;
-      automateWhat?: string[];
-      controlPreference?: string;
-      automationScale?: string;
-      securityNeeds?: string[];
-      accessType?: string[];
-      cctvCoverage?: string[];
-    };
-  } | null;
-  const interests = state?.products ?? [];
-  const budget = state?.budget;
-  const userName = state?.fullName;
-  const totalWatts = state?.totalWatts;
-  const selectedAppliances = state?.selectedAppliances;
-  const formContext = state?.formContext;
-
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
   const [aiRec, setAiRec] = useState<AIRecommendation | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState<string | null>(searchParams.get("category"));
-  const [activeSeries, setActiveSeries] = useState<string | null>(null);
+
+  // Catalog Products & UI State
+  const [products, setProducts] = useState<RetailProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [sortBy, setSortBy] = useState<SortOption>(hasState ? "ai-rank" : "featured");
+  const [quickViewProduct, setQuickViewProduct] = useState<RetailProduct | null>(null);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const { count: wishlistCount } = useWishlist();
+
+  // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState(searchParams.get("q") ?? "");
+  const [itemsPerPage, setItemsPerPage] = useState(12);
 
-  // Keep ?q= and ?category= in the URL so searches/filters are shareable and the
-  // WebSite SearchAction advertised in JSON-LD actually lands on a filtered view.
+  // Filter State: Default to "ai-picks" when arriving from assessment questionnaire
+  const categoryParam = searchParams.get("category");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    categoryParam || (hasState ? "ai-picks" : null)
+  );
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedCapacities, setSelectedCapacities] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 15_000_000]);
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  // Dynamic Category Tabs with AI Recommended as First Tab
+  const categoryTabs = useMemo(() => {
+    const list = [];
+    if (hasState || aiRec) {
+      list.push({
+        key: "ai-picks",
+        label: "✨ AI Top Recommendations",
+        icon: Sparkles,
+        isAi: true,
+      });
+    }
+    list.push(
+      { key: "all", label: "All Hardware", icon: Zap, isAi: false },
+      { key: "Inverters", label: "Inverters", icon: Zap, isAi: false },
+      { key: "Batteries", label: "LiFePO4 Batteries", icon: Battery, isAi: false },
+      { key: "Solar Panels", label: "Solar Panels", icon: Zap, isAi: false },
+      { key: "Smart Locks", label: "Smart Locks", icon: Lock, isAi: false },
+      { key: "Home Automation", label: "Home IoT", icon: HomeIcon, isAi: false },
+      { key: "CCTV", label: "CCTV & Cameras", icon: Camera, isAi: false }
+    );
+    return list;
+  }, [hasState, aiRec]);
+
+  // Load products
   useEffect(() => {
-    const next = new URLSearchParams(searchParams);
-    if (search.trim()) next.set("q", search.trim()); else next.delete("q");
-    if (activeCategory) next.set("category", activeCategory); else next.delete("category");
-    if (next.toString() !== searchParams.toString()) {
-      setSearchParams(next, { replace: true });
-    }
-  }, [search, activeCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+    let isMounted = true;
+    const loadProducts = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .eq("is_active", true)
+          .order("sort_order", { ascending: true });
 
-  const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
-  const [selectedPriceBuckets, setSelectedPriceBuckets] = useState<string[]>([]);
-  const [selectedCategoriesFilter, setSelectedCategoriesFilter] = useState<string[]>([]);
-  const [sortKey, setSortKey] = useState<SortKey>("recommended");
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [clickCounts, setClickCounts] = useState<Record<string, number>>({});
+        const staticList: RetailProduct[] = STATIC_PRODUCTS.map((p) => ({
+          id: p.id,
+          name: p.name,
+          category: p.category,
+          series: p.series || null,
+          description: p.description,
+          features: p.features || [],
+          best_for: p.best_for || p.bestFor || "Residential and commercial backup",
+          price: p.price || null,
+          numeric_price: p.numeric_price || Number(p.price?.replace(/[^\d.]/g, "") || 0),
+          tier: p.tier || "premium",
+          image_url: p.image_url || null,
+          specifications: p.specifications || {},
+          tags: p.tags || [],
+          brand: p.brand || inferBrand(p.name, p.category),
+          rating: p.rating || 5.0,
+          review_count: p.review_count || 14,
+          stock_status: (p.stock_status as any) || "in_stock",
+          is_featured: p.is_featured ?? true,
+          warranty_years: p.warranty_years || 5,
+        }));
 
+        let dbList: RetailProduct[] = [];
+        if (!error && data && data.length > 0) {
+          dbList = data.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            category: p.category,
+            series: p.series,
+            description: p.description,
+            features: Array.isArray(p.features) ? p.features : [],
+            best_for: p.best_for || "Residential and commercial backup",
+            price: p.price,
+            numeric_price: Number(p.price?.replace(/[^\d.]/g, "") || 0),
+            tier: p.tier || "premium",
+            image_url: p.image_url,
+            specifications: p.specifications || {},
+            tags: p.tags || [],
+            brand: p.brand || inferBrand(p.name, p.category),
+            rating: 5.0,
+            review_count: 14,
+            stock_status: "in_stock",
+            is_featured: true,
+            warranty_years: 5,
+          }));
+        }
 
-  // Determine the primary category from form
-  const primaryCategory = useMemo(() => {
-    if (formContext?.category) return formContext.category;
-    if (interests.length > 0) {
-      const mapped = CATEGORY_MAP[interests[0]];
-      if (mapped) return mapped === "solar" ? "solar" : mapped === "smart_locks" ? "security" : mapped;
-    }
-    return null;
-  }, [formContext?.category, interests]);
+        const productMap = new Map<string, RetailProduct>();
+        staticList.forEach((item) => productMap.set(item.id, item));
+        dbList.forEach((item) => productMap.set(item.id, item));
 
-  // Map interests to DB categories
-  const targetCategories = useMemo(() => {
-    if (interests.length > 0) {
-      return [...new Set(interests.map((i) => CATEGORY_MAP[i] || i))];
-    }
-    return ["solar", "smart_locks", "smarthome", "cctv"];
-  }, [interests]);
-
-  const [galleryByProduct, setGalleryByProduct] = useState<Record<string, string[]>>({});
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await supabase
-        .from("products")
-        .select("id, name, category, series, description, features, best_for, price, tier, image_url, specifications, tags, created_at")
-        .in("category", targetCategories)
-        .eq("is_active", true)
-        .order("sort_order");
-
-      const results = (data as Product[]) ?? [];
-      const tierOrder = getTierOrder(budget);
-      results.sort((a, b) => tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier));
-      setAllProducts(results);
-      setLoading(false);
-
-      // Fetch gallery images for these products
-      if (results.length) {
-        const ids = results.map((p) => p.id);
-        const [imgsRes, clicksRes] = await Promise.all([
-          (supabase as any)
-            .from("product_images")
-            .select("product_id, url, sort_order, is_primary")
-            .in("product_id", ids)
-            .order("is_primary", { ascending: false })
-            .order("sort_order", { ascending: true }),
-          (supabase as any)
-            .from("product_clicks")
-            .select("product_id")
-            .in("product_id", ids)
-            .limit(5000),
-        ]);
-        const map: Record<string, string[]> = {};
-        ((imgsRes.data as any[]) ?? []).forEach((row) => {
-          if (!map[row.product_id]) map[row.product_id] = [];
-          map[row.product_id].push(row.url);
-        });
-        setGalleryByProduct(map);
-
-        const counts: Record<string, number> = {};
-        ((clicksRes.data as any[]) ?? []).forEach((row) => {
-          counts[row.product_id] = (counts[row.product_id] || 0) + 1;
-        });
-        setClickCounts(counts);
+        const combined = Array.from(productMap.values());
+        if (isMounted) setProducts(combined);
+      } catch {
+        if (isMounted) {
+          setProducts(
+            STATIC_PRODUCTS.map((p) => ({
+              id: p.id,
+              name: p.name,
+              category: p.category,
+              series: p.series || null,
+              description: p.description,
+              features: p.features || [],
+              best_for: p.best_for || p.bestFor || "Residential backup",
+              price: p.price || null,
+              numeric_price: p.numeric_price || Number(p.price?.replace(/[^\d.]/g, "") || 0),
+              tier: p.tier || "premium",
+              image_url: p.image_url || null,
+              specifications: p.specifications || {},
+              tags: p.tags || [],
+              brand: p.brand || inferBrand(p.name, p.category),
+              rating: p.rating || 5.0,
+              review_count: p.review_count || 14,
+              stock_status: (p.stock_status as any) || "in_stock",
+              is_featured: true,
+              warranty_years: 5,
+            }))
+          );
+        }
+      } finally {
+        if (isMounted) setLoading(false);
       }
     };
 
-    fetchProducts();
+    loadProducts();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // AI recommendation
+  // Fetch AI recommendations if state provided
   useEffect(() => {
-    if (!formContext?.category && !totalWatts) return;
+    if (!hasState) return;
     setAiLoading(true);
     supabase.functions
       .invoke("ai-recommend", {
         body: {
-          category: formContext?.category,
+          category: state.category,
           appliances: selectedAppliances,
           totalWatts,
           budget,
-          systemType: formContext?.systemType,
-          propertyType: formContext?.propertyType,
-          usageDuration: formContext?.usageDuration,
+          systemType: state.systemType,
+          propertyType: state.propertyType,
+          usageDuration: state.usageDuration,
           formContext,
         },
       })
       .then(({ data, error }) => {
-        if (!error && data) setAiRec(data as AIRecommendation);
+        if (!error && data) {
+          setAiRec(data as AIRecommendation);
+        }
       })
       .catch(console.error)
       .finally(() => setAiLoading(false));
-  }, [formContext?.category, totalWatts]);
+  }, [hasState, state.category, totalWatts]);
 
-  // Check if product matches AI recommendation - exact name match
-  const getPickNumber = (product: Product): number => {
-    if (!aiRec?.recommendedProducts?.length) return 0;
-    const idx = aiRec.recommendedProducts.findIndex(
-      (rp) => rp.toLowerCase().trim() === product.name.toLowerCase().trim()
-    );
-    return idx >= 0 ? idx + 1 : 0;
-  };
-
-  const isRecommended = (product: Product) => {
-    return getPickNumber(product) > 0;
-  };
-
-  // Available categories from loaded products
-  const availableCategories = useMemo(() => {
-    const cats = [...new Set(allProducts.map(p => p.category))];
-    return cats;
-  }, [allProducts]);
-
-  // Marketing badge computation
-  const badgesByProduct = useMemo(() => {
-    if (!allProducts.length) return {} as Record<string, string[]>;
-    const now = Date.now();
-    const clickList = Object.values(clickCounts);
-    const sortedClicks = [...clickList].sort((a, b) => b - a);
-    const bestSellerThreshold = sortedClicks[Math.floor(sortedClicks.length * 0.1)] ?? Infinity;
-
-    // Per-category price quartiles for "Great Value"
-    const byCat: Record<string, number[]> = {};
-    for (const p of allProducts) {
-      const n = parsePriceNaira(p.price);
-      if (isFinite(n) && n > 0) {
-        if (!byCat[p.category]) byCat[p.category] = [];
-        byCat[p.category].push(n);
+  // AI rank matching — computed once per (products, aiRec) change into a lookup map,
+  // instead of re-scanning aiRec.recommendedProducts for every product on every render.
+  const computeAiPickRank = (product: RetailProduct): number => {
+    if (!aiRec?.recommendedProducts?.length) {
+      // Fallback matching by wattage or load if in recommendation state
+      if (hasState && totalWatts > 0) {
+        if (totalWatts <= 4000 && product.name.includes("5kW")) return 1;
+        if (totalWatts > 4000 && totalWatts <= 8000 && (product.name.includes("8kW") || product.name.includes("10kW"))) return 1;
+        if (totalWatts > 8000 && (product.name.includes("12kW") || product.name.includes("15kVA"))) return 1;
       }
+      return -1;
     }
-    const q1ByCat: Record<string, number> = {};
-    for (const k of Object.keys(byCat)) {
-      const s = byCat[k].sort((a, b) => a - b);
-      q1ByCat[k] = s[Math.floor(s.length * 0.25)] ?? 0;
-    }
-
-    const map: Record<string, string[]> = {};
-    for (const p of allProducts) {
-      const badges: string[] = [];
-      const clicks = clickCounts[p.id] || 0;
-      if (clicks >= 3 && clicks >= bestSellerThreshold && bestSellerThreshold !== Infinity) badges.push("Best Seller");
-      const n = parsePriceNaira(p.price);
-      if (isFinite(n) && q1ByCat[p.category] && n <= q1ByCat[p.category]) badges.push("Great Value");
-      if (p.created_at) {
-        const ageDays = (now - new Date(p.created_at).getTime()) / (1000 * 60 * 60 * 24);
-        if (ageDays <= 30) badges.push("New");
-      }
-      if (p.tier === "premium" && !badges.includes("Best Seller")) badges.push("Popular Pick");
-      map[p.id] = badges;
-    }
-    return map;
-  }, [allProducts, clickCounts]);
-
-  // Marketing rails (only meaningful in browse mode)
-  const rails = useMemo(() => {
-    const withPrice = allProducts.filter((p) => {
-      const n = parsePriceNaira(p.price);
-      return isFinite(n) && n > 0;
+    const pName = product.name.toLowerCase().trim();
+    const idx = aiRec.recommendedProducts.findIndex((rp) => {
+      const matchName = rp.toLowerCase().trim();
+      return pName.includes(matchName) || matchName.includes(pName);
     });
-    return {
-      topRecommended: allProducts.filter((p) => p.tier === "premium" || (p.tags || []).includes("recommended")).slice(0, 10),
-      bestSellers: [...allProducts].sort((a, b) => (clickCounts[b.id] || 0) - (clickCounts[a.id] || 0)).filter((p) => (clickCounts[p.id] || 0) > 0).slice(0, 10),
-      lowest: [...withPrice].sort((a, b) => parsePriceNaira(a.price) - parsePriceNaira(b.price)).slice(0, 10),
-      newest: [...allProducts].sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()).slice(0, 10),
-      bundles: allProducts.filter((p) => (p.tags || []).includes("combo") || (p.series || "").toLowerCase().includes("combo") || (p.series || "").toLowerCase().includes("suite")).slice(0, 10),
-    };
-  }, [allProducts, clickCounts]);
-
-  // Filter products
-  const filteredProducts = useMemo(() => {
-    let filtered = allProducts;
-    if (activeCategory) filtered = filtered.filter((p) => p.category === activeCategory);
-    if (activeSeries) filtered = filtered.filter((p) => (p.series || p.category) === activeSeries);
-    if (selectedCategoriesFilter.length) filtered = filtered.filter((p) => selectedCategoriesFilter.includes(p.category));
-    if (selectedTiers.length) filtered = filtered.filter((p) => selectedTiers.includes(p.tier));
-    if (selectedPriceBuckets.length) {
-      filtered = filtered.filter((p) => {
-        const n = parsePriceNaira(p.price);
-        return selectedPriceBuckets.some((k) => PRICE_BUCKETS.find((b) => b.key === k)?.test(n));
-      });
-    }
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(q) ||
-        (p.description || "").toLowerCase().includes(q) ||
-        (p.series || "").toLowerCase().includes(q) ||
-        (p.features || []).some((f) => f.toLowerCase().includes(q)) ||
-        (p.tags || []).some((t) => t.toLowerCase().includes(q))
-      );
-    }
-
-    const arr = [...filtered];
-    if (sortKey === "price-asc") arr.sort((a, b) => (parsePriceNaira(a.price) || Infinity) - (parsePriceNaira(b.price) || Infinity));
-    else if (sortKey === "price-desc") arr.sort((a, b) => (parsePriceNaira(b.price) || -1) - (parsePriceNaira(a.price) || -1));
-    else if (sortKey === "newest") arr.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
-    else if (sortKey === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
-    else if (aiRec?.recommendedProducts?.length) {
-      arr.sort((a, b) => (getPickNumber(a) || 999) - (getPickNumber(b) || 999));
-    }
-    return arr;
-  }, [allProducts, activeCategory, activeSeries, aiRec, search, selectedTiers, selectedPriceBuckets, selectedCategoriesFilter, sortKey]);
-
-  const activeFilterCount =
-    selectedTiers.length + selectedPriceBuckets.length + selectedCategoriesFilter.length + (search.trim() ? 1 : 0);
-
-  const clearAllFilters = () => {
-    setSelectedTiers([]);
-    setSelectedPriceBuckets([]);
-    setSelectedCategoriesFilter([]);
-    setSearch("");
+    return idx >= 0 ? idx + 1 : -1;
   };
 
-  // Series within active category
-  const availableSeries = useMemo(() => {
-    const source = activeCategory ? allProducts.filter((p) => p.category === activeCategory) : allProducts;
-    const seriesMap: Record<string, number> = {};
-    for (const p of source) {
-      const key = p.series || p.category;
-      seriesMap[key] = (seriesMap[key] || 0) + 1;
+  const aiPickRankMap = useMemo(() => {
+    const map = new Map<string, number>();
+    products.forEach((p) => map.set(p.id, computeAiPickRank(p)));
+    return map;
+  }, [products, aiRec, hasState, totalWatts]);
+
+  const getAiPickRank = (product: RetailProduct): number => aiPickRankMap.get(product.id) ?? -1;
+
+  const categories = useMemo(() => Array.from(new Set(products.map((p) => p.category))), [products]);
+  const brands = useMemo(() => Array.from(new Set(products.map((p) => p.brand).filter(Boolean) as string[])), [products]);
+  const capacities = useMemo(() => ["3kVA", "5kVA", "8kVA", "10kVA", "15kVA", "5.12kWh", "10.24kWh", "550W"], []);
+
+  // Filter and Sort Pipeline
+  const filteredProducts = useMemo(() => {
+    return products
+      .filter((p) => {
+        // AI Picks filter tab
+        if (selectedCategory === "ai-picks") {
+          const rank = getAiPickRank(p);
+          if (rank === -1) return false;
+        } else if (selectedCategory && selectedCategory !== "all" && !p.category.toLowerCase().includes(selectedCategory.toLowerCase())) {
+          return false;
+        }
+
+        if (selectedBrands.length > 0 && (!p.brand || !selectedBrands.includes(p.brand))) {
+          return false;
+        }
+        if (selectedCapacities.length > 0) {
+          const matchesCap = selectedCapacities.some(
+            (c) =>
+              p.name.toLowerCase().includes(c.toLowerCase()) ||
+              JSON.stringify(p.specifications || {}).toLowerCase().includes(c.toLowerCase())
+          );
+          if (!matchesCap) return false;
+        }
+        if (p.numeric_price && (p.numeric_price < priceRange[0] || p.numeric_price > priceRange[1])) {
+          return false;
+        }
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase();
+          const matchesSearch =
+            p.name.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q) ||
+            p.description.toLowerCase().includes(q) ||
+            (p.brand && p.brand.toLowerCase().includes(q));
+          if (!matchesSearch) return false;
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        if (sortBy === "ai-rank") {
+          const rankA = getAiPickRank(a);
+          const rankB = getAiPickRank(b);
+          if (rankA !== -1 && rankB !== -1) return rankA - rankB;
+          if (rankA !== -1) return -1;
+          if (rankB !== -1) return 1;
+        }
+        if (sortBy === "price-asc") return (a.numeric_price || 0) - (b.numeric_price || 0);
+        if (sortBy === "price-desc") return (b.numeric_price || 0) - (a.numeric_price || 0);
+        if (sortBy === "rating") return (b.rating || 5) - (a.rating || 5);
+        return 0;
+      });
+  }, [
+    products,
+    selectedCategory,
+    selectedBrands,
+    selectedCapacities,
+    priceRange,
+    searchQuery,
+    sortBy,
+    aiRec,
+    hasState,
+  ]);
+
+  // AI Recommended Products subset (for dedicated top rail)
+  const aiRecommendedProducts = useMemo(() => {
+    return products
+      .filter((p) => getAiPickRank(p) !== -1)
+      .sort((a, b) => getAiPickRank(a) - getAiPickRank(b));
+  }, [products, aiRec, hasState]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, selectedBrands, selectedCapacities, priceRange, searchQuery, sortBy]);
+
+  // Paginated Slice
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage) || 1;
+  const displayedProducts = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredProducts.slice(start, start + itemsPerPage);
+  }, [filteredProducts, currentPage, itemsPerPage]);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    const catalogEl = document.getElementById("catalog-grid-top");
+    if (catalogEl) {
+      catalogEl.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    return Object.entries(seriesMap).sort(([a], [b]) => a.localeCompare(b));
-  }, [allProducts, activeCategory]);
+  };
 
-  // Pagination
-  const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
-  const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * PRODUCTS_PER_PAGE,
-    currentPage * PRODUCTS_PER_PAGE
-  );
+  const handleResetFilters = () => {
+    setSelectedCategory(hasState ? "ai-picks" : null);
+    setSelectedBrands([]);
+    setSelectedCapacities([]);
+    setPriceRange([0, 15_000_000]);
+    setInStockOnly(false);
+    setSearchQuery("");
+    setSearchParams({});
+    setCurrentPage(1);
+  };
 
-  const showRails = !hasState && !activeCategory && !activeSeries && activeFilterCount === 0 && sortKey === "recommended";
-
-  // Reset page on filter change
-  useEffect(() => { setCurrentPage(1); }, [activeCategory, activeSeries, search, selectedTiers, selectedPriceBuckets, selectedCategoriesFilter, sortKey]);
-
-
-  const getPageNumbers = () => {
-    const pages: (number | "ellipsis")[] = [];
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i);
+  const handleCategorySelect = (catKey: string) => {
+    if (catKey === "all") {
+      setSelectedCategory(null);
+      setSearchParams({});
     } else {
-      pages.push(1);
-      if (currentPage > 3) pages.push("ellipsis");
-      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
-        pages.push(i);
-      }
-      if (currentPage < totalPages - 2) pages.push("ellipsis");
-      pages.push(totalPages);
+      setSelectedCategory(catKey);
+      setSearchParams({ category: catKey });
     }
-    return pages;
+    setCurrentPage(1);
+  };
+
+  const handleAddAllAiPicksToCart = () => {
+    if (!aiRecommendedProducts.length) return;
+    aiRecommendedProducts.forEach((prod) => {
+      addToCart({
+        refId: prod.id,
+        type: "product",
+        name: prod.name,
+        price: prod.price,
+        numericPrice: prod.numeric_price,
+        image: prod.image_url,
+        category: prod.category,
+        quantity: 1,
+      });
+    });
+    toast.success("Added all recommended items to cart!", {
+      description: `${aiRecommendedProducts.length} matched system components added.`,
+    });
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Product Catalog — Solar, Locks & Automation"
-        description="Browse 129+ solar inverters, batteries, STAMA smart locks and home automation products with filtering by category and budget."
+        title={hasState ? "Your Tailored Hardware Recommendation — Tioga Store" : "Tioga Store & Hardware Catalog"}
+        description="Explore tailored renewable energy, lithium battery storage, and smart home biometric access systems matching your load assessment."
         path="/catalog"
-        jsonLd={[breadcrumbJsonLd([{ name: "Catalog", path: "/catalog" }]), {
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: "Tioga Product Catalog",
-          description: "Full Tioga product catalog: solar inverters, batteries, smart locks, home automation.",
-          url: "https://tiogatechnologies.com/catalog",
-        }]}
+        jsonLd={[
+          breadcrumbJsonLd([{ name: "Catalog", path: "/catalog" }]),
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "Tioga Hardware Catalog & AI Store",
+            description: "Full Tioga product catalog: solar inverters, batteries, smart locks, home automation.",
+            url: "https://tiogatechnologies.com/catalog",
+          },
+        ]}
       />
       <SiteHeader />
-      <div className="bg-secondary text-secondary-foreground">
-        <div className="section-container py-6 sm:py-8 space-y-3">
-          <button onClick={() => navigate("/")} className="inline-flex items-center gap-1 text-sm text-secondary-foreground/60 hover:text-secondary-foreground transition-colors">
-            <ArrowLeft size={14} /> Back to Home
-          </button>
-          <h1 className="text-xl sm:text-3xl font-display font-bold leading-tight">
-            {hasState ? (
-              <>{userName ? `${userName}, here is` : "Here is"} what we <span className="text-accent">recommend for you</span></>
-            ) : (
-              <>Shop the <span className="text-accent">Tioga Store</span></>
-            )}
-          </h1>
-          <p className="text-sm text-secondary-foreground/70">
-            {hasState ? "Carefully selected solutions tailored to your request." : "Solar, smart locks, home automation & security — curated for Nigerian homes and businesses."}
-          </p>
-          {totalWatts ? (
-            <div className="flex items-center gap-2 text-xs bg-secondary-foreground/10 rounded-lg px-3 py-2 w-fit">
-              <Zap size={14} className="text-accent" />
-              <span>Your estimated power need: <strong>{totalWatts.toLocaleString()}W</strong></span>
-            </div>
-          ) : null}
-        </div>
-      </div>
 
-
-      {/* AI Recommendation Banner */}
-      {(aiLoading || aiRec) && (
-        <div className="section-container py-4">
-          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:p-6 space-y-3">
-            <div className="flex items-center gap-2">
-              <Sparkles size={18} className="text-primary" />
-              <h3 className="font-display font-bold text-foreground">AI Recommendation</h3>
-            </div>
-            {aiLoading ? (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2 size={16} className="animate-spin" />
-                Analyzing your requirements...
-              </div>
-            ) : aiRec ? (
+      <main className="flex-1 section-padding py-4 sm:py-8 pt-[72px] sm:pt-[84px]">
+        <div className="section-container px-3 sm:px-6">
+          {/* Top Hero Banner */}
+          <div className="mb-6 sm:mb-8 p-6 sm:p-8 rounded-3xl bg-secondary text-secondary-foreground shadow-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="space-y-2">
-                {aiRec.recommendedCombo && (
-                  <p className="text-sm font-semibold text-primary">Recommended package: {aiRec.recommendedCombo}</p>
-                )}
-                {aiRec.recommendedProducts?.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {aiRec.recommendedProducts.map((name, i) => (
-                      <span key={i} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
-                        #{i + 1} {name}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                <p className="text-sm text-muted-foreground">{aiRec.reason}</p>
-                {aiRec.tip && (
-                  <p className="text-xs bg-accent/10 border border-accent/20 rounded-lg px-3 py-2 text-accent-foreground">
-                    <strong>Pro tip:</strong> {aiRec.tip}
-                  </p>
-                )}
+                <button
+                  onClick={() => navigate("/")}
+                  className="inline-flex items-center gap-1 text-xs text-secondary-foreground/70 hover:text-secondary-foreground transition-colors mb-1"
+                >
+                  <ArrowLeft size={13} /> Back to Home
+                </button>
+                <h1 className="text-2xl sm:text-4xl font-display font-bold leading-tight">
+                  {hasState ? (
+                    <>
+                      {userName ? `${userName}, here is` : "Here is"} your{" "}
+                      <span className="text-accent">tailored hardware selection</span>
+                    </>
+                  ) : (
+                    <>
+                      Shop the <span className="text-accent">Tioga Store</span>
+                    </>
+                  )}
+                </h1>
+                <p className="text-xs sm:text-sm text-secondary-foreground/80 max-w-2xl leading-relaxed">
+                  {hasState
+                    ? "Based on your load assessment, we have filtered certified Tier-1 hybrid inverters, lithium batteries, and smart home IoT hardware sized specifically for your property."
+                    : "Direct warehouse supply of Tier-1 solar inverters, LiFePO4 batteries, STAMA biometric smart locks, and home IoT devices."}
+                </p>
               </div>
-            ) : null}
-          </div>
-        </div>
-      )}
 
-      <div className="section-container py-6 sm:py-10 space-y-6">
-        {/* Sticky toolbar */}
-        {!loading && (
-          <div className="sticky top-16 sm:top-20 z-20 -mx-4 sm:mx-0 px-4 sm:px-0 py-3 bg-background/85 backdrop-blur-md border-b border-border/60 space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1 min-w-0">
-                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search solar, locks, cameras…"
-                  className="pl-9 h-10 bg-card"
-                />
-              </div>
-              <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-10 gap-1.5 shrink-0">
-                    <SlidersHorizontal size={14} />
-                    <span className="hidden xs:inline">Filters</span>
-                    {activeFilterCount > 0 && (
-                      <span className="ml-0.5 rounded-full bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 font-bold">{activeFilterCount}</span>
-                    )}
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-                  <SheetHeader>
-                    <SheetTitle>Filter products</SheetTitle>
-                  </SheetHeader>
-                  <div className="space-y-6 py-6">
-                    <div>
-                      <p className="text-sm font-semibold mb-2">Category</p>
-                      <div className="space-y-2">
-                        {availableCategories.map((c) => (
-                          <label key={c} className="flex items-center gap-2 text-sm cursor-pointer">
-                            <Checkbox
-                              checked={selectedCategoriesFilter.includes(c)}
-                              onCheckedChange={(v) =>
-                                setSelectedCategoriesFilter((prev) => (v ? [...prev, c] : prev.filter((x) => x !== c)))
-                              }
-                            />
-                            {CATEGORY_LABELS[c] || c}
-                            <span className="text-xs text-muted-foreground">({allProducts.filter((p) => p.category === c).length})</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold mb-2">Tier</p>
-                      <div className="space-y-2">
-                        {(["premium", "mid", "affordable", "entry"] as const).map((t) => (
-                          <label key={t} className="flex items-center gap-2 text-sm cursor-pointer">
-                            <Checkbox
-                              checked={selectedTiers.includes(t)}
-                              onCheckedChange={(v) =>
-                                setSelectedTiers((prev) => (v ? [...prev, t] : prev.filter((x) => x !== t)))
-                              }
-                            />
-                            {tierLabels[t]}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold mb-2">Price range</p>
-                      <div className="space-y-2">
-                        {PRICE_BUCKETS.map((b) => (
-                          <label key={b.key} className="flex items-center gap-2 text-sm cursor-pointer">
-                            <Checkbox
-                              checked={selectedPriceBuckets.includes(b.key)}
-                              onCheckedChange={(v) =>
-                                setSelectedPriceBuckets((prev) => (v ? [...prev, b.key] : prev.filter((x) => x !== b.key)))
-                              }
-                            />
-                            {b.label}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
+              {totalWatts > 0 && (
+                <div className="p-4 rounded-2xl bg-secondary-foreground/10 border border-secondary-foreground/15 shrink-0">
+                  <p className="text-[10px] uppercase tracking-widest text-secondary-foreground/70 font-semibold mb-1">
+                    Assessed Load
+                  </p>
+                  <p className="text-xl sm:text-2xl font-display font-bold text-accent">
+                    {totalWatts.toLocaleString()}W
+                  </p>
+                  <p className="text-[10px] text-secondary-foreground/70">Continuous peak demand</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* AI Recommendation Summary Box */}
+          {(aiLoading || aiRec) && (
+            <div className="mb-6 sm:mb-8 rounded-3xl border border-primary/25 bg-card p-5 sm:p-7 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/80 pb-4">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
+                    <Sparkles size={18} />
                   </div>
-                  <SheetFooter className="gap-2 sm:gap-2 flex-row">
-                    <Button variant="outline" onClick={clearAllFilters} className="flex-1">Clear all</Button>
-                    <Button onClick={() => setFilterOpen(false)} className="flex-1">Show {filteredProducts.length} results</Button>
-                  </SheetFooter>
-                </SheetContent>
-              </Sheet>
-              <Select value={sortKey} onValueChange={(v) => setSortKey(v as SortKey)}>
-                <SelectTrigger className="h-10 w-[130px] sm:w-[160px] bg-card shrink-0">
+                  <div>
+                    <h3 className="font-display font-bold text-base sm:text-lg text-foreground">
+                      Engineering Recommendation
+                    </h3>
+                    <p className="text-xs text-muted-foreground">Custom-matched equipment profile</p>
+                  </div>
+                </div>
+
+                {aiRecommendedProducts.length > 0 && (
+                  <Button
+                    size="sm"
+                    onClick={handleAddAllAiPicksToCart}
+                    className="h-9 text-xs rounded-xl gap-1.5 font-bold shadow-sm"
+                  >
+                    <ShoppingBag size={13} />
+                    <span>Add Entire Matched System to Cart</span>
+                  </Button>
+                )}
+              </div>
+
+              {aiLoading ? (
+                <div className="py-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                  <Loader2 size={16} className="animate-spin text-primary" />
+                  <span>Synthesizing load metrics and computing optimal inverter-battery ratio...</span>
+                </div>
+              ) : aiRec ? (
+                <div className="grid md:grid-cols-12 gap-5 items-start">
+                  <div className="md:col-span-8 space-y-3">
+                    {aiRec.recommendedCombo && (
+                      <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-xs font-semibold text-primary flex items-center gap-2">
+                        <CheckCircle2 size={16} className="shrink-0" />
+                        <span>Recommended System Combo: {aiRec.recommendedCombo}</span>
+                      </div>
+                    )}
+                    <p className="text-xs text-foreground/90 leading-relaxed">{aiRec.reason}</p>
+
+                    {aiRec.recommendedProducts?.length > 0 && (
+                      <div className="pt-1 flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider mr-1">
+                          Priority Matches:
+                        </span>
+                        {aiRec.recommendedProducts.map((pName, i) => (
+                          <span
+                            key={i}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-muted border border-border text-[11px] font-bold text-foreground"
+                          >
+                            <span className="h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] flex items-center justify-center font-mono">
+                              {i + 1}
+                            </span>
+                            <span>{pName}</span>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="md:col-span-4 p-4 rounded-2xl bg-muted/40 border border-border space-y-2 text-xs">
+                    {aiRec.budgetFit && (
+                      <div>
+                        <p className="font-bold text-[10px] uppercase tracking-wider text-muted-foreground">Budget Alignment</p>
+                        <p className="text-foreground mt-0.5">{aiRec.budgetFit}</p>
+                      </div>
+                    )}
+                    {aiRec.tip && (
+                      <div className="pt-2 border-t border-border">
+                        <p className="font-bold text-[10px] uppercase tracking-wider text-primary">Pro Tip</p>
+                        <p className="text-muted-foreground mt-0.5">{aiRec.tip}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          )}
+
+          {/* Quick Value Props Bar */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-card border border-border/80 shadow-xs mb-6 sm:mb-8">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10 text-primary shrink-0">
+                <Truck size={16} />
+              </div>
+              <div>
+                <h4 className="font-display font-bold text-xs text-foreground leading-tight">Fast Dispatch</h4>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground">Lagos & Abuja 24h</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-muted text-foreground shrink-0">
+                <Shield size={16} />
+              </div>
+              <div>
+                <h4 className="font-display font-bold text-xs text-foreground leading-tight">5-Yr Warranty</h4>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground">Replacement guarantee</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+                <Award size={16} />
+              </div>
+              <div>
+                <h4 className="font-display font-bold text-xs text-foreground leading-tight">Tier-1 Stack</h4>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground">Authorized distributor</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0">
+                <Zap size={16} />
+              </div>
+              <div>
+                <h4 className="font-display font-bold text-xs text-foreground leading-tight">0-Flicker UPS</h4>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground">Seamless switchover</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Categorized Tabs — With AI Top Recommendations as FIRST Tab */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
+            {categoryTabs.map((tab) => {
+              const Icon = tab.icon;
+              const active =
+                tab.key === "all"
+                  ? selectedCategory === null || selectedCategory === "all"
+                  : selectedCategory === tab.key;
+
+              return (
+                <button
+                  key={tab.key}
+                  onClick={() => handleCategorySelect(tab.key)}
+                  className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 ${
+                    active
+                      ? tab.isAi
+                        ? "bg-primary text-primary-foreground shadow-md shadow-primary/25 scale-[1.02] ring-2 ring-primary/40"
+                        : "bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-[1.02]"
+                      : tab.isAi
+                      ? "bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 font-bold"
+                      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  <Icon size={14} className={tab.isAi ? "animate-pulse" : ""} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Controls Bar: Search, Mobile Filters, Sort, Grid/List */}
+          <div id="catalog-grid-top" className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 mb-6">
+            {/* Search input */}
+            <div className="relative flex-1 max-w-md">
+              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search Deye inverters, Felicity batteries, smart locks..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 pr-4 rounded-2xl bg-card border-border text-xs h-10"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {/* Right Controls */}
+            <div className="flex items-center gap-2">
+              {/* Mobile Filter Drawer */}
+              <div className="lg:hidden">
+                <Sheet open={mobileFilterOpen} onOpenChange={setMobileFilterOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-10 rounded-xl gap-2 text-xs font-semibold">
+                      <SlidersHorizontal size={14} />
+                      <span>Filters</span>
+                      {(selectedBrands.length > 0 || selectedCapacities.length > 0 || selectedCategory) && (
+                        <span className="h-2 w-2 rounded-full bg-primary" />
+                      )}
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-[300px] sm:w-[360px] p-6 overflow-y-auto">
+                    <SheetHeader className="pb-4 border-b border-border mb-4">
+                      <SheetTitle className="text-base font-display font-bold">Filter Hardware</SheetTitle>
+                    </SheetHeader>
+                    <ProductFilterSidebar
+                      filters={{
+                        category: selectedCategory === "ai-picks" ? null : selectedCategory,
+                        brands: selectedBrands,
+                        capacities: selectedCapacities,
+                        priceRange,
+                        inStockOnly,
+                        tier: null,
+                      }}
+                      onChange={(f) => {
+                        setSelectedCategory(f.category);
+                        setSelectedBrands(f.brands);
+                        setSelectedCapacities(f.capacities);
+                        setPriceRange(f.priceRange);
+                        setInStockOnly(f.inStockOnly);
+                      }}
+                      categories={categories}
+                      brands={brands}
+                      capacities={capacities}
+                      maxPrice={15_000_000}
+                      totalResults={filteredProducts.length}
+                      onReset={handleResetFilters}
+                    />
+                  </SheetContent>
+                </Sheet>
+              </div>
+
+              {/* Wishlist Link */}
+              <Link
+                to="/retail/wishlist"
+                className="inline-flex items-center gap-1.5 px-3 h-10 rounded-xl border border-border bg-card hover:bg-muted text-xs font-semibold text-foreground transition-colors"
+              >
+                <Heart size={14} className="text-red-500" />
+                <span className="hidden sm:inline">Wishlist</span>
+                <span className="bg-red-500/10 text-red-500 text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+                  {wishlistCount}
+                </span>
+              </Link>
+
+              {/* Items Per Page Selector */}
+              <Select
+                value={String(itemsPerPage)}
+                onValueChange={(v) => {
+                  setItemsPerPage(Number(v));
+                  setCurrentPage(1);
+                }}
+              >
+                <SelectTrigger className="w-24 bg-muted/30 rounded-xl text-xs font-medium h-10">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="recommended">Recommended</SelectItem>
-                  <SelectItem value="price-asc">Lowest price</SelectItem>
-                  <SelectItem value="price-desc">Highest price</SelectItem>
-                  <SelectItem value="newest">Newest</SelectItem>
-                  <SelectItem value="name">Name A–Z</SelectItem>
+                <SelectContent className="bg-card border-border">
+                  <SelectItem value="9" className="text-xs">9 / page</SelectItem>
+                  <SelectItem value="12" className="text-xs">12 / page</SelectItem>
+                  <SelectItem value="18" className="text-xs">18 / page</SelectItem>
+                  <SelectItem value="24" className="text-xs">24 / page</SelectItem>
                 </SelectContent>
               </Select>
+
+              {/* Sort Selector */}
+              <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
+                <SelectTrigger className="w-36 bg-muted/30 rounded-xl text-xs font-medium h-10">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border">
+                  {hasState && <SelectItem value="ai-rank" className="text-xs">AI Match Rank</SelectItem>}
+                  <SelectItem value="featured" className="text-xs">Featured</SelectItem>
+                  <SelectItem value="price-asc" className="text-xs">Price: Low to High</SelectItem>
+                  <SelectItem value="price-desc" className="text-xs">Price: High to Low</SelectItem>
+                  <SelectItem value="rating" className="text-xs">Top Rated</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Grid / List View Toggle */}
+              <div className="hidden md:flex items-center border border-border rounded-xl bg-muted/30 p-0.5 h-10">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  aria-label="Grid View"
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === "grid" ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Grid size={14} />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  aria-label="List View"
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === "list" ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <List size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Desktop Filter Sidebar */}
+            <div className="hidden lg:block lg:col-span-1">
+              <div className="sticky top-24 p-6 rounded-3xl bg-card border border-border/80 shadow-[var(--shadow-card)]">
+                <ProductFilterSidebar
+                  filters={{
+                    category: selectedCategory === "ai-picks" ? null : selectedCategory,
+                    brands: selectedBrands,
+                    capacities: selectedCapacities,
+                    priceRange,
+                    inStockOnly,
+                    tier: null,
+                  }}
+                  onChange={(f) => {
+                    setSelectedCategory(f.category);
+                    setSelectedBrands(f.brands);
+                    setSelectedCapacities(f.capacities);
+                    setPriceRange(f.priceRange);
+                    setInStockOnly(f.inStockOnly);
+                  }}
+                  categories={categories}
+                  brands={brands}
+                  capacities={capacities}
+                  maxPrice={15_000_000}
+                  totalResults={filteredProducts.length}
+                  onReset={handleResetFilters}
+                />
+              </div>
             </div>
 
-            {/* Category pills */}
-            {availableCategories.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto snap-x scrollbar-hide -mx-1 px-1 pb-0.5">
-                <button
-                  onClick={() => { setActiveCategory(null); setActiveSeries(null); }}
-                  className={`shrink-0 snap-start text-xs px-3 py-1.5 rounded-full border transition-colors font-medium ${!activeCategory ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-                >
-                  All ({allProducts.length})
-                </button>
-                {availableCategories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => { setActiveCategory(activeCategory === cat ? null : cat); setActiveSeries(null); }}
-                    className={`shrink-0 snap-start text-xs px-3 py-1.5 rounded-full border transition-colors font-medium whitespace-nowrap ${activeCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-                  >
-                    {CATEGORY_LABELS[cat] || cat} ({allProducts.filter((p) => p.category === cat).length})
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* Active filter chips */}
-            {activeFilterCount > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {search.trim() && (
-                  <button onClick={() => setSearch("")} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
-                    "{search}" <X size={11} />
-                  </button>
-                )}
-                {selectedCategoriesFilter.map((c) => (
-                  <button key={`c-${c}`} onClick={() => setSelectedCategoriesFilter((p) => p.filter((x) => x !== c))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
-                    {CATEGORY_LABELS[c] || c} <X size={11} />
-                  </button>
-                ))}
-                {selectedTiers.map((t) => (
-                  <button key={`t-${t}`} onClick={() => setSelectedTiers((p) => p.filter((x) => x !== t))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
-                    {tierLabels[t]} <X size={11} />
-                  </button>
-                ))}
-                {selectedPriceBuckets.map((k) => (
-                  <button key={`p-${k}`} onClick={() => setSelectedPriceBuckets((p) => p.filter((x) => x !== k))} className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full bg-muted hover:bg-muted/70 border border-border">
-                    {PRICE_BUCKETS.find((b) => b.key === k)?.label} <X size={11} />
-                  </button>
-                ))}
-                <button onClick={clearAllFilters} className="text-[11px] px-2 py-1 rounded-full text-primary hover:underline font-medium">Clear all</button>
-              </div>
-            )}
-
-            {/* Series sub-filter (only when a specific category is active) */}
-            {activeCategory && availableSeries.length > 3 && (
-              <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
-                <button
-                  onClick={() => setActiveSeries(null)}
-                  className={`shrink-0 text-[11px] px-2.5 py-1 rounded-full border transition-colors ${!activeSeries ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-                >
-                  All Series
-                </button>
-                {availableSeries.map(([series, count]) => (
-                  <button
-                    key={series}
-                    onClick={() => setActiveSeries(activeSeries === series ? null : series)}
-                    className={`shrink-0 text-[11px] px-2.5 py-1 rounded-full border transition-colors whitespace-nowrap ${activeSeries === series ? "bg-secondary text-secondary-foreground border-secondary" : "bg-card text-muted-foreground border-border hover:bg-muted"}`}
-                  >
-                    {series} ({count})
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-border bg-card overflow-hidden">
-                <div className="h-32 sm:h-40 bg-muted animate-pulse" />
-                <div className="p-3 space-y-2">
-                  <div className="h-3 w-2/3 bg-muted rounded animate-pulse" />
-                  <div className="h-2 w-full bg-muted rounded animate-pulse" />
-                  <div className="h-2 w-1/2 bg-muted rounded animate-pulse" />
+            {/* Product Cards Grid with Pagination */}
+            <div className="lg:col-span-3">
+              {loading ? (
+                <div className="py-20 flex items-center justify-center">
+                  <Loader2 className="animate-spin text-primary" size={28} />
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <>
-            {/* Marketing rails (browse mode only) */}
-            {showRails && (
-              <div className="space-y-8">
-                {[
-                  { key: "topRecommended", title: "Top Recommended", icon: Star, items: rails.topRecommended, iconClass: "text-accent" },
-                  { key: "bestSellers", title: "Best Sellers", icon: Flame, items: rails.bestSellers, iconClass: "text-orange-500" },
-                  { key: "lowest", title: "Lowest Prices", icon: Tag, items: rails.lowest, iconClass: "text-emerald-600" },
-                  { key: "newest", title: "New Arrivals", icon: TrendingUp, items: rails.newest, iconClass: "text-blue-600" },
-                  { key: "bundles", title: "Bundle & Save", icon: PackageOpen, items: rails.bundles, iconClass: "text-primary" },
-                ].filter((r) => r.items.length > 0).map((rail) => {
-                  const Icon = rail.icon;
-                  return (
-                    <div key={rail.key}>
-                      <div className="flex items-center justify-between mb-3">
-                        <h2 className="text-base sm:text-lg font-display font-bold text-foreground flex items-center gap-2">
-                          <Icon size={18} className={rail.iconClass} /> {rail.title}
-                        </h2>
-                        <button
-                          onClick={() => {
-                            if (rail.key === "lowest") setSortKey("price-asc");
-                            else if (rail.key === "newest") setSortKey("newest");
-                            document.getElementById("all-products")?.scrollIntoView({ behavior: "smooth" });
-                          }}
-                          className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
-                        >
-                          See all <ArrowRight size={12} />
-                        </button>
+              ) : filteredProducts.length === 0 ? (
+                <div className="text-center py-16 bg-card rounded-2xl border border-border p-6 space-y-3">
+                  <div className="p-4 rounded-full bg-muted w-14 h-14 mx-auto flex items-center justify-center text-muted-foreground">
+                    <Search size={22} />
+                  </div>
+                  <h3 className="text-base font-display font-bold text-foreground">No Products Found</h3>
+                  <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                    We couldn't find any products matching your specific filters. Try clearing your filters or search query.
+                  </p>
+                  <Button onClick={handleResetFilters} variant="outline" className="rounded-xl font-bold text-xs gap-1.5">
+                    <RotateCcw size={13} />
+                    Reset All Filters
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  {/* If viewing AI Top Picks, show dedicated section banner */}
+                  {selectedCategory === "ai-picks" && (
+                    <div className="mb-6 p-4 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 text-xs font-semibold text-primary">
+                        <Sparkles size={16} />
+                        <span>Showing {filteredProducts.length} hardware components matched to your load</span>
                       </div>
-                      <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-2">
-                        {rail.items.map((p) => (
-                          <div key={p.id} className="snap-start shrink-0 w-[220px] sm:w-[240px]">
-                            <ProductCard
-                              product={p}
-                              isRecommended={isRecommended(p)}
-                              pickNumber={getPickNumber(p)}
-                              gallery={galleryByProduct[p.id]}
-                              marketingBadges={badgesByProduct[p.id]}
-                              interestCount={clickCounts[p.id]}
-                            />
-                          </div>
-                        ))}
+                      <button
+                        onClick={() => setSelectedCategory(null)}
+                        className="text-xs text-muted-foreground hover:text-foreground font-semibold underline"
+                      >
+                        View All Categories
+                      </button>
+                    </div>
+                  )}
+
+                  <div
+                    className={`grid gap-4 sm:gap-6 ${
+                      viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"
+                    }`}
+                  >
+                    {displayedProducts.map((product) => {
+                      const rank = getAiPickRank(product);
+                      const customBadge = rank !== -1 ? `#${rank} AI Match` : undefined;
+
+                      return (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          onQuickView={setQuickViewProduct}
+                          customBadge={customBadge}
+                        />
+                      );
+                    })}
+                  </div>
+
+                  {/* Pagination Controls */}
+                  {totalPages > 1 && (
+                    <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)]">
+                      <p className="text-xs text-muted-foreground">
+                        Showing{" "}
+                        <span className="font-semibold text-foreground">
+                          {(currentPage - 1) * itemsPerPage + 1}–
+                          {Math.min(currentPage * itemsPerPage, filteredProducts.length)}
+                        </span>{" "}
+                        of <span className="font-semibold text-foreground">{filteredProducts.length}</span> hardware products
+                      </p>
+
+                      <div className="flex items-center gap-1.5">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage <= 1}
+                          className="h-9 px-3 text-xs rounded-xl gap-1 text-muted-foreground hover:text-foreground"
+                        >
+                          <ChevronLeft size={14} />
+                          <span className="hidden sm:inline">Previous</span>
+                        </Button>
+
+                        {/* Page Numbers */}
+                        <div className="flex items-center gap-1">
+                          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                            if (
+                              pageNum === 1 ||
+                              pageNum === totalPages ||
+                              (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                            ) {
+                              return (
+                                <button
+                                  key={pageNum}
+                                  onClick={() => handlePageChange(pageNum)}
+                                  className={`h-9 w-9 rounded-xl text-xs font-bold transition-all ${
+                                    currentPage === pageNum
+                                      ? "bg-primary text-primary-foreground shadow-md"
+                                      : "border border-border bg-card hover:bg-muted text-foreground"
+                                  }`}
+                                >
+                                  {pageNum}
+                                </button>
+                              );
+                            }
+                            if (
+                              (pageNum === 2 && currentPage > 3) ||
+                              (pageNum === totalPages - 1 && currentPage < totalPages - 2)
+                            ) {
+                              return (
+                                <span key={pageNum} className="px-1 text-xs text-muted-foreground font-mono">
+                                  ...
+                                </span>
+                              );
+                            }
+                            return null;
+                          })}
+                        </div>
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage >= totalPages}
+                          className="h-9 px-3 text-xs rounded-xl gap-1 text-muted-foreground hover:text-foreground"
+                        >
+                          <span className="hidden sm:inline">Next</span>
+                          <ChevronRight size={14} />
+                        </Button>
                       </div>
                     </div>
-                  );
-                })}
-                <div className="border-t border-border pt-4">
-                  <h2 className="text-lg sm:text-xl font-display font-bold text-foreground">Browse everything</h2>
-                  <p className="text-xs text-muted-foreground mt-1">{allProducts.length} products across every category.</p>
-                </div>
-              </div>
-            )}
-
-            {/* Product count */}
-            <p id="all-products" className="text-xs text-muted-foreground scroll-mt-32">
-              Showing {filteredProducts.length === 0 ? 0 : ((currentPage - 1) * PRODUCTS_PER_PAGE) + 1} to {Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length)} of {filteredProducts.length} products
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              {paginatedProducts.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  product={p}
-                  isRecommended={isRecommended(p)}
-                  pickNumber={getPickNumber(p)}
-                  gallery={galleryByProduct[p.id]}
-                  marketingBadges={badgesByProduct[p.id]}
-                  interestCount={clickCounts[p.id]}
-                />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <Pagination className="mt-8">
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                      className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                    />
-                  </PaginationItem>
-                  {getPageNumbers().map((page, i) =>
-                    page === "ellipsis" ? (
-                      <PaginationItem key={`e-${i}`}>
-                        <PaginationEllipsis />
-                      </PaginationItem>
-                    ) : (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          isActive={currentPage === page}
-                          onClick={() => setCurrentPage(page as number)}
-                          className="cursor-pointer"
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )
                   )}
-                  <PaginationItem>
-                    <PaginationNext
-                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            )}
-
-            {filteredProducts.length === 0 && (
-              <div className="text-center py-20 space-y-4">
-                <p className="text-muted-foreground">No products matched your selection.</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  <Button variant="outline" onClick={clearAllFilters}>Reset filters</Button>
-                  <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground">
-                    <MessageCircle size={16} /> Chat with us
-                  </a>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-
-
-      {/* Sticky bottom */}
-      <div className="fixed bottom-0 inset-x-0 z-50 bg-card/90 backdrop-blur-lg border-t border-border py-3 px-4">
-        <div className="max-w-6xl mx-auto flex gap-3">
-          <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 sm:px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all">
-            <MessageCircle size={16} />
-            <span className="hidden sm:inline">Chat on </span>WhatsApp
-          </a>
-          <a
-            href={`${WHATSAPP}?text=${encodeURIComponent("Hi, I would like to request an installation consultation.")}`}
-            target="_blank" rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg border border-primary px-4 sm:px-6 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition-all"
-          >
-            <span className="hidden sm:inline">Request </span>Installation
-          </a>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
+
+      {/* Floating Comparison Tray */}
+      <ProductCompareTray />
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={quickViewProduct}
+        open={Boolean(quickViewProduct)}
+        onOpenChange={(open) => !open && setQuickViewProduct(null)}
+      />
+
+      <SiteFooter />
     </div>
   );
 };

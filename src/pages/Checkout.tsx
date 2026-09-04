@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { trackConversion } from "@/lib/tracking";
 import DirectDebitConsent from "@/components/DirectDebitConsent";
+import { resolveProductImage } from "@/lib/productImages";
 import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 
 const WHATSAPP = "2348178000023";
@@ -453,8 +454,16 @@ const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDi
       {items.map((i: any) => (
         <li key={i.id} className="flex gap-3">
           <div className="relative shrink-0">
-            {i.image ? <img src={i.image} alt="" className="h-14 w-14 rounded-lg object-cover bg-muted border border-border" /> : <div className="h-14 w-14 rounded-lg bg-muted" />}
-            <span className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-muted-foreground text-background text-[10px] grid place-items-center font-bold">{i.quantity}</span>
+            {i.image ? (
+              <img
+                src={resolveProductImage(i.image, i.category)}
+                alt=""
+                className="h-14 w-14 rounded-lg object-contain bg-card border border-border p-1"
+              />
+            ) : (
+              <div className="h-14 w-14 rounded-lg bg-muted" />
+            )}
+            <span className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] grid place-items-center font-bold">{i.quantity}</span>
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold text-foreground line-clamp-2">{i.name}</p>

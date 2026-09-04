@@ -9,7 +9,13 @@ const BASE_URL = "https://tiogatechnologies.com";
 const STATIC_ENTRIES = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.8" },
+  { path: "/solutions", changefreq: "monthly", priority: "0.9" },
+  { path: "/smart-locks", changefreq: "weekly", priority: "0.9" },
+  { path: "/home-automation", changefreq: "weekly", priority: "0.9" },
+  { path: "/cctv", changefreq: "weekly", priority: "0.9" },
+  { path: "/solar-packages", changefreq: "weekly", priority: "0.9" },
   { path: "/packages", changefreq: "weekly", priority: "0.9" },
+  { path: "/retail", changefreq: "daily", priority: "0.9" },
   { path: "/catalog", changefreq: "weekly", priority: "0.9" },
   { path: "/lumivolt", changefreq: "monthly", priority: "0.8" },
   { path: "/voltai", changefreq: "monthly", priority: "0.8" },

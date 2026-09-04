@@ -26,6 +26,7 @@ export const ADMIN_PAGES: AdminPage[] = [
   { key: "solar_packages", label: "Solar Turnkey Packages", group: "Products & Solutions", path: "/admin/solar-packages", defaultRoles: ["staff"] },
   { key: "smart_locks", label: "Smart Locks & Security", group: "Products & Solutions", path: "/admin/smart-locks", defaultRoles: ["staff"] },
   { key: "home_automation", label: "Home Automation Systems", group: "Products & Solutions", path: "/admin/home-automation", defaultRoles: ["staff"] },
+  { key: "cctv_packages", label: "CCTV & Surveillance Packages", group: "Products & Solutions", path: "/admin/cctv-packages", defaultRoles: ["staff"] },
   { key: "lumivolt_sizings", label: "LumiVolt Solar Sizings", group: "Products & Solutions", path: "/admin/lumivolt-sizings", defaultRoles: ["staff", "engineer"] },
   { key: "assessments", label: "Solar Energy Assessments", group: "Products & Solutions", path: "/admin/assessments", defaultRoles: ["staff", "engineer"] },
   { key: "custom_requests", label: "Custom Solution Inquiries", group: "Products & Solutions", path: "/admin/custom-requests", defaultRoles: ["staff", "engineer"] },

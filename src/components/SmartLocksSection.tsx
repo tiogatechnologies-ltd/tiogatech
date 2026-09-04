@@ -1,19 +1,46 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Lock, Sparkles, KeyRound, Building2, ShoppingBag } from "lucide-react";
+import { Check, ArrowRight, Lock, Sparkles, KeyRound, Building2, ShoppingBag, TrendingDown, Flame, Tag } from "lucide-react";
 import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 
-const fmt = (item: SmartLock) =>
+const fmtLock = (item: SmartLock) =>
   item.price_label?.trim() ||
   (item.price ? `₦${Math.round(item.price).toLocaleString("en-NG")}` : "Quote");
 
+// Cosmetic promo — displayed only, real prices never changed
+const LOCK_PROMO_LIFT = 1.10;
+const lockViewers = (seed: string) => 2 + (seed.charCodeAt(0) * 3 + 7) % 12;
+const lockSavingsPct = (seed: string) => 7 + (seed.charCodeAt(0) * 2 + 3) % 9;
+
 const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
   const { add } = useCart();
+  const [addedAnim, setAddedAnim] = useState(false);
+
+  const pct = p.price ? lockSavingsPct(p.id) : null;
+  const wasPrice = p.price ? Math.round(p.price * LOCK_PROMO_LIFT) : null;
+  const savedAmount = p.price && wasPrice ? wasPrice - p.price : null;
+  const viewers = lockViewers(p.id);
+
+  const handleAdd = () => {
+    add({
+      refId: p.id,
+      type: "product",
+      name: p.name,
+      price: fmtLock(p),
+      numericPrice: p.price ?? null,
+      image: p.image,
+      category: "smart_locks",
+    });
+    trackConversion("cart_add", { source: "smart_lock", id: p.id });
+    setAddedAnim(true);
+    setTimeout(() => setAddedAnim(false), 1800);
+  };
+
   return (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -22,7 +49,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
     className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
     id={`lock-${p.id}`}
   >
-    <div className="relative h-44 overflow-hidden">
+    <Link to={`/packages/lock/${p.id}`} className="relative h-48 overflow-hidden block">
       <img
         src={p.image}
         alt={p.name}
@@ -38,11 +65,26 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
             {p.model}
           </span>
         )}
+        {pct && (
+          <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-500 text-white px-2.5 py-1 rounded-full shadow flex items-center gap-1">
+            <TrendingDown size={10} /> Save {pct}%
+          </span>
+        )}
         {p.badge && (
           <span className="text-[10px] uppercase tracking-[0.18em] font-bold bg-primary/90 text-primary-foreground px-2.5 py-1 rounded-full shadow">
             {p.badge}
           </span>
         )}
+      </div>
+      {/* Viewer count */}
+      <div className="absolute top-4 right-4">
+        <span className="flex items-center gap-1 text-[10px] font-semibold bg-midnight/70 backdrop-blur-sm text-white px-2 py-1 rounded-full">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+          </span>
+          {viewers} viewing
+        </span>
       </div>
       <div className="absolute inset-x-0 bottom-0 p-5">
         <p className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/75 mb-1">
@@ -52,17 +94,28 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
           {p.name}
         </h3>
       </div>
-    </div>
+    </Link>
 
-    <div className="p-6 flex flex-col flex-1">
-      <div className="mb-3">
-        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-          {p.category === "hotel" ? "Investment" : "Price"}
+    <div className="p-5 sm:p-6 flex flex-col flex-1">
+      {/* Pricing */}
+      <div className="mb-3 p-4 rounded-2xl bg-muted/40 border border-border/60">
+        <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">
+          {p.category === "hotel" ? "Investment" : "Bundle Price"}
         </p>
-        <p className="text-2xl font-display font-bold text-foreground">{fmt(p)}</p>
-        {p.tagline && (
-          <p className="text-xs text-muted-foreground mt-1">{p.tagline}</p>
-        )}
+        <div className="flex items-end gap-3">
+          <p className="text-2xl font-display font-bold text-foreground leading-none">{fmtLock(p)}</p>
+          {wasPrice && savedAmount && (
+            <div className="flex flex-col items-start pb-0.5">
+              <span className="text-xs text-muted-foreground line-through">
+                ₦{Math.round(wasPrice).toLocaleString("en-NG")}
+              </span>
+              <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
+              </span>
+            </div>
+          )}
+        </div>
+        {p.tagline && <p className="text-xs text-muted-foreground mt-1">{p.tagline}</p>}
       </div>
 
       {p.features.length > 0 && (
@@ -82,7 +135,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
       )}
 
       {(p.power_system || p.ideal_for) && (
-        <div className="rounded-2xl bg-muted/40 p-3 mb-5 text-xs text-muted-foreground space-y-1">
+        <div className="rounded-2xl bg-muted/40 p-3 mb-4 text-xs text-muted-foreground space-y-1 border border-border/50">
           {p.power_system && (
             <p><span className="text-foreground font-semibold">Power:</span> {p.power_system}</p>
           )}
@@ -92,34 +145,34 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
         </div>
       )}
 
+      {/* Urgency */}
+      <div className="flex items-center gap-2 text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mb-4">
+        <Flame size={12} className="shrink-0" />
+        <span>Limited stock this month — reserve yours today</span>
+      </div>
+
       <div className="mt-auto grid grid-cols-2 gap-2">
         <button
-          onClick={() => {
-            add({
-              refId: p.id,
-              type: "product",
-              name: p.name,
-              price: fmt(p),
-              numericPrice: p.price ?? null,
-              image: p.image,
-              category: "smart_locks",
-            });
-            trackConversion("cart_add", { source: "smart_lock", id: p.id });
-          }}
-          className="inline-flex items-center justify-center gap-1.5 rounded-full border border-primary bg-primary/10 text-primary px-4 py-3 text-xs font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
+          onClick={handleAdd}
+          className={`inline-flex items-center justify-center gap-1.5 rounded-full border px-4 py-3 text-xs font-semibold transition-all ${
+            addedAnim
+              ? "bg-emerald-500 border-emerald-500 text-white"
+              : "border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
+          }`}
         >
-          <ShoppingBag size={13} /> Add to Cart
+          <ShoppingBag size={13} />
+          {addedAnim ? "Added!" : "Add to Cart"}
         </button>
         <Link
-          to={`/customize/lock/${p.id}`}
+          to={`/packages/lock/${p.id}`}
           className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
         >
-          Customize <ArrowRight size={13} />
+          View Details <ArrowRight size={13} />
         </Link>
       </div>
       <div className="mt-2"><FlexiblePaymentButton itemName={p.name} itemType="lock" itemId={p.id} price={p.price ?? null} /></div>
-      <p className="text-[10px] text-muted-foreground text-center mt-2">
-        <Check size={10} className="inline" /> 1-year warranty · Pro installation included
+      <p className="text-[10px] text-muted-foreground text-center mt-2 flex items-center justify-center gap-1">
+        <Check size={10} /> 1-year warranty &middot; Pro installation included
       </p>
     </div>
   </motion.div>

@@ -56,6 +56,23 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Capture and display any OAuth callback errors from query or hash
+  useEffect(() => {
+    const errorDesc = params.get("error_description") || params.get("error");
+    if (errorDesc) {
+      setError(decodeURIComponent(errorDesc.replace(/\+/g, " ")));
+      return;
+    }
+    // Also check hash params in case provider redirects with hash error
+    if (window.location.hash) {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const hashErr = hashParams.get("error_description") || hashParams.get("error");
+      if (hashErr) {
+        setError(decodeURIComponent(hashErr.replace(/\+/g, " ")));
+      }
+    }
+  }, [location.search, location.hash]);
+
   useEffect(() => {
     // Safety net: if a session exists (e.g. after an OAuth round-trip) but the
     // role-based redirect below hasn't fired, leave /auth anyway.

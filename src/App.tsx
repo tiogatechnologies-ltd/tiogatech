@@ -23,6 +23,7 @@ import DeferredMount from "@/components/DeferredMount";
 import EnergyCalculatorDialog from "@/components/EnergyCalculatorDialog";
 import WaitlistDialog from "@/components/WaitlistDialog";
 import FeatureHighlightPopup from "@/components/FeatureHighlightPopup";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useEffect } from "react";
 import { consumeUpdatedNotice, initCacheBustCheck } from "@/lib/cache";
 import { toast } from "sonner";
@@ -30,15 +31,23 @@ import { toast } from "sonner";
 import Index from "./pages/Index.tsx";
 
 const CartDrawer = lazy(() => import("@/components/CartDrawer"));
+const ProductCompareTray = lazy(() => import("@/components/retail/ProductCompareTray"));
 const TelegramWidget = lazy(() => import("@/components/TelegramWidget"));
 
 const About = lazy(() => import("./pages/About.tsx"));
 const Catalog = lazy(() => import("./pages/Catalog.tsx"));
+const Retail = lazy(() => import("./pages/Retail.tsx"));
+const Wishlist = lazy(() => import("./pages/Wishlist.tsx"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail.tsx"));
 const TrackOrder = lazy(() => import("./pages/TrackOrder.tsx"));
 const ShortLink = lazy(() => import("./pages/ShortLink.tsx"));
 const LumiVolt = lazy(() => import("./pages/LumiVolt.tsx"));
 const SizingReport = lazy(() => import("./pages/SizingReport.tsx"));
+const Solutions = lazy(() => import("./pages/Solutions.tsx"));
+const SmartLocks = lazy(() => import("./pages/SmartLocks.tsx"));
+const HomeAutomation = lazy(() => import("./pages/HomeAutomation.tsx"));
+const CCTV = lazy(() => import("./pages/CCTV.tsx"));
+const SolarPackages = lazy(() => import("./pages/SolarPackages.tsx"));
 
 const VoltAi = lazy(() => import("./pages/VoltAi.tsx"));
 const Finance = lazy(() => import("./pages/Finance.tsx"));
@@ -48,6 +57,9 @@ const BlogPost = lazy(() => import("./pages/BlogPost.tsx"));
 const Privacy = lazy(() => import("./pages/Privacy.tsx"));
 const Terms = lazy(() => import("./pages/Terms.tsx"));
 const Packages = lazy(() => import("./pages/Packages.tsx"));
+const SolarPackageDetail = lazy(() => import("./pages/SolarPackageDetail.tsx"));
+const SmartLockDetail = lazy(() => import("./pages/SmartLockDetail.tsx"));
+const AutomationPackageDetail = lazy(() => import("./pages/AutomationPackageDetail.tsx"));
 const EnergyCalculator = lazy(() => import("./pages/EnergyCalculator.tsx"));
 const Customize = lazy(() => import("./pages/Customize.tsx"));
 const Career = lazy(() => import("./pages/Career.tsx"));
@@ -84,6 +96,7 @@ const AdminCareerApplications = lazy(() => import("./pages/AdminCareerApplicatio
 const AdminSolarPackages = lazy(() => import("./pages/AdminSolarPackages.tsx"));
 const AdminSmartLocks = lazy(() => import("./pages/AdminSmartLocks.tsx"));
 const AdminHomeAutomation = lazy(() => import("./pages/AdminHomeAutomation.tsx"));
+const AdminCCTV = lazy(() => import("./pages/AdminCCTV.tsx"));
 const AdminWaitlist = lazy(() => import("./pages/AdminWaitlist.tsx"));
 const AdminBlog = lazy(() => import("./pages/AdminBlog.tsx"));
 const AdminNewsletter = lazy(() => import("./pages/AdminNewsletter.tsx"));
@@ -176,19 +189,31 @@ const AnimatedRoutes = () => {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<RouteFade><Index /></RouteFade>} />
           <Route path="/about" element={<RouteFade><About /></RouteFade>} />
-          <Route path="/solutions" element={<Navigate to="/lumivolt" replace />} />
+          <Route path="/solutions" element={<RouteFade><Solutions /></RouteFade>} />
+          <Route path="/smart-locks" element={<RouteFade><SmartLocks /></RouteFade>} />
+          <Route path="/home-automation" element={<RouteFade><HomeAutomation /></RouteFade>} />
+          <Route path="/cctv" element={<RouteFade><CCTV /></RouteFade>} />
+          <Route path="/security" element={<RouteFade><CCTV /></RouteFade>} />
+          <Route path="/solar-packages" element={<RouteFade><SolarPackages /></RouteFade>} />
+          <Route path="/solar-solutions" element={<RouteFade><SolarPackages /></RouteFade>} />
           <Route path="/lumivolt" element={<RouteFade><LumiVolt /></RouteFade>} />
           <Route path="/voltai" element={<RouteFade><VoltAi /></RouteFade>} />
           <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
           <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
           <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
           <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
+          <Route path="/packages/solar/:id" element={<RouteFade><SolarPackageDetail /></RouteFade>} />
+          <Route path="/packages/lock/:id" element={<RouteFade><SmartLockDetail /></RouteFade>} />
+          <Route path="/packages/automation/:id" element={<RouteFade><AutomationPackageDetail /></RouteFade>} />
           <Route path="/energy-calculator" element={<RouteFade><EnergyCalculator /></RouteFade>} />
           <Route path="/customize/:type/:id" element={<RouteFade><Customize /></RouteFade>} />
 
           <Route path="/career" element={<RouteFade><Career /></RouteFade>} />
           <Route path="/careers/jobs" element={<RouteFade><Jobs /></RouteFade>} />
           <Route path="/coming-soon" element={<RouteFade><ComingSoon /></RouteFade>} />
+          <Route path="/retail" element={<RouteFade><Retail /></RouteFade>} />
+          <Route path="/store" element={<Navigate to="/retail" replace />} />
+          <Route path="/retail/wishlist" element={<RouteFade><Wishlist /></RouteFade>} />
           <Route path="/privacy" element={<RouteFade><Privacy /></RouteFade>} />
           <Route path="/terms" element={<RouteFade><Terms /></RouteFade>} />
           <Route path="/catalog" element={<RouteFade><Catalog /></RouteFade>} />
@@ -245,6 +270,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/solar-packages" element={<Admin><AdminSolarPackages /></Admin>} />
           <Route path="/admin/smart-locks" element={<Admin><AdminSmartLocks /></Admin>} />
           <Route path="/admin/home-automation" element={<Admin><AdminHomeAutomation /></Admin>} />
+          <Route path="/admin/cctv-packages" element={<Admin><AdminCCTV /></Admin>} />
           <Route path="/admin/waitlist" element={<Admin><AdminWaitlist /></Admin>} />
           <Route path="/admin/blog" element={<Admin><AdminBlog /></Admin>} />
           <Route path="/admin/newsletter" element={<Admin><AdminNewsletter /></Admin>} />
@@ -308,13 +334,16 @@ const App = () => (
             <FeatureHighlightPopup />
             <Suspense fallback={null}>
               <CartDrawer />
+              <ProductCompareTray />
               <DeferredMount delay={2500}>
                 <TelegramWidget />
                 <AiChatWidget />
               </DeferredMount>
             </Suspense>
             <ScrollToTopButton />
-            <AnimatedRoutes />
+            <ErrorBoundary>
+              <AnimatedRoutes />
+            </ErrorBoundary>
           </CartProvider>
         </AuthProvider>
       </BrowserRouter>

@@ -8,7 +8,7 @@ import {
   Mail, BarChart3, Briefcase, UserRoundCheck, Sun, Lock, Home, Smartphone,
   Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag,
   ScrollText, Calendar, Search, Calculator, Zap, Plus, Minus, Pin, PinOff, ShieldCheck,
-  Building2, Wrench, BookOpen, TrendingUp, Award,
+  Building2, Wrench, BookOpen, TrendingUp, Award, Camera,
 } from "lucide-react";
 
 
@@ -22,7 +22,7 @@ type NavItem = {
   roles?: AppRole[];
   children?: NavSubItem[];
 };
-type NavGroup = { label: string; roles?: AppRole[]; items: NavItem[] };
+type NavGroup = { label: string; roles?: AppRole[]; items: NavItem[] }
 
 const navGroups: NavGroup[] = [
   {
@@ -64,6 +64,7 @@ const navGroups: NavGroup[] = [
       { label: "Solar Packages (3kVA–20kVA)", icon: Sun, path: "/admin/solar-packages" },
       { label: "Smart Locks & Security", icon: Lock, path: "/admin/smart-locks" },
       { label: "Home Automation Systems", icon: Home, path: "/admin/home-automation" },
+      { label: "CCTV & Surveillance Packages", icon: Camera, path: "/admin/cctv-packages" },
       {
         label: "Solar Sizing & Audits",
         icon: Calculator,
@@ -76,6 +77,7 @@ const navGroups: NavGroup[] = [
       },
     ],
   },
+
   {
     label: "Supply Chain & Field ERP",
     roles: ["admin", "staff", "engineer"],
