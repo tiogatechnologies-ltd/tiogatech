@@ -10,7 +10,8 @@ import { useCart } from "@/contexts/CartContext";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { supabase } from "@/integrations/supabase/client";
 import { productPath } from "@/lib/productSlug";
-import { inferBrand } from "@/lib/productBrand";
+import { inferBrand, normalizeCategory } from "@/lib/productBrand";
+import { mergeProducts } from "@/lib/mergeProducts";
 import { resolveProductImage } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
@@ -37,7 +38,7 @@ export const Wishlist = () => {
         const dbList: RetailProduct[] = ((data as any[]) || []).map((p) => ({
           id: p.id,
           name: p.name,
-          category: p.category,
+          category: normalizeCategory(p.category),
           series: p.series || null,
           description: p.description,
           features: Array.isArray(p.features) ? p.features : [],
@@ -56,7 +57,7 @@ export const Wishlist = () => {
         const staticList: RetailProduct[] = STATIC_PRODUCTS.map((p) => ({
           id: p.id,
           name: p.name,
-          category: p.category,
+          category: normalizeCategory(p.category),
           series: p.series || null,
           description: p.description,
           features: p.features || [],
@@ -72,9 +73,7 @@ export const Wishlist = () => {
           review_count: p.review_count || 14,
         }));
 
-        const map = new Map<string, RetailProduct>();
-        [...staticList, ...dbList].forEach((item) => map.set(item.id, item));
-        setAllProducts(Array.from(map.values()));
+        setAllProducts(mergeProducts(staticList, dbList));
       } catch (err) {
         console.error("Wishlist catalog error:", err);
       } finally {
@@ -102,7 +101,7 @@ export const Wishlist = () => {
         price: p.price,
         numericPrice: p.numeric_price,
         image: p.image_url,
-        category: p.category,
+        category: normalizeCategory(p.category),
         quantity: 1,
       });
     });

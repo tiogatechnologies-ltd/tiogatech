@@ -212,7 +212,7 @@ const SmartLocksSection = () => {
         </div>
 
         <div className="mb-10 -mx-4 px-4 overflow-x-auto scrollbar-none">
-          <div className="flex justify-center min-w-max mx-auto">
+          <div className="flex justify-start sm:justify-center min-w-max sm:mx-auto">
             <div className="inline-flex p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
               {TABS.map(({ key, label, icon: Icon }) => (
                 <button

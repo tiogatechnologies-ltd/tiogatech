@@ -36,7 +36,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useWishlist } from "@/hooks/useWishlist";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
-import { inferBrand } from "@/lib/productBrand";
+import { inferBrand, normalizeCategory } from "@/lib/productBrand";
+import { mergeProducts } from "@/lib/mergeProducts";
 import type { RetailProduct } from "@/types/retail";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating" | "newest";
@@ -93,7 +94,7 @@ export const Retail = () => {
         const staticList: RetailProduct[] = STATIC_PRODUCTS.map((p) => ({
           id: p.id,
           name: p.name,
-          category: p.category,
+          category: normalizeCategory(p.category),
           series: p.series || null,
           description: p.description,
           features: p.features || [],
@@ -118,7 +119,7 @@ export const Retail = () => {
           dbList = data.map((p: any) => ({
             id: p.id,
             name: p.name,
-            category: p.category,
+            category: normalizeCategory(p.category),
             series: p.series,
             description: p.description,
             features: Array.isArray(p.features) ? p.features : [],
@@ -138,19 +139,15 @@ export const Retail = () => {
           }));
         }
 
-        // 3. Merge by product id (static and DB rows share fixed ids)
-        const productMap = new Map<string, RetailProduct>();
-        staticList.forEach((item) => productMap.set(item.id, item));
-        dbList.forEach((item) => productMap.set(item.id, item));
-
-        const combined = Array.from(productMap.values());
+        // 3. Merge static + DB rows (by id, then by name to catch legacy DB duplicates)
+        const combined = mergeProducts(staticList, dbList);
         if (isMounted) setProducts(combined);
       } catch {
         if (isMounted) {
           setProducts(STATIC_PRODUCTS.map((p) => ({
             id: p.id,
             name: p.name,
-            category: p.category,
+            category: normalizeCategory(p.category),
             series: p.series || null,
             description: p.description,
             features: p.features || [],
@@ -367,7 +364,7 @@ export const Retail = () => {
             </div>
 
             {/* Right Controls */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {/* Mobile Filter Drawer */}
               <div className="lg:hidden">
                 <Sheet open={mobileFilterOpen} onOpenChange={setMobileFilterOpen}>
@@ -425,7 +422,7 @@ export const Retail = () => {
 
               {/* Items Per Page Selector */}
               <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1); }}>
-                <SelectTrigger className="w-24 bg-muted/30 rounded-xl text-xs font-medium h-10">
+                <SelectTrigger className="w-28 shrink-0 bg-muted/30 rounded-xl text-xs font-medium h-10">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-card border-border">

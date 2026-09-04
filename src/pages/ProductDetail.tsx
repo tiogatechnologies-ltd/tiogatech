@@ -38,7 +38,8 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { trackConversion } from "@/lib/tracking";
 import { matchesSlug, productPath } from "@/lib/productSlug";
-import { inferBrand } from "@/lib/productBrand";
+import { inferBrand, normalizeCategory } from "@/lib/productBrand";
+import { mergeProducts } from "@/lib/mergeProducts";
 import { PROMO_LIFT, viewerCount, soldCount, savingsPct } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
@@ -125,7 +126,7 @@ export const ProductDetail = () => {
       const dbList: Product[] = ((data as any[]) || []).map((p) => ({
         id: p.id,
         name: p.name,
-        category: p.category,
+        category: normalizeCategory(p.category),
         series: p.series,
         description: p.description,
         features: Array.isArray(p.features) ? p.features : [],
@@ -141,7 +142,7 @@ export const ProductDetail = () => {
       const staticList: Product[] = STATIC_PRODUCTS.map((p) => ({
         id: p.id,
         name: p.name,
-        category: p.category,
+        category: normalizeCategory(p.category),
         series: p.series || null,
         description: p.description,
         features: p.features || [],
@@ -154,9 +155,7 @@ export const ProductDetail = () => {
         brand: p.brand || inferBrand(p.name, p.category),
       }));
 
-      const productMap = new Map<string, Product>();
-      [...staticList, ...dbList].forEach((item) => productMap.set(item.id, item));
-      const all = Array.from(productMap.values());
+      const all = mergeProducts(staticList, dbList);
 
       const found = all.find((p) => matchesSlug(p, slug)) ?? null;
       setProduct(found);
@@ -736,14 +735,14 @@ export const ProductDetail = () => {
 
                 <div className="divide-y divide-border">
                   {/* Category & Series rows */}
-                  <div className="flex items-center justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
                     <span className="text-muted-foreground font-medium">Hardware Class</span>
-                    <span className="font-semibold text-foreground text-right">{categoryLabels[product.category] ?? product.category}</span>
+                    <span className="font-semibold text-foreground sm:text-right">{categoryLabels[product.category] ?? product.category}</span>
                   </div>
                   {product.series && (
-                    <div className="flex items-center justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
                       <span className="text-muted-foreground font-medium">Product Series</span>
-                      <span className="font-semibold text-foreground text-right">{product.series}</span>
+                      <span className="font-semibold text-foreground sm:text-right">{product.series}</span>
                     </div>
                   )}
 
@@ -752,10 +751,10 @@ export const ProductDetail = () => {
                     Object.entries(product.specifications).map(([key, val]) => (
                       <div
                         key={key}
-                        className="flex items-center justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors"
+                        className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors"
                       >
                         <span className="text-muted-foreground font-medium">{key}</span>
-                        <span className="font-mono font-semibold text-foreground text-right">{String(val)}</span>
+                        <span className="font-mono font-semibold text-foreground break-words sm:text-right">{String(val)}</span>
                       </div>
                     ))
                   ) : (
@@ -765,15 +764,15 @@ export const ProductDetail = () => {
                   )}
 
                   {/* Warranty Duration */}
-                  <div className="flex items-center justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
                     <span className="text-muted-foreground font-medium">Warranty Period</span>
-                    <span className="font-semibold text-emerald-600 dark:text-emerald-400 text-right">5-Year Manufacturer Warranty</span>
+                    <span className="font-semibold text-emerald-600 dark:text-emerald-400 sm:text-right">5-Year Manufacturer Warranty</span>
                   </div>
 
                   {/* Compatibility */}
-                  <div className="flex items-center justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
                     <span className="text-muted-foreground font-medium">Certifications</span>
-                    <span className="font-semibold text-foreground text-right">CE, RoHS, UN38.3, IEC 62109</span>
+                    <span className="font-semibold text-foreground sm:text-right">CE, RoHS, UN38.3, IEC 62109</span>
                   </div>
                 </div>
               </div>

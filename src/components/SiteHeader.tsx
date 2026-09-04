@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, MessageCircle, Sparkles, ChevronDown } from "lucide-react";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
@@ -251,14 +252,14 @@ const SiteHeader = () => {
         </div>
       </div>
 
-      {open && (
+      {open && createPortal(
         <>
           <div
-            className="lg:hidden fixed inset-0 top-16 bg-black/40 z-30 animate-fade-in"
+            className="lg:hidden fixed inset-0 top-16 bg-black/40 z-40 animate-fade-in"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
-          <div className="lg:hidden relative z-40 border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
+          <div className="lg:hidden fixed inset-x-0 top-16 z-50 border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
           <nav className="section-container py-4 flex flex-col gap-1">
             <NavLink
               to="/"
@@ -325,7 +326,8 @@ const SiteHeader = () => {
             </a>
           </nav>
           </div>
-        </>
+        </>,
+        document.body
       )}
     </header>
   );
