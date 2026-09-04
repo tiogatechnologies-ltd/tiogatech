@@ -128,9 +128,9 @@ const Hero = ({ onApply }: HeroProps) => {
               <button
                 type="button"
                 onClick={() => { trackConversion("energy_calculator_open", { source: "hero" }); openEnergyCalculator(); }}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/5 backdrop-blur-md px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-primary-foreground hover:bg-primary-foreground/15 ios-press"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-midnight/70 backdrop-blur-xl px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-white hover:bg-midnight/90 hover:border-white/50 transition-all shadow-lg shadow-black/20 ios-press"
               >
-                <Calculator size={14} />
+                <Calculator size={14} className="text-accent" />
                 Energy Calculator
               </button>
             </div>
@@ -157,27 +157,30 @@ const Hero = ({ onApply }: HeroProps) => {
           <div className="lg:col-span-5 relative hidden lg:block h-[520px]">
             {/* Card 1 - Solar */}
             <div
-              className={`absolute top-0 right-0 w-64 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-0 right-0 w-64 rounded-2xl bg-midnight/75 backdrop-blur-2xl border border-white/20 p-5 shadow-2xl shadow-black/40 ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.5s" }}
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center border border-accent/30">
                   <Sun className="text-accent" size={20} />
                 </div>
                 <div>
-                  <p className="text-xs text-primary-foreground/60 uppercase tracking-wider">Solar Output</p>
+                  <p className="text-xs text-primary-foreground/70 uppercase tracking-wider font-semibold">Solar Output</p>
                   <p className="text-lg font-display font-bold text-primary-foreground">5.2 kWp</p>
                 </div>
               </div>
-              <div className="h-1.5 bg-primary-foreground/10 rounded-full overflow-hidden">
-                <div className="h-full bg-accent rounded-full" style={{ width: "78%" }} />
+              <div className="h-1.5 bg-white/15 rounded-full overflow-hidden">
+                <div className="h-full bg-accent rounded-full shadow-[0_0_8px_hsl(var(--solar-gold))]" style={{ width: "78%" }} />
               </div>
-              <p className="text-xs text-primary-foreground/60 mt-2">Generating now · Sunny</p>
+              <p className="text-xs text-primary-foreground/70 mt-2 flex items-center gap-1.5 font-medium">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                Generating now · Sunny
+              </p>
             </div>
 
             {/* Card 2 - Smart Home */}
             <div
-              className={`absolute top-44 left-0 w-72 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-44 left-0 w-72 rounded-2xl bg-midnight/75 backdrop-blur-2xl border border-white/20 p-5 shadow-2xl shadow-black/40 ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.7s" }}
             >
               <div className="flex items-center justify-between mb-4">
@@ -185,7 +188,7 @@ const Hero = ({ onApply }: HeroProps) => {
                   <Home className="text-primary-foreground" size={18} />
                   <p className="text-sm font-semibold text-primary-foreground">Smart Home</p>
                 </div>
-                <span className="text-[10px] text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full font-medium">ONLINE</span>
+                <span className="text-[10px] text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full font-semibold border border-emerald-500/30">ONLINE</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {[
@@ -193,9 +196,9 @@ const Hero = ({ onApply }: HeroProps) => {
                   { icon: Camera, label: "Cameras" },
                   { icon: Zap, label: "Power" },
                 ].map((item, i) => (
-                  <div key={i} className="rounded-xl bg-primary-foreground/5 p-3 text-center border border-primary-foreground/10">
+                  <div key={i} className="rounded-xl bg-white/5 backdrop-blur-sm p-3 text-center border border-white/10 hover:border-accent/40 transition-colors">
                     <item.icon size={16} className="mx-auto text-accent mb-1" />
-                    <p className="text-[10px] text-primary-foreground/70">{item.label}</p>
+                    <p className="text-[10px] text-primary-foreground/80 font-medium">{item.label}</p>
                   </div>
                 ))}
               </div>
@@ -203,12 +206,12 @@ const Hero = ({ onApply }: HeroProps) => {
 
             {/* Card 3 - Savings */}
             <div
-              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-accent/30 backdrop-blur-xl border border-accent/30 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-midnight/80 backdrop-blur-2xl border border-accent/40 p-5 shadow-2xl shadow-black/50 ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.9s", animationDuration: "7s" }}
             >
-              <p className="text-xs text-primary-foreground/70 uppercase tracking-wider mb-1">Monthly Savings</p>
+              <p className="text-xs text-accent uppercase tracking-wider mb-1 font-semibold">Monthly Savings</p>
               <p className="text-3xl font-display font-bold text-primary-foreground">₦185k</p>
-              <div className="flex items-center gap-1 mt-2 text-emerald-300 text-xs">
+              <div className="flex items-center gap-1.5 mt-2 text-emerald-400 text-xs font-semibold">
                 <TrendingUpIcon />
                 <span>vs generator fuel</span>
               </div>

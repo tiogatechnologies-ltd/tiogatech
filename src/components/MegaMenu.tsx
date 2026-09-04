@@ -75,8 +75,8 @@ export const MegaMenu = ({ onDark, open, onClose }: MegaMenuProps) => {
           ? "opacity-100 visible translate-y-0 pointer-events-auto"
           : "opacity-0 invisible translate-y-2 pointer-events-none",
         onDark
-          ? "bg-midnight/95 border-primary-foreground/15 text-primary-foreground shadow-black/60"
-          : "bg-background/95 border-border text-foreground shadow-lg",
+          ? "bg-midnight/98 border-primary-foreground/20 text-primary-foreground shadow-2xl shadow-black/70 backdrop-blur-2xl"
+          : "bg-card/98 border-border text-foreground shadow-2xl shadow-slate-900/15 backdrop-blur-2xl",
       )}
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5">
@@ -96,7 +96,7 @@ export const MegaMenu = ({ onDark, open, onClose }: MegaMenuProps) => {
                     "block rounded-2xl border p-3 transition-all hover:-translate-y-0.5 group/card",
                     onDark
                       ? "border-primary-foreground/10 bg-primary-foreground/5 hover:border-gold/40 hover:bg-primary-foreground/10"
-                      : "border-border/80 bg-muted/40 hover:border-primary/40 hover:bg-muted",
+                      : "border-border bg-background/90 hover:border-primary/40 hover:bg-muted/80 backdrop-blur-sm",
                   )}
                 >
                   <div className="flex items-center gap-2">

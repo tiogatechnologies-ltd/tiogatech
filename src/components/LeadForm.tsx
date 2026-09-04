@@ -310,7 +310,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-foreground/40 backdrop-blur-sm px-0 sm:px-4"
+      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-md px-0 sm:px-4 animate-fade-in"
       onClick={() => { handleReset(); onClose(); }}
     >
       <div

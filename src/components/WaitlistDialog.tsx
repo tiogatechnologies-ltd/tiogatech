@@ -34,7 +34,7 @@ const WaitlistDialog = () => {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-md animate-fade-in"
       onClick={() => setOpen(false)}
     >
       <div
