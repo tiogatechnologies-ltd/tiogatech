@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Package, Users, TrendingUp, Clock, ShoppingBag, Wallet, AlertTriangle,
-  Mail, ArrowUpRight, FileText, Send, Sparkles, CheckCircle2, XCircle, Loader2
+  Mail, ArrowUpRight, FileText, Send, Zap, BarChart3, CheckCircle2, XCircle, Loader2
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, Cell, Legend } from "recharts";
 import { toast } from "sonner";
@@ -189,7 +189,7 @@ const AdminDashboard = () => {
     { label: "Revenue 7d", value: NGN(stats.revenue7d), icon: Wallet, accent: "text-accent", href: "/admin/orders" },
     { label: "Orders pending", value: stats.ordersPending, icon: ShoppingBag, accent: "text-primary", href: "/admin/orders" },
     { label: "Leads today", value: stats.leadsToday, icon: Users, accent: "text-accent", href: "/admin/leads" },
-    { label: "Assessments today", value: stats.assessmentsToday, icon: Sparkles, accent: "text-primary", href: "/admin/assessments" },
+    { label: "Assessments today", value: stats.assessmentsToday, icon: Zap, accent: "text-primary", href: "/admin/assessments" },
     { label: "Pending engineering", value: stats.assessmentsPendingReview, icon: Clock, accent: stats.assessmentsPendingReview > 0 ? "text-accent" : "text-muted-foreground", href: "/admin/assessments" },
     { label: "Custom requests", value: stats.customRequestsOpen, icon: FileText, accent: stats.customRequestsOpen > 0 ? "text-accent" : "text-muted-foreground", href: "/admin/custom-requests" },
     { label: "Active finance", value: stats.activeFinance, icon: Wallet, accent: "text-accent", href: "/admin/finance/schedules" },
@@ -209,29 +209,29 @@ const AdminDashboard = () => {
       ) : (
         <div className="space-y-6">
           {/* KPI strip */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
             {kpis.map(k => (
-              <Link to={k.href} key={k.label} className="group rounded-2xl border border-border bg-card p-4 hover:border-primary/40 hover:shadow-md transition-all">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">{k.label}</span>
-                  <k.icon size={14} className={k.accent} />
+              <Link to={k.href} key={k.label} className="group rounded-xl sm:rounded-2xl border border-border bg-card p-3 sm:p-4 hover:border-primary/40 hover:shadow-md transition-all">
+                <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+                  <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground uppercase tracking-wider truncate mr-1">{k.label}</span>
+                  <k.icon size={14} className={`${k.accent} shrink-0`} />
                 </div>
-                <p className="text-xl sm:text-2xl font-display font-bold text-card-foreground truncate">{k.value}</p>
+                <p className="text-lg sm:text-2xl font-display font-bold text-card-foreground truncate">{k.value}</p>
                 <ArrowUpRight size={12} className="text-muted-foreground/40 group-hover:text-primary mt-1" />
               </Link>
             ))}
           </div>
 
           {/* Quick actions */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {[
               { label: "New product", icon: Package, href: "/admin/products" },
               { label: "New blog post", icon: FileText, href: "/admin/blog" },
               { label: "Send newsletter", icon: Send, href: "/admin/newsletter" },
               { label: "Compose email", icon: Mail, href: "/admin/email" },
-              { label: "View analytics", icon: Sparkles, href: "/admin/analytics" },
+              { label: "View analytics", icon: BarChart3, href: "/admin/analytics" },
             ].map(a => (
-              <Link key={a.label} to={a.href} className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg border border-border bg-card hover:border-primary/40 hover:text-primary transition-colors">
+              <Link key={a.label} to={a.href} className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-medium px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg border border-border bg-card hover:border-primary/40 hover:text-primary transition-colors">
                 <a.icon size={13} /> {a.label}
               </Link>
             ))}

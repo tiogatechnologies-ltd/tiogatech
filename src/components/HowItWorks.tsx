@@ -36,7 +36,7 @@ const HowItWorks = () => {
               >
                 <div className="relative rounded-2xl bg-card border border-border p-6 pop-hover hover:border-primary/40">
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-1">
+                    <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-500 ease-bounce-out group-hover:scale-110 group-hover:-translate-y-1">
                       <Icon size={20} className="text-primary-foreground" />
                     </div>
                     <span className="text-4xl font-display font-bold text-primary/15 leading-none">{String(i + 1).padStart(2, "0")}</span>

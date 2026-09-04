@@ -154,6 +154,10 @@ export default {
         "shimmer-sweep": "shimmer-sweep 12s cubic-bezier(0.4, 0, 0.2, 1) infinite",
         "idle-bob": "idle-bob 7s cubic-bezier(0.45, 0, 0.55, 1) infinite",
       },
+      transitionTimingFunction: {
+        "bounce-out": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "smooth-out": "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

@@ -386,12 +386,31 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {sidebarOpen && (<div className="fixed inset-0 z-40 bg-foreground/30 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />)}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden animate-fade-in transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-secondary text-secondary-foreground transform transition-transform lg:translate-x-0 lg:static lg:z-auto flex flex-col ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-foreground/10 shrink-0">
-          <span className="font-display text-lg font-bold tracking-tight">Tioga<span className="text-accent">.</span> Admin</span>
-          <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 rounded hover:bg-secondary-foreground/10"><X size={18} /></button>
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] lg:w-[270px] bg-secondary text-secondary-foreground transform transition-transform duration-200 ease-out lg:translate-x-0 lg:static lg:z-auto flex flex-col shadow-2xl lg:shadow-none ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      >
+        <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-secondary-foreground/10 shrink-0">
+          <span className="font-display text-base sm:text-lg font-bold tracking-tight">
+            Tioga<span className="text-accent">.</span> Admin
+          </span>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="lg:hidden p-1.5 rounded-lg text-secondary-foreground/70 hover:bg-secondary-foreground/10 hover:text-secondary-foreground transition"
+            aria-label="Close sidebar"
+          >
+            <X size={18} />
+          </button>
         </div>
 
         <div className="px-3 pt-3 pb-2 shrink-0">
@@ -401,16 +420,16 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search admin…"
-              className="w-full pl-8 pr-3 py-2 rounded-lg bg-secondary-foreground/5 border border-secondary-foreground/10 text-sm placeholder:text-secondary-foreground/40 outline-none focus:border-accent/50"
+              className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-secondary-foreground/5 border border-secondary-foreground/10 text-xs placeholder:text-secondary-foreground/40 text-secondary-foreground outline-none focus:border-accent/50 transition-colors"
             />
           </div>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 pb-3 space-y-3">
+        <nav className="flex-1 overflow-y-auto px-3 pb-3 space-y-2.5 overscroll-contain">
           {loading ? (
             <div className="space-y-2 px-1">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-8 rounded-lg bg-secondary-foreground/5 animate-pulse" />
+                <div key={i} className="h-7 rounded-lg bg-secondary-foreground/5 animate-pulse" />
               ))}
             </div>
           ) : (
@@ -418,7 +437,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               {pinnedEntries.length > 0 && !q && (
                 <div className="space-y-0.5 pb-2 border-b border-secondary-foreground/10">
                   <div className="flex items-center px-2 py-1">
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-secondary-foreground/40">Pinned</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-secondary-foreground/40">Pinned</p>
                   </div>
                   {pinnedEntries.map((p) => {
                     const active = isActiveExact(p.path);
@@ -426,13 +445,26 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                       <div key={p.path} className="group flex items-center gap-1">
                         <button
                           onClick={() => go(p.path)}
-                          className={`flex-1 flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-all ${active ? "bg-primary/20 text-primary-foreground border-l-2 border-accent" : "text-secondary-foreground/80 hover:bg-secondary-foreground/10"}`}
+                          className={`flex-1 flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                            active
+                              ? "bg-primary/20 text-primary-foreground font-semibold border-l-2 border-accent"
+                              : "text-secondary-foreground/80 hover:bg-secondary-foreground/10"
+                          }`}
                         >
-                          <p.icon size={16} />
+                          <p.icon size={15} className="shrink-0 opacity-80" />
                           <span className="truncate">{p.label}</span>
-                          {p.parentLabel && <span className="ml-auto text-[9px] uppercase tracking-wider text-secondary-foreground/40">{p.parentLabel}</span>}
+                          {p.parentLabel && (
+                            <span className="ml-auto text-[9px] uppercase tracking-wider text-secondary-foreground/40 shrink-0">
+                              {p.parentLabel}
+                            </span>
+                          )}
                         </button>
-                        <button onClick={() => togglePin(p.path)} className="p-1 rounded hover:bg-secondary-foreground/10 opacity-0 group-hover:opacity-100 transition"><PinOff size={12} /></button>
+                        <button
+                          onClick={() => togglePin(p.path)}
+                          className="p-1 rounded hover:bg-secondary-foreground/10 opacity-0 group-hover:opacity-100 transition text-secondary-foreground/50"
+                        >
+                          <PinOff size={11} />
+                        </button>
                       </div>
                     );
                   })}
@@ -445,11 +477,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   <div key={group.label} className="space-y-0.5">
                     <button
                       onClick={() => toggleGroup(group.label)}
-                      className="w-full flex items-center px-2 py-1.5 rounded-md hover:bg-secondary-foreground/5 transition"
+                      className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-left hover:bg-secondary-foreground/5 transition group"
                     >
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-secondary-foreground/50">{group.label}</span>
-                      <span className="ml-auto text-secondary-foreground/40">
-                        {groupOpen ? <Minus size={12} /> : <Plus size={12} />}
+                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-secondary-foreground/50 group-hover:text-secondary-foreground/80 transition-colors">
+                        {group.label}
+                      </span>
+                      <span className="text-secondary-foreground/35 group-hover:text-secondary-foreground/60 transition-colors">
+                        {groupOpen ? <Minus size={11} /> : <Plus size={11} />}
                       </span>
                     </button>
                     {groupOpen && group.items.map((item) => {
@@ -461,46 +495,56 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                           <div className="group flex items-center gap-0.5">
                             <button
                               onClick={() => go(item.path)}
-                              className={`flex-1 flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-all ${active && isActiveExact(item.path) ? "bg-primary/20 text-primary-foreground border-l-2 border-accent" : active ? "text-secondary-foreground" : "text-secondary-foreground/75 hover:bg-secondary-foreground/10 hover:text-secondary-foreground"}`}
+                              className={`flex-1 flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                                active && isActiveExact(item.path)
+                                  ? "bg-primary/20 text-primary-foreground font-semibold border-l-2 border-accent"
+                                  : active
+                                  ? "text-secondary-foreground font-medium bg-secondary-foreground/5"
+                                  : "text-secondary-foreground/75 hover:bg-secondary-foreground/10 hover:text-secondary-foreground"
+                              }`}
                             >
-                              <item.icon size={16} />
+                              <item.icon size={15} className="shrink-0 opacity-80" />
                               <span className="truncate">{item.label}</span>
                             </button>
                             <button
                               onClick={() => togglePin(item.path)}
                               title={pins.has(item.path) ? "Unpin" : "Pin"}
-                              className="p-1 rounded hover:bg-secondary-foreground/10 opacity-0 group-hover:opacity-100 transition"
+                              className="p-1 rounded hover:bg-secondary-foreground/10 opacity-0 group-hover:opacity-100 transition text-secondary-foreground/50"
                             >
-                              {pins.has(item.path) ? <PinOff size={12} /> : <Pin size={12} />}
+                              {pins.has(item.path) ? <PinOff size={11} /> : <Pin size={11} />}
                             </button>
                             {hasChildren && (
                               <button
                                 onClick={() => toggleItem(item.path)}
                                 className="p-1 rounded hover:bg-secondary-foreground/10 text-secondary-foreground/50"
                               >
-                                {itemOpen ? <Minus size={12} /> : <Plus size={12} />}
+                                {itemOpen ? <Minus size={11} /> : <Plus size={11} />}
                               </button>
                             )}
                           </div>
                           {hasChildren && itemOpen && (
-                            <div className="ml-6 mt-0.5 mb-1 pl-2 border-l border-secondary-foreground/10 space-y-0.5">
+                            <div className="ml-5 mt-0.5 mb-1 pl-2.5 border-l border-secondary-foreground/10 space-y-0.5">
                               {item.children!.map((c) => {
                                 const cActive = isActiveExact(c.path);
                                 return (
                                   <div key={c.path} className="group flex items-center gap-0.5">
                                     <button
                                       onClick={() => go(c.path)}
-                                      className={`flex-1 flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-md text-[13px] transition-all ${cActive ? "bg-accent/15 text-secondary-foreground font-medium" : "text-secondary-foreground/60 hover:bg-secondary-foreground/10 hover:text-secondary-foreground/90"}`}
+                                      className={`flex-1 flex items-center gap-2 pl-2 pr-2 py-1 rounded-md text-[11px] transition-all ${
+                                        cActive
+                                          ? "bg-accent/20 text-accent font-semibold"
+                                          : "text-secondary-foreground/60 hover:bg-secondary-foreground/10 hover:text-secondary-foreground/90 font-normal"
+                                      }`}
                                     >
-                                      <span className="inline-block w-1 h-1 rounded-full bg-current opacity-60" />
-                                      <span className="truncate">{c.label}</span>
+                                      <span className={`inline-block w-1.5 h-1.5 rounded-full transition-colors ${cActive ? "bg-accent" : "bg-secondary-foreground/30 group-hover:bg-secondary-foreground/60"}`} />
+                                      <span className="truncate leading-snug">{c.label}</span>
                                     </button>
                                     <button
                                       onClick={() => togglePin(c.path)}
                                       title={pins.has(c.path) ? "Unpin" : "Pin"}
-                                      className="p-1 rounded hover:bg-secondary-foreground/10 opacity-0 group-hover:opacity-100 transition"
+                                      className="p-1 rounded hover:bg-secondary-foreground/10 opacity-0 group-hover:opacity-100 transition text-secondary-foreground/50"
                                     >
-                                      {pins.has(c.path) ? <PinOff size={11} /> : <Pin size={11} />}
+                                      {pins.has(c.path) ? <PinOff size={10} /> : <Pin size={10} />}
                                     </button>
                                   </div>
                                 );
@@ -521,23 +565,33 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </nav>
 
         <div className="shrink-0 p-3 border-t border-secondary-foreground/10 space-y-1">
-          <div className="text-xs text-secondary-foreground/50 mb-2 truncate px-2">{user?.email}</div>
-          <button onClick={handleSignOut} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-secondary-foreground/70 hover:bg-secondary-foreground/10 hover:text-secondary-foreground transition-all">
-            <LogOut size={16} /> Sign Out
+          <div className="text-[11px] text-secondary-foreground/50 mb-1.5 truncate px-2">{user?.email}</div>
+          <button onClick={handleSignOut} className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-secondary-foreground/70 hover:bg-secondary-foreground/10 hover:text-secondary-foreground transition-all">
+            <LogOut size={15} /> Sign Out
           </button>
-          <button onClick={() => navigate("/")} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-secondary-foreground/70 hover:bg-secondary-foreground/10 hover:text-secondary-foreground transition-all">
-            <Globe size={16} /> Back to Website
+          <button onClick={() => navigate("/")} className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-secondary-foreground/70 hover:bg-secondary-foreground/10 hover:text-secondary-foreground transition-all">
+            <Globe size={15} /> Back to Website
           </button>
         </div>
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-lg border-b border-border px-4 sm:px-6 py-3 flex items-center gap-3">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"><Menu size={20} /></button>
-          <h1 className="font-display font-bold text-foreground text-base sm:text-lg truncate">{allNavItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}</h1>
-          <div className="ml-auto"><AdminSearch items={visibleGroups.flatMap(g => g.items.map(i => ({ ...i, group: g.label })))} /></div>
+        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-lg border-b border-border px-3 sm:px-6 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-3">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="lg:hidden p-1.5 rounded-lg hover:bg-muted text-foreground transition-colors shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
+          <h1 className="font-display font-bold text-foreground text-sm sm:text-lg truncate flex-1 min-w-0">
+            {allNavItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}
+          </h1>
+          <div className="shrink-0">
+            <AdminSearch items={visibleGroups.flatMap(g => g.items.map(i => ({ ...i, group: g.label })))} />
+          </div>
         </header>
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">{children}</main>
+        <main className="flex-1 p-3 sm:p-6 lg:p-8 overflow-auto">{children}</main>
       </div>
     </div>
   );
@@ -575,10 +629,14 @@ function AdminSearch({ items }: { items: Array<{ label: string; path: string; gr
 
   return (
     <>
-      <button onClick={() => setOpen(true)} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-muted/40 hover:bg-muted text-sm text-muted-foreground min-w-[180px] sm:min-w-[240px]">
-        <Search size={15} />
+      <button
+        onClick={() => setOpen(true)}
+        className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg border border-border bg-muted/40 hover:bg-muted text-xs sm:text-sm text-muted-foreground transition-colors"
+        aria-label="Search admin"
+      >
+        <Search size={14} className="shrink-0" />
         <span className="hidden sm:inline">Search admin…</span>
-        <span className="sm:hidden">Search</span>
+        <span className="sm:hidden text-xs">Search</span>
         <kbd className="ml-auto hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-background border border-border">⌘K</kbd>
       </button>
       {open && (
