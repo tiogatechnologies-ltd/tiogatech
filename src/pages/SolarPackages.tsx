@@ -227,7 +227,7 @@ export const SolarPackages = () => {
           <button
             type="button"
             onClick={() => openLeadForm("solar_packages_hero")}
-            className="inline-flex items-center gap-2 rounded-full bg-midnight/70 backdrop-blur-xl border border-white/30 px-6 py-3 text-sm font-semibold text-white hover:bg-midnight/90 hover:border-white/50 shadow-lg shadow-black/20 transition-all"
+            className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all"
           >
             Request Custom Engineering
           </button>

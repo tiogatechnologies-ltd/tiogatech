@@ -76,7 +76,7 @@ const Jobs = () => {
       >
         <Link
           to="/career"
-          className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-midnight/70 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-white hover:bg-midnight/90 hover:border-white/50 shadow-lg shadow-black/20 transition-all"
+          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
         >
           <ArrowLeft size={16} /> Back to Careers
         </Link>

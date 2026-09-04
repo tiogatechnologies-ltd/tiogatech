@@ -133,7 +133,7 @@ const SiteHeader = () => {
           className={cn(
             "hidden lg:flex items-center gap-0.5 rounded-full px-2 py-1.5 transition-colors",
             onDark
-              ? "border border-white/20 bg-midnight/50 backdrop-blur-xl"
+              ? "border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-md"
               : "",
           )}
         >
@@ -253,25 +253,14 @@ const SiteHeader = () => {
         </div>
       </div>
 
-      {/* Desktop MegaMenu Backdrop Scrim with blur */}
-      {productsDesktopOpen &&
-        createPortal(
-          <div
-            className="hidden lg:block fixed inset-0 top-[60px] sm:top-[68px] z-40 bg-black/35 backdrop-blur-md animate-fade-in transition-opacity"
-            onClick={() => setProductsDesktopOpen(false)}
-            aria-hidden="true"
-          />,
-          document.body
-        )}
-
       {open && createPortal(
         <>
           <div
-            className="lg:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-md z-40 animate-fade-in"
+            className="lg:hidden fixed inset-0 top-16 bg-black/40 z-40 animate-fade-in"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
-          <div className="lg:hidden fixed inset-x-0 top-16 z-50 border-t border-border bg-background/95 backdrop-blur-xl animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto shadow-2xl">
+          <div className="lg:hidden fixed inset-x-0 top-16 z-50 border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
           <nav className="section-container py-4 flex flex-col gap-1">
             <NavLink
               to="/"
