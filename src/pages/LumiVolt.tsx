@@ -12,7 +12,7 @@ import featureSolarRoof from "@/assets/feature-solar-roof.jpg";
 import featureBattery from "@/assets/feature-battery.jpg";
 import featureApp from "@/assets/feature-energy-app.jpg";
 import bgTechMesh from "@/assets/bg-grid-particles.jpg";
-import { Sun, BatteryCharging, Home, Calculator, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download, Coins, TrendingUp, Building2, Users2, Briefcase, Wrench, Shield, Smartphone, Cpu, Zap } from "lucide-react";
+import { Sun, BatteryCharging, Home, Calculator, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download, Coins, TrendingUp, Building2, Users2, Briefcase, Wrench, Shield, Smartphone, Cpu, Zap, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import LumiVoltSizer from "@/components/LumiVoltSizer";
 import SEO from "@/components/SEO";
@@ -240,11 +240,13 @@ const LumiVolt = () => {
             <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               LumiVolt is Africa's next-generation renewable energy management platform - designed to make clean energy smarter, more accessible, and highly efficient. We combine smart metering, AI-driven analytics, and modular energy systems to transform how homes and businesses generate, store, and consume energy.
             </p>
-            <p className="mt-3 text-sm font-semibold text-primary uppercase tracking-wider">📍 Abuja, Nigeria</p>
+            <p className="mt-3 text-sm font-semibold text-primary uppercase tracking-wider flex items-center justify-center gap-1.5">
+              <MapPin size={14} /> Abuja, Nigeria
+            </p>
           </div>
           <div className="grid gap-6 lg:grid-cols-2 mt-10">
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 ios-card">
-              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4"></div>
+              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4"><Shield className="text-primary" size={22} /></div>
               <h3 className="font-display font-bold text-xl text-foreground mb-2">Our Mission</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 To make clean energy accessible, efficient, and intelligent - expanding reliable power to homes, businesses, and communities, optimizing usage through smart metering and AI-driven insights, and delivering cost-effective, scalable solutions that empower users with full control and visibility.
@@ -275,16 +277,18 @@ const LumiVolt = () => {
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
             {[
-              { icon: BarChart3, img: featureApp, title: "Smart Metering Technology", emoji: "⚡", desc: "Gain full visibility and control over your energy usage.", items: ["Real-time monitoring", "Usage insights & reporting", "Cost tracking and optimization"] },
-              { icon: Cpu, img: bgTechMesh, title: "AI-Driven Energy Analytics", emoji: "🧠", desc: "Turn data into smarter energy decisions.", items: ["Predictive consumption", "Automated optimization", "Intelligent energy distribution"] },
-              { icon: Sun, img: featureSolarRoof, title: "Solar Integration (Residential & Commercial)", emoji: "☀️", desc: "Seamless solar solutions for homes and businesses.", items: ["System design & installation", "Hybrid energy solutions", "Long-term cost savings"] },
-              { icon: BatteryCharging, img: featureBattery, title: "Modular Energy Storage Systems", emoji: "🔋", desc: "Reliable energy storage designed for flexibility.", items: ["Scalable battery solutions", "Backup power systems", "Efficient storage and release"] },
+              { icon: BarChart3, img: featureApp, title: "Smart Metering Technology", desc: "Gain full visibility and control over your energy usage.", items: ["Real-time monitoring", "Usage insights & reporting", "Cost tracking and optimization"] },
+              { icon: Cpu, img: bgTechMesh, title: "AI-Driven Energy Analytics", desc: "Turn data into smarter energy decisions.", items: ["Predictive consumption", "Automated optimization", "Intelligent energy distribution"] },
+              { icon: Sun, img: featureSolarRoof, title: "Solar Integration (Residential & Commercial)", desc: "Seamless solar solutions for homes and businesses.", items: ["System design & installation", "Hybrid energy solutions", "Long-term cost savings"] },
+              { icon: BatteryCharging, img: featureBattery, title: "Modular Energy Storage Systems", desc: "Reliable energy storage designed for flexibility.", items: ["Scalable battery solutions", "Backup power systems", "Efficient storage and release"] },
             ].map((s) => (
               <div key={s.title} className="rounded-3xl overflow-hidden border border-border bg-card ios-card flex flex-col sm:flex-row">
                 <div className="relative sm:w-2/5 h-44 sm:h-auto shrink-0">
                   <img src={s.img} alt={s.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-midnight/70" />
-                  <span className="absolute top-3 left-3 text-2xl">{s.emoji}</span>
+                  <div className="absolute top-3 left-3 w-10 h-10 rounded-xl bg-card/90 backdrop-blur flex items-center justify-center text-primary shadow-sm">
+                    <s.icon size={20} />
+                  </div>
                 </div>
                 <div className="flex-1 p-5 sm:p-6">
                   <h3 className="font-display font-bold text-lg text-foreground mb-1.5">{s.title}</h3>

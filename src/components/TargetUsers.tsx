@@ -38,7 +38,7 @@ const TargetUsers = () => {
             return (
               <div
                 key={i}
-                className={`flip-card h-64 rounded-3xl ${isVisible ? (isHomes ? "animate-bounce-flip" : "animate-fade-up") : "opacity-0"}`}
+                className={`flip-card h-64 rounded-3xl ${isVisible ? "animate-fade-up" : "opacity-0"}`}
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 <div className="flip-card-inner rounded-3xl shadow-[var(--shadow-card)]">

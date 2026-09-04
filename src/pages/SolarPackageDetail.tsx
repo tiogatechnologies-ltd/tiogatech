@@ -4,7 +4,7 @@ import {
   ChevronRight, ShoppingBag, ShieldCheck, Loader2, Share2,
   Zap, CheckCircle2, Wrench, Clock, ArrowRight, Check,
   Sun, Battery, Cpu, Flame, TrendingDown, Tag, Users, Star,
-  ChevronDown, ChevronUp, Phone, MessageCircle,
+  ChevronDown, ChevronUp, Phone, MessageCircle, Home, Laptop, Store, Building2,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -32,10 +32,10 @@ const FAQS = [
 ];
 
 const IDEAL_FOR = [
-  { label: "Family Homes", icon: "🏠", desc: "Power lighting, fans, TV, fridge, and phone charging 24/7." },
-  { label: "Home Offices", icon: "💻", desc: "Uninterrupted power for routers, laptops, and workstations." },
-  { label: "Small Businesses", icon: "🏪", desc: "Keep point-of-sale, fridges and security cameras running." },
-  { label: "Event Venues", icon: "🎪", desc: "Reliable backup for lighting and AV equipment." },
+  { label: "Family Homes", icon: Home, desc: "Power lighting, fans, TV, fridge, and phone charging 24/7." },
+  { label: "Home Offices", icon: Laptop, desc: "Uninterrupted power for routers, laptops, and workstations." },
+  { label: "Small Businesses", icon: Store, desc: "Keep point-of-sale, fridges and security cameras running." },
+  { label: "Commercial Venues", icon: Building2, desc: "Reliable backup for lighting and AV equipment." },
 ];
 
 export const SolarPackageDetail = () => {
@@ -418,9 +418,11 @@ export const SolarPackageDetail = () => {
 
             <h3 className="text-lg font-display font-semibold text-foreground mb-4 no-clip">Ideal For</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {IDEAL_FOR.map(({ label, icon, desc }) => (
+              {IDEAL_FOR.map(({ label, icon: Icon, desc }) => (
                 <div key={label} className="p-4 rounded-2xl bg-card border border-border text-center">
-                  <div className="text-3xl mb-2">{icon}</div>
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
+                    <Icon size={20} />
+                  </div>
                   <p className="text-sm font-bold text-foreground mb-1">{label}</p>
                   <p className="text-xs text-muted-foreground">{desc}</p>
                 </div>

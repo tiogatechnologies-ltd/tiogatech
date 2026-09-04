@@ -52,7 +52,7 @@ const SLIDES: Slide[] = [
   },
   {
     id: "slide-3",
-    badge: "Next-Gen IoT Security",
+    badge: "Advanced Smart Security",
     badgeIcon: Shield,
     headline: "STAMA 3D Face Recognition & Biometric Smart Locks",
     subheadline: "Military-grade encryption, Tuya & TTlock cloud sync, hidden physical key backup, and anti-tamper alarms for residences and luxury hospitality suites.",

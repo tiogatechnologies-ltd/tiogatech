@@ -22,16 +22,8 @@ const PageHero = ({ eyebrow, title, subtitle, children, backgroundImage, backgro
       </div>
     )}
 
-    {/* Cinematic gradient overlay matching landing hero */}
-    <div className="absolute inset-0 bg-secondary/90" />
-    <div className="absolute inset-0 bg-secondary" />
-
-    {/* Animated gradient orbs */}
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute -top-32 -left-32 w-[460px] h-[460px] rounded-full bg-primary/30 blur-3xl animate-blob" />
-      <div className="absolute top-1/3 -right-40 w-[520px] h-[520px] rounded-full bg-accent/20 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
-      <div className="absolute -bottom-40 left-1/3 w-[420px] h-[420px] rounded-full bg-primary/25 blur-3xl animate-blob" style={{ animationDelay: "8s" }} />
-    </div>
+    {/* Background photo legibility overlay */}
+    <div className="absolute inset-0 bg-secondary/70" />
 
     <div className="relative section-container py-24 sm:py-28 lg:py-32 text-center">
       {eyebrow && (

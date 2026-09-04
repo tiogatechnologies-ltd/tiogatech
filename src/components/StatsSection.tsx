@@ -61,9 +61,7 @@ const StatsSection = () => {
         }}
       />
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.12),transparent_60%)] pointer-events-none" />
-      {/* Decorative orbs */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-accent/20 blur-3xl animate-blob" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-primary-foreground/10 blur-3xl animate-blob" style={{ animationDelay: "6s" }} />
+
 
       <div ref={ref} className="relative section-container">
         <div className={`grid grid-cols-2 lg:grid-cols-4 gap-8 ${isVisible ? "animate-fade-up" : "opacity-0"}`}>

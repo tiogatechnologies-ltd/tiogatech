@@ -8,17 +8,10 @@ interface FinalCTAProps {
 const FinalCTA = ({ onApply }: FinalCTAProps) => {
   return (
     <section className="relative py-24 bg-secondary text-secondary-foreground overflow-hidden">
-      {/* Animated background orbs */}
-      <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-primary/30 blur-3xl animate-blob" />
-      <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/20 blur-3xl animate-blob" style={{ animationDelay: "5s" }} />
-
       <div className="relative section-container">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full bg-secondary-foreground/10 backdrop-blur-md border border-secondary-foreground/20 px-4 py-1.5 text-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-accent" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
-            </span>
+            <span className="inline-block h-2 w-2 rounded-full bg-accent" />
             Free consultation
           </div>
 

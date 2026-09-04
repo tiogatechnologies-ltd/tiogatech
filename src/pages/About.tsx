@@ -91,7 +91,7 @@ const About = () => {
             Tioga Technologies Ltd is an IoT infrastructure and embedded systems company specializing in the development of core infrastructure around IoT, embedded systems, and intelligent renewable energy solutions.
           </p>
           <p>
-            We are at the forefront of cutting-edge next-generation renewable energy management platforms designed to power Africa's clean energy transition, from individual homes in Lagos to grid-scale operators across the continent.
+            We develop reliable renewable energy management platforms designed to power Nigeria's clean energy transition, from individual homes in Lagos to commercial operators across the continent.
           </p>
         </div>
       </div>
@@ -229,7 +229,7 @@ const About = () => {
             </h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                By developing cutting-edge technology solutions for renewable energy management, Tioga Technologies is contributing to Africa's sustainable future. Our platforms enable more efficient use of renewable resources, reduce energy waste, and support the continent's transition away from fossil fuels.
+                By developing purpose-built technology solutions for renewable energy management, Tioga Technologies is contributing to a sustainable future. Our platforms enable more efficient use of renewable resources, reduce energy waste, and support the transition away from fossil fuels.
               </p>
               <p>
                 We work with energy providers, governments, and organizations across Africa to deploy intelligent energy management systems that make clean energy more accessible, reliable, and cost-effective for communities and businesses.
