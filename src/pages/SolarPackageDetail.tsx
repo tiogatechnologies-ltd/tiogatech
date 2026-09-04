@@ -199,25 +199,23 @@ export const SolarPackageDetail = () => {
                   alt={`${pkg.inverter} Solar System`}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-midnight/80" />
-
                 {/* Badges on image */}
                 <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
-                  <span className="text-[10px] font-bold bg-gold text-midnight px-2.5 py-0.5 rounded-full shadow w-fit">
+                  <span className="text-[10px] font-bold bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight px-2.5 py-0.5 rounded-full shadow-md w-fit">
                     #{pkg.package_number}
                   </span>
-                  <span className="flex items-center gap-1 text-[10px] font-extrabold bg-red-500 text-white px-2.5 py-0.5 rounded-full shadow w-fit">
+                  <span className="flex items-center gap-1 text-[10px] font-extrabold bg-red-600/90 backdrop-blur-md border border-white/25 text-white px-2.5 py-0.5 rounded-full shadow-md w-fit">
                     <TrendingDown size={10} /> Save {pct}%
                   </span>
                   {pkg.badge && (
-                    <span className="text-[10px] font-bold bg-primary text-primary-foreground px-2.5 py-0.5 rounded-full shadow w-fit">
+                    <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-md border border-white/20 text-white px-2.5 py-0.5 rounded-full shadow-md w-fit">
                       {pkg.badge}
                     </span>
                   )}
                 </div>
 
                 {/* Viewer count */}
-                <div className="absolute top-3.5 right-3.5 flex items-center gap-1 bg-midnight/75 backdrop-blur-sm text-white text-[10px] sm:text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 bg-midnight/75 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full shadow-md">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
@@ -226,7 +224,7 @@ export const SolarPackageDetail = () => {
                 </div>
 
                 {/* Bottom of image: name */}
-                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5">
+                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/65 backdrop-blur-md border-t border-white/10">
                   <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{batteryLabel} System</p>
                   <h1 className="text-lg sm:text-2xl font-display font-bold text-white leading-tight">{pkg.inverter}</h1>
                 </div>
@@ -489,8 +487,7 @@ export const SolarPackageDetail = () => {
                   >
                     <div className="relative h-36 overflow-hidden">
                       <img src={r.image} alt={r.inverter} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-midnight/80" />
-                      <div className="absolute bottom-3 left-3">
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/65 backdrop-blur-md border-t border-white/10">
                         <p className="text-[10px] text-white/70 mb-0.5">#{r.package_number}</p>
                         <p className="text-sm font-bold text-white leading-tight line-clamp-2">{r.inverter}</p>
                       </div>

@@ -1,9 +1,9 @@
 import { Sun, Cpu, Camera, Check } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
-import offerSolar from "@/assets/offer-solar.jpg";
-import offerAutomation from "@/assets/offer-automation.jpg";
-import offerSecurity from "@/assets/offer-security.jpg";
+import offerSolar from "@/assets/bg-rooftop-install.jpg";
+import offerAutomation from "@/assets/bg-lagos-apartment.jpg";
+import offerSecurity from "@/assets/feature-cctv.jpg";
 
 const defaultOffers = [
   { title: "Solar Inverter Systems", desc: "Quiet, fuel-free power.", highlights: ["Custom-sized load", "Lithium batteries", "Up to 25yr warranty", "From ₦400,000"] },
@@ -42,9 +42,8 @@ const OfferSection = () => {
                     src={offerImages[i % offerImages.length]}
                     alt={o.title}
                     loading="lazy"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-card" />
                   <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-700" />
                   <div className="absolute -bottom-7 left-6 w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1">
                     <Icon size={24} className="text-primary-foreground" />

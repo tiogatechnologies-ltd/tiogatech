@@ -103,9 +103,9 @@ const AiChatWidget = () => {
               />
             )}
             {!needsAuth && messages.length === 0 && (
-              <div className="text-sm text-muted-foreground space-y-3">
-                <p className="font-medium text-foreground">Hi 👋 I'm Volt. I can help with:</p>
-                <ul className="space-y-1.5">
+              <div className="text-sm space-y-3">
+                <p className="font-semibold text-foreground text-base">Hi 👋 I'm Volt. I can help with:</p>
+                <ul className="space-y-1.5 text-foreground/90 font-medium">
                   <li>• Finding the right solar package</li>
                   <li>• Flexible Payment monthly estimates</li>
                   <li>• Smart locks and security gear</li>
@@ -113,7 +113,7 @@ const AiChatWidget = () => {
                 </ul>
                 <div className="flex flex-wrap gap-1.5 pt-2">
                   {["Recommend a solar package", "Calculate a 6-month plan for ₦1.2M", "Show me smart locks"].map((s) => (
-                    <button key={s} onClick={() => send(s)} className="text-xs px-3 py-1.5 rounded-full border border-border bg-card hover:bg-primary hover:text-primary-foreground transition-colors">{s}</button>
+                    <button key={s} onClick={() => send(s)} className="text-xs px-3 py-1.5 rounded-full border border-border bg-card text-foreground font-semibold hover:bg-primary hover:text-white shadow-xs transition-colors">{s}</button>
                   ))}
                 </div>
               </div>
@@ -121,13 +121,17 @@ const AiChatWidget = () => {
 
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm ${m.role === "user" ? "bg-primary text-primary-foreground" : "bg-card border border-border text-foreground"}`}>
+                <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm ${m.role === "user" ? "bg-primary text-white font-medium" : "bg-card border border-border text-foreground font-normal"}`}>
                   {m.text && (
-                    <div className="prose prose-sm max-w-none [&_p]:my-1 [&_ul]:my-1 [&_a]:text-primary [&_strong]:font-semibold">
+                    <div className={`prose prose-sm max-w-none [&_p]:my-1 [&_ul]:my-1 ${
+                      m.role === "user"
+                        ? "text-white [&_*]:text-white [&_p]:text-white [&_strong]:text-white [&_strong]:font-bold [&_a]:text-amber-200 [&_a]:font-bold [&_li]:text-white"
+                        : "text-foreground [&_*]:text-foreground [&_p]:text-foreground [&_strong]:text-foreground [&_strong]:font-bold [&_a]:text-primary [&_a]:font-semibold [&_li]:text-foreground"
+                    }`}>
                       <ReactMarkdown
                         components={{
                           a: ({ href, children }) => (
-                            <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline">{children}<ExternalLink size={11} /></a>
+                            <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline font-semibold">{children}<ExternalLink size={11} /></a>
                           ),
                         }}
                       >{m.text}</ReactMarkdown>
@@ -135,24 +139,24 @@ const AiChatWidget = () => {
                   )}
                   {(m.tool_events || []).map((tp: any, i: number) => {
                     const out = tp.result;
-                    if (out?.url) return <a key={i} href={out.url} target="_blank" rel="noopener noreferrer" className="block mt-2 text-xs px-3 py-2 rounded-lg bg-accent/15 hover:bg-accent/25">Open WhatsApp →</a>;
+                    if (out?.url) return <a key={i} href={out.url} target="_blank" rel="noopener noreferrer" className="block mt-2 text-xs font-semibold px-3 py-2 rounded-xl bg-primary text-white hover:bg-primary/90 text-center shadow-sm">Open WhatsApp →</a>;
                     if (Array.isArray(out?.results)) return (
-                      <div key={i} className="mt-2 space-y-1">
+                      <div key={i} className="mt-2 space-y-1.5">
                         {out.results.slice(0, 5).map((r: any, j: number) => (
-                          <div key={j} className="text-xs p-2 rounded-lg bg-muted/50">
-                            <p className="font-semibold">{r.name}</p>
-                            <p className="opacity-70">{r.price || "Price on request"}{r.best_for ? ` · ${r.best_for}` : ""}</p>
+                          <div key={j} className="text-xs p-2.5 rounded-xl bg-muted/80 border border-border/60 text-foreground">
+                            <p className="font-bold text-foreground">{r.name}</p>
+                            <p className="text-muted-foreground font-medium mt-0.5">{r.price || "Price on request"}{r.best_for ? ` · ${r.best_for}` : ""}</p>
                           </div>
                         ))}
                       </div>
                     );
                     if (out?.monthly_payment) return (
-                      <div key={i} className="mt-2 text-xs p-2 rounded-lg bg-muted/50">
-                        <p>Deposit: <strong>₦{out.deposit.toLocaleString()}</strong></p>
-                        <p>{out.months} × <strong>₦{out.monthly_payment.toLocaleString()}</strong>/mo</p>
+                      <div key={i} className="mt-2 text-xs p-2.5 rounded-xl bg-muted/80 border border-border/60 text-foreground font-medium space-y-1">
+                        <p className="text-foreground">Deposit: <strong className="font-bold text-foreground text-sm">₦{out.deposit.toLocaleString()}</strong></p>
+                        <p className="text-foreground">{out.months} × <strong className="font-bold text-primary text-sm">₦{out.monthly_payment.toLocaleString()}</strong>/mo</p>
                       </div>
                     );
-                    if (out?.lead_id) return <p key={i} className="text-xs mt-1 text-primary">✓ {out.message}</p>;
+                    if (out?.lead_id) return <p key={i} className="text-xs mt-1.5 font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">✓ {out.message}</p>;
                     return null;
                   })}
                 </div>
@@ -161,7 +165,7 @@ const AiChatWidget = () => {
             {loading && (
               <div className="flex justify-start">
                 <div className="rounded-2xl px-3.5 py-2.5 bg-card border border-border">
-                  <Loader2 size={14} className="animate-spin text-muted-foreground" />
+                  <Loader2 size={14} className="animate-spin text-primary" />
                 </div>
               </div>
             )}
@@ -177,9 +181,9 @@ const AiChatWidget = () => {
               placeholder={needsAuth ? "Sign in above to start chatting…" : "Ask about solar, packages, financing…"}
               rows={1}
               disabled={needsAuth}
-              className="flex-1 resize-none rounded-xl border border-border bg-muted/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 max-h-32 disabled:opacity-60"
+              className="flex-1 resize-none rounded-xl border border-border bg-card px-3 py-2 text-sm text-foreground font-medium placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/30 max-h-32 disabled:opacity-60"
             />
-            <button type="submit" disabled={loading || !input.trim() || needsAuth} className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-40 hover:bg-primary/90">
+            <button type="submit" disabled={loading || !input.trim() || needsAuth} className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-40 hover:bg-primary/90 shadow-sm">
               {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
             </button>
           </form>

@@ -144,13 +144,12 @@ export const HomeAutomation = () => {
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-midnight/90" />
                   {pkg.badge && (
-                    <span className="absolute top-4 left-4 text-[10px] uppercase tracking-wider font-bold bg-gold text-midnight px-2.5 py-1 rounded-full shadow-sm">
+                    <span className="absolute top-4 left-4 text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight px-2.5 py-1 rounded-full shadow-md">
                       {pkg.badge}
                     </span>
                   )}
-                  <div className="absolute inset-x-0 bottom-0 p-5">
+                  <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/65 backdrop-blur-md border-t border-white/10">
                     <p className="text-[10px] uppercase tracking-widest text-primary-foreground/80 mb-1">
                       {pkg.tagline}
                     </p>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchFreshRows } from "@/lib/freshContent";
-import bgAscentia from "@/assets/feature-control-panel.jpg";
-import bgSprout from "@/assets/offer-automation.jpg";
+import bgAscentia from "@/assets/bg-lagos-apartment.jpg";
+import bgSprout from "@/assets/feature-smart-automation-device.jpg";
 import bgIbiza from "@/assets/hero-smart-home.jpg";
 
 const IMAGE_BY_TIER: Record<string, string> = {

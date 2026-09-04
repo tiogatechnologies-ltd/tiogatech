@@ -112,22 +112,20 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
         </Link>
 
         {/* Gradient overlay for bottom legibility */}
-        <div className="absolute inset-0 bg-midnight/30 pointer-events-none" />
-
         {/* Left Badges (top-left stack) */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
           {pct && (
-            <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow flex items-center gap-1 w-fit">
+            <span className="px-2 py-0.5 rounded-full bg-red-600/90 backdrop-blur-md border border-white/25 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
               <TrendingDown size={10} /> Save {pct}%
             </span>
           )}
           {customBadge && (
-            <span className="px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow flex items-center gap-1 w-fit">
+            <span className="px-2 py-0.5 rounded-full bg-primary/90 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
               {customBadge}
             </span>
           )}
           {product.is_featured && !customBadge && !pct && (
-            <span className="px-2 py-0.5 rounded-full bg-gold text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow w-fit">
+            <span className="px-2 py-0.5 rounded-full bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
               Featured
             </span>
           )}
@@ -135,7 +133,7 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
 
         {/* Live Viewers (bottom-left overlay on image) */}
         <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
-          <span className="flex items-center gap-1 text-[9px] sm:text-[10px] font-semibold bg-midnight/80 backdrop-blur-sm text-white px-2 py-0.5 rounded-full shadow-sm">
+          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2 py-0.5 rounded-full shadow-md">
             <span className="relative flex h-1.5 w-1.5 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />

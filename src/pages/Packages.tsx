@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
-import bgBundle from "@/assets/bg-bundle.jpg";
-import catSolar from "@/assets/cat-solar.jpg";
-import catLocks from "@/assets/cat-locks.jpg";
-import catAutomation from "@/assets/cat-automation.jpg";
+import bgBundle from "@/assets/hero-smart-home.jpg";
+import catSolar from "@/assets/bg-rooftop-install.jpg";
+import catLocks from "@/assets/stock-smart-lock.png";
+import catAutomation from "@/assets/bg-lagos-apartment.jpg";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
 
 const SolarPackagesSection = lazy(() => import("@/components/SolarPackagesSection"));
@@ -283,8 +283,6 @@ const Packages = () => {
                       height={400}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
-                    <div className="absolute inset-0 bg-midnight/90" />
-
                     {/* Icon + count badge */}
                     <div className="absolute top-4 left-4 flex items-center gap-2">
                       <span className={`grid h-10 w-10 place-items-center rounded-xl shadow ${
@@ -292,14 +290,14 @@ const Packages = () => {
                       }`}>
                         <Icon size={18} />
                       </span>
-                      <span className="text-[10px] font-bold bg-midnight/70 backdrop-blur-sm text-white px-2 py-1 rounded-full">
+                      <span className="text-[10px] font-bold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2.5 py-1 rounded-full shadow-md">
                         {c.stat} {c.statLabel}
                       </span>
                     </div>
 
                     {isActive && (
                       <div className="absolute top-4 right-4">
-                        <span className="text-[10px] font-bold bg-primary text-primary-foreground px-2 py-1 rounded-full">
+                        <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-md border border-white/25 text-primary-foreground px-2.5 py-1 rounded-full shadow-md">
                           ▼ Open
                         </span>
                       </div>

@@ -1,12 +1,12 @@
 import bgPanelCloseup from "@/assets/bg-panel-closeup.jpg";
 import featureSolarPanel from "@/assets/feature-solar-panel.jpg";
 import bgCommercialSolar from "@/assets/bg-commercial-solar.jpg";
-import offerSolar from "@/assets/offer-solar.jpg";
-import catSolar from "@/assets/cat-solar.jpg";
+import offerSolar from "@/assets/bg-rooftop-install.jpg";
+import catSolar from "@/assets/bg-rooftop-install.jpg";
 import bgSolarField from "@/assets/bg-solar-field.jpg";
 
 import featureBattery from "@/assets/feature-battery.jpg";
-import bgBundle from "@/assets/bg-bundle.jpg";
+import bgBundle from "@/assets/hero-smart-home.jpg";
 import bgCircuit from "@/assets/bg-circuit.jpg";
 
 import bgSmartlockElite from "@/assets/bg-smartlock-elite.jpg";
@@ -15,16 +15,17 @@ import bgSmartlockPro from "@/assets/bg-smartlock-pro.jpg";
 import bgSmartlockBase from "@/assets/bg-smartlock-base.jpg";
 import bgSmartlockAccessory from "@/assets/bg-smartlock-accessory.jpg";
 import bgSmartlockHotel from "@/assets/bg-smartlock-hotel.jpg";
+import stockSmartLock from "@/assets/stock-smart-lock.png";
 
 import featureSmartAutomationDevice from "@/assets/feature-smart-automation-device.jpg";
-import featureControlPanel from "@/assets/feature-control-panel.jpg";
+import featureControlPanel from "@/assets/bg-lagos-apartment.jpg";
 import featureSmartApp from "@/assets/feature-smart-app.jpg";
 import featureTabletMonitor from "@/assets/feature-tablet-monitor.jpg";
 import heroSmartHome from "@/assets/hero-smart-home.jpg";
 
 import featureCctv from "@/assets/feature-cctv.jpg";
 import featureSecurity from "@/assets/feature-security.jpg";
-import offerSecurity from "@/assets/offer-security.jpg";
+import offerSecurity from "@/assets/feature-cctv.jpg";
 
 export interface StockImageOption {
   label: string;
@@ -51,6 +52,7 @@ export const STOCK_IMAGE_LIBRARY: StockImageOption[] = [
   { label: "Bifacial Commercial Solar Panel", category: "Solar Panels", url: "/src/assets/bg-commercial-solar.jpg", preview: bgCommercialSolar },
 
   // Smart Locks
+  { label: "Biometric Interior Smart Handle Lock", category: "Smart Locks", url: "/src/assets/stock-smart-lock.png", preview: stockSmartLock },
   { label: "STAMA Elite 3D Face ID Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-elite.jpg", preview: bgSmartlockElite },
   { label: "STAMA Apex Biometric Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-apex.jpg", preview: bgSmartlockApex },
   { label: "STAMA Pro Slim Aluminum Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-pro.jpg", preview: bgSmartlockPro },
@@ -89,6 +91,7 @@ const ASSET_MAP: Record<string, string> = {
   "/src/assets/bg-smartlock-base.jpg": bgSmartlockBase,
   "/src/assets/bg-smartlock-accessory.jpg": bgSmartlockAccessory,
   "/src/assets/bg-smartlock-hotel.jpg": bgSmartlockHotel,
+  "/src/assets/stock-smart-lock.png": stockSmartLock,
 
   "/src/assets/feature-smart-automation-device.jpg": featureSmartAutomationDevice,
   "/src/assets/feature-control-panel.jpg": featureControlPanel,

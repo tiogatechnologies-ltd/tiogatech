@@ -50,26 +50,24 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-        <div className="absolute inset-0 bg-midnight/90" />
-
         {/* Top-left badges */}
         <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 flex-wrap max-w-[62%]">
-          <span className="text-[10px] uppercase tracking-wider font-bold bg-gold text-midnight px-2 py-0.5 rounded-full shadow-sm">
+          <span className="text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight px-2.5 py-0.5 rounded-full shadow-md">
             #{pkg.package_number}
           </span>
-          <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-500 text-white px-2.5 py-1 rounded-full shadow flex items-center gap-1">
+          <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-600/90 backdrop-blur-md border border-white/25 text-white px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
             <TrendingDown size={10} /> Save {pct}%
           </span>
           {pkg.badge && (
-            <span className="text-[10px] uppercase tracking-wider font-bold bg-primary/90 text-primary-foreground px-2.5 py-1 rounded-full shadow-sm">
+            <span className="text-[10px] uppercase tracking-wider font-bold bg-primary/90 backdrop-blur-md border border-white/20 text-white px-2.5 py-1 rounded-full shadow-md">
               {pkg.badge}
             </span>
           )}
         </div>
 
         {/* Viewer count */}
-        <div className="absolute top-4 right-4">
-          <span className="flex items-center gap-1 text-[10px] font-semibold bg-midnight/70 backdrop-blur-sm text-white px-2 py-1 rounded-full">
+        <div className="absolute top-3.5 right-3.5">
+          <span className="flex items-center gap-1.5 text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2.5 py-1 rounded-full shadow-md">
             <span className="relative flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
@@ -78,7 +76,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           </span>
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 p-5">
+        <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/65 backdrop-blur-md border-t border-white/10">
           <p className="text-[10px] uppercase tracking-widest text-primary-foreground/80 mb-1">
             {pkg.tagline || (pkg.battery_type === "lithium" ? "Lithium LiFePO4" : "Tubular Backup")}
           </p>
