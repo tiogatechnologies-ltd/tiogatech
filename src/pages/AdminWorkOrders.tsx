@@ -19,6 +19,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useSiteContact } from "@/hooks/useSiteContact";
 
 const db = supabase as any;
 
@@ -71,6 +72,7 @@ const jobTypeLabels: Record<string, string> = {
 };
 
 const AdminWorkOrders = () => {
+  const { contact } = useSiteContact();
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -702,7 +704,7 @@ const AdminWorkOrders = () => {
                 <div>
                   <h2 className="text-2xl font-bold text-emerald-800">TIOGA TECHNOLOGIES LTD</h2>
                   <p className="text-xs text-slate-600">Field Engineering & Commissioning Sheet</p>
-                  <p className="text-xs text-slate-500">12 Commercial Ave, Ikeja, Lagos • +234 817 800 0023</p>
+                  <p className="text-xs text-slate-500">{contact.address} • {contact.phone}</p>
                 </div>
                 <div className="text-right">
                   <span className="inline-block px-3 py-1 bg-slate-100 font-mono font-bold text-xs rounded">

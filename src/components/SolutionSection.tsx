@@ -46,7 +46,7 @@ const SolutionSection = () => {
                 <f.icon size={20} className="text-primary" />
               </div>
               {/* Faded white side panel */}
-              <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-white/70 dark:bg-white/15 backdrop-blur-md border border-white/50 p-5 text-foreground">
+              <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-white/90 dark:bg-card/90 border border-white/50 p-5 text-foreground">
                 <h3 className="text-xl font-display font-semibold tracking-tight mb-1">{f.title}</h3>
                 <p className="text-sm text-foreground/80 leading-relaxed">{f.desc}</p>
                 <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary">

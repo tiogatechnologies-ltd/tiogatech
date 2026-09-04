@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import MegaMenu from "@/components/MegaMenu";
 import CartButton from "@/components/CartButton";
 import AccountButton from "@/components/AccountButton";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 // Sub-brands now live inside the Products mega-menu (see MegaMenu.tsx).
 const brandLinks: { label: string; to: string }[] = [
@@ -39,6 +40,7 @@ export const openLeadForm = (source = "ai_badge") => {
 };
 
 const SiteHeader = () => {
+  const { contact } = useSiteContact();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
@@ -316,7 +318,7 @@ const SiteHeader = () => {
               Get a Quote / Enquiry
             </button>
             <a
-              href="https://wa.me/2348178000023"
+              href={whatsappLink(contact)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground"

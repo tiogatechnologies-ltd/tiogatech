@@ -12,8 +12,7 @@ import { trackConversion } from "@/lib/tracking";
 import DirectDebitConsent from "@/components/DirectDebitConsent";
 import { resolveProductImage } from "@/lib/productImages";
 import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
-
-const WHATSAPP = "2348178000023";
+import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
 
@@ -30,6 +29,7 @@ const schema = z.object({
 });
 
 const Checkout = () => {
+  const { contact } = useSiteContact();
   const navigate = useNavigate();
   const { items, count, clear } = useCart();
   const { user, profile, loading: authLoading } = useAuth();
@@ -256,7 +256,7 @@ const Checkout = () => {
     if (payment === "whatsapp") {
       const msg = items.map((i, n) => `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` - ${i.price}` : ""}`).join("\n");
       const text = encodeURIComponent(`Hi Tioga, I just placed order ${orderNumber}.\n\n${msg}\n\nTotal: ${formNGN(total)}\nName: ${form.first_name} ${form.last_name}\nPhone: ${form.phone}\nAddress: ${form.address}, ${form.city}, ${form.state}`);
-      window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank", "noopener,noreferrer");
+      window.open(`https://wa.me/${whatsappDigits(contact)}?text=${text}`, "_blank", "noopener,noreferrer");
     }
 
     // Cart is NOT cleared here - only cleared after verified payment success.

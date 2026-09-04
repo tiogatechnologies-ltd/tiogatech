@@ -11,11 +11,13 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import CustomSolutionDialog from "@/components/CustomSolutionDialog";
 import AiUpgradeDialog from "@/components/AiUpgradeDialog";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 const SolarAssessmentReport = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const { contact } = useSiteContact();
   const [loading, setLoading] = useState(true);
   const [unlocking, setUnlocking] = useState(false);
   const [paywall, setPaywall] = useState(false);
@@ -202,7 +204,7 @@ const SolarAssessmentReport = () => {
                     <div className="font-display font-bold text-sm">Apply for Flex Pay</div>
                     <div className="text-xs text-muted-foreground mt-1">30% deposit, then 3, 6, 12 or 24 monthly installments.</div>
                   </Link>
-                  <a href={`https://wa.me/2348000000000?text=${waMsg}`} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
+                  <a href={whatsappLink(contact, waMsg)} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
                     <Wrench className="text-primary mb-2" size={20} />
                     <div className="font-display font-bold text-sm">Schedule installation</div>
                     <div className="text-xs text-muted-foreground mt-1">Book a site visit + commissioning slot.</div>

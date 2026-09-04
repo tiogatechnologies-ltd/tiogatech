@@ -13,6 +13,7 @@ import CategorySelect from "./lead-form/CategorySelect";
 import { solarStepKeys, renderSolarStep, canProceedSolar } from "./lead-form/SolarFlow";
 import { automationStepKeys, renderAutomationStep, canProceedAutomation } from "./lead-form/AutomationFlow";
 import { renderSecurityStep, canProceedSecurity, getSecuritySteps } from "./lead-form/SecurityFlow";
+import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 
 interface LeadFormProps {
   open: boolean;
@@ -44,6 +45,7 @@ function mapCategoryToProducts(cat: FlowCategory, data: LeadFormData): string[] 
 }
 
 const LeadForm = ({ open, onClose }: LeadFormProps) => {
+  const { contact } = useSiteContact();
   const navigate = useNavigate();
   const [data, setData] = useState<LeadFormData>({ ...initialFormData });
   const [step, setStep] = useState(-1);
@@ -67,7 +69,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
       data.budget ? `• Budget: ${data.budget}` : "",
       data.totalWatts ? `• Estimated load: ${data.totalWatts}W` : "",
     ].filter(Boolean).join("\n");
-    return `https://wa.me/2348178000023?text=${encodeURIComponent(lines)}`;
+    return `https://wa.me/${whatsappDigits(contact)}?text=${encodeURIComponent(lines)}`;
   };
 
   const steps = data.category ? getCategorySteps(data.category, data) : [];

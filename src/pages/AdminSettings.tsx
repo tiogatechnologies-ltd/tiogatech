@@ -4,6 +4,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
 import { Search, Save, Building2, Phone, Search as SearchIcon, Truck, ShieldCheck, CreditCard, Bell, Image as ImageIcon, Plug, Database, FileSliders, Tag, Users, ScrollText, Globe, RefreshCw, CloudUpload, ExternalLink, Loader2 } from "lucide-react";
 import { bumpGlobalCache } from "@/lib/cache";
+import { invalidateSiteContactCache } from "@/hooks/useSiteContact";
 
 type Section = { id: string; label: string; icon: any; group: string; adminOnly?: boolean; members: string[]; keywords?: string };
 
@@ -26,7 +27,7 @@ const SECTIONS: Section[] = [
 const defaults: Record<string, any> = {
   general: { site_name: "Tioga Technologies", tagline: "Powering Nigerian homes and businesses", hero_title: "Reliable Power. Smarter Living.", hero_subtitle: "Solar, smart home, and security solutions across Nigeria.", default_currency: "NGN", default_language: "en" },
   branding: { logo_url: "", favicon_url: "/favicon.ico", primary_color_hex: "", og_image_url: "" },
-  contact: { phone: "+234 817 800 0023", email: "sales@tiogatechnologies.com", support_email: "support@tiogatechnologies.com", address: "Ikeja, Lagos, Nigeria", whatsapp: "+2348178000023", business_hours: "Mon-Sat 9am-6pm WAT" },
+  contact: { phone: "+234 903 596 6388", email: "sales@tiogatechnologies.com", support_email: "support@tiogatechnologies.com", address: "No 7, Commercial Layout, Abattoir Rd, LGA, behind Airforce Primary School, Jos 930103, Plateau State, Nigeria", whatsapp: "+2348178000023", business_hours: "Mon to Fri · 10:00 AM to 6:00 PM WAT" },
   social: { facebook: "", instagram: "", twitter: "", linkedin: "", tiktok: "", youtube: "", telegram: "", whatsapp_community: "" },
   seo: { meta_title: "Tioga Technologies - Solar, Smart Home, Security in Nigeria", meta_description: "Reliable solar, smart home and security systems with flexible financing across Nigeria.", og_image_url: "", google_analytics_id: "", meta_pixel_id: "", google_tag_manager_id: "", google_site_verification: "", robots_index: true },
   payment: { paystack_public_key: "", bank_name: "", bank_account_name: "Tioga Technologies", bank_account_number: "", accept_bank_transfer: true, accept_card: true, accept_pay_on_delivery: false, allow_guest_checkout: true },
@@ -123,6 +124,7 @@ const AdminSettings = () => {
       for (const k of changed) {
         await supabase.from("site_settings").upsert({ key: k, value: data[k] }, { onConflict: "key" });
       }
+      if (changed.includes("contact")) invalidateSiteContactCache();
       setOriginal(data); toast.success("Settings saved");
     } catch (e: any) { toast.error(e?.message || "Save failed"); }
     finally { setSaving(false); }

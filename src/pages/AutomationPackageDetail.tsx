@@ -17,6 +17,7 @@ import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PROMO_LIFT as AUTO_PROMO_LIFT, viewerCount as autoViewers, savingsPct as autoSavingsPct } from "@/lib/promoDisplay";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 const fmtAuto = (p: HomeAutomationPackage) =>
   p.price_label ?? (p.price ? `From ₦${(p.price / 1_000_000).toFixed(1)}M` : "On request");
@@ -53,6 +54,7 @@ const TIER_FEATURES: Record<string, { icon: typeof Home; label: string }[]> = {
 };
 
 export const AutomationPackageDetail = () => {
+  const { contact } = useSiteContact();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { add } = useCart();
@@ -216,7 +218,7 @@ export const AutomationPackageDetail = () => {
                   {viewers} viewing
                 </div>
 
-                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/65 backdrop-blur-md border-t border-white/10">
+                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/80 border-t border-white/10">
                   <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{pkg.tagline}</p>
                   <h1 className="text-xl sm:text-3xl font-display font-bold text-white leading-tight">{pkg.name}</h1>
                 </div>
@@ -318,7 +320,7 @@ export const AutomationPackageDetail = () => {
               </div>
 
               <a
-                href={`https://wa.me/2348178000023?text=${encodeURIComponent(`Hi Tioga, I'm interested in the ${pkg.name} Home Automation package. Please share installation timeline and what's included.`)}`}
+                href={whatsappLink(contact, `Hi Tioga, I'm interested in the ${pkg.name} Home Automation package. Please share installation timeline and what's included.`)}
                 target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 hover:underline"
               >
@@ -437,7 +439,7 @@ export const AutomationPackageDetail = () => {
                   <Link key={r.id} to={`/packages/automation/${r.id}`} className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all">
                     <div className="relative h-36 overflow-hidden">
                       <img src={r.image} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/65 backdrop-blur-md border-t border-white/10">
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/80 border-t border-white/10">
                         <p className="text-[10px] text-white/70 mb-0.5">{r.tier} Tier</p>
                         <p className="text-sm font-bold text-white">{r.name}</p>
                       </div>
@@ -463,7 +465,7 @@ export const AutomationPackageDetail = () => {
                 <button onClick={() => openLeadForm("automation_pdp_bottom")} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all">
                   Free Consultation
                 </button>
-                <a href="tel:+2348178000023" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all">
+                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all">
                   <Phone size={15} /> Call Us
                 </a>
               </div>

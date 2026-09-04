@@ -11,8 +11,7 @@ import AuthGatePrompt from "@/components/AuthGatePrompt";
 import { resolveProductImage } from "@/lib/productImages";
 import { toast } from "sonner";
 import { z } from "zod";
-
-const WHATSAPP = "2348178000023";
+import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 
 const leadSchema = z.object({
   full_name: z.string().trim().min(2).max(120),
@@ -22,6 +21,7 @@ const leadSchema = z.object({
 });
 
 const CartDrawer = () => {
+  const { contact } = useSiteContact();
   const { user } = useAuth();
   const { items, open, setOpen, remove, updateQty, clear, count } = useCart();
   const [step, setStep] = useState<"cart" | "checkout">("cart");
@@ -50,7 +50,7 @@ const CartDrawer = () => {
     }
     const msg = encodeURIComponent(buildMessage());
     trackConversion("cart_checkout_whatsapp", { item_count: count });
-    window.open(`https://wa.me/${WHATSAPP}?text=${msg}`, "_blank", "noopener,noreferrer");
+    window.open(`https://wa.me/${whatsappDigits(contact)}?text=${msg}`, "_blank", "noopener,noreferrer");
     clear();
     setOpen(false);
     reset();

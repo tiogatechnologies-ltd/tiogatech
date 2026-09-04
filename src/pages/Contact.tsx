@@ -12,8 +12,10 @@ import { useLandingContent } from "@/hooks/useLandingContent";
 import SocialLinks from "@/components/SocialLinks";
 import { TELEGRAM_COMMUNITY_URL } from "@/components/TelegramWidget";
 import { breadcrumbJsonLd, contactPageJsonLd } from "@/lib/seoSchema";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 const Contact = () => {
+  const { contact } = useSiteContact();
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -51,9 +53,9 @@ const Contact = () => {
     <div className="min-h-screen flex flex-col">
       <SEO
         title="Contact Tioga Technologies"
-        description="Talk to Tioga Technologies about solar, smart locks or home automation. Call +234 903 596 6388, WhatsApp, or visit our Jos office."
+        description={`Talk to Tioga Technologies about solar, smart locks or home automation. Call ${contact.phone}, WhatsApp, or visit our office.`}
         path="/contact"
-        jsonLd={[breadcrumbJsonLd([{ name: "Contact", path: "/contact" }]), contactPageJsonLd()]}
+        jsonLd={[breadcrumbJsonLd([{ name: "Contact", path: "/contact" }]), contactPageJsonLd(contact)]}
       />
       <SiteHeader />
       <PageHero
@@ -75,8 +77,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Email</p>
-                  <a href="mailto:sales@tiogatechnologies.com" className="text-foreground font-medium hover:text-primary">
-                    sales@tiogatechnologies.com
+                  <a href={`mailto:${contact.email}`} className="text-foreground font-medium hover:text-primary">
+                    {contact.email}
                   </a>
                 </div>
               </div>
@@ -87,13 +89,13 @@ const Contact = () => {
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">WhatsApp</p>
                   <a
-                    href="https://wa.me/2348178000023"
+                    href={whatsappLink(contact)}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackConversion("whatsapp_click", { source: "contact_page" })}
                     className="text-foreground font-medium hover:text-primary"
                   >
-                    +234 817 800 0023
+                    {contact.whatsapp}
                   </a>
                 </div>
               </div>
@@ -103,8 +105,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Phone</p>
-                  <a href="tel:+2349035966388" className="text-foreground font-medium hover:text-primary">
-                    0903 596 6388
+                  <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="text-foreground font-medium hover:text-primary">
+                    {contact.phone}
                   </a>
                 </div>
               </div>
@@ -115,9 +117,7 @@ const Contact = () => {
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Office</p>
                   <p className="text-foreground font-medium leading-relaxed">
-                    No 7, Commercial Layout, Abattoir Rd, LGA,<br />
-                    behind Airforce Primary School,<br />
-                    Jos 930103, Plateau State, Nigeria
+                    {contact.address}
                   </p>
                 </div>
               </div>
@@ -127,13 +127,13 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Hours</p>
-                  <p className="text-foreground font-medium">Mon to Fri · 10:00 AM to 6:00 PM WAT</p>
+                  <p className="text-foreground font-medium">{contact.business_hours}</p>
                 </div>
               </div>
             </div>
 
             <a
-              href="https://wa.me/2348178000023"
+              href={whatsappLink(contact)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackConversion("whatsapp_click", { source: "contact_page_card" })}

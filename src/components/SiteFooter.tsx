@@ -6,6 +6,7 @@ import { toast } from "@/components/ui/sonner";
 import SocialLinks from "@/components/SocialLinks";
 import { supabase } from "@/integrations/supabase/client";
 import { TELEGRAM_COMMUNITY_URL } from "@/components/TelegramWidget";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 const company = [
   { label: "About", to: "/about" },
@@ -35,6 +36,7 @@ const support = [
 ];
 
 const SiteFooter = () => {
+  const { contact } = useSiteContact();
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -82,31 +84,31 @@ const SiteFooter = () => {
             <ul className="mt-5 space-y-2 text-sm">
               <li className="flex items-center gap-2">
                 <Mail size={14} className="text-gold shrink-0" />
-                <a href="mailto:sales@tiogatechnologies.com" className="hover:text-gold transition-colors">
-                  sales@tiogatechnologies.com
+                <a href={`mailto:${contact.email}`} className="hover:text-gold transition-colors">
+                  {contact.email}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <MessageCircle size={14} className="text-gold shrink-0" />
-                <a href="https://wa.me/2348178000023" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
-                  +234 817 800 0023
+                <a href={whatsappLink(contact)} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
+                  {contact.whatsapp}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Phone size={14} className="text-gold shrink-0" />
-                <a href="tel:+2349035966388" className="hover:text-gold transition-colors">
-                  0903 596 6388
+                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="hover:text-gold transition-colors">
+                  {contact.phone}
                 </a>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin size={14} className="text-gold shrink-0 mt-0.5" />
                 <span className="text-primary-foreground/85 leading-relaxed">
-                  No 7, Commercial Layout, Abattoir Rd, LGA, behind Airforce Primary School, Jos 930103, Plateau State, Nigeria
+                  {contact.address}
                 </span>
               </li>
               <li className="flex items-center gap-2">
                 <Clock size={14} className="text-gold shrink-0" />
-                <span className="text-primary-foreground/85">Mon to Fri · 10am to 6pm</span>
+                <span className="text-primary-foreground/85">{contact.business_hours}</span>
               </li>
             </ul>
             <div className="mt-5">

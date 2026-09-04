@@ -17,6 +17,7 @@ import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PROMO_LIFT, viewerCount, savingsPct } from "@/lib/promoDisplay";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 const fmtLock = (item: SmartLock) =>
   item.price_label?.trim() ||
@@ -41,6 +42,7 @@ const FEATURES_MAP: Record<string, { icon: typeof Fingerprint; label: string }> 
 };
 
 export const SmartLockDetail = () => {
+  const { contact } = useSiteContact();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { add } = useCart();
@@ -215,7 +217,7 @@ export const SmartLockDetail = () => {
                   {viewers} viewing
                 </div>
 
-                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/65 backdrop-blur-md border-t border-white/10">
+                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/80 border-t border-white/10">
                   <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{categoryLabel}</p>
                   <h1 className="text-lg sm:text-2xl font-display font-bold text-white leading-tight">{lock.name}</h1>
                 </div>
@@ -321,7 +323,7 @@ export const SmartLockDetail = () => {
               </div>
 
               <a
-                href={`https://wa.me/2348178000023?text=${encodeURIComponent(`Hi Tioga, I'm interested in the ${lock.name}${lock.price ? ` (${fmtLock(lock)})` : ""}. Please share availability and installation timeline.`)}`}
+                href={whatsappLink(contact, `Hi Tioga, I'm interested in the ${lock.name}${lock.price ? ` (${fmtLock(lock)})` : ""}. Please share availability and installation timeline.`)}
                 target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 hover:underline"
               >
@@ -399,7 +401,7 @@ export const SmartLockDetail = () => {
                   <Link key={r.id} to={`/packages/lock/${r.id}`} className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all">
                     <div className="relative h-36 overflow-hidden">
                       <img src={r.image} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/65 backdrop-blur-md border-t border-white/10">
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/80 border-t border-white/10">
                         <p className="text-sm font-bold text-white leading-tight line-clamp-2">{r.name}</p>
                       </div>
                     </div>
@@ -424,7 +426,7 @@ export const SmartLockDetail = () => {
                 <button onClick={() => openLeadForm("lock_pdp_bottom")} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all">
                   Get Recommendation
                 </button>
-                <a href="tel:+2348178000023" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all">
+                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all">
                   <Phone size={15} /> Call Us
                 </a>
               </div>

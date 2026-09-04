@@ -1,11 +1,13 @@
 import { MessageCircle, ArrowRight, Sun, Cpu, ShieldCheck } from "lucide-react";
 import { trackConversion } from "@/lib/tracking";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 interface FinalCTAProps {
   onApply: () => void;
 }
 
 const FinalCTA = ({ onApply }: FinalCTAProps) => {
+  const { contact } = useSiteContact();
   return (
     <section className="relative py-24 bg-secondary text-secondary-foreground overflow-hidden">
       <div className="relative section-container">
@@ -33,7 +35,7 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <a
-              href="https://wa.me/2348178000023"
+              href={whatsappLink(contact)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackConversion("whatsapp_click", { source: "final_cta" })}

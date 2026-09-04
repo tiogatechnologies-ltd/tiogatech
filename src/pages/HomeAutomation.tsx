@@ -149,7 +149,7 @@ export const HomeAutomation = () => {
                       {pkg.badge}
                     </span>
                   )}
-                  <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/65 backdrop-blur-md border-t border-white/10">
+                  <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/80 border-t border-white/10">
                     <p className="text-[10px] uppercase tracking-widest text-primary-foreground/80 mb-1">
                       {pkg.tagline}
                     </p>

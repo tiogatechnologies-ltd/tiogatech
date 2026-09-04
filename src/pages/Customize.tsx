@@ -11,8 +11,7 @@ import { useCart } from "@/contexts/CartContext";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 import bgCustomize from "@/assets/feature-control-panel.jpg";
-
-const WA_NUMBER = "2348178000023";
+import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 
 const ngn = (n: number | null | undefined) =>
   n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
@@ -364,6 +363,7 @@ const ItemCard = ({ item, onChange, index }: { item: LineItem; onChange: (n: num
 };
 
 const Customize = () => {
+  const { contact } = useSiteContact();
   const { type, id } = useParams<{ type: string; id: string }>();
   const navigate = useNavigate();
   const { add } = useCart();
@@ -435,7 +435,7 @@ const Customize = () => {
 
   const handleWhatsApp = () => {
     trackConversion("whatsapp_click", { source: "customize", type: pkg?.type, id: pkg?.id });
-    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(buildMessage())}`;
+    const url = `https://wa.me/${whatsappDigits(contact)}?text=${encodeURIComponent(buildMessage())}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 

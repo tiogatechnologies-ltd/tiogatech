@@ -91,7 +91,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
         </span>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/65 backdrop-blur-md border-t border-white/10">
+      <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/80 border-t border-white/10">
         <p className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/75 mb-1">
           {p.tagline || (p.battery_type === "lithium" ? "Lithium LiFePO4" : "Tubular / Gel")}
         </p>

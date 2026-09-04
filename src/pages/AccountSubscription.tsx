@@ -8,10 +8,7 @@ import SEO from "@/components/SEO";
 import { Zap, Crown, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, Check, Building2, Star, Loader2 } from "lucide-react";
 import { startAiSubscription, type AiPlanId } from "@/lib/subscribe";
 import { toast } from "sonner";
-
-const WA = "https://wa.me/2348178000023?text=";
-const WA_CUSTOM = WA + encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ");
-const WA_CANCEL = WA + encodeURIComponent("Hi Tioga, I'd like to cancel/pause my AI subscription.");
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 type PlanTier = { id: AiPlanId; name: string; bestFor: string; price: string; period: string; credits: string; amountNgn: number; icon: any; ring: string; accent: string; badge?: string; features: string[]; cta: string; href?: string };
 const TIERS: PlanTier[] = [
@@ -57,7 +54,6 @@ const TIERS: PlanTier[] = [
     accent: "bg-accent/20",
     features: ["Choose your monthly credit pack", "Unlimited team seats", "Dedicated engineer review", "API access & SSO", "SLA + named account manager"],
     cta: "Build my plan",
-    href: WA_CUSTOM,
   },
 ];
 
@@ -80,6 +76,7 @@ const FEATURE_LABEL: Record<string, { label: string; icon: any }> = {
 };
 
 const AccountSubscription = () => {
+  const { contact } = useSiteContact();
   const { user, isAdmin, isStaff } = useAuth();
   const adminUnlimited = isAdmin || isStaff;
   const [credits, setCredits] = useState<any>(null);
@@ -89,7 +86,7 @@ const AccountSubscription = () => {
   const [subscribing, setSubscribing] = useState<AiPlanId | null>(null);
 
   const subscribe = async (tier: PlanTier) => {
-    if (tier.id === "custom") { window.open(tier.href || WA_CUSTOM, "_blank", "noopener,noreferrer"); return; }
+    if (tier.id === "custom") { window.open(whatsappLink(contact, "Hi Tioga, I'd like a custom AI plan. My monthly usage is around: "), "_blank", "noopener,noreferrer"); return; }
     if (!user?.email) { toast.error("Please sign in first."); return; }
     setSubscribing(tier.id);
     const err = await startAiSubscription({ plan: tier.id, amountNgn: tier.amountNgn, email: user.email, userId: user.id });
@@ -183,7 +180,7 @@ const AccountSubscription = () => {
                   <Link to="/ai-pricing" className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
                     Manage plan
                   </Link>
-                  <a href={WA_CANCEL} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-destructive">
+                  <a href={whatsappLink(contact, "Hi Tioga, I'd like to cancel/pause my AI subscription.")} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-destructive">
                     Pause or cancel
                   </a>
                 </div>

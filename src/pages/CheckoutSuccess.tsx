@@ -4,10 +4,12 @@ import { CheckCircle2, Package, MessageCircle, Loader2, AlertCircle } from "luci
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 type Verify = { status: "idle" | "checking" | "success" | "failed"; amount?: number | null };
 
 const CheckoutSuccess = () => {
+  const { contact } = useSiteContact();
   const [params] = useSearchParams();
   const orderNumber = params.get("order");
   const method = params.get("method");
@@ -68,7 +70,7 @@ const CheckoutSuccess = () => {
         <div className="flex flex-wrap items-center justify-center gap-2">
           <Link to={orderNumber ? `/track?order=${encodeURIComponent(orderNumber)}` : "/track"} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"><Package size={14} /> Track this order</Link>
           <Link to="/account" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground">View my orders</Link>
-          <a href="https://wa.me/2348178000023" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground"><MessageCircle size={14} /> Chat with us</a>
+          <a href={whatsappLink(contact)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground"><MessageCircle size={14} /> Chat with us</a>
         </div>
       </div>
     </div>

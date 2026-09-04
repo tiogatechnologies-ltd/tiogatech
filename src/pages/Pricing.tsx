@@ -8,8 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { startAiSubscription, type AiPlanId } from "@/lib/subscribe";
 import { toast } from "sonner";
 import { Check, Zap, Crown, Building2, ArrowRight, Star, Loader2, MessageCircle } from "lucide-react";
-
-const WA_CUSTOM = "https://wa.me/2348178000023?text=" + encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ");
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 type Plan = {
   id: AiPlanId;
@@ -97,6 +96,7 @@ const PLANS: Plan[] = [
 ];
 
 const Pricing = () => {
+  const { contact } = useSiteContact();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [sub, setSub] = useState<any>(null);
@@ -112,7 +112,7 @@ const Pricing = () => {
 
   const handleSubscribe = async (p: Plan) => {
     if (p.id === "custom" || p.amount === 0) {
-      window.open(WA_CUSTOM, "_blank", "noopener,noreferrer");
+      window.open(whatsappLink(contact, "Hi Tioga, I'd like a custom AI plan. My monthly usage is around: "), "_blank", "noopener,noreferrer");
       return;
     }
     if (!user?.email) {

@@ -3,6 +3,7 @@ import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import bgTechMesh from "@/assets/bg-circuit.jpg";
 import SEO from "@/components/SEO";
+import { useSiteContact } from "@/hooks/useSiteContact";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-8">
@@ -11,7 +12,9 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
   </div>
 );
 
-const Privacy = () => (
+const Privacy = () => {
+  const { contact } = useSiteContact();
+  return (
   <div className="min-h-screen flex flex-col">
     <SEO title="Privacy Policy" description="How Tioga Technologies collects, uses and protects your information across our solar, smart lock and home automation services." path="/privacy" />
     <SiteHeader />
@@ -44,7 +47,7 @@ const Privacy = () => (
         </Section>
 
         <Section title="5. Your Rights">
-          <p>You may request access, correction, or deletion of your personal information at any time by emailing sales@tiogatechnologies.com.</p>
+          <p>You may request access, correction, or deletion of your personal information at any time by emailing {contact.email}.</p>
         </Section>
 
         <Section title="6. Cookies">
@@ -56,12 +59,13 @@ const Privacy = () => (
         </Section>
 
         <Section title="8. Contact Us">
-          <p>For privacy questions, contact us at sales@tiogatechnologies.com or +234 817 800 0023.</p>
+          <p>For privacy questions, contact us at {contact.email} or {contact.phone}.</p>
         </Section>
       </div>
     </section>
     <SiteFooter />
   </div>
-);
+  );
+};
 
 export default Privacy;

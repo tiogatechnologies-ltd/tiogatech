@@ -20,6 +20,7 @@ import {
   Eye,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useSiteContact } from "@/hooks/useSiteContact";
 
 const db = supabase as any;
 
@@ -90,6 +91,7 @@ const transferStatusColors: Record<string, string> = {
 };
 
 const AdminWarehouseInventory = () => {
+  const { contact } = useSiteContact();
   const [activeTab, setActiveTab] = useState<"inventory" | "serials" | "transfers">("inventory");
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
@@ -920,8 +922,8 @@ const AdminWarehouseInventory = () => {
                 <div>
                   <h2 className="text-2xl font-bold text-emerald-800">TIOGA TECHNOLOGIES LTD</h2>
                   <p className="text-xs text-slate-600">Solar, Smart Home & Security Solutions</p>
-                  <p className="text-xs text-slate-500">Ikeja, Lagos • Maitama, Abuja • Jos, Plateau</p>
-                  <p className="text-xs text-slate-500">www.tiogatechnologies.com • +234 817 800 0023</p>
+                  <p className="text-xs text-slate-500">{contact.address}</p>
+                  <p className="text-xs text-slate-500">www.tiogatechnologies.com • {contact.phone}</p>
                 </div>
                 <div className="text-right">
                   <span className="inline-block px-3 py-1 bg-slate-100 font-mono font-bold text-sm rounded">

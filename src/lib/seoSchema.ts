@@ -50,7 +50,7 @@ export function serviceJsonLd(opts: {
 }
 
 /** ContactPage schema with the real contact points. */
-export function contactPageJsonLd() {
+export function contactPageJsonLd(contact?: { phone?: string; email?: string }) {
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
@@ -63,8 +63,8 @@ export function contactPageJsonLd() {
       contactPoint: [
         {
           "@type": "ContactPoint",
-          telephone: "+234 903 596 6388",
-          email: "sales@tiogatechnologies.com",
+          telephone: contact?.phone || "+234 903 596 6388",
+          email: contact?.email || "sales@tiogatechnologies.com",
           contactType: "sales",
           areaServed: "NG",
           availableLanguage: ["English"],

@@ -15,6 +15,7 @@ import bgLagosNight from "@/assets/bg-lagos-apartment.jpg";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
+import { useSiteContact } from "@/hooks/useSiteContact";
 
 const reasons = [
   {
@@ -38,6 +39,7 @@ const reasons = [
 ];
 
 const Career = () => {
+  const { contact } = useSiteContact();
   const { jobs: openRoles } = useCareers();
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [affiliateOpen, setAffiliateOpen] = useState(false);
@@ -318,13 +320,13 @@ const Career = () => {
               <p className="text-sm font-semibold text-foreground break-all">careers@tiogatechnologies.com</p>
             </a>
             <a
-              href="tel:+2349035966388"
+              href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`}
               className="group rounded-2xl border border-border bg-background p-5 hover:border-emerald-500/60 hover:shadow-[0_0_24px_rgba(16,185,129,0.15)] transition-all"
             >
               <Phone className="text-emerald-500 mb-2" size={20} />
               <p className="text-xs uppercase tracking-wider text-muted-foreground">Call</p>
-              <p className="text-sm font-semibold text-foreground">0903 596 6388</p>
-              <p className="text-sm font-semibold text-foreground">0817 800 0023</p>
+              <p className="text-sm font-semibold text-foreground">{contact.phone}</p>
+              <p className="text-sm font-semibold text-foreground">{contact.whatsapp}</p>
             </a>
             <a
               href="https://www.linkedin.com/company/tiogatechnologies"

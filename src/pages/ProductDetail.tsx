@@ -45,8 +45,7 @@ import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
-
-const WHATSAPP = "https://wa.me/2348178000023";
+import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 
 interface Product {
   id: string;
@@ -95,6 +94,7 @@ const formatPrice = (price?: string | null): string => {
 
 
 export const ProductDetail = () => {
+  const { contact } = useSiteContact();
   const { slug = "" } = useParams();
   const navigate = useNavigate();
   const { add: addToCart } = useCart();
@@ -630,14 +630,14 @@ export const ProductDetail = () => {
 
                 {/* WhatsApp Sales Channel */}
                 <a
-                  href={`${WHATSAPP}?text=${waMsg}`}
+                  href={`https://wa.me/${whatsappDigits(contact)}?text=${waMsg}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => trackConversion("whatsapp_click", { product_id: product.id, source: "pdp" })}
                   className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card px-4 py-3 text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
                 >
                   <MessageCircle size={16} className="text-emerald-500" />
-                  <span>Order or Inquire via WhatsApp (+234 817 800 0023)</span>
+                  <span>Order or Inquire via WhatsApp ({contact.whatsapp || contact.phone})</span>
                 </a>
               </div>
 
