@@ -186,8 +186,8 @@ const AdminCustomers = () => {
               filtered.length === 0 ? <tr><td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">No customers</td></tr> :
               filtered.map((c) => (
                 <tr key={c.id} onClick={() => setActive(c)} className="border-t border-border hover:bg-muted/20 cursor-pointer">
-                  <td className="px-4 py-3"><div className="font-semibold">{c.full_name || "—"}</div><div className="text-xs text-muted-foreground">{c.email}</div></td>
-                  <td className="px-4 py-3 text-xs">{c.phone || "—"}</td>
+                  <td className="px-4 py-3"><div className="font-semibold">{c.full_name || "-"}</div><div className="text-xs text-muted-foreground">{c.email}</div></td>
+                  <td className="px-4 py-3 text-xs">{c.phone || "-"}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">
                       {customerTags(c.id).slice(0, 3).map((t) => <span key={t.id} className="px-1.5 py-0.5 rounded bg-primary/10 text-primary text-[10px]">{t.tag}</span>)}
@@ -195,7 +195,7 @@ const AdminCustomers = () => {
                   </td>
                   <td className="px-4 py-3">{c.order_count}</td>
                   <td className="px-4 py-3 font-semibold">₦{c.lifetime_value.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-xs text-muted-foreground">{c.last_order_at ? new Date(c.last_order_at).toLocaleDateString() : "—"}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{c.last_order_at ? new Date(c.last_order_at).toLocaleDateString() : "-"}</td>
                   <td className="px-4 py-3 text-xs text-muted-foreground">{new Date(c.created_at).toLocaleDateString()}</td>
                 </tr>
               ))}
@@ -218,7 +218,7 @@ const AdminCustomers = () => {
             <div className="grid grid-cols-3 gap-2 text-center">
               <div className="rounded-xl border border-border p-3"><div className="text-lg font-bold">{active.order_count}</div><div className="text-[11px] text-muted-foreground">Orders</div></div>
               <div className="rounded-xl border border-border p-3"><div className="text-lg font-bold">₦{Math.round(active.lifetime_value).toLocaleString()}</div><div className="text-[11px] text-muted-foreground">LTV</div></div>
-              <div className="rounded-xl border border-border p-3"><div className="text-lg font-bold">{active.order_count ? `₦${Math.round(active.lifetime_value / active.order_count).toLocaleString()}` : "—"}</div><div className="text-[11px] text-muted-foreground">Avg order</div></div>
+              <div className="rounded-xl border border-border p-3"><div className="text-lg font-bold">{active.order_count ? `₦${Math.round(active.lifetime_value / active.order_count).toLocaleString()}` : "-"}</div><div className="text-[11px] text-muted-foreground">Avg order</div></div>
             </div>
 
             <div>

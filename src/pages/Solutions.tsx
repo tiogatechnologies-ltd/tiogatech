@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Sun, Home, Shield, Cpu, Zap, ArrowRight, CheckCircle2, Sparkles, ShoppingBag, Calculator, Layers, Award, HardHat } from "lucide-react";
+import { Sun, Home, Shield, Cpu, Zap, ArrowRight, CheckCircle2, ShoppingBag, Calculator, Layers, Award, HardHat } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -44,7 +44,7 @@ export const Solutions = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Engineering Solutions — Solar, IoT Automation & Biometric Security"
+        title="Engineering Solutions - Solar, IoT Automation & Biometric Security"
         description="Explore Tioga's complete ecosystem of renewable solar energy, smart home automation, and security infrastructure built for Nigerian living."
         path="/solutions"
         jsonLd={[
@@ -72,7 +72,7 @@ export const Solutions = () => {
             onClick={() => openLeadForm("solutions_hero")}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20 transition-all"
           >
-            <Sparkles size={16} /> Request Complete System Consultation
+            Request Complete System Consultation
           </button>
           <Link
             to="/retail"

@@ -154,8 +154,8 @@ const AdminAutomations = () => {
                     {runs.map((r) => (
                       <tr key={r.id} className="border-b border-border/60">
                         <td className="py-2 pr-3 font-medium text-foreground">{r.rule_key}</td>
-                        <td className="py-2 pr-3 text-muted-foreground">{[r.entity_type, r.entity_id?.slice(0, 8)].filter(Boolean).join(" · ") || "—"}</td>
-                        <td className="py-2 pr-3 text-muted-foreground">{r.recipient || "—"}</td>
+                        <td className="py-2 pr-3 text-muted-foreground">{[r.entity_type, r.entity_id?.slice(0, 8)].filter(Boolean).join(" · ") || "-"}</td>
+                        <td className="py-2 pr-3 text-muted-foreground">{r.recipient || "-"}</td>
                         <td className="py-2 pr-3">
                           <Badge variant="outline" className={r.status === "failed" ? "bg-red-100 text-red-700 border-red-200" : "bg-emerald-100 text-emerald-700 border-emerald-200"}>
                             {r.status}

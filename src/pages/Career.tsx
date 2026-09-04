@@ -7,7 +7,7 @@ import JobCard, { type Job } from "@/components/JobCard";
 import CareerApplicationDialog from "@/components/CareerApplicationDialog";
 import AffiliateApplicationDialog from "@/components/AffiliateApplicationDialog";
 import { useCareers } from "@/hooks/useCareers";
-import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail, Sparkles, Wrench, Sun, Cpu, Quote, Compass, ShieldCheck, Phone, Linkedin, Share2, DollarSign, TrendingUp, Link as LinkIcon } from "lucide-react";
+import { ArrowRight, Heart, Rocket, Users, GraduationCap, Mail, Gem, Wrench, Sun, Cpu, Quote, Compass, ShieldCheck, Phone, Linkedin, Share2, DollarSign, TrendingUp, Link as LinkIcon } from "lucide-react";
 import bgTeam from "@/assets/bg-team-meeting.jpg";
 import bgTechMesh from "@/assets/bg-fluid-wave.jpg";
 import bgSolarField from "@/assets/bg-commercial-solar.jpg";
@@ -96,7 +96,7 @@ const Career = () => {
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
               {/* High-contrast overlay so text remains very visible */}
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/85 to-midnight/40" />
+              <div className="absolute inset-0 bg-midnight" />
               <div className="relative z-10 p-6 flex flex-col justify-end text-primary-foreground">
                 <div className="w-11 h-11 rounded-xl bg-gold/95 flex items-center justify-center mb-3 shadow-lg">
                   <r.icon className="text-midnight" size={20} />
@@ -124,7 +124,7 @@ const Career = () => {
           {[
             { icon: ShieldCheck, title: "Reliability first", desc: "We over-engineer for Nigerian conditions. If it cannot survive a brownout, it does not ship." },
             { icon: Compass, title: "Customer obsession", desc: "Every system is somebody's home or business. We act like it." },
-            { icon: Sparkles, title: "Bias for craft", desc: "Clean cabling, neat installs, well-named code. The boring details matter." },
+            { icon: Gem, title: "Bias for craft", desc: "Clean cabling, neat installs, well-named code. The boring details matter." },
             { icon: Heart, title: "People over titles", desc: "Best idea wins. Junior engineers ship to production from week one." },
           ].map((v) => (
             <div key={v.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
@@ -172,7 +172,7 @@ const Career = () => {
       <div className="section-container">
         <div className="relative rounded-3xl overflow-hidden border border-border min-h-[320px] sm:min-h-[400px]">
           <img src={bgTeam} alt="Tioga Technologies team in Lagos" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-midnight via-midnight/85 to-midnight/40" />
+          <div className="absolute inset-0 bg-midnight" />
           <div className="relative h-full p-8 sm:p-12 lg:p-16 flex flex-col justify-center max-w-xl text-primary-foreground">
             <p className="text-[10px] uppercase tracking-[0.22em] text-gold mb-3 font-bold">Life at Tioga</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold leading-tight no-clip mb-4">
@@ -232,14 +232,14 @@ const Career = () => {
     {/* Affiliate program */}
     <section id="affiliate" className="section-padding">
       <div className="section-container max-w-5xl">
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-card to-primary/5 p-8 sm:p-12">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-primary/10 p-8 sm:p-12">
           <div className="absolute -top-16 -right-16 w-64 h-64 bg-primary/15 rounded-full blur-3xl" />
           <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
           <div className="relative grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 mb-4">
                 <Share2 size={14} className="text-primary" />
-                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary">New — Affiliate Program</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary">New - Affiliate Program</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip mb-4">
                 Refer customers. Earn naira.
@@ -268,7 +268,7 @@ const Career = () => {
                 onClick={() => setAffiliateOpen(true)}
                 className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
               >
-                <Sparkles size={16} /> Apply to become an affiliate
+                Apply to become an affiliate
               </button>
             </div>
             <div className="rounded-2xl border border-border bg-card/80 backdrop-blur p-6 space-y-4">
@@ -276,7 +276,7 @@ const Career = () => {
               <ol className="space-y-3 text-sm">
                 <li className="flex gap-3">
                   <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">1</span>
-                  <span className="text-foreground/90">Apply with your audience details — takes 2 minutes.</span>
+                  <span className="text-foreground/90">Apply with your audience details - takes 2 minutes.</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">2</span>
@@ -284,7 +284,7 @@ const Career = () => {
                 </li>
                 <li className="flex gap-3">
                   <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">3</span>
-                  <span className="text-foreground/90">Share it anywhere — every lead is attributed back to you for 60 days.</span>
+                  <span className="text-foreground/90">Share it anywhere - every lead is attributed back to you for 60 days.</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">4</span>

@@ -85,7 +85,7 @@ const TrustSection = () => {
           })}
         </div>
 
-        {/* Brand carousel — logo-style tiles, grayscale -> color on hover */}
+        {/* Brand carousel - logo-style tiles, grayscale -> color on hover */}
         <div className="mt-16">
           <p className="text-center text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-6">
             Powered by industry-leading brands

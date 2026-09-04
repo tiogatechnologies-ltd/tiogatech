@@ -2,14 +2,14 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ShoppingBag, Sparkles, Calculator, Wallet, Package } from "lucide-react";
+import { ArrowLeft, ArrowRight, ShoppingBag, Calculator, Wallet, Package } from "lucide-react";
 import bgComingSoon from "@/assets/bg-coming-soon.jpg";
 
 const ComingSoon = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEO
-        title="Tioga Retail — Coming Soon"
+        title="Tioga Retail - Coming Soon"
         description="The Tioga online retail store is launching soon. Meanwhile, size your system with our Energy Calculator or spread payments with Flexible Payment."
         path="/coming-soon"
       />
@@ -20,10 +20,10 @@ const ComingSoon = () => {
           alt="Tioga retail store launching soon"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-midnight/95 via-midnight/85 to-midnight/70" />
+        <div className="absolute inset-0 bg-midnight/95" />
         <div className="relative section-container py-20 text-center text-primary-foreground">
           <div className="inline-flex items-center gap-2 rounded-full bg-gold/15 border border-gold/40 px-4 py-1.5 text-xs uppercase tracking-[0.22em] text-gold font-semibold mb-6">
-            <Sparkles size={14} /> Retail Store — Coming Soon
+            Retail Store - Coming Soon
           </div>
           <h1 className="text-4xl sm:text-6xl font-display font-bold tracking-tight mb-4 no-clip">
             Our Online Store Is On The Way
@@ -58,7 +58,7 @@ const ComingSoon = () => {
               </span>
               <p className="font-display font-bold text-lg leading-tight mb-1">Flexible Payment</p>
               <p className="text-sm text-primary-foreground/75 leading-snug mb-3">
-                Pay 30% now, spread the rest over 3, 6, 12 or 24 months — Easy Flex.
+                Pay 30% now, spread the rest over 3, 6, 12 or 24 months - Easy Flex.
               </p>
               <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold">
                 See plans <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />

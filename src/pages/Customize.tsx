@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Sparkles, MessageCircle, Minus, Plus, Loader2, Check, ShoppingBag, Info } from "lucide-react";
+import { ArrowLeft, ArrowRight, MessageCircle, Minus, Plus, Loader2, Check, ShoppingBag, Info } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
@@ -15,7 +15,7 @@ import bgCustomize from "@/assets/feature-control-panel.jpg";
 const WA_NUMBER = "2348178000023";
 
 const ngn = (n: number | null | undefined) =>
-  n == null ? "—" : `₦${Math.round(n).toLocaleString("en-NG")}`;
+  n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
 
 type LineItem = {
   key: string;
@@ -146,7 +146,7 @@ const buildLockItems = (d: any): LineItem[] => {
       key: `feature_${i}`,
       group: "addon",
       label: f,
-      detail: "Included feature — adjust if you need extra capacity",
+      detail: "Included feature - adjust if you need extra capacity",
       unitPrice: null,
       qty: 1,
       defaultQty: 1,
@@ -163,7 +163,7 @@ const buildAutomationItems = (d: any): LineItem[] => {
     {
       key: "package_base",
       group: "core",
-      label: `${d.name} Package — Base Setup`,
+      label: `${d.name} Package - Base Setup`,
       detail: d.description?.slice(0, 120) || `${d.tier} whole-home automation`,
       unitPrice: d.price,
       qty: 1,
@@ -179,7 +179,7 @@ const buildAutomationItems = (d: any): LineItem[] => {
       key: `feature_${i}`,
       group: "addon",
       label: f,
-      detail: "Smart device included — increase qty for extra rooms or zones",
+      detail: "Smart device included - increase qty for extra rooms or zones",
       unitPrice: null,
       qty: 1,
       defaultQty: 1,
@@ -194,7 +194,7 @@ const buildAutomationItems = (d: any): LineItem[] => {
       key: `ent_${i}`,
       group: "addon",
       label: f,
-      detail: "Entertainment add-on — adjust to taste",
+      detail: "Entertainment add-on - adjust to taste",
       unitPrice: null,
       qty: 1,
       defaultQty: 1,
@@ -249,7 +249,7 @@ const useLoadPackage = (type: string | undefined, id: string | undefined) => {
         setPkg({
           type: "solar",
           id: d.id,
-          title: `Solar Package #${d.package_number} — ${d.inverter}`,
+          title: `Solar Package #${d.package_number} - ${d.inverter}`,
           subtitle: d.tagline || (d.battery_type === "lithium" ? "Lithium LiFePO4 system" : "Tubular / Gel system"),
           basePrice: d.total_price,
           items: buildSolarItems(d),
@@ -274,7 +274,7 @@ const useLoadPackage = (type: string | undefined, id: string | undefined) => {
         setPkg({
           type: "automation",
           id: d.id,
-          title: `${d.name} — Home Automation`,
+          title: `${d.name} - Home Automation`,
           subtitle: d.tagline || d.tier,
           basePrice: d.price,
           items: buildAutomationItems(d),
@@ -355,7 +355,7 @@ const ItemCard = ({ item, onChange, index }: { item: LineItem; onChange: (n: num
         <div className="text-right min-w-[90px]">
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Subtotal</p>
           <p className="font-display font-bold text-foreground tabular-nums">
-            {item.unitPrice != null ? ngn(item.unitPrice * item.qty) : "—"}
+            {item.unitPrice != null ? ngn(item.unitPrice * item.qty) : "-"}
           </p>
         </div>
       </div>
@@ -411,7 +411,7 @@ const Customize = () => {
         .filter((i) => i.qty > 0)
         .map((i) => {
           const diff = i.qty !== i.defaultQty ? ` [changed from ${i.defaultQty}]` : "";
-          return `• ${i.qty} × ${i.detail}${i.unitPrice ? ` — ${ngn(i.unitPrice * i.qty)}` : ""}${diff}`;
+          return `• ${i.qty} × ${i.detail}${i.unitPrice ? ` - ${ngn(i.unitPrice * i.qty)}` : ""}${diff}`;
         }),
     ];
 
@@ -465,7 +465,7 @@ const Customize = () => {
     <div className="min-h-screen flex flex-col">
       <SEO
         title={pkg ? `Customize: ${pkg.title}` : "Customize your package"}
-        description="Adjust quantities for inverters, panels, batteries, smart-lock features and more — then send your exact spec to our team."
+        description="Adjust quantities for inverters, panels, batteries, smart-lock features and more - then send your exact spec to our team."
         path={`/customize/${type}/${id}`}
       />
       <SiteHeader />
@@ -651,7 +651,7 @@ const Customize = () => {
                         <div key={i.key} className="flex justify-between gap-3">
                           <span className="text-muted-foreground truncate">{i.qty}× {i.detail}</span>
                           <span className="text-foreground tabular-nums shrink-0">
-                            {i.unitPrice ? ngn(i.unitPrice * i.qty) : "—"}
+                            {i.unitPrice ? ngn(i.unitPrice * i.qty) : "-"}
                           </span>
                         </div>
                       ))}
@@ -681,7 +681,7 @@ const Customize = () => {
                       onClick={() => openLeadForm(`customize_${pkg.type}_${pkg.id}`)}
                       className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent text-accent-foreground hover:brightness-110 active:scale-[0.98] transition-all px-5 py-3 text-sm font-semibold shadow-md shadow-accent/30"
                     >
-                      <Sparkles size={16} /> Get AI Recommendation
+                      Get AI Recommendation
                     </button>
                     <button
                       onClick={handleAddToCart}

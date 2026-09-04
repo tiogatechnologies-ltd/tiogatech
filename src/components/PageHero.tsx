@@ -11,7 +11,7 @@ interface PageHeroProps {
 
 const PageHero = ({ eyebrow, title, subtitle, children, backgroundImage, backgroundAlt }: PageHeroProps) => (
   <section className="relative overflow-hidden bg-secondary -mt-[64px] sm:-mt-[72px] pt-[64px] sm:pt-[72px]">
-    {/* Background image (stock) — same treatment as landing hero */}
+    {/* Background image (stock) - same treatment as landing hero */}
     {backgroundImage && (
       <div className="absolute inset-0">
         <img
@@ -23,8 +23,8 @@ const PageHero = ({ eyebrow, title, subtitle, children, backgroundImage, backgro
     )}
 
     {/* Cinematic gradient overlay matching landing hero */}
-    <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/75 to-primary/55" />
-    <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />
+    <div className="absolute inset-0 bg-secondary/90" />
+    <div className="absolute inset-0 bg-secondary" />
 
     {/* Animated gradient orbs */}
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

@@ -183,7 +183,7 @@ const FinanceApply = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SEO title="Apply for Easy Flex — Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 3, 6, 12 or 24 month repayments, bank-partner approval." />
+      <SEO title="Apply for Easy Flex - Tioga Technologies" description="Apply for Lease-to-Own solar financing in Nigeria. 30% deposit, 3, 6, 12 or 24 month repayments, bank-partner approval." />
       <SiteHeader />
       <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
 
@@ -289,7 +289,7 @@ const FinanceApply = () => {
             <>
               <h2 className="font-display text-lg font-bold">Review & submit</h2>
               <div className="p-4 rounded-xl bg-muted/40 space-y-2 text-sm">
-                <Row label="Item" value={form.item_name || "—"} />
+                <Row label="Item" value={form.item_name || "-"} />
                 <Row label="Total cost" value={formatNGN(breakdown.total)} />
                 <Row label="Deposit upfront" value={formatNGN(breakdown.deposit)} muted />
                 <Row label="Interest rate" value={`${(breakdown.interest_rate * 100).toFixed(0)}%`} muted />
@@ -311,7 +311,7 @@ const FinanceApply = () => {
               {paymentMode === "auto_debit" && (
                 <DirectDebitConsent checked={ddConsent} onChange={setDdConsent} amountLabel={formatNGN(breakdown.monthly_payment)} />
               )}
-              <p className="text-[11px] text-muted-foreground">✓ Liquidate anytime — pay only this month's interest + remaining principal. No prepayment penalty.</p>
+              <p className="text-[11px] text-muted-foreground">✓ Liquidate anytime - pay only this month's interest + remaining principal. No prepayment penalty.</p>
               <label className="flex items-start gap-2 text-sm">
                 <input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1" />
                 <span>I confirm the information provided is accurate and consent to Tioga Technologies and its bank partner verifying my identity, income, and creditworthiness. I agree to the financing terms including insurance and management fees.</span>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send, Sparkles } from "lucide-react";
+import { Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -104,7 +104,7 @@ const AffiliateApplicationDialog = ({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
         <DialogHeader>
           <DialogTitle className="font-display text-2xl no-clip flex items-center gap-2">
-            <Sparkles className="text-accent" size={20} /> Become a Tioga Affiliate
+            Become a Tioga Affiliate
           </DialogTitle>
           <DialogDescription>
             Earn commission on every solar, smart lock, or automation deal that closes through your unique link. Tell us about you and we'll set you up.

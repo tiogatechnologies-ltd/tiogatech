@@ -12,8 +12,8 @@ const company = [
   { label: "Career", to: "/career" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
-  { label: "LumiVolt — Residential", to: "/lumivolt" },
-  { label: "VoltAi — Smart Automation", to: "/voltai" },
+  { label: "LumiVolt - Residential", to: "/lumivolt" },
+  { label: "VoltAi - Smart Automation", to: "/voltai" },
 ];
 
 const solutions = [
@@ -52,7 +52,7 @@ const SiteFooter = () => {
       if (error) throw error;
       toast.success(
         data?.pending_confirmation
-          ? "Almost there — check your inbox to confirm."
+          ? "Almost there - check your inbox to confirm."
           : "You're already subscribed. Thanks!"
       );
       setEmail("");

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { X, Smartphone, Sparkles } from "lucide-react";
+import { X, Smartphone } from "lucide-react";
 import AppWaitlistForm from "@/components/AppWaitlistForm";
 
 let externalSetter: ((v: boolean) => void) | null = null;
@@ -51,7 +51,7 @@ const WaitlistDialog = () => {
 
         <div className="p-6 sm:p-8 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-gold/15 border border-gold/40 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-gold font-semibold mb-4">
-            <Sparkles size={12} /> Coming Soon
+            Coming Soon
           </div>
           <div className="mx-auto w-12 h-12 rounded-2xl bg-gold/15 text-gold flex items-center justify-center mb-3">
             <Smartphone size={22} />

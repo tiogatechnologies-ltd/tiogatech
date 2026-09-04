@@ -102,14 +102,14 @@ const AdminAiSubscriptions = () => {
               filtered.map((r) => (
                 <tr key={r.id} className="border-t border-border">
                   <td className="px-4 py-3">
-                    <div className="font-semibold">{users[r.user_id]?.full_name || "—"}</div>
+                    <div className="font-semibold">{users[r.user_id]?.full_name || "-"}</div>
                     <div className="text-xs text-muted-foreground">{users[r.user_id]?.email || r.user_id.slice(0, 8)}</div>
                   </td>
                   <td className="px-4 py-3 capitalize"><span className={`text-xs px-2 py-1 rounded-full ${r.plan === "business" ? "bg-accent/20 text-accent-foreground" : r.plan === "starter" ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"}`}>{r.plan}</span></td>
                   <td className="px-4 py-3">₦{Number(r.monthly_price_ngn).toLocaleString()}/mo</td>
                   <td className="px-4 py-3 text-xs">{new Date(r.started_at).toLocaleDateString()}</td>
-                  <td className="px-4 py-3 text-xs">{r.expires_at ? new Date(r.expires_at).toLocaleDateString() : "—"}</td>
-                  <td className="px-4 py-3 text-xs text-muted-foreground max-w-[200px] truncate">{r.notes || "—"}</td>
+                  <td className="px-4 py-3 text-xs">{r.expires_at ? new Date(r.expires_at).toLocaleDateString() : "-"}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground max-w-[200px] truncate">{r.notes || "-"}</td>
                   <td className="px-4 py-3 text-right">
                     {r.status === "active" && <button onClick={() => revoke(r.id)} className="text-xs text-red-600 hover:underline">Revoke</button>}
                   </td>

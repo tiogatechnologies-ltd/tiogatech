@@ -184,7 +184,7 @@ const AdminInventory = () => {
         <div className="fixed inset-0 z-50 bg-foreground/40 flex items-center justify-center p-4" onClick={() => setAdjust(null)}>
           <div className="bg-card border border-border rounded-2xl max-w-md w-full p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-display text-lg font-bold">Adjust stock</h3>
-            <p className="text-sm text-muted-foreground">{adjust.product.name} — current: <strong>{adjust.product.stock_qty ?? 0}</strong></p>
+            <p className="text-sm text-muted-foreground">{adjust.product.name} - current: <strong>{adjust.product.stock_qty ?? 0}</strong></p>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-semibold">Change (+ / -)</label>
@@ -215,7 +215,7 @@ const AdminInventory = () => {
       {historyFor && (
         <div className="fixed inset-0 z-50 bg-foreground/40 flex items-center justify-center p-4" onClick={() => setHistoryFor(null)}>
           <div className="bg-card border border-border rounded-2xl max-w-lg w-full p-6 space-y-3 max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <h3 className="font-display text-lg font-bold">{historyFor.name} — movements</h3>
+            <h3 className="font-display text-lg font-bold">{historyFor.name} - movements</h3>
             <div className="space-y-1.5">
               {productMovements(historyFor.id).length === 0 ? <p className="text-sm text-muted-foreground">No movements yet.</p> :
               productMovements(historyFor.id).map((m) => (

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Lock, Sparkles, KeyRound, Building2, ShoppingBag, TrendingDown, Flame, Tag } from "lucide-react";
+import { Check, ArrowRight, Lock, KeyRound, Building2, ShoppingBag, TrendingDown, Flame, Tag } from "lucide-react";
 import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
@@ -12,7 +12,7 @@ const fmtLock = (item: SmartLock) =>
   item.price_label?.trim() ||
   (item.price ? `₦${Math.round(item.price).toLocaleString("en-NG")}` : "Quote");
 
-// Cosmetic promo — displayed only, real prices never changed
+// Cosmetic promo - displayed only, real prices never changed
 const LOCK_PROMO_LIFT = 1.10;
 const lockViewers = (seed: string) => 2 + (seed.charCodeAt(0) * 3 + 7) % 12;
 const lockSavingsPct = (seed: string) => 7 + (seed.charCodeAt(0) * 2 + 3) % 9;
@@ -58,7 +58,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
         height={768}
         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/55 to-midnight/20" />
+      <div className="absolute inset-0 bg-midnight/95" />
       <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
         {p.model && (
           <span className="text-[10px] uppercase tracking-[0.18em] font-bold bg-gold text-midnight px-2.5 py-1 rounded-full shadow">
@@ -148,7 +148,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
       {/* Urgency */}
       <div className="flex items-center gap-2 text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mb-4">
         <Flame size={12} className="shrink-0" />
-        <span>Limited stock this month — reserve yours today</span>
+        <span>Limited stock this month - reserve yours today</span>
       </div>
 
       <div className="mt-auto grid grid-cols-2 gap-2">
@@ -238,7 +238,6 @@ const SmartLocksSection = () => {
         </div>
 
         <div className="mt-12 rounded-3xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-          <Sparkles className="text-gold mx-auto mb-3" size={26} />
           <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground tracking-tight mb-2 no-clip">
             Need help choosing the right lock?
           </h3>
@@ -249,7 +248,7 @@ const SmartLocksSection = () => {
             onClick={() => openLeadForm("smart_locks_custom")}
             className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
           >
-            <Sparkles size={16} /> Get my recommendation
+            Get my recommendation
           </button>
         </div>
       </div>

@@ -459,7 +459,7 @@ const AdminWarehouseInventory = () => {
                         <td className="px-4 py-3 text-right font-bold text-foreground">{available}</td>
                         <td className="px-4 py-3 text-right text-muted-foreground">{item.reorder_point}</td>
                         <td className="px-4 py-3 text-right font-mono text-muted-foreground">
-                          {item.unit_cost ? `₦${Number(item.unit_cost).toLocaleString()}` : "—"}
+                          {item.unit_cost ? `₦${Number(item.unit_cost).toLocaleString()}` : "-"}
                         </td>
                         <td className="px-4 py-3 text-center">
                           {isLow ? (
@@ -525,7 +525,7 @@ const AdminWarehouseInventory = () => {
                             {s.work_order_no && <p className="text-[11px] text-primary">{s.work_order_no}</p>}
                           </div>
                         ) : (
-                          <span className="text-muted-foreground text-xs">—</span>
+                          <span className="text-muted-foreground text-xs">-</span>
                         )}
                       </td>
                       <td className="px-4 py-3 text-xs text-muted-foreground">
@@ -581,7 +581,7 @@ const AdminWarehouseInventory = () => {
                           ))}
                         </td>
                         <td className="px-4 py-3 text-xs text-muted-foreground">
-                          {t.driver_name ? `${t.driver_name} (${t.vehicle_no || "N/A"})` : "—"}
+                          {t.driver_name ? `${t.driver_name} (${t.vehicle_no || "N/A"})` : "-"}
                         </td>
                         <td className="px-4 py-3 text-center">
                           <span

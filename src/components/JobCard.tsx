@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Calendar, Sparkles } from "lucide-react";
+import { ArrowRight, MapPin, Calendar } from "lucide-react";
 
 export type Job = {
   id?: string;
@@ -49,7 +49,7 @@ const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (j
         transition: "transform 200ms ease-out",
         transformStyle: "preserve-3d",
       }}
-      className="group relative rounded-2xl backdrop-blur-xl bg-gradient-to-br from-midnight/90 to-midnight/75 border border-primary/25 shadow-[0_10px_40px_hsl(var(--foreground)/0.35)] hover:border-accent/80 hover:shadow-[0_0_46px_hsl(var(--accent)/0.22)] overflow-hidden flex flex-col min-h-[620px]"
+      className="group relative rounded-2xl backdrop-blur-xl bg-midnight/90 border border-primary/25 shadow-[0_10px_40px_hsl(var(--foreground)/0.35)] hover:border-accent/80 hover:shadow-[0_0_46px_hsl(var(--accent)/0.22)] overflow-hidden flex flex-col min-h-[620px]"
     >
       {job.backgroundImage && (
         <img
@@ -60,8 +60,8 @@ const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (j
           className="absolute inset-0 h-full w-full object-cover opacity-55 saturate-[0.85] transition-transform duration-700 ease-out group-hover:scale-105"
         />
       )}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-midnight/70 via-midnight/88 to-midnight/95" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-midnight/95 via-midnight/45 to-midnight/80" />
+      <div className="pointer-events-none absolute inset-0 bg-midnight/70" />
+      <div className="pointer-events-none absolute inset-0 bg-midnight/95" />
       {/* Cursor-tracking sheen */}
       <div
         className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -70,7 +70,7 @@ const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (j
         }}
       />
       {/* Top emerald hairline */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-accent/40" />
       {/* Glow accent */}
       <div className="pointer-events-none absolute -top-24 -right-24 w-60 h-60 rounded-full bg-accent/15 blur-3xl opacity-70 group-hover:opacity-100 transition-opacity" />
 
@@ -78,7 +78,7 @@ const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (j
       <div className="relative px-6 sm:px-7 pt-6 pb-4 border-b border-white/5">
         <div className="flex items-center gap-2 mb-2">
           <span className="inline-flex items-center gap-1 rounded-full bg-accent/15 border border-accent/40 text-accent text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1">
-            <Sparkles size={10} /> Now Hiring
+            Now Hiring
           </span>
           <span className="inline-flex items-center gap-1 rounded-full bg-white/5 border border-white/10 text-white/70 text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1">
             <Calendar size={10} className="text-accent" /> Closes {job.deadline || DEFAULT_DEADLINE}

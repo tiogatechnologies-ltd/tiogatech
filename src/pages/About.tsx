@@ -6,7 +6,7 @@ import bgTechMesh from "@/assets/bg-topo-lines.jpg";
 import bgSolarField from "@/assets/bg-solar-aerial.jpg";
 import bgLagosNight from "@/assets/bg-lagos-night.jpg";
 import bgTeam from "@/assets/bg-team.jpg";
-import { Target, Eye, Wifi, Cpu, Zap, ArrowRight, Globe2, Sparkles, Shield, Leaf, Users, Building2 } from "lucide-react";
+import { Target, Eye, Wifi, Cpu, Zap, ArrowRight, Globe2, BrainCircuit, Shield, Leaf, Users, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
@@ -38,7 +38,7 @@ const values = [
   { icon: Shield, title: "Reliability First", desc: "Every system we ship is engineered for harsh African conditions, with redundancy and remote diagnostics built in from day one." },
   { icon: Leaf, title: "Sustainable by Design", desc: "Clean energy is the goal, not just a feature. We optimize every kilowatt to displace fossil-fuel generation." },
   { icon: Users, title: "African Talent", desc: "Built by Nigerian engineers for African realities. We invest in local skills and long-term capability." },
-  { icon: Sparkles, title: "Intelligent Software", desc: "Our platforms turn raw sensor data into decisions: predictive maintenance, demand forecasting, and adaptive control." },
+  { icon: BrainCircuit, title: "Intelligent Software", desc: "Our platforms turn raw sensor data into decisions: predictive maintenance, demand forecasting, and adaptive control." },
 ];
 
 const partners = [
@@ -121,7 +121,7 @@ const About = () => {
       </div>
     </section>
 
-    {/* What we do — Pillars */}
+    {/* What we do - Pillars */}
     <section className="section-padding bg-muted">
       <div className="section-container">
         <div className="text-center mb-12">
@@ -135,7 +135,7 @@ const About = () => {
           {pillars.map((p) => (
             <div key={p.title} className="group relative rounded-2xl border border-border overflow-hidden hover-lift min-h-[320px]">
               <img src={p.bg} alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/85 to-midnight/60" />
+              <div className="absolute inset-0 bg-midnight/95" />
               <div className="relative p-6 sm:p-7 h-full flex flex-col justify-end text-primary-foreground">
                 <div className="w-12 h-12 rounded-xl bg-gold text-midnight flex items-center justify-center shadow-lg mb-4">
                   <p.icon size={22} />
@@ -150,7 +150,7 @@ const About = () => {
         {/* Team imagery */}
         <div className="mt-10 relative rounded-3xl overflow-hidden border border-border h-56 sm:h-72">
           <img src={bgTeam} alt="Tioga Technologies team" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-midnight/90 via-midnight/50 to-transparent" />
+          <div className="absolute inset-0 bg-midnight/90" />
           <div className="relative h-full p-7 sm:p-10 flex flex-col justify-center max-w-md text-primary-foreground">
             <p className="text-[10px] uppercase tracking-[0.22em] text-gold mb-2 font-bold">Our People</p>
             <h3 className="text-2xl sm:text-3xl font-display font-bold leading-tight no-clip">A team obsessed with reliability and craft.</h3>
@@ -195,7 +195,7 @@ const About = () => {
                 loading="lazy"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-midnight/95 via-midnight/40 to-transparent p-5">
+              <div className="absolute inset-x-0 bottom-0 bg-midnight/95 p-5">
                 <p className="text-[10px] uppercase tracking-[0.22em] text-gold font-bold mb-1">Founder</p>
                 <p className="text-primary-foreground font-display font-bold text-lg leading-tight">{founder.name}</p>
                 <p className="text-primary-foreground/75 text-xs mt-0.5">{founder.role}</p>

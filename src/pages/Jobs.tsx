@@ -60,7 +60,7 @@ const Jobs = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEO
-        title="All Open Roles — Tioga Technologies Careers"
+        title="All Open Roles - Tioga Technologies Careers"
         description="Browse every open role at Tioga Technologies. Filter by location, category and keyword. Engineering, installation, sales and operations roles across Nigeria."
         path="/careers/jobs"
         jsonLd={breadcrumbJsonLd([{ name: "Careers", path: "/career" }, { name: "Open Roles", path: "/careers/jobs" }])}

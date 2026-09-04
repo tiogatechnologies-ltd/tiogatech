@@ -17,7 +17,7 @@ const SolutionSection = () => {
   const { content } = useLandingContent("solution");
 
   const heading = content?.heading || "One system. Everything connected.";
-  const description = content?.description || "Solar, automation, and security — designed and installed end-to-end.";
+  const description = content?.description || "Solar, automation, and security - designed and installed end-to-end.";
 
   return (
     <section className="relative py-24 bg-background overflow-hidden">
@@ -41,7 +41,7 @@ const SolutionSection = () => {
               style={{ animationDelay: `${i * 150}ms` }}
             >
               <img src={f.img} alt={f.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight/70 via-midnight/20 to-transparent" />
+              <div className="absolute inset-0 bg-midnight/70" />
               <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
                 <f.icon size={20} className="text-primary" />
               </div>

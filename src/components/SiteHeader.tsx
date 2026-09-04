@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, MessageCircle, Sparkles, ChevronDown } from "lucide-react";
+import { Menu, X, MessageCircle, ChevronDown } from "lucide-react";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { cn } from "@/lib/utils";
@@ -103,7 +103,7 @@ const SiteHeader = () => {
   };
 
   // Only allow transparent-over-dark on the landing route. Every other page has a
-  // light body background — a transparent header would look invisible over it.
+  // light body background - a transparent header would look invisible over it.
   const isLanding = location.pathname === "/";
   const onDark = isLanding && !scrolled && !open;
 
@@ -222,7 +222,7 @@ const SiteHeader = () => {
         <div className="flex items-center gap-1 sm:gap-2">
           <CartButton onDark={onDark} />
           <AccountButton onDark={onDark} />
-          {/* Quote button — clean, high-contrast, no fuzzy blur */}
+          {/* Quote button - clean, high-contrast, no fuzzy blur */}
           <button
             type="button"
             onClick={handleAiClick}
@@ -232,7 +232,6 @@ const SiteHeader = () => {
             )}
             aria-label="Get a Quote and Make Enquiry"
           >
-            <Sparkles size={12} className="fill-midnight shrink-0" />
             <span className="hidden sm:inline">Get a Quote</span>
             <span className="sm:hidden font-extrabold">Quote</span>
           </button>
@@ -314,7 +313,7 @@ const SiteHeader = () => {
               onClick={handleAiClick}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-bold text-midnight shadow-md shadow-gold/40"
             >
-              <Sparkles size={14} className="fill-midnight" /> Get a Quote / Enquiry
+              Get a Quote / Enquiry
             </button>
             <a
               href="https://wa.me/2348178000023"

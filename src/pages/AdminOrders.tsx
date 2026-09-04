@@ -114,7 +114,7 @@ const AdminOrders = () => {
       supabase.functions.invoke("send-gmail", {
         body: {
           recipients: [order.email],
-          subject: `Order ${order.order_number} update — ${status}`,
+          subject: `Order ${order.order_number} update - ${status}`,
           message: `Hi ${(order.full_name || "there").split(" ")[0]},\n\nYour order ${order.order_number} is now: ${status}.\n\nTrack your order: ${trackUrl}\n\nThe Tioga Team`,
           sender: "orders",
           label: "order-status-update",

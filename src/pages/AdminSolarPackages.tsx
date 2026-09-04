@@ -55,7 +55,7 @@ const empty: Omit<Pkg, "id"> = {
 };
 
 const fmt = (n: number | null) =>
-  n == null ? "—" : `₦${Math.round(n).toLocaleString("en-NG")}`;
+  n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
 
 const AdminSolarPackages = () => {
   const [items, setItems] = useState<Pkg[]>([]);
@@ -117,7 +117,7 @@ const AdminSolarPackages = () => {
   };
 
   const remove = async (p: Pkg) => {
-    if (!confirm(`Delete package #${p.package_number} — ${p.inverter}?`)) return;
+    if (!confirm(`Delete package #${p.package_number} - ${p.inverter}?`)) return;
     const { error } = await supabase.from("solar_packages" as any).delete().eq("id", p.id);
     if (error) return toast.error(error.message);
     toast.success("Deleted");

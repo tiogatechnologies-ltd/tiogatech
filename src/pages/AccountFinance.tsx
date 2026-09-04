@@ -63,7 +63,7 @@ const AccountFinance = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <SEO title="My Flexible Payment Plans — Tioga" description="View and manage your flexible payment applications and installments." />
+      <SEO title="My Flexible Payment Plans - Tioga" description="View and manage your flexible payment applications and installments." />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-12 px-4 bg-muted/30">
         <div className="max-w-4xl mx-auto space-y-6">

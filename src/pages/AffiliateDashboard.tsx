@@ -356,7 +356,7 @@ const AffiliateDashboard = () => {
                           <TableCell className="text-xs">{o.full_name}</TableCell>
                           <TableCell className="text-right">{NGN(Number(o.total || 0))}</TableCell>
                           <TableCell className="text-right">
-                            {o.payment_status === "paid" ? NGN(Number(o.total || 0) * (affiliate.commission_rate / 100)) : "—"}
+                            {o.payment_status === "paid" ? NGN(Number(o.total || 0) * (affiliate.commission_rate / 100)) : "-"}
                           </TableCell>
                           <TableCell><Badge className={statusTone[o.payment_status] || "bg-muted"}>{o.payment_status || "pending"}</Badge></TableCell>
                           <TableCell className="whitespace-nowrap text-xs">{fmtDate(o.created_at)}</TableCell>
@@ -405,7 +405,7 @@ const AffiliateDashboard = () => {
                           <TableCell className="whitespace-nowrap text-xs">{fmtDate(r.created_at)}</TableCell>
                           <TableCell className="text-right">{NGN(Number(r.amount))}</TableCell>
                           <TableCell><Badge className={statusTone[r.status] || "bg-muted"}>{r.status}</Badge></TableCell>
-                          <TableCell className="text-xs text-muted-foreground">{r.admin_note || "—"}</TableCell>
+                          <TableCell className="text-xs text-muted-foreground">{r.admin_note || "-"}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -435,7 +435,7 @@ const AffiliateDashboard = () => {
                           <TableCell className="whitespace-nowrap text-xs">{fmtDate(p.period_start)} – {fmtDate(p.period_end)}</TableCell>
                           <TableCell className="text-right">{NGN(Number(p.amount))}</TableCell>
                           <TableCell><Badge className={statusTone[p.status] || "bg-muted"}>{p.status}</Badge></TableCell>
-                          <TableCell className="font-mono text-xs">{p.payment_reference || "—"}</TableCell>
+                          <TableCell className="font-mono text-xs">{p.payment_reference || "-"}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -467,7 +467,7 @@ const AffiliateDashboard = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>Account name & number</Label>
-                  <Textarea rows={3} value={bank.payout_details} placeholder="Jane Doe — 0123456789"
+                  <Textarea rows={3} value={bank.payout_details} placeholder="Jane Doe - 0123456789"
                     onChange={(e) => setBank({ ...bank, payout_details: e.target.value })} />
                 </div>
                 <p className="text-xs text-muted-foreground">

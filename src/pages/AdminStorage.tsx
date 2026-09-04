@@ -22,7 +22,7 @@ const BUCKETS: BucketDef[] = [
 ];
 
 const prettySize = (bytes?: number) => {
-  if (!bytes) return "—";
+  if (!bytes) return "-";
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
@@ -176,7 +176,7 @@ const AdminStorage = () => {
           ) : shown.length === 0 ? (
             <div className="p-12 text-center text-muted-foreground text-sm">
               <ImageIcon size={32} className="mx-auto mb-2 opacity-40" />
-              {q ? "No files match your search." : "No files yet — drag and drop here to upload."}
+              {q ? "No files match your search." : "No files yet - drag and drop here to upload."}
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
@@ -200,7 +200,7 @@ const AdminStorage = () => {
                     </button>
                     <div className="p-2 text-[11px] space-y-1">
                       <p className="truncate font-medium" title={f.name}>{f.name}</p>
-                      <p className="text-muted-foreground">{prettySize(f.metadata?.size)} · {f.created_at ? new Date(f.created_at).toLocaleDateString() : "—"}</p>
+                      <p className="text-muted-foreground">{prettySize(f.metadata?.size)} · {f.created_at ? new Date(f.created_at).toLocaleDateString() : "-"}</p>
                       <div className="flex gap-1 pt-1">
                         <button onClick={() => copyUrl(f.name)} className="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1 rounded bg-muted hover:bg-muted/70 text-xs" title="Copy URL"><Copy size={11} />URL</button>
                         <button onClick={() => copyUrl(f.name, true)} className="px-2 py-1 rounded bg-muted hover:bg-muted/70 text-xs" title="Copy markdown">MD</button>

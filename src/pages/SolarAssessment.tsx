@@ -45,7 +45,7 @@ const SolarAssessment = () => {
   }, [appliances]);
 
   const addAppliance = (name: string, watts: number) => {
-    if (appliances.some((a) => a.name === name)) return toast.info("Already added — adjust quantity");
+    if (appliances.some((a) => a.name === name)) return toast.info("Already added - adjust quantity");
     setAppliances([...appliances, { name, qty: 1, watts, hours: 4 }]);
   };
 
@@ -115,7 +115,7 @@ const SolarAssessment = () => {
               >
                 View Full System Specification <ArrowRight size={16} />
               </button>
-              {!user && <p className="text-[11px] text-muted-foreground mt-3">Free — sign up to use one of your 3 free analyses.</p>}
+              {!user && <p className="text-[11px] text-muted-foreground mt-3">Free - sign up to use one of your 3 free analyses.</p>}
             </div>
 
             <div className="text-center mt-6">

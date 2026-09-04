@@ -1,19 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
-import { Battery, Sun, Zap, Cpu, Check, ArrowRight, Sparkles, ShoppingBag, Users, Clock, Tag, TrendingDown, Flame } from "lucide-react";
+import { Battery, Sun, Zap, Cpu, Check, ArrowRight, ShoppingBag, Users, Clock, Tag, TrendingDown, Flame } from "lucide-react";
 import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 
-// Cosmetic discount — real price is always total_price. These multipliers
+// Cosmetic discount - real price is always total_price. These multipliers
 // generate a plausible "was" price for display only; nothing is stored or changed.
 const PROMO_LIFT = 1.12; // implies ~11% bundle saving shown to user
 
 const fmtPrice = (n: number | null) =>
-  n == null ? "—" : `₦${Math.round(n).toLocaleString("en-NG")}`;
+  n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
 
 // Stable pseudo-random viewer count per package (3–18 range)
 const viewerCount = (seed: number) => 3 + (seed * 7 + 11) % 16;
@@ -27,7 +27,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
   const { add } = useCart();
   const [addedAnim, setAddedAnim] = useState(false);
 
-  // Cosmetic promo values — real price is always p.total_price
+  // Cosmetic promo values - real price is always p.total_price
   const pct = savingsPct(p.package_number);
   const wasPrice = Math.round(p.total_price * PROMO_LIFT);
   const savedAmount = wasPrice - p.total_price;
@@ -37,7 +37,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
     add({
       refId: p.id,
       type: "package",
-      name: `Solar Package #${p.package_number} — ${p.inverter}`,
+      name: `Solar Package #${p.package_number} - ${p.inverter}`,
       price: fmtPrice(p.total_price),
       numericPrice: p.total_price,
       image: p.image,
@@ -56,7 +56,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
     className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
     id={`pkg-${p.package_number}`}
   >
-    {/* Image with Savings Badge — clicking opens detail page */}
+    {/* Image with Savings Badge - clicking opens detail page */}
     <Link to={`/packages/solar/${p.id}`} className="relative h-48 overflow-hidden block">
       <img
         src={p.image}
@@ -64,7 +64,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
         loading="lazy"
         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/55 to-midnight/20" />
+      <div className="absolute inset-0 bg-midnight/95" />
 
       {/* Top badges row */}
       <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 flex-wrap max-w-[62%]">
@@ -164,7 +164,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
       {/* Urgency strip */}
       <div className="flex items-center gap-2 text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mb-4">
         <Flame size={12} className="shrink-0" />
-        <span>Bundle pricing valid for <strong>this week only</strong> — contact us to lock it in</span>
+        <span>Bundle pricing valid for <strong>this week only</strong> - contact us to lock it in</span>
       </div>
 
       {/* CTA Buttons */}
@@ -227,7 +227,7 @@ const SolarPackagesSection = () => {
           <div className="flex items-center gap-3">
             <Flame size={20} className="shrink-0" />
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-wider">Mid-Month Bundle Deals — Up to 17% Off</p>
+              <p className="text-xs font-extrabold uppercase tracking-wider">Mid-Month Bundle Deals - Up to 17% Off</p>
               <p className="text-[11px] text-primary-foreground/80 mt-0.5">Pre-engineered systems priced below individual component retail. Limited slots this month.</p>
             </div>
           </div>
@@ -275,7 +275,6 @@ const SolarPackagesSection = () => {
         </div>
 
         <div className="mt-12 rounded-3xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-          <Sparkles className="text-gold mx-auto mb-3" size={26} />
           <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground tracking-tight mb-2 no-clip">
             None of these fit perfectly?
           </h3>
@@ -286,7 +285,7 @@ const SolarPackagesSection = () => {
             onClick={() => openLeadForm("solar_packages_custom")}
             className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
           >
-            <Sparkles size={16} /> Build my custom package
+            Build my custom package
           </button>
         </div>
       </div>

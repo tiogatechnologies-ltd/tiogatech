@@ -122,16 +122,16 @@ const AdminAssessments = () => {
               <Info label="Occupants" value={selected.occupants} />
               <Info label="Daily kWh" value={selected.daily_kwh} />
               <Info label="Peak load" value={`${selected.peak_load_w} W`} />
-              <Info label="Monthly bill" value={selected.monthly_bill_ngn ? `₦${selected.monthly_bill_ngn}` : "—"} />
+              <Info label="Monthly bill" value={selected.monthly_bill_ngn ? `₦${selected.monthly_bill_ngn}` : "-"} />
             </div>
 
             <div>
               <h3 className="font-semibold text-sm mb-1">Recommended system</h3>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <Info label="Inverter" value={selected.recommendation?.inverter_kva ? `${selected.recommendation.inverter_kva} kVA` : "—"} />
-                <Info label="Battery" value={selected.recommendation?.battery_kwh ? `${selected.recommendation.battery_kwh} kWh` : "—"} />
-                <Info label="Panels" value={selected.recommendation ? `${selected.recommendation.panel_count} × ${selected.recommendation.panel_w} W` : "—"} />
-                <Info label="Backup" value={selected.recommendation?.backup_hours ? `${selected.recommendation.backup_hours} h` : "—"} />
+                <Info label="Inverter" value={selected.recommendation?.inverter_kva ? `${selected.recommendation.inverter_kva} kVA` : "-"} />
+                <Info label="Battery" value={selected.recommendation?.battery_kwh ? `${selected.recommendation.battery_kwh} kWh` : "-"} />
+                <Info label="Panels" value={selected.recommendation ? `${selected.recommendation.panel_count} × ${selected.recommendation.panel_w} W` : "-"} />
+                <Info label="Backup" value={selected.recommendation?.backup_hours ? `${selected.recommendation.backup_hours} h` : "-"} />
               </div>
             </div>
 
@@ -177,7 +177,7 @@ const AdminAssessments = () => {
 const Info = ({ label, value }: { label: string; value: any }) => (
   <div className="rounded-lg bg-muted/40 px-3 py-2">
     <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
-    <div className="font-medium">{value ?? "—"}</div>
+    <div className="font-medium">{value ?? "-"}</div>
   </div>
 );
 

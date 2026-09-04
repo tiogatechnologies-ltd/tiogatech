@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ChevronRight, ShoppingBag, ShieldCheck, Loader2, Share2,
-  Zap, CheckCircle2, Wrench, Sparkles, ArrowRight, Star,
+  Zap, CheckCircle2, Wrench, ArrowRight, Star,
   Flame, TrendingDown, Tag, Users, Phone, MessageCircle,
   ChevronDown, ChevronUp, Fingerprint, Wifi, Key, Building2,
 } from "lucide-react";
@@ -159,7 +159,7 @@ export const SmartLockDetail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title={`${lock.name} — STAMA Smart Lock | Tioga Technologies`}
+        title={`${lock.name} - STAMA Smart Lock | Tioga Technologies`}
         description={`${lock.description.slice(0, 160)} ${lock.features.slice(0, 3).join(", ")}.`}
         path={`/packages/lock/${lock.id}`}
         image={lock.image}
@@ -192,7 +192,7 @@ export const SmartLockDetail = () => {
             <div className="lg:col-span-6 lg:sticky lg:top-28 space-y-4">
               <div className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] aspect-[4/3]">
                 <img src={lock.image} alt={lock.name} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-midnight/20 to-transparent" />
+                <div className="absolute inset-0 bg-midnight/80" />
 
                 <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
                   {lock.model && (
@@ -317,7 +317,7 @@ export const SmartLockDetail = () => {
                   onClick={() => openLeadForm(`lock_pdp_${lock.id}`)}
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3 text-sm font-semibold text-foreground hover:bg-muted transition-all"
                 >
-                  <Sparkles size={15} className="text-gold" /> Get Custom Quote
+                  Get Custom Quote
                 </button>
               </div>
 
@@ -400,7 +400,7 @@ export const SmartLockDetail = () => {
                   <Link key={r.id} to={`/packages/lock/${r.id}`} className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all">
                     <div className="relative h-36 overflow-hidden">
                       <img src={r.image} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 to-transparent" />
+                      <div className="absolute inset-0 bg-midnight/80" />
                       <div className="absolute bottom-3 left-3">
                         <p className="text-sm font-bold text-white leading-tight line-clamp-2">{r.name}</p>
                       </div>
@@ -420,12 +420,11 @@ export const SmartLockDetail = () => {
         <section className="section-padding py-10">
           <div className="section-container">
             <div className="rounded-3xl bg-primary p-8 text-center text-primary-foreground">
-              <Sparkles size={24} className="mx-auto mb-3" />
               <h3 className="text-xl font-display font-bold mb-2 no-clip">Not sure which lock suits you?</h3>
               <p className="text-sm text-primary-foreground/80 mb-5">Talk to our STAMA specialists for a free recommendation based on your door type and security needs.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button onClick={() => openLeadForm("lock_pdp_bottom")} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all">
-                  <Sparkles size={15} /> Get Recommendation
+                  Get Recommendation
                 </button>
                 <a href="tel:+2348178000023" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all">
                   <Phone size={15} /> Call Us

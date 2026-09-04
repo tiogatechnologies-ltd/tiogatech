@@ -322,7 +322,7 @@ export const AdminProducts = () => {
                         </div>
                       </td>
                       <td className="p-3 text-muted-foreground capitalize">{p.category.replace("_", " ")}</td>
-                      <td className="p-3 font-medium text-foreground">{p.price ?? "—"}</td>
+                      <td className="p-3 font-medium text-foreground">{p.price ?? "-"}</td>
                       <td className="p-3"><span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground capitalize">{p.tier}</span></td>
                       <td className="p-3">
                         <button onClick={() => toggleActive(p)} className={`text-xs px-2 py-0.5 rounded-full font-medium transition-colors ${p.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>

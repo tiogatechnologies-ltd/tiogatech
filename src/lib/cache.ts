@@ -119,7 +119,7 @@ export const initCacheBustCheck = async () => {
       }
     }
   } catch {
-    // network hiccup — silently ignore, cache remains valid
+    // network hiccup - silently ignore, cache remains valid
   } finally {
     if (shouldReload) window.location.reload();
   }

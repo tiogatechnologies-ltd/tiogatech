@@ -5,7 +5,7 @@ export type QuoteLineItem = { item: string; qty?: number | string; unit?: number
 export type QuoteSection = { title: string; items: QuoteLineItem[] };
 
 export const ngn = (n: number | null | undefined) =>
-  n === null || n === undefined || Number.isNaN(Number(n)) ? "—" : `NGN ${Number(n).toLocaleString("en-NG")}`;
+  n === null || n === undefined || Number.isNaN(Number(n)) ? "-" : `NGN ${Number(n).toLocaleString("en-NG")}`;
 
 export const sectionTotal = (s: QuoteSection) =>
   (s.items || []).reduce((sum, i) => sum + (Number(i.total) || (Number(i.unit) || 0) * (Number(i.qty) || 0)), 0);
@@ -39,7 +39,7 @@ export function quoteToReport(row: any): ReportData {
     },
     meta: [
       { label: "Date", value: new Date(row.created_at || Date.now()).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" }) },
-      { label: "Client", value: row.customer_name || "—" },
+      { label: "Client", value: row.customer_name || "-" },
       { label: "Scope", value: row.scope || "Supply and installation" },
     ],
     callout: row.intro || undefined,

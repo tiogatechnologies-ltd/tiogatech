@@ -150,7 +150,7 @@ const AdminHomeAutomation = () => {
                   </div>
                   <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
                     <span>{p.tagline}</span>
-                    <span className="text-foreground font-semibold">{p.price_label ?? (p.price ? `₦${p.price.toLocaleString("en-NG")}` : "—")}</span>
+                    <span className="text-foreground font-semibold">{p.price_label ?? (p.price ? `₦${p.price.toLocaleString("en-NG")}` : "-")}</span>
                     <span>{p.features.length} features</span>
                   </div>
                 </div>

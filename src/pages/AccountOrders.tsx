@@ -24,7 +24,7 @@ const PAGE_SIZE = 10;
 const STAGES = ["new", "confirmed", "processing", "shipped", "delivered"];
 
 const naira = (n: number | null | undefined) =>
-  typeof n === "number" ? `₦${n.toLocaleString("en-NG")}` : "—";
+  typeof n === "number" ? `₦${n.toLocaleString("en-NG")}` : "-";
 
 const pretty = (s: string) => s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
@@ -135,7 +135,7 @@ const AccountOrders = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="My Orders — Tioga Technologies"
+        title="My Orders - Tioga Technologies"
         description="View your full Tioga Technologies order history, track delivery progress and reorder past purchases."
         path="/account/orders"
       />
@@ -248,7 +248,7 @@ const AccountOrders = () => {
                                   <p className="truncate text-sm font-semibold text-foreground">{it.product_name}</p>
                                   <p className="text-xs text-muted-foreground">Qty {it.quantity}</p>
                                 </div>
-                                <p className="shrink-0 text-sm text-muted-foreground">{it.price_label || "—"}</p>
+                                <p className="shrink-0 text-sm text-muted-foreground">{it.price_label || "-"}</p>
                               </li>
                             ))}
                             {d && d.items.length === 0 && (

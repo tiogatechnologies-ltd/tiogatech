@@ -114,7 +114,7 @@ const AdminFinanceSchedules = () => {
       if (error) throw error;
       toast.success("Reminder job triggered for all due/overdue installments");
     } catch (e: any) {
-      toast.success("Reminder queue checked — all notifications scheduled");
+      toast.success("Reminder queue checked - all notifications scheduled");
     }
   };
 
@@ -195,7 +195,7 @@ const AdminFinanceSchedules = () => {
                   <td className="px-4 py-3">{r.is_deposit ? <span className="text-xs font-semibold text-primary">Deposit</span> : `#${r.installment_no}`}</td>
                   <td className="px-4 py-3 font-semibold">₦{Number(r.amount_ngn).toLocaleString()}</td>
                   <td className="px-4 py-3"><span className={`text-xs px-2 py-0.5 rounded-full capitalize ${badge(r.status)}`}>{r.status}</span></td>
-                  <td className="px-4 py-3 text-xs text-muted-foreground capitalize">{(r.auto_charge_status || "—").replace(/_/g, " ")}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground capitalize">{(r.auto_charge_status || "-").replace(/_/g, " ")}</td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-1">
                       <button onClick={() => loadDetail(r.application_id)} className="text-xs px-3 py-1.5 rounded-lg border border-border hover:bg-muted">Details</button>
@@ -222,7 +222,7 @@ const AdminFinanceSchedules = () => {
               </div>
 
               <div className={`rounded-xl p-3 text-sm ${depositPaid ? "bg-green-500/10 text-green-700 dark:text-green-300" : "bg-amber-500/10 text-amber-700 dark:text-amber-300"}`}>
-                {depositPaid ? "Deposit confirmed — monthly installments are unlocked." : "Deposit not yet paid — installments stay locked until the 30% deposit clears."}
+                {depositPaid ? "Deposit confirmed - monthly installments are unlocked." : "Deposit not yet paid - installments stay locked until the 30% deposit clears."}
               </div>
 
               <section className="space-y-2">

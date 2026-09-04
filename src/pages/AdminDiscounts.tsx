@@ -64,7 +64,7 @@ const AdminDiscounts = () => {
                   <td className="px-4 py-3">₦{Number(d.min_cart_ngn).toLocaleString()}</td>
                   <td className="px-4 py-3">{d.uses_count}{d.max_uses ? ` / ${d.max_uses}` : ""}</td>
                   <td className="px-4 py-3 font-mono text-xs">₦{(savedTotals[d.id] || 0).toLocaleString()}</td>
-                  <td className="px-4 py-3">{d.expires_at ? new Date(d.expires_at).toLocaleDateString() : "—"}</td>
+                  <td className="px-4 py-3">{d.expires_at ? new Date(d.expires_at).toLocaleDateString() : "-"}</td>
                   <td className="px-4 py-3"><span className={`text-[10px] px-2 py-0.5 rounded-full ${d.active ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"}`}>{d.active ? "Active" : "Inactive"}</span></td>
                   <td className="px-4 py-3 text-right"><div className="flex justify-end gap-1"><button onClick={() => setEditing(d)} className="p-1.5 rounded hover:bg-muted"><Edit2 size={14} /></button><button onClick={() => remove(d.id)} className="p-1.5 rounded hover:bg-muted text-destructive"><Trash2 size={14} /></button></div></td>
                 </tr>

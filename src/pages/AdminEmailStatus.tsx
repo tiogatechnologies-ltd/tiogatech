@@ -120,7 +120,7 @@ const AdminEmailStatus = () => {
       if ((data as any)?.success === false) {
         toast.warning(`Not sent: ${(data as any).reason}`);
       } else {
-        toast.success("Test email queued — refresh in a few seconds to see the result");
+        toast.success("Test email queued - refresh in a few seconds to see the result");
       }
       setTimeout(load, 4000);
     } catch (e: any) {
@@ -225,7 +225,7 @@ const AdminEmailStatus = () => {
                   <td className="px-4 py-3">
                     <span className={`px-2 py-1 rounded-lg text-xs font-medium ${STATUS_STYLES[r.status] || "bg-muted text-muted-foreground"}`}>{r.status}</span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-destructive max-w-[280px] truncate" title={r.error_message || ""}>{r.error_message || "—"}</td>
+                  <td className="px-4 py-3 text-xs text-destructive max-w-[280px] truncate" title={r.error_message || ""}>{r.error_message || "-"}</td>
                   <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">{new Date(r.created_at).toLocaleString()}</td>
                 </tr>
               ))}

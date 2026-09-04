@@ -4,7 +4,7 @@ import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
 import {
-  ArrowRight, Sparkles, Lock, Sun, Home as HomeIcon,
+  ArrowRight, Lock, Sun, Home as HomeIcon,
   Loader2, ChevronDown, Flame, Tag, ShieldCheck, Clock, Wrench,
 } from "lucide-react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
@@ -37,7 +37,7 @@ const CATEGORIES: {
     label: "Solar Inverter Systems",
     shortLabel: "Solar",
     icon: Sun,
-    desc: "19 pre-engineered packages from 1KVA to 40KVA — sized for real Nigerian load profiles with lithium, tubular, and high-voltage options.",
+    desc: "19 pre-engineered packages from 1KVA to 40KVA - sized for real Nigerian load profiles with lithium, tubular, and high-voltage options.",
     image: catSolar,
     stat: "19",
     statLabel: "Packages",
@@ -59,7 +59,7 @@ const CATEGORIES: {
     label: "Home Automation",
     shortLabel: "Automation",
     icon: HomeIcon,
-    desc: "Three curated tiers — Apex, Aura and Riviera — covering lighting, climate, entertainment and security in a single unified system.",
+    desc: "Three curated tiers - Apex, Aura and Riviera - covering lighting, climate, entertainment and security in a single unified system.",
     image: catAutomation,
     stat: "3",
     statLabel: "Tiers",
@@ -127,7 +127,7 @@ const Packages = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEO
-        title="All Packages — Solar, Smart Locks & Home Automation | Tioga Technologies"
+        title="All Packages - Solar, Smart Locks & Home Automation | Tioga Technologies"
         description="Browse all Tioga packages: 19 solar inverter systems (1KVA–40KVA), 20 STAMA smart lock products, and 3 home automation tiers. Bundle pricing up to 17% off. Installation in 48 hours."
         path="/packages"
         jsonLd={[
@@ -135,7 +135,7 @@ const Packages = () => {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            name: "Tioga Technologies — All Packages",
+            name: "Tioga Technologies - All Packages",
             description: "Curated solar, smart lock and home automation bundles for Nigerian homes and businesses.",
             url: "https://tiogatechnologies.com/packages",
             about: ["Solar inverter systems", "STAMA smart locks", "Home automation bundles"],
@@ -148,7 +148,7 @@ const Packages = () => {
       <PageHero
         eyebrow="All Packages"
         title="Everything you need. One page."
-        subtitle="Solar power systems, smart security locks, and intelligent home automation — all pre-engineered, bundled, and installable next week."
+        subtitle="Solar power systems, smart security locks, and intelligent home automation - all pre-engineered, bundled, and installable next week."
         backgroundImage={bgBundle}
         backgroundAlt="Tioga Technologies curated product bundles"
       >
@@ -156,7 +156,7 @@ const Packages = () => {
           onClick={() => openLeadForm("packages_hero")}
           className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
         >
-          <Sparkles size={16} /> Get AI Recommendation
+          Get AI Recommendation
         </button>
         <Link
           to="/contact"
@@ -188,7 +188,7 @@ const Packages = () => {
         <div className="section-container py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
           <div className="flex items-center gap-1.5 text-xs sm:text-sm text-amber-800 dark:text-amber-300 font-semibold min-w-0">
             <Flame size={14} className="shrink-0 text-amber-600" />
-            <span className="truncate">Mid-Month Deals — Up to 17% Off</span>
+            <span className="truncate">Mid-Month Deals - Up to 17% Off</span>
             <span className="text-xs opacity-80 hidden sm:inline">Pre-engineered systems priced below individual component retail.</span>
           </div>
           <div className="flex items-center gap-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 shrink-0 ml-auto sm:ml-0">
@@ -202,7 +202,7 @@ const Packages = () => {
       {/* Sticky category tab bar */}
       <div className="sticky top-[60px] z-30 bg-background/90 backdrop-blur-xl border-b border-border shadow-sm">
         <div className="section-container">
-          <div className="flex items-center gap-1.5 sm:gap-2 py-2 overflow-x-auto scrollbar-hide no-scrollbar">
+          <div className="flex items-center gap-1.5 sm:gap-2 py-2 overflow-x-auto scrollbar-hide no-scrollbar snap-x snap-mandatory">
             {CATEGORIES.map((c) => {
               const Icon = c.icon;
               const isActive = active === c.key;
@@ -211,7 +211,7 @@ const Packages = () => {
                   key={c.key}
                   type="button"
                   onClick={() => handleCategoryClick(c.key)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
+                  className={`snap-start inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
                     isActive
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -236,7 +236,7 @@ const Packages = () => {
                 onClick={() => openLeadForm("packages_tabs")}
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-accent text-accent-foreground hover:brightness-110 transition-all"
               >
-                <Sparkles size={13} /> AI Pick
+                AI Pick
               </button>
             </div>
           </div>
@@ -283,7 +283,7 @@ const Packages = () => {
                       height={400}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/40 to-midnight/10" />
+                    <div className="absolute inset-0 bg-midnight/90" />
 
                     {/* Icon + count badge */}
                     <div className="absolute top-4 left-4 flex items-center gap-2">
@@ -323,7 +323,7 @@ const Packages = () => {
         </div>
       </section>
 
-      {/* Package sections — lazy loaded */}
+      {/* Package sections - lazy loaded */}
       <Suspense fallback={<SectionLoader />}>
         {active === "solar" && (
           <div ref={(el) => { sectionRefs.current["solar"] = el; }}>
@@ -347,7 +347,6 @@ const Packages = () => {
         <section className="section-padding">
           <div className="section-container">
             <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 text-center shadow-[var(--shadow-card)]">
-              <Sparkles className="text-gold mx-auto mb-4" size={28} />
               <h3 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-3 no-clip">
                 Not sure which package fits?
               </h3>
@@ -359,7 +358,7 @@ const Packages = () => {
                   onClick={() => openLeadForm("packages_bottom_cta")}
                   className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
                 >
-                  <Sparkles size={16} /> Get AI Recommendation
+                  Get AI Recommendation
                 </button>
                 <Link
                   to="/contact"

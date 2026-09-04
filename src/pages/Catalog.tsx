@@ -19,7 +19,6 @@ import {
   Camera,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   ArrowLeft,
   CheckCircle2,
   Check,
@@ -109,8 +108,8 @@ export const Catalog = () => {
     if (hasState || aiRec) {
       list.push({
         key: "ai-picks",
-        label: "✨ AI Top Recommendations",
-        icon: Sparkles,
+        label: "AI Top Recommendations",
+        icon: Cpu,
         isAi: true,
       });
     }
@@ -250,7 +249,7 @@ export const Catalog = () => {
       .finally(() => setAiLoading(false));
   }, [hasState, state.category, totalWatts]);
 
-  // AI rank matching — computed once per (products, aiRec) change into a lookup map,
+  // AI rank matching - computed once per (products, aiRec) change into a lookup map,
   // instead of re-scanning aiRec.recommendedProducts for every product on every render.
   const computeAiPickRank = (product: RetailProduct): number => {
     if (!aiRec?.recommendedProducts?.length) {
@@ -416,7 +415,7 @@ export const Catalog = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title={hasState ? "Your Tailored Hardware Recommendation — Tioga Store" : "Tioga Store & Hardware Catalog"}
+        title={hasState ? "Your Tailored Hardware Recommendation - Tioga Store" : "Tioga Store & Hardware Catalog"}
         description="Explore tailored renewable energy, lithium battery storage, and smart home biometric access systems matching your load assessment."
         path="/catalog"
         jsonLd={[
@@ -483,8 +482,7 @@ export const Catalog = () => {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/80 pb-4">
                 <div className="flex items-center gap-2.5">
                   <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-                    <Sparkles size={18} />
-                  </div>
+                    </div>
                   <div>
                     <h3 className="font-display font-bold text-base sm:text-lg text-foreground">
                       Engineering Recommendation
@@ -603,7 +601,7 @@ export const Catalog = () => {
             </div>
           </div>
 
-          {/* Categorized Tabs — With AI Top Recommendations as FIRST Tab */}
+          {/* Categorized Tabs - With AI Top Recommendations as FIRST Tab */}
           <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
             {categoryTabs.map((tab) => {
               const Icon = tab.icon;
@@ -825,7 +823,6 @@ export const Catalog = () => {
                   {selectedCategory === "ai-picks" && (
                     <div className="mb-6 p-4 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2 text-xs font-semibold text-primary">
-                        <Sparkles size={16} />
                         <span>Showing {filteredProducts.length} hardware components matched to your load</span>
                       </div>
                       <button

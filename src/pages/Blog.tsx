@@ -56,7 +56,7 @@ const Blog = () => {
   return (
     <div className="min-h-screen">
       <SEO
-        title="Blog — Solar & Smart Home Insights"
+        title="Blog - Solar & Smart Home Insights"
         description="Energy tips, solar guides, smart home automation insights and product news from Tioga Technologies. Learn how to power your home reliably in Nigeria."
         path="/blog"
         jsonLd={jsonLd}

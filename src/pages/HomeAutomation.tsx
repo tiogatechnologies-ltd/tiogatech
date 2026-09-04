@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Home, Lightbulb, Smartphone, Music, Wifi, Check, Sparkles, ShoppingBag, Eye, ShieldCheck, Cpu, Sliders, Zap } from "lucide-react";
+import { Home, Lightbulb, Smartphone, Music, Wifi, Check, ShoppingBag, Eye, ShieldCheck, Cpu, Sliders, Zap } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -22,7 +22,7 @@ export const HomeAutomation = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Smart Home Automation — Intelligent Lighting, Curtains & Climate in Nigeria"
+        title="Smart Home Automation - Intelligent Lighting, Curtains & Climate in Nigeria"
         description="Experience luxury smart home living with VoltAi automated lighting, voice control, smart curtain tracks, and multi-room audio installed across Nigeria."
         path="/home-automation"
         jsonLd={[
@@ -50,7 +50,7 @@ export const HomeAutomation = () => {
             onClick={() => openLeadForm("home_automation_hero")}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20 transition-all"
           >
-            <Sparkles size={16} /> Request Custom Automation Plan
+            Request Custom Automation Plan
           </button>
           <Link
             to="/retail?category=Home+Automation"
@@ -144,7 +144,7 @@ export const HomeAutomation = () => {
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/40 to-transparent" />
+                  <div className="absolute inset-0 bg-midnight/90" />
                   {pkg.badge && (
                     <span className="absolute top-4 left-4 text-[10px] uppercase tracking-wider font-bold bg-gold text-midnight px-2.5 py-1 rounded-full shadow-sm">
                       {pkg.badge}
@@ -200,7 +200,7 @@ export const HomeAutomation = () => {
                         onClick={() => openLeadForm(`automation_${pkg.id}`)}
                         className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-gold text-midnight text-xs font-bold hover:brightness-110 shadow-sm transition-all"
                       >
-                        <Sparkles size={14} /> Request Custom Design
+                        Request Custom Design
                       </button>
                     )}
 

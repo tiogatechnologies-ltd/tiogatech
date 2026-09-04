@@ -24,7 +24,7 @@ const FlexiblePaymentButton = ({ itemName, itemType, itemId, price, className = 
         type="button"
         onClick={() => setOpen(true)}
         className={`inline-flex items-center justify-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent-foreground px-3 py-1.5 text-[11px] font-semibold hover:bg-accent/20 hover:border-accent/60 transition-all ${compact ? "" : "w-full"} ${className}`}
-        title="Pay 30% now, spread the rest — Easy Flex"
+        title="Pay 30% now, spread the rest - Easy Flex"
       >
         <Wallet size={12} />
         Easy Flex

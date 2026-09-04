@@ -164,7 +164,7 @@ const AdminBlog = () => {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-xs text-muted-foreground">
-                      {p.published_at ? new Date(p.published_at).toLocaleDateString() : "—"}
+                      {p.published_at ? new Date(p.published_at).toLocaleDateString() : "-"}
                     </td>
                     <td className="px-4 py-3 text-right space-x-2">
                       <button onClick={() => togglePublish(p)} className="text-xs text-foreground hover:text-primary">

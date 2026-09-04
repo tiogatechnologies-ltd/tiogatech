@@ -12,7 +12,7 @@ import featureSolarRoof from "@/assets/feature-solar-roof.jpg";
 import featureBattery from "@/assets/feature-battery.jpg";
 import featureApp from "@/assets/feature-energy-app.jpg";
 import bgTechMesh from "@/assets/bg-grid-particles.jpg";
-import { Sun, BatteryCharging, Home, Calculator, Sparkles, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download, Coins, TrendingUp, Building2, Users2, Briefcase, Wrench, Shield, Smartphone, Cpu, Zap } from "lucide-react";
+import { Sun, BatteryCharging, Home, Calculator, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download, Coins, TrendingUp, Building2, Users2, Briefcase, Wrench, Shield, Smartphone, Cpu, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import LumiVoltSizer from "@/components/LumiVoltSizer";
 import SEO from "@/components/SEO";
@@ -28,7 +28,7 @@ const pillars = [
 const steps = [
   { n: 1, icon: Plus, title: "Add Your Appliances", desc: "List the devices you use daily with their wattage and usage hours.", bg: featureApp },
   { n: 2, icon: Calculator, title: "Calculate Energy", desc: "We compute your total daily and monthly energy consumption instantly.", bg: bgTechMesh },
-  { n: 3, icon: Sparkles, title: "Get a System", desc: "Our team designs the perfect solar setup, fully installed and warrantied.", bg: bgSolarField },
+  { n: 3, icon: CheckCircle2, title: "Get a System", desc: "Our team designs the perfect solar setup, fully installed and warrantied.", bg: bgSolarField },
 ];
 
 const benefits = [
@@ -52,12 +52,12 @@ const LumiVolt = () => {
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="LumiVolt — Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with LumiVolt by Tioga Technologies." path="/lumivolt" jsonLd={[breadcrumbJsonLd([{ name: "LumiVolt", path: "/lumivolt" }]), serviceJsonLd({ name: "LumiVolt Residential Solar Installation", description: "Off-grid, hybrid and grid-tie solar systems engineered, sized and installed for Nigerian homes, with lithium battery backup and 24/7 monitoring.", path: "/lumivolt", serviceType: "Solar power system installation" })]} />
+      <SEO title="LumiVolt - Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with LumiVolt by Tioga Technologies." path="/lumivolt" jsonLd={[breadcrumbJsonLd([{ name: "LumiVolt", path: "/lumivolt" }]), serviceJsonLd({ name: "LumiVolt Residential Solar Installation", description: "Off-grid, hybrid and grid-tie solar systems engineered, sized and installed for Nigerian homes, with lithium battery backup and 24/7 monitoring.", path: "/lumivolt", serviceType: "Solar power system installation" })]} />
       <SiteHeader />
 
       <PageHero
         eyebrow={c.eyebrow || "A Tioga Sub-brand · Residential"}
-        title={c.title || "LumiVolt — clean, reliable solar for your home"}
+        title={c.title || "LumiVolt - clean, reliable solar for your home"}
         subtitle={c.subtitle || "Off-grid, hybrid and grid-tie solar systems engineered for Nigerian homes. Sized accurately, installed cleanly, monitored 24/7."}
         backgroundImage={bgResidential}
         backgroundAlt="Modern Nigerian home with rooftop solar at golden hour"
@@ -230,7 +230,7 @@ const LumiVolt = () => {
       {/* Tagline / Mission & Vision */}
       <section className="relative section-padding overflow-hidden">
         <img src={bgSolarAerial} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-15" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        <div className="absolute inset-0 bg-background" />
         <div className="relative section-container max-w-5xl">
           <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Tagline</p>
@@ -238,30 +238,30 @@ const LumiVolt = () => {
               Powering Africa's Clean Energy Future
             </h2>
             <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              LumiVolt is Africa's next-generation renewable energy management platform — designed to make clean energy smarter, more accessible, and highly efficient. We combine smart metering, AI-driven analytics, and modular energy systems to transform how homes and businesses generate, store, and consume energy.
+              LumiVolt is Africa's next-generation renewable energy management platform - designed to make clean energy smarter, more accessible, and highly efficient. We combine smart metering, AI-driven analytics, and modular energy systems to transform how homes and businesses generate, store, and consume energy.
             </p>
             <p className="mt-3 text-sm font-semibold text-primary uppercase tracking-wider">📍 Abuja, Nigeria</p>
           </div>
           <div className="grid gap-6 lg:grid-cols-2 mt-10">
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 ios-card">
-              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4"><Sparkles className="text-primary" size={22} /></div>
+              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4"></div>
               <h3 className="font-display font-bold text-xl text-foreground mb-2">Our Mission</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                To make clean energy accessible, efficient, and intelligent — expanding reliable power to homes, businesses, and communities, optimizing usage through smart metering and AI-driven insights, and delivering cost-effective, scalable solutions that empower users with full control and visibility.
+                To make clean energy accessible, efficient, and intelligent - expanding reliable power to homes, businesses, and communities, optimizing usage through smart metering and AI-driven insights, and delivering cost-effective, scalable solutions that empower users with full control and visibility.
               </p>
             </div>
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 ios-card">
               <div className="w-11 h-11 rounded-xl bg-gold/15 flex items-center justify-center mb-4"><Globe className="text-gold" size={22} /></div>
               <h3 className="font-display font-bold text-xl text-foreground mb-2">Our Vision</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                To power Africa's transition into a connected, intelligent, and sustainable energy ecosystem — where clean energy is accessible to all, systems are self-optimizing, and communities thrive through reliable power. We envision Africa leading the world in renewable energy innovation.
+                To power Africa's transition into a connected, intelligent, and sustainable energy ecosystem - where clean energy is accessible to all, systems are self-optimizing, and communities thrive through reliable power. We envision Africa leading the world in renewable energy innovation.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* What We Do — Detailed Services */}
+      {/* What We Do - Detailed Services */}
       <section className="section-padding bg-muted">
         <div className="section-container">
           <div className="text-center mb-12">
@@ -283,7 +283,7 @@ const LumiVolt = () => {
               <div key={s.title} className="rounded-3xl overflow-hidden border border-border bg-card ios-card flex flex-col sm:flex-row">
                 <div className="relative sm:w-2/5 h-44 sm:h-auto shrink-0">
                   <img src={s.img} alt={s.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight/70 to-transparent sm:bg-gradient-to-r" />
+                  <div className="absolute inset-0 bg-midnight/70" />
                   <span className="absolute top-3 left-3 text-2xl">{s.emoji}</span>
                 </div>
                 <div className="flex-1 p-5 sm:p-6">
@@ -306,13 +306,13 @@ const LumiVolt = () => {
       {/* Trust / Impact stats */}
       <section className="relative section-padding overflow-hidden bg-midnight text-primary-foreground">
         <img src={bgPanelClose} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-25" />
-        <div className="absolute inset-0 bg-gradient-to-b from-midnight/90 via-midnight/85 to-midnight/95" />
+        <div className="absolute inset-0 bg-midnight/90" />
         <div className="relative section-container">
           <div className="text-center mb-12">
             <p className="text-xs sm:text-sm font-semibold text-gold uppercase tracking-[0.2em] mb-3">Trust / Impact</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight no-clip">Building more than power systems</h2>
             <p className="mt-3 text-primary-foreground/80 max-w-2xl mx-auto">
-              At LumiVolt we are not just powering homes and businesses — we are powering the future of Africa.
+              At LumiVolt we are not just powering homes and businesses - we are powering the future of Africa.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto mb-10">
@@ -332,7 +332,7 @@ const LumiVolt = () => {
             {[
               { icon: Cpu, label: "Intelligent Energy Systems" },
               { icon: Shield, label: "Reliable Power Infrastructure" },
-              { icon: Sparkles, label: "AI-Driven Optimization" },
+              { icon: BarChart3, label: "AI-Driven Optimization" },
               { icon: Globe, label: "Sustainable Impact" },
             ].map((t) => (
               <div key={t.label} className="rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-4 flex items-center gap-3">
@@ -385,7 +385,7 @@ const LumiVolt = () => {
             {steps.map((s) => (
               <div key={s.n} className="group relative rounded-2xl overflow-hidden border border-border min-h-[260px] ios-card">
                 <img src={s.bg} alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-                <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/75 to-midnight/40" />
+                <div className="absolute inset-0 bg-midnight/95" />
                 <div className="relative h-full p-6 flex flex-col justify-end text-primary-foreground">
                   <div className="relative w-14 h-14 rounded-2xl bg-gold text-midnight flex items-center justify-center shadow-lg mb-4">
                     <s.icon size={24} />
@@ -428,7 +428,7 @@ const LumiVolt = () => {
       {/* Watts Calculator */}
       <section id="power-calculator" className="relative section-padding overflow-hidden scroll-mt-24">
         <img src={bgSolarField} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-15" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        <div className="absolute inset-0 bg-background" />
         <div className="relative section-container">
           <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Try It Now</p>

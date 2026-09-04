@@ -37,7 +37,7 @@ const PAGES: PageDef[] = [
     label: "About",
     sections: [
       { key: "page_about", label: "Hero", fields: ["eyebrow", "title", "subtitle", "image"] },
-      { key: "about_intro", label: "Intro — Who we are", fields: ["eyebrow", "title", "body"] },
+      { key: "about_intro", label: "Intro - Who we are", fields: ["eyebrow", "title", "body"] },
       { key: "about_mission", label: "Mission card", fields: ["title", "body"] },
       { key: "about_vision", label: "Vision card", fields: ["title", "body"] },
       { key: "about_pillars", label: "Pillars headline", fields: ["eyebrow", "title", "subtitle"] },

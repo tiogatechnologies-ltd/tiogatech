@@ -172,7 +172,7 @@ const AdminCareers = () => {
                     )}
                   </div>
                   <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-                    <span className="inline-flex items-center gap-1"><MapPin size={11} /> {c.location || "—"}</span>
+                    <span className="inline-flex items-center gap-1"><MapPin size={11} /> {c.location || "-"}</span>
                     <span className="inline-flex items-center gap-1"><Calendar size={11} /> {c.deadline}</span>
                     <span>Order: {c.sort_order}</span>
                   </div>

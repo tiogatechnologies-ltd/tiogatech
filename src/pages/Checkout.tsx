@@ -103,7 +103,7 @@ const Checkout = () => {
   }, [user]);
 
   const subtotal = useMemo(() => items.reduce((s, i) => s + ((i.numericPrice || 0) * i.quantity), 0), [items]);
-  // Free delivery only in Abuja (FCT) and Jos (Plateau) — our office locations. Elsewhere: ₦15,000 flat.
+  // Free delivery only in Abuja (FCT) and Jos (Plateau) - our office locations. Elsewhere: ₦15,000 flat.
   const isFreeDeliveryState = (s: string) => {
     const v = (s || "").toLowerCase();
     return v.includes("abuja") || v.includes("fct") || v.includes("plateau") || v.includes("jos");
@@ -254,12 +254,12 @@ const Checkout = () => {
     }
 
     if (payment === "whatsapp") {
-      const msg = items.map((i, n) => `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` — ${i.price}` : ""}`).join("\n");
+      const msg = items.map((i, n) => `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` - ${i.price}` : ""}`).join("\n");
       const text = encodeURIComponent(`Hi Tioga, I just placed order ${orderNumber}.\n\n${msg}\n\nTotal: ${formNGN(total)}\nName: ${form.first_name} ${form.last_name}\nPhone: ${form.phone}\nAddress: ${form.address}, ${form.city}, ${form.state}`);
       window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank", "noopener,noreferrer");
     }
 
-    // Cart is NOT cleared here — only cleared after verified payment success.
+    // Cart is NOT cleared here - only cleared after verified payment success.
     setSubmitting(false);
     navigate(`/checkout/success?order=${orderNumber}&method=${payment}`);
   };
@@ -348,7 +348,7 @@ const Checkout = () => {
               </div>
               <p className="text-[11px] text-muted-foreground mt-1">
                 {isFreeDeliveryState(form.state)
-                  ? "Free local delivery — you're in one of our office cities (Abuja / Jos)."
+                  ? "Free local delivery - you're in one of our office cities (Abuja / Jos)."
                   : "Flat ₦15,000 delivery fee outside Abuja and Jos. Select an Abuja or Plateau address to qualify for free delivery."}
               </p>
             </section>
@@ -400,7 +400,7 @@ const Checkout = () => {
                     <div className="flex justify-between pt-1 border-t border-border"><span className="text-foreground font-semibold">Monthly × {flexMonths}</span><span className="font-display font-bold text-primary">{formNGN(flexBreakdown.monthly_payment)}</span></div>
                   </div>
                   <p className="text-[11px] text-muted-foreground">
-                    ✓ Liquidate anytime — pay only this month's interest + remaining principal. <strong>No prepayment penalty.</strong>
+                    ✓ Liquidate anytime - pay only this month's interest + remaining principal. <strong>No prepayment penalty.</strong>
                   </p>
                   <div>
                     <p className="text-xs font-semibold text-foreground mb-2">Payment style</p>
@@ -420,7 +420,7 @@ const Checkout = () => {
                 </div>
               )}
 
-              {/* 4. WhatsApp — human-assisted fallback */}
+              {/* 4. WhatsApp - human-assisted fallback */}
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "whatsapp" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                 <input type="radio" checked={payment === "whatsapp"} onChange={() => setPayment("whatsapp")} className="mt-1" />
                 <div className="flex-1">
@@ -469,7 +469,7 @@ const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDi
             <p className="text-xs font-semibold text-foreground line-clamp-2">{i.name}</p>
             {i.price && <p className="text-[11px] text-muted-foreground mt-0.5">{i.price}</p>}
           </div>
-          <p className="text-xs font-semibold text-foreground shrink-0">{i.numericPrice ? formNGN(i.numericPrice * i.quantity) : i.price || "—"}</p>
+          <p className="text-xs font-semibold text-foreground shrink-0">{i.numericPrice ? formNGN(i.numericPrice * i.quantity) : i.price || "-"}</p>
         </li>
       ))}
     </ul>

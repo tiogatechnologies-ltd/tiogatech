@@ -282,7 +282,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [pins, setPins] = useState<Set<string>>(() => loadSet(LS_PINS));
 
   // On mount / route change, ensure active group is open (only if user hasn't
-  // explicitly toggled — we always guarantee the active group is visible).
+  // explicitly toggled - we always guarantee the active group is visible).
   const hasHydrated = useRef(false);
   useEffect(() => {
     if (activeGroupLabel) {
@@ -329,7 +329,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     return n;
   });
 
-  // Search filter — matches labels; auto-expand any group/item with a match.
+  // Search filter - matches labels; auto-expand any group/item with a match.
   const q = query.trim().toLowerCase();
   const matches = useCallback((s: string) => s.toLowerCase().includes(q), [q]);
 

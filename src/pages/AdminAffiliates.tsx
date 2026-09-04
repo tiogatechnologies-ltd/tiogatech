@@ -237,7 +237,7 @@ const AdminAffiliates = () => {
                           {a.commission_rate}% commission
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">{a.email} • {a.phone || "—"}</p>
+                      <p className="text-xs text-muted-foreground">{a.email} • {a.phone || "-"}</p>
                       <p className="text-xs mt-1">
                         <span className="text-muted-foreground">Code:</span>{" "}
                         <span className="font-mono font-bold text-foreground">{a.code.toUpperCase()}</span>
@@ -286,11 +286,11 @@ const AdminAffiliates = () => {
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      {app.email} • {app.phone} • {app.location || "—"}
+                      {app.email} • {app.phone} • {app.location || "-"}
                     </p>
                     <p className="text-xs mt-1 text-muted-foreground">
-                      Audience: {app.audience_size || "—"} • Channels:{" "}
-                      {app.channels.length ? app.channels.join(", ") : "—"}
+                      Audience: {app.audience_size || "-"} • Channels:{" "}
+                      {app.channels.length ? app.channels.join(", ") : "-"}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
@@ -333,11 +333,11 @@ const AdminAffiliates = () => {
             <div className="space-y-3 text-sm">
               <p><strong>Email:</strong> {appOpen.email}</p>
               <p><strong>Phone:</strong> {appOpen.phone}</p>
-              <p><strong>Location:</strong> {appOpen.location || "—"}</p>
-              <p><strong>Audience:</strong> {appOpen.audience_size || "—"}</p>
-              <p><strong>Channels:</strong> {appOpen.channels.join(", ") || "—"}</p>
-              <p><strong>Links:</strong> <span className="break-all">{appOpen.social_links || "—"}</span></p>
-              <p><strong>Why:</strong> {appOpen.why || "—"}</p>
+              <p><strong>Location:</strong> {appOpen.location || "-"}</p>
+              <p><strong>Audience:</strong> {appOpen.audience_size || "-"}</p>
+              <p><strong>Channels:</strong> {appOpen.channels.join(", ") || "-"}</p>
+              <p><strong>Links:</strong> <span className="break-all">{appOpen.social_links || "-"}</span></p>
+              <p><strong>Why:</strong> {appOpen.why || "-"}</p>
               {appOpen.status === "pending" && (
                 <div className="flex gap-2 pt-3">
                   <Button onClick={() => approve(appOpen)} className="flex-1">

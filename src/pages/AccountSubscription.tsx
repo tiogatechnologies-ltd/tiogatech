@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
-import { Zap, Crown, Sparkles, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, Check, Building2, Star, Loader2 } from "lucide-react";
+import { Zap, Crown, ArrowRight, Clock, CheckCircle2, Sun, Calculator, Lightbulb, BarChart3, Calendar, Check, Building2, Star, Loader2 } from "lucide-react";
 import { startAiSubscription, type AiPlanId } from "@/lib/subscribe";
 import { toast } from "sonner";
 
@@ -25,7 +25,7 @@ const TIERS: PlanTier[] = [
     amountNgn: 2500,
     icon: Zap,
     ring: "border-border",
-    accent: "from-emerald-500/10 to-transparent",
+    accent: "bg-emerald-500/10",
     features: ["20 AI assessments / month", "Full sizing report + BoM PDF", "Personalised package match", "Email support (24h)", "Cancel anytime"],
     cta: "Subscribe",
   },
@@ -39,7 +39,7 @@ const TIERS: PlanTier[] = [
     amountNgn: 12000,
     icon: Building2,
     ring: "border-primary shadow-[var(--shadow-elevated)]",
-    accent: "from-primary/15 to-transparent",
+    accent: "bg-primary/15",
     badge: "Most popular",
     features: ["120 AI assessments / month", "Team seats (up to 3)", "Installer dashboard + CSV export", "Priority engineer review", "WhatsApp support (4h)"],
     cta: "Subscribe",
@@ -54,7 +54,7 @@ const TIERS: PlanTier[] = [
     amountNgn: 0,
     icon: Crown,
     ring: "border-accent",
-    accent: "from-accent/20 to-transparent",
+    accent: "bg-accent/20",
     features: ["Choose your monthly credit pack", "Unlimited team seats", "Dedicated engineer review", "API access & SSO", "SLA + named account manager"],
     cta: "Build my plan",
     href: WA_CUSTOM,
@@ -114,7 +114,7 @@ const AccountSubscription = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("pay") === "success") {
-      toast.success("Payment received — your plan is being activated. Credits will appear within a minute.");
+      toast.success("Payment received - your plan is being activated. Credits will appear within a minute.");
       // Clean URL
       window.history.replaceState({}, "", "/account/subscription");
     }
@@ -142,7 +142,7 @@ const AccountSubscription = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="My AI Plan & Credits — Tioga" description="Manage your AI subscription, view free credits and usage history." path="/account/subscription" />
+      <SEO title="My AI Plan & Credits - Tioga" description="Manage your AI subscription, view free credits and usage history." path="/account/subscription" />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-5xl mx-auto space-y-6">
@@ -156,12 +156,12 @@ const AccountSubscription = () => {
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${adminUnlimited || hasActiveSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  {adminUnlimited ? <Crown size={22} /> : hasActiveSub ? (sub.plan === "business" ? <Crown size={22} /> : <Zap size={22} />) : <Sparkles size={22} />}
+                  {adminUnlimited ? <Crown size={22} /> : hasActiveSub ? (sub.plan === "business" ? <Crown size={22} /> : <Zap size={22} />) : <Zap size={22} />}
                 </div>
                 <div>
                   <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Current plan</div>
                   <div className="font-display text-xl font-bold capitalize">
-                    {adminUnlimited ? "Admin — Unlimited" : hasActiveSub ? `AI ${sub.plan}` : "Free Starter"}
+                    {adminUnlimited ? "Admin - Unlimited" : hasActiveSub ? `AI ${sub.plan}` : "Free Starter"}
                   </div>
                   {adminUnlimited && (
                     <div className="text-xs text-muted-foreground mt-0.5">Unlimited AI usage for admins and staff. Your team never runs out of credits.</div>
@@ -228,8 +228,7 @@ const AccountSubscription = () => {
             <div className="rounded-2xl border border-border bg-card p-5">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] uppercase tracking-wider text-muted-foreground">All time</span>
-                <Sparkles size={14} className="text-muted-foreground" />
-              </div>
+                </div>
               <div className="font-display text-2xl font-bold mt-1">{usage.length}</div>
               <div className="text-xs text-muted-foreground">Total reports run</div>
             </div>
@@ -242,7 +241,7 @@ const AccountSubscription = () => {
               <p className="text-xs text-muted-foreground mb-4">Last 30 days breakdown.</p>
               <div className="space-y-3">
                 {Object.entries(byFeature).sort((a, b) => b[1] - a[1]).map(([f, n]) => {
-                  const meta = FEATURE_LABEL[f] || { label: f, icon: Sparkles };
+                  const meta = FEATURE_LABEL[f] || { label: f, icon: Star };
                   const Icon = meta.icon;
                   return (
                     <div key={f}>
@@ -260,10 +259,9 @@ const AccountSubscription = () => {
             </div>
           )}
 
-          {/* Full 3-tier plan grid — merged from the standalone AI pricing page */}
+          {/* Full 3-tier plan grid - merged from the standalone AI pricing page */}
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-7">
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles size={18} className="text-primary" />
               <h2 className="font-display font-bold">{hasActiveSub ? "Compare & change plan" : "Choose your AI plan"}</h2>
             </div>
             <p className="text-xs text-muted-foreground mb-5">
@@ -276,7 +274,7 @@ const AccountSubscription = () => {
                 const isCurrent = hasActiveSub && sub?.plan === p.id;
                 return (
                   <div key={p.id} className={`relative rounded-2xl border bg-background overflow-hidden flex flex-col ${p.ring}`}>
-                    <div className={`absolute inset-x-0 top-0 h-24 bg-gradient-to-b ${p.accent} pointer-events-none`} />
+                    <div className={`absolute inset-x-0 top-0 h-24 ${p.accent} pointer-events-none`} />
                     {p.badge && (
                       <span className="absolute top-3 right-3 inline-flex px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">
                         {p.badge}
@@ -327,7 +325,7 @@ const AccountSubscription = () => {
             </div>
 
             <p className="mt-5 text-[11px] text-muted-foreground text-center">
-              Pay securely with card or bank transfer via Paystack — your plan activates automatically the moment payment is confirmed. Custom plans are quoted by our team on WhatsApp.
+              Pay securely with card or bank transfer via Paystack - your plan activates automatically the moment payment is confirmed. Custom plans are quoted by our team on WhatsApp.
             </p>
           </div>
 
@@ -350,7 +348,7 @@ const AccountSubscription = () => {
             ) : (
               <ul className="divide-y divide-border">
                 {usage.map((u) => {
-                  const meta = FEATURE_LABEL[u.feature] || { label: u.feature, icon: Sparkles };
+                  const meta = FEATURE_LABEL[u.feature] || { label: u.feature, icon: Star };
                   const Icon = meta.icon;
                   return (
                     <li key={u.id} className="px-6 py-4 flex items-center gap-4">
@@ -363,7 +361,7 @@ const AccountSubscription = () => {
                         <div className="text-xs text-muted-foreground">{new Date(u.created_at).toLocaleDateString()} · {new Date(u.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                         <div className="text-[10px] uppercase tracking-wider mt-0.5 inline-flex items-center gap-1">
                           {u.used_free_credit ? (
-                            <span className="text-amber-600 flex items-center gap-1"><Sparkles size={10} /> Free credit</span>
+                            <span className="text-amber-600 flex items-center gap-1">Free credit</span>
                           ) : (
                             <span className="text-primary flex items-center gap-1"><CheckCircle2 size={10} /> {u.subscription_plan || "Plan"}</span>
                           )}

@@ -262,7 +262,7 @@ export const Retail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Tioga Retail Store — Tier-1 Solar Inverters, Lithium Batteries & Smart Locks"
+        title="Tioga Retail Store - Tier-1 Solar Inverters, Lithium Batteries & Smart Locks"
         description="Shop certified Tier-1 Deye Hybrid Inverters, Felicity LiFePO4 batteries, Longi panels, and STAMA smart biometric locks. Direct nationwide dispatch from Lagos & Abuja."
         path="/retail"
       />

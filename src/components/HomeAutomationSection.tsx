@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Sparkles, Music, Home, ShoppingBag, TrendingDown, Flame, Tag } from "lucide-react";
+import { Check, ArrowRight, Music, Home, ShoppingBag, TrendingDown, Flame, Tag } from "lucide-react";
 import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/useHomeAutomationPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
@@ -11,7 +11,7 @@ import { trackConversion } from "@/lib/tracking";
 const fmtAuto = (p: HomeAutomationPackage) =>
   p.price_label ?? (p.price ? `From ₦${(p.price / 1_000_000).toFixed(1)}M` : "On request");
 
-// Cosmetic promo — displayed only, real prices never changed
+// Cosmetic promo - displayed only, real prices never changed
 const AUTO_PROMO_LIFT = 1.13;
 const autoViewers = (seed: string) => 4 + (seed.charCodeAt(0) * 5 + 9) % 14;
 const autoSavingsPct = (seed: string) => 9 + (seed.charCodeAt(0) * 4 + 7) % 9;
@@ -29,7 +29,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
     add({
       refId: p.id,
       type: "package",
-      name: `${p.name} — Home Automation`,
+      name: `${p.name} - Home Automation`,
       price: fmtAuto(p),
       numericPrice: p.price ?? null,
       image: p.image,
@@ -55,7 +55,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
         loading="lazy"
         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-midnight/95 via-midnight/55 to-midnight/15" />
+      <div className="absolute inset-0 bg-midnight/95" />
 
       {/* Badges */}
       <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
@@ -152,7 +152,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
       {/* Urgency */}
       <div className="flex items-center gap-2 text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mb-4">
         <Flame size={12} className="shrink-0" />
-        <span>Installation slots filling up — <strong>book this month to lock the price</strong></span>
+        <span>Installation slots filling up - <strong>book this month to lock the price</strong></span>
       </div>
 
       <div className="mt-auto grid grid-cols-2 gap-2">
@@ -210,7 +210,6 @@ const HomeAutomationSection = () => {
         </div>
 
         <div className="mt-12 rounded-3xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-          <Sparkles className="text-gold mx-auto mb-3" size={26} />
           <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground tracking-tight mb-2 no-clip">
             Want a custom blend?
           </h3>
@@ -221,7 +220,7 @@ const HomeAutomationSection = () => {
             onClick={() => openLeadForm("home_automation_custom")}
             className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
           >
-            <Sparkles size={16} /> Design my smart home
+            Design my smart home
           </button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Check, ShoppingCart, Sparkles, Tag } from "lucide-react";
+import { Plus, Check, ShoppingCart, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
@@ -52,9 +52,8 @@ export const FrequentlyBoughtTogether = ({ currentProduct, recommendedProducts }
   };
 
   return (
-    <div className="rounded-3xl border border-gold/30 bg-gradient-to-br from-card via-card to-gold/5 p-6 md:p-8 shadow-[var(--shadow-card)] my-10">
+    <div className="rounded-3xl border border-gold/30 bg-card p-6 md:p-8 shadow-[var(--shadow-card)] my-10">
       <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gold mb-1">
-        <Sparkles size={15} />
         <span>Frequently Bought Together</span>
       </div>
       <h3 className="text-xl font-display font-bold text-foreground mb-6">

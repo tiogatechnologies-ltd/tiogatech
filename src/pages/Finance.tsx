@@ -10,7 +10,7 @@ import imgFamilyHome from "@/assets/feature-solar-roof.jpg";
 import imgInstaller from "@/assets/bg-installer.jpg";
 import imgBattery from "@/assets/feature-battery.jpg";
 
-import { MessageCircle, FileText, CreditCard, Wrench, Home, ShieldCheck, Check, ArrowRight, Calculator, Sparkles } from "lucide-react";
+import { MessageCircle, FileText, CreditCard, Wrench, Home, ShieldCheck, Check, ArrowRight, Calculator } from "lucide-react";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { supabase } from "@/integrations/supabase/client";
@@ -38,7 +38,7 @@ const imperiumRequirements = [
   "Completed Imperium Lease-to-Own application form",
   "Valid government-issued ID (NIN, passport, driver's license or voter's card)",
   "Two recent passport photographs",
-  "Proof of address (utility bill, rental agreement or LGA letter — not older than 3 months)",
+  "Proof of address (utility bill, rental agreement or LGA letter - not older than 3 months)",
   "6 months personal bank statement",
   "Employment / income letter, or evidence of steady income for self-employed applicants",
   "One credible guarantor with a valid ID and proof of address",
@@ -105,7 +105,6 @@ const Finance = () => {
       {itemName && (
         <section className="bg-accent/10 border-y border-accent/20">
           <div className="section-container py-4 flex items-center gap-3 flex-wrap">
-            <Sparkles className="text-accent-foreground shrink-0" size={18} />
             <p className="text-sm text-foreground flex-1 min-w-0">
               Setting up Easy Flex for <strong>{itemName}</strong>
               {presetAmount > 0 && <> at <strong>{formatNGN(presetAmount)}</strong></>}.
@@ -204,7 +203,7 @@ const Finance = () => {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="section-padding bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+      <section className="section-padding bg-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
           <img src={imgRooftopInstall} alt="" className="w-full h-full object-cover" />
         </div>
@@ -280,7 +279,7 @@ const Finance = () => {
         <div className="section-container">
           <div className="relative rounded-3xl overflow-hidden border border-border shadow-[var(--shadow-card)]">
             <img src={imgInstaller} alt="Certified Tioga installer on rooftop" className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-midnight/90 via-midnight/75 to-midnight/40" />
+            <div className="absolute inset-0 bg-midnight/90" />
             <div className="relative p-8 sm:p-14 max-w-2xl text-primary-foreground">
               <ShieldCheck className="text-gold mb-4" size={36} />
               <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight mb-3">Your investment is protected</h2>

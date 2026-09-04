@@ -137,7 +137,7 @@ const Contact = () => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackConversion("whatsapp_click", { source: "contact_page_card" })}
-              className="block rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-6 text-primary-foreground hover:brightness-110 transition-all shadow-md shadow-primary/20"
+              className="block rounded-2xl bg-primary p-6 text-primary-foreground hover:brightness-110 transition-all shadow-md shadow-primary/20"
             >
               <MessageCircle size={22} className="mb-3" />
               <p className="font-display font-bold text-lg mb-1">Chat with us instantly</p>

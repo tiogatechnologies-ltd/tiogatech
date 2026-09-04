@@ -16,7 +16,6 @@ import {
   Maximize2,
   Wrench,
   Clock,
-  Sparkles,
   ArrowRight,
   Check,
   SlidersHorizontal,
@@ -307,7 +306,7 @@ export const ProductDetail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title={`${product.name} — ${categoryLabels[product.category] ?? product.category} | Tioga Technologies`}
+        title={`${product.name} - ${categoryLabels[product.category] ?? product.category} | Tioga Technologies`}
         description={`${product.description.slice(0, 155)}...`}
         path={productPath(product)}
         type="website"
@@ -353,7 +352,7 @@ export const ProductDetail = () => {
                 {images[activeIdx] ? (
                   <img
                     src={images[activeIdx]}
-                    alt={`${product.name} — ${categoryLabels[product.category] ?? product.category}`}
+                    alt={`${product.name} - ${categoryLabels[product.category] ?? product.category}`}
                     className="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-105"
                   />
                 ) : (
@@ -704,7 +703,6 @@ export const ProductDetail = () => {
               {/* Best For Application Banner */}
               <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 space-y-2">
                 <div className="flex items-center gap-2">
-                  <Sparkles size={16} className="text-primary" />
                   <h4 className="font-bold text-foreground text-sm">Recommended Deployment</h4>
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">

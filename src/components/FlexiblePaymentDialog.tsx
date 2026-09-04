@@ -48,7 +48,7 @@ const FlexiblePaymentDialog = ({ open, onOpenChange, itemName, price }: Props) =
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary inline-flex items-center justify-center mb-2"><Wallet size={20} /></div>
-          <DialogTitle className="font-display text-xl">Easy Flex — pay over time</DialogTitle>
+          <DialogTitle className="font-display text-xl">Easy Flex - pay over time</DialogTitle>
           <DialogDescription>
             Start with 30% deposit, then spread the rest over 3, 6, 12 or 24 months. Adjust the amount below to see your plan.
           </DialogDescription>

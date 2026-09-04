@@ -10,7 +10,6 @@ import {
   Check,
   Zap,
   Shield,
-  Sparkles,
   TrendingDown,
   Flame,
   Users,
@@ -46,7 +45,7 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
   const isSaved = isInWishlist(product.id);
   const isCompared = isInCompare(product.id);
 
-  // Cosmetic promo values — real price is always product.numeric_price
+  // Cosmetic promo values - real price is always product.numeric_price
   const hasPrice = !!(product.numeric_price && product.numeric_price > 0);
   const pct = hasPrice ? savingsPct(product.id) : null;
   const wasPrice = hasPrice ? Math.round(product.numeric_price! * PROMO_LIFT) : null;
@@ -113,7 +112,7 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
         </Link>
 
         {/* Gradient overlay for bottom legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-midnight/30 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-midnight/30 pointer-events-none" />
 
         {/* Left Badges (top-left stack) */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
@@ -124,7 +123,7 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
           )}
           {customBadge && (
             <span className="px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow flex items-center gap-1 w-fit">
-              <Sparkles size={10} /> {customBadge}
+              {customBadge}
             </span>
           )}
           {product.is_featured && !customBadge && !pct && (

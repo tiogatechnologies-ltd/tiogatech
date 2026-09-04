@@ -1,6 +1,6 @@
 /**
  * Lightweight web vitals + error monitoring.
- * No dependencies — uses native PerformanceObserver.
+ * No dependencies - uses native PerformanceObserver.
  * Reports once per page session to console + a single conversion row.
  */
 import { supabase } from "@/integrations/supabase/client";

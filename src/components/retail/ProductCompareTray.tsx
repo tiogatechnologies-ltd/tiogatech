@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SlidersHorizontal, X, ArrowRight, Check, Trash2, ShoppingBag, Sparkles, Scale, ExternalLink } from "lucide-react";
+import { SlidersHorizontal, X, ArrowRight, Check, Trash2, ShoppingBag, Scale, ExternalLink } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useProductCompare } from "@/hooks/useProductCompare";
@@ -114,7 +114,6 @@ export const ProductCompareTray = () => {
                 onClick={() => setHighlightDiffs((h) => !h)}
                 className="text-xs rounded-xl h-8 font-semibold"
               >
-                <Sparkles size={13} className="mr-1.5" />
                 {highlightDiffs ? "Show All" : "Highlight Differences"}
               </Button>
 
@@ -250,7 +249,7 @@ export const ProductCompareTray = () => {
 
                 {/* Dynamic Specification Rows */}
                 {allSpecKeys.map((key) => {
-                  const values = compareItems.map((item) => item.specifications?.[key] || "—");
+                  const values = compareItems.map((item) => item.specifications?.[key] || "-");
                   const allSame = values.every((v) => v === values[0]);
 
                   if (highlightDiffs && allSame) return null;
@@ -272,7 +271,7 @@ export const ProductCompareTray = () => {
                       </td>
                       {compareItems.map((item) => (
                         <td key={item.id} className="p-3.5 text-center text-foreground font-mono">
-                          {item.specifications?.[key] || "—"}
+                          {item.specifications?.[key] || "-"}
                         </td>
                       ))}
                     </tr>

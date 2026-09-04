@@ -58,7 +58,7 @@ const SolarAssessmentReport = () => {
     if (!assessment?.full_report) return;
     const fr = assessment.full_report;
     const doc = new jsPDF();
-    doc.setFontSize(18); doc.text("Tioga Technologies — Solar System Report", 14, 18);
+    doc.setFontSize(18); doc.text("Tioga Technologies - Solar System Report", 14, 18);
     doc.setFontSize(10); doc.setTextColor(100);
     doc.text(`Prepared for: ${assessment.full_name} (${assessment.email})`, 14, 26);
     doc.text(`Location: ${assessment.location || "Nigeria"} • ${new Date().toLocaleDateString()}`, 14, 32);
@@ -130,7 +130,7 @@ const SolarAssessmentReport = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title={`Full Solar Report — ${assessment.full_name}`} description="Complete solar engineering specification with bill of materials." path={`/solar-assessment/${id}/full`} />
+      <SEO title={`Full Solar Report - ${assessment.full_name}`} description="Complete solar engineering specification with bill of materials." path={`/solar-assessment/${id}/full`} />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-4xl mx-auto space-y-6">

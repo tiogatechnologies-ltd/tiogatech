@@ -95,7 +95,7 @@ const ProductReviews = ({ productId, onStats }: Props) => {
         .eq("id", mine.id);
       setSaving(false);
       if (error) return toast.error(error.message);
-      toast.success("Review updated — it will reappear once re-approved.");
+      toast.success("Review updated - it will reappear once re-approved.");
     } else {
       const name =
         (user.user_metadata as any)?.full_name || user.email?.split("@")[0] || "Customer";
@@ -187,7 +187,7 @@ const ProductReviews = ({ productId, onStats }: Props) => {
           </div>
 
           {reviews.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No reviews yet — be the first to share your experience.</p>
+            <p className="text-sm text-muted-foreground">No reviews yet - be the first to share your experience.</p>
           ) : (
             <ul className="space-y-3">
               {reviews.map((r) => (

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Flame, Clock, Truck, Tag, Sparkles } from "lucide-react";
+import { Flame, Clock, Truck, Tag } from "lucide-react";
 
 export const FlashDealsBar = () => {
   // 48-hour cyclical countdown timer

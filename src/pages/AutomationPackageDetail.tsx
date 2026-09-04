@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ChevronRight, ShoppingBag, ShieldCheck, Loader2, Share2,
-  Zap, CheckCircle2, Wrench, Sparkles, ArrowRight, Star,
+  Zap, CheckCircle2, Wrench, ArrowRight, Star,
   Flame, TrendingDown, Tag, Users, Phone, MessageCircle,
   ChevronDown, ChevronUp, Music, Home, Lightbulb, Shield,
 } from "lucide-react";
@@ -24,7 +24,7 @@ const fmtAuto = (p: HomeAutomationPackage) =>
 const fmtN = (n: number) => `₦${Math.round(n).toLocaleString("en-NG")}`;
 
 const FAQS = [
-  { q: "What does a home automation system actually do?", a: "It connects lighting, climate, curtains, entertainment and security into one app. You control everything from your phone or via voice — from anywhere in the world." },
+  { q: "What does a home automation system actually do?", a: "It connects lighting, climate, curtains, entertainment and security into one app. You control everything from your phone or via voice - from anywhere in the world." },
   { q: "Is my internet required for the system to work?", a: "Core functions (local control, scenes, automations) work on your local network even without internet. Remote access and cloud integrations require connectivity." },
   { q: "How long does installation take?", a: "Typically 1–3 days for a full home depending on the tier. Our certified engineers handle all wiring, programming, and user training." },
   { q: "Can I add more devices later?", a: "Yes. All our automation tiers are modular and expandable. You can add rooms, devices, or upgrade your tier at any time." },
@@ -78,7 +78,7 @@ export const AutomationPackageDetail = () => {
     add({
       refId: pkg.id,
       type: "package",
-      name: `${pkg.name} — Home Automation`,
+      name: `${pkg.name} - Home Automation`,
       price: fmtAuto(pkg),
       numericPrice: pkg.price ?? null,
       image: pkg.image,
@@ -198,7 +198,7 @@ export const AutomationPackageDetail = () => {
             <div className="lg:col-span-6 lg:sticky lg:top-28 space-y-4">
               <div className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] aspect-[4/3]">
                 <img src={pkg.image} alt={`${pkg.name} Home Automation`} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-midnight/20 to-transparent" />
+                <div className="absolute inset-0 bg-midnight/80" />
 
                 <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
                   {pkg.badge && <span className="text-[10px] font-bold bg-gold text-midnight px-2.5 py-0.5 rounded-full shadow w-fit">{pkg.badge}</span>}
@@ -314,7 +314,7 @@ export const AutomationPackageDetail = () => {
                   onClick={() => openLeadForm(`automation_pdp_${pkg.id}`)}
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3 text-sm font-semibold text-foreground hover:bg-muted transition-all"
                 >
-                  <Sparkles size={15} className="text-gold" /> Schedule Free Consultation
+                  Schedule Free Consultation
                 </button>
               </div>
 
@@ -438,7 +438,7 @@ export const AutomationPackageDetail = () => {
                   <Link key={r.id} to={`/packages/automation/${r.id}`} className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all">
                     <div className="relative h-36 overflow-hidden">
                       <img src={r.image} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 to-transparent" />
+                      <div className="absolute inset-0 bg-midnight/80" />
                       <div className="absolute bottom-3 left-3">
                         <p className="text-[10px] text-white/70 mb-0.5">{r.tier} Tier</p>
                         <p className="text-sm font-bold text-white">{r.name}</p>
@@ -459,12 +459,11 @@ export const AutomationPackageDetail = () => {
         <section className="section-padding py-10">
           <div className="section-container">
             <div className="rounded-3xl bg-primary p-8 text-center text-primary-foreground">
-              <Sparkles size={24} className="mx-auto mb-3" />
               <h3 className="text-xl font-display font-bold mb-2 no-clip">Want a custom automation plan?</h3>
-              <p className="text-sm text-primary-foreground/80 mb-5">Our home automation designers will create a bespoke system for your floor plan — free consultation.</p>
+              <p className="text-sm text-primary-foreground/80 mb-5">Our home automation designers will create a bespoke system for your floor plan - free consultation.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button onClick={() => openLeadForm("automation_pdp_bottom")} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all">
-                  <Sparkles size={15} /> Free Consultation
+                  Free Consultation
                 </button>
                 <a href="tel:+2348178000023" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all">
                   <Phone size={15} /> Call Us

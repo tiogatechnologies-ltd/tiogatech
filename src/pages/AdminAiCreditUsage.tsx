@@ -92,7 +92,7 @@ const AdminAiCreditUsage = () => {
                 <tr key={r.id} className="border-t border-border">
                   <td className="px-4 py-3 text-xs whitespace-nowrap">{new Date(r.created_at).toLocaleString()}</td>
                   <td className="px-4 py-3">
-                    <div className="font-semibold text-xs">{users[r.user_id]?.full_name || "—"}</div>
+                    <div className="font-semibold text-xs">{users[r.user_id]?.full_name || "-"}</div>
                     <div className="text-[11px] text-muted-foreground">{users[r.user_id]?.email || r.user_id.slice(0, 8)}</div>
                   </td>
                   <td className="px-4 py-3 text-xs">{r.feature}</td>
@@ -103,7 +103,7 @@ const AdminAiCreditUsage = () => {
                       <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-primary"><CheckCircle2 size={10} /> {r.subscription_plan || "Plan"}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-xs text-muted-foreground max-w-[260px] truncate">{r.description || "—"}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground max-w-[260px] truncate">{r.description || "-"}</td>
                 </tr>
               ))}
             </tbody>

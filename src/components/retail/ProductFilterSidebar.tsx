@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { X, SlidersHorizontal, RotateCcw, Check, Sparkles } from "lucide-react";
+import { X, SlidersHorizontal, RotateCcw, Check } from "lucide-react";
 
 interface FilterState {
   category: string | null;

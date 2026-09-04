@@ -189,7 +189,7 @@ const ProductGalleryManager = ({ productId }: Props) => {
           className="w-full h-24 rounded-xl border-2 border-dashed border-border hover:border-primary/40 bg-muted/30 flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-foreground transition-all"
         >
           <Upload size={18} />
-          <span className="text-xs">No gallery images yet — click to upload</span>
+          <span className="text-xs">No gallery images yet - click to upload</span>
         </button>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">

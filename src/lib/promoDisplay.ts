@@ -1,6 +1,6 @@
 /**
  * Cosmetic "was price" / urgency display helpers shared across product and
- * package detail/listing pages. Display only — real prices are never changed.
+ * package detail/listing pages. Display only - real prices are never changed.
  */
 export const PROMO_LIFT = 1.12;
 

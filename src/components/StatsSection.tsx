@@ -24,7 +24,7 @@ const Counter = ({ target, prefix = "", suffix = "", display }: { target: number
         const dur = 1600;
         const tick = (now: number) => {
           const t = Math.min(1, (now - start) / dur);
-          // easeOutExpo — iPhone-like
+          // easeOutExpo - iPhone-like
           const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
           setVal(Math.round(target * eased));
           if (t < 1) requestAnimationFrame(tick);
@@ -49,7 +49,7 @@ const StatsSection = () => {
   const items = content?.items || defaultStats;
 
   return (
-    <section className="relative py-20 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground overflow-hidden">
+    <section className="relative py-20 bg-primary text-primary-foreground overflow-hidden">
       {/* Texture overlay */}
       <div
         aria-hidden

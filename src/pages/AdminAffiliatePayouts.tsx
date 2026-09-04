@@ -162,7 +162,7 @@ const AdminAffiliatePayouts = () => {
     void notifyAffiliate(
       p,
       "Your payout has been approved",
-      `Good news — your payout of ₦${Number(p.amount).toLocaleString()} for ${p.period_start} to ${p.period_end} has been approved and is queued for payment.`,
+      `Good news - your payout of ₦${Number(p.amount).toLocaleString()} for ${p.period_start} to ${p.period_end} has been approved and is queued for payment.`,
     );
     void load();
   };
@@ -463,7 +463,7 @@ const CreatePayoutDialog = ({
               <SelectContent>
                 {active.map((a) => (
                   <SelectItem key={a.id} value={a.id}>
-                    {a.full_name} ({a.code}) — {a.commission_rate}%
+                    {a.full_name} ({a.code}) - {a.commission_rate}%
                   </SelectItem>
                 ))}
               </SelectContent>

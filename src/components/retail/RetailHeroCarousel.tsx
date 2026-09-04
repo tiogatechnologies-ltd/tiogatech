@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Sparkles, Zap, Shield, Battery, ChevronLeft, ChevronRight, Award } from "lucide-react";
+import { ArrowRight, Zap, Shield, Battery, ChevronLeft, ChevronRight, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import bgSolarHero from "@/assets/bg-commercial-solar.jpg";
 import bgInverterHero from "@/assets/bg-panel-closeup.jpg";
@@ -34,7 +34,7 @@ const SLIDES: Slide[] = [
     secondaryCtaText: "LumiVolt Load Calculator",
     secondaryCtaLink: "/lumivolt",
     image: bgSolarHero,
-    gradient: "from-midnight/95 via-midnight/80 to-midnight/40",
+    gradient: "bg-midnight/80",
   },
   {
     id: "slide-2",
@@ -48,7 +48,7 @@ const SLIDES: Slide[] = [
     secondaryCtaText: "Apply for 12-Month Financing",
     secondaryCtaLink: "/finance",
     image: bgInverterHero,
-    gradient: "from-midnight/95 via-slate-900/85 to-transparent",
+    gradient: "bg-midnight/85",
   },
   {
     id: "slide-3",
@@ -62,7 +62,7 @@ const SLIDES: Slide[] = [
     secondaryCtaText: "Hotel Access Systems",
     secondaryCtaLink: "/contact",
     image: bgSmartLockHero,
-    gradient: "from-midnight/95 via-midnight/80 to-midnight/50",
+    gradient: "bg-midnight/80",
   },
 ];
 
@@ -107,7 +107,7 @@ export const RetailHeroCarousel = () => {
             alt={slide.headline}
             className="w-full h-full object-cover object-center"
           />
-          <div className={`absolute inset-0 bg-gradient-to-r ${slide.gradient}`} />
+          <div className={`absolute inset-0 ${slide.gradient}`} />
         </motion.div>
       </AnimatePresence>
 

@@ -136,7 +136,7 @@ const AdminSupportTickets = () => {
             `Hi ${ticket.user_name || "there"},\n\n` +
             `Your support ticket ${ticket.ticket_number} status is now: ${newStatus.replace("_", " ").toUpperCase()}.\n\n` +
             `Subject: ${ticket.subject || ticket.message.slice(0, 80)}\n\n` +
-            `Our team will keep you posted. Reply to this email if you need to add anything.\n\n— Tioga Technologies Support`,
+            `Our team will keep you posted. Reply to this email if you need to add anything.\n\n- Tioga Technologies Support`,
           from_name: "Tioga Technologies Support",
         },
       });

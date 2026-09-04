@@ -5,7 +5,7 @@ import bgAutomation from "@/assets/bg-voltai-ai.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import featureSecurity from "@/assets/feature-security.jpg";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
-import { Lock, Lightbulb, Camera, Wifi, Cpu, Mic, Smartphone, Zap, Shield, ArrowRight, CheckCircle2, Sparkles, Download } from "lucide-react";
+import { Lock, Lightbulb, Camera, Wifi, Cpu, Mic, Smartphone, Zap, Shield, ArrowRight, CheckCircle2, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
@@ -39,12 +39,12 @@ const VoltAi = () => {
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="VoltAi — Smart Home Automation by Tioga" description="Smart locks, lights, cameras and sensors orchestrated through one app. AI-powered home automation by Tioga Technologies, built for Nigeria." path="/voltai" jsonLd={[breadcrumbJsonLd([{ name: "VoltAi", path: "/voltai" }]), serviceJsonLd({ name: "VoltAi Smart Home Automation", description: "Smart locks, lighting, cameras and sensors installed and orchestrated through one app, designed to work alongside LumiVolt solar.", path: "/voltai", serviceType: "Home automation installation" })]} />
+      <SEO title="VoltAi - Smart Home Automation by Tioga" description="Smart locks, lights, cameras and sensors orchestrated through one app. AI-powered home automation by Tioga Technologies, built for Nigeria." path="/voltai" jsonLd={[breadcrumbJsonLd([{ name: "VoltAi", path: "/voltai" }]), serviceJsonLd({ name: "VoltAi Smart Home Automation", description: "Smart locks, lighting, cameras and sensors installed and orchestrated through one app, designed to work alongside LumiVolt solar.", path: "/voltai", serviceType: "Home automation installation" })]} />
       <SiteHeader />
 
       <PageHero
         eyebrow={c.eyebrow || "A Tioga Sub-brand · Smart Automation"}
-        title={c.title || "VoltAi — your home, intelligently automated"}
+        title={c.title || "VoltAi - your home, intelligently automated"}
         subtitle={c.subtitle || "Locks, lights, cameras and sensors orchestrated through one app. Built to work seamlessly with LumiVolt solar."}
         backgroundImage={bgAutomation}
         backgroundAlt="Hand interacting with futuristic smart home control interface"
@@ -82,7 +82,7 @@ const VoltAi = () => {
       {/* Visual showcase */}
       <section className="relative section-padding overflow-hidden bg-midnight">
         <img src={bgTechMesh} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-25"  loading="lazy" decoding="async" />
-        <div className="absolute inset-0 bg-gradient-to-br from-midnight via-midnight/90 to-primary/30" />
+        <div className="absolute inset-0 bg-midnight" />
         <div className="relative section-container grid gap-10 lg:grid-cols-2 items-center">
           <div className="text-primary-foreground">
             <p className="text-xs sm:text-sm font-semibold text-gold uppercase tracking-[0.2em] mb-3">The VoltAi Hub</p>
@@ -162,7 +162,7 @@ const VoltAi = () => {
                 to="/lumivolt"
                 className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted ios-press"
               >
-                <Sparkles size={15} /> Pair with LumiVolt Solar
+                Pair with LumiVolt Solar
               </Link>
             </div>
           </div>

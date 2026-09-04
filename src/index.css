@@ -29,7 +29,7 @@ html.lenis, html.lenis body { height: auto; }
     --primary: 152 85% 30%;
     --primary-foreground: 0 0% 100%;
 
-    /* Midnight navy — deep brand surface */
+    /* Midnight navy - deep brand surface */
     --secondary: 215 64% 11%;
     --secondary-foreground: 0 0% 100%;
     --midnight: 215 64% 11%;
@@ -37,7 +37,7 @@ html.lenis, html.lenis body { height: auto; }
     --muted: 210 20% 95%;
     --muted-foreground: 215 16% 47%;
 
-    /* Solar gold — CTA accent */
+    /* Solar gold - CTA accent */
     --accent: 51 100% 50%;
     --accent-foreground: 215 64% 11%;
     --solar-gold: 51 100% 50%;
@@ -181,7 +181,7 @@ html.lenis, html.lenis body { height: auto; }
   }
   .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
 
-  /* Standard card hover — iPhone-style ease, calmer + green glow */
+  /* Standard card hover - iPhone-style ease, calmer + green glow */
   .card-hover {
     transition: transform 600ms var(--ease-soft),
                 box-shadow 600ms var(--ease-soft),

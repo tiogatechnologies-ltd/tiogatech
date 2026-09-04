@@ -19,15 +19,15 @@
 
 Tioga Technologies designs and installs three categories of products:
 
-1. **Solar power systems** — 1KVA to 30KVA pre-engineered solar inverter and battery packages for homes, offices, shops and small industry. Installation typically completes in 1 to 3 days. Modular systems can be expanded later.
-2. **STAMA smart locks** — biometric (fingerprint), passcode, card and app-controlled door locks for residential and commercial properties.
-3. **Home automation** — three product tiers (Apex, Aura, Riviera) covering smart lighting, switches, AC control, curtains, fans, water heaters, gate motors, CCTV and AI-driven scenes via the VoltAi platform.
+1. **Solar power systems** - 1KVA to 30KVA pre-engineered solar inverter and battery packages for homes, offices, shops and small industry. Installation typically completes in 1 to 3 days. Modular systems can be expanded later.
+2. **STAMA smart locks** - biometric (fingerprint), passcode, card and app-controlled door locks for residential and commercial properties.
+3. **Home automation** - three product tiers (Apex, Aura, Riviera) covering smart lighting, switches, AC control, curtains, fans, water heaters, gate motors, CCTV and AI-driven scenes via the VoltAi platform.
 
 ## Pricing
 
 - **Basic solar backup:** from ₦400,000
 - **Full off-grid solar:** ₦1.8M to ₦5M+ depending on load
-- **Flexible payment plans and installments** available — see /finance
+- **Flexible payment plans and installments** available - see /finance
 
 ## Products
 
@@ -56,7 +56,7 @@ Tioga Technologies designs and installs three categories of products:
 - **Do you offer payment plans?** Yes, including installments. See /finance.
 - **Do you service my area?** Yes, currently Lagos, Abuja, Port Harcourt, Jos and surrounding regions.
 - **Warranty?** Manufacturer warranties of 1 to 5 years plus after-sales support.
-- **Does solar work in rainy season?** Yes — battery storage covers low-sun periods.
+- **Does solar work in rainy season?** Yes - battery storage covers low-sun periods.
 - **What smart home features can I control?** Lights, switches, AC, curtains, fans, water heaters, gate motors, CCTV and more.
 
 ## Social profiles

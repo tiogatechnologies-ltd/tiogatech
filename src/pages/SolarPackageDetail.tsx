@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ChevronRight, ShoppingBag, ShieldCheck, Loader2, Share2,
-  Zap, CheckCircle2, Wrench, Clock, Sparkles, ArrowRight, Check,
+  Zap, CheckCircle2, Wrench, Clock, ArrowRight, Check,
   Sun, Battery, Cpu, Flame, TrendingDown, Tag, Users, Star,
   ChevronDown, ChevronUp, Phone, MessageCircle,
 } from "lucide-react";
@@ -18,13 +18,13 @@ import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PROMO_LIFT, viewerCount, savingsPct } from "@/lib/promoDisplay";
 
-// Cosmetic promo helpers — real prices never change
+// Cosmetic promo helpers - real prices never change
 
 const fmtN = (n: number | null) =>
-  n == null ? "—" : `₦${Math.round(n).toLocaleString("en-NG")}`;
+  n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
 
 const FAQS = [
-  { q: "Is installation included?", a: "Yes — every solar package includes certified engineer installation. We schedule within 48–72 hours of order confirmation." },
+  { q: "Is installation included?", a: "Yes - every solar package includes certified engineer installation. We schedule within 48–72 hours of order confirmation." },
   { q: "Can I upgrade the battery bank later?", a: "Absolutely. Our hybrid inverters are designed to be modular. You can add battery units at any time." },
   { q: "What happens when NEPA brings light?", a: "The hybrid inverter automatically switches to grid power and recharges the batteries. Zero manual input required." },
   { q: "What warranty do I get?", a: "5-year warranty on inverters, 3-year on batteries, 10-year performance guarantee on solar panels." },
@@ -68,7 +68,7 @@ export const SolarPackageDetail = () => {
     add({
       refId: pkg.id,
       type: "package",
-      name: `Solar Package #${pkg.package_number} — ${pkg.inverter}`,
+      name: `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
       price: fmtN(pkg.total_price),
       numericPrice: pkg.total_price,
       image: pkg.image,
@@ -140,7 +140,7 @@ export const SolarPackageDetail = () => {
     {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: `Solar Package #${pkg.package_number} — ${pkg.inverter}`,
+      name: `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
       description: `Pre-engineered ${pkg.inverter} solar system with ${pkg.battery} battery bank and ${pkg.solar_panels}. Powers: ${pkg.appliances}.`,
       brand: { "@type": "Brand", name: "Tioga Technologies (LumiVolt)" },
       offers: {
@@ -162,7 +162,7 @@ export const SolarPackageDetail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title={`Solar Package #${pkg.package_number} — ${pkg.inverter} | Tioga Technologies`}
+        title={`Solar Package #${pkg.package_number} - ${pkg.inverter} | Tioga Technologies`}
         description={`Pre-engineered ${pkg.inverter} solar system (${batteryLabel}) with ${pkg.solar_panels}. Powers: ${pkg.appliances}. Installed in 48 hours. Price: ${fmtN(pkg.total_price)}.`}
         path={`/packages/solar/${pkg.id}`}
         image={pkg.image}
@@ -199,7 +199,7 @@ export const SolarPackageDetail = () => {
                   alt={`${pkg.inverter} Solar System`}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-midnight/20 to-transparent" />
+                <div className="absolute inset-0 bg-midnight/80" />
 
                 {/* Badges on image */}
                 <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
@@ -341,13 +341,13 @@ export const SolarPackageDetail = () => {
                   onClick={() => openLeadForm(`solar_pdp_${pkg.id}`)}
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3 text-sm font-semibold text-foreground hover:bg-muted transition-all"
                 >
-                  <Sparkles size={15} className="text-gold" /> Request Custom Engineering
+                  Request Custom Engineering
                 </button>
               </div>
 
               {/* WhatsApp */}
               <a
-                href={`https://wa.me/2348178000023?text=${encodeURIComponent(`Hi Tioga, I'm interested in Solar Package #${pkg.package_number} — ${pkg.inverter} (${fmtN(pkg.total_price)}). Please share installation timeline.`)}`}
+                href={`https://wa.me/2348178000023?text=${encodeURIComponent(`Hi Tioga, I'm interested in Solar Package #${pkg.package_number} - ${pkg.inverter} (${fmtN(pkg.total_price)}). Please share installation timeline.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 hover:underline"
@@ -362,7 +362,7 @@ export const SolarPackageDetail = () => {
         <section className="bg-muted/30 section-padding py-12">
           <div className="section-container">
             <h2 className="text-2xl font-display font-bold text-foreground mb-2 no-clip">What's Included</h2>
-            <p className="text-sm text-muted-foreground mb-8">Everything below is included in the bundle price — no hidden extras.</p>
+            <p className="text-sm text-muted-foreground mb-8">Everything below is included in the bundle price - no hidden extras.</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 { icon: Cpu, label: "Inverter", value: pkg.inverter, price: pkg.inverter_price },
@@ -372,7 +372,7 @@ export const SolarPackageDetail = () => {
                   ? [{ icon: Zap, label: "Charge Controller", value: pkg.charge_controller, price: pkg.charge_controller_price }]
                   : []),
                 { icon: Wrench, label: "Accessories & Cabling", value: "DC breakers, surge protector, cabling, mounting", price: pkg.accessories_price },
-                { icon: CheckCircle2, label: "Professional Installation", value: "Certified Tioga engineers — 48–72h scheduling", price: pkg.setup_fee },
+                { icon: CheckCircle2, label: "Professional Installation", value: "Certified Tioga engineers - 48–72h scheduling", price: pkg.setup_fee },
               ].map(({ icon: Icon, label, value, price }) => (
                 <div key={label} className="flex gap-4 p-4 rounded-2xl bg-card border border-border shadow-sm">
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
@@ -487,7 +487,7 @@ export const SolarPackageDetail = () => {
                   >
                     <div className="relative h-36 overflow-hidden">
                       <img src={r.image} alt={r.inverter} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 to-transparent" />
+                      <div className="absolute inset-0 bg-midnight/80" />
                       <div className="absolute bottom-3 left-3">
                         <p className="text-[10px] text-white/70 mb-0.5">#{r.package_number}</p>
                         <p className="text-sm font-bold text-white leading-tight line-clamp-2">{r.inverter}</p>
@@ -510,15 +510,14 @@ export const SolarPackageDetail = () => {
         <section className="section-padding py-10">
           <div className="section-container">
             <div className="rounded-3xl bg-primary p-8 text-center text-primary-foreground">
-              <Sparkles size={24} className="mx-auto mb-3" />
               <h3 className="text-xl font-display font-bold mb-2 no-clip">Need help choosing the right package?</h3>
-              <p className="text-sm text-primary-foreground/80 mb-5">Our energy engineers will size the perfect system for your load profile — free of charge.</p>
+              <p className="text-sm text-primary-foreground/80 mb-5">Our energy engineers will size the perfect system for your load profile - free of charge.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button
                   onClick={() => openLeadForm("solar_pdp_bottom")}
                   className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all"
                 >
-                  <Sparkles size={15} /> Get AI Recommendation
+                  Get AI Recommendation
                 </button>
                 <a
                   href="tel:+2348178000023"

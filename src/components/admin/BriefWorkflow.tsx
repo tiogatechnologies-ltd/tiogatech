@@ -166,7 +166,7 @@ const BriefWorkflow = ({ entityType, row, onSaved }: Props) => {
                   <span className="text-[10px] text-muted-foreground">{new Date(e.created_at).toLocaleString()}</span>
                 </div>
                 <p className="text-sm">
-                  {e.event_type === "status" ? `${e.from_value || "—"} → ${e.to_value}` : e.note || e.to_value}
+                  {e.event_type === "status" ? `${e.from_value || "-"} → ${e.to_value}` : e.note || e.to_value}
                 </p>
                 <p className="text-[10px] text-muted-foreground">{e.actor_email || "system"}</p>
               </li>

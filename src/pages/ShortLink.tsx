@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 
 const FUNCTIONS_ORIGIN = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1`;
 
-/** /r/:slug — resolves an affiliate short link, logs the click, then redirects. */
+/** /r/:slug - resolves an affiliate short link, logs the click, then redirects. */
 export default function ShortLink() {
   const { slug } = useParams<{ slug: string }>();
   const [failed, setFailed] = useState(false);

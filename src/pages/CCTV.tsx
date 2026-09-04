@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Camera, Eye, Sun, HardDrive, Check, Sparkles, ShoppingBag, Cpu } from "lucide-react";
+import { Camera, Eye, Sun, HardDrive, Check, ShoppingBag, Cpu } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -26,7 +26,7 @@ type CctvPackage = {
   sort_order: number;
 };
 
-// Static fallback — matches the seeded rows so the page always has content
+// Static fallback - matches the seeded rows so the page always has content
 // even before the cctv_packages table is created in Supabase.
 const STATIC_FALLBACK: CctvPackage[] = [
   {
@@ -71,7 +71,7 @@ const STATIC_FALLBACK: CctvPackage[] = [
     id: "cctv-solar-ptz",
     name: "4G Solar Standalone Dual-Lens PTZ Camera",
     brand: "Tioga Standalone Pro",
-    tagline: "Zero Electricity & Zero WiFi Required — Built-in Solar & SIM Slot",
+    tagline: "Zero Electricity & Zero WiFi Required - Built-in Solar & SIM Slot",
     badge: "100% Off-Grid",
     price: 165_000,
     channels: 0,
@@ -88,7 +88,7 @@ const STATIC_FALLBACK: CctvPackage[] = [
   },
 ];
 
-// Resolve the image for a package — prefer DB image_url, else fall back by index.
+// Resolve the image for a package - prefer DB image_url, else fall back by index.
 const resolveImage = (pkg: CctvPackage, idx: number) => {
   if (pkg.image_url) return pkg.image_url;
   return idx % 2 === 0 ? featureCctv : featureSecurity;
@@ -115,7 +115,7 @@ export const CCTV = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="AI CCTV & Security Cameras — 24/7 ColorVu Surveillance Nigeria"
+        title="AI CCTV & Security Cameras - 24/7 ColorVu Surveillance Nigeria"
         description="Protect your property with AI-powered CCTV surveillance, 24/7 ColorVu night vision, solar 4G standalone cameras, and remote mobile viewing across Nigeria."
         path="/cctv"
         jsonLd={[
@@ -143,7 +143,7 @@ export const CCTV = () => {
             onClick={() => openLeadForm("cctv_hero")}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20 transition-all"
           >
-            <Sparkles size={16} /> Request Free Security Audit
+            Request Free Security Audit
           </button>
           <Link
             to="/retail?category=CCTV"
@@ -237,7 +237,7 @@ export const CCTV = () => {
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/40 to-transparent" />
+                  <div className="absolute inset-0 bg-midnight/90" />
                   {pkg.badge && (
                     <span className="absolute top-4 left-4 text-[10px] uppercase tracking-wider font-bold bg-gold text-midnight px-2.5 py-1 rounded-full shadow-sm">
                       {pkg.badge}
@@ -301,7 +301,7 @@ export const CCTV = () => {
                         onClick={() => openLeadForm(`cctv_${pkg.id}`)}
                         className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-border bg-muted/40 hover:bg-muted text-[11px] font-semibold text-foreground transition-colors"
                       >
-                        <Sparkles size={12} /> Free Site Survey
+                        Free Site Survey
                       </button>
                       <FlexiblePaymentButton
                         itemName={pkg.name}

@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Sun, Battery, Zap, Cpu, Check, Sparkles, ShoppingBag, ArrowRight, Calculator, TrendingDown, Flame, Tag } from "lucide-react";
+import { Sun, Battery, Zap, Cpu, Check, ShoppingBag, ArrowRight, Calculator, TrendingDown, Flame, Tag } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -29,7 +29,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
     add({
       refId: pkg.id,
       type: "package",
-      name: `Solar Package #${pkg.package_number} — ${pkg.inverter}`,
+      name: `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
       price: fmtPrice(pkg.total_price),
       numericPrice: pkg.total_price,
       image: pkg.image,
@@ -42,7 +42,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
   return (
     <div className="group rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col transition-all">
-      {/* Image with Savings Badge — clicking opens detail page */}
+      {/* Image with Savings Badge - clicking opens detail page */}
       <Link to={`/packages/solar/${pkg.id}`} className="relative h-52 overflow-hidden block">
         <img
           src={pkg.image}
@@ -50,7 +50,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/40 to-transparent" />
+        <div className="absolute inset-0 bg-midnight/90" />
 
         {/* Top-left badges */}
         <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 flex-wrap max-w-[62%]">
@@ -132,7 +132,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
         {/* Urgency */}
         <div className="flex items-center gap-2 text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mb-4">
           <Flame size={12} className="shrink-0" />
-          <span>Bundle pricing valid for <strong>this week only</strong> — contact us to lock it in</span>
+          <span>Bundle pricing valid for <strong>this week only</strong> - contact us to lock it in</span>
         </div>
 
         {/* CTAs */}
@@ -154,7 +154,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
               onClick={() => openLeadForm(`solar_pkg_${pkg.package_number}`)}
               className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-gold text-midnight text-xs font-bold hover:brightness-110 shadow-sm transition-all"
             >
-              <Sparkles size={14} /> Request System Sizing
+              Request System Sizing
             </button>
           )}
 
@@ -197,7 +197,7 @@ export const SolarPackages = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Turnkey Solar Power Packages Nigeria — 3kVA, 5kVA, 10kVA Hybrid Systems"
+        title="Turnkey Solar Power Packages Nigeria - 3kVA, 5kVA, 10kVA Hybrid Systems"
         description="Browse certified turnkey solar packages featuring Deye hybrid inverters, Felicity LiFePO4 lithium batteries, and Longi Tier-1 panels with 5-year warranty."
         path="/solar-packages"
         jsonLd={[
@@ -231,7 +231,7 @@ export const SolarPackages = () => {
             onClick={() => openLeadForm("solar_packages_hero")}
             className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all"
           >
-            <Sparkles size={16} /> Request Custom Engineering
+            Request Custom Engineering
           </button>
         </div>
       </PageHero>
@@ -244,7 +244,7 @@ export const SolarPackages = () => {
             <div className="flex items-center gap-3">
               <Flame size={20} className="shrink-0" />
               <div>
-                <p className="text-xs font-extrabold uppercase tracking-wider">Mid-Month Bundle Deals — Up to 17% Off</p>
+                <p className="text-xs font-extrabold uppercase tracking-wider">Mid-Month Bundle Deals - Up to 17% Off</p>
                 <p className="text-[11px] text-primary-foreground/80 mt-0.5">Pre-engineered systems priced below individual component retail. Limited slots this month.</p>
               </div>
             </div>

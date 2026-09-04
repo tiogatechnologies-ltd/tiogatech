@@ -10,7 +10,7 @@ const JOB_BACKGROUNDS = [bgInstaller, bgRooftopInstall, bgOffice, bgTeamMeeting]
 
 const FALLBACK: Job[] = [
   {
-    title: "Call for Partnership — Nationwide Installers",
+    title: "Call for Partnership - Nationwide Installers",
     location: "Nationwide, Nigeria",
     summary:
       "Inviting credible solar installers across Nigeria to partner with Tioga and deploy advanced energy solutions, integrated inverters and lithium battery systems, that reduce grid dependence.",
@@ -20,7 +20,7 @@ const FALLBACK: Job[] = [
     backgroundImage: bgInstaller,
   },
   {
-    title: "Engineering Force — Project Engineers & Solar Installers",
+    title: "Engineering Force - Project Engineers & Solar Installers",
     location: "Lagos | Abuja | Jos",
     summary: "Contract-based roles for engineers who can design, install and commission PV and ESS storage systems at scale.",
     highlights: [

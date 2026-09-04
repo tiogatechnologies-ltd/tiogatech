@@ -279,7 +279,7 @@ const AdminLeads = () => {
                       <td className="px-4 py-3 font-medium text-card-foreground">{lead.full_name}</td>
                       <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{lead.phone}</td>
                       <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">{lead.location}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{lead.budget ?? "—"}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{lead.budget ?? "-"}</td>
                       <td className="px-4 py-3">
                         <select value={lead.status} onChange={e => updateStatus(lead.id, e.target.value)}
                           className={`text-[11px] px-2 py-1 rounded-full font-medium border-0 cursor-pointer ${statusColors[lead.status] || "bg-muted text-muted-foreground"}`}>
@@ -483,7 +483,7 @@ const AdminLeads = () => {
                 {activities.length > 0 ? activities.map(a => (
                   <div key={a.id} className="flex items-start gap-2 text-xs">
                     <span className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium capitalize shrink-0">{a.action_type}</span>
-                    <span className="text-card-foreground flex-1">{a.note || "—"}</span>
+                    <span className="text-card-foreground flex-1">{a.note || "-"}</span>
                     <span className="text-muted-foreground shrink-0">{new Date(a.created_at).toLocaleDateString()}</span>
                   </div>
                 )) : (

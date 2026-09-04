@@ -79,7 +79,7 @@ const ProblemSection = () => {
                     className="absolute inset-0 rounded-2xl p-6 bg-card border border-border shadow-[var(--shadow-card)]"
                     style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
                   >
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-4">
                       <Icon size={22} className="text-primary" />
                     </div>
                     <h3 className="text-base font-display font-semibold text-foreground mb-2">{p.title}</h3>
@@ -101,7 +101,7 @@ const ProblemSection = () => {
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-br from-midnight/95 via-midnight/85 to-midnight/70" />
+                    <div className="absolute inset-0 bg-midnight/95" />
                     <div className="relative h-full p-6 flex flex-col text-primary-foreground">
                       <p className="text-[10px] uppercase tracking-[0.22em] text-gold/90 mb-3">Tioga Solution</p>
                       <p className="text-gold font-display text-lg font-bold leading-snug drop-shadow">{solution}</p>

@@ -45,7 +45,7 @@ const SizingReport = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Your Solar Sizing Report — Tioga Technologies" description="Your saved solar system sizing summary from Tioga Technologies." path={`/sizing/${token}`} />
+      <SEO title="Your Solar Sizing Report - Tioga Technologies" description="Your saved solar system sizing summary from Tioga Technologies." path={`/sizing/${token}`} />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-12 px-4 bg-muted/30">
         <div className="max-w-3xl mx-auto space-y-6">

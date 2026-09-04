@@ -24,7 +24,7 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
 
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] tracking-tight">
             Ready for uninterrupted power and{" "}
-            <span className="bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">smarter living?</span>
+            <span className="text-accent">smarter living?</span>
           </h2>
 
           <p className="text-secondary-foreground/75 text-lg leading-relaxed max-w-2xl mx-auto">

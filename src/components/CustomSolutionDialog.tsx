@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -70,7 +70,7 @@ export const CustomSolutionDialog = ({ open, onOpenChange, assessmentId, default
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 font-display">
-            <Sparkles size={18} className="text-primary" /> Request a Custom Solar Solution
+            Request a Custom Solar Solution
           </DialogTitle>
           <DialogDescription>
             Tell us about your project and our engineers will design a tailored proposal.

@@ -18,7 +18,7 @@ const HowItWorks = () => {
 
   return (
     <section id="how-it-works" className="relative py-24 bg-background overflow-hidden">
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent hidden lg:block" />
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-primary/20 hidden lg:block" />
       <div ref={ref} className="relative section-container">
         <div className={`max-w-2xl mb-14 ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
           <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">How It Works</p>
@@ -36,7 +36,7 @@ const HowItWorks = () => {
               >
                 <div className="relative rounded-2xl bg-card border border-border p-6 pop-hover hover:border-primary/40">
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-1">
+                    <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-1">
                       <Icon size={20} className="text-primary-foreground" />
                     </div>
                     <span className="text-4xl font-display font-bold text-primary/15 leading-none">{String(i + 1).padStart(2, "0")}</span>
@@ -45,7 +45,7 @@ const HowItWorks = () => {
                   <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
                 </div>
                 {i < items.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-px bg-gradient-to-r from-primary/40 to-transparent" />
+                  <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-px bg-primary/40" />
                 )}
               </div>
             );

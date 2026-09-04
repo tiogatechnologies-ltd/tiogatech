@@ -16,7 +16,7 @@ const DirectDebitConsent = ({ checked, onChange, amountLabel }: Props) => (
       <li>Your card is securely stored by Paystack (PCI-DSS compliant). Tioga never sees your card details.</li>
       <li>Each auto-charge will be for the installment amount shown{amountLabel ? ` (${amountLabel})` : ""}.</li>
       <li>We'll email you a reminder 24 hours before every charge.</li>
-      <li>If your card doesn't support silent charging, we'll automatically send you a manual payment link instead — no failed retries.</li>
+      <li>If your card doesn't support silent charging, we'll automatically send you a manual payment link instead - no failed retries.</li>
       <li>You can cancel future auto-charges any time by emailing <a className="underline" href="mailto:tiogatechnologies@gmail.com">tiogatechnologies@gmail.com</a>. Cancelling auto-debit does not cancel your underlying payment obligation.</li>
     </ul>
     <label className="flex items-start gap-2 text-xs sm:text-sm text-foreground pt-1">

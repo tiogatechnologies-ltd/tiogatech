@@ -71,7 +71,7 @@ const WarrantyClaimDialog = ({
       .single();
     setSaving(false);
     if (error) return toast.error(error.message);
-    toast.success(`Claim ${(data as any)?.rma_number || ""} submitted — our team will be in touch.`);
+    toast.success(`Claim ${(data as any)?.rma_number || ""} submitted - our team will be in touch.`);
     setDescription("");
     onOpenChange(false);
     onCreated?.();
@@ -94,7 +94,7 @@ const WarrantyClaimDialog = ({
                   ? serial.warranty_until
                     ? `In warranty until ${new Date(serial.warranty_until).toLocaleDateString("en-NG")}`
                     : "In warranty"
-                  : "Warranty expired — the claim can still be reviewed, repairs may be chargeable"}
+                  : "Warranty expired - the claim can still be reviewed, repairs may be chargeable"}
               </p>
             </div>
 

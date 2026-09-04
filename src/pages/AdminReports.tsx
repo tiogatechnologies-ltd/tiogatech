@@ -72,7 +72,7 @@ const AdminReports = () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
-      if (!token) { toast.error("Session expired — sign in again"); return; }
+      if (!token) { toast.error("Session expired - sign in again"); return; }
       const base = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/export-csv`;
       const url = `${base}?table=${encodeURIComponent(table)}&from=${from}&to=${to}`;
       const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
@@ -87,11 +87,11 @@ const AdminReports = () => {
   };
 
   const kpis = [
-    { label: "Orders", value: summary ? summary.orders.toLocaleString() : "—" },
-    { label: "Paid revenue", value: summary ? `₦${summary.revenue.toLocaleString()}` : "—" },
-    { label: "Leads", value: summary ? summary.leads.toLocaleString() : "—" },
-    { label: "Finance applications", value: summary ? summary.apps.toLocaleString() : "—" },
-    { label: "New subscribers", value: summary ? summary.subscribers.toLocaleString() : "—" },
+    { label: "Orders", value: summary ? summary.orders.toLocaleString() : "-" },
+    { label: "Paid revenue", value: summary ? `₦${summary.revenue.toLocaleString()}` : "-" },
+    { label: "Leads", value: summary ? summary.leads.toLocaleString() : "-" },
+    { label: "Finance applications", value: summary ? summary.apps.toLocaleString() : "-" },
+    { label: "New subscribers", value: summary ? summary.subscribers.toLocaleString() : "-" },
   ];
 
   return (

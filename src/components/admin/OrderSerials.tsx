@@ -1,4 +1,4 @@
-// Serial number capture for an order — recorded at dispatch so returns/RMA can be traced.
+// Serial number capture for an order - recorded at dispatch so returns/RMA can be traced.
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";

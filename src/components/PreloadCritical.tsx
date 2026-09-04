@@ -6,7 +6,7 @@ import logoLight from "@/assets/tioga-logo-light.png";
 /**
  * Injects <link rel="preload" as="image"> for the LCP-critical hero images
  * as early as possible. Because these assets are bundled by Vite (hashed
- * URLs), we cannot hard-code them in index.html — so we inject at runtime.
+ * URLs), we cannot hard-code them in index.html - so we inject at runtime.
  */
 const CRITICAL: { href: string; priority?: "high" | "low" }[] = [
   { href: heroBg, priority: "high" },

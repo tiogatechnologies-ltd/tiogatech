@@ -14,28 +14,27 @@ import {
   ShieldCheck,
   ArrowRight,
   ArrowLeft,
-  Sparkles,
   CheckCircle2,
 } from "lucide-react";
 
 const STEPS = [
-  { icon: Plug, title: "List your appliances", body: "Add every device you want to power — TVs, fridges, ACs, fans, lights, pumps. Use the wattage on the label for accuracy." },
+  { icon: Plug, title: "List your appliances", body: "Add every device you want to power - TVs, fridges, ACs, fans, lights, pumps. Use the wattage on the label for accuracy." },
   { icon: Calculator, title: "Set your usage", body: "Pick days of autonomy, battery voltage, battery type, and average sunlight hours for your city." },
-  { icon: Sparkles, title: "Get your sized system", body: "Instantly see the right solar panel size, inverter, battery bank, and charge controller for your load." },
+  { icon: CheckCircle2, title: "Get your sized system", body: "Instantly see the right solar panel size, inverter, battery bank, and charge controller for your load." },
 ];
 
 const WHY = [
   { icon: Sun, title: "Avoid undersizing", body: "An undersized system fails during the rainy season and shortens battery life." },
   { icon: BatteryCharging, title: "Avoid overspending", body: "Oversized systems waste hundreds of thousands of naira on kit you'll never fully use." },
   { icon: ShieldCheck, title: "Engineer-verified", body: "The math behind this tool mirrors how our engineers size every Tioga installation." },
-  { icon: Cpu, title: "Future-proof", body: "Plan for new appliances, EVs, or a workshop before you buy — not after." },
+  { icon: Cpu, title: "Future-proof", body: "Plan for new appliances, EVs, or a workshop before you buy - not after." },
 ];
 
 const FAQS = [
-  { q: "Is the calculator accurate?", a: "Yes — it uses the same Wh-based load profile, depth-of-discharge and sunlight-hour formulas our engineers use. Real installations may vary ±10% based on roof orientation and shading." },
+  { q: "Is the calculator accurate?", a: "Yes - it uses the same Wh-based load profile, depth-of-discharge and sunlight-hour formulas our engineers use. Real installations may vary ±10% based on roof orientation and shading." },
   { q: "Do I need to know my appliance wattage?", a: "Use the rating on the device label or its manual. For most homes, a fridge is 150–250W, ceiling fan 70W, LED bulb 9W, 1HP AC about 750W." },
   { q: "What's 'days of autonomy'?", a: "How many full days your battery should run your home with no sun at all. Most homes pick 1 day; off-grid sites pick 2." },
-  { q: "Will Tioga see my calculation?", a: "Only if you save it and submit your contact details — then a Tioga engineer will reach out with a quote within 1 business day." },
+  { q: "Will Tioga see my calculation?", a: "Only if you save it and submit your contact details - then a Tioga engineer will reach out with a quote within 1 business day." },
 ];
 
 const EnergyCalculator = () => {
@@ -52,8 +51,8 @@ const EnergyCalculator = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEO
-        title="Energy Calculator — Size Your Solar System Free"
-        description="Free Nigerian solar sizing calculator. Add your appliances and get the exact panel, inverter, battery and charge-controller size you need — in under 60 seconds."
+        title="Energy Calculator - Size Your Solar System Free"
+        description="Free Nigerian solar sizing calculator. Add your appliances and get the exact panel, inverter, battery and charge-controller size you need - in under 60 seconds."
         path="/energy-calculator"
         jsonLd={jsonLd}
       />
@@ -148,7 +147,7 @@ const EnergyCalculator = () => {
         <div className="section-container">
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight no-clip">Typical appliance wattages</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Approximate values — always check your device label.</p>
+            <p className="mt-2 text-sm text-muted-foreground">Approximate values - always check your device label.</p>
           </div>
           <div className="overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full text-sm">

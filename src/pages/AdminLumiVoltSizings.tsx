@@ -92,7 +92,7 @@ const AdminLumiVoltSizings = () => {
             <Sun className="text-primary" />
             <div>
               <h1 className="text-2xl font-display font-bold text-foreground">LumiVolt Sizings</h1>
-              <p className="text-sm text-muted-foreground">Calculator submissions — sales and engineering briefs</p>
+              <p className="text-sm text-muted-foreground">Calculator submissions - sales and engineering briefs</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -135,14 +135,14 @@ const AdminLumiVoltSizings = () => {
                       <td className="px-4 py-3 text-xs text-muted-foreground">{new Date(r.created_at).toLocaleString()}</td>
                       <td className="px-4 py-3 font-medium text-foreground">{r.full_name || "Guest"}</td>
                       <td className="px-4 py-3 text-xs">
-                        <div>{r.email || "—"}</div>
+                        <div>{r.email || "-"}</div>
                         <div className="text-muted-foreground">{r.phone || ""}</div>
                       </td>
-                      <td className="px-4 py-3 text-xs">{r.location || "—"}</td>
+                      <td className="px-4 py-3 text-xs">{r.location || "-"}</td>
                       <td className="px-4 py-3">{Math.round(r.total_load_w).toLocaleString()} W</td>
                       <td className="px-4 py-3">{(r.daily_energy_wh / 1000).toFixed(2)}</td>
-                      <td className="px-4 py-3">{effective(r, "solar_panel_w") ? Math.round(Number(effective(r, "solar_panel_w"))).toLocaleString() : "—"}</td>
-                      <td className="px-4 py-3">{effective(r, "battery_kwh") ? `${Number(effective(r, "battery_kwh")).toFixed(2)} kWh` : "—"}</td>
+                      <td className="px-4 py-3">{effective(r, "solar_panel_w") ? Math.round(Number(effective(r, "solar_panel_w"))).toLocaleString() : "-"}</td>
+                      <td className="px-4 py-3">{effective(r, "battery_kwh") ? `${Number(effective(r, "battery_kwh")).toFixed(2)} kWh` : "-"}</td>
                       <td className="px-4 py-3"><span className={`text-[10px] px-2 py-1 rounded-full border ${stageClass(r.pipeline_status)}`}>{stageLabel(r.pipeline_status)}</span></td>
                       <td className="px-4 py-3">
                         <button onClick={() => setOpen(r)} className="text-primary text-xs font-semibold hover:underline">Open brief</button>
@@ -161,7 +161,7 @@ const AdminLumiVoltSizings = () => {
           <div className="bg-card rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-auto shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between p-5 border-b border-border sticky top-0 bg-card z-10">
               <div>
-                <h3 className="font-display font-bold text-lg">{open.full_name || "Guest"} — sizing brief</h3>
+                <h3 className="font-display font-bold text-lg">{open.full_name || "Guest"} - sizing brief</h3>
                 <p className="text-xs text-muted-foreground">Ref SZ-{String(open.id).slice(0, 8).toUpperCase()}</p>
               </div>
               <div className="flex items-center gap-2">
@@ -173,9 +173,9 @@ const AdminLumiVoltSizings = () => {
             <div className="p-5 space-y-5">
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <Info icon={<Calendar size={14} />} label="Submitted" value={new Date(open.created_at).toLocaleString()} />
-                <Info icon={<MapPin size={14} />} label="Location" value={open.location || "—"} />
-                <Info icon={<Mail size={14} />} label="Email" value={open.email || "—"} />
-                <Info icon={<Phone size={14} />} label="Phone" value={open.phone || "—"} />
+                <Info icon={<MapPin size={14} />} label="Location" value={open.location || "-"} />
+                <Info icon={<Mail size={14} />} label="Email" value={open.email || "-"} />
+                <Info icon={<Phone size={14} />} label="Phone" value={open.phone || "-"} />
               </div>
 
               {open.share_token && (
@@ -189,14 +189,14 @@ const AdminLumiVoltSizings = () => {
                 <Stat label="Daily" value={`${(open.daily_energy_wh / 1000).toFixed(2)} kWh`} />
                 <Stat label="Autonomy" value={`${open.days_autonomy} day(s)`} />
                 <Stat label="Sunlight" value={`${open.sunlight_hours} h`} />
-                <Stat label="Solar panel" value={`${effective(open, "solar_panel_w") ? Math.round(Number(effective(open, "solar_panel_w"))) : "—"} W`} />
-                <Stat label="Recommended" value={`${effective(open, "recommended_panel_w") ? Math.round(Number(effective(open, "recommended_panel_w"))) : "—"} W`} />
-                <Stat label="Inverter" value={`${effective(open, "inverter_w") ? Math.round(Number(effective(open, "inverter_w"))) : "—"} W`} />
-                <Stat label="Battery" value={`${effective(open, "battery_ah") ? Number(effective(open, "battery_ah")).toFixed(0) : "—"} Ah @ ${open.battery_voltage}V`} />
-                <Stat label="Battery kWh" value={`${effective(open, "battery_kwh") ? Number(effective(open, "battery_kwh")).toFixed(2) : "—"}`} />
+                <Stat label="Solar panel" value={`${effective(open, "solar_panel_w") ? Math.round(Number(effective(open, "solar_panel_w"))) : "-"} W`} />
+                <Stat label="Recommended" value={`${effective(open, "recommended_panel_w") ? Math.round(Number(effective(open, "recommended_panel_w"))) : "-"} W`} />
+                <Stat label="Inverter" value={`${effective(open, "inverter_w") ? Math.round(Number(effective(open, "inverter_w"))) : "-"} W`} />
+                <Stat label="Battery" value={`${effective(open, "battery_ah") ? Number(effective(open, "battery_ah")).toFixed(0) : "-"} Ah @ ${open.battery_voltage}V`} />
+                <Stat label="Battery kWh" value={`${effective(open, "battery_kwh") ? Number(effective(open, "battery_kwh")).toFixed(2) : "-"}`} />
                 <Stat label="Battery type" value={open.battery_type} />
-                <Stat label="Controller" value={`${effective(open, "charge_controller_a") ? Number(effective(open, "charge_controller_a")).toFixed(1) : "—"} A`} />
-                <Stat label="Source" value={open.source || "—"} />
+                <Stat label="Controller" value={`${effective(open, "charge_controller_a") ? Number(effective(open, "charge_controller_a")).toFixed(1) : "-"} A`} />
+                <Stat label="Source" value={open.source || "-"} />
               </div>
 
               <div>
@@ -224,7 +224,7 @@ const AdminLumiVoltSizings = () => {
                       <input
                         type="number"
                         value={revised[f.key] ?? ""}
-                        placeholder={open[f.key] !== null && open[f.key] !== undefined ? String(Math.round(Number(open[f.key]) * 100) / 100) : "—"}
+                        placeholder={open[f.key] !== null && open[f.key] !== undefined ? String(Math.round(Number(open[f.key]) * 100) / 100) : "-"}
                         onChange={(e) => setRevised((r) => ({ ...r, [f.key]: e.target.value }))}
                         className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm"
                       />

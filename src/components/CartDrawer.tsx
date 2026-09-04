@@ -34,7 +34,7 @@ const CartDrawer = () => {
 
   const buildMessage = () => {
     const lines = items.map((i, n) =>
-      `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` — ${i.price}` : ""}`
+      `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` - ${i.price}` : ""}`
     );
     const header = form.full_name ? `Hi Tioga, this is ${form.full_name}. I would like to order:` : `Hi Tioga, I would like to order:`;
     const loc = form.location ? `\n\nLocation: ${form.location}` : "";

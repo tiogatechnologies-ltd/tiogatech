@@ -248,10 +248,10 @@ export function buildReportPdf(data: ReportData): jsPDF {
   heading(data.internal ? "Client details" : "Prepared for");
   table(
     [
-      ["Name", data.customer.full_name || "—"],
-      ["Email", data.customer.email || "—"],
-      ["Phone", data.customer.phone || "—"],
-      ["Location", data.customer.location || "—"],
+      ["Name", data.customer.full_name || "-"],
+      ["Email", data.customer.email || "-"],
+      ["Phone", data.customer.phone || "-"],
+      ["Location", data.customer.location || "-"],
     ],
     undefined,
     { widths: [45] },
@@ -426,7 +426,7 @@ export function buildReportPdf(data: ReportData): jsPDF {
     doc.setTextColor(140);
     doc.text(
       data.internal
-        ? "Tioga Technologies — internal use only. Do not share with customers."
+        ? "Tioga Technologies - internal use only. Do not share with customers."
         : "Tioga Technologies · tiogatechnologies.com · Estimates are indicative pending a site survey.",
       M,
       289,
@@ -446,4 +446,4 @@ export function whatsappShareUrl(message: string, phone?: string) {
   return `${base}?text=${encodeURIComponent(message)}`;
 }
 
-export const TIOGA_PAY_TO = { name: "Tioga Technologies Ltd", account: "—", bank: "—" };
+export const TIOGA_PAY_TO = { name: "Tioga Technologies Ltd", account: "-", bank: "-" };

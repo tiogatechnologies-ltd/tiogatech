@@ -124,7 +124,7 @@ const AdminSmartLocks = () => {
   };
 
   const fmt = (p: Lock) =>
-    p.price_label?.trim() || (p.price ? `₦${Math.round(p.price).toLocaleString("en-NG")}` : "—");
+    p.price_label?.trim() || (p.price ? `₦${Math.round(p.price).toLocaleString("en-NG")}` : "-");
 
   return (
     <AdminLayout>

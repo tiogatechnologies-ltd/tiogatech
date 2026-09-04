@@ -45,7 +45,7 @@ const TargetUsers = () => {
                   {/* Front: image */}
                   <div className="flip-face rounded-3xl border border-border bg-card">
                     <img src={img} alt={`${u.label} powered by Tioga solar and smart technology in Nigeria`} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-midnight/85 via-midnight/20 to-transparent" />
+                    <div className="absolute inset-0 bg-midnight/85" />
                     <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur flex items-center justify-center">
                       <Icon size={20} className="text-primary" />
                     </div>
@@ -54,7 +54,7 @@ const TargetUsers = () => {
                     </div>
                   </div>
                   {/* Back: zoom-in description */}
-                  <div className="flip-face flip-back rounded-3xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-6 flex flex-col items-center justify-center text-center">
+                  <div className="flip-face flip-back rounded-3xl bg-primary text-primary-foreground p-6 flex flex-col items-center justify-center text-center">
                     <div className="w-12 h-12 rounded-2xl bg-primary-foreground/15 flex items-center justify-center mb-3">
                       <Icon size={22} className="text-primary-foreground" />
                     </div>

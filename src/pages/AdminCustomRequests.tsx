@@ -134,10 +134,10 @@ const AdminCustomRequests = () => {
                 {filtered.map((r) => (
                   <tr key={r.id} onClick={() => open(r)} className="border-t border-border hover:bg-muted/20 cursor-pointer">
                     <td className="px-4 py-3">
-                      <div className="font-medium">{r.full_name || "—"}</div>
+                      <div className="font-medium">{r.full_name || "-"}</div>
                       <div className="text-xs text-muted-foreground">{r.email} {r.phone ? `• ${r.phone}` : ""}</div>
                     </td>
-                    <td className="px-4 py-3">{r.location || "—"}</td>
+                    <td className="px-4 py-3">{r.location || "-"}</td>
                     <td className="px-4 py-3 max-w-xs"><div className="text-xs text-muted-foreground line-clamp-2">{r.requirements}</div></td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${statusStyle[r.status] || "bg-muted"}`}>{r.status}</span>
@@ -170,10 +170,10 @@ const AdminCustomRequests = () => {
             </div>
 
             <dl className="space-y-3 text-sm">
-              <div><dt className="text-xs uppercase text-muted-foreground">Email</dt><dd>{active.email || "—"}</dd></div>
-              <div><dt className="text-xs uppercase text-muted-foreground">Phone</dt><dd>{active.phone || "—"}</dd></div>
-              <div><dt className="text-xs uppercase text-muted-foreground">Location</dt><dd>{active.location || "—"}</dd></div>
-              <div><dt className="text-xs uppercase text-muted-foreground">Requirements</dt><dd className="whitespace-pre-wrap">{active.requirements || "—"}</dd></div>
+              <div><dt className="text-xs uppercase text-muted-foreground">Email</dt><dd>{active.email || "-"}</dd></div>
+              <div><dt className="text-xs uppercase text-muted-foreground">Phone</dt><dd>{active.phone || "-"}</dd></div>
+              <div><dt className="text-xs uppercase text-muted-foreground">Location</dt><dd>{active.location || "-"}</dd></div>
+              <div><dt className="text-xs uppercase text-muted-foreground">Requirements</dt><dd className="whitespace-pre-wrap">{active.requirements || "-"}</dd></div>
               {active.assessment_id && (
                 <div>
                   <dt className="text-xs uppercase text-muted-foreground">Linked assessment</dt>

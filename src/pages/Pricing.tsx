@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { startAiSubscription, type AiPlanId } from "@/lib/subscribe";
 import { toast } from "sonner";
-import { Check, Sparkles, Zap, Crown, Building2, ArrowRight, Star, Loader2, MessageCircle } from "lucide-react";
+import { Check, Zap, Crown, Building2, ArrowRight, Star, Loader2, MessageCircle } from "lucide-react";
 
 const WA_CUSTOM = "https://wa.me/2348178000023?text=" + encodeURIComponent("Hi Tioga, I'd like a custom AI plan. My monthly usage is around: ");
 
@@ -16,7 +16,7 @@ type Plan = {
   name: string;
   bestFor: string;
   price: string;
-  amount: number; // NGN — 0 means "contact sales"
+  amount: number; // NGN - 0 means "contact sales"
   period: string;
   credits: string;
   icon: any;
@@ -37,7 +37,7 @@ const PLANS: Plan[] = [
     period: "/month",
     credits: "20 AI credits",
     icon: Zap,
-    accent: "from-emerald-500/10 to-emerald-500/0",
+    accent: "bg-emerald-500/10",
     ring: "border-border",
     features: [
       "20 AI assessments / month",
@@ -58,7 +58,7 @@ const PLANS: Plan[] = [
     period: "/month",
     credits: "120 AI credits",
     icon: Building2,
-    accent: "from-primary/15 to-primary/0",
+    accent: "bg-primary/15",
     ring: "border-primary shadow-[var(--shadow-elevated)]",
     badge: "Most popular",
     features: [
@@ -81,7 +81,7 @@ const PLANS: Plan[] = [
     period: "",
     credits: "Unlimited team seats",
     icon: Crown,
-    accent: "from-accent/20 to-accent/0",
+    accent: "bg-accent/20",
     ring: "border-accent",
     features: [
       "Choose your monthly credit pack",
@@ -128,7 +128,7 @@ const Pricing = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEO
-        title="AI Credit Pricing — Tioga Energy Intelligence"
+        title="AI Credit Pricing - Tioga Energy Intelligence"
         description="Three clear AI plans for Tioga: Starters (₦2,500/mo, 20 credits), Businesses (₦12,000/mo, 120 credits) and a Custom plan for installers, agencies and enterprise."
         path="/ai-pricing"
       />
@@ -137,7 +137,7 @@ const Pricing = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10 max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-3">
-              <Sparkles size={12} /> AI Energy Intelligence
+              AI Energy Intelligence
             </div>
             <h1 className="text-3xl sm:text-5xl font-display font-bold tracking-tight no-clip">Plans built for every solar journey</h1>
             <p className="mt-4 text-muted-foreground">
@@ -151,7 +151,7 @@ const Pricing = () => {
               <Star size={18} />
             </span>
             <div className="flex-1">
-              <p className="font-semibold text-foreground">Try Tioga AI free — 3 assessments on us</p>
+              <p className="font-semibold text-foreground">Try Tioga AI free - 3 assessments on us</p>
               <p className="text-sm text-muted-foreground">Get a full sizing report and engineering match. No card required.</p>
             </div>
             <Link to="/solar-assessment" className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:brightness-110 whitespace-nowrap">
@@ -171,7 +171,7 @@ const Pricing = () => {
               const Icon = p.icon;
               return (
                 <div key={p.id} className={`relative rounded-3xl border bg-card overflow-hidden flex flex-col ${p.ring}`}>
-                  <div className={`absolute inset-x-0 top-0 h-32 bg-gradient-to-b ${p.accent} pointer-events-none`} />
+                  <div className={`absolute inset-x-0 top-0 h-32 ${p.accent} pointer-events-none`} />
                   {p.badge && (
                     <span className="absolute top-4 right-4 inline-flex px-2.5 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">
                       {p.badge}
@@ -227,7 +227,7 @@ const Pricing = () => {
                 ["AI credits / month", "20", "120", "Custom"],
                 ["Team seats", "1", "Up to 3", "Unlimited"],
                 ["Engineer review", "Standard", "Priority", "Dedicated"],
-                ["CSV / API export", "—", "CSV", "CSV + API"],
+                ["CSV / API export", "-", "CSV", "CSV + API"],
                 ["Support SLA", "Email 24h", "WhatsApp 4h", "Named AM + SLA"],
                 ["Best for", "Homes", "Installers / SMEs", "Agencies / EPC"],
               ].map((row, i) => (

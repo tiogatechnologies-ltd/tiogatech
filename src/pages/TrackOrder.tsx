@@ -37,7 +37,7 @@ interface HistoryRow {
 const STAGES = ["new", "confirmed", "processing", "shipped", "delivered"];
 
 const naira = (n: number | null | undefined) =>
-  typeof n === "number" ? `₦${n.toLocaleString("en-NG")}` : "—";
+  typeof n === "number" ? `₦${n.toLocaleString("en-NG")}` : "-";
 
 const pretty = (s: string) => s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
@@ -217,7 +217,7 @@ const TrackOrder = () => {
                   <ClipboardList size={16} className="text-primary" /> Status timeline
                 </h3>
                 {history.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No updates yet — we'll move this along shortly.</p>
+                  <p className="text-sm text-muted-foreground">No updates yet - we'll move this along shortly.</p>
                 ) : (
                   <ul className="space-y-3">
                     {history.map((h, i) => (

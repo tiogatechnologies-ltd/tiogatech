@@ -40,7 +40,7 @@ const periodOptions = [
 const tooltipStyle = { background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: 12 } as const;
 
 // ---------- Helpers ----------
-/** Robust budget parser — handles ranges like "500K-1M", "₦1,200,000", "over 5M". Returns midpoint or single value. */
+/** Robust budget parser - handles ranges like "500K-1M", "₦1,200,000", "over 5M". Returns midpoint or single value. */
 function parseBudget(b: string | null): number {
   if (!b) return 0;
   const s = b.toLowerCase().replace(/,/g, "").replace(/naira|ngn|₦|about|over|around|approx\.?|~/g, "");
@@ -639,7 +639,7 @@ const AdminAnalytics = () => {
     { label: "Sessions", value: uniqueSessions.toLocaleString(), icon: Globe, sub: `${pagesPerSession} pages/session` },
     { label: "New Sessions", value: `${uniqueSessions > 0 ? Math.round((newSessions / uniqueSessions) * 100) : 0}%`, icon: Users, sub: `${returningPct}% returning` },
     { label: "Bounce Rate", value: `${bounceRate}%`, icon: MousePointerClick, sub: "1-page sessions" },
-    { label: "Avg Session", value: avgSessionSec > 0 ? `${Math.floor(avgSessionSec / 60)}m ${avgSessionSec % 60}s` : "—", icon: Clock, sub: "median duration" },
+    { label: "Avg Session", value: avgSessionSec > 0 ? `${Math.floor(avgSessionSec / 60)}m ${avgSessionSec % 60}s` : "-", icon: Clock, sub: "median duration" },
     { label: "Active Now", value: activeNow, icon: Activity, sub: "in last 5 min" },
   ];
 
@@ -671,7 +671,7 @@ const AdminAnalytics = () => {
   };
   const avgLCP = avgVital("LCP"), avgINP = avgVital("INP"), avgCLS = avgVital("CLS");
   const rateVital = (name: "LCP" | "INP" | "CLS", v: number | null) => {
-    if (v == null) return "—";
+    if (v == null) return "-";
     if (name === "LCP") return v <= 2500 ? "good" : v <= 4000 ? "needs work" : "poor";
     if (name === "INP") return v <= 200 ? "good" : v <= 500 ? "needs work" : "poor";
     return v <= 0.1 ? "good" : v <= 0.25 ? "needs work" : "poor";
@@ -696,9 +696,9 @@ const AdminAnalytics = () => {
       .sort((a, b) => b.value - a.value).slice(0, 8);
   }, [vitals]);
   const perfKpis = [
-    { label: "Avg LCP", value: avgLCP != null ? `${Math.round(avgLCP)} ms` : "—", icon: Gauge, sub: rateVital("LCP", avgLCP) },
-    { label: "Avg INP", value: avgINP != null ? `${Math.round(avgINP)} ms` : "—", icon: Activity, sub: rateVital("INP", avgINP) },
-    { label: "Avg CLS", value: avgCLS != null ? avgCLS.toFixed(3) : "—", icon: Eye, sub: rateVital("CLS", avgCLS) },
+    { label: "Avg LCP", value: avgLCP != null ? `${Math.round(avgLCP)} ms` : "-", icon: Gauge, sub: rateVital("LCP", avgLCP) },
+    { label: "Avg INP", value: avgINP != null ? `${Math.round(avgINP)} ms` : "-", icon: Activity, sub: rateVital("INP", avgINP) },
+    { label: "Avg CLS", value: avgCLS != null ? avgCLS.toFixed(3) : "-", icon: Eye, sub: rateVital("CLS", avgCLS) },
     { label: "Total Errors", value: errors.length, icon: AlertTriangle, sub: `${topFailingRoutes.length} routes affected` },
   ];
 
@@ -1411,7 +1411,7 @@ const AdminAnalytics = () => {
                           <Area type="monotone" dataKey="errors" stroke="#ef4444" fill="url(#errGrad)" strokeWidth={2} />
                         </AreaChart>
                       </ResponsiveContainer>
-                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No errors recorded — nice!</p>}
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No errors recorded - nice!</p>}
                   </div>
                 </div>
               </div>

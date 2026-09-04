@@ -40,7 +40,7 @@ const empty: Omit<CctvPackage, "id"> = {
 };
 
 const fmt = (n: number | null) =>
-  n == null ? "—" : `₦${Math.round(n).toLocaleString("en-NG")}`;
+  n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
 
 const AdminCCTV = () => {
   const [items, setItems] = useState<CctvPackage[]>([]);

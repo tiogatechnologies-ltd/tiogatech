@@ -257,7 +257,7 @@ const AdminQuotes = () => {
                   </div>
                   <p className="mt-1 text-sm text-foreground">{r.customer_name}</p>
                   <p className="text-xs text-muted-foreground">
-                    {[r.customer_email, r.customer_phone, r.customer_location].filter(Boolean).join(" · ") || "—"}
+                    {[r.customer_email, r.customer_phone, r.customer_location].filter(Boolean).join(" · ") || "-"}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {new Date(r.created_at).toLocaleDateString("en-NG")}

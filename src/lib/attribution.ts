@@ -35,7 +35,7 @@ export function captureAttributionFromUrl() {
     const ut = params.get("utm_term");
     const ucn = params.get("utm_content");
     if (!aff && !alk && !us && !um && !uc) {
-      // Nothing in URL — only store referrer if we have none stored yet
+      // Nothing in URL - only store referrer if we have none stored yet
       const existing = getAttribution();
       if (!existing && document.referrer && !document.referrer.includes(window.location.host)) {
         const next: Attribution = {

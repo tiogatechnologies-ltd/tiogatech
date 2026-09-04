@@ -8,7 +8,7 @@ import { bumpGlobalCache } from "@/lib/cache";
 type Section = { id: string; label: string; icon: any; group: string; adminOnly?: boolean; members: string[]; keywords?: string };
 
 // Panes group one or more underlying `site_settings` keys. The storage keys are
-// unchanged — merging only affects how the panes are presented.
+// unchanged - merging only affects how the panes are presented.
 const SECTIONS: Section[] = [
   { id: "brand", label: "Brand & Contact", icon: Building2, group: "Storefront", members: ["general", "branding", "social", "contact"], keywords: "site name tagline hero currency language logo favicon colour og image facebook instagram twitter linkedin tiktok youtube telegram phone email address whatsapp business hours" },
   { id: "seo", label: "SEO & Tracking", icon: SearchIcon, group: "Storefront", members: ["seo"], keywords: "meta analytics pixel tag manager verification robots" },
@@ -28,7 +28,7 @@ const defaults: Record<string, any> = {
   branding: { logo_url: "", favicon_url: "/favicon.ico", primary_color_hex: "", og_image_url: "" },
   contact: { phone: "+234 817 800 0023", email: "sales@tiogatechnologies.com", support_email: "support@tiogatechnologies.com", address: "Ikeja, Lagos, Nigeria", whatsapp: "+2348178000023", business_hours: "Mon-Sat 9am-6pm WAT" },
   social: { facebook: "", instagram: "", twitter: "", linkedin: "", tiktok: "", youtube: "", telegram: "", whatsapp_community: "" },
-  seo: { meta_title: "Tioga Technologies — Solar, Smart Home, Security in Nigeria", meta_description: "Reliable solar, smart home and security systems with flexible financing across Nigeria.", og_image_url: "", google_analytics_id: "", meta_pixel_id: "", google_tag_manager_id: "", google_site_verification: "", robots_index: true },
+  seo: { meta_title: "Tioga Technologies - Solar, Smart Home, Security in Nigeria", meta_description: "Reliable solar, smart home and security systems with flexible financing across Nigeria.", og_image_url: "", google_analytics_id: "", meta_pixel_id: "", google_tag_manager_id: "", google_site_verification: "", robots_index: true },
   payment: { paystack_public_key: "", bank_name: "", bank_account_name: "Tioga Technologies", bank_account_number: "", accept_bank_transfer: true, accept_card: true, accept_pay_on_delivery: false, allow_guest_checkout: true },
   finance: { deposit_pct: 0.30, tenures_months: [3, 6, 12, 24], vat_pct: 0.075, install_pct: 0.10, insurance_pct: 0.02, management_pct: 0.01, min_finance_amount_ngn: 500000, max_finance_amount_ngn: 50000000, finance_terms_url: "/finance", interest_tiers: [{ min: 1000000, max: 5000000, rate: 0.09 }, { min: 5000001, max: 7500000, rate: 0.15 }, { min: 7500001, max: null, rate: 0.25 }] },
   shipping: { free_shipping_threshold_ngn: 500000, default_shipping_fee_ngn: 6000, delivery_eta_days: "3-7", service_areas: "Lagos, Abuja, Port Harcourt, Ibadan", pickup_address: "Ikeja, Lagos" },
@@ -152,7 +152,7 @@ const AdminSettings = () => {
   return (
     <AdminLayout>
       <div className="space-y-6 pb-24">
-        {/* Page header — matches the other admin pages */}
+        {/* Page header - matches the other admin pages */}
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 className="font-display text-2xl font-bold">Settings</h1>
@@ -478,7 +478,7 @@ const AdminSettings = () => {
                 <Card title="Connected services">
                   <div className="space-y-2">
                     {[
-                      { k: "gmail_connected", l: "Gmail (LumiVolt) — connected via connector" },
+                      { k: "gmail_connected", l: "Gmail (LumiVolt) - connected via connector" },
                       { k: "openai_enabled", l: "Lovable AI Gateway" },
                     ].map((r) => (
                       <Toggle key={r.k} label={r.l} value={!!data.integrations[r.k]} onChange={(v) => set("integrations", { [r.k]: v })} />
@@ -655,7 +655,7 @@ function GoogleDriveBackupCard() {
                 <span className={`h-1.5 w-1.5 rounded-full ${r.status === "success" ? "bg-emerald-500" : "bg-destructive"}`} />
                 <div className="min-w-0 flex-1">
                   <div className="font-medium truncate">{r.filename}</div>
-                  <div className="text-[11px] text-muted-foreground">{new Date(r.created_at).toLocaleString()} · {r.tables_count || 0} tables · {r.size_bytes ? Math.round(r.size_bytes / 1024) + " KB" : "—"}</div>
+                  <div className="text-[11px] text-muted-foreground">{new Date(r.created_at).toLocaleString()} · {r.tables_count || 0} tables · {r.size_bytes ? Math.round(r.size_bytes / 1024) + " KB" : "-"}</div>
                 </div>
                 {r.drive_web_link && (
                   <a href={r.drive_web_link} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">Open <ExternalLink size={11} /></a>

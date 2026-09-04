@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
-import { X, Calculator, Wallet, ArrowRight, Sparkles } from "lucide-react";
+import { X, Calculator, Wallet, ArrowRight } from "lucide-react";
 
 const STORAGE_KEY = "tioga.featureHighlight.dismissedAt";
 const SUPPRESS_MS = 1000 * 60 * 60 * 24 * 3; // 3 days
@@ -52,7 +52,7 @@ const FeatureHighlightPopup = () => {
       aria-live="polite"
     >
       <div className="pointer-events-auto mx-auto sm:mx-0 w-full sm:w-[380px] max-w-md rounded-t-3xl sm:rounded-3xl border border-border bg-card shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
-        <div className="relative bg-gradient-to-br from-primary/95 via-primary to-primary/80 px-5 py-4 text-primary-foreground">
+        <div className="relative bg-primary/95 px-5 py-4 text-primary-foreground">
           <button
             onClick={dismiss}
             aria-label="Dismiss"
@@ -61,7 +61,7 @@ const FeatureHighlightPopup = () => {
             <X size={14} />
           </button>
           <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] font-semibold text-gold mb-1.5">
-            <Sparkles size={12} /> New on Tioga
+            New on Tioga
           </div>
           <p className="font-display font-bold text-lg leading-tight">
             Size your system. Pay your way.

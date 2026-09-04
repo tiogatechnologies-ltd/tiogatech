@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Lock, ShieldCheck, KeyRound, Smartphone, Sparkles, Building2, Check, ArrowRight, Truck, Wrench, Shield, ShoppingBag, Eye, SlidersHorizontal } from "lucide-react";
+import { Lock, ShieldCheck, KeyRound, Smartphone, Building2, Check, ArrowRight, Truck, Wrench, Shield, ShoppingBag, Eye, SlidersHorizontal } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -29,7 +29,7 @@ export const SmartLocks = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="STAMA Smart Locks — Biometric, 3D Face ID & Hotel Keyless Entry"
+        title="STAMA Smart Locks - Biometric, 3D Face ID & Hotel Keyless Entry"
         description="Explore STAMA intelligent door locks with 3D Face Recognition, biometric fingerprint, Tuya / TTLock app control, and hotel card access across Nigeria."
         path="/smart-locks"
         jsonLd={[
@@ -57,7 +57,7 @@ export const SmartLocks = () => {
             onClick={() => openLeadForm("smart_locks_hero")}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20 transition-all"
           >
-            <Sparkles size={16} /> Request Lock Installation
+            Request Lock Installation
           </button>
           <Link
             to="/retail?category=Smart+Locks"
@@ -164,7 +164,7 @@ export const SmartLocks = () => {
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/40 to-transparent" />
+                  <div className="absolute inset-0 bg-midnight/90" />
                   <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
                     {lock.model && (
                       <span className="text-[10px] uppercase tracking-wider font-bold bg-gold text-midnight px-2.5 py-1 rounded-full shadow-sm">
@@ -227,7 +227,7 @@ export const SmartLocks = () => {
                         onClick={() => openLeadForm(`smart_lock_${lock.id}`)}
                         className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-gold text-midnight text-xs font-bold hover:brightness-110 shadow-sm transition-all"
                       >
-                        <Sparkles size={14} /> Request Quote / Consultation
+                        Request Quote / Consultation
                       </button>
                     )}
 
@@ -282,16 +282,16 @@ export const SmartLocks = () => {
                   <tr>
                     <td className="p-3.5 font-medium text-foreground">3D Face Recognition</td>
                     <td className="p-3.5 text-emerald-500 font-bold">Structured Light (0.3s)</td>
-                    <td className="p-3.5">—</td>
-                    <td className="p-3.5">—</td>
-                    <td className="p-3.5">—</td>
+                    <td className="p-3.5">-</td>
+                    <td className="p-3.5">-</td>
+                    <td className="p-3.5">-</td>
                   </tr>
                   <tr>
                     <td className="p-3.5 font-medium text-foreground">Biometric Fingerprint</td>
                     <td className="p-3.5 text-emerald-500">Live Semiconductor (99.8%)</td>
                     <td className="p-3.5 text-emerald-500">Live Semiconductor (99.8%)</td>
-                    <td className="p-3.5">—</td>
-                    <td className="p-3.5">—</td>
+                    <td className="p-3.5">-</td>
+                    <td className="p-3.5">-</td>
                   </tr>
                   <tr>
                     <td className="p-3.5 font-medium text-foreground">Mobile App Control</td>

@@ -48,7 +48,7 @@ const Hero = ({ onApply }: HeroProps) => {
       id="hero"
       className="relative min-h-[100vh] flex items-center overflow-hidden bg-secondary"
     >
-      {/* Static background — no scroll parallax (was conflicting with Lenis and causing glitching) */}
+      {/* Static background - no scroll parallax (was conflicting with Lenis and causing glitching) */}
       <div className="absolute inset-0">
         <img
           src={heroSmartHome}
@@ -61,11 +61,11 @@ const Hero = ({ onApply }: HeroProps) => {
           className="absolute inset-0 w-full h-full object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 via-secondary/70 to-primary/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-secondary/90" />
+        <div className="absolute inset-0 bg-secondary" />
       </div>
 
-      {/* Ambient gradient orbs — hidden on small screens (heavy blur kills mobile perf) */}
+      {/* Ambient gradient orbs - hidden on small screens (heavy blur kills mobile perf) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
         <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-primary/30 blur-3xl animate-blob" />
         <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full bg-accent/20 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
@@ -75,7 +75,7 @@ const Hero = ({ onApply }: HeroProps) => {
       {/* Main content */}
       <div className="relative z-10 section-container w-full pt-24 pb-24 sm:pt-28 sm:pb-20">
         <div className="grid lg:grid-cols-12 gap-10 items-center">
-          {/* Left — copy */}
+          {/* Left - copy */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-7">
             <p
               className={`text-xs sm:text-sm font-semibold text-accent uppercase tracking-widest ${mounted ? "animate-fade-up" : "opacity-0"}`}
@@ -95,7 +95,7 @@ const Hero = ({ onApply }: HeroProps) => {
               </span>
               <span className="block mt-2 sm:mt-3 text-[1.85rem] xs:text-[2.1rem] sm:text-[2.75rem] md:text-5xl lg:text-[3.75rem] xl:text-[4.5rem] min-h-[1.15em]">
                 <span className="relative inline-block align-baseline">
-                  <span className="bg-gradient-to-r from-accent via-accent to-yellow-300 bg-clip-text text-transparent">
+                  <span className="text-accent">
                     <Typewriter
                       words={[
                         "solar energy.",
@@ -161,9 +161,9 @@ const Hero = ({ onApply }: HeroProps) => {
             </div>
           </div>
 
-          {/* Right — floating glass cards (hidden on small) */}
+          {/* Right - floating glass cards (hidden on small) */}
           <div className="lg:col-span-5 relative hidden lg:block h-[520px]">
-            {/* Card 1 — Solar */}
+            {/* Card 1 - Solar */}
             <div
               className={`absolute top-0 right-0 w-64 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.5s" }}
@@ -178,12 +178,12 @@ const Hero = ({ onApply }: HeroProps) => {
                 </div>
               </div>
               <div className="h-1.5 bg-primary-foreground/10 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-accent to-yellow-300 rounded-full" style={{ width: "78%" }} />
+                <div className="h-full bg-accent rounded-full" style={{ width: "78%" }} />
               </div>
               <p className="text-xs text-primary-foreground/60 mt-2">Generating now · Sunny</p>
             </div>
 
-            {/* Card 2 — Smart Home */}
+            {/* Card 2 - Smart Home */}
             <div
               className={`absolute top-44 left-0 w-72 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.7s" }}
@@ -209,9 +209,9 @@ const Hero = ({ onApply }: HeroProps) => {
               </div>
             </div>
 
-            {/* Card 3 — Savings */}
+            {/* Card 3 - Savings */}
             <div
-              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-gradient-to-br from-accent/30 to-accent/10 backdrop-blur-xl border border-accent/30 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-accent/30 backdrop-blur-xl border border-accent/30 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.9s", animationDuration: "7s" }}
             >
               <p className="text-xs text-primary-foreground/70 uppercase tracking-wider mb-1">Monthly Savings</p>

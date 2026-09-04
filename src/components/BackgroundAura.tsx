@@ -30,7 +30,7 @@ const BackgroundAura = () => {
     };
 
     const tick = () => {
-      // simple lerp for a lagged, smooth feel — no React, no layout
+      // simple lerp for a lagged, smooth feel - no React, no layout
       curX += (targetX - curX) * 0.12;
       curY += (targetY - curY) * 0.12;
       const el = ref.current;
