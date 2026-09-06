@@ -10,7 +10,7 @@ import { trackConversion } from "@/lib/tracking";
 
 import { useWishlist } from "@/hooks/useWishlist";
 import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
-import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const fmtPrice = (n: number | null) =>
   n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
@@ -27,7 +27,6 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
   const pct = savingsPct(p.package_number);
   const wasPrice = calcWasPrice(p.total_price);
   const savedAmount = wasPrice - p.total_price;
-  const viewers = viewerCount(p.package_number);
   const sold = soldCount(p.package_number);
   const monthlyEst = Math.round(p.total_price / 3);
 
@@ -92,17 +91,6 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
               {p.badge}
             </span>
           )}
-        </div>
-
-        {/* Live Viewers (bottom-left overlay on image) */}
-        <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
-          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2 py-0.5 rounded-full shadow-md">
-            <span className="relative flex h-1.5 w-1.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-            </span>
-            {viewers} viewing
-          </span>
         </div>
 
         {/* Floating Action Buttons (top-right) */}

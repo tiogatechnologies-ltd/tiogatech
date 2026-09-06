@@ -8,7 +8,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
-import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const fmtLock = (item: SmartLock) =>
   item.price_label?.trim() ||
@@ -26,7 +26,6 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
   const pct = hasPrice ? savingsPct(p.id) : null;
   const wasPriceVal = hasPrice ? calcWasPrice(p.price!) : null;
   const savedAmount = hasPrice && wasPriceVal ? wasPriceVal - p.price! : null;
-  const viewers = viewerCount(p.id);
   const sold = soldCount(p.id);
   const monthlyEst = p.price ? Math.round(p.price / 3) : null;
 
@@ -95,17 +94,6 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
               {p.badge}
             </span>
           )}
-        </div>
-
-        {/* Live Viewers (bottom-left overlay on image) */}
-        <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
-          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2 py-0.5 rounded-full shadow-md">
-            <span className="relative flex h-1.5 w-1.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-            </span>
-            {viewers} viewing
-          </span>
         </div>
 
         {/* Floating Action Buttons (top-right) */}

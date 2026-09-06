@@ -39,7 +39,7 @@ import { trackConversion } from "@/lib/tracking";
 import { matchesSlug, productPath } from "@/lib/productSlug";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
-import { PROMO_LIFT, viewerCount, soldCount, savingsPct } from "@/lib/promoDisplay";
+import { PROMO_LIFT, soldCount, savingsPct } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
@@ -299,7 +299,6 @@ export const ProductDetail = () => {
   const pct = numPrice > 0 ? savingsPct(product.id) : null;
   const wasPrice = numPrice > 0 ? Math.round(numPrice * PROMO_LIFT) : null;
   const savedAmount = numPrice > 0 && wasPrice ? wasPrice - numPrice : null;
-  const viewers = viewerCount(product.id);
   const sold = soldCount(product.id);
 
   return (
@@ -380,17 +379,6 @@ export const ProductDetail = () => {
                   )}
                 </div>
 
-                {/* Live Viewers Top Right */}
-                <div className="absolute top-4 right-4 pointer-events-none">
-                  <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold bg-midnight/70 backdrop-blur-sm text-white px-2.5 py-1 rounded-full shadow">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-                    </span>
-                    {viewers} viewing
-                  </span>
-                </div>
-
                 {/* Zoom Lightbox Trigger */}
                 <button
                   type="button"
@@ -448,7 +436,7 @@ export const ProductDetail = () => {
               
               {/* Category, Brand, Actions Header */}
               <div className="flex items-center justify-between gap-2">
-                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+                <span className="text-primary text-xs font-bold uppercase tracking-wider">
                   {categoryLabels[product.category] ?? product.category}
                 </span>
 

@@ -16,7 +16,7 @@ import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { PROMO_LIFT, viewerCount, savingsPct } from "@/lib/promoDisplay";
+import { PROMO_LIFT, savingsPct } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 const fmtLock = (item: SmartLock) =>
@@ -132,7 +132,6 @@ export const SmartLockDetail = () => {
   const pct = lock.price ? savingsPct(lock.id) : null;
   const wasPrice = lock.price ? Math.round(lock.price * PROMO_LIFT) : null;
   const savedAmount = lock.price && wasPrice ? wasPrice - lock.price : null;
-  const viewers = viewerCount(lock.id);
   const categoryLabel = lock.category === "hotel" ? "Hotel Ecosystem" : lock.category === "accessory" ? "Smart Lock Accessory" : `${lock.series}`;
 
   const jsonLd = [
@@ -209,14 +208,6 @@ export const SmartLockDetail = () => {
                   )}
                 </div>
 
-                <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-                  </span>
-                  {viewers} viewing
-                </div>
-
                 <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
                   <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{categoryLabel}</p>
                   <h1 className="text-lg sm:text-2xl font-display font-bold text-white leading-tight">{lock.name}</h1>
@@ -243,9 +234,9 @@ export const SmartLockDetail = () => {
 
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <span className="inline-block text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full mb-2">
+                  <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">
                     STAMA · {categoryLabel}
-                  </span>
+                  </p>
                   <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground leading-tight no-clip">{lock.name}</h2>
                   {lock.tagline && <p className="text-sm text-muted-foreground mt-1">{lock.tagline}</p>}
                 </div>

@@ -16,7 +16,7 @@ import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { PROMO_LIFT, viewerCount, savingsPct } from "@/lib/promoDisplay";
+import { PROMO_LIFT, savingsPct } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 // Cosmetic promo helpers - real prices never change
@@ -135,7 +135,6 @@ export const SolarPackageDetail = () => {
   const pct = savingsPct(pkg.package_number);
   const wasPrice = Math.round(pkg.total_price * PROMO_LIFT);
   const savedAmount = wasPrice - pkg.total_price;
-  const viewers = viewerCount(pkg.package_number);
   const batteryLabel = pkg.battery_type === "lithium" ? "Lithium LiFePO₄" : pkg.battery_type === "high_voltage" ? "High Voltage" : "Tubular / Gel";
 
   const jsonLd = [
@@ -216,15 +215,6 @@ export const SolarPackageDetail = () => {
                   )}
                 </div>
 
-                {/* Viewer count */}
-                <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-                  </span>
-                  {viewers} viewing
-                </div>
-
                 {/* Bottom of image: name */}
                 <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
                   <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{batteryLabel} System</p>
@@ -254,9 +244,9 @@ export const SolarPackageDetail = () => {
               {/* Title + share */}
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <span className="inline-block text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full mb-2">
+                  <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">
                     LumiVolt Solar · {batteryLabel}
-                  </span>
+                  </p>
                   <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground leading-tight no-clip">
                     {pkg.inverter}
                   </h2>

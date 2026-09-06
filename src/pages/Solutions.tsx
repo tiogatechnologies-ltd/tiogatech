@@ -94,7 +94,7 @@ export const Solutions = () => {
                 className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center p-6 sm:p-10 rounded-3xl bg-card border border-border/80 shadow-[var(--shadow-card)]"
               >
                 <div className={`lg:col-span-6 space-y-5 ${isEven ? "order-1" : "order-1 lg:order-2"}`}>
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-primary">
                     {sol.brand}
                   </span>
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-foreground leading-tight">

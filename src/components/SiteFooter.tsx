@@ -74,13 +74,6 @@ const SiteFooter = () => {
             <p className="mt-4 text-sm text-primary-foreground/65 max-w-xs leading-relaxed">
               IoT infrastructure and embedded systems company powering Africa's clean energy transition.
             </p>
-            <div className="mt-5 inline-flex items-center gap-2 text-xs text-primary-foreground/65">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-              </span>
-              All Systems Operational
-            </div>
             <ul className="mt-5 space-y-2 text-sm">
               <li className="flex items-center gap-2">
                 <Mail size={14} className="text-gold shrink-0" />

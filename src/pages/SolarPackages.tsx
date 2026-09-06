@@ -13,7 +13,7 @@ import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const fmtPrice = (n: number | null) =>
   n == null ? "Price on Request" : `₦${Math.round(n).toLocaleString("en-NG")}`;
@@ -29,7 +29,6 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
   const pct = savingsPct(pkg.package_number);
   const wasPriceVal = calcWasPrice(pkg.total_price);
   const savedAmount = wasPriceVal - pkg.total_price;
-  const viewers = viewerCount(pkg.package_number);
   const sold = soldCount(pkg.package_number);
   const monthlyEst = Math.round(pkg.total_price / 3);
 
@@ -94,17 +93,6 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
               {pkg.badge}
             </span>
           )}
-        </div>
-
-        {/* Live Viewers (bottom-left overlay on image) */}
-        <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
-          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2 py-0.5 rounded-full shadow-md">
-            <span className="relative flex h-1.5 w-1.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-            </span>
-            {viewers} viewing
-          </span>
         </div>
 
         {/* Floating Action Buttons (top-right) */}

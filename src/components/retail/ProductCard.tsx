@@ -20,7 +20,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
-import { PROMO_LIFT, viewerCount, soldCount, savingsPct } from "@/lib/promoDisplay";
+import { PROMO_LIFT, soldCount, savingsPct } from "@/lib/promoDisplay";
 import type { RetailProduct } from "@/types/retail";
 
 interface CardProps {
@@ -50,7 +50,6 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
   const pct = hasPrice ? savingsPct(product.id) : null;
   const wasPrice = hasPrice ? Math.round(product.numeric_price! * PROMO_LIFT) : null;
   const savedAmount = hasPrice && wasPrice ? wasPrice - product.numeric_price! : null;
-  const viewers = viewerCount(product.id);
   const sold = soldCount(product.id);
   const monthlyEst = product.numeric_price ? Math.round(product.numeric_price / 3) : null;
 
@@ -129,17 +128,6 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
               Featured
             </span>
           )}
-        </div>
-
-        {/* Live Viewers (bottom-left overlay on image) */}
-        <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
-          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2 py-0.5 rounded-full shadow-md">
-            <span className="relative flex h-1.5 w-1.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-            </span>
-            {viewers} viewing
-          </span>
         </div>
 
         {/* Floating Action Buttons (top-right) */}

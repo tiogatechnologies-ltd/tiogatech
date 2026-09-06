@@ -16,7 +16,7 @@ import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/u
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { PROMO_LIFT as AUTO_PROMO_LIFT, viewerCount as autoViewers, savingsPct as autoSavingsPct } from "@/lib/promoDisplay";
+import { PROMO_LIFT as AUTO_PROMO_LIFT, savingsPct as autoSavingsPct } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 
 const fmtAuto = (p: HomeAutomationPackage) =>
@@ -138,7 +138,6 @@ export const AutomationPackageDetail = () => {
   const pct = pkg.price ? autoSavingsPct(pkg.id) : null;
   const wasPrice = pkg.price ? Math.round(pkg.price * AUTO_PROMO_LIFT) : null;
   const savedAmount = pkg.price && wasPrice ? wasPrice - pkg.price : null;
-  const viewers = autoViewers(pkg.id);
   const tierIcons = TIER_FEATURES[pkg.tier] ?? TIER_FEATURES["Riviera"];
 
   const jsonLd = [
@@ -210,14 +209,6 @@ export const AutomationPackageDetail = () => {
                   )}
                 </div>
 
-                <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-                  </span>
-                  {viewers} viewing
-                </div>
-
                 <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
                   <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{pkg.tagline}</p>
                   <h1 className="text-xl sm:text-3xl font-display font-bold text-white leading-tight">{pkg.name}</h1>
@@ -242,9 +233,9 @@ export const AutomationPackageDetail = () => {
 
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <span className="inline-block text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full mb-2">
+                  <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">
                     {pkg.tier} Tier · Home Automation
-                  </span>
+                  </p>
                   <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground leading-tight no-clip">{pkg.name} Package</h2>
                   {pkg.tagline && <p className="text-sm text-muted-foreground mt-1">{pkg.tagline}</p>}
                 </div>
