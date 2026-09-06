@@ -26,7 +26,9 @@ html.lenis, html.lenis body { height: auto; }
     --popover: 0 0% 100%;
     --popover-foreground: 220 26% 14%;
 
-    --primary: 152 85% 30%;
+    /* L26 keeps text-primary >=4.5:1 on both --card (white) and --muted surfaces,
+       and white-on-primary buttons at >=5:1 (WCAG AA) */
+    --primary: 152 85% 26%;
     --primary-foreground: 0 0% 100%;
 
     /* Midnight navy - deep brand surface */
@@ -35,7 +37,7 @@ html.lenis, html.lenis body { height: auto; }
     --midnight: 215 64% 11%;
 
     --muted: 210 20% 95%;
-    --muted-foreground: 215 16% 47%;
+    --muted-foreground: 215 16% 45%;
 
     /* Solar gold - CTA accent */
     --accent: 51 100% 50%;
@@ -47,7 +49,7 @@ html.lenis, html.lenis body { height: auto; }
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 152 85% 30%;
+    --ring: 152 85% 26%;
 
     --radius: 0.75rem;
 

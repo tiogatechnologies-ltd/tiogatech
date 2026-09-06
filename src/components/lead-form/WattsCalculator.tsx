@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Plus, Minus, X, Search, Zap, AlertTriangle } from "lucide-react";
 import { applianceDatabase, findApplianceWatts, estimateWatts, calculateTotalWatts, recommendedInverterSize, type ApplianceInfo, type SelectedAppliance } from "@/data/applianceWatts";
+import { applianceCategoryIcon } from "@/lib/applianceIcons";
 import { StepUI, inputClass } from "./StepUI";
 
 interface WattsCalculatorProps {
@@ -90,16 +91,19 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
       {/* Search dropdown */}
       {searchResults.length > 0 && (
         <div className="border border-border rounded-xl bg-card shadow-lg max-h-40 overflow-y-auto">
-          {searchResults.slice(0, 8).map((a) => (
-            <button
-              key={a.name}
-              onClick={() => addAppliance(a)}
-              className="w-full text-left px-3 py-2 text-sm hover:bg-muted flex items-center justify-between transition-colors"
-            >
-              <span>{a.icon} {a.name}</span>
-              <span className="text-xs text-muted-foreground">{a.minWatts} to {a.maxWatts}W</span>
-            </button>
-          ))}
+          {searchResults.slice(0, 8).map((a) => {
+            const Icon = applianceCategoryIcon[a.category];
+            return (
+              <button
+                key={a.name}
+                onClick={() => addAppliance(a)}
+                className="w-full text-left px-3 py-2 text-sm hover:bg-muted flex items-center justify-between transition-colors"
+              >
+                <span className="flex items-center gap-1.5"><Icon size={13} className="text-primary shrink-0" /> {a.name}</span>
+                <span className="text-xs text-muted-foreground">{a.minWatts} to {a.maxWatts}W</span>
+              </button>
+            );
+          })}
         </div>
       )}
 
@@ -107,17 +111,18 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
       <div className="flex flex-wrap gap-1.5">
         {displayItems.map((a) => {
           const selected = selectedAppliances.find(s => s.name === a.name);
+          const Icon = applianceCategoryIcon[a.category];
           return (
             <button
               key={a.name}
               onClick={() => addAppliance(a)}
-              className={`text-xs px-2.5 py-1.5 rounded-lg border transition-all ${
+              className={`text-xs px-2.5 py-1.5 rounded-lg border transition-all inline-flex items-center gap-1.5 ${
                 selected
                   ? "border-primary bg-primary/10 text-primary font-medium"
                   : "border-border text-foreground hover:border-primary/30"
               }`}
             >
-              {a.icon} {a.name} {selected ? `x${selected.quantity}` : ""}
+              <Icon size={12} className="shrink-0" /> {a.name} {selected ? `x${selected.quantity}` : ""}
             </button>
           );
         })}
@@ -139,8 +144,9 @@ const WattsCalculator = ({ selectedAppliances, onChange, budget }: WattsCalculat
                 key={a.name}
                 className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-3 py-2"
               >
-                <span className="text-sm flex-1">
-                  {a.info.icon} {a.name}
+                <span className="text-sm flex-1 flex items-center gap-1.5">
+                  {(() => { const Icon = applianceCategoryIcon[a.info.category]; return <Icon size={13} className="text-primary shrink-0" />; })()}
+                  {a.name}
                   <span className="text-xs text-muted-foreground ml-1">
                     ({a.info.minWatts} to {a.info.maxWatts}W each)
                   </span>

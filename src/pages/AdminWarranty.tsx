@@ -233,8 +233,8 @@ const AdminWarranty = () => {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-amber-600">Active / In Diagnosis</span>
-            <p className="text-2xl font-bold font-display text-amber-600 mt-1">
+            <span className="text-xs font-semibold uppercase text-amber-700">Active / In Diagnosis</span>
+            <p className="text-2xl font-bold font-display text-amber-700 mt-1">
               {rows.filter((r) => !["closed", "replaced", "refunded", "rejected"].includes(r.status)).length}
             </p>
             <p className="text-[11px] text-muted-foreground">Bench testing & OEM review</p>
@@ -249,8 +249,8 @@ const AdminWarranty = () => {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-emerald-600">OEM Replaced / Closed</span>
-            <p className="text-2xl font-bold font-display text-emerald-600 mt-1">
+            <span className="text-xs font-semibold uppercase text-emerald-700">OEM Replaced / Closed</span>
+            <p className="text-2xl font-bold font-display text-emerald-700 mt-1">
               {rows.filter((r) => ["closed", "replaced"].includes(r.status)).length}
             </p>
             <p className="text-[11px] text-muted-foreground">Successfully resolved</p>

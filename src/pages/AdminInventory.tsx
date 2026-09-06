@@ -120,7 +120,7 @@ const AdminInventory = () => {
           {[
             { label: "Products", value: stats.total, color: "bg-primary/10 text-primary" },
             { label: "Units in stock", value: stats.units.toLocaleString(), color: "bg-blue-500/10 text-blue-600" },
-            { label: "Low stock", value: stats.low, color: "bg-amber-500/10 text-amber-600" },
+            { label: "Low stock", value: stats.low, color: "bg-amber-500/10 text-amber-700" },
             { label: "Out of stock", value: stats.out, color: "bg-destructive/10 text-destructive" },
           ].map((s) => (
             <div key={s.label} className="rounded-2xl border border-border bg-card p-4">
@@ -161,13 +161,13 @@ const AdminInventory = () => {
                       <td className="px-4 py-3 text-muted-foreground">{t}</td>
                       <td className="px-4 py-3">
                         {status === "out" ? <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-destructive/10 text-destructive font-bold uppercase"><AlertTriangle size={10} />Out</span> :
-                         status === "low" ? <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-bold uppercase"><AlertTriangle size={10} />Low</span> :
+                         status === "low" ? <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 font-bold uppercase"><AlertTriangle size={10} />Low</span> :
                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 font-bold uppercase">OK</span>}
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex justify-end gap-1">
                           <button onClick={() => setAdjust({ product: p, delta: 1, reason: "restock", note: "" })} className="p-1.5 rounded-lg hover:bg-muted text-green-600" title="Restock"><Plus size={14} /></button>
-                          <button onClick={() => setAdjust({ product: p, delta: -1, reason: "adjustment", note: "" })} className="p-1.5 rounded-lg hover:bg-muted text-amber-600" title="Reduce"><Minus size={14} /></button>
+                          <button onClick={() => setAdjust({ product: p, delta: -1, reason: "adjustment", note: "" })} className="p-1.5 rounded-lg hover:bg-muted text-amber-700" title="Reduce"><Minus size={14} /></button>
                           <button onClick={() => setHistoryFor(p)} className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground" title="History"><History size={14} /></button>
                         </div>
                       </td>

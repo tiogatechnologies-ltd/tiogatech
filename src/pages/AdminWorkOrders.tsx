@@ -270,8 +270,8 @@ const AdminWorkOrders = () => {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-emerald-600">Commissioned Systems</span>
-            <p className="text-2xl font-bold font-display text-emerald-600 mt-1">
+            <span className="text-xs font-semibold uppercase text-emerald-700">Commissioned Systems</span>
+            <p className="text-2xl font-bold font-display text-emerald-700 mt-1">
               {workOrders.filter((w) => w.status === "commissioned").length}
             </p>
             <p className="text-[11px] text-muted-foreground">Successfully powered up</p>
@@ -615,7 +615,7 @@ const AdminWorkOrders = () => {
             <div className="bg-card rounded-3xl border border-border shadow-2xl w-full max-w-lg overflow-hidden">
               <div className="flex items-center justify-between px-6 pt-6 pb-2 border-b border-border">
                 <h3 className="font-display font-bold text-foreground text-lg flex items-center gap-2">
-                  <CheckCircle size={18} className="text-emerald-600" /> Digital Commissioning & Handover
+                  <CheckCircle size={18} className="text-emerald-700" /> Digital Commissioning & Handover
                 </h3>
                 <button onClick={() => setCommissioningModal(null)} className="p-1 rounded-lg hover:bg-muted text-muted-foreground">
                   <X size={18} />

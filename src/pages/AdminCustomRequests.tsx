@@ -23,9 +23,9 @@ const STATUSES = ["new", "contacted", "quoted", "won", "lost"];
 
 const statusStyle: Record<string, string> = {
   new: "bg-primary/10 text-primary",
-  contacted: "bg-amber-500/10 text-amber-600",
+  contacted: "bg-amber-500/10 text-amber-700",
   quoted: "bg-blue-500/10 text-blue-600",
-  won: "bg-emerald-500/10 text-emerald-600",
+  won: "bg-emerald-500/10 text-emerald-700",
   lost: "bg-destructive/10 text-destructive",
 };
 
@@ -166,7 +166,7 @@ const AdminCustomRequests = () => {
             <div className="grid grid-cols-2 gap-2">
               {active.email && <a href={`mailto:${active.email}`} className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm hover:bg-muted"><Mail size={14} />Email</a>}
               {active.phone && <a href={`tel:${active.phone}`} className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm hover:bg-muted"><Phone size={14} />Call</a>}
-              {active.phone && <a href={waLink(active.phone)} target="_blank" rel="noopener noreferrer" className="col-span-2 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-600 text-sm font-medium hover:bg-emerald-500/20"><MessageCircle size={14} />WhatsApp</a>}
+              {active.phone && <a href={waLink(active.phone)} target="_blank" rel="noopener noreferrer" className="col-span-2 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-700 text-sm font-medium hover:bg-emerald-500/20"><MessageCircle size={14} />WhatsApp</a>}
             </div>
 
             <dl className="space-y-3 text-sm">

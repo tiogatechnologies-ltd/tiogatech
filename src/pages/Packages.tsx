@@ -201,7 +201,7 @@ const Packages = () => {
       <div className="bg-amber-500/10 border-b border-amber-500/20">
         <div className="section-container py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
           <div className="flex items-center gap-1.5 text-xs sm:text-sm text-amber-800 dark:text-amber-300 font-semibold min-w-0">
-            <Flame size={14} className="shrink-0 text-amber-600" />
+            <Flame size={14} className="shrink-0 text-amber-700" />
             <span className="truncate">Mid-Month Deals - Up to 17% Off</span>
             <span className="text-xs opacity-80 hidden sm:inline">Pre-engineered systems priced below individual component retail.</span>
           </div>

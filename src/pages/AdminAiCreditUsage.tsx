@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { BarChart3, Search, Sparkles, CheckCircle2 } from "lucide-react";
+import { BarChart3, Search, Gift, CheckCircle2 } from "lucide-react";
 
 interface UsageRow {
   id: string;
@@ -98,7 +98,7 @@ const AdminAiCreditUsage = () => {
                   <td className="px-4 py-3 text-xs">{r.feature}</td>
                   <td className="px-4 py-3">
                     {r.used_free_credit ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-amber-600"><Sparkles size={10} /> Free credit</span>
+                      <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-amber-700"><Gift size={10} /> Free credit</span>
                     ) : (
                       <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-primary"><CheckCircle2 size={10} /> {r.subscription_plan || "Plan"}</span>
                     )}

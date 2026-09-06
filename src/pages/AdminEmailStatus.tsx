@@ -21,8 +21,8 @@ const RANGES = [
 ] as const;
 
 const STATUS_STYLES: Record<string, string> = {
-  sent: "bg-emerald-500/10 text-emerald-600",
-  pending: "bg-amber-500/10 text-amber-600",
+  sent: "bg-emerald-500/10 text-emerald-700",
+  pending: "bg-amber-500/10 text-amber-700",
   dlq: "bg-destructive/10 text-destructive",
   failed: "bg-destructive/10 text-destructive",
   bounced: "bg-destructive/10 text-destructive",

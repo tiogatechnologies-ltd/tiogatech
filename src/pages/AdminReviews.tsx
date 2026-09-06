@@ -6,7 +6,6 @@ import {
   ShieldCheck,
   CheckCircle,
   XCircle,
-  Sparkles,
   Search,
   Filter,
   Reply,
@@ -194,9 +193,9 @@ export const AdminReviews = () => {
                         review.status === "featured"
                           ? "bg-gold text-midnight"
                           : review.status === "approved"
-                          ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                          ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
                           : review.status === "pending"
-                          ? "bg-amber-500/15 text-amber-600"
+                          ? "bg-amber-500/15 text-amber-700"
                           : "bg-red-500/15 text-red-600"
                       }`}
                     >
@@ -214,7 +213,7 @@ export const AdminReviews = () => {
                   <div className="flex items-center gap-3 text-muted-foreground text-[11px]">
                     <span className="font-semibold text-foreground">{review.author_name}</span>
                     {review.verified_purchase && (
-                      <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
+                      <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-semibold">
                         <ShieldCheck size={13} />
                         Verified Purchase
                       </span>
@@ -254,7 +253,7 @@ export const AdminReviews = () => {
                         onClick={() => updateStatus(review.id, "featured")}
                         className="text-xs rounded-xl h-8 gap-1 bg-gold/20 text-gold-dark dark:text-gold hover:bg-gold/30"
                       >
-                        <Sparkles size={13} />
+                        <Star size={13} />
                         <span>Feature</span>
                       </Button>
                     )}

@@ -45,7 +45,7 @@ interface ApprovalRequest {
 const typeLabels: Record<ApprovalRequest["request_type"], { label: string; icon: any; color: string }> = {
   discount_override: { label: "Discount Override", icon: TrendingDown, color: "text-purple-600 bg-purple-100" },
   purchase_order: { label: "Purchase Order", icon: Truck, color: "text-blue-600 bg-blue-100" },
-  expense_claim: { label: "Field Expense Claim", icon: Receipt, color: "text-emerald-600 bg-emerald-100" },
+  expense_claim: { label: "Field Expense Claim", icon: Receipt, color: "text-emerald-700 bg-emerald-100" },
   inventory_writeoff: { label: "Inventory Write-Off", icon: AlertTriangle, color: "text-rose-600 bg-rose-100" },
 };
 
@@ -230,10 +230,10 @@ const AdminApprovals = () => {
         {/* KPI Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-amber-600 flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase text-amber-700 flex items-center justify-between">
               Pending Approvals <Clock size={15} />
             </span>
-            <p className="text-2xl font-bold font-display text-amber-600 mt-1">{pendingRequests.length}</p>
+            <p className="text-2xl font-bold font-display text-amber-700 mt-1">{pendingRequests.length}</p>
             <p className="text-[11px] text-muted-foreground">Requires managerial action</p>
           </div>
 
@@ -248,10 +248,10 @@ const AdminApprovals = () => {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-emerald-600 flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase text-emerald-700 flex items-center justify-between">
               Approved Requests <CheckCircle size={15} />
             </span>
-            <p className="text-2xl font-bold font-display text-emerald-600 mt-1">
+            <p className="text-2xl font-bold font-display text-emerald-700 mt-1">
               {requests.filter((r) => r.status === "approved").length}
             </p>
             <p className="text-[11px] text-muted-foreground">Successfully authorized</p>

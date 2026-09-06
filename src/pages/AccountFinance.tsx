@@ -126,12 +126,12 @@ const AccountFinance = () => {
                   <div className="p-5 grid sm:grid-cols-3 gap-3 text-sm">
                     <div><p className="text-[10px] uppercase text-muted-foreground">Total</p><p className="font-semibold">₦{Number(a.total_amount_ngn).toLocaleString()}</p></div>
                     <div><p className="text-[10px] uppercase text-muted-foreground">Monthly</p><p className="font-semibold text-primary">₦{Number(a.monthly_payment_ngn).toLocaleString()}</p></div>
-                    <div><p className="text-[10px] uppercase text-muted-foreground">Deposit</p><p className={`font-semibold ${depositPaid ? "text-emerald-600" : "text-muted-foreground"}`}>₦{Number(a.deposit_ngn).toLocaleString()} · {depositLabel}</p></div>
+                    <div><p className="text-[10px] uppercase text-muted-foreground">Deposit</p><p className={`font-semibold ${depositPaid ? "text-emerald-700" : "text-muted-foreground"}`}>₦{Number(a.deposit_ngn).toLocaleString()} · {depositLabel}</p></div>
                   </div>
 
                   {!depositPaid && (a.status === "approved" || a.status === "active") && (
                     <div className="mx-5 mb-5 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 flex items-start gap-3">
-                      <Lock size={18} className="text-amber-600 shrink-0 mt-0.5" />
+                      <Lock size={18} className="text-amber-700 shrink-0 mt-0.5" />
                       <div className="text-sm text-amber-900 dark:text-amber-200 flex-1">
                         <p className="font-semibold">Pay your 30% deposit to activate this plan.</p>
                         <p className="text-xs mt-1">Monthly installments will unlock once your deposit is confirmed by Paystack.</p>

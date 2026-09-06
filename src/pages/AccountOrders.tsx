@@ -37,7 +37,7 @@ const parsePrice = (label: string | null) => {
 const StatusPill = ({ status }: { status: string }) => {
   const tone =
     status === "delivered" || status === "paid"
-      ? "bg-emerald-500/10 text-emerald-600"
+      ? "bg-emerald-500/10 text-emerald-700"
       : status === "cancelled" || status === "failed"
         ? "bg-destructive/10 text-destructive"
         : "bg-muted text-muted-foreground";

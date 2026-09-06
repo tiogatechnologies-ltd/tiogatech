@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { normalizeDeep } from "@/lib/normalizeText";
 import type { Job } from "@/components/JobCard";
 import bgInstaller from "@/assets/bg-installer.jpg";
 import bgRooftopInstall from "@/assets/bg-rooftop-install.jpg";
@@ -76,7 +77,7 @@ export const useCareers = () => {
       if (!active) return;
       if (!error && data && data.length > 0) {
         setJobs(
-          data.map((d: any, index: number) => ({
+          normalizeDeep(data).map((d: any, index: number) => ({
             id: d.id,
             title: d.title,
             location: d.location,

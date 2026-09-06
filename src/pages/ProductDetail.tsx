@@ -372,7 +372,7 @@ export const ProductDetail = () => {
                     </span>
                   )}
                   {inStock && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 backdrop-blur-md">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 backdrop-blur-md">
                       <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                       In Stock
                     </span>
@@ -506,12 +506,12 @@ export const ProductDetail = () => {
                     <span className="text-muted-foreground">({product.review_count || 14} reviews)</span>
                   </div>
                   <span>·</span>
-                  <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">
+                  <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-semibold">
                     <Users size={13} />
                     <span>{sold} purchased this week</span>
                   </div>
                   <span>·</span>
-                  <span className="text-amber-600 dark:text-amber-400 font-semibold flex items-center gap-1">
+                  <span className="text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1">
                     <Flame size={13} /> In High Demand
                   </span>
                 </div>
@@ -534,7 +534,7 @@ export const ProductDetail = () => {
                           <span className="text-sm text-muted-foreground line-through">
                             ₦{Math.round(wasPrice).toLocaleString("en-NG")}
                           </span>
-                          <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
                             <Tag size={11} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")} ({pct}%)
                           </span>
                         </div>
@@ -752,7 +752,7 @@ export const ProductDetail = () => {
                   {/* Warranty Duration */}
                   <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
                     <span className="text-muted-foreground font-medium">Warranty Period</span>
-                    <span className="font-semibold text-emerald-600 dark:text-emerald-400 sm:text-right">5-Year Manufacturer Warranty</span>
+                    <span className="font-semibold text-emerald-700 dark:text-emerald-400 sm:text-right">5-Year Manufacturer Warranty</span>
                   </div>
 
                   {/* Compatibility */}

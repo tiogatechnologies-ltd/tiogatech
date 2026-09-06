@@ -1,63 +1,64 @@
 // Common Nigerian household appliance wattage database
+export type ApplianceCategory = "lighting" | "cooling" | "entertainment" | "kitchen" | "laundry" | "other";
+
 export interface ApplianceInfo {
   name: string;
   minWatts: number;
   maxWatts: number;
   avgWatts: number;
-  category: "lighting" | "cooling" | "entertainment" | "kitchen" | "laundry" | "other";
-  icon: string;
+  category: ApplianceCategory;
 }
 
 export const applianceDatabase: ApplianceInfo[] = [
   // Lighting
-  { name: "LED Bulb", minWatts: 5, maxWatts: 15, avgWatts: 10, category: "lighting", icon: "💡" },
-  { name: "Energy Saving Bulb", minWatts: 15, maxWatts: 25, avgWatts: 20, category: "lighting", icon: "💡" },
-  { name: "Fluorescent Tube", minWatts: 18, maxWatts: 40, avgWatts: 30, category: "lighting", icon: "💡" },
-  { name: "Spotlight", minWatts: 20, maxWatts: 50, avgWatts: 35, category: "lighting", icon: "🔦" },
+  { name: "LED Bulb", minWatts: 5, maxWatts: 15, avgWatts: 10, category: "lighting" },
+  { name: "Energy Saving Bulb", minWatts: 15, maxWatts: 25, avgWatts: 20, category: "lighting" },
+  { name: "Fluorescent Tube", minWatts: 18, maxWatts: 40, avgWatts: 30, category: "lighting" },
+  { name: "Spotlight", minWatts: 20, maxWatts: 50, avgWatts: 35, category: "lighting" },
 
   // Cooling
-  { name: "Ceiling Fan", minWatts: 60, maxWatts: 100, avgWatts: 75, category: "cooling", icon: "🌀" },
-  { name: "Standing Fan", minWatts: 40, maxWatts: 70, avgWatts: 55, category: "cooling", icon: "🌀" },
-  { name: "Table Fan", minWatts: 25, maxWatts: 50, avgWatts: 40, category: "cooling", icon: "🌀" },
-  { name: "1HP AC", minWatts: 700, maxWatts: 1200, avgWatts: 900, category: "cooling", icon: "❄️" },
-  { name: "1.5HP AC", minWatts: 1100, maxWatts: 1700, avgWatts: 1400, category: "cooling", icon: "❄️" },
-  { name: "2HP AC", minWatts: 1500, maxWatts: 2200, avgWatts: 1800, category: "cooling", icon: "❄️" },
+  { name: "Ceiling Fan", minWatts: 60, maxWatts: 100, avgWatts: 75, category: "cooling" },
+  { name: "Standing Fan", minWatts: 40, maxWatts: 70, avgWatts: 55, category: "cooling" },
+  { name: "Table Fan", minWatts: 25, maxWatts: 50, avgWatts: 40, category: "cooling" },
+  { name: "1HP AC", minWatts: 700, maxWatts: 1200, avgWatts: 900, category: "cooling" },
+  { name: "1.5HP AC", minWatts: 1100, maxWatts: 1700, avgWatts: 1400, category: "cooling" },
+  { name: "2HP AC", minWatts: 1500, maxWatts: 2200, avgWatts: 1800, category: "cooling" },
 
   // Entertainment
-  { name: "TV (32\")", minWatts: 30, maxWatts: 60, avgWatts: 45, category: "entertainment", icon: "📺" },
-  { name: "TV (43\")", minWatts: 50, maxWatts: 90, avgWatts: 70, category: "entertainment", icon: "📺" },
-  { name: "TV (55\")", minWatts: 80, maxWatts: 130, avgWatts: 100, category: "entertainment", icon: "📺" },
-  { name: "TV (65\"+)", minWatts: 100, maxWatts: 200, avgWatts: 150, category: "entertainment", icon: "📺" },
-  { name: "Laptop", minWatts: 30, maxWatts: 80, avgWatts: 50, category: "entertainment", icon: "💻" },
-  { name: "Desktop Computer", minWatts: 150, maxWatts: 400, avgWatts: 250, category: "entertainment", icon: "🖥️" },
-  { name: "Sound System", minWatts: 50, maxWatts: 200, avgWatts: 100, category: "entertainment", icon: "🔊" },
-  { name: "DSTV/Decoder", minWatts: 15, maxWatts: 30, avgWatts: 20, category: "entertainment", icon: "📡" },
-  { name: "Gaming Console", minWatts: 100, maxWatts: 250, avgWatts: 150, category: "entertainment", icon: "🎮" },
+  { name: "TV (32\")", minWatts: 30, maxWatts: 60, avgWatts: 45, category: "entertainment" },
+  { name: "TV (43\")", minWatts: 50, maxWatts: 90, avgWatts: 70, category: "entertainment" },
+  { name: "TV (55\")", minWatts: 80, maxWatts: 130, avgWatts: 100, category: "entertainment" },
+  { name: "TV (65\"+)", minWatts: 100, maxWatts: 200, avgWatts: 150, category: "entertainment" },
+  { name: "Laptop", minWatts: 30, maxWatts: 80, avgWatts: 50, category: "entertainment" },
+  { name: "Desktop Computer", minWatts: 150, maxWatts: 400, avgWatts: 250, category: "entertainment" },
+  { name: "Sound System", minWatts: 50, maxWatts: 200, avgWatts: 100, category: "entertainment" },
+  { name: "DSTV/Decoder", minWatts: 15, maxWatts: 30, avgWatts: 20, category: "entertainment" },
+  { name: "Gaming Console", minWatts: 100, maxWatts: 250, avgWatts: 150, category: "entertainment" },
 
   // Kitchen
-  { name: "Fridge (Single Door)", minWatts: 80, maxWatts: 150, avgWatts: 100, category: "kitchen", icon: "🧊" },
-  { name: "Fridge (Double Door)", minWatts: 150, maxWatts: 300, avgWatts: 200, category: "kitchen", icon: "🧊" },
-  { name: "Deep Freezer (Small)", minWatts: 100, maxWatts: 200, avgWatts: 150, category: "kitchen", icon: "🧊" },
-  { name: "Deep Freezer (Large)", minWatts: 200, maxWatts: 400, avgWatts: 300, category: "kitchen", icon: "🧊" },
-  { name: "Microwave", minWatts: 600, maxWatts: 1200, avgWatts: 900, category: "kitchen", icon: "🍲" },
-  { name: "Electric Kettle", minWatts: 1000, maxWatts: 2200, avgWatts: 1500, category: "kitchen", icon: "☕" },
-  { name: "Blender", minWatts: 200, maxWatts: 500, avgWatts: 350, category: "kitchen", icon: "🥤" },
-  { name: "Toaster", minWatts: 700, maxWatts: 1200, avgWatts: 900, category: "kitchen", icon: "🍞" },
-  { name: "Rice Cooker", minWatts: 300, maxWatts: 700, avgWatts: 500, category: "kitchen", icon: "🍚" },
-  { name: "Electric Cooker/Hot Plate", minWatts: 1000, maxWatts: 2500, avgWatts: 1500, category: "kitchen", icon: "🍳" },
+  { name: "Fridge (Single Door)", minWatts: 80, maxWatts: 150, avgWatts: 100, category: "kitchen" },
+  { name: "Fridge (Double Door)", minWatts: 150, maxWatts: 300, avgWatts: 200, category: "kitchen" },
+  { name: "Deep Freezer (Small)", minWatts: 100, maxWatts: 200, avgWatts: 150, category: "kitchen" },
+  { name: "Deep Freezer (Large)", minWatts: 200, maxWatts: 400, avgWatts: 300, category: "kitchen" },
+  { name: "Microwave", minWatts: 600, maxWatts: 1200, avgWatts: 900, category: "kitchen" },
+  { name: "Electric Kettle", minWatts: 1000, maxWatts: 2200, avgWatts: 1500, category: "kitchen" },
+  { name: "Blender", minWatts: 200, maxWatts: 500, avgWatts: 350, category: "kitchen" },
+  { name: "Toaster", minWatts: 700, maxWatts: 1200, avgWatts: 900, category: "kitchen" },
+  { name: "Rice Cooker", minWatts: 300, maxWatts: 700, avgWatts: 500, category: "kitchen" },
+  { name: "Electric Cooker/Hot Plate", minWatts: 1000, maxWatts: 2500, avgWatts: 1500, category: "kitchen" },
 
   // Laundry
-  { name: "Washing Machine", minWatts: 300, maxWatts: 800, avgWatts: 500, category: "laundry", icon: "👔" },
-  { name: "Iron", minWatts: 800, maxWatts: 1500, avgWatts: 1000, category: "laundry", icon: "👕" },
-  { name: "Dryer", minWatts: 1800, maxWatts: 3000, avgWatts: 2400, category: "laundry", icon: "👗" },
+  { name: "Washing Machine", minWatts: 300, maxWatts: 800, avgWatts: 500, category: "laundry" },
+  { name: "Iron", minWatts: 800, maxWatts: 1500, avgWatts: 1000, category: "laundry" },
+  { name: "Dryer", minWatts: 1800, maxWatts: 3000, avgWatts: 2400, category: "laundry" },
 
   // Other
-  { name: "Water Pump", minWatts: 370, maxWatts: 1500, avgWatts: 750, category: "other", icon: "🚰" },
-  { name: "CCTV System", minWatts: 30, maxWatts: 100, avgWatts: 60, category: "other", icon: "📷" },
-  { name: "WiFi Router", minWatts: 5, maxWatts: 20, avgWatts: 12, category: "other", icon: "📶" },
-  { name: "Phone Charger", minWatts: 5, maxWatts: 25, avgWatts: 10, category: "other", icon: "📱" },
-  { name: "Hair Dryer", minWatts: 800, maxWatts: 2000, avgWatts: 1200, category: "other", icon: "💇" },
-  { name: "Electric Heater", minWatts: 1000, maxWatts: 3000, avgWatts: 2000, category: "other", icon: "🔥" },
+  { name: "Water Pump", minWatts: 370, maxWatts: 1500, avgWatts: 750, category: "other" },
+  { name: "CCTV System", minWatts: 30, maxWatts: 100, avgWatts: 60, category: "other" },
+  { name: "WiFi Router", minWatts: 5, maxWatts: 20, avgWatts: 12, category: "other" },
+  { name: "Phone Charger", minWatts: 5, maxWatts: 25, avgWatts: 10, category: "other" },
+  { name: "Hair Dryer", minWatts: 800, maxWatts: 2000, avgWatts: 1200, category: "other" },
+  { name: "Electric Heater", minWatts: 1000, maxWatts: 3000, avgWatts: 2000, category: "other" },
 ];
 
 // Fuzzy search for appliance wattage
@@ -112,7 +113,6 @@ export function estimateWatts(name: string): ApplianceInfo {
     maxWatts: 500,
     avgWatts: 200,
     category: "other",
-    icon: "⚡",
   };
 }
 

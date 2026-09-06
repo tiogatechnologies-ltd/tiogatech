@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { applianceDatabase } from "@/data/applianceWatts";
+import { applianceCategoryIcon } from "@/lib/applianceIcons";
 import { downloadReportPdf, whatsappShareUrl } from "@/lib/reportPdf";
 import { sizingToReport } from "@/lib/briefData";
 
@@ -320,7 +321,7 @@ const LumiVoltSizer = () => {
               className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-1 text-[11px] hover:border-primary/50 hover:bg-primary/5 transition-colors"
               title={`${a.avgWatts}W (typical)`}
             >
-              <span>{a.icon}</span>
+              {(() => { const Icon = applianceCategoryIcon[a.category]; return <Icon size={12} className="text-primary shrink-0" />; })()}
               <span className="font-medium text-foreground">{a.name}</span>
               <span className="text-muted-foreground">· {a.avgWatts}W</span>
             </button>
@@ -329,7 +330,7 @@ const LumiVoltSizer = () => {
       </div>
 
       <p className="text-xs text-muted-foreground text-center">
-        💡 Tip: Use the wattage on your appliance label for accurate sizing.
+        Tip: Use the wattage on your appliance label for accurate sizing.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">

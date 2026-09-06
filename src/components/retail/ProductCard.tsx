@@ -235,10 +235,10 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
         {/* Sold count urgency */}
         <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3">
           <Users size={11} className="text-emerald-500 shrink-0" />
-          <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{sold} sold this week</span>
+          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} sold this week</span>
           <span className="opacity-50">·</span>
           <Flame size={11} className="text-amber-500 shrink-0" />
-          <span className="text-amber-600 dark:text-amber-400 font-semibold">In demand</span>
+          <span className="text-amber-700 dark:text-amber-400 font-semibold">In demand</span>
         </div>
 
         {/* Price & Financing */}
@@ -255,7 +255,7 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
                   <span className="text-xs text-muted-foreground line-through">
                     ₦{Math.round(wasPrice).toLocaleString("en-NG")}
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
+                  <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
                     <Tag size={9} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
                   </span>
                 </div>
@@ -269,7 +269,7 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
             </div>
 
             {/* In stock badge */}
-            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
+            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               In Stock
             </span>

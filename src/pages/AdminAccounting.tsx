@@ -258,7 +258,7 @@ const AdminAccounting = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="rounded-2xl border border-border bg-card p-4">
             <span className="text-xs font-semibold uppercase text-muted-foreground">Total Revenue</span>
-            <p className="text-2xl font-bold font-display text-emerald-600 mt-1">
+            <p className="text-2xl font-bold font-display text-emerald-700 mt-1">
               ₦{totalRevenue.toLocaleString()}
             </p>
             <p className="text-[11px] text-muted-foreground">Sales & Service Inflow</p>
@@ -477,7 +477,7 @@ const AdminAccounting = () => {
 
             {/* Revenue */}
             <div className="space-y-3 mb-6">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 border-b border-border/50 pb-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-700 border-b border-border/50 pb-1">
                 1. Operating Revenue
               </h4>
               {revenueAccounts.map((a) => (
@@ -515,7 +515,7 @@ const AdminAccounting = () => {
                 <p className="font-bold text-foreground text-sm">Net Operating Profit Before Tax</p>
                 <p className="text-xs text-muted-foreground">Operating margin: {totalRevenue ? ((netIncome / totalRevenue) * 100).toFixed(2) : 0}%</p>
               </div>
-              <p className="text-xl font-bold font-mono text-emerald-600">
+              <p className="text-xl font-bold font-mono text-emerald-700">
                 ₦{netIncome.toLocaleString()}
               </p>
             </div>
@@ -557,7 +557,7 @@ const AdminAccounting = () => {
 
             {/* Liabilities */}
             <div className="space-y-3 mb-6">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-600 border-b border-border/50 pb-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-700 border-b border-border/50 pb-1">
                 Liabilities
               </h4>
               {liabilityAccounts.map((a) => (
@@ -583,7 +583,7 @@ const AdminAccounting = () => {
                   <span className="font-mono font-semibold">₦{Number(a.balance).toLocaleString()}</span>
                 </div>
               ))}
-              <div className="flex justify-between text-xs text-emerald-600 font-semibold py-1">
+              <div className="flex justify-between text-xs text-emerald-700 font-semibold py-1">
                 <span>Current Year Retained Profit (from P&L)</span>
                 <span className="font-mono">₦{netIncome.toLocaleString()}</span>
               </div>

@@ -218,8 +218,8 @@ const AdminEngineerCommissions = () => {
         {/* Commission KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-amber-600">Pending Accruals</span>
-            <p className="text-2xl font-bold font-display text-amber-600 mt-1">
+            <span className="text-xs font-semibold uppercase text-amber-700">Pending Accruals</span>
+            <p className="text-2xl font-bold font-display text-amber-700 mt-1">
               ₦{totalAccrued.toLocaleString()}
             </p>
             <p className="text-[11px] text-muted-foreground">Awaiting manager sign-off</p>
@@ -234,8 +234,8 @@ const AdminEngineerCommissions = () => {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-emerald-600">Disbursed YTD</span>
-            <p className="text-2xl font-bold font-display text-emerald-600 mt-1">
+            <span className="text-xs font-semibold uppercase text-emerald-700">Disbursed YTD</span>
+            <p className="text-2xl font-bold font-display text-emerald-700 mt-1">
               ₦{totalPaid.toLocaleString()}
             </p>
             <p className="text-[11px] text-muted-foreground">Paid installation bonuses</p>
@@ -332,7 +332,7 @@ const AdminEngineerCommissions = () => {
                           </button>
                         )}
                         {c.status === "paid" && (
-                          <span className="text-xs font-semibold text-emerald-600 inline-flex items-center gap-1">
+                          <span className="text-xs font-semibold text-emerald-700 inline-flex items-center gap-1">
                             <CheckCircle2 size={13} /> Paid
                           </span>
                         )}

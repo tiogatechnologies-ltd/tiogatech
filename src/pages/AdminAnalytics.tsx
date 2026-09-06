@@ -815,7 +815,7 @@ const AdminAnalytics = () => {
                       {kpi.change && (
                         <>
                           {kpi.positive ? <ArrowUpRight size={12} className="text-emerald-500" /> : <ArrowDownRight size={12} className="text-red-500" />}
-                          <span className={kpi.positive ? "text-emerald-500" : "text-red-500"}>{kpi.change}</span>
+                          <span className={kpi.positive ? "text-emerald-700" : "text-red-600"}>{kpi.change}</span>
                         </>
                       )}
                       <span className="text-muted-foreground">{kpi.sub}</span>

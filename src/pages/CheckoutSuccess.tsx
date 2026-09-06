@@ -45,7 +45,7 @@ const CheckoutSuccess = () => {
 
         {method === "paystack" && verify.status === "success" && (
           <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-foreground mb-5">
-            ✅ Paystack confirmed your payment{verify.amount ? ` of ₦${verify.amount.toLocaleString("en-NG")}` : ""}. Our team will contact you to schedule delivery or installation.
+            Paystack confirmed your payment{verify.amount ? ` of ₦${verify.amount.toLocaleString("en-NG")}` : ""}. Our team will contact you to schedule delivery or installation.
           </div>
         )}
         {method === "paystack" && verify.status === "failed" && (

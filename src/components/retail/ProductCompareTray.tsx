@@ -229,7 +229,7 @@ export const ProductCompareTray = () => {
                   <td className="p-3.5 font-bold text-foreground bg-muted/20">Availability</td>
                   {compareItems.map((item) => (
                     <td key={item.id} className="p-3.5 text-center">
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
                         <Check size={13} />
                         In Stock (Ships in 24h)
                       </span>

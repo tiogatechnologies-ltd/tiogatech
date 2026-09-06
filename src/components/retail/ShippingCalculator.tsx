@@ -35,7 +35,7 @@ export const ShippingCalculator = () => {
           <Truck size={16} className="text-primary" />
           <span>Delivery & Dispatch Estimator</span>
         </div>
-        <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+        <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1">
           <CheckCircle2 size={13} />
           Insured Transit
         </span>
@@ -62,7 +62,7 @@ export const ShippingCalculator = () => {
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Shipping Fee:</span>
             <span className="font-mono font-bold text-foreground">
-              {rate.fee === 0 ? <strong className="text-emerald-500 uppercase">FREE</strong> : `₦${rate.fee.toLocaleString()}`}
+              {rate.fee === 0 ? <strong className="text-emerald-700 uppercase">FREE</strong> : `₦${rate.fee.toLocaleString()}`}
             </span>
           </div>
           <div className="flex items-center justify-between">

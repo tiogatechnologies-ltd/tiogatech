@@ -252,7 +252,7 @@ export const AutomationPackageDetail = () => {
                 <span className="text-xs text-muted-foreground">·</span>
                 <div className="flex items-center gap-1 text-xs">
                   <Users size={12} className="text-emerald-500" />
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">1 booked this week</span>
+                  <span className="text-emerald-700 dark:text-emerald-400 font-semibold">1 booked this week</span>
                 </div>
               </div>
 
@@ -264,7 +264,7 @@ export const AutomationPackageDetail = () => {
                   {wasPrice && savedAmount && (
                     <div className="flex flex-col pb-1">
                       <span className="text-sm text-muted-foreground line-through">From {fmtN(wasPrice)}</span>
-                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Save {fmtN(savedAmount)} ({pct}%)</span>
+                      <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">Save {fmtN(savedAmount)} ({pct}%)</span>
                     </div>
                   )}
                 </div>
@@ -313,7 +313,7 @@ export const AutomationPackageDetail = () => {
               <a
                 href={whatsappLink(contact, `Hi Tioga, I'm interested in the ${pkg.name} Home Automation package. Please share installation timeline and what's included.`)}
                 target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 hover:underline"
+                className="flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-400 hover:underline"
               >
                 <MessageCircle size={15} /> Chat on WhatsApp
               </a>
@@ -373,7 +373,7 @@ export const AutomationPackageDetail = () => {
                   ].map(({ label, value, muted, highlight, green }) => (
                     <div key={label} className={`p-3 rounded-xl text-center ${highlight ? "bg-primary text-primary-foreground" : "bg-card border border-border"}`}>
                       <p className={`text-[10px] uppercase tracking-wider font-semibold mb-1 ${highlight ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{label}</p>
-                      <p className={`font-display font-bold text-base ${green ? "text-emerald-600 dark:text-emerald-400" : muted ? "line-through text-muted-foreground text-sm" : ""}`}>{value}</p>
+                      <p className={`font-display font-bold text-base ${green ? "text-emerald-700 dark:text-emerald-400" : muted ? "line-through text-muted-foreground text-sm" : ""}`}>{value}</p>
                     </div>
                   ))}
                 </div>

@@ -278,7 +278,7 @@ const AccountSubscription = () => {
                       </span>
                     )}
                     {isCurrent && (
-                      <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 text-[10px] font-bold uppercase tracking-widest">
+                      <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 text-[10px] font-bold uppercase tracking-widest">
                         <Star size={10} /> Current
                       </span>
                     )}
@@ -358,7 +358,7 @@ const AccountSubscription = () => {
                         <div className="text-xs text-muted-foreground">{new Date(u.created_at).toLocaleDateString()} · {new Date(u.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                         <div className="text-[10px] uppercase tracking-wider mt-0.5 inline-flex items-center gap-1">
                           {u.used_free_credit ? (
-                            <span className="text-amber-600 flex items-center gap-1">Free credit</span>
+                            <span className="text-amber-700 flex items-center gap-1">Free credit</span>
                           ) : (
                             <span className="text-primary flex items-center gap-1"><CheckCircle2 size={10} /> {u.subscription_plan || "Plan"}</span>
                           )}

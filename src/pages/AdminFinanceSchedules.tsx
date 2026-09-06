@@ -184,7 +184,7 @@ const AdminFinanceSchedules = () => {
                 <tr key={r.id} className="border-t border-border hover:bg-muted/20">
                   <td className="px-4 py-3 whitespace-nowrap">
                     {new Date(r.due_date).toLocaleDateString()}
-                    {r.original_due_date && r.original_due_date !== r.due_date && <span className="block text-[10px] text-amber-600">shifted</span>}
+                    {r.original_due_date && r.original_due_date !== r.due_date && <span className="block text-[10px] text-amber-700">shifted</span>}
                   </td>
                   <td className="px-4 py-3">
                     <button onClick={() => loadDetail(r.application_id)} className="text-left hover:underline">
@@ -233,7 +233,7 @@ const AdminFinanceSchedules = () => {
                       <div>
                         <span className="font-medium">{r.is_deposit ? "Deposit" : `Installment #${r.installment_no}`}</span>
                         <span className="ml-2 text-xs text-muted-foreground">due {new Date(r.due_date).toLocaleDateString()}</span>
-                        {r.override_reason && <p className="text-[11px] text-amber-600">Shifted: {r.override_reason}</p>}
+                        {r.override_reason && <p className="text-[11px] text-amber-700">Shifted: {r.override_reason}</p>}
                         {r.last_charge_error && <p className="text-[11px] text-destructive">Last error: {r.last_charge_error}</p>}
                       </div>
                       <div className="flex items-center gap-2">

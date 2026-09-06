@@ -227,7 +227,7 @@ const AdminAffiliates = () => {
                         <span
                           className={`text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded ${
                             a.status === "active"
-                              ? "bg-emerald-500/15 text-emerald-600"
+                              ? "bg-emerald-500/15 text-emerald-700"
                               : "bg-muted text-muted-foreground"
                           }`}
                         >
@@ -276,9 +276,9 @@ const AdminAffiliates = () => {
                       <span
                         className={`text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded ${
                           app.status === "pending"
-                            ? "bg-amber-500/15 text-amber-600"
+                            ? "bg-amber-500/15 text-amber-700"
                             : app.status === "approved"
-                            ? "bg-emerald-500/15 text-emerald-600"
+                            ? "bg-emerald-500/15 text-emerald-700"
                             : "bg-muted text-muted-foreground"
                         }`}
                       >

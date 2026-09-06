@@ -80,9 +80,9 @@ const parseBudgetToNGN = (b: string | null): number => {
 };
 
 const statusStyles: Record<string, string> = {
-  pending: "bg-amber-500/15 text-amber-600",
+  pending: "bg-amber-500/15 text-amber-700",
   approved: "bg-blue-500/15 text-blue-600",
-  paid: "bg-emerald-500/15 text-emerald-600",
+  paid: "bg-emerald-500/15 text-emerald-700",
   rejected: "bg-muted text-muted-foreground",
 };
 
@@ -276,7 +276,7 @@ const AdminAffiliatePayouts = () => {
                       <span className="text-muted-foreground"> • Commission</span>{" "}
                       <span className="font-bold text-primary">{ngn(p.commission_total)}</span>
                       <span className="text-muted-foreground"> • Payout</span>{" "}
-                      <span className="font-bold text-emerald-600">{ngn(p.amount)}</span>
+                      <span className="font-bold text-emerald-700">{ngn(p.amount)}</span>
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2 shrink-0">
@@ -354,12 +354,12 @@ const StatCard = ({
   tone: "amber" | "emerald" | "primary";
 }) => {
   const map = {
-    amber: "from-amber-500/10 to-amber-500/5 border-amber-500/20 text-amber-600",
-    emerald: "from-emerald-500/10 to-emerald-500/5 border-emerald-500/20 text-emerald-600",
-    primary: "from-primary/10 to-primary/5 border-primary/20 text-primary",
+    amber: "bg-amber-500/10 border-amber-500/20 text-amber-700",
+    emerald: "bg-emerald-500/10 border-emerald-500/20 text-emerald-700",
+    primary: "bg-primary/10 border-primary/20 text-primary",
   } as const;
   return (
-    <div className={`rounded-2xl border bg-gradient-to-br p-4 ${map[tone]}`}>
+    <div className={`rounded-2xl border p-4 ${map[tone]}`}>
       <p className="text-[11px] uppercase tracking-wider font-semibold">{label}</p>
       <p className="text-2xl font-display font-bold mt-1 text-foreground">{value}</p>
     </div>

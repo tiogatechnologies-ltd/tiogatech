@@ -35,9 +35,9 @@ interface OrderItem {
 const STATUSES = ["new", "contacted", "confirmed", "fulfilled", "cancelled"];
 const STATUS_COLORS: Record<string, string> = {
   new: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-  contacted: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  contacted: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
   confirmed: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
-  fulfilled: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  fulfilled: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
   cancelled: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
 };
 

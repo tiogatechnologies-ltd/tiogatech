@@ -179,8 +179,8 @@ const AdminJobCosting = () => {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-emerald-600">Total Gross Profit</span>
-            <p className="text-2xl font-bold font-display text-emerald-600 mt-1">
+            <span className="text-xs font-semibold uppercase text-emerald-700">Total Gross Profit</span>
+            <p className="text-2xl font-bold font-display text-emerald-700 mt-1">
               ₦{totalGrossProfit.toLocaleString()}
             </p>
             <p className="text-[11px] text-muted-foreground">After all site labor & haulage</p>
@@ -257,7 +257,7 @@ const AdminJobCosting = () => {
                       <td className="px-4 py-3 text-right font-mono text-muted-foreground text-xs">
                         ₦{(Number(j.technician_labor_cost) + Number(j.logistics_cost)).toLocaleString()}
                       </td>
-                      <td className="px-4 py-3 text-right font-mono font-bold text-emerald-600">
+                      <td className="px-4 py-3 text-right font-mono font-bold text-emerald-700">
                         ₦{Number(j.gross_profit).toLocaleString()}
                       </td>
                       <td className="px-4 py-3 text-center">
@@ -392,7 +392,7 @@ const AdminJobCosting = () => {
                 <div className="bg-muted/40 p-4 rounded-2xl border border-border flex justify-between items-center text-xs">
                   <div>
                     <p className="text-muted-foreground">Estimated Gross Profit:</p>
-                    <p className="font-bold font-mono text-emerald-600 text-sm">₦{grossProfit.toLocaleString()}</p>
+                    <p className="font-bold font-mono text-emerald-700 text-sm">₦{grossProfit.toLocaleString()}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-muted-foreground">Gross Margin %:</p>

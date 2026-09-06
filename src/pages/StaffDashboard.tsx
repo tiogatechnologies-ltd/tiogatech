@@ -89,12 +89,12 @@ const StaffDashboard = () => {
 
   const cards = useMemo(() => stats ? [
     { icon: ShoppingBag, label: "Orders today", value: stats.ordersToday.toString(), href: "/admin/orders", accent: "text-primary" },
-    { icon: Wallet, label: "Revenue today", value: NGN(stats.revenueToday), href: "/admin/orders?status=paid", accent: "text-emerald-600" },
-    { icon: Clock, label: "Orders needing action", value: stats.ordersPending.toString(), href: "/admin/orders?status=pending", accent: "text-amber-600" },
+    { icon: Wallet, label: "Revenue today", value: NGN(stats.revenueToday), href: "/admin/orders?status=paid", accent: "text-emerald-700" },
+    { icon: Clock, label: "Orders needing action", value: stats.ordersPending.toString(), href: "/admin/orders?status=pending", accent: "text-amber-700" },
     { icon: Users, label: "Leads today", value: stats.leadsToday.toString(), href: "/admin/leads", accent: "text-primary" },
-    { icon: Users, label: "New leads to work", value: stats.leadsNew.toString(), href: "/admin/leads", accent: "text-amber-600" },
+    { icon: Users, label: "New leads to work", value: stats.leadsNew.toString(), href: "/admin/leads", accent: "text-amber-700" },
     { icon: Ticket, label: "Open tickets", value: stats.ticketsOpen.toString(), href: "/admin/tickets", accent: "text-red-600" },
-    { icon: MessageSquare, label: "Tickets in progress", value: stats.ticketsInProgress.toString(), href: "/admin/tickets", accent: "text-amber-600" },
+    { icon: MessageSquare, label: "Tickets in progress", value: stats.ticketsInProgress.toString(), href: "/admin/tickets", accent: "text-amber-700" },
     { icon: Sun, label: "Pending assessments", value: stats.assessmentsPending.toString(), href: "/admin/assessments", accent: "text-primary" },
     { icon: FileText, label: "Open custom requests", value: stats.customRequestsOpen.toString(), href: "/admin/custom-requests", accent: "text-primary" },
   ] : [], [stats]);

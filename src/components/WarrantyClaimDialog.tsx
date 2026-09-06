@@ -89,7 +89,7 @@ const WarrantyClaimDialog = ({
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-sm">
               <p className="font-semibold text-foreground">{serial.product_name}</p>
               <p className="text-xs text-muted-foreground">Serial {serial.serial}</p>
-              <p className={`mt-1 text-xs font-semibold ${inWarranty ? "text-emerald-600" : "text-destructive"}`}>
+              <p className={`mt-1 text-xs font-semibold ${inWarranty ? "text-emerald-700" : "text-destructive"}`}>
                 {inWarranty
                   ? serial.warranty_until
                     ? `In warranty until ${new Date(serial.warranty_until).toLocaleDateString("en-NG")}`

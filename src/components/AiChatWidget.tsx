@@ -156,7 +156,7 @@ const AiChatWidget = () => {
                         <p className="text-foreground">{out.months} × <strong className="font-bold text-primary text-sm">₦{out.monthly_payment.toLocaleString()}</strong>/mo</p>
                       </div>
                     );
-                    if (out?.lead_id) return <p key={i} className="text-xs mt-1.5 font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">✓ {out.message}</p>;
+                    if (out?.lead_id) return <p key={i} className="text-xs mt-1.5 font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">✓ {out.message}</p>;
                     return null;
                   })}
                 </div>

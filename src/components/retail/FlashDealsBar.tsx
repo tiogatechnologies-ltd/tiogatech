@@ -29,7 +29,7 @@ export const FlashDealsBar = () => {
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs sm:text-sm font-display font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+              <span className="text-xs sm:text-sm font-display font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
                 Mid-Month Energy Flash Deals
               </span>
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500 text-midnight text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
@@ -38,7 +38,7 @@ export const FlashDealsBar = () => {
             </div>
             <p className="text-xs text-foreground/80 mt-1">
               Apply code{" "}
-              <strong className="text-amber-600 dark:text-amber-400 font-mono bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded font-bold">
+              <strong className="text-amber-700 dark:text-amber-400 font-mono bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded font-bold">
                 TIOGA2026
               </strong>{" "}
               at checkout for free 24-hour expedited dispatch on all inverter and battery storage orders.
@@ -50,7 +50,7 @@ export const FlashDealsBar = () => {
         <div className="flex items-center gap-4 sm:gap-6 w-full lg:w-auto justify-between lg:justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-amber-500/20">
           {/* Live Countdown Timer */}
           <div className="flex items-center gap-2 text-xs font-semibold">
-            <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
+            <div className="flex items-center gap-1 text-amber-700 dark:text-amber-400">
               <Clock size={14} />
               <span className="font-bold">Ends In:</span>
             </div>
@@ -65,7 +65,7 @@ export const FlashDealsBar = () => {
                 <span className="text-[9px] text-muted-foreground font-sans ml-0.5">m</span>
               </div>
               <span className="text-amber-500 font-bold">:</span>
-              <div className="px-2.5 py-1 rounded-xl bg-card border border-amber-500/40 text-amber-600 dark:text-amber-400 shadow-xs">
+              <div className="px-2.5 py-1 rounded-xl bg-card border border-amber-500/40 text-amber-700 dark:text-amber-400 shadow-xs">
                 {format(timeLeft.seconds)}
                 <span className="text-[9px] text-muted-foreground font-sans ml-0.5">s</span>
               </div>
@@ -73,7 +73,7 @@ export const FlashDealsBar = () => {
           </div>
 
           {/* Value Badge */}
-          <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-xl">
+          <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-xl">
             <Truck size={14} />
             <span>24h Dispatch</span>
           </div>

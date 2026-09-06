@@ -45,9 +45,9 @@ const StatusPill = ({ status }: { status: string }) => {
   const s = (status || "").toLowerCase();
   const tone =
     s === "paid" || s === "approved" || s === "active" || s === "completed" || s === "delivered"
-      ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+      ? "bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
       : s === "pending" || s === "in_review" || s === "processing" || s === "shipped"
-      ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
+      ? "bg-amber-500/10 text-amber-700 border-amber-500/20"
       : s === "rejected" || s === "cancelled" || s === "failed"
       ? "bg-destructive/10 text-destructive border-destructive/20"
       : "bg-muted text-muted-foreground border-border";
@@ -217,7 +217,7 @@ const Account = () => {
           {/* KPI tiles */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <StatTile icon={ShoppingBag} label="Orders" value={orders.length} hint={`${formatNGN(totalSpent)} lifetime`} />
-            <StatTile icon={Wallet} label="Active finance" value={activeFinance ? formatNGN(activeFinance.monthly_payment_ngn) + "/mo" : "-"} hint={activeFinance ? `${activeFinance.months} months` : "No active plan"} accent="bg-amber-500/10 text-amber-600" />
+            <StatTile icon={Wallet} label="Active finance" value={activeFinance ? formatNGN(activeFinance.monthly_payment_ngn) + "/mo" : "-"} hint={activeFinance ? `${activeFinance.months} months` : "No active plan"} accent="bg-amber-500/10 text-amber-700" />
             <StatTile icon={Sun} label="AI assessments" value={assessments.length} hint={adminUnlimited ? "Unlimited (Admin)" : `${remainingCredits} free credit${remainingCredits === 1 ? "" : "s"} left`} accent="bg-blue-500/10 text-blue-600" />
             <StatTile icon={Zap} label="AI plan" value={adminUnlimited ? "Unlimited" : activeSub ? (aiSub.plan === "business" ? "Business" : "Starter") : "Free"} hint={adminUnlimited ? "Admin access" : activeSub ? "Unlimited" : `${usedCredits}/${totalCredits} used`} accent={adminUnlimited || activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"} />
           </div>
@@ -270,7 +270,7 @@ const Account = () => {
                 <div className="rounded-3xl border border-amber-500/30 bg-amber-500/5 p-5 sm:p-6">
                   <div className="flex items-center justify-between gap-3 mb-3">
                     <div className="flex items-center gap-2">
-                      {isAdmin ? <Crown size={18} className="text-amber-600" /> : isStaff ? <ShieldCheck size={18} className="text-amber-600" /> : <Wrench size={18} className="text-amber-600" />}
+                      {isAdmin ? <Crown size={18} className="text-amber-700" /> : isStaff ? <ShieldCheck size={18} className="text-amber-700" /> : <Wrench size={18} className="text-amber-700" />}
                       <h2 className="font-display font-bold">{isAdmin ? "Admin workspace" : isStaff ? "Staff workspace" : "Engineer workspace"}</h2>
                     </div>
                     {engineerQueue > 0 && (
@@ -560,11 +560,11 @@ const Account = () => {
                       </div>
                       <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/20 p-2.5">
                         <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Paid</div>
-                        <div className="font-display font-bold text-emerald-600 truncate">{formatNGN(affEarnings)}</div>
+                        <div className="font-display font-bold text-emerald-700 truncate">{formatNGN(affEarnings)}</div>
                       </div>
                       <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-2.5">
                         <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Pending</div>
-                        <div className="font-display font-bold text-amber-600 truncate">{formatNGN(affPendingEarnings)}</div>
+                        <div className="font-display font-bold text-amber-700 truncate">{formatNGN(affPendingEarnings)}</div>
                       </div>
                     </div>
 
@@ -603,8 +603,8 @@ const Account = () => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
-                        {affApplication.status === "pending" ? <Clock size={16} className="text-amber-600" /> :
-                          affApplication.status === "approved" ? <CheckCircle2 size={16} className="text-emerald-600" /> :
+                        {affApplication.status === "pending" ? <Clock size={16} className="text-amber-700" /> :
+                          affApplication.status === "approved" ? <CheckCircle2 size={16} className="text-emerald-700" /> :
                           <AlertCircle size={16} className="text-destructive" />}
                         <span className="text-sm font-semibold text-foreground capitalize">Application {affApplication.status}</span>
                       </div>

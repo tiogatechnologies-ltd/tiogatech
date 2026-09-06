@@ -97,8 +97,8 @@ const Career = () => {
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
-              {/* High-contrast overlay so text remains very visible */}
-              <div className="absolute inset-0 bg-midnight" />
+              {/* Translucent so the photo still reads while keeping white text legible */}
+              <div className="absolute inset-0 bg-midnight/70" />
               <div className="relative z-10 p-6 flex flex-col justify-end text-primary-foreground">
                 <div className="w-11 h-11 rounded-xl bg-gold/95 flex items-center justify-center mb-3 shadow-lg">
                   <r.icon className="text-midnight" size={20} />
@@ -174,7 +174,7 @@ const Career = () => {
       <div className="section-container">
         <div className="relative rounded-3xl overflow-hidden border border-border min-h-[320px] sm:min-h-[400px]">
           <img src={bgTeam} alt="Tioga Technologies team in Lagos" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-midnight" />
+          <div className="absolute inset-0 bg-midnight/70" />
           <div className="relative h-full p-8 sm:p-12 lg:p-16 flex flex-col justify-center max-w-xl text-primary-foreground">
             <p className="text-[10px] uppercase tracking-[0.22em] text-gold mb-3 font-bold">Life at Tioga</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold leading-tight no-clip mb-4">

@@ -164,7 +164,7 @@ const TrackOrder = () => {
                     <span className={`rounded-full px-3 py-1 text-xs font-semibold ${cancelled ? "bg-destructive/10 text-destructive" : "bg-primary/10 text-primary"}`}>
                       {pretty(order.status)}
                     </span>
-                    <span className={`rounded-full px-3 py-1 text-xs font-medium ${order.payment_status === "paid" ? "bg-emerald-500/10 text-emerald-600" : "bg-muted text-muted-foreground"}`}>
+                    <span className={`rounded-full px-3 py-1 text-xs font-medium ${order.payment_status === "paid" ? "bg-emerald-500/10 text-emerald-700" : "bg-muted text-muted-foreground"}`}>
                       Payment: {pretty(order.payment_status ?? "pending")}
                     </span>
                   </div>

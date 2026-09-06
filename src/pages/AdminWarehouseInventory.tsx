@@ -342,11 +342,11 @@ const AdminWarehouseInventory = () => {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <div className="flex items-center justify-between text-amber-600 mb-1">
+            <div className="flex items-center justify-between text-amber-700 mb-1">
               <span className="text-xs font-semibold uppercase">Low Stock Alerts</span>
               <AlertTriangle size={16} />
             </div>
-            <p className="text-2xl font-bold font-display text-amber-600">{lowStockCount}</p>
+            <p className="text-2xl font-bold font-display text-amber-700">{lowStockCount}</p>
             <p className="text-[11px] text-muted-foreground">Below reorder point</p>
           </div>
         </div>

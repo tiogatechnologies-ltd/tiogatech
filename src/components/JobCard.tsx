@@ -18,22 +18,6 @@ const DEFAULT_DEADLINE = "30th May, 2026";
 
 const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (job: Job) => void }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0, mx: 50, my: 50 });
-
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    setTilt({
-      rx: -py * 6,
-      ry: px * 8,
-      mx: ((e.clientX - r.left) / r.width) * 100,
-      my: ((e.clientY - r.top) / r.height) * 100,
-    });
-  };
-  const reset = () => setTilt({ rx: 0, ry: 0, mx: 50, my: 50 });
 
   return (
     <motion.div
@@ -42,14 +26,7 @@ const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (j
       viewport={{ once: true, margin: "-10%" }}
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.12 }}
       ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={reset}
-      style={{
-        transform: `perspective(900px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
-        transition: "transform 200ms ease-out",
-        transformStyle: "preserve-3d",
-      }}
-      className="group relative rounded-2xl backdrop-blur-xl bg-midnight/90 border border-primary/25 shadow-[0_10px_40px_hsl(var(--foreground)/0.35)] hover:border-accent/80 hover:shadow-[0_0_46px_hsl(var(--accent)/0.22)] overflow-hidden flex flex-col min-h-[620px]"
+      className="group relative rounded-2xl bg-midnight border border-primary/25 shadow-lg hover:border-accent/80 hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col min-h-[620px]"
     >
       {job.backgroundImage && (
         <img
@@ -60,15 +37,7 @@ const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (j
           className="absolute inset-0 h-full w-full object-cover opacity-55 saturate-[0.85] transition-transform duration-700 ease-out group-hover:scale-105"
         />
       )}
-      <div className="pointer-events-none absolute inset-0 bg-midnight/70" />
-      <div className="pointer-events-none absolute inset-0 bg-midnight/95" />
-      {/* Cursor-tracking sheen */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{
-          background: `radial-gradient(420px circle at ${tilt.mx}% ${tilt.my}%, hsl(var(--accent) / 0.16), transparent 55%)`,
-        }}
-      />
+      <div className="pointer-events-none absolute inset-0 bg-midnight/75" />
       {/* Top emerald hairline */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-accent/40" />
       {/* Glow accent */}

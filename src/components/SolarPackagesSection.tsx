@@ -186,10 +186,10 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
         {/* Social Proof Urgency */}
         <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3">
           <Users size={11} className="text-emerald-500 shrink-0" />
-          <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
+          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
           <span className="opacity-50">·</span>
           <Flame size={11} className="text-amber-500 shrink-0" />
-          <span className="text-amber-600 dark:text-amber-400 font-semibold">In demand</span>
+          <span className="text-amber-700 dark:text-amber-400 font-semibold">In demand</span>
         </div>
 
         {/* Price & Financing */}
@@ -206,7 +206,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
                   <span className="text-xs text-muted-foreground line-through">
                     {fmtPrice(wasPrice)}
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
+                  <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
                     <Tag size={9} /> Save {fmtPrice(savedAmount)}
                   </span>
                 </div>
@@ -219,7 +219,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
             </div>
 
             {/* In stock / Ready badge */}
-            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
+            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Ready to Install
             </span>

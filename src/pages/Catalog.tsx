@@ -597,7 +597,7 @@ export const Catalog = () => {
             </div>
 
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 shrink-0">
                 <Award size={16} />
               </div>
               <div>

@@ -388,7 +388,7 @@ const AdminSupportTickets = () => {
 
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">
-                    Update status {isEmail(selected.user_contact) && <span className="text-emerald-600">· customer will be emailed</span>}
+                    Update status {isEmail(selected.user_contact) && <span className="text-emerald-700">· customer will be emailed</span>}
                   </p>
                   <Select value={selected.status} onValueChange={(v) => updateStatus(selected.id, v as Ticket["status"])}>
                     <SelectTrigger><SelectValue /></SelectTrigger>

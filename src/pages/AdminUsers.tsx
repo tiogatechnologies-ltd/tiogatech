@@ -382,10 +382,10 @@ const AdminUsers = () => {
 
           <div className="rounded-2xl border border-border bg-card p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase text-amber-600">Field Engineers</span>
-              <Wrench size={16} className="text-amber-600" />
+              <span className="text-xs font-semibold uppercase text-amber-700">Field Engineers</span>
+              <Wrench size={16} className="text-amber-700" />
             </div>
-            <p className="text-2xl font-bold font-display text-amber-600 mt-1">
+            <p className="text-2xl font-bold font-display text-amber-700 mt-1">
               {users.filter((u) => u.roles.includes("engineer")).length}
             </p>
           </div>
@@ -402,10 +402,10 @@ const AdminUsers = () => {
 
           <div className="rounded-2xl border border-border bg-card p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase text-emerald-600">Active Accounts</span>
-              <CheckCircle2 size={16} className="text-emerald-600" />
+              <span className="text-xs font-semibold uppercase text-emerald-700">Active Accounts</span>
+              <CheckCircle2 size={16} className="text-emerald-700" />
             </div>
-            <p className="text-2xl font-bold font-display text-emerald-600 mt-1">
+            <p className="text-2xl font-bold font-display text-emerald-700 mt-1">
               {users.length}
             </p>
           </div>
@@ -487,7 +487,7 @@ const AdminUsers = () => {
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                         Active
                       </span>

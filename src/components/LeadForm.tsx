@@ -329,23 +329,12 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
         {step >= 0 && (
           <div className="mx-6 h-2 rounded-full bg-muted overflow-hidden relative">
             <div
-              className="h-full rounded-full relative overflow-hidden"
+              className="h-full rounded-full bg-primary"
               style={{
                 width: `${progress}%`,
-                background: "linear-gradient(90deg, hsl(var(--solar-gold)) 0%, hsl(var(--primary)) 100%)",
                 transition: "width 700ms cubic-bezier(0.34, 1.56, 0.64, 1)",
               }}
-            >
-              {/* liquid shimmer */}
-              <div
-                className="absolute inset-0 opacity-60"
-                style={{
-                  background: "linear-gradient(90deg, transparent, hsla(0,0%,100%,0.55), transparent)",
-                  backgroundSize: "200% 100%",
-                  animation: "shimmer 2.4s linear infinite",
-                }}
-              />
-            </div>
+            />
           </div>
         )}
 

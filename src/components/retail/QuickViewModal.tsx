@@ -113,7 +113,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
                     <span className="text-xs text-muted-foreground line-through">
                       ₦{Math.round(wasPrice).toLocaleString("en-NG")}
                     </span>
-                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                    <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400">
                       Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
                     </span>
                   </div>

@@ -59,7 +59,7 @@ const TelegramWidget = () => {
         </button>
         <div
           className="mx-auto h-14 w-14 rounded-2xl flex items-center justify-center text-white shadow-lg mb-4"
-          style={{ background: "linear-gradient(135deg, #229ED9, #1d8dc2)" }}
+          style={{ background: "#229ED9" }}
         >
           <Send size={26} className="-ml-0.5" />
         </div>
@@ -86,7 +86,7 @@ const TelegramWidget = () => {
               dismiss();
             }}
             className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
-            style={{ background: "linear-gradient(135deg, #229ED9, #1d8dc2)" }}
+            style={{ background: "#229ED9" }}
           >
             <Send size={15} /> Join on Telegram
           </a>

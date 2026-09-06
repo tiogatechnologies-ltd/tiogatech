@@ -3,7 +3,8 @@ import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Package, Users, TrendingUp, Clock, ShoppingBag, Wallet, AlertTriangle,
-  Mail, ArrowUpRight, FileText, Send, Zap, BarChart3, CheckCircle2, XCircle, Loader2
+  Mail, ArrowUpRight, FileText, Send, Zap, BarChart3, CheckCircle2, XCircle, Loader2,
+  Briefcase, Star
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, Cell, Legend } from "recharts";
 import { toast } from "sonner";
@@ -300,11 +301,11 @@ const AdminDashboard = () => {
               </div>
               <div className="divide-y divide-border">
                 {pending.length === 0 ? (
-                  <p className="px-5 py-8 text-sm text-center text-muted-foreground">Nothing to review 🎉</p>
+                  <p className="px-5 py-8 text-sm text-center text-muted-foreground">Nothing to review</p>
                 ) : pending.map(p => (
                   <Link key={`${p.kind}-${p.id}`} to={p.href} className="flex items-center gap-3 px-5 py-3 hover:bg-muted/40 transition-colors">
                     <span className={`h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold ${p.kind === "finance" ? "bg-accent/15 text-accent" : p.kind === "career" ? "bg-primary/15 text-primary" : "bg-muted text-foreground"}`}>
-                      {p.kind === "finance" ? "₦" : p.kind === "career" ? "✦" : "♛"}
+                      {p.kind === "finance" ? "₦" : p.kind === "career" ? <Briefcase size={14} /> : <Star size={14} />}
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-card-foreground truncate">{p.title}</p>
@@ -382,7 +383,7 @@ const AdminDashboard = () => {
           </div>
 
           {isAdmin && stats && (
-            <div className="rounded-2xl border border-border bg-gradient-to-br from-card to-muted/30 p-5 flex flex-wrap items-center gap-4 justify-between">
+            <div className="rounded-2xl border border-border bg-card p-5 flex flex-wrap items-center gap-4 justify-between">
               <div className="flex items-center gap-3">
                 <span className="h-10 w-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center"><CheckCircle2 size={18} /></span>
                 <div>

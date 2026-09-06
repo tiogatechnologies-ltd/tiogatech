@@ -169,7 +169,7 @@ export const CCTV = () => {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center mb-4">
                 <Eye size={24} />
               </div>
               <h3 className="font-display font-bold text-lg text-foreground mb-2">24/7 ColorVu Night Vision</h3>
@@ -189,7 +189,7 @@ export const CCTV = () => {
             </div>
 
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-4">
                 <Sun size={24} />
               </div>
               <h3 className="font-display font-bold text-lg text-foreground mb-2">Solar 4G Off-Grid Ready</h3>

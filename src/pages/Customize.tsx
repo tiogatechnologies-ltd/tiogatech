@@ -605,7 +605,7 @@ const Customize = () => {
                   <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Your custom total</p>
                   <p className="text-4xl font-display font-bold text-foreground mb-1 tabular-nums">{ngn(total)}</p>
                   {priceDelta !== 0 && baselinePrice > 0 && (
-                    <p className={`text-xs mb-2 font-semibold ${priceDelta > 0 ? "text-amber-600" : "text-emerald-600"}`}>
+                    <p className={`text-xs mb-2 font-semibold ${priceDelta > 0 ? "text-amber-700" : "text-emerald-700"}`}>
                       {priceDelta > 0 ? "+" : "−"}{ngn(Math.abs(priceDelta))} vs. base package ({ngn(baselinePrice)})
                     </p>
                   )}

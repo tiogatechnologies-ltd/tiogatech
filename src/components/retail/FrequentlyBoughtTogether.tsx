@@ -133,7 +133,7 @@ export const FrequentlyBoughtTogether = ({ currentProduct, recommendedProducts }
             </div>
 
             {bundleDiscount > 0 && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full mt-2">
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full mt-2">
                 <Tag size={12} /> You Save ₦{bundleDiscount.toLocaleString()} (8% OFF)
               </span>
             )}

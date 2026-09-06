@@ -260,16 +260,16 @@ const AdminInvoices = () => {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-emerald-600">Collected Revenue</span>
-            <p className="text-2xl font-bold font-display text-emerald-600 mt-1">
+            <span className="text-xs font-semibold uppercase text-emerald-700">Collected Revenue</span>
+            <p className="text-2xl font-bold font-display text-emerald-700 mt-1">
               ₦{Number(totalPaidRevenue).toLocaleString()}
             </p>
             <p className="text-[11px] text-muted-foreground">Confirmed Receipts & Deposits</p>
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-4">
-            <span className="text-xs font-semibold uppercase text-amber-600">Accounts Receivable</span>
-            <p className="text-2xl font-bold font-display text-amber-600 mt-1">
+            <span className="text-xs font-semibold uppercase text-amber-700">Accounts Receivable</span>
+            <p className="text-2xl font-bold font-display text-amber-700 mt-1">
               ₦{Number(totalReceivables).toLocaleString()}
             </p>
             <p className="text-[11px] text-muted-foreground">Outstanding Customer Balances</p>
@@ -356,10 +356,10 @@ const AdminInvoices = () => {
                     <td className="px-4 py-3 text-right font-bold text-foreground">
                       ₦{Number(inv.total_amount).toLocaleString()}
                     </td>
-                    <td className="px-4 py-3 text-right text-emerald-600 font-semibold">
+                    <td className="px-4 py-3 text-right text-emerald-700 font-semibold">
                       ₦{Number(inv.deposit_paid || 0).toLocaleString()}
                     </td>
-                    <td className="px-4 py-3 text-right font-mono font-bold text-amber-600">
+                    <td className="px-4 py-3 text-right font-mono font-bold text-amber-700">
                       ₦{Number(inv.balance_due || 0).toLocaleString()}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -612,9 +612,9 @@ const AdminInvoices = () => {
 
                   <div className="border-t border-border pt-2 flex justify-between font-bold text-sm text-foreground">
                     <span>Total Invoiced:</span>
-                    <span className="font-mono text-emerald-600">₦{totalAmount.toLocaleString()}</span>
+                    <span className="font-mono text-emerald-700">₦{totalAmount.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between font-bold text-sm text-amber-600">
+                  <div className="flex justify-between font-bold text-sm text-amber-700">
                     <span>Balance Due:</span>
                     <span className="font-mono">₦{balanceDue.toLocaleString()}</span>
                   </div>

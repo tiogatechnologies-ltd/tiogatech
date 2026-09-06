@@ -167,7 +167,7 @@ const Contact = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="block rounded-2xl p-6 text-white shadow-md transition-all hover:brightness-110"
-              style={{ background: "linear-gradient(135deg, #229ED9, #1d8dc2)" }}
+              style={{ background: "#229ED9" }}
             >
               <Send size={22} className="mb-3" />
               <p className="font-display font-bold text-lg mb-1">Join our Telegram community</p>

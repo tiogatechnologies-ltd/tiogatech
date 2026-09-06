@@ -5,6 +5,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { applianceDatabase } from "@/data/applianceWatts";
+import { applianceCategoryIcon } from "@/lib/applianceIcons";
 import { ArrowRight, Loader2, Plus, Minus, Trash2, Sun, Zap, Battery, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
@@ -187,11 +188,14 @@ const SolarAssessment = () => {
                 <p className="text-sm text-muted-foreground">Adjust quantity and daily hours. Add more from the picker below.</p>
 
                 <div className="rounded-xl border border-border bg-muted/30 p-3 grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-44 overflow-y-auto">
-                  {applianceDatabase.map((a) => (
-                    <button key={a.name} onClick={() => addAppliance(a.name, a.avgWatts)} className="text-xs text-left px-3 py-2 rounded-lg bg-background hover:bg-primary/10 border border-border">
-                      <span className="mr-1">{a.icon}</span>{a.name}
-                    </button>
-                  ))}
+                  {applianceDatabase.map((a) => {
+                    const Icon = applianceCategoryIcon[a.category];
+                    return (
+                      <button key={a.name} onClick={() => addAppliance(a.name, a.avgWatts)} className="text-xs text-left px-3 py-2 rounded-lg bg-background hover:bg-primary/10 border border-border flex items-center gap-1.5">
+                        <Icon size={12} className="text-primary shrink-0" />{a.name}
+                      </button>
+                    );
+                  })}
                 </div>
 
                 <div className="space-y-2 mt-3">

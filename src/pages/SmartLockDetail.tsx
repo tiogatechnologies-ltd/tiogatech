@@ -253,7 +253,7 @@ export const SmartLockDetail = () => {
                 <span className="text-xs text-muted-foreground">·</span>
                 <div className="flex items-center gap-1 text-xs">
                   <Users size={12} className="text-emerald-500" />
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">2 ordered this week</span>
+                  <span className="text-emerald-700 dark:text-emerald-400 font-semibold">2 ordered this week</span>
                 </div>
               </div>
 
@@ -267,7 +267,7 @@ export const SmartLockDetail = () => {
                   {wasPrice && savedAmount && (
                     <div className="flex flex-col pb-1">
                       <span className="text-sm text-muted-foreground line-through">{fmtN(wasPrice)}</span>
-                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Save {fmtN(savedAmount)} ({pct}%)</span>
+                      <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">Save {fmtN(savedAmount)} ({pct}%)</span>
                     </div>
                   )}
                 </div>
@@ -316,7 +316,7 @@ export const SmartLockDetail = () => {
               <a
                 href={whatsappLink(contact, `Hi Tioga, I'm interested in the ${lock.name}${lock.price ? ` (${fmtLock(lock)})` : ""}. Please share availability and installation timeline.`)}
                 target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 hover:underline"
+                className="flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-400 hover:underline"
               >
                 <MessageCircle size={15} /> Chat on WhatsApp
               </a>
