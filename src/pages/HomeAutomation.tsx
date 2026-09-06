@@ -16,7 +16,7 @@ const fmt = (p: HomeAutomationPackage) =>
   p.price_label ?? (p.price ? `From ₦${(p.price / 1_000_000).toFixed(1)}M` : "Custom Quote");
 
 export const HomeAutomation = () => {
-  const { items, loading } = useHomeAutomationPackages();
+  const { packages: items, loading } = useHomeAutomationPackages();
   const { add } = useCart();
 
   return (
@@ -184,8 +184,11 @@ export const HomeAutomation = () => {
                         onClick={() =>
                           add({
                             id: `automation-${pkg.id}`,
+                            refId: pkg.id,
+                            type: "package",
                             name: pkg.name,
-                            price: pkg.price || 0,
+                            price: fmt(pkg),
+                            numericPrice: pkg.price || 0,
                             category: "Home Automation",
                             image: pkg.image,
                           })
@@ -213,9 +216,10 @@ export const HomeAutomation = () => {
                       {pkg.price && pkg.price > 300_000 && (
                         <div className="flex-1">
                           <FlexiblePaymentButton
-                            amount={pkg.price}
-                            productName={pkg.name}
-                            productType="package"
+                            price={pkg.price}
+                            itemName={pkg.name}
+                            itemType="package"
+                            itemId={pkg.id}
                             className="w-full text-[11px] py-2 rounded-xl"
                           />
                         </div>

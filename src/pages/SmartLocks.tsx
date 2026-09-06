@@ -211,8 +211,11 @@ export const SmartLocks = () => {
                         onClick={() =>
                           add({
                             id: `lock-${lock.id}`,
+                            refId: lock.id,
+                            type: "package",
                             name: lock.name,
-                            price: lock.price || 0,
+                            price: fmt(lock),
+                            numericPrice: lock.price || 0,
                             category: "Smart Locks",
                             image: lock.image,
                           })
@@ -240,9 +243,10 @@ export const SmartLocks = () => {
                       {lock.price && lock.price > 100_000 && (
                         <div className="flex-1">
                           <FlexiblePaymentButton
-                            amount={lock.price}
-                            productName={lock.name}
-                            productType="lock"
+                            price={lock.price}
+                            itemName={lock.name}
+                            itemType="lock"
+                            itemId={lock.id}
                             className="w-full text-[11px] py-2 rounded-xl"
                           />
                         </div>

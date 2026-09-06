@@ -250,9 +250,8 @@ export const ProductDetail = () => {
     return [
       schema,
       breadcrumbJsonLd([
-        { name: "Home", item: SITE_URL },
-        { name: "Retail Store", item: `${SITE_URL}/retail` },
-        { name: product.name, item: prodUrl },
+        { name: "Retail Store", path: "/retail" },
+        { name: product.name, path: productPath(product) },
       ]),
     ];
   }, [product, images, reviewStats]);

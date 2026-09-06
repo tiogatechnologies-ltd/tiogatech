@@ -45,12 +45,12 @@ const TargetUsers = () => {
                   {/* Front: image */}
                   <div className="flip-face rounded-3xl border border-border bg-card">
                     <img src={img} alt={`${u.label} powered by Tioga solar and smart technology in Nigeria`} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-midnight/85" />
+                    <div className="absolute inset-0 bg-midnight/60" />
                     <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur flex items-center justify-center">
                       <Icon size={20} className="text-primary" />
                     </div>
                     <div className="absolute bottom-4 left-4 right-4">
-                      <span className="block font-display font-semibold text-primary-foreground text-lg">{u.label}</span>
+                      <span className="block font-display font-semibold text-primary-foreground text-lg drop-shadow">{u.label}</span>
                     </div>
                   </div>
                   {/* Back: zoom-in description */}

@@ -41,7 +41,7 @@ const SolutionSection = () => {
               style={{ animationDelay: `${i * 150}ms` }}
             >
               <img src={f.img} alt={f.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-              <div className="absolute inset-0 bg-midnight/55" />
+              <div className="absolute inset-0 bg-midnight/50" />
               <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/90 backdrop-blur-md flex items-center justify-center shadow-lg">
                 <f.icon size={20} className="text-primary" />
               </div>

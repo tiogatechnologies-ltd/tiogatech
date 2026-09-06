@@ -66,7 +66,7 @@ const SiteFooter = () => {
   };
 
   return (
-    <footer className="bg-midnight text-primary-foreground">
+    <footer className="bg-midnight text-primary-foreground border-t border-white/[0.12] relative">
       <div className="section-container py-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="border-t border-primary-foreground/15 pt-6">

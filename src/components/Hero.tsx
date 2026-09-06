@@ -128,7 +128,7 @@ const Hero = ({ onApply }: HeroProps) => {
               <button
                 type="button"
                 onClick={() => { trackConversion("energy_calculator_open", { source: "hero" }); openEnergyCalculator(); }}
-                className="glass-action inline-flex items-center justify-center gap-2 rounded-full px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-primary-foreground ios-press"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-xl px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-primary-foreground hover:bg-primary-foreground/20 hover:border-primary-foreground/50 transition-all shadow-lg shadow-black/10 ios-press"
               >
                 <Calculator size={14} />
                 Energy Calculator

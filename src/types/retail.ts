@@ -37,20 +37,6 @@ export interface ProductVariant {
   image_url?: string | null;
 }
 
-export interface ProductReview {
-  id: string;
-  product_id: string;
-  author_name: string;
-  author_email?: string;
-  rating: number;
-  title: string;
-  content: string;
-  is_verified_purchase: boolean;
-  status: "pending" | "approved" | "rejected" | "featured";
-  admin_reply?: string | null;
-  helpful_count: number;
-  created_at: string;
-}
 
 export interface StoreBanner {
   id: string;

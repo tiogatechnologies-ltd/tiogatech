@@ -17,7 +17,7 @@ const SEO = ({ title, description, path = "/", image, type = "website", jsonLd }
   const ldArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
   return (
-    <Helmet>
+    <Helmet defer={false}>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={url} />

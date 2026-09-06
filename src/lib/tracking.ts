@@ -17,6 +17,7 @@ export type ConversionEvent =
   | "whatsapp_click"
   | "catalog_view"
   | "product_view"
+  | "package_view"
   | "product_click"
   | "contact_submitted"
   | "cart_add"
