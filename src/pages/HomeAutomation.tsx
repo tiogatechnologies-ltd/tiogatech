@@ -14,8 +14,265 @@ import featureApp from "@/assets/feature-smart-app.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 import { PROMO_LIFT, viewerCount, savingsPct } from "@/lib/promoDisplay";
 
+import { useWishlist } from "@/hooks/useWishlist";
+import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
+import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+
 const fmt = (p: HomeAutomationPackage) =>
   p.price_label ?? (p.price ? `From ₦${(p.price / 1_000_000).toFixed(1)}M` : "Custom Quote");
+
+const PackageCard = ({ pkg, i }: { pkg: HomeAutomationPackage; i: number }) => {
+  const { add } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const [isHovered, setIsHovered] = useState(false);
+  const [addedAnim, setAddedAnim] = useState(false);
+
+  const isSaved = isInWishlist(pkg.id);
+
+  const hasPrice = !!(pkg.price && pkg.price > 0);
+  const pct = hasPrice ? savingsPct(pkg.id) : null;
+  const wasPriceVal = hasPrice ? calcWasPrice(pkg.price!) : null;
+  const savedAmount = hasPrice && wasPriceVal ? wasPriceVal - pkg.price! : null;
+  const viewers = viewerCount(pkg.id);
+  const sold = soldCount(pkg.id);
+  const monthlyEst = pkg.price ? Math.round(pkg.price / 3) : null;
+
+  const handleAdd = (e?: React.MouseEvent) => {
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+    add({
+      id: `automation-${pkg.id}`,
+      refId: pkg.id,
+      type: "package",
+      name: pkg.name,
+      price: fmt(pkg),
+      numericPrice: pkg.price || 0,
+      category: "Home Automation",
+      image: pkg.image,
+    });
+    setAddedAnim(true);
+    setTimeout(() => setAddedAnim(false), 1800);
+  };
+
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(pkg.id, `${pkg.name} - Home Automation`);
+  };
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.25 }}
+      className="group relative rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] hover:shadow-xl hover:border-primary/40 transition-all duration-300 flex flex-col overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      id={`automation-${pkg.id}`}
+    >
+      {/* Top Image Container */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/20">
+        <Link to={`/packages/automation/${pkg.id}`} className="block w-full h-full">
+          <img
+            src={pkg.image}
+            alt={pkg.name}
+            loading="lazy"
+            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+          />
+        </Link>
+
+        {/* Left Badges (top-left stack) */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
+          {pct && (
+            <span className="px-2 py-0.5 rounded-full bg-red-600/90 backdrop-blur-md border border-white/25 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
+              <TrendingDown size={10} /> Save {pct}%
+            </span>
+          )}
+          {pkg.badge && (
+            <span className="px-2 py-0.5 rounded-full bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
+              {pkg.badge}
+            </span>
+          )}
+        </div>
+
+        {/* Live Viewers (bottom-left overlay on image) */}
+        <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
+          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2 py-0.5 rounded-full shadow-md">
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+            </span>
+            {viewers} viewing
+          </span>
+        </div>
+
+        {/* Floating Action Buttons (top-right) */}
+        <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
+          <button
+            onClick={handleWishlist}
+            aria-label={isSaved ? "Remove from Wishlist" : "Save to Wishlist"}
+            className={`p-2 rounded-full backdrop-blur-md transition-all shadow-md ${
+              isSaved
+                ? "bg-red-500 text-white shadow-red-500/20 scale-110"
+                : "bg-background/80 hover:bg-background text-muted-foreground hover:text-red-500"
+            }`}
+          >
+            <Heart size={15} fill={isSaved ? "currentColor" : "none"} />
+          </button>
+
+          <Link
+            to={`/packages/automation/${pkg.id}`}
+            aria-label="View Details"
+            className="p-2 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md flex items-center justify-center"
+          >
+            <Eye size={15} />
+          </Link>
+        </div>
+
+        {/* Quick Add Overlay on Hover */}
+        <div
+          className={`absolute inset-x-3 bottom-3 z-10 transition-all duration-300 ${
+            isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
+          }`}
+        >
+          <button
+            onClick={handleAdd}
+            className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-2 transition-all ${
+              addedAnim
+                ? "bg-emerald-600 text-white"
+                : "bg-primary text-primary-foreground hover:bg-primary/90"
+            }`}
+          >
+            {addedAnim ? (
+              <>
+                <Check size={14} className="animate-bounce" />
+                <span>Added to Cart!</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart size={14} />
+                <span>Quick Add to Cart</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Content Container */}
+      <div className="p-4 sm:p-5 flex flex-col flex-1">
+        {/* Category & Rating */}
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
+          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary">
+            {pkg.tagline || "Smart Living"}
+          </span>
+          <div className="flex items-center gap-1 font-medium text-amber-500">
+            <Star size={13} fill="currentColor" />
+            <span className="text-foreground font-bold">5.0</span>
+            <span className="text-muted-foreground text-[10px]">({12 + (pkg.name.length * 3) % 15})</span>
+          </div>
+        </div>
+
+        {/* Product Title */}
+        <Link
+          to={`/packages/automation/${pkg.id}`}
+          className="font-display font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug mb-2"
+        >
+          {pkg.name}
+        </Link>
+
+        {/* Highlights / Specs Chips */}
+        {pkg.features && pkg.features.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {pkg.features.slice(0, 3).map((f) => (
+              <span
+                key={f}
+                className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1"
+              >
+                <Check size={10} className="text-primary shrink-0" />
+                <span>{f}</span>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Social Proof Urgency */}
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3">
+          <Users size={11} className="text-emerald-500 shrink-0" />
+          <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
+          <span className="opacity-50">·</span>
+          <Flame size={11} className="text-amber-500 shrink-0" />
+          <span className="text-amber-600 dark:text-amber-400 font-semibold">In demand</span>
+        </div>
+
+        {/* Price & Financing */}
+        <div className="mt-auto pt-3 border-t border-border/60">
+          <div className="flex items-start justify-between gap-2 mb-1.5">
+            <div>
+              {/* Main Price */}
+              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-none">
+                {fmt(pkg)}
+              </p>
+              {/* Was Price (slashed) */}
+              {wasPriceVal && savedAmount && (
+                <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                  <span className="text-xs text-muted-foreground line-through">
+                    {wasPriceVal >= 1_000_000
+                      ? `From ₦${(wasPriceVal / 1_000_000).toFixed(1)}M`
+                      : `₦${Math.round(wasPriceVal).toLocaleString("en-NG")}`}
+                  </span>
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
+                    <Tag size={9} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
+                  </span>
+                </div>
+              )}
+              {monthlyEst && (
+                <p className="text-[10px] text-muted-foreground mt-0.5">
+                  Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
+                </p>
+              )}
+            </div>
+
+            {/* Ready to Install badge */}
+            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Ready to Install
+            </span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            <Link
+              to={`/packages/automation/${pkg.id}`}
+              className="py-2 px-3 rounded-xl font-semibold text-xs border border-border bg-muted/40 hover:bg-muted text-foreground flex items-center justify-center gap-1.5 transition-all text-center"
+            >
+              View Details <ArrowRight size={12} />
+            </Link>
+            <button
+              onClick={handleAdd}
+              className={`py-2 px-3 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-1.5 transition-all ${
+                addedAnim
+                  ? "bg-emerald-600 text-white"
+                  : "bg-primary text-primary-foreground hover:bg-primary/90"
+              }`}
+            >
+              {addedAnim ? (
+                <><Check size={12} /> Added</>
+              ) : (
+                <><ShoppingCart size={12} /> Add to Cart</>
+              )}
+            </button>
+          </div>
+
+          <div className="mt-2">
+            <FlexiblePaymentButton itemName={pkg.name} itemType="automation" itemId={pkg.id} price={pkg.price ?? null} />
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 export const HomeAutomation = () => {
   const { packages: items, loading } = useHomeAutomationPackages();
@@ -134,143 +391,9 @@ export const HomeAutomation = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {items.map((pkg, i) => {
-              const hasPrice = !!(pkg.price && pkg.price > 0);
-              const pct = hasPrice ? savingsPct(pkg.id) : null;
-              const wasPriceVal = hasPrice ? Math.round(pkg.price! * PROMO_LIFT) : null;
-              const savedAmount = hasPrice && wasPriceVal ? wasPriceVal - pkg.price! : null;
-              const viewers = viewerCount(pkg.id);
-              return (
-              <motion.div
-                key={pkg.id}
-                layout
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.25 }}
-                className="group rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift hover:border-primary/40 overflow-hidden flex flex-col transition-all"
-              >
-                <Link to={`/packages/automation/${pkg.id}`} className="relative h-52 overflow-hidden block">
-                  <img
-                    src={pkg.image}
-                    alt={pkg.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  />
-                  <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap max-w-[62%]">
-                    {pct && (
-                      <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-600/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.2)] flex items-center gap-1">
-                        <TrendingDown size={10} /> Save {pct}%
-                      </span>
-                    )}
-                    {pkg.badge && (
-                      <span className="text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_4px_12px_rgba(0,0,0,0.2)]">
-                        {pkg.badge}
-                      </span>
-                    )}
-                  </div>
-                  <div className="absolute bottom-3 left-3">
-                    <span className="flex items-center gap-1.5 text-[10px] font-semibold bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-                      </span>
-                      {viewers} viewing
-                    </span>
-                  </div>
-                </Link>
-
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="mb-4">
-                    <p className="text-[10px] uppercase tracking-widest text-primary font-semibold mb-1">
-                      {pkg.tagline}
-                    </p>
-                    <Link to={`/packages/automation/${pkg.id}`} className="text-xl font-display font-bold text-foreground leading-tight mb-2 hover:text-primary transition-colors block">
-                      {pkg.name}
-                    </Link>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Starting From</p>
-                    <div className="flex items-end gap-2 flex-wrap">
-                      <p className="text-2xl font-display font-bold text-foreground">{fmt(pkg)}</p>
-                      {wasPriceVal && savedAmount && (
-                        <div className="flex items-center gap-1.5 pb-0.5">
-                          <span className="text-xs text-muted-foreground line-through">
-                            {wasPriceVal >= 1_000_000
-                              ? `From ₦${(wasPriceVal / 1_000_000).toFixed(1)}M`
-                              : `₦${Math.round(wasPriceVal).toLocaleString("en-NG")}`}
-                          </span>
-                          <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
-                            <Tag size={9} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
-                    {pkg.description}
-                  </p>
-
-                  <div className="space-y-2 mb-6 flex-1">
-                    {pkg.features.slice(0, 5).map((feat, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-xs text-foreground/90">
-                        <Check size={14} className="text-primary shrink-0" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="pt-4 border-t border-border flex flex-col gap-2">
-                    {pkg.price ? (
-                      <button
-                        onClick={() =>
-                          add({
-                            id: `automation-${pkg.id}`,
-                            refId: pkg.id,
-                            type: "package",
-                            name: pkg.name,
-                            price: fmt(pkg),
-                            numericPrice: pkg.price || 0,
-                            category: "Home Automation",
-                            image: pkg.image,
-                          })
-                        }
-                        className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 shadow-sm transition-all"
-                      >
-                        <ShoppingBag size={14} /> Add System to Cart
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => openLeadForm(`automation_${pkg.id}`)}
-                        className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-gold text-midnight text-xs font-bold hover:brightness-110 shadow-sm transition-all"
-                      >
-                        Request Custom Design
-                      </button>
-                    )}
-
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => openLeadForm(`consult_${pkg.id}`)}
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border bg-muted/40 hover:bg-muted text-[11px] font-semibold text-foreground transition-colors"
-                      >
-                        <Eye size={12} /> Book Site Survey
-                      </button>
-                      {pkg.price && pkg.price > 300_000 && (
-                        <div className="flex-1">
-                          <FlexiblePaymentButton
-                            price={pkg.price}
-                            itemName={pkg.name}
-                            itemType="package"
-                            itemId={pkg.id}
-                            className="w-full text-[11px] py-2 rounded-xl"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              );
-            })}
+            {items.map((pkg, i) => (
+              <PackageCard key={pkg.id} pkg={pkg} i={i} />
+            ))}
           </div>
         </div>
       </main>

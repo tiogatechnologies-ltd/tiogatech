@@ -8,32 +8,32 @@ import { useCart } from "@/contexts/CartContext";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 
-// Cosmetic discount - real price is always total_price. These multipliers
-// generate a plausible "was" price for display only; nothing is stored or changed.
-const PROMO_LIFT = 1.12; // implies ~11% bundle saving shown to user
+import { useWishlist } from "@/hooks/useWishlist";
+import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
+import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const fmtPrice = (n: number | null) =>
   n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
 
-// Stable pseudo-random viewer count per package (3–18 range)
-const viewerCount = (seed: number) => 3 + (seed * 7 + 11) % 16;
-
-// Stable savings % per package (8–17 range)
-const savingsPct = (seed: number) => 8 + (seed * 3 + 5) % 10;
-
-
-
 const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
   const { add } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const [isHovered, setIsHovered] = useState(false);
   const [addedAnim, setAddedAnim] = useState(false);
+
+  const isSaved = isInWishlist(p.id);
 
   // Cosmetic promo values - real price is always p.total_price
   const pct = savingsPct(p.package_number);
-  const wasPrice = Math.round(p.total_price * PROMO_LIFT);
+  const wasPrice = calcWasPrice(p.total_price);
   const savedAmount = wasPrice - p.total_price;
   const viewers = viewerCount(p.package_number);
+  const sold = soldCount(p.package_number);
+  const monthlyEst = Math.round(p.total_price / 3);
 
-  const handleAdd = () => {
+  const handleAdd = (e?: React.MouseEvent) => {
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
     add({
       refId: p.id,
       type: "package",
@@ -48,149 +48,225 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
     setTimeout(() => setAddedAnim(false), 1800);
   };
 
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(p.id, `Solar Package #${p.package_number} - ${p.inverter}`);
+  };
+
   return (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.35, ease: "easeOut", delay: (i % 4) * 0.05 }}
-    className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift hover:border-primary/40 overflow-hidden flex flex-col transition-all"
-    id={`pkg-${p.package_number}`}
-  >
-    {/* Image with Savings Badge - clicking opens detail page */}
-    <Link to={`/packages/solar/${p.id}`} className="relative h-48 overflow-hidden block">
-      <img
-        src={p.image}
-        alt={p.inverter}
-        loading="lazy"
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-      />
-      {/* Top badges row */}
-      <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 flex-wrap max-w-[62%]">
-        <span className="text-[10px] uppercase tracking-[0.18em] font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight px-2.5 py-0.5 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_4px_12px_rgba(0,0,0,0.2)]">
-          #{p.package_number}
-        </span>
-        {/* Promo savings pill */}
-        <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-600/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.2)] flex items-center gap-1">
-          <TrendingDown size={10} /> Save {pct}%
-        </span>
-        {p.badge && (
-          <span className="text-[10px] uppercase tracking-[0.18em] font-bold bg-primary/90 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.2)]">
-            {p.badge}
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.25 }}
+      className="group relative rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] hover:shadow-xl hover:border-primary/40 transition-all duration-300 flex flex-col overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      id={`pkg-${p.package_number}`}
+    >
+      {/* Top Image Container */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/20">
+        <Link to={`/packages/solar/${p.id}`} className="block w-full h-full">
+          <img
+            src={p.image}
+            alt={p.inverter}
+            loading="lazy"
+            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+          />
+        </Link>
+
+        {/* Left Badges (top-left stack) */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
+          {pct && (
+            <span className="px-2 py-0.5 rounded-full bg-red-600/90 backdrop-blur-md border border-white/25 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
+              <TrendingDown size={10} /> Save {pct}%
+            </span>
+          )}
+          <span className="px-2 py-0.5 rounded-full bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
+            Package #{p.package_number}
           </span>
-        )}
-      </div>
+          {p.badge && (
+            <span className="px-2 py-0.5 rounded-full bg-primary/90 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
+              {p.badge}
+            </span>
+          )}
+        </div>
 
-      {/* Live viewer count */}
-      <div className="absolute top-3.5 right-3.5">
-        <span className="flex items-center gap-1.5 text-[10px] font-semibold bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+        {/* Live Viewers (bottom-left overlay on image) */}
+        <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
+          <span className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2 py-0.5 rounded-full shadow-md">
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+            </span>
+            {viewers} viewing
           </span>
-          {viewers} viewing
-        </span>
-      </div>
-
-      <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
-        <p className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/75 mb-1">
-          {p.tagline || (p.battery_type === "lithium" ? "Lithium LiFePO4" : "Tubular / Gel")}
-        </p>
-        <h3 className="text-lg font-display font-bold text-primary-foreground no-clip leading-tight">
-          {p.inverter}
-        </h3>
-      </div>
-    </Link>
-
-    <div className="p-5 sm:p-6 flex flex-col flex-1">
-
-      {/* Pricing Block */}
-      <div className="mb-4 p-4 rounded-2xl bg-muted/40 border border-border/60">
-        <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Bundle Price</p>
-        <div className="flex items-end gap-3">
-          <p className="text-3xl font-display font-bold text-foreground leading-none">{fmtPrice(p.total_price)}</p>
-          <div className="flex flex-col items-start pb-0.5">
-            <span className="text-xs text-muted-foreground line-through">{fmtPrice(wasPrice)}</span>
-            <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">You save {fmtPrice(savedAmount)}</span>
-          </div>
         </div>
-        {/* Bundle vs. individual breakdown hint */}
-        <p className="text-[10px] text-muted-foreground mt-1.5 flex items-center gap-1">
-          <Tag size={10} className="text-primary" />
-          Bundle discount applied vs. buying components separately
-        </p>
-      </div>
 
-      {/* Components */}
-      <ul className="space-y-2 mb-4 text-sm">
-        <li className="flex items-start gap-2.5">
-          <Sun size={15} className="text-gold mt-0.5 shrink-0" />
-          <span className="text-foreground"><span className="text-muted-foreground">Panels:</span> {p.solar_panels}</span>
-        </li>
-        <li className="flex items-start gap-2.5">
-          <Battery size={15} className="text-primary mt-0.5 shrink-0" />
-          <span className="text-foreground"><span className="text-muted-foreground">Battery:</span> {p.battery}</span>
-        </li>
-        {p.charge_controller && p.charge_controller !== "NIL" && (
-          <li className="flex items-start gap-2.5">
-            <Cpu size={15} className="text-primary mt-0.5 shrink-0" />
-            <span className="text-foreground"><span className="text-muted-foreground">Controller:</span> {p.charge_controller}</span>
-          </li>
-        )}
-        <li className="flex items-start gap-2.5">
-          <Zap size={15} className="text-accent mt-0.5 shrink-0" />
-          <span className="text-foreground"><span className="text-muted-foreground">Powers:</span> {p.appliances}</span>
-        </li>
-      </ul>
+        {/* Floating Action Buttons (top-right) */}
+        <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
+          <button
+            onClick={handleWishlist}
+            aria-label={isSaved ? "Remove from Wishlist" : "Save to Wishlist"}
+            className={`p-2 rounded-full backdrop-blur-md transition-all shadow-md ${
+              isSaved
+                ? "bg-red-500 text-white shadow-red-500/20 scale-110"
+                : "bg-background/80 hover:bg-background text-muted-foreground hover:text-red-500"
+            }`}
+          >
+            <Heart size={15} fill={isSaved ? "currentColor" : "none"} />
+          </button>
 
-      {/* Price Breakdown */}
-      <div className="rounded-2xl bg-muted/30 p-3 mb-4 text-xs text-muted-foreground space-y-1 border border-border/50">
-        <p className="text-[10px] font-bold uppercase tracking-wider text-foreground mb-1.5">Component Breakdown</p>
-        <div className="flex justify-between"><span>Inverter</span><span className="text-foreground">{fmtPrice(p.inverter_price)}</span></div>
-        <div className="flex justify-between"><span>Panels</span><span className="text-foreground">{fmtPrice(p.solar_panels_price)}</span></div>
-        <div className="flex justify-between"><span>Battery</span><span className="text-foreground">{fmtPrice(p.battery_price)}</span></div>
-        {p.charge_controller_price ? (
-          <div className="flex justify-between"><span>Controller</span><span className="text-foreground">{fmtPrice(p.charge_controller_price)}</span></div>
-        ) : null}
-        <div className="flex justify-between"><span>Accessories</span><span className="text-foreground">{fmtPrice(p.accessories_price)}</span></div>
-        <div className="flex justify-between"><span>Professional Setup</span><span className="text-foreground">{fmtPrice(p.setup_fee)}</span></div>
-        <div className="flex justify-between border-t border-border/60 pt-1.5 mt-0.5">
-          <span className="font-bold text-foreground">Bundle Total</span>
-          <span className="font-bold text-primary">{fmtPrice(p.total_price)}</span>
+          <Link
+            to={`/packages/solar/${p.id}`}
+            aria-label="View Details"
+            className="p-2 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md flex items-center justify-center"
+          >
+            <Eye size={15} />
+          </Link>
         </div>
-      </div>
 
-      {/* Urgency strip */}
-      <div className="flex items-center gap-2 text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mb-4">
-        <Flame size={12} className="shrink-0" />
-        <span>Bundle pricing valid for <strong>this week only</strong> - contact us to lock it in</span>
-      </div>
-
-      {/* CTA Buttons */}
-      <div className="mt-auto grid grid-cols-2 gap-2">
-        <button
-          onClick={handleAdd}
-          className={`inline-flex items-center justify-center gap-1.5 rounded-full border px-4 py-3 text-xs font-semibold transition-all ${
-            addedAnim
-              ? "bg-emerald-500 border-emerald-500 text-white"
-              : "border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
+        {/* Quick Add Overlay on Hover */}
+        <div
+          className={`absolute inset-x-3 bottom-3 z-10 transition-all duration-300 ${
+            isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
           }`}
         >
-          <ShoppingBag size={13} />
-          {addedAnim ? "Added!" : "Add to Cart"}
-        </button>
+          <button
+            onClick={handleAdd}
+            className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-2 transition-all ${
+              addedAnim
+                ? "bg-emerald-600 text-white"
+                : "bg-primary text-primary-foreground hover:bg-primary/90"
+            }`}
+          >
+            {addedAnim ? (
+              <>
+                <Check size={14} className="animate-bounce" />
+                <span>Added to Cart!</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart size={14} />
+                <span>Quick Add to Cart</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Content Container */}
+      <div className="p-4 sm:p-5 flex flex-col flex-1">
+        {/* Category & Rating */}
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
+          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary">
+            {p.tagline || (p.battery_type === "lithium" ? "Lithium LiFePO4" : "Tubular Backup")}
+          </span>
+          <div className="flex items-center gap-1 font-medium text-amber-500">
+            <Star size={13} fill="currentColor" />
+            <span className="text-foreground font-bold">5.0</span>
+            <span className="text-muted-foreground text-[10px]">({12 + (p.package_number * 3) % 15})</span>
+          </div>
+        </div>
+
+        {/* Product Title */}
         <Link
           to={`/packages/solar/${p.id}`}
-          className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-primary/20"
+          className="font-display font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug mb-2"
         >
-          View Details <ArrowRight size={13} />
+          {p.inverter}
         </Link>
+
+        {/* Highlights / Specs Chips */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
+            <Sun size={11} className="text-gold shrink-0" />
+            <span>Panels: <strong className="text-foreground">{p.solar_panels.split("+")[0]?.trim() || p.solar_panels}</strong></span>
+          </span>
+          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
+            <Battery size={11} className="text-emerald-500 shrink-0" />
+            <span>Battery: <strong className="text-foreground">{p.battery.split("(")[0]?.trim() || p.battery}</strong></span>
+          </span>
+          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
+            <Zap size={11} className="text-primary shrink-0" />
+            <span>Powers: <strong className="text-foreground line-clamp-1">{p.appliances.split(",").slice(0, 2).join(", ")}</strong></span>
+          </span>
+        </div>
+
+        {/* Social Proof Urgency */}
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3">
+          <Users size={11} className="text-emerald-500 shrink-0" />
+          <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
+          <span className="opacity-50">·</span>
+          <Flame size={11} className="text-amber-500 shrink-0" />
+          <span className="text-amber-600 dark:text-amber-400 font-semibold">In demand</span>
+        </div>
+
+        {/* Price & Financing */}
+        <div className="mt-auto pt-3 border-t border-border/60">
+          <div className="flex items-start justify-between gap-2 mb-1.5">
+            <div>
+              {/* Main Price */}
+              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-none">
+                {fmtPrice(p.total_price)}
+              </p>
+              {/* Was Price (slashed) */}
+              {wasPrice && savedAmount && (
+                <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                  <span className="text-xs text-muted-foreground line-through">
+                    {fmtPrice(wasPrice)}
+                  </span>
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
+                    <Tag size={9} /> Save {fmtPrice(savedAmount)}
+                  </span>
+                </div>
+              )}
+              {monthlyEst && (
+                <p className="text-[10px] text-muted-foreground mt-0.5">
+                  Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
+                </p>
+              )}
+            </div>
+
+            {/* In stock / Ready badge */}
+            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Ready to Install
+            </span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            <Link
+              to={`/packages/solar/${p.id}`}
+              className="py-2 px-3 rounded-xl font-semibold text-xs border border-border bg-muted/40 hover:bg-muted text-foreground flex items-center justify-center gap-1.5 transition-all text-center"
+            >
+              View Details <ArrowRight size={12} />
+            </Link>
+            <button
+              onClick={handleAdd}
+              className={`py-2 px-3 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-1.5 transition-all ${
+                addedAnim
+                  ? "bg-emerald-600 text-white"
+                  : "bg-primary text-primary-foreground hover:bg-primary/90"
+              }`}
+            >
+              {addedAnim ? (
+                <><Check size={12} /> Added</>
+              ) : (
+                <><ShoppingCart size={12} /> Add to Cart</>
+              )}
+            </button>
+          </div>
+
+          <div className="mt-2">
+            <FlexiblePaymentButton itemName={`Solar Package #${p.package_number}`} itemType="package" itemId={p.id} price={p.total_price} />
+          </div>
+        </div>
       </div>
-      <div className="mt-2"><FlexiblePaymentButton itemName={`Solar Package #${p.package_number}`} itemType="package" itemId={p.id} price={p.total_price} /></div>
-      <p className="text-[10px] text-muted-foreground text-center mt-2 flex items-center justify-center gap-1">
-        <Check size={10} /> Installers available next week &middot; 5-yr warranty
-      </p>
-    </div>
-  </motion.div>
+    </motion.div>
   );
 };
 

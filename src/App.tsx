@@ -203,6 +203,7 @@ const AnimatedRoutes = () => {
           <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
           <Route path="/packages/solar/:id" element={<RouteFade><SolarPackageDetail /></RouteFade>} />
           <Route path="/packages/lock/:id" element={<RouteFade><SmartLockDetail /></RouteFade>} />
+          <Route path="/packages/locks/:id" element={<RouteFade><SmartLockDetail /></RouteFade>} />
           <Route path="/packages/automation/:id" element={<RouteFade><AutomationPackageDetail /></RouteFade>} />
           <Route path="/energy-calculator" element={<RouteFade><EnergyCalculator /></RouteFade>} />
           <Route path="/customize/:type/:id" element={<RouteFade><Customize /></RouteFade>} />
