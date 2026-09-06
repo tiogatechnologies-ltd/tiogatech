@@ -66,19 +66,19 @@ const EnergyCalculator = () => {
       >
         <a
           href="#calculator"
-          className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 shadow-md shadow-accent/30"
+          className="inline-flex items-center gap-2 rounded-full bg-accent/90 hover:bg-accent backdrop-blur-xl border border-accent/40 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 shadow-md shadow-accent/30 transition-all"
         >
           <Calculator size={16} /> Start calculating
         </a>
         <Link
           to="/lumivolt"
-          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15"
+          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
         >
           <ArrowLeft size={16} /> Back to LumiVolt
         </Link>
         <Link
           to="/packages"
-          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15"
+          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
         >
           See ready-made packages <ArrowRight size={16} />
         </Link>

@@ -479,7 +479,7 @@ const Customize = () => {
       >
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-5 py-2.5 text-xs font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-5 py-2.5 text-xs font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
         >
           <ArrowLeft size={14} /> Back to packages
         </button>

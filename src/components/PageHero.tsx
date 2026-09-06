@@ -27,9 +27,9 @@ const PageHero = ({ eyebrow, title, subtitle, children, backgroundImage, backgro
 
     <div className="relative section-container py-24 sm:py-28 lg:py-32 text-center">
       {eyebrow && (
-        <p className="text-[11px] sm:text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4 animate-fade-up">
+        <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-midnight/65 dark:bg-midnight/75 backdrop-blur-md border border-white/20 text-[11px] sm:text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4 animate-fade-up shadow-sm">
           {eyebrow}
-        </p>
+        </div>
       )}
       <h1
         className="text-[2rem] sm:text-5xl lg:text-6xl font-display font-bold text-primary-foreground tracking-[-0.02em] leading-[1.08] max-w-3xl mx-auto animate-fade-up"

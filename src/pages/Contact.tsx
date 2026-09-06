@@ -70,14 +70,14 @@ const Contact = () => {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackConversion("whatsapp_click", { source: "contact_hero" })}
-          className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-md shadow-accent/30 transition-all"
+          className="inline-flex items-center gap-2 rounded-full bg-accent/90 hover:bg-accent backdrop-blur-xl border border-accent/40 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-md shadow-accent/30 transition-all"
         >
           <MessageCircle size={16} />
           Chat on WhatsApp
         </a>
         <a
           href={`tel:${contact.phone}`}
-          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
         >
           <Phone size={16} />
           Call {contact.phone}

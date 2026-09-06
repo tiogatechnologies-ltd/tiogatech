@@ -14,8 +14,8 @@ const CartButton = ({ onDark }: Props) => {
       className={cn(
         "relative inline-flex items-center justify-center h-9 w-9 sm:h-10 sm:w-10 rounded-full transition-all active:scale-95",
         onDark
-          ? "bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground border border-primary-foreground/15"
-          : "bg-muted hover:bg-muted/80 text-foreground border border-border",
+          ? "bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl text-primary-foreground border border-white/20 shadow-sm"
+          : "bg-card/80 hover:bg-card backdrop-blur-xl text-foreground border border-border shadow-sm",
       )}
     >
       <ShoppingBag size={16} />

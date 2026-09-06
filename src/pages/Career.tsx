@@ -58,19 +58,19 @@ const Career = () => {
     >
       <a
         href="mailto:careers@tiogatechnologies.com?subject=Application%20to%20Tioga"
-        className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
+        className="inline-flex items-center gap-2 rounded-full bg-accent/90 hover:bg-accent backdrop-blur-xl border border-accent/40 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
       >
         <Mail size={16} /> Send us your CV
       </a>
       <a
         href="#open-roles"
-        className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+        className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
       >
         See open roles <ArrowRight size={16} />
       </a>
       <a
         href="#affiliate"
-        className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/15 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-gold/25 transition-all"
+        className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/20 hover:bg-gold/30 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-gold/35 transition-all shadow-md"
       >
         <Share2 size={16} /> Become an affiliate
       </a>

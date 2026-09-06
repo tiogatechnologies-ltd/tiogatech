@@ -220,14 +220,14 @@ export const SolarPackages = () => {
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/energy-calculator"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/20 transition-all"
+            className="inline-flex items-center gap-2 rounded-full bg-primary/90 hover:bg-primary backdrop-blur-xl border border-primary/40 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/25 transition-all"
           >
             <Calculator size={16} /> Free Load Sizing Calculator
           </Link>
           <button
             type="button"
             onClick={() => openLeadForm("solar_packages_hero")}
-            className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all"
+            className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
           >
             Request Custom Engineering
           </button>

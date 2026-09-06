@@ -69,12 +69,14 @@ const Hero = ({ onApply }: HeroProps) => {
         <div className="grid lg:grid-cols-12 gap-10 items-center">
           {/* Left - copy */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-7">
-            <p
-              className={`text-xs sm:text-sm font-semibold text-accent uppercase tracking-widest ${mounted ? "animate-fade-up" : "opacity-0"}`}
-              style={{ animationDelay: "0.1s" }}
-            >
-              Trusted by 100+ Nigerian homes & businesses
-            </p>
+            <div>
+              <span
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 bg-midnight/65 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-accent uppercase tracking-widest shadow-sm ${mounted ? "animate-fade-up" : "opacity-0"}`}
+                style={{ animationDelay: "0.1s" }}
+              >
+                Trusted by 100+ Nigerian homes & businesses
+              </span>
+            </div>
 
             <h1
               className={`font-display font-bold text-primary-foreground leading-[1.05] tracking-[-0.02em] no-clip ${mounted ? "" : "opacity-0"}`}
@@ -120,7 +122,7 @@ const Hero = ({ onApply }: HeroProps) => {
             >
               <button
                 onClick={onApply}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-2xl shadow-accent/30 hover:shadow-accent/50"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent/90 hover:bg-accent backdrop-blur-xl border border-accent/40 px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-2xl shadow-accent/30 hover:shadow-accent/50 transition-all"
               >
                 Get My Personalized Quote
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -128,7 +130,7 @@ const Hero = ({ onApply }: HeroProps) => {
               <button
                 type="button"
                 onClick={() => { trackConversion("energy_calculator_open", { source: "hero" }); openEnergyCalculator(); }}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-xl px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-primary-foreground hover:bg-primary-foreground/20 hover:border-primary-foreground/50 transition-all shadow-lg shadow-black/10 ios-press"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-midnight/60 hover:bg-midnight/80 backdrop-blur-xl px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-primary-foreground hover:border-white/50 transition-all shadow-lg shadow-black/15 ios-press"
               >
                 <Calculator size={14} />
                 Energy Calculator

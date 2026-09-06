@@ -131,10 +131,10 @@ const SiteHeader = () => {
 
         <nav
           className={cn(
-            "hidden lg:flex items-center gap-0.5 rounded-full px-2 py-1.5 transition-colors",
+            "hidden lg:flex items-center gap-0.5 rounded-full px-2 py-1.5 transition-all",
             onDark
-              ? "border border-primary-foreground/15 bg-primary-foreground/5 backdrop-blur-md"
-              : "",
+              ? "border border-white/20 bg-midnight/70 backdrop-blur-xl shadow-lg shadow-black/25"
+              : "border border-border/80 bg-background/80 dark:bg-card/80 backdrop-blur-xl shadow-sm",
           )}
         >
           <NavLink
@@ -224,13 +224,13 @@ const SiteHeader = () => {
         <div className="flex items-center gap-1 sm:gap-2">
           <CartButton onDark={onDark} />
           <AccountButton onDark={onDark} />
-          {/* Quote button - clean, high-contrast, no fuzzy blur */}
+          {/* Quote button - frosted glass accent pill */}
           <button
             type="button"
             onClick={handleAiClick}
             className={cn(
               "inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97]",
-              "bg-gold text-midnight border border-gold hover:brightness-105 shadow-sm",
+              "bg-gold/90 hover:bg-gold backdrop-blur-xl text-midnight border border-gold/60 hover:brightness-105 shadow-sm",
             )}
             aria-label="Get a Quote and Make Enquiry"
           >
@@ -256,11 +256,11 @@ const SiteHeader = () => {
       {open && createPortal(
         <>
           <div
-            className="lg:hidden fixed inset-0 top-16 bg-black/40 z-40 animate-fade-in"
+            className="lg:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-sm z-40 animate-fade-in"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
-          <div className="lg:hidden fixed inset-x-0 top-16 z-50 border-t border-border bg-background animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto">
+          <div className="lg:hidden fixed inset-x-0 top-16 z-50 border-t border-border bg-background/90 dark:bg-midnight/90 backdrop-blur-2xl animate-fade-up max-h-[calc(100vh-64px)] overflow-y-auto shadow-2xl">
           <nav className="section-container py-4 flex flex-col gap-1">
             <NavLink
               to="/"
