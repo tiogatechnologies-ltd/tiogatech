@@ -1,20 +1,18 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Lock, KeyRound, Building2, ShoppingBag, TrendingDown, Flame, Tag, Loader2 } from "lucide-react";
+import { Check, ArrowRight, Lock, KeyRound, Building2, ShoppingBag, TrendingDown, Flame, Tag, Loader2, Star, ShoppingCart, Heart, Eye, Users } from "lucide-react";
 import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/hooks/useWishlist";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
+import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const fmtLock = (item: SmartLock) =>
   item.price_label?.trim() ||
   (item.price ? `₦${Math.round(item.price).toLocaleString("en-NG")}` : "Quote");
-
-import { useWishlist } from "@/hooks/useWishlist";
-import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
-import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
   const { add } = useCart();

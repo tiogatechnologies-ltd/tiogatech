@@ -1,25 +1,22 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Sun, Battery, Zap, Cpu, Check, ShoppingBag, ArrowRight, Calculator, TrendingDown, Flame, Tag } from "lucide-react";
+import { Sun, Battery, Zap, Cpu, Check, ShoppingBag, ArrowRight, Calculator, TrendingDown, Flame, Tag, Star, ShoppingCart, Heart, Eye, Users } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
 import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/hooks/useWishlist";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { PROMO_LIFT, viewerCount, savingsPct } from "@/lib/promoDisplay";
+import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const fmtPrice = (n: number | null) =>
   n == null ? "Price on Request" : `₦${Math.round(n).toLocaleString("en-NG")}`;
-
-import { useWishlist } from "@/hooks/useWishlist";
-import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
-import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
   const { add } = useCart();

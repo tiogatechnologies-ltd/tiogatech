@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Lightbulb, Smartphone, Music, Wifi, Check, ShoppingBag, Eye, ShieldCheck, Cpu, Sliders, Zap, TrendingDown, Tag } from "lucide-react";
+import { Home, Lightbulb, Smartphone, Music, Wifi, Check, ShoppingBag, Eye, ShieldCheck, Cpu, Sliders, Zap, TrendingDown, Tag, Star, ShoppingCart, Heart, Users, Flame, ArrowRight } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
 import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/useHomeAutomationPackages";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/hooks/useWishlist";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import bgAutomation from "@/assets/bg-voltai-ai.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { PROMO_LIFT, viewerCount, savingsPct } from "@/lib/promoDisplay";
-
-import { useWishlist } from "@/hooks/useWishlist";
-import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
 import { PROMO_LIFT, viewerCount, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 
 const fmt = (p: HomeAutomationPackage) =>
