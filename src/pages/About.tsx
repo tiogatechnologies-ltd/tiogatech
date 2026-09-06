@@ -77,7 +77,21 @@ const About = () => {
       subtitle={c.subtitle || "Tioga Technologies Ltd is an IoT infrastructure and embedded systems company building the intelligent backbone of Africa's renewable energy future."}
       backgroundImage={heroSmartHome}
       backgroundAlt="Modern smart home with rooftop solar at golden hour"
-    />
+    >
+      <button
+        type="button"
+        onClick={() => openLeadForm("about_hero")}
+        className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-md shadow-accent/30 transition-all"
+      >
+        Work with Tioga <ArrowRight size={16} />
+      </button>
+      <Link
+        to="/solutions"
+        className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+      >
+        Explore Our Solutions
+      </Link>
+    </PageHero>
 
     {/* Intro */}
     <section className="section-padding">

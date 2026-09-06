@@ -157,7 +157,7 @@ const Hero = ({ onApply }: HeroProps) => {
           <div className="lg:col-span-5 relative hidden lg:block h-[520px]">
             {/* Card 1 - Solar */}
             <div
-              className={`absolute top-0 right-0 w-64 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-0 right-0 w-64 rounded-2xl bg-midnight/70 backdrop-blur-xl border border-white/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.5s" }}
             >
               <div className="flex items-center gap-3 mb-3">
@@ -165,25 +165,25 @@ const Hero = ({ onApply }: HeroProps) => {
                   <Sun className="text-accent" size={20} />
                 </div>
                 <div>
-                  <p className="text-xs text-primary-foreground/60 uppercase tracking-wider">Solar Output</p>
-                  <p className="text-lg font-display font-bold text-primary-foreground">5.2 kWp</p>
+                  <p className="text-xs text-white/70 uppercase tracking-wider">Solar Output</p>
+                  <p className="text-lg font-display font-bold text-white">5.2 kWp</p>
                 </div>
               </div>
-              <div className="h-1.5 bg-primary-foreground/10 rounded-full overflow-hidden">
+              <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
                 <div className="h-full bg-accent rounded-full" style={{ width: "78%" }} />
               </div>
-              <p className="text-xs text-primary-foreground/60 mt-2">Generating now · Sunny</p>
+              <p className="text-xs text-white/70 mt-2">Generating now · Sunny</p>
             </div>
 
             {/* Card 2 - Smart Home */}
             <div
-              className={`absolute top-44 left-0 w-72 rounded-2xl bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-44 left-0 w-72 rounded-2xl bg-midnight/70 backdrop-blur-xl border border-white/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.7s" }}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Home className="text-primary-foreground" size={18} />
-                  <p className="text-sm font-semibold text-primary-foreground">Smart Home</p>
+                  <Home className="text-white" size={18} />
+                  <p className="text-sm font-semibold text-white">Smart Home</p>
                 </div>
                 <span className="text-[10px] text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full font-medium">ONLINE</span>
               </div>
@@ -193,9 +193,9 @@ const Hero = ({ onApply }: HeroProps) => {
                   { icon: Camera, label: "Cameras" },
                   { icon: Zap, label: "Power" },
                 ].map((item, i) => (
-                  <div key={i} className="rounded-xl bg-primary-foreground/5 p-3 text-center border border-primary-foreground/10">
+                  <div key={i} className="rounded-xl bg-white/5 p-3 text-center border border-white/10">
                     <item.icon size={16} className="mx-auto text-accent mb-1" />
-                    <p className="text-[10px] text-primary-foreground/70">{item.label}</p>
+                    <p className="text-[10px] text-white/80">{item.label}</p>
                   </div>
                 ))}
               </div>
@@ -203,11 +203,11 @@ const Hero = ({ onApply }: HeroProps) => {
 
             {/* Card 3 - Savings */}
             <div
-              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-accent/30 backdrop-blur-xl border border-accent/30 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-midnight/75 backdrop-blur-xl border border-accent/40 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.9s", animationDuration: "7s" }}
             >
-              <p className="text-xs text-primary-foreground/70 uppercase tracking-wider mb-1">Monthly Savings</p>
-              <p className="text-3xl font-display font-bold text-primary-foreground">₦185k</p>
+              <p className="text-xs text-white/70 uppercase tracking-wider mb-1">Monthly Savings</p>
+              <p className="text-3xl font-display font-bold text-white">₦185k</p>
               <div className="flex items-center gap-1 mt-2 text-emerald-300 text-xs">
                 <TrendingUpIcon />
                 <span>vs generator fuel</span>

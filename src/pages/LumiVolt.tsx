@@ -65,10 +65,16 @@ const LumiVolt = () => {
         <button
           type="button"
           onClick={() => window.dispatchEvent(new CustomEvent("tioga:open-waitlist"))}
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 ios-press shadow-md shadow-primary/20"
+          className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-md shadow-accent/30"
         >
           <Download size={16} /> Download App
         </button>
+        <Link
+          to="/solar-packages"
+          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+        >
+          Explore Solar Packages <ArrowRight size={16} />
+        </Link>
       </PageHero>
 
       {/* Project Overview */}

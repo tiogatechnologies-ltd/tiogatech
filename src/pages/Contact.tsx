@@ -64,7 +64,25 @@ const Contact = () => {
         subtitle={c.subtitle || "Tell us about your space and what you would like to power. Our team will get back to you within one business day."}
         backgroundImage={heroBg}
         backgroundAlt="Tioga Technologies workspace"
-      />
+      >
+        <a
+          href={whatsappLink(contact)}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackConversion("whatsapp_click", { source: "contact_hero" })}
+          className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-md shadow-accent/30 transition-all"
+        >
+          <MessageCircle size={16} />
+          Chat on WhatsApp
+        </a>
+        <a
+          href={`tel:${contact.phone}`}
+          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+        >
+          <Phone size={16} />
+          Call {contact.phone}
+        </a>
+      </PageHero>
 
       <section className="section-padding">
         <div className="section-container grid gap-8 lg:grid-cols-5">

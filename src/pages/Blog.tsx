@@ -66,7 +66,20 @@ const Blog = () => {
         eyebrow="Insights"
         title="The Tioga Blog"
         subtitle="Solar tips, smart-home guides, and energy insights from the field across Nigeria."
-      />
+      >
+        <Link
+          to="/packages"
+          className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-md shadow-accent/30 transition-all"
+        >
+          Explore Solar Packages <ArrowRight size={16} />
+        </Link>
+        <Link
+          to="/solar-assessment"
+          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+        >
+          Start Energy Assessment
+        </Link>
+      </PageHero>
 
       <section className="section-container py-12 sm:py-16">
         {/* Search + tag filters */}

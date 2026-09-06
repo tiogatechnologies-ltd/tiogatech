@@ -100,7 +100,21 @@ const Finance = () => {
         subtitle={c.subtitle || "Start with 30% deposit, then spread the rest over 3, 6, 12 or 24 fixed monthly payments. Bank-partner financing, professional installation, and insurance included."}
         backgroundImage={heroFinance}
         backgroundAlt="Solar panels powering a Nigerian home"
-      />
+      >
+        <a
+          href="#calculator"
+          className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-md shadow-accent/30 transition-all"
+        >
+          <Calculator size={16} />
+          Calculate Repayment
+        </a>
+        <Link
+          to="/finance/apply"
+          className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+        >
+          Apply for Financing <ArrowRight size={16} />
+        </Link>
+      </PageHero>
 
       {itemName && (
         <section className="bg-accent/10 border-y border-accent/20">
@@ -117,7 +131,7 @@ const Finance = () => {
       )}
 
       {/* CALCULATOR */}
-      <section className="section-padding bg-muted/30">
+      <section id="calculator" className="section-padding bg-muted/30 scroll-mt-20">
         <div className="section-container max-w-6xl">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3"><Calculator size={22} /></div>

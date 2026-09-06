@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -24,7 +25,20 @@ const Terms = () => {
       subtitle="The terms governing your use of Tioga Technologies' website and services."
       backgroundImage={bgOffice}
       backgroundAlt="Modern Lagos office at dusk"
-    />
+    >
+      <Link
+        to="/contact"
+        className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-md shadow-accent/30 transition-all"
+      >
+        Contact Support
+      </Link>
+      <Link
+        to="/"
+        className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/15 transition-all"
+      >
+        Back to Home
+      </Link>
+    </PageHero>
     <section className="section-padding">
       <div className="section-container max-w-3xl">
         <p className="text-xs text-muted-foreground mb-8">Last updated: May 6, 2026</p>

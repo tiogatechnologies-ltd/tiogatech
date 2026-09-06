@@ -460,6 +460,22 @@ export const Catalog = () => {
                     ? "Based on your load assessment, we have filtered certified Tier-1 hybrid inverters, lithium batteries, and smart home IoT hardware sized specifically for your property."
                     : "Direct warehouse supply of Tier-1 solar inverters, LiFePO4 batteries, STAMA biometric smart locks, and home IoT devices."}
                 </p>
+                <div className="flex flex-wrap items-center gap-2.5 pt-2">
+                  <Link
+                    to="/packages"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground hover:brightness-110 shadow-sm transition-all"
+                  >
+                    <Package size={14} />
+                    Explore Turnkey Packages
+                  </Link>
+                  <Link
+                    to="/energy-calculator"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-secondary-foreground/10 hover:bg-secondary-foreground/20 border border-secondary-foreground/20 px-4 py-2 text-xs font-semibold text-secondary-foreground transition-all"
+                  >
+                    <Cpu size={14} />
+                    Calculate Sizing
+                  </Link>
+                </div>
               </div>
 
               {totalWatts > 0 && (

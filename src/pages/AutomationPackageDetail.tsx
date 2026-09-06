@@ -218,7 +218,7 @@ export const AutomationPackageDetail = () => {
                   {viewers} viewing
                 </div>
 
-                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/80 border-t border-white/10">
+                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/65 backdrop-blur-md border-t border-white/15">
                   <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{pkg.tagline}</p>
                   <h1 className="text-xl sm:text-3xl font-display font-bold text-white leading-tight">{pkg.name}</h1>
                 </div>
@@ -439,7 +439,7 @@ export const AutomationPackageDetail = () => {
                   <Link key={r.id} to={`/packages/automation/${r.id}`} className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all">
                     <div className="relative h-36 overflow-hidden">
                       <img src={r.image} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/80 border-t border-white/10">
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/65 backdrop-blur-md border-t border-white/15">
                         <p className="text-[10px] text-white/70 mb-0.5">{r.tier} Tier</p>
                         <p className="text-sm font-bold text-white">{r.name}</p>
                       </div>
