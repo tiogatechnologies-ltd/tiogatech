@@ -101,7 +101,7 @@ const ProblemSection = () => {
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-midnight/95" />
+                    <div className="absolute inset-0 bg-midnight/80" />
                     <div className="relative h-full p-6 flex flex-col text-primary-foreground">
                       <p className="text-[10px] uppercase tracking-[0.22em] text-gold/90 mb-3">Tioga Solution</p>
                       <p className="text-gold font-display text-lg font-bold leading-snug drop-shadow">{solution}</p>

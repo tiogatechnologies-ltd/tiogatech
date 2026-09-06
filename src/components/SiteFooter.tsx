@@ -69,7 +69,7 @@ const SiteFooter = () => {
     <footer className="bg-midnight text-primary-foreground">
       <div className="section-container py-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div>
+          <div className="border-t border-primary-foreground/15 pt-6">
             <img src={tiogaLogoLight} alt="Tioga Technologies" className="h-10 w-auto" />
             <p className="mt-4 text-sm text-primary-foreground/65 max-w-xs leading-relaxed">
               IoT infrastructure and embedded systems company powering Africa's clean energy transition.

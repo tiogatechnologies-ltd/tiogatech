@@ -25,7 +25,9 @@ const SEO = ({ title, description, path = "/", image, type = "website", jsonLd }
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:type" content={type} />
+      <meta property="og:site_name" content="Tioga Technologies" />
       {image && <meta property="og:image" content={image} />}
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       {image && <meta name="twitter:image" content={image} />}

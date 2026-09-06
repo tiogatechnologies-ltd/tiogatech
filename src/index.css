@@ -99,6 +99,20 @@ html.lenis, html.lenis body { height: auto; }
     @apply py-16 sm:py-20 lg:py-24;
   }
 
+  .glass-action {
+    background-color: hsl(var(--primary-foreground) / 0.1);
+    border: 1px solid hsl(var(--primary-foreground) / 0.34);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 10px 30px -18px hsl(var(--secondary) / 0.65);
+    transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+  }
+
+  .glass-action:hover {
+    background-color: hsl(var(--primary-foreground) / 0.18);
+    border-color: hsl(var(--primary-foreground) / 0.48);
+  }
+
   /* Prevent descender clipping on animated headings */
   .no-clip {
     overflow: visible;

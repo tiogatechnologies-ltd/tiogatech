@@ -12,8 +12,8 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
     <section className="relative py-24 bg-secondary text-secondary-foreground overflow-hidden">
       <div className="relative section-container">
         <div className="max-w-3xl mx-auto text-center space-y-8">
-          <div className="inline-flex items-center gap-2 rounded-full bg-secondary-foreground/10 backdrop-blur-md border border-secondary-foreground/20 px-4 py-1.5 text-sm">
-            <span className="inline-block h-2 w-2 rounded-full bg-accent" />
+          <div className="flex items-center justify-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-secondary-foreground/70">
+            <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden />
             Free consultation
           </div>
 
@@ -39,7 +39,7 @@ const FinalCTA = ({ onApply }: FinalCTAProps) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackConversion("whatsapp_click", { source: "final_cta" })}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-secondary-foreground/30 bg-secondary-foreground/5 backdrop-blur-md px-8 py-4 text-sm font-medium text-secondary-foreground hover:bg-secondary-foreground/15 active:scale-[0.97] transition-all"
+              className="glass-action inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-medium text-secondary-foreground active:scale-[0.97] transition-all"
             >
               <MessageCircle size={16} />
               Chat on WhatsApp
