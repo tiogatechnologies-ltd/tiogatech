@@ -79,18 +79,17 @@ const PackageCard = ({ pkg, i }: { pkg: HomeAutomationPackage; i: number }) => {
           />
         </Link>
 
-        {/* Left Badges (top-left stack) */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
-          {pct && (
-            <span className="px-2 py-0.5 rounded-full bg-red-600/90 backdrop-blur-md border border-white/25 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
-              <TrendingDown size={10} /> Save {pct}%
+        {/* Top-left Promo / Status Badge */}
+        <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none">
+          {pct ? (
+            <span className="px-2.5 py-1 rounded-full bg-red-600/95 backdrop-blur-md border border-white/25 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1">
+              <TrendingDown size={11} /> Save {pct}%
             </span>
-          )}
-          {pkg.badge && (
-            <span className="px-2 py-0.5 rounded-full bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
+          ) : pkg.badge ? (
+            <span className="px-2.5 py-1 rounded-full bg-primary/95 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
               {pkg.badge}
             </span>
-          )}
+          ) : null}
         </div>
 
         {/* Floating Action Buttons (top-right) */}
@@ -147,12 +146,12 @@ const PackageCard = ({ pkg, i }: { pkg: HomeAutomationPackage; i: number }) => {
 
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
-        {/* Category & Rating */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary">
-            {pkg.tagline || "Smart Living"}
+        {/* Category, Tier & Rating */}
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
+          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
+            {pkg.badge ? `${pkg.badge} Tier · ` : ""}{pkg.tagline || "Smart Living"}
           </span>
-          <div className="flex items-center gap-1 font-medium text-amber-500">
+          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
             <Star size={13} fill="currentColor" />
             <span className="text-foreground font-bold">5.0</span>
             <span className="text-muted-foreground text-[10px]">({12 + ((pkg.name || "").length * 3) % 15})</span>

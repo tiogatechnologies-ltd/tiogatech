@@ -78,21 +78,17 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           />
         </Link>
 
-        {/* Left Badges (top-left stack) */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
-          {pct && (
-            <span className="px-2 py-0.5 rounded-full bg-red-600/90 backdrop-blur-md border border-white/25 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
-              <TrendingDown size={10} /> Save {pct}%
+        {/* Top-left Promo / Status Badge (single clean badge) */}
+        <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none">
+          {pct ? (
+            <span className="px-2.5 py-1 rounded-full bg-red-600/95 backdrop-blur-md border border-white/25 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1">
+              <TrendingDown size={11} /> Save {pct}%
             </span>
-          )}
-          <span className="px-2 py-0.5 rounded-full bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
-            Package #{pkg.package_number}
-          </span>
-          {pkg.badge && (
-            <span className="px-2 py-0.5 rounded-full bg-primary/90 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
+          ) : pkg.badge ? (
+            <span className="px-2.5 py-1 rounded-full bg-primary/95 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
               {pkg.badge}
             </span>
-          )}
+          ) : null}
         </div>
 
         {/* Floating Action Buttons (top-right) */}
@@ -149,12 +145,12 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
-        {/* Category & Rating */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary">
-            {pkg.tagline || (pkg.battery_type === "lithium" ? "Lithium LiFePO4" : "Tubular Backup")}
+        {/* Category, Tier & Rating */}
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
+          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
+            Package #{pkg.package_number}{pkg.badge ? ` · ${pkg.badge}` : ""}{pkg.tagline ? ` · ${pkg.tagline}` : ""}
           </span>
-          <div className="flex items-center gap-1 font-medium text-amber-500">
+          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
             <Star size={13} fill="currentColor" />
             <span className="text-foreground font-bold">5.0</span>
             <span className="text-muted-foreground text-[10px]">({12 + (pkg.package_number * 3) % 15})</span>
@@ -341,20 +337,22 @@ export const SolarPackages = () => {
             </div>
 
             {/* Filter tabs */}
-            <div className="inline-flex p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
-              {(["all", "lithium", "tubular", "high_voltage"] as const).map((k) => (
-                <button
-                  key={k}
-                  onClick={() => setFilter(k)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                    filter === k
-                      ? "bg-primary text-primary-foreground shadow"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {k === "all" ? "All" : k === "lithium" ? "Lithium" : k === "tubular" ? "Tubular / Gel" : "High Voltage"}
-                </button>
-              ))}
+            <div className="overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+              <div className="flex items-center gap-2 min-w-max">
+                {(["all", "lithium", "tubular", "high_voltage"] as const).map((k) => (
+                  <button
+                    key={k}
+                    onClick={() => setFilter(k)}
+                    className={`px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
+                      filter === k
+                        ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                        : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    {k === "all" ? "All" : k === "lithium" ? "Lithium" : k === "tubular" ? "Tubular / Gel" : "High Voltage"}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 

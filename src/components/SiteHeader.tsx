@@ -233,7 +233,7 @@ const SiteHeader = () => {
             type="button"
             onClick={handleAiClick}
             className={cn(
-              "inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97]",
+              "hidden min-[480px]:inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97]",
               "bg-gold/90 hover:bg-gold backdrop-blur-xl backdrop-saturate-150 text-midnight border border-gold/60 border-t-white/60 hover:brightness-105 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_4px_16px_rgba(245,158,11,0.3)]",
             )}
             aria-label="Get a Quote and Make Enquiry"

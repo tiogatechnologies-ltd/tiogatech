@@ -95,11 +95,15 @@ const Packages = () => {
         ? "smart-locks"
         : key === "automation"
         ? "home-automation"
-        : "all-packages";
+        : "categories";
 
     window.setTimeout(() => {
       const el = document.getElementById(id) ?? sectionRefs.current[key];
-      if (el) return el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (el) {
+        const topOffset = el.getBoundingClientRect().top + window.pageYOffset - 116;
+        window.scrollTo({ top: Math.max(0, topOffset), behavior: "smooth" });
+        return;
+      }
       if (attempts < 8) scrollToSection(key, attempts + 1);
     }, attempts === 0 ? 80 : 200);
   };
@@ -216,7 +220,7 @@ const Packages = () => {
       {/* Sticky category tab bar */}
       <div className="sticky top-[60px] z-30 bg-background/90 backdrop-blur-xl border-b border-border shadow-sm">
         <div className="section-container">
-          <div className="flex items-center gap-1.5 sm:gap-2 py-2 overflow-x-auto scrollbar-hide no-scrollbar snap-x snap-mandatory">
+          <div className="flex items-center gap-2 py-2.5 overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
             {TABS.map((t) => {
               const Icon = t.icon;
               const isActive = active === t.key;
@@ -225,14 +229,14 @@ const Packages = () => {
                   key={t.key}
                   type="button"
                   onClick={() => handleCategoryClick(t.key)}
-                  className={`snap-start inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
+                  className={`inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0 border transition-all ${
                     isActive
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                      : "border-border bg-card/90 text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`}
                 >
-                  <Icon size={15} />
-                  {t.label}
+                  <Icon size={14} />
+                  <span>{t.label}</span>
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
                       isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
@@ -242,7 +246,7 @@ const Packages = () => {
                   </span>
                   {t.key !== "all" && (
                     <ChevronDown
-                      size={13}
+                      size={12}
                       className={`transition-transform duration-200 ${isActive ? "rotate-180" : ""}`}
                     />
                   )}

@@ -77,23 +77,17 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
           />
         </Link>
 
-        {/* Left Badges (top-left stack) */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
-          {pct && (
-            <span className="px-2 py-0.5 rounded-full bg-red-600/90 backdrop-blur-md border border-white/25 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
-              <TrendingDown size={10} /> Save {pct}%
+        {/* Top-left Promo / Status Badge */}
+        <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none">
+          {pct ? (
+            <span className="px-2.5 py-1 rounded-full bg-red-600/95 backdrop-blur-md border border-white/25 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1">
+              <TrendingDown size={11} /> Save {pct}%
             </span>
-          )}
-          {p.model && (
-            <span className="px-2 py-0.5 rounded-full bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
-              {p.model}
-            </span>
-          )}
-          {p.badge && (
-            <span className="px-2 py-0.5 rounded-full bg-primary/90 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
+          ) : p.badge ? (
+            <span className="px-2.5 py-1 rounded-full bg-primary/95 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
               {p.badge}
             </span>
-          )}
+          ) : null}
         </div>
 
         {/* Floating Action Buttons (top-right) */}
@@ -150,12 +144,12 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
 
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
-        {/* Category & Rating */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary">
-            {p.series || "STAMA Security"}
+        {/* Category, Series & Rating */}
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
+          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
+            {p.series || "STAMA Security"}{p.model ? ` · ${p.model}` : ""}{p.badge ? ` · ${p.badge}` : ""}
           </span>
-          <div className="flex items-center gap-1 font-medium text-amber-500">
+          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
             <Star size={13} fill="currentColor" />
             <span className="text-foreground font-bold">5.0</span>
             <span className="text-muted-foreground text-[10px]">({10 + ((p.name || "").length * 2) % 18})</span>
@@ -288,7 +282,7 @@ const SmartLocksSection = () => {
   if (items.length === 0) return null;
 
   return (
-    <section id="smart-locks" data-no-reveal className="section-padding scroll-mt-24">
+    <section id="smart-locks" data-no-reveal className="section-padding scroll-mt-32">
       <div className="section-container">
         <div className="text-center mb-10">
           <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">
@@ -302,23 +296,21 @@ const SmartLocksSection = () => {
           </p>
         </div>
 
-        <div className="mb-8 sm:mb-10 -mx-4 px-4 overflow-x-auto scrollbar-hide no-scrollbar pb-1">
-          <div className="flex justify-start sm:justify-center min-w-max sm:mx-auto">
-            <div className="inline-flex p-1 sm:p-1.5 rounded-full bg-card border border-border shadow-sm gap-1">
-              {TABS.map(({ key, label, icon: Icon }) => (
-                <button
-                  key={key}
-                  onClick={() => setTab(key)}
-                  className={`whitespace-nowrap px-3.5 sm:px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all inline-flex items-center gap-1.5 ${
-                    tab === key
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Icon size={14} /> {label}
-                </button>
-              ))}
-            </div>
+        <div className="mb-6 sm:mb-8 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex items-center sm:justify-center gap-2 min-w-max">
+            {TABS.map(({ key, label, icon: Icon }) => (
+              <button
+                key={key}
+                onClick={() => setTab(key)}
+                className={`whitespace-nowrap px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold rounded-full border transition-all inline-flex items-center gap-1.5 shrink-0 ${
+                  tab === key
+                    ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                    : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                <Icon size={14} /> {label}
+              </button>
+            ))}
           </div>
         </div>
 

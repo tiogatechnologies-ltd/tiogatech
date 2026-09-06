@@ -149,7 +149,7 @@ html.lenis, html.lenis body { height: auto; }
   }
 
   .section-padding {
-    @apply py-16 sm:py-20 lg:py-24;
+    @apply py-10 sm:py-16 lg:py-24;
   }
 
   .glass-action {

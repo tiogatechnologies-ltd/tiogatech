@@ -25,21 +25,21 @@ const PageHero = ({ eyebrow, title, subtitle, children, backgroundImage, backgro
     {/* Background photo legibility overlay */}
     <div className="absolute inset-0 bg-secondary/70" />
 
-    <div className="relative section-container py-24 sm:py-28 lg:py-32 text-center">
+    <div className="relative section-container py-12 sm:py-24 lg:py-32 text-center">
       {eyebrow && (
-        <p className="text-[11px] sm:text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4 animate-fade-up">
+        <p className="text-[11px] sm:text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-3 sm:mb-4 animate-fade-up">
           {eyebrow}
         </p>
       )}
       <h1
-        className="text-[2rem] sm:text-5xl lg:text-6xl font-display font-bold text-primary-foreground tracking-[-0.02em] leading-[1.08] max-w-3xl mx-auto animate-fade-up"
+        className="text-2xl sm:text-5xl lg:text-6xl font-display font-bold text-primary-foreground tracking-[-0.02em] leading-tight max-w-3xl mx-auto animate-fade-up"
         style={{ animationDelay: "0.1s" }}
       >
         {title}
       </h1>
       {subtitle && (
         <p
-          className="mt-5 text-base sm:text-lg text-primary-foreground/80 max-w-2xl mx-auto leading-relaxed animate-fade-up"
+          className="mt-3 sm:mt-5 text-sm sm:text-lg text-primary-foreground/80 max-w-2xl mx-auto leading-relaxed animate-fade-up"
           style={{ animationDelay: "0.2s" }}
         >
           {subtitle}
@@ -47,7 +47,7 @@ const PageHero = ({ eyebrow, title, subtitle, children, backgroundImage, backgro
       )}
       {children && (
         <div
-          className="mt-8 flex flex-wrap items-center justify-center gap-3 animate-fade-up"
+          className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 animate-fade-up"
           style={{ animationDelay: "0.3s" }}
         >
           {children}
