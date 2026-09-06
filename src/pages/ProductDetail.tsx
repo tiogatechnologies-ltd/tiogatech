@@ -542,7 +542,7 @@ export const ProductDetail = () => {
                     </div>
                   </div>
                   {numPrice > 0 && (
-                    <div className="text-right">
+                    <div className="w-full sm:w-auto text-left sm:text-right">
                       <span className="text-[11px] text-muted-foreground block">Spread payment with direct debit</span>
                       <span className="text-xs font-bold text-primary">
                         From ₦{Math.round(numPrice / 6).toLocaleString("en-NG")}/mo

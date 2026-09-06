@@ -224,16 +224,16 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
             {Object.entries(product.specifications).slice(0, 2).map(([key, val]) => (
               <span
                 key={key}
-                className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium"
+                className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium max-w-full truncate"
               >
-                {key}: <strong className="text-foreground">{val}</strong>
+                <span className="truncate">{key}: <strong className="text-foreground">{val}</strong></span>
               </span>
             ))}
           </div>
         )}
 
         {/* Sold count urgency */}
-        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3">
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3 flex-wrap">
           <Users size={11} className="text-emerald-500 shrink-0" />
           <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} sold this week</span>
           <span className="opacity-50">·</span>
@@ -243,15 +243,15 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
 
         {/* Price & Financing */}
         <div className="mt-auto pt-3 border-t border-border/60">
-          <div className="flex items-start justify-between gap-2 mb-1.5">
-            <div>
+          <div className="flex items-start justify-between gap-1.5 mb-1.5 flex-wrap">
+            <div className="min-w-0 flex-1">
               {/* Main Price */}
-              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-none">
+              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
                 {fmt(product.numeric_price, product.price)}
               </p>
               {/* Was Price (slashed) */}
               {wasPrice && savedAmount && (
-                <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                <div className="flex flex-wrap items-center gap-1 mt-0.5">
                   <span className="text-xs text-muted-foreground line-through">
                     ₦{Math.round(wasPrice).toLocaleString("en-NG")}
                   </span>
@@ -262,7 +262,7 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
               )}
               {/* Monthly payment hint */}
               {monthlyEst && (
-                <p className="text-[10px] text-muted-foreground mt-0.5">
+                <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
                   Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
                 </p>
               )}

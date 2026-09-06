@@ -316,7 +316,7 @@ const Checkout = () => {
                 </div>
                 <input value={form.address} onChange={(e) => setF("address", e.target.value)} placeholder="Address" className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm" />
                 <input value={form.apartment} onChange={(e) => setF("apartment", e.target.value)} placeholder="Apartment, suite, etc. (optional)" className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm" />
-                <div className="grid grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   <input value={form.city} onChange={(e) => setF("city", e.target.value)} placeholder="City" className="rounded-xl border border-border bg-background px-4 py-3 text-sm" />
                   <select value={form.state} onChange={(e) => setF("state", e.target.value)} className="rounded-xl border border-border bg-background px-4 py-3 text-sm">
                     {NG_STATES.map((s) => <option key={s} value={s}>{s}</option>)}

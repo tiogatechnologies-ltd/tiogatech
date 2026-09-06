@@ -168,17 +168,17 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
             {p.features.slice(0, 3).map((f) => (
               <span
                 key={f}
-                className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1"
+                className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full"
               >
                 <Check size={10} className="text-primary shrink-0" />
-                <span>{f}</span>
+                <span className="truncate">{f}</span>
               </span>
             ))}
           </div>
         )}
 
         {/* Social Proof Urgency */}
-        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3">
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3 flex-wrap">
           <Users size={11} className="text-emerald-500 shrink-0" />
           <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
           <span className="opacity-50">·</span>
@@ -188,15 +188,15 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
 
         {/* Price & Financing */}
         <div className="mt-auto pt-3 border-t border-border/60">
-          <div className="flex items-start justify-between gap-2 mb-1.5">
-            <div>
+          <div className="flex items-start justify-between gap-1.5 mb-1.5 flex-wrap">
+            <div className="min-w-0 flex-1">
               {/* Main Price */}
-              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-none">
+              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
                 {fmtAuto(p)}
               </p>
               {/* Was Price (slashed) */}
               {wasPriceVal && savedAmount && (
-                <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                <div className="flex flex-wrap items-center gap-1 mt-0.5">
                   <span className="text-xs text-muted-foreground line-through">
                     {wasPriceVal >= 1_000_000
                       ? `From ₦${(wasPriceVal / 1_000_000).toFixed(1)}M`
@@ -208,7 +208,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
                 </div>
               )}
               {monthlyEst && (
-                <p className="text-[10px] text-muted-foreground mt-0.5">
+                <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
                   Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
                 </p>
               )}
@@ -225,22 +225,22 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
           <div className="grid grid-cols-2 gap-2 mt-2">
             <Link
               to={`/packages/automation/${p.id}`}
-              className="py-2 px-3 rounded-xl font-semibold text-xs border border-border bg-muted/40 hover:bg-muted text-foreground flex items-center justify-center gap-1.5 transition-all text-center"
+              className="py-2 px-2.5 sm:px-3 rounded-xl font-semibold text-xs border border-border bg-muted/40 hover:bg-muted text-foreground flex items-center justify-center gap-1 transition-all text-center"
             >
-              View Details <ArrowRight size={12} />
+              <span className="truncate">View Details</span> <ArrowRight size={12} className="shrink-0" />
             </Link>
             <button
               onClick={handleAdd}
-              className={`py-2 px-3 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-1.5 transition-all ${
+              className={`py-2 px-2.5 sm:px-3 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-1 transition-all ${
                 addedAnim
                   ? "bg-emerald-600 text-white"
                   : "bg-primary text-primary-foreground hover:bg-primary/90"
               }`}
             >
               {addedAnim ? (
-                <><Check size={12} /> Added</>
+                <><Check size={12} className="shrink-0" /> <span className="truncate">Added</span></>
               ) : (
-                <><ShoppingCart size={12} /> Add to Cart</>
+                <><ShoppingCart size={12} className="shrink-0" /> <span className="truncate">Add to Cart</span></>
               )}
             </button>
           </div>

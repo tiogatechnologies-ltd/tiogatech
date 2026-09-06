@@ -279,10 +279,10 @@ export const SolarPackageDetail = () => {
               {/* Price block */}
               <div className="p-5 rounded-2xl bg-muted/40 border border-border">
                 <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Bundle Installation Price</p>
-                <div className="flex items-end gap-4 mb-2">
-                  <span className="text-4xl font-display font-bold text-foreground leading-none">{fmtN(pkg.total_price)}</span>
-                  <div className="flex flex-col pb-1">
-                    <span className="text-sm text-muted-foreground line-through">{fmtN(wasPrice)}</span>
+                <div className="flex flex-col sm:flex-row sm:items-end gap-1.5 sm:gap-4 mb-2">
+                  <span className="text-3xl sm:text-4xl font-display font-bold text-foreground leading-tight">{fmtN(pkg.total_price)}</span>
+                  <div className="flex flex-wrap sm:flex-col items-baseline sm:items-start gap-2 sm:gap-0 pb-0.5 sm:pb-1">
+                    <span className="text-xs sm:text-sm text-muted-foreground line-through">{fmtN(wasPrice)}</span>
                     <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
                       You save {fmtN(savedAmount)} ({pct}%)
                     </span>
@@ -384,7 +384,7 @@ export const SolarPackageDetail = () => {
               <p className="text-sm font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-2 mb-3">
                 <TrendingDown size={16} /> Bundle Savings vs. Buying Separately
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
                 {[
                   { label: "Individual Retail Total", value: fmtN(wasPrice), muted: true },
                   { label: "Bundle Price", value: fmtN(pkg.total_price), highlight: true },

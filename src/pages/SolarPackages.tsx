@@ -171,22 +171,22 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
         {/* Highlights / Specs Chips */}
         <div className="flex flex-wrap gap-1.5 mb-3">
-          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
             <Sun size={11} className="text-gold shrink-0" />
-            <span>Panels: <strong className="text-foreground">{(pkg.solar_panels?.split("+") || [])[0]?.trim() || pkg.solar_panels || "Standard Panels"}</strong></span>
+            <span className="truncate">Panels: <strong className="text-foreground">{(pkg.solar_panels?.split("+") || [])[0]?.trim() || pkg.solar_panels || "Standard Panels"}</strong></span>
           </span>
-          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
             <Battery size={11} className="text-emerald-500 shrink-0" />
-            <span>Battery: <strong className="text-foreground">{(pkg.battery?.split("(") || [])[0]?.trim() || pkg.battery || "Compatible Battery"}</strong></span>
+            <span className="truncate">Battery: <strong className="text-foreground">{(pkg.battery?.split("(") || [])[0]?.trim() || pkg.battery || "Compatible Battery"}</strong></span>
           </span>
-          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
             <Zap size={11} className="text-primary shrink-0" />
-            <span>Powers: <strong className="text-foreground line-clamp-1">{pkg.appliances ? pkg.appliances.split(",").slice(0, 2).join(", ") : "Essential Appliances"}</strong></span>
+            <span className="truncate">Powers: <strong className="text-foreground">{pkg.appliances ? pkg.appliances.split(",").slice(0, 2).join(", ") : "Essential Appliances"}</strong></span>
           </span>
         </div>
 
         {/* Social Proof Urgency */}
-        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3">
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3 flex-wrap">
           <Users size={11} className="text-emerald-500 shrink-0" />
           <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
           <span className="opacity-50">·</span>
@@ -196,15 +196,15 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
         {/* Price & Financing */}
         <div className="mt-auto pt-3 border-t border-border/60">
-          <div className="flex items-start justify-between gap-2 mb-1.5">
-            <div>
+          <div className="flex items-start justify-between gap-1.5 mb-1.5 flex-wrap">
+            <div className="min-w-0 flex-1">
               {/* Main Price */}
-              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-none">
+              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
                 {fmtPrice(pkg.total_price)}
               </p>
               {/* Was Price (slashed) */}
               {wasPriceVal && savedAmount && (
-                <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                <div className="flex flex-wrap items-center gap-1 mt-0.5">
                   <span className="text-xs text-muted-foreground line-through">
                     {fmtPrice(wasPriceVal)}
                   </span>
@@ -214,7 +214,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
                 </div>
               )}
               {monthlyEst && (
-                <p className="text-[10px] text-muted-foreground mt-0.5">
+                <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
                   Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
                 </p>
               )}
@@ -231,22 +231,22 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           <div className="grid grid-cols-2 gap-2 mt-2">
             <Link
               to={`/packages/solar/${pkg.id}`}
-              className="py-2 px-3 rounded-xl font-semibold text-xs border border-border bg-muted/40 hover:bg-muted text-foreground flex items-center justify-center gap-1.5 transition-all text-center"
+              className="py-2 px-2.5 sm:px-3 rounded-xl font-semibold text-xs border border-border bg-muted/40 hover:bg-muted text-foreground flex items-center justify-center gap-1 transition-all text-center"
             >
-              View Details <ArrowRight size={12} />
+              <span className="truncate">View Details</span> <ArrowRight size={12} className="shrink-0" />
             </Link>
             <button
               onClick={handleAdd}
-              className={`py-2 px-3 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-1.5 transition-all ${
+              className={`py-2 px-2.5 sm:px-3 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-1 transition-all ${
                 addedAnim
                   ? "bg-emerald-600 text-white"
                   : "bg-primary text-primary-foreground hover:bg-primary/90"
               }`}
             >
               {addedAnim ? (
-                <><Check size={12} /> Added</>
+                <><Check size={12} className="shrink-0" /> <span className="truncate">Added</span></>
               ) : (
-                <><ShoppingCart size={12} /> Add to Cart</>
+                <><ShoppingCart size={12} className="shrink-0" /> <span className="truncate">Add to Cart</span></>
               )}
             </button>
           </div>

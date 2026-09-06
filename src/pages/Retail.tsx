@@ -364,12 +364,12 @@ export const Retail = () => {
             </div>
 
             {/* Right Controls */}
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
               {/* Mobile Filter Drawer */}
-              <div className="lg:hidden">
+              <div className="lg:hidden col-span-1">
                 <Sheet open={mobileFilterOpen} onOpenChange={setMobileFilterOpen}>
                   <SheetTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-10 rounded-xl gap-2 text-xs font-semibold">
+                    <Button variant="outline" size="sm" className="h-10 rounded-xl gap-2 text-xs font-semibold w-full justify-center">
                       <SlidersHorizontal size={14} />
                       <span>Filters</span>
                       {(selectedBrands.length > 0 || selectedCapacities.length > 0 || selectedCategory) && (
@@ -411,40 +411,44 @@ export const Retail = () => {
               {/* Wishlist Link */}
               <Link
                 to="/retail/wishlist"
-                className="inline-flex items-center gap-1.5 px-3 h-10 rounded-xl border border-border bg-card hover:bg-muted text-xs font-semibold text-foreground transition-colors"
+                className="col-span-1 inline-flex items-center justify-center gap-1.5 px-3 h-10 rounded-xl border border-border bg-card hover:bg-muted text-xs font-semibold text-foreground transition-colors w-full sm:w-auto"
               >
                 <Heart size={14} className="text-red-500" />
-                <span className="hidden sm:inline">Wishlist</span>
+                <span>Wishlist</span>
                 <span className="bg-red-500/10 text-red-500 text-[10px] font-bold px-1.5 py-0.2 rounded-full">
                   {wishlistCount}
                 </span>
               </Link>
 
               {/* Items Per Page Selector */}
-              <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1); }}>
-                <SelectTrigger className="w-28 shrink-0 bg-muted/30 rounded-xl text-xs font-medium h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-card border-border">
-                  <SelectItem value="9" className="text-xs">9 / page</SelectItem>
-                  <SelectItem value="12" className="text-xs">12 / page</SelectItem>
-                  <SelectItem value="18" className="text-xs">18 / page</SelectItem>
-                  <SelectItem value="24" className="text-xs">24 / page</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="col-span-1 w-full sm:w-auto">
+                <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1); }}>
+                  <SelectTrigger className="w-full sm:w-28 shrink-0 bg-muted/30 rounded-xl text-xs font-medium h-10 justify-between">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card border-border">
+                    <SelectItem value="9" className="text-xs">9 / page</SelectItem>
+                    <SelectItem value="12" className="text-xs">12 / page</SelectItem>
+                    <SelectItem value="18" className="text-xs">18 / page</SelectItem>
+                    <SelectItem value="24" className="text-xs">24 / page</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
               {/* Sort Selector */}
-              <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
-                <SelectTrigger className="w-36 bg-muted/30 rounded-xl text-xs font-medium h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-card border-border">
-                  <SelectItem value="featured" className="text-xs">Featured</SelectItem>
-                  <SelectItem value="price-asc" className="text-xs">Price: Low to High</SelectItem>
-                  <SelectItem value="price-desc" className="text-xs">Price: High to Low</SelectItem>
-                  <SelectItem value="rating" className="text-xs">Top Rated</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="col-span-1 w-full sm:w-auto">
+                <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
+                  <SelectTrigger className="w-full sm:w-36 bg-muted/30 rounded-xl text-xs font-medium h-10 justify-between">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card border-border">
+                    <SelectItem value="featured" className="text-xs">Featured</SelectItem>
+                    <SelectItem value="price-asc" className="text-xs">Price: Low to High</SelectItem>
+                    <SelectItem value="price-desc" className="text-xs">Price: High to Low</SelectItem>
+                    <SelectItem value="rating" className="text-xs">Top Rated</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
               {/* Grid / List View Toggle */}
               <div className="hidden md:flex items-center border border-border rounded-xl bg-muted/30 p-0.5 h-10">

@@ -262,11 +262,11 @@ export const SmartLockDetail = () => {
                 <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">
                   {lock.category === "hotel" ? "Investment Price" : "Bundle Price"}
                 </p>
-                <div className="flex items-end gap-4 mb-2">
-                  <span className="text-4xl font-display font-bold text-foreground leading-none">{fmtLock(lock)}</span>
+                <div className="flex flex-col sm:flex-row sm:items-end gap-1.5 sm:gap-4 mb-2">
+                  <span className="text-3xl sm:text-4xl font-display font-bold text-foreground leading-tight">{fmtLock(lock)}</span>
                   {wasPrice && savedAmount && (
-                    <div className="flex flex-col pb-1">
-                      <span className="text-sm text-muted-foreground line-through">{fmtN(wasPrice)}</span>
+                    <div className="flex flex-wrap sm:flex-col items-baseline sm:items-start gap-2 sm:gap-0 pb-0.5 sm:pb-1">
+                      <span className="text-xs sm:text-sm text-muted-foreground line-through">{fmtN(wasPrice)}</span>
                       <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">Save {fmtN(savedAmount)} ({pct}%)</span>
                     </div>
                   )}
