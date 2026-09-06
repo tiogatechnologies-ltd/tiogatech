@@ -29,12 +29,13 @@ Tioga Technologies designs and installs three categories of products:
 - **Full off-grid solar:** ₦1.8M to ₦5M+ depending on load
 - **Flexible payment plans and installments** available - see /finance
 
-## Products
+## Products and services
 
-- [Solar packages](https://tiogatechnologies.com/packages): Curated solar bundles by KVA
-- [Catalog](https://tiogatechnologies.com/catalog): 129+ products with filtering by category and budget
-- [LumiVolt](https://tiogatechnologies.com/lumivolt): Solar product line and companion mobile app
-- [VoltAi](https://tiogatechnologies.com/voltai): AI home automation platform
+- [Solar packages](https://tiogatechnologies.com/packages): Curated solar bundles by KVA for Nigerian homes and businesses
+- [Catalog](https://tiogatechnologies.com/catalog): Solar, battery, smart lock, CCTV and home automation products
+- [LumiVolt](https://tiogatechnologies.com/lumivolt): Residential solar systems, lithium battery backup and monitoring
+- [VoltAi](https://tiogatechnologies.com/voltai): Smart lighting, climate, security and energy automation
+- [Easy Flex financing](https://tiogatechnologies.com/finance): Lease-to-own solar financing with a 30% deposit and fixed monthly repayments
 
 ## Key pages
 
@@ -48,6 +49,10 @@ Tioga Technologies designs and installs three categories of products:
 - [Blog](https://tiogatechnologies.com/blog): Solar, smart home and energy insights
 - [Privacy](https://tiogatechnologies.com/privacy)
 - [Terms](https://tiogatechnologies.com/terms)
+
+## Local service information
+
+Tioga Technologies serves customers in Lagos, Abuja, Port Harcourt, Jos and surrounding Nigerian regions. The company headquarters is at No 7, Commercial Layout, Abattoir Road, behind Airforce Primary School, Jos, Plateau State, Nigeria. Contact sales@tiogatechnologies.com or WhatsApp +234 817 800 0023 for a quote, site assessment or installation request.
 
 ## Common questions
 
