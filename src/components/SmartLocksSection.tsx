@@ -46,7 +46,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.35, ease: "easeOut", delay: (i % 6) * 0.04 }}
-    className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col"
+    className="group relative rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift hover:border-primary/40 overflow-hidden flex flex-col transition-all"
     id={`lock-${p.id}`}
   >
     <Link to={`/packages/lock/${p.id}`} className="relative h-48 overflow-hidden block">

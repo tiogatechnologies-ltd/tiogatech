@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Home, Lightbulb, Smartphone, Music, Wifi, Check, ShoppingBag, Eye, ShieldCheck, Cpu, Sliders, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+import { Home, Lightbulb, Smartphone, Music, Wifi, Check, ShoppingBag, Eye, ShieldCheck, Cpu, Sliders, Zap, TrendingDown, Tag } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -11,6 +12,7 @@ import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import bgAutomation from "@/assets/bg-voltai-ai.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
+import { PROMO_LIFT, viewerCount, savingsPct } from "@/lib/promoDisplay";
 
 const fmt = (p: HomeAutomationPackage) =>
   p.price_label ?? (p.price ? `From ₦${(p.price / 1_000_000).toFixed(1)}M` : "Custom Quote");
@@ -132,37 +134,76 @@ export const HomeAutomation = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {items.map((pkg, i) => (
-              <div
+            {items.map((pkg, i) => {
+              const hasPrice = !!(pkg.price && pkg.price > 0);
+              const pct = hasPrice ? savingsPct(pkg.id) : null;
+              const wasPriceVal = hasPrice ? Math.round(pkg.price! * PROMO_LIFT) : null;
+              const savedAmount = hasPrice && wasPriceVal ? wasPriceVal - pkg.price! : null;
+              const viewers = viewerCount(pkg.id);
+              return (
+              <motion.div
                 key={pkg.id}
-                className="group rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col transition-all"
+                layout
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.25 }}
+                className="group rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift hover:border-primary/40 overflow-hidden flex flex-col transition-all"
               >
-                <div className="relative h-52 overflow-hidden">
+                <Link to={`/packages/automation/${pkg.id}`} className="relative h-52 overflow-hidden block">
                   <img
                     src={pkg.image}
                     alt={pkg.name}
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  {pkg.badge && (
-                    <span className="absolute top-4 left-4 text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_4px_12px_rgba(0,0,0,0.2)]">
-                      {pkg.badge}
-                    </span>
-                  )}
-                  <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
-                    <p className="text-[10px] uppercase tracking-widest text-primary-foreground/80 mb-1">
-                      {pkg.tagline}
-                    </p>
-                    <h3 className="text-xl font-display font-bold text-primary-foreground leading-tight">
-                      {pkg.name}
-                    </h3>
+                  <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap max-w-[62%]">
+                    {pct && (
+                      <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-600/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.2)] flex items-center gap-1">
+                        <TrendingDown size={10} /> Save {pct}%
+                      </span>
+                    )}
+                    {pkg.badge && (
+                      <span className="text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_4px_12px_rgba(0,0,0,0.2)]">
+                        {pkg.badge}
+                      </span>
+                    )}
                   </div>
-                </div>
+                  <div className="absolute bottom-3 left-3">
+                    <span className="flex items-center gap-1.5 text-[10px] font-semibold bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                      </span>
+                      {viewers} viewing
+                    </span>
+                  </div>
+                </Link>
 
                 <div className="p-6 flex flex-col flex-1">
                   <div className="mb-4">
+                    <p className="text-[10px] uppercase tracking-widest text-primary font-semibold mb-1">
+                      {pkg.tagline}
+                    </p>
+                    <Link to={`/packages/automation/${pkg.id}`} className="text-xl font-display font-bold text-foreground leading-tight mb-2 hover:text-primary transition-colors block">
+                      {pkg.name}
+                    </Link>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Starting From</p>
-                    <p className="text-2xl font-display font-bold text-foreground">{fmt(pkg)}</p>
+                    <div className="flex items-end gap-2 flex-wrap">
+                      <p className="text-2xl font-display font-bold text-foreground">{fmt(pkg)}</p>
+                      {wasPriceVal && savedAmount && (
+                        <div className="flex items-center gap-1.5 pb-0.5">
+                          <span className="text-xs text-muted-foreground line-through">
+                            {wasPriceVal >= 1_000_000
+                              ? `From ₦${(wasPriceVal / 1_000_000).toFixed(1)}M`
+                              : `₦${Math.round(wasPriceVal).toLocaleString("en-NG")}`}
+                          </span>
+                          <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
+                            <Tag size={9} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <p className="text-xs text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
@@ -227,8 +268,9 @@ export const HomeAutomation = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              </motion.div>
+              );
+            })}
           </div>
         </div>
       </main>

@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Sun, Battery, Zap, Cpu, Check, ShoppingBag, ArrowRight, Calculator, TrendingDown, Flame, Tag } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -41,7 +42,14 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
   };
 
   return (
-    <div className="group rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift overflow-hidden flex flex-col transition-all">
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.25 }}
+      className="group rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] hover-lift hover:border-primary/40 overflow-hidden flex flex-col transition-all"
+    >
       {/* Image with Savings Badge - clicking opens detail page */}
       <Link to={`/packages/solar/${pkg.id}`} className="relative h-52 overflow-hidden block">
         <img
@@ -75,19 +83,20 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
             {viewers} viewing
           </span>
         </div>
-
-        <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
-          <p className="text-[10px] uppercase tracking-widest text-primary-foreground/80 mb-1">
-            {pkg.tagline || (pkg.battery_type === "lithium" ? "Lithium LiFePO4" : "Tubular Backup")}
-          </p>
-          <h3 className="text-xl font-display font-bold text-primary-foreground leading-tight">
-            {pkg.inverter}
-          </h3>
-        </div>
       </Link>
 
       {/* Body */}
       <div className="p-5 sm:p-6 flex flex-col flex-1">
+
+        {/* Title */}
+        <div className="mb-4">
+          <p className="text-[10px] uppercase tracking-widest text-primary font-semibold mb-1">
+            {pkg.tagline || (pkg.battery_type === "lithium" ? "Lithium LiFePO4" : "Tubular Backup")}
+          </p>
+          <Link to={`/packages/solar/${pkg.id}`} className="text-xl font-display font-bold text-foreground leading-tight hover:text-primary transition-colors">
+            {pkg.inverter}
+          </Link>
+        </div>
 
         {/* Price block */}
         <div className="mb-4 p-4 rounded-2xl bg-muted/40 border border-border/60">
@@ -179,7 +188,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
