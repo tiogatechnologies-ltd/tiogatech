@@ -58,19 +58,19 @@ const Career = () => {
     >
       <a
         href="mailto:careers@tiogatechnologies.com?subject=Application%20to%20Tioga"
-        className="inline-flex items-center gap-2 rounded-full bg-accent/90 hover:bg-accent backdrop-blur-xl border border-accent/40 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
+        className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]"
       >
         <Mail size={16} /> Send us your CV
       </a>
       <a
         href="#open-roles"
-        className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
+        className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
       >
         See open roles <ArrowRight size={16} />
       </a>
       <a
         href="#affiliate"
-        className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/20 hover:bg-gold/30 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-gold/35 transition-all shadow-md"
+        className="inline-flex items-center gap-2 rounded-full border border-gold/40 border-t-white/40 bg-gold/15 hover:bg-gold/25 backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-gold/60 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(245,158,11,0.2)]"
       >
         <Share2 size={16} /> Become an affiliate
       </a>

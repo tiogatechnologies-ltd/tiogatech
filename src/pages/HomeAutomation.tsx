@@ -48,13 +48,13 @@ export const HomeAutomation = () => {
           <button
             type="button"
             onClick={() => openLeadForm("home_automation_hero")}
-            className="inline-flex items-center gap-2 rounded-full bg-primary/90 hover:bg-primary backdrop-blur-xl border border-primary/40 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/25 transition-all"
+            className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 backdrop-blur-xl border border-primary/60 border-t-white/40 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.25)]"
           >
             Request Custom Automation Plan
           </button>
           <Link
             to="/retail?category=Home+Automation"
-            className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
           >
             <ShoppingBag size={16} /> Shop IoT Switches & Modules
           </Link>
@@ -145,11 +145,11 @@ export const HomeAutomation = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   {pkg.badge && (
-                    <span className="absolute top-4 left-4 text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight px-2.5 py-1 rounded-full shadow-md">
+                    <span className="absolute top-4 left-4 text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_4px_12px_rgba(0,0,0,0.2)]">
                       {pkg.badge}
                     </span>
                   )}
-                  <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/65 backdrop-blur-md border-t border-white/15">
+                  <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
                     <p className="text-[10px] uppercase tracking-widest text-primary-foreground/80 mb-1">
                       {pkg.tagline}
                     </p>

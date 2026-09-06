@@ -58,12 +58,12 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
       {/* Badges */}
       <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
         {p.badge && (
-          <span className="text-[10px] uppercase tracking-[0.18em] font-bold bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight px-2.5 py-1 rounded-full shadow-md">
+          <span className="text-[10px] uppercase tracking-[0.18em] font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_4px_12px_rgba(0,0,0,0.2)]">
             {p.badge}
           </span>
         )}
         {pct && (
-          <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-600/90 backdrop-blur-md border border-white/25 text-white px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
+          <span className="text-[10px] uppercase tracking-wider font-extrabold bg-red-600/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.2)] flex items-center gap-1">
             <TrendingDown size={10} /> Save {pct}%
           </span>
         )}
@@ -71,7 +71,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
 
       {/* Viewer count */}
       <div className="absolute top-4 right-4">
-        <span className="flex items-center gap-1.5 text-[10px] font-semibold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2.5 py-1 rounded-full shadow-md">
+        <span className="flex items-center gap-1.5 text-[10px] font-semibold bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
           <span className="relative flex h-1.5 w-1.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
@@ -80,7 +80,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
         </span>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/65 backdrop-blur-md border-t border-white/15">
+      <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
         <p className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/75 mb-1">
           {p.tagline}
         </p>

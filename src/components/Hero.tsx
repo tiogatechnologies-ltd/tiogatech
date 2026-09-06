@@ -69,14 +69,12 @@ const Hero = ({ onApply }: HeroProps) => {
         <div className="grid lg:grid-cols-12 gap-10 items-center">
           {/* Left - copy */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-7">
-            <div>
-              <span
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 bg-midnight/65 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-accent uppercase tracking-widest shadow-sm ${mounted ? "animate-fade-up" : "opacity-0"}`}
-                style={{ animationDelay: "0.1s" }}
-              >
-                Trusted by 100+ Nigerian homes & businesses
-              </span>
-            </div>
+            <p
+              className={`text-xs sm:text-sm font-semibold text-accent uppercase tracking-widest ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              style={{ animationDelay: "0.1s" }}
+            >
+              Trusted by 100+ Nigerian homes & businesses
+            </p>
 
             <h1
               className={`font-display font-bold text-primary-foreground leading-[1.05] tracking-[-0.02em] no-clip ${mounted ? "" : "opacity-0"}`}
@@ -122,7 +120,7 @@ const Hero = ({ onApply }: HeroProps) => {
             >
               <button
                 onClick={onApply}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent/90 hover:bg-accent backdrop-blur-xl border border-accent/40 px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-2xl shadow-accent/30 hover:shadow-accent/50 transition-all"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-semibold text-accent-foreground hover:brightness-110 ios-press shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)] transition-all"
               >
                 Get My Personalized Quote
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -130,7 +128,7 @@ const Hero = ({ onApply }: HeroProps) => {
               <button
                 type="button"
                 onClick={() => { trackConversion("energy_calculator_open", { source: "hero" }); openEnergyCalculator(); }}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-midnight/60 hover:bg-midnight/80 backdrop-blur-xl px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-primary-foreground hover:border-white/50 transition-all shadow-lg shadow-black/15 ios-press"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-4 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-medium text-white hover:border-white/40 transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.3)] ios-press"
               >
                 <Calculator size={14} />
                 Energy Calculator
@@ -155,15 +153,15 @@ const Hero = ({ onApply }: HeroProps) => {
             </div>
           </div>
 
-          {/* Right - floating glass cards (hidden on small) */}
+          {/* Right - floating liquid glass cards (hidden on small) */}
           <div className="lg:col-span-5 relative hidden lg:block h-[520px]">
             {/* Card 1 - Solar */}
             <div
-              className={`absolute top-0 right-0 w-64 rounded-2xl bg-midnight/70 backdrop-blur-xl border border-white/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-0 right-0 w-64 rounded-2xl bg-white/[0.08] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 border-t-white/40 p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_16px_36px_rgba(0,0,0,0.4)] ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.5s" }}
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center border border-accent/30">
                   <Sun className="text-accent" size={20} />
                 </div>
                 <div>
@@ -172,14 +170,14 @@ const Hero = ({ onApply }: HeroProps) => {
                 </div>
               </div>
               <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                <div className="h-full bg-accent rounded-full" style={{ width: "78%" }} />
+                <div className="h-full bg-accent rounded-full shadow-[0_0_8px_rgba(245,158,11,0.6)]" style={{ width: "78%" }} />
               </div>
               <p className="text-xs text-white/70 mt-2">Generating now · Sunny</p>
             </div>
 
             {/* Card 2 - Smart Home */}
             <div
-              className={`absolute top-44 left-0 w-72 rounded-2xl bg-midnight/70 backdrop-blur-xl border border-white/20 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute top-44 left-0 w-72 rounded-2xl bg-white/[0.08] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 border-t-white/40 p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_16px_36px_rgba(0,0,0,0.4)] ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.7s" }}
             >
               <div className="flex items-center justify-between mb-4">
@@ -187,7 +185,7 @@ const Hero = ({ onApply }: HeroProps) => {
                   <Home className="text-white" size={18} />
                   <p className="text-sm font-semibold text-white">Smart Home</p>
                 </div>
-                <span className="text-[10px] text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full font-medium">ONLINE</span>
+                <span className="text-[10px] text-emerald-300 bg-emerald-500/20 border border-emerald-400/30 px-2 py-0.5 rounded-full font-medium shadow-sm">ONLINE</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {[
@@ -195,9 +193,9 @@ const Hero = ({ onApply }: HeroProps) => {
                   { icon: Camera, label: "Cameras" },
                   { icon: Zap, label: "Power" },
                 ].map((item, i) => (
-                  <div key={i} className="rounded-xl bg-white/5 p-3 text-center border border-white/10">
+                  <div key={i} className="rounded-xl bg-white/10 backdrop-blur-md p-3 text-center border border-white/10">
                     <item.icon size={16} className="mx-auto text-accent mb-1" />
-                    <p className="text-[10px] text-white/80">{item.label}</p>
+                    <p className="text-[10px] text-white/90">{item.label}</p>
                   </div>
                 ))}
               </div>
@@ -205,7 +203,7 @@ const Hero = ({ onApply }: HeroProps) => {
 
             {/* Card 3 - Savings */}
             <div
-              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-midnight/75 backdrop-blur-xl border border-accent/40 p-5 shadow-2xl ${mounted ? "animate-scale-in" : "opacity-0"}`}
+              className={`absolute bottom-0 right-8 w-60 rounded-2xl bg-white/[0.08] backdrop-blur-2xl backdrop-saturate-150 border border-accent/40 border-t-accent/60 p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_16px_36px_rgba(0,0,0,0.4)] ${mounted ? "animate-scale-in" : "opacity-0"}`}
               style={{ animationDelay: "0.9s", animationDuration: "7s" }}
             >
               <p className="text-xs text-white/70 uppercase tracking-wider mb-1">Monthly Savings</p>

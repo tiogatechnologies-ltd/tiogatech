@@ -197,19 +197,19 @@ export const SmartLockDetail = () => {
                 {/* Badges on image */}
                 <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
                   {lock.model && (
-                    <span className="text-[10px] font-bold bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight px-2.5 py-0.5 rounded-full shadow-md w-fit">{lock.model}</span>
+                    <span className="text-[10px] font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35)] px-2.5 py-0.5 rounded-full shadow-md w-fit">{lock.model}</span>
                   )}
                   {pct && (
-                    <span className="flex items-center gap-1 text-[10px] font-extrabold bg-red-600/90 backdrop-blur-md border border-white/25 text-white px-2.5 py-0.5 rounded-full shadow-md w-fit">
+                    <span className="flex items-center gap-1 text-[10px] font-extrabold bg-red-600/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-white shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3)] px-2.5 py-0.5 rounded-full shadow-md w-fit">
                       <TrendingDown size={10} /> Save {pct}%
                     </span>
                   )}
                   {lock.badge && (
-                    <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-md border border-white/20 text-white px-2.5 py-0.5 rounded-full shadow-md w-fit">{lock.badge}</span>
+                    <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3)] px-2.5 py-0.5 rounded-full shadow-md w-fit">{lock.badge}</span>
                   )}
                 </div>
 
-                <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 bg-midnight/75 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full shadow-md">
+                <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
@@ -217,7 +217,7 @@ export const SmartLockDetail = () => {
                   {viewers} viewing
                 </div>
 
-                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/65 backdrop-blur-md border-t border-white/15">
+                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
                   <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{categoryLabel}</p>
                   <h1 className="text-lg sm:text-2xl font-display font-bold text-white leading-tight">{lock.name}</h1>
                 </div>
@@ -401,7 +401,7 @@ export const SmartLockDetail = () => {
                   <Link key={r.id} to={`/packages/lock/${r.id}`} className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all">
                     <div className="relative h-36 overflow-hidden">
                       <img src={r.image} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/65 backdrop-blur-md border-t border-white/15">
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
                         <p className="text-sm font-bold text-white leading-tight line-clamp-2">{r.name}</p>
                       </div>
                     </div>
@@ -426,7 +426,7 @@ export const SmartLockDetail = () => {
                 <button onClick={() => openLeadForm("lock_pdp_bottom")} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all">
                   Get Recommendation
                 </button>
-                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/20 transition-all">
+                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]">
                   <Phone size={15} /> Call Us
                 </a>
               </div>

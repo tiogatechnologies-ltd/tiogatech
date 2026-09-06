@@ -55,13 +55,13 @@ export const SmartLocks = () => {
           <button
             type="button"
             onClick={() => openLeadForm("smart_locks_hero")}
-            className="inline-flex items-center gap-2 rounded-full bg-primary/90 hover:bg-primary backdrop-blur-xl border border-primary/40 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/25 transition-all"
+            className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 backdrop-blur-xl border border-primary/60 border-t-white/40 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.25)]"
           >
             Request Lock Installation
           </button>
           <Link
             to="/retail?category=Smart+Locks"
-            className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
           >
             <ShoppingBag size={16} /> Browse Retail Inventory
           </Link>
@@ -166,17 +166,17 @@ export const SmartLocks = () => {
                   />
                   <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
                     {lock.model && (
-                      <span className="text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight px-2.5 py-1 rounded-full shadow-md">
+                      <span className="text-[10px] uppercase tracking-wider font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_4px_12px_rgba(0,0,0,0.2)]">
                         {lock.model}
                       </span>
                     )}
                     {lock.badge && (
-                      <span className="text-[10px] uppercase tracking-wider font-bold bg-primary/90 backdrop-blur-md border border-white/20 text-white px-2.5 py-1 rounded-full shadow-md">
+                      <span className="text-[10px] uppercase tracking-wider font-bold bg-primary/90 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.2)]">
                         {lock.badge}
                       </span>
                     )}
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/65 backdrop-blur-md border-t border-white/15">
+                  <div className="absolute inset-x-0 bottom-0 p-4 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
                     <p className="text-[10px] uppercase tracking-widest text-primary-foreground/80 mb-1">
                       {lock.series || "STAMA Series"}
                     </p>

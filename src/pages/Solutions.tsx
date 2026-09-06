@@ -70,13 +70,13 @@ export const Solutions = () => {
           <button
             type="button"
             onClick={() => openLeadForm("solutions_hero")}
-            className="inline-flex items-center gap-2 rounded-full bg-primary/90 hover:bg-primary backdrop-blur-xl border border-primary/40 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-md shadow-primary/25 transition-all"
+            className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 backdrop-blur-xl border border-primary/60 border-t-white/40 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.25)]"
           >
             Request Complete System Consultation
           </button>
           <Link
             to="/retail"
-            className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
           >
             <ShoppingBag size={16} /> Explore Retail Hardware
           </Link>

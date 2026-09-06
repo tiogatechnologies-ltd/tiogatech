@@ -117,7 +117,7 @@ const SiteHeader = () => {
         "fixed top-0 z-40 w-full transition-all duration-300",
         onDark
           ? "bg-transparent border-b border-transparent"
-          : "bg-background/85 backdrop-blur-xl border-b border-border shadow-sm",
+          : "bg-background/80 backdrop-blur-2xl backdrop-saturate-150 border-b border-border/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]",
       )}
     >
       <div className="section-container flex items-center justify-between py-3 sm:py-4">
@@ -133,8 +133,8 @@ const SiteHeader = () => {
           className={cn(
             "hidden lg:flex items-center gap-0.5 rounded-full px-2 py-1.5 transition-all",
             onDark
-              ? "border border-white/20 bg-midnight/70 backdrop-blur-xl shadow-lg shadow-black/25"
-              : "border border-border/80 bg-background/80 dark:bg-card/80 backdrop-blur-xl shadow-sm",
+              ? "border border-white/15 border-t-white/35 bg-white/[0.08] backdrop-blur-2xl backdrop-saturate-150 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.35)]"
+              : "border border-border/70 border-t-white/80 bg-background/70 dark:bg-card/70 backdrop-blur-2xl backdrop-saturate-150 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.5),0_4px_20px_rgba(0,0,0,0.06)]",
           )}
         >
           <NavLink
@@ -224,13 +224,13 @@ const SiteHeader = () => {
         <div className="flex items-center gap-1 sm:gap-2">
           <CartButton onDark={onDark} />
           <AccountButton onDark={onDark} />
-          {/* Quote button - frosted glass accent pill */}
+          {/* Quote button - liquid glass accent pill */}
           <button
             type="button"
             onClick={handleAiClick}
             className={cn(
               "inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97]",
-              "bg-gold/90 hover:bg-gold backdrop-blur-xl text-midnight border border-gold/60 hover:brightness-105 shadow-sm",
+              "bg-gold/90 hover:bg-gold backdrop-blur-xl backdrop-saturate-150 text-midnight border border-gold/60 border-t-white/60 hover:brightness-105 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_4px_16px_rgba(245,158,11,0.3)]",
             )}
             aria-label="Get a Quote and Make Enquiry"
           >

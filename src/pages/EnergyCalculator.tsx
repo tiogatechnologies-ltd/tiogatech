@@ -66,19 +66,19 @@ const EnergyCalculator = () => {
       >
         <a
           href="#calculator"
-          className="inline-flex items-center gap-2 rounded-full bg-accent/90 hover:bg-accent backdrop-blur-xl border border-accent/40 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 shadow-md shadow-accent/30 transition-all"
+          className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]"
         >
           <Calculator size={16} /> Start calculating
         </a>
         <Link
           to="/lumivolt"
-          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
+          className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
         >
           <ArrowLeft size={16} /> Back to LumiVolt
         </Link>
         <Link
           to="/packages"
-          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
+          className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
         >
           See ready-made packages <ArrowRight size={16} />
         </Link>
@@ -211,10 +211,10 @@ const EnergyCalculator = () => {
           <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight no-clip">Ready to power up?</h2>
           <p className="mt-3 text-primary-foreground/80">Pick a ready-made package, or let our engineers build a custom system from your calculation.</p>
           <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/packages" className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110">
+            <Link to="/packages" className="inline-flex items-center justify-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]">
               View packages <ArrowRight size={16} />
             </Link>
-            <Link to="/contact" className="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 backdrop-blur-md px-6 py-3 text-sm font-semibold hover:bg-primary-foreground/15">
+            <Link to="/contact" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]">
               Talk to an engineer
             </Link>
           </div>

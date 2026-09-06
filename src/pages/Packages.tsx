@@ -154,13 +154,13 @@ const Packages = () => {
       >
         <button
           onClick={() => openLeadForm("packages_hero")}
-          className="inline-flex items-center gap-2 rounded-full bg-accent/90 hover:bg-accent backdrop-blur-xl border border-accent/40 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
+          className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]"
         >
           Get AI Recommendation
         </button>
         <Link
           to="/contact"
-          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-midnight/65 hover:bg-midnight/80 backdrop-blur-xl px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-midnight/90 transition-all shadow-md"
+          className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
         >
           Talk to an Expert <ArrowRight size={16} />
         </Link>
@@ -290,14 +290,14 @@ const Packages = () => {
                       }`}>
                         <Icon size={18} />
                       </span>
-                      <span className="text-[10px] font-bold bg-midnight/75 backdrop-blur-md border border-white/20 text-white px-2.5 py-1 rounded-full shadow-md">
+                      <span className="text-[10px] font-bold bg-midnight/70 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_4px_12px_rgba(0,0,0,0.2)]">
                         {c.stat} {c.statLabel}
                       </span>
                     </div>
 
                     {isActive && (
                       <div className="absolute top-4 right-4">
-                        <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-md border border-white/25 text-primary-foreground px-2.5 py-1 rounded-full shadow-md">
+                        <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-primary-foreground px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.2)]">
                           ▼ Open
                         </span>
                       </div>
