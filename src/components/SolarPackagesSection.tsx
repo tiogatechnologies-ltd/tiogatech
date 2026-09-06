@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
-import { Battery, Sun, Zap, Cpu, Check, ArrowRight, ShoppingBag, Users, Clock, Tag, TrendingDown, Flame } from "lucide-react";
+import { Battery, Sun, Zap, Cpu, Check, ArrowRight, ShoppingBag, Users, Clock, Tag, TrendingDown, Flame, Loader2 } from "lucide-react";
 import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
@@ -183,15 +183,15 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
         <div className="flex flex-wrap gap-1.5 mb-3">
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
             <Sun size={11} className="text-gold shrink-0" />
-            <span>Panels: <strong className="text-foreground">{p.solar_panels.split("+")[0]?.trim() || p.solar_panels}</strong></span>
+            <span>Panels: <strong className="text-foreground">{(p.solar_panels?.split("+") || [])[0]?.trim() || p.solar_panels || "Standard Panels"}</strong></span>
           </span>
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
             <Battery size={11} className="text-emerald-500 shrink-0" />
-            <span>Battery: <strong className="text-foreground">{p.battery.split("(")[0]?.trim() || p.battery}</strong></span>
+            <span>Battery: <strong className="text-foreground">{(p.battery?.split("(") || [])[0]?.trim() || p.battery || "Compatible Battery"}</strong></span>
           </span>
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
             <Zap size={11} className="text-primary shrink-0" />
-            <span>Powers: <strong className="text-foreground line-clamp-1">{p.appliances.split(",").slice(0, 2).join(", ")}</strong></span>
+            <span>Powers: <strong className="text-foreground line-clamp-1">{p.appliances ? p.appliances.split(",").slice(0, 2).join(", ") : "Essential Appliances"}</strong></span>
           </span>
         </div>
 
@@ -290,7 +290,17 @@ const SolarPackagesSection = () => {
     [packages, tab]
   );
 
-  if (loading || packages.length === 0) return null;
+  if (loading) {
+    return (
+      <section id="solar-packages" data-no-reveal className="section-padding bg-muted/30 scroll-mt-24">
+        <div className="section-container flex items-center justify-center py-16">
+          <Loader2 size={28} className="animate-spin text-primary" />
+        </div>
+      </section>
+    );
+  }
+
+  if (packages.length === 0) return null;
 
   return (
     <section id="solar-packages" data-no-reveal className="section-padding bg-muted/30 scroll-mt-24">

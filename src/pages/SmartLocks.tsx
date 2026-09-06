@@ -176,7 +176,7 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
           <div className="flex items-center gap-1 font-medium text-amber-500">
             <Star size={13} fill="currentColor" />
             <span className="text-foreground font-bold">5.0</span>
-            <span className="text-muted-foreground text-[10px]">({12 + (lock.name.length * 2) % 16})</span>
+            <span className="text-muted-foreground text-[10px]">({12 + ((lock.name || "").length * 2) % 16})</span>
           </div>
         </div>
 
@@ -189,7 +189,7 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
         </Link>
 
         {/* Highlights / Specs Chips */}
-        {lock.features && lock.features.length > 0 && (
+        {Array.isArray(lock.features) && lock.features.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">
             {lock.features.slice(0, 3).map((f) => (
               <span

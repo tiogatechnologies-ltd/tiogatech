@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Lock, KeyRound, Building2, ShoppingBag, TrendingDown, Flame, Tag } from "lucide-react";
+import { Check, ArrowRight, Lock, KeyRound, Building2, ShoppingBag, TrendingDown, Flame, Tag, Loader2 } from "lucide-react";
 import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
@@ -172,7 +172,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
           <div className="flex items-center gap-1 font-medium text-amber-500">
             <Star size={13} fill="currentColor" />
             <span className="text-foreground font-bold">5.0</span>
-            <span className="text-muted-foreground text-[10px]">({10 + (p.name.length * 2) % 18})</span>
+            <span className="text-muted-foreground text-[10px]">({10 + ((p.name || "").length * 2) % 18})</span>
           </div>
         </div>
 
@@ -185,7 +185,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
         </Link>
 
         {/* Highlights / Specs Chips */}
-        {p.features && p.features.length > 0 && (
+        {Array.isArray(p.features) && p.features.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">
             {p.features.slice(0, 3).map((f) => (
               <span
@@ -289,7 +289,17 @@ const SmartLocksSection = () => {
     [items, tab]
   );
 
-  if (loading || items.length === 0) return null;
+  if (loading) {
+    return (
+      <section id="smart-locks" data-no-reveal className="section-padding scroll-mt-24">
+        <div className="section-container flex items-center justify-center py-16">
+          <Loader2 size={28} className="animate-spin text-primary" />
+        </div>
+      </section>
+    );
+  }
+
+  if (items.length === 0) return null;
 
   return (
     <section id="smart-locks" data-no-reveal className="section-padding scroll-mt-24">

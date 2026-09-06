@@ -1,11 +1,11 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
 import {
   ArrowRight, Lock, Sun, Home as HomeIcon,
-  Loader2, ChevronDown, Flame, Tag, ShieldCheck, Clock, Wrench,
+  Layers, ChevronDown, Flame, Tag, ShieldCheck, Clock, Wrench,
 } from "lucide-react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { openLeadForm } from "@/components/SiteHeader";
@@ -15,14 +15,14 @@ import catLocks from "@/assets/stock-smart-lock.png";
 import catAutomation from "@/assets/bg-lagos-apartment.jpg";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
 
-const SolarPackagesSection = lazy(() => import("@/components/SolarPackagesSection"));
-const SmartLocksSection = lazy(() => import("@/components/SmartLocksSection"));
-const HomeAutomationSection = lazy(() => import("@/components/HomeAutomationSection"));
+import SolarPackagesSection from "@/components/SolarPackagesSection";
+import SmartLocksSection from "@/components/SmartLocksSection";
+import HomeAutomationSection from "@/components/HomeAutomationSection";
 
-type CategoryKey = "solar" | "locks" | "automation";
+type CategoryKey = "all" | "solar" | "locks" | "automation";
 
 const CATEGORIES: {
-  key: CategoryKey;
+  key: "solar" | "locks" | "automation";
   label: string;
   shortLabel: string;
   icon: typeof Sun;
@@ -67,6 +67,13 @@ const CATEGORIES: {
   },
 ];
 
+const TABS: { key: CategoryKey; label: string; icon: any; count: string }[] = [
+  { key: "all", label: "All Packages", icon: Layers, count: "42" },
+  { key: "solar", label: "Solar Systems", icon: Sun, count: "19" },
+  { key: "locks", label: "Smart Locks", icon: Lock, count: "20" },
+  { key: "automation", label: "Home Automation", icon: HomeIcon, count: "3" },
+];
+
 const TRUST_STATS = [
   { icon: ShieldCheck, value: "5-yr", label: "Warranty" },
   { icon: Clock, value: "48h", label: "Installation" },
@@ -74,22 +81,22 @@ const TRUST_STATS = [
   { icon: Flame, value: "17%", label: "Bundle Savings" },
 ];
 
-const SectionLoader = () => (
-  <div className="section-padding">
-    <div className="section-container flex items-center justify-center py-16">
-      <Loader2 size={24} className="animate-spin text-primary" />
-    </div>
-  </div>
-);
-
 const Packages = () => {
-  const [active, setActive] = useState<CategoryKey | null>(null);
+  const [active, setActive] = useState<CategoryKey>("all");
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const scrollToSection = (key: CategoryKey, attempts = 0) => {
-    const id = key === "solar" ? "solar-packages" : key === "locks" ? "smart-locks" : "home-automation";
+    const id =
+      key === "solar"
+        ? "solar-packages"
+        : key === "locks"
+        ? "smart-locks"
+        : key === "automation"
+        ? "home-automation"
+        : "all-packages";
+
     window.setTimeout(() => {
       const el = document.getElementById(id) ?? sectionRefs.current[key];
       if (el) return el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -101,13 +108,20 @@ const Packages = () => {
     const hash = location.hash.replace("#", "");
     const category = searchParams.get("category") as CategoryKey | null;
     const packageId = searchParams.get("id") || searchParams.get("package");
-    const next: CategoryKey | null =
-      category ||
-      (hash === "smart-locks" ? "locks" :
-        hash === "home-automation" ? "automation" :
-          hash === "solar-packages" || packageId ? "solar" : null);
-    if (next) {
-      setActive(next);
+
+    let next: CategoryKey = "all";
+    if (category && (category === "solar" || category === "locks" || category === "automation" || category === "all")) {
+      next = category;
+    } else if (hash === "smart-locks") {
+      next = "locks";
+    } else if (hash === "home-automation") {
+      next = "automation";
+    } else if (hash === "solar-packages" || packageId) {
+      next = "solar";
+    }
+
+    setActive(next);
+    if (next !== "all" || packageId) {
       scrollToSection(next);
       if (packageId) {
         window.setTimeout(
@@ -119,9 +133,9 @@ const Packages = () => {
   }, [location.hash, searchParams]);
 
   const handleCategoryClick = (key: CategoryKey) => {
-    const next = active === key ? null : key;
+    const next = active === key ? "all" : key;
     setActive(next);
-    if (next) scrollToSection(next);
+    scrollToSection(next);
   };
 
   return (
@@ -203,14 +217,14 @@ const Packages = () => {
       <div className="sticky top-[60px] z-30 bg-background/90 backdrop-blur-xl border-b border-border shadow-sm">
         <div className="section-container">
           <div className="flex items-center gap-1.5 sm:gap-2 py-2 overflow-x-auto scrollbar-hide no-scrollbar snap-x snap-mandatory">
-            {CATEGORIES.map((c) => {
-              const Icon = c.icon;
-              const isActive = active === c.key;
+            {TABS.map((t) => {
+              const Icon = t.icon;
+              const isActive = active === t.key;
               return (
                 <button
-                  key={c.key}
+                  key={t.key}
                   type="button"
-                  onClick={() => handleCategoryClick(c.key)}
+                  onClick={() => handleCategoryClick(t.key)}
                   className={`snap-start inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
                     isActive
                       ? "bg-primary text-primary-foreground shadow-sm"
@@ -218,16 +232,20 @@ const Packages = () => {
                   }`}
                 >
                   <Icon size={15} />
-                  {c.shortLabel}
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
-                    isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
-                  }`}>
-                    {c.stat}
+                  {t.label}
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                      isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {t.count}
                   </span>
-                  <ChevronDown
-                    size={13}
-                    className={`transition-transform duration-200 ${isActive ? "rotate-180" : ""}`}
-                  />
+                  {t.key !== "all" && (
+                    <ChevronDown
+                      size={13}
+                      className={`transition-transform duration-200 ${isActive ? "rotate-180" : ""}`}
+                    />
+                  )}
                 </button>
               );
             })}
@@ -248,13 +266,13 @@ const Packages = () => {
         <div className="section-container">
           <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">
-              3 Categories
+              3 Categories · 42 Packages
             </p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
               What are you shopping for?
             </h2>
             <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-              Select a category below to expand its full package lineup with pricing and promo details.
+              Choose a category to filter, or browse the complete lineup below.
             </p>
           </div>
 
@@ -298,7 +316,7 @@ const Packages = () => {
                     {isActive && (
                       <div className="absolute top-4 right-4">
                         <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-primary-foreground px-2.5 py-1 rounded-full shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.2)]">
-                          ▼ Open
+                          ▼ Filtered
                         </span>
                       </div>
                     )}
@@ -311,7 +329,7 @@ const Packages = () => {
                     <span className={`mt-3 inline-flex items-center gap-1.5 text-xs font-semibold ${
                       isActive ? "text-primary" : "text-foreground/70 group-hover:text-primary"
                     }`}>
-                      {isActive ? "Showing packages below" : "Tap to view packages"} <ArrowRight size={14} />
+                      {isActive ? "Filtered to this category · Tap to show all" : "View category packages"} <ArrowRight size={14} />
                     </span>
                   </div>
                 </button>
@@ -321,54 +339,52 @@ const Packages = () => {
         </div>
       </section>
 
-      {/* Package sections - lazy loaded */}
-      <Suspense fallback={<SectionLoader />}>
-        {active === "solar" && (
+      {/* Package sections */}
+      <div id="all-packages">
+        {(active === "all" || active === "solar") && (
           <div ref={(el) => { sectionRefs.current["solar"] = el; }}>
             <SolarPackagesSection />
           </div>
         )}
-        {active === "locks" && (
+        {(active === "all" || active === "locks") && (
           <div ref={(el) => { sectionRefs.current["locks"] = el; }}>
             <SmartLocksSection />
           </div>
         )}
-        {active === "automation" && (
+        {(active === "all" || active === "automation") && (
           <div ref={(el) => { sectionRefs.current["automation"] = el; }}>
             <HomeAutomationSection />
           </div>
         )}
-      </Suspense>
+      </div>
 
       {/* Bottom CTA */}
-      {!active && (
-        <section className="section-padding">
-          <div className="section-container">
-            <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 text-center shadow-[var(--shadow-card)]">
-              <h3 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-3 no-clip">
-                Not sure which package fits?
-              </h3>
-              <p className="text-muted-foreground max-w-xl mx-auto mb-6">
-                Answer 3 quick questions and our LumiVolt AI will recommend the perfect solar, security or automation bundle for your space and budget.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button
-                  onClick={() => openLeadForm("packages_bottom_cta")}
-                  className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
-                >
-                  Get AI Recommendation
-                </button>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-7 py-3.5 text-sm font-semibold text-foreground hover:bg-muted transition-all"
-                >
-                  Talk to an Expert <ArrowRight size={16} />
-                </Link>
-              </div>
+      <section className="section-padding">
+        <div className="section-container">
+          <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 text-center shadow-[var(--shadow-card)]">
+            <h3 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-3 no-clip">
+              Not sure which package fits?
+            </h3>
+            <p className="text-muted-foreground max-w-xl mx-auto mb-6">
+              Answer 3 quick questions and our LumiVolt AI will recommend the perfect solar, security or automation bundle for your space and budget.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                onClick={() => openLeadForm("packages_bottom_cta")}
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
+              >
+                Get AI Recommendation
+              </button>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 rounded-full border border-border px-7 py-3.5 text-sm font-semibold text-foreground hover:bg-muted transition-all"
+              >
+                Talk to an Expert <ArrowRight size={16} />
+              </Link>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       <SiteFooter />
     </div>

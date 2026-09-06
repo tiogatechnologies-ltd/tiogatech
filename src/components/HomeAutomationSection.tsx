@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Music, Home, ShoppingBag, TrendingDown, Flame, Tag } from "lucide-react";
+import { Check, ArrowRight, Music, Home, ShoppingBag, TrendingDown, Flame, Tag, Loader2 } from "lucide-react";
 import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/useHomeAutomationPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
@@ -164,7 +164,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
           <div className="flex items-center gap-1 font-medium text-amber-500">
             <Star size={13} fill="currentColor" />
             <span className="text-foreground font-bold">5.0</span>
-            <span className="text-muted-foreground text-[10px]">({12 + (p.name.length * 3) % 15})</span>
+            <span className="text-muted-foreground text-[10px]">({12 + ((p.name || "").length * 3) % 15})</span>
           </div>
         </div>
 
@@ -177,7 +177,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
         </Link>
 
         {/* Highlights / Specs Chips */}
-        {p.features && p.features.length > 0 && (
+        {Array.isArray(p.features) && p.features.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">
             {p.features.slice(0, 3).map((f) => (
               <span
@@ -271,7 +271,17 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
 const HomeAutomationSection = () => {
   const { packages, loading } = useHomeAutomationPackages();
 
-  if (loading || packages.length === 0) return null;
+  if (loading) {
+    return (
+      <section id="home-automation" data-no-reveal className="section-padding scroll-mt-24">
+        <div className="section-container flex items-center justify-center py-16">
+          <Loader2 size={28} className="animate-spin text-primary" />
+        </div>
+      </section>
+    );
+  }
+
+  if (packages.length === 0) return null;
 
   return (
     <section id="home-automation" data-no-reveal className="section-padding scroll-mt-24">

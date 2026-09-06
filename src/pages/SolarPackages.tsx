@@ -188,15 +188,15 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
         <div className="flex flex-wrap gap-1.5 mb-3">
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
             <Sun size={11} className="text-gold shrink-0" />
-            <span>Panels: <strong className="text-foreground">{pkg.solar_panels.split("+")[0]?.trim() || pkg.solar_panels}</strong></span>
+            <span>Panels: <strong className="text-foreground">{(pkg.solar_panels?.split("+") || [])[0]?.trim() || pkg.solar_panels || "Standard Panels"}</strong></span>
           </span>
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
             <Battery size={11} className="text-emerald-500 shrink-0" />
-            <span>Battery: <strong className="text-foreground">{pkg.battery.split("(")[0]?.trim() || pkg.battery}</strong></span>
+            <span>Battery: <strong className="text-foreground">{(pkg.battery?.split("(") || [])[0]?.trim() || pkg.battery || "Compatible Battery"}</strong></span>
           </span>
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1">
             <Zap size={11} className="text-primary shrink-0" />
-            <span>Powers: <strong className="text-foreground line-clamp-1">{pkg.appliances.split(",").slice(0, 2).join(", ")}</strong></span>
+            <span>Powers: <strong className="text-foreground line-clamp-1">{pkg.appliances ? pkg.appliances.split(",").slice(0, 2).join(", ") : "Essential Appliances"}</strong></span>
           </span>
         </div>
 
