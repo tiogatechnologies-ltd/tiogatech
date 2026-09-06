@@ -4,13 +4,16 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Package, User as UserIcon, LogOut, Loader2, ShoppingBag, Wallet, Share2,
-  ShieldCheck, Sun, Zap, Wrench, Mail, Phone, MapPin, TrendingUp, Coins,
+  ShieldCheck, Sun, Moon, Laptop, Zap, Wrench, Mail, Phone, MapPin, TrendingUp, Coins,
   Calendar, CheckCircle2, Clock, AlertCircle, ExternalLink, Copy, Crown,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 const formatNGN = (n: number | null | undefined) =>
   n == null ? "-" : `₦${Number(n).toLocaleString("en-NG")}`;
@@ -61,6 +64,8 @@ const StatusPill = ({ status }: { status: string }) => {
 const Account = () => {
   const { user, profile, roles, isAdmin, isStaff, isAffiliate, signOut, refreshProfile, hasRole } = useAuth();
   const isEngineer = hasRole("engineer");
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [phone, setPhone] = useState(profile?.phone || "");
@@ -366,6 +371,70 @@ const Account = () => {
                 <button onClick={saveProfile} disabled={saving} className="w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground hover:brightness-110 disabled:opacity-50 flex items-center justify-center gap-2">
                   {saving && <Loader2 size={14} className="animate-spin" />} Save changes
                 </button>
+
+                {/* Dark Mode & Theme Preferences */}
+                <div className="pt-4 mt-1 border-t border-border space-y-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="space-y-0.5">
+                      <label htmlFor="account-dark-mode" className="text-xs font-semibold text-foreground flex items-center gap-1.5 cursor-pointer">
+                        {isDark ? <Moon size={14} className="text-primary" /> : <Sun size={14} className="text-amber-500" />}
+                        Dark Mode
+                      </label>
+                      <p className="text-[11px] text-muted-foreground">
+                        {isDark ? "Dark theme enabled" : "Light theme enabled"}
+                      </p>
+                    </div>
+                    <Switch
+                      id="account-dark-mode"
+                      checked={isDark}
+                      onCheckedChange={(checked) => {
+                        const next = checked ? "dark" : "light";
+                        setTheme(next);
+                        toast.success(`${checked ? "Dark" : "Light"} mode activated`);
+                      }}
+                      aria-label="Toggle dark mode"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-muted/60 border border-border text-xs">
+                    <button
+                      type="button"
+                      onClick={() => { setTheme("light"); toast.success("Light theme activated"); }}
+                      className={cn(
+                        "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium transition-all",
+                        theme === "light"
+                          ? "bg-card text-foreground shadow-xs border border-border/70"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      <Sun size={12} className="text-amber-500" /> Light
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { setTheme("dark"); toast.success("Dark theme activated"); }}
+                      className={cn(
+                        "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium transition-all",
+                        theme === "dark"
+                          ? "bg-card text-foreground shadow-xs border border-border/70"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      <Moon size={12} className="text-primary" /> Dark
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { setTheme("system"); toast.success("System theme preference enabled"); }}
+                      className={cn(
+                        "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium transition-all",
+                        theme === "system"
+                          ? "bg-card text-foreground shadow-xs border border-border/70"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      <Laptop size={12} /> Auto
+                    </button>
+                  </div>
+                </div>
               </div>
             </SectionCard>
 

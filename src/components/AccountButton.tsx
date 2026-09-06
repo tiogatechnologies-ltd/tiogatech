@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { User, LogIn, LogOut, Package, ShieldCheck, Share2, Sun, Zap } from "lucide-react";
+import { User, LogIn, LogOut, Package, ShieldCheck, Share2, Sun, Moon, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
 
 const AccountButton = ({ onDark = false }: { onDark?: boolean }) => {
   const { user, profile, isAdmin, isStaff, isAffiliate, signOut } = useAuth();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -77,6 +81,17 @@ const AccountButton = ({ onDark = false }: { onDark?: boolean }) => {
                 <ShieldCheck size={14} /> {isAdmin ? "Admin" : "Staff"} dashboard
               </Link>
             )}
+          </div>
+          <div className="px-4 py-2.5 border-t border-border flex items-center justify-between">
+            <span className="text-xs text-muted-foreground flex items-center gap-1.5 font-medium">
+              {isDark ? <Moon size={13} className="text-primary" /> : <Sun size={13} className="text-amber-500" />}
+              Dark Mode
+            </span>
+            <Switch
+              checked={isDark}
+              onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+              aria-label="Toggle dark mode"
+            />
           </div>
           <button onClick={() => { setOpen(false); signOut(); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 border-t border-border">
             <LogOut size={14} /> Sign out

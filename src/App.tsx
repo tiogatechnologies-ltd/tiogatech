@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { ThemeProvider } from "next-themes";
 import AutoReveal from "@/components/AutoReveal";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -315,38 +316,40 @@ const AnimatedRoutes = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <CartProvider>
-            <PageTracker />
-            <CacheBoot />
-            <PreloadCritical />
-            <ScrollToTop />
-            <SmoothScroll />
-            <AutoReveal />
-            <LeadFormHost />
-            <EnergyCalculatorDialog />
-            <WaitlistDialog />
-            <FeatureHighlightPopup />
-            <Suspense fallback={null}>
-              <CartDrawer />
-              <ProductCompareTray />
-              <DeferredMount delay={2500}>
-                <TelegramWidget />
-                <AiChatWidget />
-              </DeferredMount>
-            </Suspense>
-            <ScrollToTopButton />
-            <ErrorBoundary>
-              <AnimatedRoutes />
-            </ErrorBoundary>
-          </CartProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="tioga-theme">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <CartProvider>
+              <PageTracker />
+              <CacheBoot />
+              <PreloadCritical />
+              <ScrollToTop />
+              <SmoothScroll />
+              <AutoReveal />
+              <LeadFormHost />
+              <EnergyCalculatorDialog />
+              <WaitlistDialog />
+              <FeatureHighlightPopup />
+              <Suspense fallback={null}>
+                <CartDrawer />
+                <ProductCompareTray />
+                <DeferredMount delay={2500}>
+                  <TelegramWidget />
+                  <AiChatWidget />
+                </DeferredMount>
+              </Suspense>
+              <ScrollToTopButton />
+              <ErrorBoundary>
+                <AnimatedRoutes />
+              </ErrorBoundary>
+            </CartProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

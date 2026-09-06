@@ -9,6 +9,7 @@ import MegaMenu from "@/components/MegaMenu";
 import CartButton from "@/components/CartButton";
 import AccountButton from "@/components/AccountButton";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
+import { useTheme } from "next-themes";
 
 // Sub-brands now live inside the Products mega-menu (see MegaMenu.tsx).
 const brandLinks: { label: string; to: string }[] = [
@@ -104,6 +105,9 @@ const SiteHeader = () => {
     closeTimer.current = window.setTimeout(() => setProductsDesktopOpen(false), 140);
   };
 
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   // Only allow transparent-over-dark on the landing route. Every other page has a
   // light body background - a transparent header would look invisible over it.
   const isLanding = location.pathname === "/";
@@ -123,7 +127,7 @@ const SiteHeader = () => {
       <div className="section-container flex items-center justify-between py-3 sm:py-4">
         <Link to="/" className="flex items-center">
           <img
-            src={onDark ? tiogaLogoLight : tiogaLogoDark}
+            src={onDark || isDark ? tiogaLogoLight : tiogaLogoDark}
             alt="Tioga Technologies"
             className="h-9 sm:h-10 w-auto"
           />
