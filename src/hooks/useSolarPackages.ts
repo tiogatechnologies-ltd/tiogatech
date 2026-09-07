@@ -47,8 +47,13 @@ export type SolarPackage = {
   image: string;
 };
 
-const decorate = (data: any[]): SolarPackage[] =>
-  data.map((p, i) => ({ ...p, image: IMAGES[i % IMAGES.length] })) as SolarPackage[];
+import { fetchPackageImagesMap } from "@/lib/packageImages";
+
+const decorate = (data: any[], imgMap: Record<string, string> = {}): SolarPackage[] =>
+  data.map((p, i) => ({
+    ...p,
+    image: p.image_url || imgMap[p.id] || IMAGES[i % IMAGES.length],
+  })) as SolarPackage[];
 
 export const useSolarPackages = () => {
   const [packages, setPackages] = useState<SolarPackage[]>([]);
@@ -57,16 +62,17 @@ export const useSolarPackages = () => {
   useEffect(() => {
     let active = true;
     const fetchOnce = async (attempt = 0): Promise<void> => {
-      const { data, error } = await fetchFreshRows<any>(
-        "solar_packages?select=*&is_active=eq.true&order=sort_order.asc",
-      );
+      const [{ data, error }, imgMap] = await Promise.all([
+        fetchFreshRows<any>("solar_packages?select=*&is_active=eq.true&order=sort_order.asc"),
+        fetchPackageImagesMap(),
+      ]);
       if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
         return fetchOnce(attempt + 1);
       }
       if (data) {
-        setPackages(decorate(data as any[]));
+        setPackages(decorate(data as any[], imgMap));
       }
       setLoading(false);
     };

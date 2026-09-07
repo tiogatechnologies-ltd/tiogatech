@@ -6,6 +6,9 @@ import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
+import { useAuth } from "@/contexts/AuthContext";
+import { PRODUCTS } from "@/data/products";
+import { resolveProductImage } from "@/lib/productImages";
 
 interface TrackedOrder {
   order_number: string;
@@ -41,7 +44,48 @@ const naira = (n: number | null | undefined) =>
 
 const pretty = (s: string) => s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
+const findProductImg = (name: string): string | null => {
+  if (!name) return null;
+  const clean = name.replace(/^\d+[\.\)]\s*/, "").split("(")[0].split("x")[0].trim().toLowerCase();
+  if (!clean) return null;
+  const match = PRODUCTS.find((p) => {
+    const pn = p.name.toLowerCase();
+    return pn === clean || pn.includes(clean) || clean.includes(pn);
+  });
+  if (match?.image_url) return resolveProductImage(match.image_url, match.category);
+  return null;
+};
+
+const parseTrackedItems = (summary: string) => {
+  if (!summary) return [];
+  return summary
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((line, idx) => {
+      const cleanLine = line.replace(/^\d+[\.\)]\s*/, "").trim();
+      const priceMatch = cleanLine.match(/\((₦?[0-9,]+(\.[0-9]+)?)\)/);
+      const price = priceMatch ? priceMatch[1] : null;
+      let name = cleanLine.replace(/\s*\([^)]*\)/, "").trim();
+      let qty = 1;
+      const qtyMatch = name.match(/x(\d+)$/i);
+      if (qtyMatch) {
+        qty = parseInt(qtyMatch[1], 10) || 1;
+        name = name.replace(/x\d+$/i, "").trim();
+      }
+      const img = findProductImg(name);
+      return {
+        id: idx,
+        name,
+        qty,
+        price,
+        img,
+      };
+    });
+};
+
 const TrackOrder = () => {
+  const { user } = useAuth();
   const [params, setParams] = useSearchParams();
   const [orderNumber, setOrderNumber] = useState(params.get("order") ?? "");
   const [contact, setContact] = useState("");
@@ -58,9 +102,43 @@ const TrackOrder = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderNumber]);
 
+  // Automatically check recent local orders or user orders if order param is given
+  useEffect(() => {
+    const ref = (params.get("order") || "").trim().toUpperCase();
+    if (!ref) return;
+
+    try {
+      const local = JSON.parse(localStorage.getItem(`tioga_order_${ref}`) || "null");
+      if (local && local.order_number) {
+        setOrder(local);
+        if (local.phone || local.email) setContact(local.phone || local.email);
+        return;
+      }
+
+      const recent: any[] = JSON.parse(localStorage.getItem("tioga_recent_orders") || "[]");
+      const found = recent.find((o) => o.order_number?.toUpperCase() === ref);
+      if (found) {
+        setOrder(found);
+        if (found.phone || found.email) setContact(found.phone || found.email);
+        return;
+      }
+    } catch {}
+
+    if (user) {
+      (async () => {
+        const { data } = await supabase.from("orders").select("*").eq("order_number", ref).maybeSingle();
+        if (data) {
+          setOrder(data as TrackedOrder);
+        }
+      })();
+    }
+  }, [params, user]);
+
   const lookup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!orderNumber.trim() || !contact.trim()) {
+    const ref = orderNumber.trim().toUpperCase();
+    const who = contact.trim();
+    if (!ref || !who) {
       setError("Enter your order number and the email or phone used at checkout.");
       return;
     }
@@ -68,21 +146,84 @@ const TrackOrder = () => {
     setError(null);
     setOrder(null);
     setHistory([]);
-    const { data, error: fnError } = await supabase.functions.invoke("track-order", {
-      body: { order_number: orderNumber.trim(), contact: contact.trim() },
-    });
+
+    // 1. Check local storage cache
+    try {
+      const normWho = who.toLowerCase().replace(/\D/g, "");
+      const local = JSON.parse(localStorage.getItem(`tioga_order_${ref}`) || "null");
+      if (local) {
+        const localPhone = (local.phone || "").replace(/\D/g, "");
+        const localEmail = (local.email || "").toLowerCase();
+        if (localEmail.includes(who.toLowerCase()) || (normWho.length >= 7 && localPhone.endsWith(normWho)) || localPhone === normWho) {
+          setOrder(local);
+          setLoading(false);
+          return;
+        }
+      }
+
+      const recent: any[] = JSON.parse(localStorage.getItem("tioga_recent_orders") || "[]");
+      const found = recent.find((o) => o.order_number?.toUpperCase() === ref);
+      if (found) {
+        const fPhone = (found.phone || "").replace(/\D/g, "");
+        const fEmail = (found.email || "").toLowerCase();
+        if (fEmail.includes(who.toLowerCase()) || (normWho.length >= 7 && fPhone.endsWith(normWho)) || fPhone === normWho) {
+          setOrder(found);
+          setLoading(false);
+          return;
+        }
+      }
+    } catch {}
+
+    // 2. If authenticated user, check database directly
+    if (user) {
+      try {
+        const { data: dbOrder } = await supabase.from("orders").select("*").eq("order_number", ref).maybeSingle();
+        if (dbOrder) {
+          setOrder(dbOrder as TrackedOrder);
+          setLoading(false);
+          return;
+        }
+      } catch {}
+    }
+
+    // 3. Try edge function if available
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("track-order", {
+        body: { order_number: ref, contact: who },
+      });
+      if (!fnError && (data as any)?.found && (data as any)?.order) {
+        setOrder((data as any).order);
+        setHistory((data as any).history ?? []);
+        setLoading(false);
+        return;
+      }
+    } catch {}
+
+    // 4. Fallback: check database directly for matching order_number and contact phone/email
+    try {
+      const { data: dbMatches } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("order_number", ref)
+        .maybeSingle();
+
+      if (dbMatches) {
+        const phoneDigits = (dbMatches.phone || "").replace(/\D/g, "");
+        const contactDigits = who.replace(/\D/g, "");
+        const matchesContact =
+          (dbMatches.email && dbMatches.email.toLowerCase() === who.toLowerCase()) ||
+          (contactDigits.length >= 7 && phoneDigits.endsWith(contactDigits));
+
+        if (matchesContact) {
+          setOrder(dbMatches as TrackedOrder);
+          setLoading(false);
+          return;
+        }
+      }
+    } catch {}
+
     setLoading(false);
-    if (fnError) {
-      setError("We couldn't reach the tracking service. Please try again.");
-      return;
-    }
-    const payload = data as { found?: boolean; message?: string; order?: TrackedOrder; history?: HistoryRow[] };
-    if (!payload?.found || !payload.order) {
-      setError(payload?.message ?? "No order matches that reference and contact.");
-      return;
-    }
-    setOrder(payload.order);
-    setHistory(payload.history ?? []);
+    setError("No order matches that reference and contact. Please verify your order number and phone/email.");
   };
 
   const currentStage = order ? Math.max(0, STAGES.indexOf(order.status)) : 0;
@@ -186,14 +327,41 @@ const TrackOrder = () => {
                   </ol>
                 )}
 
-                <dl className="grid gap-2 sm:grid-cols-2 text-sm pt-2">
-                  <div className="flex justify-between gap-3 sm:block">
-                    <dt className="text-muted-foreground text-xs">Items</dt>
-                    <dd className="font-medium text-right sm:text-left">{order.items_summary} ({order.item_count})</dd>
+                <div className="pt-2 border-t border-border">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2.5">
+                    Order Items ({order.item_count})
+                  </p>
+                  <div className="space-y-2">
+                    {parseTrackedItems(order.items_summary).map((it) => (
+                      <div key={it.id} className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-background shadow-xs">
+                        {it.img ? (
+                          <img src={it.img} alt={it.name} className="h-11 w-11 rounded-lg object-contain bg-muted p-1 shrink-0" />
+                        ) : (
+                          <div className="h-11 w-11 rounded-lg bg-muted flex items-center justify-center text-muted-foreground shrink-0"><Package size={16} /></div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-foreground text-sm leading-tight truncate">{it.name}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">Quantity: <span className="font-semibold text-foreground">{it.qty}</span></p>
+                        </div>
+                        {it.price && (
+                          <span className="font-semibold text-primary text-sm shrink-0">{it.price}</span>
+                        )}
+                      </div>
+                    ))}
+                    {parseTrackedItems(order.items_summary).length === 0 && (
+                      <p className="text-sm text-foreground whitespace-pre-line">{order.items_summary}</p>
+                    )}
                   </div>
+                </div>
+
+                <dl className="grid gap-2 sm:grid-cols-2 text-sm pt-2 border-t border-border">
                   <div className="flex justify-between gap-3 sm:block">
                     <dt className="text-muted-foreground text-xs">Delivery to</dt>
                     <dd className="font-medium text-right sm:text-left">{order.location}</dd>
+                  </div>
+                  <div className="flex justify-between gap-3 sm:block">
+                    <dt className="text-muted-foreground text-xs">Payment method</dt>
+                    <dd className="font-medium capitalize text-right sm:text-left">{order.payment_method || "Online"}</dd>
                   </div>
                   <div className="flex justify-between gap-3 sm:block">
                     <dt className="text-muted-foreground text-xs">Delivery fee</dt>

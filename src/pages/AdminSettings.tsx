@@ -124,6 +124,9 @@ const AdminSettings = () => {
       for (const k of changed) {
         await supabase.from("site_settings").upsert({ key: k, value: data[k] }, { onConflict: "key" });
       }
+      if (changed.includes("payment") && data.payment?.paystack_public_key) {
+        try { localStorage.setItem("tioga_paystack_public_key", data.payment.paystack_public_key.trim()); } catch {}
+      }
       if (changed.includes("contact")) invalidateSiteContactCache();
       setOriginal(data); toast.success("Settings saved");
     } catch (e: any) { toast.error(e?.message || "Save failed"); }

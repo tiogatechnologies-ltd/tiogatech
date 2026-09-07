@@ -26,7 +26,11 @@ export type SmartLock = {
   image: string;
 };
 
-const pickImage = (item: { category: string; series: string }) => {
+import { fetchPackageImagesMap } from "@/lib/packageImages";
+
+const pickImage = (item: { id: string; category: string; series: string; image_url?: string | null }, imgMap: Record<string, string> = {}) => {
+  if (item.image_url) return item.image_url;
+  if (imgMap[item.id]) return imgMap[item.id];
   if (item.category === "hotel") return bgHotel;
   if (item.category === "accessory") return bgAccessory;
   const s = item.series.toLowerCase();
@@ -43,16 +47,17 @@ export const useSmartLocks = () => {
   useEffect(() => {
     let active = true;
     const run = async (attempt = 0): Promise<void> => {
-      const { data, error } = await fetchFreshRows<any>(
-        "smart_locks?select=*&is_active=eq.true&order=sort_order.asc",
-      );
+      const [{ data, error }, imgMap] = await Promise.all([
+        fetchFreshRows<any>("smart_locks?select=*&is_active=eq.true&order=sort_order.asc"),
+        fetchPackageImagesMap(),
+      ]);
       if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
         return run(attempt + 1);
       }
       if (data) {
-        setItems((data as any[]).map((p) => ({ ...p, image: pickImage(p) })) as SmartLock[]);
+        setItems((data as any[]).map((p) => ({ ...p, image: pickImage(p, imgMap) })) as SmartLock[]);
       }
       setLoading(false);
     };

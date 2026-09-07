@@ -19,6 +19,11 @@ import {
   Camera,
   ChevronLeft,
   ChevronRight,
+  Volume2,
+  Lightbulb,
+  Radio,
+  Tv,
+  Layers,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -43,13 +48,21 @@ import type { RetailProduct } from "@/types/retail";
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating" | "newest";
 
 const CATEGORY_TABS = [
-  { key: "all", label: "All Hardware", icon: Zap },
-  { key: "Inverters", label: "Inverters", icon: Zap },
+  { key: "all", label: "All Hardware", icon: Layers },
+  { key: "Smart Switches & Sockets", label: "Smart Switches", icon: Zap },
+  { key: "Smart Control Panels", label: "Control Panels", icon: Tv },
+  { key: "Smart Door Locks", label: "Smart Locks", icon: Lock },
+  { key: "CCTV & Cameras", label: "CCTV & Cameras", icon: Camera },
+  { key: "Smart Sensors & Alarms", label: "Sensors & Alarms", icon: Shield },
+  { key: "Smart Curtains & Motors", label: "Curtains & Blinds", icon: SlidersHorizontal },
+  { key: "Smart Audio & Intercom", label: "Audio & Sound", icon: Volume2 },
+  { key: "Smart Lighting & Track", label: "Lighting & Track", icon: Lightbulb },
+  { key: "Gateways & Networking", label: "Gateways & Mesh", icon: Radio },
+  { key: "Smart Breakers & Energy", label: "Smart Breakers", icon: Zap },
+  { key: "Smart Hotel & Commercial", label: "Hotel & Commercial", icon: Award },
+  { key: "Inverters", label: "Solar Inverters", icon: Zap },
   { key: "Batteries", label: "LiFePO4 Batteries", icon: Battery },
   { key: "Solar Panels", label: "Solar Panels", icon: Zap },
-  { key: "Smart Locks", label: "Smart Locks", icon: Lock },
-  { key: "Home Automation", label: "Home IoT", icon: HomeIcon },
-  { key: "CCTV", label: "CCTV & Cameras", icon: Camera },
 ];
 
 export const Retail = () => {
@@ -65,7 +78,7 @@ export const Retail = () => {
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(24);
 
   // Filter State
   const categoryParam = searchParams.get("category");
@@ -182,8 +195,24 @@ export const Retail = () => {
   // Filter and Sort Pipeline
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
-      if (selectedCategory && selectedCategory !== "all" && !p.category.toLowerCase().includes(selectedCategory.toLowerCase())) {
-        return false;
+      if (selectedCategory && selectedCategory !== "all") {
+        const sel = selectedCategory.toLowerCase();
+        const pCat = p.category.toLowerCase();
+        const matches =
+          pCat === sel ||
+          pCat.includes(sel) ||
+          sel.includes(pCat) ||
+          (sel.includes("switch") && pCat.includes("switch")) ||
+          (sel.includes("lock") && pCat.includes("lock")) ||
+          ((sel.includes("camera") || sel.includes("cctv")) && (pCat.includes("camera") || pCat.includes("cctv"))) ||
+          ((sel.includes("audio") || sel.includes("sound")) && (pCat.includes("audio") || pCat.includes("sound"))) ||
+          (sel.includes("curtain") && pCat.includes("curtain")) ||
+          (sel.includes("light") && pCat.includes("light")) ||
+          (sel.includes("panel") && pCat.includes("panel") && !pCat.includes("solar")) ||
+          (sel.includes("solar") && pCat.includes("solar")) ||
+          (sel.includes("battery") && pCat.includes("batter")) ||
+          (sel.includes("inverter") && pCat.includes("inverter"));
+        if (!matches) return false;
       }
       if (selectedBrands.length > 0 && (!p.brand || !selectedBrands.includes(p.brand))) {
         return false;
@@ -204,7 +233,9 @@ export const Retail = () => {
           p.name.toLowerCase().includes(q) ||
           p.category.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
-          (p.brand && p.brand.toLowerCase().includes(q));
+          (p.brand && p.brand.toLowerCase().includes(q)) ||
+          (p.series && p.series.toLowerCase().includes(q)) ||
+          (p.tags && p.tags.some((t) => t.toLowerCase().includes(q)));
         if (!matchesSearch) return false;
       }
       return true;
@@ -427,10 +458,10 @@ export const Retail = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-border">
-                    <SelectItem value="9" className="text-xs">9 / page</SelectItem>
                     <SelectItem value="12" className="text-xs">12 / page</SelectItem>
-                    <SelectItem value="18" className="text-xs">18 / page</SelectItem>
                     <SelectItem value="24" className="text-xs">24 / page</SelectItem>
+                    <SelectItem value="48" className="text-xs">48 / page</SelectItem>
+                    <SelectItem value="96" className="text-xs">96 / page</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

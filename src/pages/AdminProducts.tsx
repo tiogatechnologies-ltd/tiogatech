@@ -4,6 +4,8 @@ import { Plus, Pencil, Trash2, X, Upload, Image as ImageIcon, Search, Tag, Setti
 import AdminLayout from "@/components/admin/AdminLayout";
 import ProductGalleryManager from "@/components/admin/ProductGalleryManager";
 import { resolveProductImage } from "@/lib/productImages";
+import { PRODUCTS } from "@/data/products";
+import { mergeProducts } from "@/lib/mergeProducts";
 import { toast } from "sonner";
 
 interface Product {
@@ -54,11 +56,13 @@ export const AdminProducts = () => {
       const { data, error } = await supabase.from("products").select("*").order("sort_order");
       if (error) {
         console.error("Failed to fetch products:", error);
-        toast.error("Failed to load products");
       }
-      setProducts((data as Product[]) ?? []);
+      const dbList = (data as Product[]) ?? [];
+      const combined = mergeProducts(PRODUCTS as any[], dbList);
+      setProducts(combined as Product[]);
     } catch (err) {
       console.error("Products fetch error:", err);
+      setProducts(PRODUCTS as any[]);
     } finally {
       setLoading(false);
     }

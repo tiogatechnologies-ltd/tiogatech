@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import { Loader2, Search, Phone, Mail, MapPin, Package, Trash2, ChevronDown, ChevronUp, MessageCircle, History, Send } from "lucide-react";
 import { format } from "date-fns";
 import OrderSerials from "@/components/admin/OrderSerials";
-
+import { PRODUCTS } from "@/data/products";
+import { resolveProductImage } from "@/lib/productImages";
 
 interface Order {
   id: string;
@@ -26,11 +27,52 @@ interface Order {
 interface OrderItem {
   id: string;
   product_name: string;
-  product_type: string | null;
+  product_type?: string | null;
   price_label: string | null;
   quantity: number;
   image_url: string | null;
 }
+
+const findProductImg = (name: string, fallbackUrl?: string | null): string | null => {
+  if (fallbackUrl) return resolveProductImage(fallbackUrl);
+  if (!name) return null;
+  const clean = name.replace(/^\d+[\.\)]\s*/, "").split("(")[0].split("x")[0].trim().toLowerCase();
+  if (!clean) return null;
+  const match = PRODUCTS.find((p) => {
+    const pn = p.name.toLowerCase();
+    return pn === clean || pn.includes(clean) || clean.includes(pn);
+  });
+  if (match?.image_url) return resolveProductImage(match.image_url, match.category);
+  return null;
+};
+
+const parseSummaryItems = (summary: string): OrderItem[] => {
+  if (!summary) return [];
+  return summary
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((line, idx) => {
+      const cleanLine = line.replace(/^\d+[\.\)]\s*/, "").trim();
+      const priceMatch = cleanLine.match(/\((₦?[0-9,]+(\.[0-9]+)?)\)/);
+      const price = priceMatch ? priceMatch[1] : null;
+      let name = cleanLine.replace(/\s*\([^)]*\)/, "").trim();
+      let qty = 1;
+      const qtyMatch = name.match(/x(\d+)$/i);
+      if (qtyMatch) {
+        qty = parseInt(qtyMatch[1], 10) || 1;
+        name = name.replace(/x\d+$/i, "").trim();
+      }
+      const img = findProductImg(name);
+      return {
+        id: `summary-${idx}`,
+        product_name: name,
+        quantity: qty,
+        price_label: price,
+        image_url: img,
+      };
+    });
+};
 
 const STATUSES = ["new", "contacted", "confirmed", "fulfilled", "cancelled"];
 const STATUS_COLORS: Record<string, string> = {
@@ -214,6 +256,33 @@ const AdminOrders = () => {
                         <span className="inline-flex items-center gap-1"><MapPin size={11} />{o.location}</span>
                         <span className="inline-flex items-center gap-1"><Package size={11} />{o.item_count} item{o.item_count !== 1 ? "s" : ""}</span>
                       </div>
+
+                      {/* Product pictures preview chips */}
+                      {(() => {
+                        const displayItems = (itemsById[o.id] && itemsById[o.id].length > 0)
+                          ? itemsById[o.id].map((it) => ({ ...it, image_url: findProductImg(it.product_name, it.image_url) }))
+                          : parseSummaryItems(o.items_summary);
+                        if (displayItems.length === 0) return null;
+                        return (
+                          <div className="flex items-center gap-1.5 mt-2.5 overflow-x-auto py-0.5">
+                            {displayItems.slice(0, 6).map((it, idx) => (
+                              <div key={idx} className="relative group shrink-0" title={`${it.product_name} (${it.quantity > 1 ? `x${it.quantity}` : ""})`}>
+                                {it.image_url ? (
+                                  <img src={it.image_url} alt="" className="h-8 w-8 rounded-lg object-contain bg-background border border-border p-0.5 shadow-xs" />
+                                ) : (
+                                  <div className="h-8 w-8 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground"><Package size={12} /></div>
+                                )}
+                                {it.quantity > 1 && (
+                                  <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[9px] font-bold px-1 rounded-full leading-tight">{it.quantity}</span>
+                                )}
+                              </div>
+                            ))}
+                            {displayItems.length > 6 && (
+                              <span className="text-[10px] text-muted-foreground font-semibold pl-1">+{displayItems.length - 6} more</span>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </div>
                     <div className="flex items-center gap-2">
                       <select value={o.status} onChange={(e) => updateStatus(o.id, e.target.value)} className="rounded-lg border border-input bg-background px-2 py-1.5 text-xs">
@@ -237,19 +306,38 @@ const AdminOrders = () => {
                     </div>
                   </div>
                   {isOpen && (
-                    <div className="border-t border-border p-4 bg-muted/30">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Items</h4>
-                      <ul className="space-y-1.5 mb-3">
-                        {(itemsById[o.id] || []).map((it) => (
-                          <li key={it.id} className="flex justify-between gap-3 text-sm">
-                            <span className="text-foreground">{it.product_name}{it.quantity > 1 ? <span className="text-muted-foreground"> × {it.quantity}</span> : null}</span>
-                            {it.price_label && <span className="font-semibold text-primary">{it.price_label}</span>}
-                          </li>
-                        ))}
-                        {(!itemsById[o.id] || itemsById[o.id].length === 0) && (
-                          <li className="text-xs text-muted-foreground whitespace-pre-line">{o.items_summary}</li>
-                        )}
-                      </ul>
+                    <div className="border-t border-border p-4 bg-muted/30 space-y-4">
+                      <div>
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">Order Items ({o.item_count})</h4>
+                        {(() => {
+                          const displayItems = (itemsById[o.id] && itemsById[o.id].length > 0)
+                            ? itemsById[o.id].map((it) => ({ ...it, image_url: findProductImg(it.product_name, it.image_url) }))
+                            : parseSummaryItems(o.items_summary);
+                          return (
+                            <div className="space-y-2">
+                              {displayItems.map((it) => (
+                                <div key={it.id} className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-card shadow-xs">
+                                  {it.image_url ? (
+                                    <img src={it.image_url} alt={it.product_name} className="h-12 w-12 rounded-lg object-contain bg-background border border-border p-1 shrink-0" />
+                                  ) : (
+                                    <div className="h-12 w-12 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground shrink-0"><Package size={18} /></div>
+                                  )}
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-semibold text-foreground text-sm leading-tight truncate">{it.product_name}</p>
+                                    <p className="text-xs text-muted-foreground mt-0.5">Quantity: <span className="font-semibold text-foreground">{it.quantity}</span></p>
+                                  </div>
+                                  {it.price_label && (
+                                    <span className="font-bold text-primary text-sm shrink-0">{it.price_label}</span>
+                                  )}
+                                </div>
+                              ))}
+                              {displayItems.length === 0 && (
+                                <p className="text-xs text-muted-foreground whitespace-pre-line">{o.items_summary}</p>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      </div>
                       {o.notes && (
                         <div className="rounded-lg bg-amber-500/10 p-3 text-xs text-amber-700 dark:text-amber-300 mb-3"><strong>Notes:</strong> {o.notes}</div>
                       )}

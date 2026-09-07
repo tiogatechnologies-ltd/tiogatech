@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Lock } from "lucide-react";
+import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
+import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
 
 type Lock = {
   id: string;
@@ -25,6 +27,7 @@ type Lock = {
   power_system: string;
   ideal_for: string;
   badge: string | null;
+  image_url?: string | null;
   is_active: boolean;
   sort_order: number;
 };
@@ -42,6 +45,7 @@ const empty: Omit<Lock, "id"> = {
   power_system: "",
   ideal_for: "",
   badge: "",
+  image_url: null,
   is_active: true,
   sort_order: 0,
 };
@@ -57,12 +61,21 @@ const AdminSmartLocks = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("smart_locks" as any)
-      .select("*")
-      .order("sort_order", { ascending: true });
-    if (error) toast.error("Could not load smart locks");
-    else setItems(((data as any) || []) as Lock[]);
+    const [lockRes, imgMap] = await Promise.all([
+      supabase.from("smart_locks" as any).select("*").order("sort_order", { ascending: true }),
+      fetchPackageImagesMap(),
+    ]);
+
+    if (lockRes.error) {
+      toast.error("Could not load smart locks");
+    } else {
+      const raw = (lockRes.data as any[]) || [];
+      const merged = raw.map((p) => ({
+        ...p,
+        image_url: p.image_url || imgMap[p.id] || null,
+      }));
+      setItems(merged as Lock[]);
+    }
     setLoading(false);
   };
 
@@ -70,7 +83,7 @@ const AdminSmartLocks = () => {
 
   const startNew = () => {
     setEditing(null);
-    setForm({ ...empty, sort_order: (items.at(-1)?.sort_order ?? 0) + 1 });
+    setForm({ ...empty, sort_order: (items.at(-1)?.sort_order ?? 0) + 1, image_url: null });
     setFeaturesText("");
     setOpen(true);
   };
@@ -89,6 +102,7 @@ const AdminSmartLocks = () => {
       return;
     }
     setSaving(true);
+    let targetId = editing?.id;
     const payload = {
       ...form,
       features: featuresText
@@ -96,11 +110,33 @@ const AdminSmartLocks = () => {
         .map((s) => s.trim())
         .filter(Boolean),
     };
-    const { error } = editing
+    const { image_url, ...withoutImage } = payload;
+
+    let res = editing
       ? await supabase.from("smart_locks" as any).update(payload).eq("id", editing.id)
-      : await supabase.from("smart_locks" as any).insert(payload);
+      : await supabase.from("smart_locks" as any).insert(payload).select("id").maybeSingle();
+
+    if (res.error && res.error.message?.includes("image_url")) {
+      res = editing
+        ? await supabase.from("smart_locks" as any).update(withoutImage).eq("id", editing.id)
+        : await supabase.from("smart_locks" as any).insert(withoutImage).select("id").maybeSingle();
+    }
+
+    if (res.error) {
+      setSaving(false);
+      toast.error(res.error.message);
+      return;
+    }
+
+    if (!editing && (res.data as any)?.id) {
+      targetId = (res.data as any).id;
+    }
+
+    if (targetId) {
+      await savePackageImage(targetId, form.image_url ?? null);
+    }
+
     setSaving(false);
-    if (error) return toast.error(error.message);
     toast.success(editing ? "Updated" : "Created");
     setOpen(false);
     load();
@@ -156,6 +192,23 @@ const AdminSmartLocks = () => {
                   p.is_active ? "border-border" : "border-dashed border-border opacity-70"
                 }`}
               >
+                {/* Smart Lock Picture Thumbnail */}
+                <div className="relative w-full sm:w-28 h-28 sm:h-20 shrink-0 rounded-xl overflow-hidden bg-muted/40 border border-border shadow-xs">
+                  <img
+                    src={p.image_url || getDefaultPackageImage("lock", p.series || p.category)}
+                    alt={p.name}
+                    className="w-full h-full object-cover object-center"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = getDefaultPackageImage("lock", p.series || p.category);
+                    }}
+                  />
+                  {p.image_url && (
+                    <span className="absolute bottom-1 right-1 bg-black/60 backdrop-blur-xs text-[9px] text-white px-1.5 py-0.5 rounded font-medium">
+                      Custom
+                    </span>
+                  )}
+                </div>
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-primary/15 text-primary px-2 py-0.5 rounded-full">
@@ -195,6 +248,15 @@ const AdminSmartLocks = () => {
             </DialogHeader>
 
             <div className="space-y-4 py-2">
+              <PackageImagePicker
+                value={form.image_url ?? null}
+                onChange={(url) => setForm({ ...form, image_url: url })}
+                category="lock"
+                identifier={form.series || form.category}
+                label="Smart Lock / Hotel Picture"
+                helperText="Select a STAMA biometric lock picture from the library or upload a custom hardware photo."
+              />
+
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
                   <Label>Category</Label>

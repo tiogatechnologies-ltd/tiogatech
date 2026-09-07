@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,8 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Camera, Loader2, AlertCircle } from "lucide-react";
+import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
+import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
 
 type CctvPackage = {
   id: string;
@@ -55,12 +57,21 @@ const AdminCCTV = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("cctv_packages" as any)
-      .select("*")
-      .order("sort_order", { ascending: true });
-    if (error) toast.error("Could not load CCTV packages: " + error.message);
-    else setItems(((data as any) || []) as CctvPackage[]);
+    const [cctvRes, imgMap] = await Promise.all([
+      supabase.from("cctv_packages" as any).select("*").order("sort_order", { ascending: true }),
+      fetchPackageImagesMap(),
+    ]);
+
+    if (cctvRes.error) {
+      toast.error("Could not load CCTV packages: " + cctvRes.error.message);
+    } else {
+      const raw = (cctvRes.data as any[]) || [];
+      const merged = raw.map((p) => ({
+        ...p,
+        image_url: p.image_url || imgMap[p.id] || null,
+      }));
+      setItems(merged as CctvPackage[]);
+    }
     setLoading(false);
   };
 
@@ -68,7 +79,7 @@ const AdminCCTV = () => {
 
   const startNew = () => {
     setEditing(null);
-    setForm({ ...empty, sort_order: (items.at(-1)?.sort_order ?? 0) + 1 });
+    setForm({ ...empty, sort_order: (items.at(-1)?.sort_order ?? 0) + 1, image_url: null });
     setSpecsText("");
     setFeaturesText("");
     setOpen(true);
@@ -86,14 +97,24 @@ const AdminCCTV = () => {
   const save = async () => {
     if (!form.name.trim()) { toast.error("Package name is required"); return; }
     setSaving(true);
+    let targetId = editing?.id;
     const payload = {
       ...form,
       specs: specsText.split("\n").map((s) => s.trim()).filter(Boolean),
       features: featuresText.split("\n").map((s) => s.trim()).filter(Boolean),
     };
-    const { error } = editing
-      ? await supabase.from("cctv_packages" as any).update(payload).eq("id", editing.id)
-      : await supabase.from("cctv_packages" as any).insert(payload);
+    const { error, data } = editing
+      ? await supabase.from("cctv_packages" as any).update(payload).eq("id", editing.id).select("id").maybeSingle()
+      : await supabase.from("cctv_packages" as any).insert(payload).select("id").maybeSingle();
+
+    if (!editing && (data as any)?.id) {
+      targetId = (data as any).id;
+    }
+
+    if (targetId) {
+      await savePackageImage(targetId, form.image_url ?? null);
+    }
+
     setSaving(false);
     if (error) { toast.error(error.message); return; }
     toast.success(editing ? "Package updated" : "Package created");
@@ -150,6 +171,23 @@ const AdminCCTV = () => {
           <div className="grid gap-4">
             {items.map((pkg) => (
               <div key={pkg.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl border border-border bg-card">
+                {/* CCTV Picture Thumbnail */}
+                <div className="relative w-full sm:w-28 h-28 sm:h-20 shrink-0 rounded-xl overflow-hidden bg-muted/40 border border-border shadow-xs">
+                  <img
+                    src={pkg.image_url || getDefaultPackageImage("cctv", pkg.channels)}
+                    alt={pkg.name}
+                    className="w-full h-full object-cover object-center"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = getDefaultPackageImage("cctv", pkg.channels);
+                    }}
+                  />
+                  {pkg.image_url && (
+                    <span className="absolute bottom-1 right-1 bg-black/60 backdrop-blur-xs text-[9px] text-white px-1.5 py-0.5 rounded font-medium">
+                      Custom
+                    </span>
+                  )}
+                </div>
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-display font-bold text-foreground text-sm">{pkg.name}</span>
@@ -185,6 +223,16 @@ const AdminCCTV = () => {
           <div className="space-y-4 py-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5 sm:col-span-2">
+                <PackageImagePicker
+                  value={form.image_url ?? null}
+                  onChange={(url) => setForm({ ...form, image_url: url })}
+                  category="cctv"
+                  identifier={form.channels}
+                  label="CCTV Kit Picture"
+                  helperText="Select a CCTV camera/NVR kit picture from the library or upload a custom hardware photo."
+                />
+              </div>
+              <div className="space-y-1.5 sm:col-span-2">
                 <Label>Package Name *</Label>
                 <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="4-Channel Smart AI CCTV Kit" className="rounded-xl" />
               </div>
@@ -207,10 +255,6 @@ const AdminCCTV = () => {
               <div className="space-y-1.5 sm:col-span-2">
                 <Label>Tagline</Label>
                 <Input value={form.tagline ?? ""} onChange={(e) => setForm({ ...form, tagline: e.target.value })} placeholder="Ideal for 3-4 bedroom homes…" className="rounded-xl" />
-              </div>
-              <div className="space-y-1.5">
-                <Label>Image URL (optional)</Label>
-                <Input value={form.image_url ?? ""} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://…" className="rounded-xl" />
               </div>
               <div className="space-y-1.5">
                 <Label>Sort Order</Label>

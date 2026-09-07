@@ -9,6 +9,8 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Home } from "lucide-react";
+import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
+import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
 
 type Pkg = {
   id: string;
@@ -21,6 +23,7 @@ type Pkg = {
   price: number | null;
   price_label: string | null;
   badge: string | null;
+  image_url?: string | null;
   is_active: boolean;
   sort_order: number;
 };
@@ -35,6 +38,7 @@ const empty: Omit<Pkg, "id"> = {
   price: null,
   price_label: "",
   badge: "",
+  image_url: null,
   is_active: true,
   sort_order: 0,
 };
@@ -51,12 +55,21 @@ const AdminHomeAutomation = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("home_automation_packages" as any)
-      .select("*")
-      .order("sort_order", { ascending: true });
-    if (error) toast.error("Could not load packages");
-    else setItems(((data as any) || []) as Pkg[]);
+    const [pkgRes, imgMap] = await Promise.all([
+      supabase.from("home_automation_packages" as any).select("*").order("sort_order", { ascending: true }),
+      fetchPackageImagesMap(),
+    ]);
+
+    if (pkgRes.error) {
+      toast.error("Could not load packages");
+    } else {
+      const raw = (pkgRes.data as any[]) || [];
+      const merged = raw.map((p) => ({
+        ...p,
+        image_url: p.image_url || imgMap[p.id] || null,
+      }));
+      setItems(merged as Pkg[]);
+    }
     setLoading(false);
   };
 
@@ -64,7 +77,7 @@ const AdminHomeAutomation = () => {
 
   const startNew = () => {
     setEditing(null);
-    setForm({ ...empty, sort_order: (items.at(-1)?.sort_order ?? 0) + 1 });
+    setForm({ ...empty, sort_order: (items.at(-1)?.sort_order ?? 0) + 1, image_url: null });
     setFeaturesText("");
     setEntertainmentText("");
     setOpen(true);
@@ -84,17 +97,40 @@ const AdminHomeAutomation = () => {
       toast.error("Tier and name are required");
       return;
     }
+    setSaving(true);
+    let targetId = editing?.id;
     const payload = {
       ...form,
       features: featuresText.split("\n").map((s) => s.trim()).filter(Boolean),
       entertainment: entertainmentText.split("\n").map((s) => s.trim()).filter(Boolean),
     };
-    setSaving(true);
-    const { error } = editing
+    const { image_url, ...withoutImage } = payload;
+
+    let res = editing
       ? await supabase.from("home_automation_packages" as any).update(payload).eq("id", editing.id)
-      : await supabase.from("home_automation_packages" as any).insert(payload);
+      : await supabase.from("home_automation_packages" as any).insert(payload).select("id").maybeSingle();
+
+    if (res.error && res.error.message?.includes("image_url")) {
+      res = editing
+        ? await supabase.from("home_automation_packages" as any).update(withoutImage).eq("id", editing.id)
+        : await supabase.from("home_automation_packages" as any).insert(withoutImage).select("id").maybeSingle();
+    }
+
+    if (res.error) {
+      setSaving(false);
+      toast.error(res.error.message);
+      return;
+    }
+
+    if (!editing && (res.data as any)?.id) {
+      targetId = (res.data as any).id;
+    }
+
+    if (targetId) {
+      await savePackageImage(targetId, form.image_url ?? null);
+    }
+
     setSaving(false);
-    if (error) { toast.error(error.message); return; }
     toast.success(editing ? "Package updated" : "Package created");
     setOpen(false);
     load();
@@ -142,6 +178,23 @@ const AdminHomeAutomation = () => {
           <div className="grid gap-3">
             {items.map((p) => (
               <div key={p.id} className={`rounded-2xl border bg-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4 ${p.is_active ? "border-border" : "border-dashed border-border opacity-70"}`}>
+                {/* Package Picture Thumbnail */}
+                <div className="relative w-full sm:w-28 h-28 sm:h-20 shrink-0 rounded-xl overflow-hidden bg-muted/40 border border-border shadow-xs">
+                  <img
+                    src={p.image_url || getDefaultPackageImage("automation", p.tier)}
+                    alt={p.name}
+                    className="w-full h-full object-cover object-center"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = getDefaultPackageImage("automation", p.tier);
+                    }}
+                  />
+                  {p.image_url && (
+                    <span className="absolute bottom-1 right-1 bg-black/60 backdrop-blur-xs text-[9px] text-white px-1.5 py-0.5 rounded font-medium">
+                      Custom
+                    </span>
+                  )}
+                </div>
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-primary/15 text-primary px-2 py-0.5 rounded-full">{p.tier}</span>
@@ -171,6 +224,15 @@ const AdminHomeAutomation = () => {
             </DialogHeader>
 
             <div className="space-y-4 py-2">
+              <PackageImagePicker
+                value={form.image_url ?? null}
+                onChange={(url) => setForm({ ...form, image_url: url })}
+                category="automation"
+                identifier={form.tier}
+                label="Home Automation Picture"
+                helperText="Select an automation lifestyle/device picture from the library or upload a custom photo."
+              />
+
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
                   <Label>Tier (key)</Label>

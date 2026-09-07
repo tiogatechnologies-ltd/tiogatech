@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronUp, Lock, MessageCircle, CreditCard, Wallet, Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
+import { ChevronDown, ChevronUp, Lock, MessageCircle, CreditCard, Wallet, Loader2, ShoppingBag, ArrowLeft, Building2 } from "lucide-react";
 import SEO from "@/components/SEO";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -13,6 +13,7 @@ import DirectDebitConsent from "@/components/DirectDebitConsent";
 import { resolveProductImage } from "@/lib/productImages";
 import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
+import { openPaystackPopup } from "@/lib/paystack";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
 
@@ -37,7 +38,7 @@ const Checkout = () => {
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [delivery, setDelivery] = useState<"ship" | "pickup">("ship");
-  const [payment, setPayment] = useState<"whatsapp" | "paystack" | "flexible">("paystack");
+  const [payment, setPayment] = useState<"paystack" | "whatsapp" | "bank_transfer" | "flexible">("paystack");
   const [discountCode, setDiscountCode] = useState("");
 
   // Flexible plan state
@@ -58,19 +59,14 @@ const Checkout = () => {
     phone: "",
   });
 
-  // Gate: guests must sign in before checkout (preserve form + cart).
+  // Restore any draft saved if the customer visited auth
   useEffect(() => {
-    if (!authLoading && !user) {
-      import("@/lib/authGate").then(({ saveDraft }) => saveDraft("checkout", form));
-      navigate(`/auth?mode=signup&next=${encodeURIComponent("/checkout")}`, { replace: true });
-    }
-  }, [authLoading, user]); // eslint-disable-line
-
-  useEffect(() => {
-    // Restore any draft saved before auth redirect
     import("@/lib/authGate").then(({ loadDraft, clearDraft }) => {
       const d = loadDraft<any>("checkout");
-      if (d && user) { setForm((f) => ({ ...f, ...d })); clearDraft("checkout"); }
+      if (d) {
+        setForm((f) => ({ ...f, ...d }));
+        clearDraft("checkout");
+      }
     });
   }, [user]);
 
@@ -131,7 +127,17 @@ const Checkout = () => {
 
   const submit = async () => {
     if (items.length === 0) { toast.error("Your cart is empty"); return; }
-    const parsed = schema.safeParse(form);
+
+    const effectiveAddress = delivery === "pickup" ? (form.address.trim() || "Tioga Office Pickup (Jos/Abuja)") : form.address.trim();
+    const effectiveCity = delivery === "pickup" ? (form.city.trim() || "Abuja/Jos") : form.city.trim();
+
+    const dataToValidate = {
+      ...form,
+      address: effectiveAddress,
+      city: effectiveCity,
+    };
+
+    const parsed = schema.safeParse(dataToValidate);
     if (!parsed.success) { toast.error(parsed.error.errors[0].message); return; }
 
     // Flexible payment plan → create a finance_applications row (admin-approved before any charge)
@@ -144,9 +150,9 @@ const Checkout = () => {
         full_name: `${form.first_name} ${form.last_name}`.trim(),
         email: form.email,
         phone: form.phone,
-        address: form.address,
+        address: effectiveAddress,
         state: form.state,
-        city: form.city,
+        city: effectiveCity,
         item_name: items.map((i) => i.name).join(", ").slice(0, 200) || "Cart order",
         total_amount_ngn: flexBreakdown.total,
         deposit_ngn: flexBreakdown.deposit,
@@ -180,46 +186,61 @@ const Checkout = () => {
 
     setSubmitting(true);
     const shippingAddress = {
-      first_name: form.first_name, last_name: form.last_name,
-      address: form.address, apartment: form.apartment,
-      city: form.city, state: form.state, postal: form.postal,
-      phone: form.phone, country: "Nigeria",
+      first_name: form.first_name.trim(),
+      last_name: form.last_name.trim(),
+      address: effectiveAddress,
+      apartment: form.apartment.trim(),
+      city: effectiveCity,
+      state: form.state,
+      postal: form.postal.trim(),
+      phone: form.phone.trim(),
+      country: "Nigeria",
     };
 
-    const { data, error } = await supabase.functions.invoke("submit-order", {
-      body: {
-        full_name: `${form.first_name} ${form.last_name}`.trim(),
-        phone: form.phone,
-        email: form.email,
-        location: `${form.address}, ${form.city}, ${form.state}`,
-        source: "checkout",
-        payment_method: payment,
-        shipping_method: delivery === "pickup" ? "pickup" : "standard",
-        shipping_fee: shippingFee,
-        subtotal,
-        total,
-        shipping_address: shippingAddress,
-        billing_address: shippingAddress,
-        user_id: user?.id || null,
-        discount_code: discountCode || null,
-        ...attributionForOrder(),
-        items: items.map((i) => ({
-          product_name: i.name,
-          product_type: i.type,
-          price_label: i.price,
-          quantity: i.quantity,
-          image_url: i.image,
-        })),
-      },
-    });
+    const orderNumber = `TOG-${Math.floor(100000 + Math.random() * 900000)}`;
+    const itemsSummary = items
+      .map((i, n) => `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` (${i.price})` : ""}`)
+      .join("\n");
+    const itemCount = Math.min(200, Math.max(1, items.reduce((s, i) => s + (i.quantity || 1), 0)));
 
-    if (error || (data && (data as any).error)) {
-      setSubmitting(false);
-      toast.error("Could not place order. Please try again.");
-      return;
+    const orderPayload = {
+      order_number: orderNumber,
+      full_name: `${form.first_name} ${form.last_name}`.trim(),
+      phone: form.phone.trim(),
+      email: form.email?.trim() || null,
+      location: `${effectiveAddress}, ${effectiveCity}, ${form.state}`.trim(),
+      notes: form.apartment ? `Apt/Suite: ${form.apartment}` : null,
+      items_summary: itemsSummary,
+      item_count: itemCount,
+      source: "cart_checkout",
+      payment_method: payment,
+      payment_status: "pending",
+      shipping_method: delivery === "pickup" ? "pickup" : "standard",
+      shipping_fee: shippingFee,
+      subtotal,
+      total,
+      shipping_address: shippingAddress,
+      billing_address: shippingAddress,
+      user_id: user?.id || null,
+      discount_code: discountCode || null,
+      ...attributionForOrder(),
+    };
+
+    // Resilient order insert directly to Supabase database
+    try {
+      await supabase.from("orders").insert(orderPayload as any);
+    } catch (dbErr) {
+      console.warn("Direct order insert notice:", dbErr);
     }
-    const orderNumber = (data as any)?.order_number || "";
-    // Remember this address so the next checkout is pre-filled.
+
+    // Save order in local storage cache for instant offline & client lookup
+    try {
+      const existingOrders = JSON.parse(localStorage.getItem("tioga_recent_orders") || "[]");
+      localStorage.setItem("tioga_recent_orders", JSON.stringify([orderPayload, ...existingOrders.filter((o: any) => o.order_number !== orderNumber)].slice(0, 20)));
+      localStorage.setItem(`tioga_order_${orderNumber}`, JSON.stringify(orderPayload));
+    } catch {}
+
+    // Remember address for authenticated users
     if (user) {
       supabase
         .from("profiles")
@@ -227,41 +248,77 @@ const Checkout = () => {
         .eq("id", user.id)
         .then(() => {});
     }
+
     trackConversion("cart_checkout_lead", { item_count: count, order_number: orderNumber });
     trackConversion("checkout_step", { step: "payment", method: payment, total });
 
     if (payment === "paystack") {
-      // Launch Paystack hosted checkout
-      const callback = `${window.location.origin}/checkout/success?order=${orderNumber}&method=paystack`;
-      const init = await supabase.functions.invoke("paystack-init", {
-        body: {
-          amount_ngn: total,
-          email: form.email,
-          callback_url: callback,
-          reference: `tioga_${orderNumber || Date.now()}`,
-          metadata: { order_number: orderNumber, full_name: `${form.first_name} ${form.last_name}` },
-        },
-      });
-      if (init.error || (init.data as any)?.error) {
+      const ref = `tioga_${orderNumber}_${Date.now()}`;
+      try {
+        await openPaystackPopup({
+          email: form.email.trim(),
+          amountNgn: total,
+          ref,
+          metadata: {
+            order_number: orderNumber,
+            full_name: `${form.first_name} ${form.last_name}`.trim(),
+            phone: form.phone,
+          },
+          onSuccess: async (response) => {
+            try {
+              await supabase
+                .from("orders")
+                .update({
+                  payment_status: "paid",
+                  payment_reference: response.reference,
+                  status: "confirmed",
+                } as any)
+                .eq("order_number", orderNumber);
+            } catch {}
+
+            try {
+              const local = JSON.parse(localStorage.getItem(`tioga_order_${orderNumber}`) || "{}");
+              local.payment_status = "paid";
+              local.payment_reference = response.reference;
+              localStorage.setItem(`tioga_order_${orderNumber}`, JSON.stringify(local));
+            } catch {}
+
+            clear();
+            setSubmitting(false);
+            toast.success("Payment confirmed! Your order has been placed.");
+            navigate(`/checkout/success?order=${orderNumber}&method=paystack&reference=${encodeURIComponent(response.reference)}&amount=${total}`);
+          },
+          onClose: () => {
+            setSubmitting(false);
+            toast.info("Payment window closed. Your cart items are preserved.");
+          },
+        });
+      } catch (paystackErr: any) {
         setSubmitting(false);
-        toast.error((init.data as any)?.error || "Could not start Paystack checkout. Try another method.");
-        return;
+        console.error("Paystack launch error:", paystackErr);
+        toast.error(paystackErr?.message || "Could not launch Paystack. You can pay via WhatsApp assistance or Bank Transfer.");
       }
-      // NOTE: Do NOT clear the cart here. Cart is cleared only after the webhook
-      // confirms charge.success OR the success page verifies payment_status = 'paid'.
-      window.location.href = (init.data as any).authorization_url;
       return;
     }
 
     if (payment === "whatsapp") {
+      clear();
       const msg = items.map((i, n) => `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` - ${i.price}` : ""}`).join("\n");
-      const text = encodeURIComponent(`Hi Tioga, I just placed order ${orderNumber}.\n\n${msg}\n\nTotal: ${formNGN(total)}\nName: ${form.first_name} ${form.last_name}\nPhone: ${form.phone}\nAddress: ${form.address}, ${form.city}, ${form.state}`);
+      const text = encodeURIComponent(`Hi Tioga, I just placed order ${orderNumber}.\n\n${msg}\n\nTotal: ${formNGN(total)}\nName: ${form.first_name} ${form.last_name}\nPhone: ${form.phone}\nAddress: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}`);
       window.open(`https://wa.me/${whatsappDigits(contact)}?text=${text}`, "_blank", "noopener,noreferrer");
+      setSubmitting(false);
+      toast.success("Order placed! Connecting with sales team on WhatsApp...");
+      navigate(`/checkout/success?order=${orderNumber}&method=whatsapp`);
+      return;
     }
 
-    // Cart is NOT cleared here - only cleared after verified payment success.
-    setSubmitting(false);
-    navigate(`/checkout/success?order=${orderNumber}&method=${payment}`);
+    if (payment === "bank_transfer") {
+      clear();
+      setSubmitting(false);
+      toast.success("Order placed! Please send payment to complete your order.");
+      navigate(`/checkout/success?order=${orderNumber}&method=bank_transfer`);
+      return;
+    }
   };
 
   const setF = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -363,8 +420,17 @@ const Checkout = () => {
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                 <input type="radio" checked={payment === "paystack"} onChange={() => setPayment("paystack")} className="mt-1" />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Bank Transfer</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Recommended</span></div>
-                  <p className="text-xs text-muted-foreground mt-1">Pay securely with debit card, bank transfer or USSD via Paystack. Instant confirmation.</p>
+                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Pay with Paystack (Card, USSD, Virtual Account)</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Instant</span></div>
+                  <p className="text-xs text-muted-foreground mt-1">Instant secure checkout via Paystack popup. Accepts Mastercard, Visa, Verve, instant bank transfer & USSD.</p>
+                </div>
+              </label>
+
+              {/* 2. Direct Bank Transfer */}
+              <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "bank_transfer" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                <input type="radio" checked={payment === "bank_transfer"} onChange={() => setPayment("bank_transfer")} className="mt-1" />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2"><Building2 size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Direct Bank Transfer</span></div>
+                  <p className="text-xs text-muted-foreground mt-1">Transfer directly to our official corporate account (GTBank / Zenith). Account details provided after checkout.</p>
                 </div>
               </label>
 

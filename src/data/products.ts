@@ -1190,14 +1190,17 @@ export const cctvList: Product[] = [
   }
 ];
 
-// Unified 35+ products array
+import { MINISIM_PRODUCTS } from "./minisimProducts";
+
+// Unified products array including solar hardware, smart locks, and complete Minisim retail catalog
 export const PRODUCTS: Product[] = [
   ...invertersList,
   ...batteriesList,
   ...solarPanelsList,
   ...smartLocksList,
   ...smartHomeList,
-  ...cctvList
+  ...cctvList,
+  ...MINISIM_PRODUCTS,
 ];
 
 // Legacy backward-compatibility aliases

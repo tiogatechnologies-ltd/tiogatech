@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Sun } from "lucide-react";
+import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
+import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
 
 type Pkg = {
   id: string;
@@ -29,6 +31,7 @@ type Pkg = {
   appliances: string;
   tagline: string | null;
   badge: string | null;
+  image_url?: string | null;
   is_active: boolean;
   sort_order: number;
 };
@@ -50,6 +53,7 @@ const empty: Omit<Pkg, "id"> = {
   appliances: "",
   tagline: "",
   badge: "",
+  image_url: null,
   is_active: true,
   sort_order: 0,
 };
@@ -67,12 +71,21 @@ const AdminSolarPackages = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("solar_packages" as any)
-      .select("*")
-      .order("sort_order", { ascending: true });
-    if (error) toast.error("Could not load packages");
-    else setItems(((data as any) || []) as Pkg[]);
+    const [pkgRes, imgMap] = await Promise.all([
+      supabase.from("solar_packages" as any).select("*").order("sort_order", { ascending: true }),
+      fetchPackageImagesMap(),
+    ]);
+
+    if (pkgRes.error) {
+      toast.error("Could not load packages");
+    } else {
+      const raw = (pkgRes.data as any[]) || [];
+      const merged = raw.map((p) => ({
+        ...p,
+        image_url: p.image_url || imgMap[p.id] || null,
+      }));
+      setItems(merged as Pkg[]);
+    }
     setLoading(false);
   };
 
@@ -86,6 +99,7 @@ const AdminSolarPackages = () => {
       ...empty,
       sort_order: (items.at(-1)?.sort_order ?? 0) + 1,
       package_number: (items.at(-1)?.package_number ?? 0) + 1,
+      image_url: null,
     });
     setOpen(true);
   };
@@ -103,14 +117,34 @@ const AdminSolarPackages = () => {
       return;
     }
     setSaving(true);
-    const { error } = editing
+    let targetId = editing?.id;
+    const { image_url, ...withoutImage } = form;
+
+    let res = editing
       ? await supabase.from("solar_packages" as any).update(form).eq("id", editing.id)
-      : await supabase.from("solar_packages" as any).insert(form);
-    setSaving(false);
-    if (error) {
-      toast.error(error.message);
+      : await supabase.from("solar_packages" as any).insert(form).select("id").maybeSingle();
+
+    if (res.error && res.error.message?.includes("image_url")) {
+      res = editing
+        ? await supabase.from("solar_packages" as any).update(withoutImage).eq("id", editing.id)
+        : await supabase.from("solar_packages" as any).insert(withoutImage).select("id").maybeSingle();
+    }
+
+    if (res.error) {
+      setSaving(false);
+      toast.error(res.error.message);
       return;
     }
+
+    if (!editing && (res.data as any)?.id) {
+      targetId = (res.data as any).id;
+    }
+
+    if (targetId) {
+      await savePackageImage(targetId, form.image_url ?? null);
+    }
+
+    setSaving(false);
     toast.success(editing ? "Package updated" : "Package created");
     setOpen(false);
     load();
@@ -173,6 +207,23 @@ const AdminSolarPackages = () => {
                   p.is_active ? "border-border" : "border-dashed border-border opacity-70"
                 }`}
               >
+                {/* Package Picture Thumbnail */}
+                <div className="relative w-full sm:w-28 h-28 sm:h-20 shrink-0 rounded-xl overflow-hidden bg-muted/40 border border-border shadow-xs">
+                  <img
+                    src={p.image_url || getDefaultPackageImage("solar", p.package_number)}
+                    alt={p.inverter}
+                    className="w-full h-full object-cover object-center"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = getDefaultPackageImage("solar", p.package_number);
+                    }}
+                  />
+                  {p.image_url && (
+                    <span className="absolute bottom-1 right-1 bg-black/60 backdrop-blur-xs text-[9px] text-white px-1.5 py-0.5 rounded font-medium">
+                      Custom
+                    </span>
+                  )}
+                </div>
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-gold/20 text-gold-foreground px-2 py-0.5 rounded-full">
@@ -221,6 +272,15 @@ const AdminSolarPackages = () => {
             </DialogHeader>
 
             <div className="space-y-4 py-2">
+              <PackageImagePicker
+                value={form.image_url ?? null}
+                onChange={(url) => setForm({ ...form, image_url: url })}
+                category="solar"
+                identifier={form.package_number}
+                label="Solar Package Picture"
+                helperText="Choose a high-resolution solar system picture from the library or upload a custom photo."
+              />
+
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
                   <Label>Package #</Label>

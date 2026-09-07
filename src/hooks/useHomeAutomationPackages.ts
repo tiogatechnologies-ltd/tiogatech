@@ -30,8 +30,13 @@ export type HomeAutomationPackage = {
   image: string;
 };
 
-const decorate = (rows: any[]): HomeAutomationPackage[] =>
-  rows.map((p) => ({ ...p, image: IMAGE_BY_TIER[p.tier] ?? bgAscentia })) as HomeAutomationPackage[];
+import { fetchPackageImagesMap } from "@/lib/packageImages";
+
+const decorate = (rows: any[], imgMap: Record<string, string> = {}): HomeAutomationPackage[] =>
+  rows.map((p) => ({
+    ...p,
+    image: p.image_url || imgMap[p.id] || (IMAGE_BY_TIER[p.tier] ?? bgAscentia),
+  })) as HomeAutomationPackage[];
 
 export const useHomeAutomationPackages = () => {
   const [packages, setPackages] = useState<HomeAutomationPackage[]>([]);
@@ -40,16 +45,17 @@ export const useHomeAutomationPackages = () => {
   useEffect(() => {
     let active = true;
     const run = async (attempt = 0): Promise<void> => {
-      const { data, error } = await fetchFreshRows<any>(
-        "home_automation_packages?select=*&is_active=eq.true&order=sort_order.asc",
-      );
+      const [{ data, error }, imgMap] = await Promise.all([
+        fetchFreshRows<any>("home_automation_packages?select=*&is_active=eq.true&order=sort_order.asc"),
+        fetchPackageImagesMap(),
+      ]);
       if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
         return run(attempt + 1);
       }
       if (data) {
-        setPackages(decorate(data as any[]));
+        setPackages(decorate(data as any[], imgMap));
       }
       setLoading(false);
     };
