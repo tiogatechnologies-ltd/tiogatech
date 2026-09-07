@@ -19,7 +19,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-1.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -61,7 +61,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-2.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -103,7 +103,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-3.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -145,7 +145,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-4.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -187,7 +187,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-5.webp",
+    "image_url": "/products/clear/switch-scene.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -228,7 +228,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦42,000",
     "numeric_price": 42000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-6.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -270,7 +270,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-7.webp",
+    "image_url": "/products/clear/switch-dimmer.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -312,7 +312,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-8.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -354,7 +354,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-9.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Rated Current": "30A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -398,7 +398,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-10.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Rated Current": "20A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -440,7 +440,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-11.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Rated Current": "20A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -483,7 +483,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-12.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Google Assistant",
@@ -525,7 +525,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-13.webp",
+    "image_url": "/products/clear/socket-double.webp",
     "specifications": {
       "Rated Current": "15A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -570,7 +570,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-14.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Rated Current": "16A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -613,7 +613,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-15.webp",
+    "image_url": "/products/clear/socket-double.webp",
     "specifications": {
       "Rated Current": "16A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -656,7 +656,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦44,000",
     "numeric_price": 44000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-16.webp",
+    "image_url": "/products/clear/power-strip-smart.webp",
     "specifications": {
       "Rated Current": "13A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -694,7 +694,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-18.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -736,7 +736,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-19.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -778,7 +778,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-20.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -820,7 +820,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-21.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -863,7 +863,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-22.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Rated Current": "30A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -908,7 +908,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-23.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Rated Current": "13A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -953,7 +953,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦41,000",
     "numeric_price": 41000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-24.webp",
+    "image_url": "/products/clear/socket-double.webp",
     "specifications": {
       "Rated Current": "15A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -998,7 +998,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦96,000",
     "numeric_price": 96000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-25.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -1040,7 +1040,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦96,000",
     "numeric_price": 96000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-26.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -1083,7 +1083,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100,000",
     "numeric_price": 100000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-27.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -1127,7 +1127,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-28.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Rated Current": "16A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1171,7 +1171,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-29.webp",
+    "image_url": "/products/clear/socket-double.webp",
     "specifications": {
       "Rated Current": "16A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1217,7 +1217,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-31.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1263,7 +1263,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-32.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1309,7 +1309,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-33.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1355,7 +1355,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,500",
     "numeric_price": 29500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-34.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1401,7 +1401,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-35.webp",
+    "image_url": "/products/clear/switch-dimmer.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1445,7 +1445,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-36.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Rated Current": "13A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1490,7 +1490,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦42,000",
     "numeric_price": 42000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-37.webp",
+    "image_url": "/products/clear/socket-double.webp",
     "specifications": {
       "Rated Current": "15A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1537,7 +1537,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-39.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1583,7 +1583,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-40.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1629,7 +1629,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-41.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1675,7 +1675,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-42.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1721,7 +1721,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-43.webp",
+    "image_url": "/products/clear/switch-dimmer.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1765,7 +1765,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,500",
     "numeric_price": 33500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-44.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Rated Current": "13A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1810,7 +1810,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,500",
     "numeric_price": 43500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-45.webp",
+    "image_url": "/products/clear/socket-double.webp",
     "specifications": {
       "Rated Current": "15A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1857,7 +1857,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-47.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1903,7 +1903,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-48.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1949,7 +1949,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-49.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1995,7 +1995,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-50.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -2039,7 +2039,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,500",
     "numeric_price": 28500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-53.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -2079,7 +2079,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-54.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2125,7 +2125,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-55.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2171,7 +2171,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-56.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2217,7 +2217,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-57.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2263,7 +2263,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-58.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Operating Voltage": "100-250V",
       "Rated Power": "6600W",
@@ -2311,7 +2311,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,500",
     "numeric_price": 24500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-60.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2357,7 +2357,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,500",
     "numeric_price": 25500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-61.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2403,7 +2403,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,500",
     "numeric_price": 26500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-62.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2449,7 +2449,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-63.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2495,7 +2495,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-64.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Operating Voltage": "100-250V",
       "Rated Power": "6600W",
@@ -2541,7 +2541,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-66.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -2586,7 +2586,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-67.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2633,7 +2633,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-68.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2680,7 +2680,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-69.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2727,7 +2727,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-71.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2774,7 +2774,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-72.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2821,7 +2821,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-73.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2868,7 +2868,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-74.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2915,7 +2915,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-76.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -2962,7 +2962,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-77.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -3009,7 +3009,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-78.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -3055,7 +3055,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-79.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -3100,7 +3100,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-80.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -3147,7 +3147,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-81.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -3193,7 +3193,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦52,000",
     "numeric_price": 52000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-83.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3239,7 +3239,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦57,000",
     "numeric_price": 57000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-84.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3286,7 +3286,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦63,000",
     "numeric_price": 63000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-85.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3333,7 +3333,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-86.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3378,7 +3378,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-87.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "4000W",
@@ -3424,7 +3424,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,000",
     "numeric_price": 43000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-89.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3470,7 +3470,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-90.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3517,7 +3517,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦49,000",
     "numeric_price": 49000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-91.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3563,7 +3563,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦51,000",
     "numeric_price": 51000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-92.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Voice Control": "Amazon Alexa, Google Assistant",
@@ -3605,7 +3605,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦52,000",
     "numeric_price": 52000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-94.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -3644,7 +3644,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-95.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3690,7 +3690,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-96.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3736,7 +3736,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-97.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3782,7 +3782,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-98.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3828,7 +3828,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-99.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "4400W",
@@ -3875,7 +3875,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-100.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3921,7 +3921,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-101.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3967,7 +3967,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-102.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -4013,7 +4013,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦37,000",
     "numeric_price": 37000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-103.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -4059,7 +4059,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-104.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "4400W",
@@ -4103,7 +4103,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-107.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -4140,7 +4140,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-108.webp",
+    "image_url": "/products/clear/switch-scene.webp",
     "specifications": {
       "Operating Voltage": "110-250V",
       "Rated Power": "300W",
@@ -4184,7 +4184,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦58,000",
     "numeric_price": 58000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-109.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -4228,7 +4228,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦38,000",
     "numeric_price": 38000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-110.webp",
+    "image_url": "/products/clear/switch-dimmer.webp",
     "specifications": {
       "Operating Voltage": "240v",
       "Rated Current": "10a",
@@ -4269,7 +4269,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,000",
     "numeric_price": 43000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-112.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -4311,7 +4311,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-113.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4358,7 +4358,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-114.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4405,7 +4405,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-115.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4452,7 +4452,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-116.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4499,7 +4499,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦19,000",
     "numeric_price": 19000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-117.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4546,7 +4546,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-118.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4593,7 +4593,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-119.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4638,7 +4638,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-120.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -4684,7 +4684,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-121.webp",
+    "image_url": "/products/clear/switch-heater-ac.webp",
     "specifications": {
       "Operating Voltage": "100-250V",
       "Rated Power": "6600W",
@@ -4732,7 +4732,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-122.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4779,7 +4779,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-123.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4826,7 +4826,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-124.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4871,7 +4871,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦13,000",
     "numeric_price": 13000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-125.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "100W",
@@ -4911,7 +4911,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-126.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "200W",
@@ -4951,7 +4951,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦19,000",
     "numeric_price": 19000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-127.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "300W",
@@ -4991,7 +4991,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-128.webp",
+    "image_url": "/products/clear/switch-4gang-white.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "400W",
@@ -5031,7 +5031,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-129.webp",
+    "image_url": "/products/clear/switch-1gang-white.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "100W",
@@ -5072,7 +5072,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-130.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "200W",
@@ -5113,7 +5113,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-131.webp",
+    "image_url": "/products/clear/switch-3gang-white.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "300W",
@@ -5154,7 +5154,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-132.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "400W",
@@ -5195,7 +5195,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,500",
     "numeric_price": 16500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-133.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "90-250V",
       "Rated Power": "3 w",
@@ -5237,7 +5237,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-134.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "90-250V",
       "Rated Power": "2 w",
@@ -5279,7 +5279,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,500",
     "numeric_price": 15500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-135.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "90- 250VAC",
       "Rated Power": "500W",
@@ -5322,7 +5322,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,500",
     "numeric_price": 16500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-136.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "90- 250VAC",
       "Rated Power": "500W",
@@ -5365,7 +5365,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦19,500",
     "numeric_price": 19500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-137.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "90-250V",
       "Rated Power": "500W",
@@ -5407,7 +5407,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,500",
     "numeric_price": 10500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-138.webp",
+    "image_url": "/products/clear/curtain-remote.webp",
     "specifications": {
       "Operating Voltage": "1527 V",
       "Rated Power": "108W",
@@ -5448,7 +5448,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦14,500",
     "numeric_price": 14500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-139.webp",
+    "image_url": "/products/clear/curtain-remote.webp",
     "specifications": {
       "Operating Voltage": "1527 V",
       "Rated Power": "108W",
@@ -5489,7 +5489,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦165,000",
     "numeric_price": 165000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-140.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -5530,7 +5530,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-141.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -5571,7 +5571,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-143.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Available Finishes": "Black, White Gold",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -5610,7 +5610,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-144.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Available Finishes": "Black, White Gold",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -5649,7 +5649,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦19,000",
     "numeric_price": 19000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-145.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Available Finishes": "Black, White Gold",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -5689,7 +5689,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-146.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Available Finishes": "Black, White Gold",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -5729,7 +5729,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-147.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "30A",
       "Available Finishes": "Black, White"
@@ -5770,7 +5770,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-148.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "30A",
       "Available Finishes": "Black, White"
@@ -5811,7 +5811,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,500",
     "numeric_price": 17500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-149.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Available Finishes": "Black, White"
     },
@@ -5851,7 +5851,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-150.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Available Finishes": "Black, White"
     },
@@ -5891,7 +5891,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,500",
     "numeric_price": 21500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-151.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Available Finishes": "Black, White"
@@ -5934,7 +5934,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦53,000",
     "numeric_price": 53000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-153.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -5976,7 +5976,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-154.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -6017,7 +6017,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-155.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -6059,7 +6059,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-156.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -6098,7 +6098,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-157.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "0 V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -6139,7 +6139,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦112,000",
     "numeric_price": 112000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-158.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -6181,7 +6181,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-159.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -6220,7 +6220,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-160.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -6260,7 +6260,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-161.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -6297,7 +6297,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦67,000",
     "numeric_price": 67000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-162.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -6336,7 +6336,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-164.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Power": "3000 W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -6377,7 +6377,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦120,000",
     "numeric_price": 120000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-165.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "12v",
       "Rated Current": "1A",
@@ -6419,7 +6419,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-166.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "12v",
       "Rated Current": "1A",
@@ -6461,7 +6461,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-167.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "100-240V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -6503,7 +6503,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-168.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Power": "30w",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -6541,7 +6541,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦97,000",
     "numeric_price": 97000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-169.webp",
+    "image_url": "/products/clear/switch-poe-network.webp",
     "specifications": {
       "Rated Power": "110w",
       "Resolution": "9mp"
@@ -6582,7 +6582,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦165,000",
     "numeric_price": 165000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-170.webp",
+    "image_url": "/products/clear/switch-poe-network.webp",
     "specifications": {
       "Rated Power": "30w",
       "Connectivity": "Ethernet PoE (802.3af/at)"
@@ -6622,7 +6622,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-171.webp",
+    "image_url": "/products/clear/switch-poe-network.webp",
     "specifications": {
       "Rated Power": "30w",
       "Connectivity": "Ethernet PoE (802.3af/at)"
@@ -6660,7 +6660,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦165,000",
     "numeric_price": 165000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-173.webp",
+    "image_url": "/products/clear/panel-touch-4inch.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -6700,7 +6700,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦115,000",
     "numeric_price": 115000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-174.webp",
+    "image_url": "/products/clear/panel-touch-6inch.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -6740,7 +6740,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦178,000",
     "numeric_price": 178000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-175.webp",
+    "image_url": "/products/clear/panel-touch-6inch.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -6781,7 +6781,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-176.webp",
+    "image_url": "/products/clear/panel-touch-4inch.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa"
@@ -6822,7 +6822,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-177.webp",
+    "image_url": "/products/clear/panel-touch-4inch.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa"
@@ -6863,7 +6863,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦330,000",
     "numeric_price": 330000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-178.webp",
+    "image_url": "/products/clear/panel-touch-6inch.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -6991,7 +6991,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦355,000",
     "numeric_price": 355000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-181.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "40W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -7034,7 +7034,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦390,000",
     "numeric_price": 390000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-182.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "40W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -7077,7 +7077,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦395,000",
     "numeric_price": 395000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-183.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "80W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7121,7 +7121,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦245,000",
     "numeric_price": 245000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-184.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -7161,7 +7161,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦395,000",
     "numeric_price": 395000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-185.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Power": "40W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7205,7 +7205,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦495,000",
     "numeric_price": 495000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-186.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -7291,7 +7291,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦410,000",
     "numeric_price": 410000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-188.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7334,7 +7334,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦520,000",
     "numeric_price": 520000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-189.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7376,7 +7376,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦620,000",
     "numeric_price": 620000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-190.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -7418,7 +7418,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-191.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Operating Voltage": "100-240v",
       "Rated Power": "25w",
@@ -7463,7 +7463,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦145,000",
     "numeric_price": 145000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-192.webp",
+    "image_url": "/products/clear/curtain-remote.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -7506,7 +7506,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-193.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -7546,7 +7546,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦85,000",
     "numeric_price": 85000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-194.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -7586,7 +7586,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-195.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -7624,7 +7624,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦160,000",
     "numeric_price": 160000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-196.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "480*480"
@@ -7667,7 +7667,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-197.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -7712,7 +7712,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦255,000",
     "numeric_price": 255000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-198.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -7754,7 +7754,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦470,000",
     "numeric_price": 470000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-199.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -7793,7 +7793,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-200.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -7836,7 +7836,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦350,000",
     "numeric_price": 350000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-202.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Current": "1A",
@@ -7880,7 +7880,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦265,000",
     "numeric_price": 265000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-203.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Dimensions": "1280*800",
       "Resolution": "1280*800"
@@ -7921,7 +7921,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦420,000",
     "numeric_price": 420000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-204.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "25W",
@@ -7963,7 +7963,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦135,000",
     "numeric_price": 135000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-205.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Connectivity": "Ethernet PoE (802.3af/at)"
@@ -8000,7 +8000,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦135,000",
     "numeric_price": 135000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-206.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8037,7 +8037,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-208.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "32A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8078,7 +8078,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-209.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "63A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8119,7 +8119,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-210.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "80A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8161,7 +8161,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-211.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "100A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8202,7 +8202,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦85,000",
     "numeric_price": 85000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-212.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "100A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8243,7 +8243,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦95,000",
     "numeric_price": 95000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-213.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "100A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8284,7 +8284,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100,000",
     "numeric_price": 100000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-214.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "125A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8328,7 +8328,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-215.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "90V",
       "Rated Current": "63A",
@@ -8369,7 +8369,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-216.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "63A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -8411,7 +8411,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-217.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Rated Current": "63A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -8453,7 +8453,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-218.webp",
+    "image_url": "/products/clear/meter-digital-power.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8492,7 +8492,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-219.webp",
+    "image_url": "/products/clear/meter-digital-power.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Current": "63A",
@@ -8534,7 +8534,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-220.webp",
+    "image_url": "/products/clear/meter-digital-power.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Current": "63A",
@@ -8576,7 +8576,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦5,000",
     "numeric_price": 5000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-222.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC",
       "Dimensions": "86x86"
@@ -8615,7 +8615,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦9,000",
     "numeric_price": 9000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-223.webp",
+    "image_url": "/products/clear/socket-double.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -8654,7 +8654,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦210,000",
     "numeric_price": 210000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-225.webp",
+    "image_url": "/products/clear/socket-popup.webp",
     "specifications": {
       "Operating Voltage": "250V",
       "Rated Power": "30W",
@@ -8693,7 +8693,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-226.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "54 w",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -8734,7 +8734,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-227.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Rated Power": "15W"
     },
@@ -8772,7 +8772,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-228.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8812,7 +8812,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-229.webp",
+    "image_url": "/products/clear/socket-popup.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8852,7 +8852,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-230.webp",
+    "image_url": "/products/clear/socket-popup.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8893,7 +8893,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-231.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Rated Power": "15W",
       "Housing Material": "Aerospace Aluminum Alloy",
@@ -8933,7 +8933,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-232.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -8971,7 +8971,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦105,000",
     "numeric_price": 105000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-233.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -9009,7 +9009,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦120,000",
     "numeric_price": 120000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-234.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -9047,7 +9047,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-235.webp",
+    "image_url": "/products/clear/socket-single-universal.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -9088,7 +9088,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦13,000",
     "numeric_price": 13000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-236.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Operating Voltage": "9V",
       "Rated Power": "15W",
@@ -9129,7 +9129,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-237.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Rated Power": "5w"
     },
@@ -9166,7 +9166,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-238.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Rated Power": "5w"
     },
@@ -9203,7 +9203,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-239.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Rated Power": "15w"
     },
@@ -9240,7 +9240,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-240.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Rated Power": "15w"
     },
@@ -9278,7 +9278,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦13,000",
     "numeric_price": 13000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-241.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Rated Power": "15W"
     },
@@ -9316,7 +9316,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-243.webp",
+    "image_url": "/products/clear/remote-ir-universal.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9357,7 +9357,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-244.webp",
+    "image_url": "/products/clear/remote-ir-universal.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9399,7 +9399,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-245.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Rated Power": "5W",
       "Rated Current": "3A",
@@ -9441,7 +9441,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-246.webp",
+    "image_url": "/products/clear/remote-ir-universal.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -9482,7 +9482,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦49,000",
     "numeric_price": 49000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-247.webp",
+    "image_url": "/products/clear/remote-ir-universal.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -9521,7 +9521,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-248.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "16A",
@@ -9562,7 +9562,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-249.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "16A",
@@ -9603,7 +9603,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-250.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "16A",
@@ -9646,7 +9646,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-251.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "16A",
@@ -9687,7 +9687,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-252.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9725,7 +9725,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-253.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9766,7 +9766,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,500",
     "numeric_price": 18500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-254.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -9805,7 +9805,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦50,000",
     "numeric_price": 50000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-255.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9843,7 +9843,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦14,000",
     "numeric_price": 14000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-256.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa"
@@ -9883,7 +9883,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-257.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9922,7 +9922,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-258.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9961,7 +9961,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-259.webp",
+    "image_url": "/products/clear/remote-ir-universal.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -10001,7 +10001,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-260.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10041,7 +10041,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-261.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -10082,7 +10082,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-262.webp",
+    "image_url": "/products/clear/remote-ir-universal.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -10122,7 +10122,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦95,000",
     "numeric_price": 95000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-263.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10162,7 +10162,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-264.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10202,7 +10202,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,500",
     "numeric_price": 23500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-265.webp",
+    "image_url": "/products/clear/sensor-smoke-alarm.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -10241,7 +10241,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-266.webp",
+    "image_url": "/products/clear/sensor-smoke-alarm.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -10279,7 +10279,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-267.webp",
+    "image_url": "/products/clear/sensor-smoke-alarm.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -10319,7 +10319,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,500",
     "numeric_price": 24500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-268.webp",
+    "image_url": "/products/clear/sensor-smoke-alarm.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10357,7 +10357,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-269.webp",
+    "image_url": "/products/clear/sensor-smoke-alarm.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -10398,7 +10398,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-270.webp",
+    "image_url": "/products/clear/sensor-siren-strobe.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -10440,7 +10440,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-271.webp",
+    "image_url": "/products/clear/sensor-siren-strobe.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10481,7 +10481,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-272.webp",
+    "image_url": "/products/clear/sensor-water-leak.webp",
     "specifications": {
       "Rated Power": "65 W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -10522,7 +10522,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-273.webp",
+    "image_url": "/products/clear/sensor-gas-leak.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -10561,7 +10561,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-274.webp",
+    "image_url": "/products/clear/sensor-gas-leak.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -10599,7 +10599,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-275.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -10640,7 +10640,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-276.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -10681,7 +10681,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-277.webp",
+    "image_url": "/products/clear/remote-ir-universal.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10718,7 +10718,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-278.webp",
+    "image_url": "/products/clear/sensor-temp-humidity.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -10759,7 +10759,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,500",
     "numeric_price": 18500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-279.webp",
+    "image_url": "/products/clear/sensor-water-leak.webp",
     "specifications": {
       "Operating Voltage": "3V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -10798,7 +10798,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦125,000",
     "numeric_price": 125000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-280.webp",
+    "image_url": "/products/clear/sensor-water-leak.webp",
     "specifications": {
       "Operating Voltage": "6V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -10840,7 +10840,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-282.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Operating Voltage": "120-277V"
     },
@@ -10879,7 +10879,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-283.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -10920,7 +10920,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-284.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "5A"
@@ -10961,7 +10961,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦8,000",
     "numeric_price": 8000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-285.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Rated Power": "9 W"
     },
@@ -11001,7 +11001,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,000",
     "numeric_price": 10000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-286.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Rated Power": "12W"
     },
@@ -11040,7 +11040,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦7,000",
     "numeric_price": 7000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-287.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -11077,7 +11077,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-288.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -11119,7 +11119,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦220,000",
     "numeric_price": 220000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-290.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa",
@@ -11163,7 +11163,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦235,000",
     "numeric_price": 235000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-291.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11207,7 +11207,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦295,000",
     "numeric_price": 295000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-292.webp",
+    "image_url": "/products/clear/switch-2gang-white.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa",
@@ -11249,7 +11249,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦180,000",
     "numeric_price": 180000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-293.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa",
@@ -11291,7 +11291,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦190,000",
     "numeric_price": 190000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-294.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa",
@@ -11333,7 +11333,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-295.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -11375,7 +11375,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-296.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -11413,7 +11413,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦50,000",
     "numeric_price": 50000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-297.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -11453,7 +11453,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦215,000",
     "numeric_price": 215000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-298.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Dimensions": "1024 * 600",
@@ -11494,7 +11494,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-299.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Dimensions": "1280*800",
       "Resolution": "1080p"
@@ -11536,7 +11536,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦136,000",
     "numeric_price": 136000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-300.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Rated Power": "65 w",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11577,7 +11577,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100,000",
     "numeric_price": 100000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-301.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Operating Voltage": "12-24V",
       "Rated Power": "65 W",
@@ -11618,7 +11618,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦95,000",
     "numeric_price": 95000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-302.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa, Google Assistant",
@@ -11657,7 +11657,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-303.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa, Google Assistant",
@@ -11697,7 +11697,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦12,000",
     "numeric_price": 12000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-304.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -11738,7 +11738,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100,000",
     "numeric_price": 100000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-305.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa, Google Assistant",
       "Resolution": "3mp"
@@ -11777,7 +11777,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-306.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -11814,7 +11814,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-307.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -11854,7 +11854,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-308.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11894,7 +11894,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦140,000",
     "numeric_price": 140000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-310.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11937,7 +11937,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦160,000",
     "numeric_price": 160000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-311.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11979,7 +11979,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦14,000",
     "numeric_price": 14000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-312.webp",
+    "image_url": "/products/clear/remote-ir-universal.webp",
     "specifications": {
       "Wireless Protocol": "RF 433MHz"
     },
@@ -12019,7 +12019,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-313.webp",
+    "image_url": "/products/clear/sensor-siren-strobe.webp",
     "specifications": {
       "Wireless Protocol": "RF 433MHz"
     },
@@ -12059,7 +12059,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦52,000",
     "numeric_price": 52000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-314.webp",
+    "image_url": "/products/clear/wifi-mesh-repeater.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -12099,7 +12099,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-315.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12140,7 +12140,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,500",
     "numeric_price": 10500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-316.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12183,7 +12183,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦12,000",
     "numeric_price": 12000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-317.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Operating Voltage": "3V",
       "Wireless Protocol": "RF 433MHz",
@@ -12223,7 +12223,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,500",
     "numeric_price": 10500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-318.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12264,7 +12264,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-319.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12305,7 +12305,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-320.webp",
+    "image_url": "/products/clear/sensor-smoke-alarm.webp",
     "specifications": {
       "Wireless Protocol": "RF 433MHz"
     },
@@ -12345,7 +12345,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-321.webp",
+    "image_url": "/products/clear/sensor-gas-leak.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Rated Current": "1A"
@@ -12388,7 +12388,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-322.webp",
+    "image_url": "/products/clear/sensor-siren-strobe.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Rated Current": "1A",
@@ -12427,7 +12427,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-323.webp",
+    "image_url": "/products/clear/sensor-siren-strobe.webp",
     "specifications": {
       "Operating Voltage": "7V",
       "Wireless Protocol": "RF 433MHz",
@@ -12468,7 +12468,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-324.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Operating Voltage": "3V"
     },
@@ -12506,7 +12506,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-325.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12546,7 +12546,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-326.webp",
+    "image_url": "/products/clear/sensor-door-window.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12588,7 +12588,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-328.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12626,7 +12626,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-329.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12665,7 +12665,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150,000",
     "numeric_price": 150000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-330.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12703,7 +12703,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-331.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -12743,7 +12743,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-332.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -12782,7 +12782,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-333.webp",
+    "image_url": "/products/clear/lock-face-recognition.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12822,7 +12822,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-334.webp",
+    "image_url": "/products/clear/lock-face-recognition.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12862,7 +12862,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦195,000",
     "numeric_price": 195000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-335.webp",
+    "image_url": "/products/clear/lock-face-recognition.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12903,7 +12903,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150,000",
     "numeric_price": 150000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-336.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12942,7 +12942,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦250,000",
     "numeric_price": 250000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-337.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -12984,7 +12984,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦145,000",
     "numeric_price": 145000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-338.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13024,7 +13024,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦370,000",
     "numeric_price": 370000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-339.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13065,7 +13065,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-340.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13103,7 +13103,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-341.webp",
+    "image_url": "/products/clear/lock-face-recognition.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa"
@@ -13144,7 +13144,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-342.webp",
+    "image_url": "/products/clear/lock-face-recognition.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa"
@@ -13185,7 +13185,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-343.webp",
+    "image_url": "/products/clear/lock-face-recognition.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13226,7 +13226,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦140,000",
     "numeric_price": 140000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-344.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -13264,7 +13264,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-345.webp",
+    "image_url": "/products/clear/lock-face-recognition.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13304,7 +13304,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦280,000",
     "numeric_price": 280000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-346.webp",
+    "image_url": "/products/clear/lock-face-recognition.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13346,7 +13346,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150,000",
     "numeric_price": 150000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-347.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13383,7 +13383,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦270,000",
     "numeric_price": 270000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-348.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13422,7 +13422,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦195,000",
     "numeric_price": 195000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-349.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -13460,7 +13460,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦270,000",
     "numeric_price": 270000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-350.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13499,7 +13499,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-351.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13537,7 +13537,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦290,000",
     "numeric_price": 290000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-352.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13578,7 +13578,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦255,000",
     "numeric_price": 255000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-353.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13619,7 +13619,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦255,000",
     "numeric_price": 255000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-354.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13659,7 +13659,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦270,000",
     "numeric_price": 270000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-355.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -13697,7 +13697,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-356.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -13736,7 +13736,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-357.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -13775,7 +13775,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-358.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13815,7 +13815,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-359.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13855,7 +13855,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦220,000",
     "numeric_price": 220000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-360.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13895,7 +13895,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦220,000",
     "numeric_price": 220000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-361.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13937,7 +13937,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦180,000",
     "numeric_price": 180000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-362.webp",
+    "image_url": "/products/clear/lock-glass-door.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -13977,7 +13977,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-363.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14017,7 +14017,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-364.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14055,7 +14055,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-365.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14096,7 +14096,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-366.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -14132,7 +14132,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-367.webp",
+    "image_url": "/products/clear/lock-padlock-smart.webp",
     "specifications": {
       "Rated Power": "66 W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -14170,7 +14170,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-368.webp",
+    "image_url": "/products/clear/lock-padlock-smart.webp",
     "specifications": {
       "Rated Power": "66 W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -14208,7 +14208,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-369.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14249,7 +14249,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-370.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14286,7 +14286,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦190,000",
     "numeric_price": 190000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-371.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14327,7 +14327,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-372.webp",
+    "image_url": "/products/clear/lock-padlock-smart.webp",
     "specifications": {
       "Operating Voltage": "7V",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14367,7 +14367,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-373.webp",
+    "image_url": "/products/clear/lock-padlock-smart.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -14405,7 +14405,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,500",
     "numeric_price": 18500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-374.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14443,7 +14443,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-375.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14483,7 +14483,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦320,000",
     "numeric_price": 320000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-377.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Housing Material": "Aerospace Aluminum Alloy"
     },
@@ -14522,7 +14522,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦300,000",
     "numeric_price": 300000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-378.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14563,7 +14563,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦120,000",
     "numeric_price": 120000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-379.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -14600,7 +14600,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦160,000",
     "numeric_price": 160000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-380.webp",
+    "image_url": "/products/clear/lock-glass-door.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14639,7 +14639,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-381.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -14674,7 +14674,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-382.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -14712,7 +14712,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-384.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -14753,7 +14753,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-385.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -14795,7 +14795,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦41,000",
     "numeric_price": 41000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-386.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -14837,7 +14837,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,000",
     "numeric_price": 43000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-387.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -14877,7 +14877,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-389.webp",
+    "image_url": "/products/clear/camera-mini-spy.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -14919,7 +14919,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-390.webp",
+    "image_url": "/products/clear/camera-mini-spy.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14962,7 +14962,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-391.webp",
+    "image_url": "/products/clear/camera-mini-spy.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Rated Current": "1A",
@@ -15004,7 +15004,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-392.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -15047,7 +15047,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦46,000",
     "numeric_price": 46000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-393.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -15089,7 +15089,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦52,000",
     "numeric_price": 52000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-394.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -15132,7 +15132,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-395.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -15176,7 +15176,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-396.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Rated Power": "66 w",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -15218,7 +15218,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-397.webp",
+    "image_url": "/products/clear/camera-dome.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -15260,7 +15260,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-398.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -15301,7 +15301,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-399.webp",
+    "image_url": "/products/clear/camera-ptz-solar.webp",
     "specifications": {
       "Rated Power": "5W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -15344,7 +15344,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-400.webp",
+    "image_url": "/products/clear/camera-ptz-solar.webp",
     "specifications": {
       "Rated Power": "5W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -15386,7 +15386,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-401.webp",
+    "image_url": "/products/clear/camera-ptz-solar.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -15426,7 +15426,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦103,000",
     "numeric_price": 103000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-402.webp",
+    "image_url": "/products/clear/camera-ptz-solar.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -15471,7 +15471,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦340,000",
     "numeric_price": 340000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-403.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "3MP"
@@ -15513,7 +15513,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦460,000",
     "numeric_price": 460000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-404.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -15553,7 +15553,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦550,000",
     "numeric_price": 550000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-405.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Rated Power": "5W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -15596,7 +15596,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦700,000",
     "numeric_price": 700000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-406.webp",
+    "image_url": "/products/clear/camera-ptz-solar.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "4mp"
@@ -15639,7 +15639,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦280,000",
     "numeric_price": 280000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-407.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Resolution": "0MP"
@@ -15682,7 +15682,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦480,000",
     "numeric_price": 480000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-408.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Resolution": "0MP"
@@ -15725,7 +15725,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦160,000",
     "numeric_price": 160000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-409.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Operating Voltage": "265 v",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -15769,7 +15769,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-410.webp",
+    "image_url": "/products/clear/camera-bullet.webp",
     "specifications": {
       "Rated Power": "66 W",
       "Resolution": "5MP"
@@ -15811,7 +15811,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-411.webp",
+    "image_url": "/products/clear/camera-dome.webp",
     "specifications": {
       "Rated Power": "66 W",
       "Resolution": "5MP"
@@ -15853,7 +15853,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-412.webp",
+    "image_url": "/products/clear/camera-ptz-indoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "3MP"
@@ -15894,7 +15894,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-413.webp",
+    "image_url": "/products/clear/sensor-pir-motion.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -15934,7 +15934,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦400,000",
     "numeric_price": 400000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-414.webp",
+    "image_url": "/products/clear/camera-ptz-solar.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -15976,7 +15976,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦440,000",
     "numeric_price": 440000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-415.webp",
+    "image_url": "/products/clear/camera-ptz-solar.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "8MP"
@@ -16016,7 +16016,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-417.webp",
+    "image_url": "/products/clear/camera-ptz-indoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "iCSee App",
@@ -16055,7 +16055,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-418.webp",
+    "image_url": "/products/clear/camera-ptz-indoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "V380 Pro App",
@@ -16097,7 +16097,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-419.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -16136,7 +16136,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-420.webp",
+    "image_url": "/products/clear/camera-ptz-indoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -16177,7 +16177,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-421.webp",
+    "image_url": "/products/clear/camera-ptz-indoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -16220,7 +16220,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-422.webp",
+    "image_url": "/products/clear/camera-ptz-indoor.webp",
     "specifications": {
       "Operating Voltage": "265 v",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -16264,7 +16264,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-423.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -16307,7 +16307,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-424.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -16349,7 +16349,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-425.webp",
+    "image_url": "/products/clear/camera-mini-spy.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "iCSee App",
@@ -16391,7 +16391,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-426.webp",
+    "image_url": "/products/clear/camera-ptz-indoor.webp",
     "specifications": {
       "Rated Power": "67 w",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -16433,7 +16433,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-427.webp",
+    "image_url": "/products/clear/camera-bullet.webp",
     "specifications": {
       "Rated Power": "1080 w",
       "Dimensions": "1020 x 1080",
@@ -16473,7 +16473,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-428.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -16514,7 +16514,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-429.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "CamHipro App",
@@ -16558,7 +16558,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-430.webp",
+    "image_url": "/products/clear/camera-ptz-indoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "3MP"
@@ -16599,7 +16599,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-431.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa, Google Assistant",
@@ -16640,7 +16640,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-432.webp",
+    "image_url": "/products/clear/camera-mini-spy.webp",
     "specifications": {
       "Resolution": "1080P"
     },
@@ -16681,7 +16681,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-433.webp",
+    "image_url": "/products/clear/camera-mini-spy.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "1080P"
@@ -16722,7 +16722,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-434.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -16763,7 +16763,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦12,000",
     "numeric_price": 12000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-435.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -16802,7 +16802,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦13,000",
     "numeric_price": 13000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-436.webp",
+    "image_url": "/products/clear/camera-ptz-outdoor.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -16841,7 +16841,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-437.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Resolution": "2MP"
@@ -16882,7 +16882,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-438.webp",
+    "image_url": "/products/clear/camera-mini-spy.webp",
     "specifications": {
       "Dimensions": "1920 x 1080",
       "Resolution": "1920 x 1080"
@@ -16922,7 +16922,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-439.webp",
+    "image_url": "/products/clear/camera-mini-spy.webp",
     "specifications": {
       "Resolution": "1080P"
     },
@@ -16963,7 +16963,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦128,000",
     "numeric_price": 128000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-441.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17005,7 +17005,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦133,000",
     "numeric_price": 133000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-442.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -17047,7 +17047,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦138,000",
     "numeric_price": 138000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-443.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17089,7 +17089,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦143,000",
     "numeric_price": 143000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-444.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -17131,7 +17131,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦148,000",
     "numeric_price": 148000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-445.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17173,7 +17173,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦153,000",
     "numeric_price": 153000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-446.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -17215,7 +17215,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦158,000",
     "numeric_price": 158000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-447.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17257,7 +17257,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦163,000",
     "numeric_price": 163000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-448.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -17299,7 +17299,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦168,000",
     "numeric_price": 168000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-449.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17341,7 +17341,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦173,000",
     "numeric_price": 173000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-450.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -17383,7 +17383,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦63,000",
     "numeric_price": 63000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-451.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -17421,7 +17421,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦66,000",
     "numeric_price": 66000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-452.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -17460,7 +17460,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-453.webp",
+    "image_url": "/products/clear/curtain-remote.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "115W",
@@ -17502,7 +17502,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦85,000",
     "numeric_price": 85000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-454.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -17543,7 +17543,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-455.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -17584,7 +17584,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-456.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -17625,7 +17625,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-457.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -17666,7 +17666,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-458.webp",
+    "image_url": "/products/clear/curtain-remote.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17705,7 +17705,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-459.webp",
+    "image_url": "/products/clear/curtain-remote.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17743,7 +17743,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-460.webp",
+    "image_url": "/products/clear/curtain-remote.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17781,7 +17781,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-461.webp",
+    "image_url": "/products/clear/curtain-remote.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17820,7 +17820,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦1,000",
     "numeric_price": 1000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-462.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17857,7 +17857,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦4,500",
     "numeric_price": 4500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-463.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17896,7 +17896,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100",
     "numeric_price": 100,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-464.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17937,7 +17937,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150",
     "numeric_price": 150,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-465.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17976,7 +17976,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦6,000",
     "numeric_price": 6000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-466.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18016,7 +18016,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦3,500",
     "numeric_price": 3500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-467.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18055,7 +18055,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦6,000",
     "numeric_price": 6000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-468.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18094,7 +18094,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦11,000",
     "numeric_price": 11000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-469.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18132,7 +18132,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-470.webp",
+    "image_url": "/products/clear/curtain-motor-track.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18168,7 +18168,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-471.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Operating Voltage": "10V",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -18209,7 +18209,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦125,000",
     "numeric_price": 125000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-472.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Operating Voltage": "10V",
       "Rated Power": "4W",
@@ -18255,7 +18255,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-473.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Operating Voltage": "10V",
       "Rated Power": "4W",
@@ -18301,7 +18301,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-475.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "15W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -18341,7 +18341,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦115,000",
     "numeric_price": 115000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-476.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "20W",
@@ -18380,7 +18380,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-477.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -18416,7 +18416,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-478.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "1 w",
@@ -18460,7 +18460,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦205,000",
     "numeric_price": 205000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-479.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -18504,7 +18504,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦280,000",
     "numeric_price": 280000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-480.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Operating Voltage": "110V",
       "Rated Power": "30W",
@@ -18547,7 +18547,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦385,000",
     "numeric_price": 385000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-481.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Dimensions": "1024*600",
@@ -18589,7 +18589,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦390,000",
     "numeric_price": 390000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-482.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Voice Control": "Amazon Alexa"
@@ -18629,7 +18629,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦400,000",
     "numeric_price": 400000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-483.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "30W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -18671,7 +18671,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦495,000",
     "numeric_price": 495000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-484.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -18713,7 +18713,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦510,000",
     "numeric_price": 510000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-485.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -18754,7 +18754,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-486.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18795,7 +18795,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦250,000",
     "numeric_price": 250000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-487.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "50W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -18838,7 +18838,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-488.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "35W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -18881,7 +18881,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦435,000",
     "numeric_price": 435000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-489.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "50W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -18924,7 +18924,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦380,000",
     "numeric_price": 380000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-490.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "80W"
     },
@@ -18964,7 +18964,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦210,000",
     "numeric_price": 210000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-491.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "80W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -19005,7 +19005,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦115,000",
     "numeric_price": 115000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-492.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -19041,7 +19041,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦140,000",
     "numeric_price": 140000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-493.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Google Assistant"
@@ -19081,7 +19081,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦375,000",
     "numeric_price": 375000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-494.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -19123,7 +19123,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦680,000",
     "numeric_price": 680000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-495.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "110W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -19164,7 +19164,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦315,000",
     "numeric_price": 315000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-496.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "60W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -19205,7 +19205,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦201,000",
     "numeric_price": 201000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-497.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -19243,7 +19243,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦1,400,000",
     "numeric_price": 1400000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-498.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "50W"
     },
@@ -19283,7 +19283,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦1,050,000",
     "numeric_price": 1050000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-499.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "50 w"
     },
@@ -19322,7 +19322,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦105,000",
     "numeric_price": 105000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-500.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -19361,7 +19361,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-503.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -19402,7 +19402,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-504.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -19443,7 +19443,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-505.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "40W"
     },
@@ -19483,7 +19483,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦63,000",
     "numeric_price": 63000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-506.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "40W"
     },
@@ -19523,7 +19523,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-507.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "80W"
     },
@@ -19563,7 +19563,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦58,000",
     "numeric_price": 58000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-508.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "80W"
     },
@@ -19599,7 +19599,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-509.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "100W",
       "Dimensions": "273*106mm",
@@ -19641,7 +19641,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-510.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "100W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -19683,7 +19683,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-511.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "30W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -19723,7 +19723,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-512.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "30W"
     },
@@ -19762,7 +19762,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-514.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "10w"
     },
@@ -19798,7 +19798,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦50,000",
     "numeric_price": 50000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-515.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "50W"
     },
@@ -19838,7 +19838,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦62,000",
     "numeric_price": 62000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-516.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "80W"
     },
@@ -19878,7 +19878,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-517.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "100W"
     },
@@ -19917,7 +19917,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-518.webp",
+    "image_url": "/products/clear/audio-wall-amplifier.webp",
     "specifications": {
       "Rated Power": "40W"
     },
@@ -19957,7 +19957,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-519.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "80 W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -19996,7 +19996,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-520.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -20038,7 +20038,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-521.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Rated Power": "50W"
     },
@@ -20079,7 +20079,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-522.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Rated Power": "60W"
     },
@@ -20120,7 +20120,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-523.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Rated Power": "50W",
       "Dimensions": "171×169×278",
@@ -20163,7 +20163,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦400,000",
     "numeric_price": 400000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-524.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Rated Power": "100W",
       "Dimensions": "280*383*323mm",
@@ -20203,7 +20203,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦670,000",
     "numeric_price": 670000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-525.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Rated Power": "150W"
     },
@@ -20241,7 +20241,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦105,000",
     "numeric_price": 105000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-526.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Power": "20W",
@@ -20283,7 +20283,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-527.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Rated Power": "30W",
       "Dimensions": "285×187",
@@ -20327,7 +20327,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦350,000",
     "numeric_price": 350000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-528.webp",
+    "image_url": "/products/clear/speaker-hivi-sound.webp",
     "specifications": {
       "Rated Power": "100 w",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -20368,7 +20368,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦400,000",
     "numeric_price": 400000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-529.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "150W"
     },
@@ -20405,7 +20405,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦375,000",
     "numeric_price": 375000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-530.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "100W"
     },
@@ -20441,7 +20441,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦140,000",
     "numeric_price": 140000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-531.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "30W"
     },
@@ -20481,7 +20481,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-532.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Rated Power": "10W"
     },
@@ -20521,7 +20521,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-534.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20560,7 +20560,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-535.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20598,7 +20598,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦125,000",
     "numeric_price": 125000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-536.webp",
+    "image_url": "/products/clear/lock-fingerprint-handle.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20638,7 +20638,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-537.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20673,7 +20673,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦120,000",
     "numeric_price": 120000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-538.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20710,7 +20710,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦210,000",
     "numeric_price": 210000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-539.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20749,7 +20749,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150,000",
     "numeric_price": 150000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-540.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -20788,7 +20788,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦250,000",
     "numeric_price": 250000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-541.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20826,7 +20826,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦665,000",
     "numeric_price": 665000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-542.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20906,7 +20906,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦350,000",
     "numeric_price": 350000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-544.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20946,7 +20946,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦215,000",
     "numeric_price": 215000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-545.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -20985,7 +20985,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦520,000",
     "numeric_price": 520000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-546.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21023,7 +21023,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦620,000",
     "numeric_price": 620000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-547.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21061,7 +21061,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦95,000",
     "numeric_price": 95000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-548.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -21100,7 +21100,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-549.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -21138,7 +21138,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦380,000",
     "numeric_price": 380000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-550.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -21177,7 +21177,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦270,000",
     "numeric_price": 270000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-551.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21218,7 +21218,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-552.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Panel Material": "High-Grade Acrylic with Metal Trim"
     },
@@ -21256,7 +21256,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-553.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -21296,7 +21296,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-554.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21334,7 +21334,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-555.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21375,7 +21375,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-556.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21414,7 +21414,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-557.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21455,7 +21455,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-558.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21494,7 +21494,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-559.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -21534,7 +21534,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-560.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21575,7 +21575,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦14,000",
     "numeric_price": 14000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-562.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Rated Power": "9W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -21614,7 +21614,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-563.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Rated Power": "7 W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -21652,7 +21652,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-564.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -21693,7 +21693,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-566.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Rated Power": "16W"
     },
@@ -21734,7 +21734,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-567.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Rated Power": "16W"
     },
@@ -21775,7 +21775,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦215,000",
     "numeric_price": 215000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-568.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "16W"
@@ -21816,7 +21816,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-569.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "16W"
@@ -21857,7 +21857,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦255,000",
     "numeric_price": 255000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-570.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "16W"
@@ -21896,7 +21896,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦85,000",
     "numeric_price": 85000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-571.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "16W"
@@ -21937,7 +21937,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-573.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Dimensions": "1000*32*57 mm"
     },
@@ -21977,7 +21977,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-574.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Dimensions": "2000*32*57 mm"
     },
@@ -22017,7 +22017,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-575.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Dimensions": "1000*32*57 mm"
     },
@@ -22057,7 +22057,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-576.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Dimensions": "2000*32*57 mm"
     },
@@ -22097,7 +22097,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-577.webp",
+    "image_url": "/products/clear/track-spotlight-led.webp",
     "specifications": {
       "Rated Power": "18W",
       "Dimensions": "410*25*41mm"
@@ -22134,7 +22134,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-578.webp",
+    "image_url": "/products/clear/track-linear-flood.webp",
     "specifications": {
       "Rated Power": "18W",
       "Dimensions": "410*25*41mm"
@@ -22171,7 +22171,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦41,000",
     "numeric_price": 41000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-579.webp",
+    "image_url": "/products/clear/track-linear-flood.webp",
     "specifications": {
       "Rated Power": "27W",
       "Dimensions": "600*25*41mm"
@@ -22209,7 +22209,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦38,000",
     "numeric_price": 38000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-580.webp",
+    "image_url": "/products/clear/track-spotlight-led.webp",
     "specifications": {
       "Rated Power": "18W",
       "Dimensions": "220*25*105mm"
@@ -22247,7 +22247,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦39,000",
     "numeric_price": 39000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-581.webp",
+    "image_url": "/products/clear/track-linear-flood.webp",
     "specifications": {
       "Rated Power": "9W",
       "Dimensions": "220*25*105mm"
@@ -22285,7 +22285,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-582.webp",
+    "image_url": "/products/clear/track-spotlight-led.webp",
     "specifications": {
       "Rated Power": "7W"
     },
@@ -22321,7 +22321,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-583.webp",
+    "image_url": "/products/clear/track-spotlight-led.webp",
     "specifications": {
       "Rated Power": "20W"
     },
@@ -22358,7 +22358,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-584.webp",
+    "image_url": "/products/clear/track-spotlight-led.webp",
     "specifications": {
       "Rated Power": "10W"
     },
@@ -22394,7 +22394,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦2,500",
     "numeric_price": 2500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-585.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22430,7 +22430,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦4,500",
     "numeric_price": 4500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-586.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Dimensions": "20*2"
     },
@@ -22465,7 +22465,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦2,500",
     "numeric_price": 2500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-587.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22501,7 +22501,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦3,500",
     "numeric_price": 3500,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-588.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -22537,7 +22537,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦3,000",
     "numeric_price": 3000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-589.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22574,7 +22574,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦5,000",
     "numeric_price": 5000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-590.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22611,7 +22611,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-591.webp",
+    "image_url": "/products/clear/gateway-zigbee-hub.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22647,7 +22647,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-592.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22684,7 +22684,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-593.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22721,7 +22721,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦76,000",
     "numeric_price": 76000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-595.webp",
+    "image_url": "/products/clear/stair-step-lighting.webp",
     "specifications": {
       "Operating Voltage": "12V"
     },
@@ -22761,7 +22761,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦50,000",
     "numeric_price": 50000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-596.webp",
+    "image_url": "/products/clear/stair-step-lighting.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "300W"
@@ -22799,7 +22799,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦51,000",
     "numeric_price": 51000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-597.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "200W"
@@ -22838,7 +22838,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-598.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "100W"
@@ -22875,7 +22875,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-599.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "100W"
@@ -22912,7 +22912,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦37,000",
     "numeric_price": 37000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-600.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "100W"
@@ -22949,7 +22949,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-601.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "350W",
@@ -22989,7 +22989,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-602.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24V"
     },
@@ -23026,7 +23026,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-603.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24V"
     },
@@ -23063,7 +23063,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-604.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24V"
     },
@@ -23101,7 +23101,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-605.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "12V"
     },
@@ -23143,7 +23143,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-606.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24Vdc",
       "Rated Power": "10W"
@@ -23183,7 +23183,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦42,000",
     "numeric_price": 42000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-607.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24Vdc",
       "Rated Power": "12W"
@@ -23224,7 +23224,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-608.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "24Vdc",
       "Rated Power": "10W"
@@ -23262,7 +23262,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦47,000",
     "numeric_price": 47000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-609.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23303,7 +23303,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-610.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -23345,7 +23345,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-611.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -23385,7 +23385,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,000",
     "numeric_price": 10000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-612.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23422,7 +23422,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-613.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23462,7 +23462,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-614.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "18W",
@@ -23505,7 +23505,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-615.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23546,7 +23546,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦1,150,000",
     "numeric_price": 1150000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-617.webp",
+    "image_url": "/products/clear/track-magnetic-rail.webp",
     "specifications": {
       "Resolution": "4K"
     },
@@ -23586,7 +23586,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,000",
     "numeric_price": 43000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-619.webp",
+    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23625,7 +23625,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-621.webp",
+    "image_url": "/products/clear/vacuum-robot-smart.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -23664,7 +23664,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦495,000",
     "numeric_price": 495000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-622.webp",
+    "image_url": "/products/clear/vacuum-robot-smart.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -23706,7 +23706,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/minisim/minisim-624.webp",
+    "image_url": "/products/clear/hotel-keycard-switch.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23744,7 +23744,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-625.webp",
+    "image_url": "/products/clear/hotel-keycard-switch.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23781,7 +23781,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-626.webp",
+    "image_url": "/products/clear/hotel-keycard-switch.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23819,7 +23819,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-627.webp",
+    "image_url": "/products/clear/hotel-keycard-switch.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23856,7 +23856,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-628.webp",
+    "image_url": "/products/clear/hotel-keycard-switch.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23893,7 +23893,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,000",
     "numeric_price": 10000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-629.webp",
+    "image_url": "/products/clear/camera-doorbell-video.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23929,7 +23929,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-631.webp",
+    "image_url": "/products/clear/panel-touch-10inch.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23970,7 +23970,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/minisim/minisim-632.webp",
+    "image_url": "/products/clear/panel-touch-4inch.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"

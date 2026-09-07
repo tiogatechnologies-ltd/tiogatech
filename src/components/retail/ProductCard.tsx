@@ -103,7 +103,7 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
       <div className="relative aspect-square w-full overflow-hidden bg-muted/20">
         <Link to={productPath(product)} className="block w-full h-full">
           <img
-            src={resolveProductImage(product.image_url, product.category)}
+            src={resolveProductImage(product.image_url, product.category, product.name)}
             alt={product.name}
             loading="lazy"
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"

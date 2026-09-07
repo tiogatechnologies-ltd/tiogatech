@@ -68,7 +68,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
           {/* Left: Image */}
           <div className="relative bg-muted/30 p-8 flex items-center justify-center min-h-[300px] md:min-h-[400px]">
             <img
-              src={resolveProductImage(product.image_url, product.category)}
+              src={resolveProductImage(product.image_url, product.category, product.name)}
               alt={product.name}
               className="max-h-72 w-full object-contain drop-shadow-lg"
             />

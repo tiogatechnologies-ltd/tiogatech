@@ -174,7 +174,7 @@ export const ProductDetail = () => {
       if (found) {
         setRelated(all.filter((p) => p.category === found.category && p.id !== found.id).slice(0, 4));
         const gallery = getMultiAngleProductImages(found.image_url, found.category);
-        setImages(gallery.length > 0 ? gallery : [resolveProductImage(found.image_url, found.category)]);
+        setImages(gallery.length > 0 ? gallery : [resolveProductImage(found.image_url, found.category, found.name)]);
         setActiveIdx(0);
         trackConversion("product_view", { product_id: found.id, slug });
       }

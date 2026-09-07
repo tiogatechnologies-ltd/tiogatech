@@ -35,6 +35,22 @@ export interface StockImageOption {
 }
 
 export const STOCK_IMAGE_LIBRARY: StockImageOption[] = [
+  // High-Resolution Clear Hardware
+  { label: "Deye Hybrid Inverter (Tier-1 Crisp)", category: "Inverters", url: "/products/clear/inverter-deye-hybrid.webp", preview: "/products/clear/inverter-deye-hybrid.webp" },
+  { label: "Growatt / Must Solar Inverter", category: "Inverters", url: "/products/clear/inverter-growatt-must.webp", preview: "/products/clear/inverter-growatt-must.webp" },
+  { label: "Felicity LiFePO4 Battery (Tier-1 Crisp)", category: "Batteries", url: "/products/clear/battery-felicity-lifepo4.webp", preview: "/products/clear/battery-felicity-lifepo4.webp" },
+  { label: "Powerwall & Lithium Rack Battery", category: "Batteries", url: "/products/clear/battery-powerwall-rack.webp", preview: "/products/clear/battery-powerwall-rack.webp" },
+  { label: "Longi Hi-MO 5 Solar Module", category: "Solar Panels", url: "/products/clear/panel-longi-solar.webp", preview: "/products/clear/panel-longi-solar.webp" },
+  { label: "Canadian Solar Monocrystalline Panel", category: "Solar Panels", url: "/products/clear/panel-canadian-solar.webp", preview: "/products/clear/panel-canadian-solar.webp" },
+  { label: "STAMA 3D Face ID Biometric Lock", category: "Smart Locks", url: "/products/clear/lock-face-recognition.webp", preview: "/products/clear/lock-face-recognition.webp" },
+  { label: "STAMA Apex Fingerprint Mortise Lock", category: "Smart Locks", url: "/products/clear/lock-fingerprint-handle.webp", preview: "/products/clear/lock-fingerprint-handle.webp" },
+  { label: "STAMA Slim Aluminum Door Lock", category: "Smart Locks", url: "/products/clear/lock-slim-aluminum.webp", preview: "/products/clear/lock-slim-aluminum.webp" },
+  { label: "Outdoor Solar 4G Dual PTZ Camera", category: "CCTV", url: "/products/clear/camera-ptz-solar.webp", preview: "/products/clear/camera-ptz-solar.webp" },
+  { label: "Outdoor PTZ Night Vision Dome Camera", category: "CCTV", url: "/products/clear/camera-ptz-outdoor.webp", preview: "/products/clear/camera-ptz-outdoor.webp" },
+  { label: "Tuya Glass Smart Touch Switch", category: "Home Automation", url: "/products/clear/switch-2gang-white.webp", preview: "/products/clear/switch-2gang-white.webp" },
+  { label: "Tuya Smart Touch Central Panel", category: "Home Automation", url: "/products/clear/panel-touch-4inch.webp", preview: "/products/clear/panel-touch-4inch.webp" },
+  { label: "Frameless Coaxial Ceiling Speaker", category: "Home Automation", url: "/products/clear/speaker-ceiling-coaxial.webp", preview: "/products/clear/speaker-ceiling-coaxial.webp" },
+
   // Solar & Inverters
   { label: "Solar Inverter Closeup (Tier-1)", category: "Inverters", url: "/src/assets/bg-panel-closeup.jpg", preview: bgPanelCloseup },
   { label: "Solar Inverter Dual MPPT", category: "Inverters", url: "/src/assets/offer-solar.jpg", preview: offerSolar },
@@ -104,14 +120,25 @@ const ASSET_MAP: Record<string, string> = {
   "/src/assets/offer-security.jpg": offerSecurity,
 };
 
-export function resolveProductImage(url?: string | null, category?: string): string {
-  if (!url) {
-    if (category?.toLowerCase().includes("inverter")) return bgPanelCloseup;
-    if (category?.toLowerCase().includes("batter")) return featureBattery;
-    if (category?.toLowerCase().includes("panel")) return featureSolarPanel;
-    if (category?.toLowerCase().includes("lock")) return bgSmartlockElite;
-    if (category?.toLowerCase().includes("cctv")) return featureCctv;
-    return featureSmartAutomationDevice;
+export function resolveProductImage(url?: string | null, category?: string, name?: string): string {
+  const cat = (category || "").toLowerCase();
+  const n = (name || "").toLowerCase();
+
+  // If no URL or older low-res PDF thumbnail, fallback to crystal-clear high-res hardware photo
+  if (!url || url.startsWith("/products/minisim/")) {
+    if (cat.includes("inverter")) return "/products/clear/inverter-deye-hybrid.webp";
+    if (cat.includes("batter")) return "/products/clear/battery-felicity-lifepo4.webp";
+    if (cat.includes("panel") && (cat.includes("solar") || n.includes("solar"))) return "/products/clear/panel-longi-solar.webp";
+    if (cat.includes("lock")) return "/products/clear/lock-fingerprint-handle.webp";
+    if (cat.includes("cctv") || cat.includes("camera")) return "/products/clear/camera-ptz-outdoor.webp";
+    if (cat.includes("switch")) return "/products/clear/switch-2gang-white.webp";
+    if (cat.includes("socket")) return "/products/clear/socket-single-universal.webp";
+    if (cat.includes("sensor") || cat.includes("alarm")) return "/products/clear/sensor-pir-motion.webp";
+    if (cat.includes("audio") || cat.includes("speaker") || cat.includes("sound")) return "/products/clear/speaker-ceiling-coaxial.webp";
+    if (cat.includes("curtain")) return "/products/clear/curtain-motor-track.webp";
+    if (cat.includes("panel") || cat.includes("control")) return "/products/clear/panel-touch-4inch.webp";
+    if (cat.includes("light") || cat.includes("track")) return "/products/clear/track-magnetic-rail.webp";
+    return "/products/clear/switch-2gang-white.webp";
   }
 
   if (ASSET_MAP[url]) {
@@ -130,17 +157,71 @@ export function getMultiAngleProductImages(primaryUrl?: string | null, category?
 
   let alternates: string[] = [];
   if (cat.includes("inverter")) {
-    alternates = [offerSolar, catSolar, bgSolarField, bgCommercialSolar];
+    alternates = [
+      "/products/clear/inverter-deye-hybrid.webp",
+      "/products/clear/inverter-growatt-must.webp",
+      "/products/clear/meter-digital-power.webp",
+      "/products/clear/breaker-smart-mcb.webp",
+    ];
   } else if (cat.includes("batter")) {
-    alternates = [bgBundle, bgCircuit, featureBattery];
+    alternates = [
+      "/products/clear/battery-felicity-lifepo4.webp",
+      "/products/clear/battery-powerwall-rack.webp",
+    ];
   } else if (cat.includes("panel")) {
-    alternates = [bgCommercialSolar, bgPanelCloseup, bgSolarField];
+    alternates = [
+      "/products/clear/panel-longi-solar.webp",
+      "/products/clear/panel-canadian-solar.webp",
+    ];
   } else if (cat.includes("lock")) {
-    alternates = [bgSmartlockApex, bgSmartlockPro, bgSmartlockBase, bgSmartlockElite];
-  } else if (cat.includes("cctv")) {
-    alternates = [featureSecurity, offerSecurity, featureCctv];
+    alternates = [
+      "/products/clear/lock-face-recognition.webp",
+      "/products/clear/lock-fingerprint-handle.webp",
+      "/products/clear/lock-slim-aluminum.webp",
+      "/products/clear/lock-glass-door.webp",
+    ];
+  } else if (cat.includes("cctv") || cat.includes("camera")) {
+    alternates = [
+      "/products/clear/camera-ptz-solar.webp",
+      "/products/clear/camera-ptz-outdoor.webp",
+      "/products/clear/camera-ptz-indoor.webp",
+      "/products/clear/camera-doorbell-video.webp",
+    ];
+  } else if (cat.includes("curtain")) {
+    alternates = [
+      "/products/clear/curtain-motor-track.webp",
+      "/products/clear/curtain-roller-shade.webp",
+      "/products/clear/curtain-robot.webp",
+      "/products/clear/curtain-remote.webp",
+    ];
+  } else if (cat.includes("sensor") || cat.includes("alarm")) {
+    alternates = [
+      "/products/clear/sensor-pir-motion.webp",
+      "/products/clear/sensor-door-window.webp",
+      "/products/clear/sensor-smoke-alarm.webp",
+      "/products/clear/sensor-siren-strobe.webp",
+    ];
+  } else if (cat.includes("audio") || cat.includes("speaker") || cat.includes("sound")) {
+    alternates = [
+      "/products/clear/speaker-ceiling-coaxial.webp",
+      "/products/clear/audio-wall-amplifier.webp",
+      "/products/clear/echo-show-screen.webp",
+      "/products/clear/echo-dot-speaker.webp",
+    ];
+  } else if (cat.includes("panel") || cat.includes("control")) {
+    alternates = [
+      "/products/clear/panel-touch-4inch.webp",
+      "/products/clear/panel-touch-6inch.webp",
+      "/products/clear/panel-touch-10inch.webp",
+      "/products/clear/panel-rotary-knob.webp",
+    ];
   } else {
-    alternates = [featureControlPanel, featureTabletMonitor, featureSmartApp, heroSmartHome];
+    alternates = [
+      "/products/clear/switch-1gang-white.webp",
+      "/products/clear/switch-2gang-white.webp",
+      "/products/clear/switch-3gang-white.webp",
+      "/products/clear/switch-4gang-white.webp",
+    ];
   }
 
   const gallery = [primary, ...alternates.filter((img) => img !== primary)];

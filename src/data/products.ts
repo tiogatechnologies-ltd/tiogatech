@@ -43,7 +43,7 @@ export const invertersList: Product[] = [
     price: "₦1,850,000",
     numeric_price: 1850000,
     tier: "premium",
-    image_url: "/src/assets/bg-panel-closeup.jpg",
+    image_url: "/products/clear/inverter-deye-hybrid.webp",
     specifications: {
       "Rated AC Output": "5,000W Continuous / 10,000W Peak Surge",
       "Nominal DC Voltage": "48Vdc (40V - 60V Range)",
@@ -80,7 +80,7 @@ export const invertersList: Product[] = [
     price: "₦2,650,000",
     numeric_price: 2650000,
     tier: "premium",
-    image_url: "/src/assets/feature-solar-panel.jpg",
+    image_url: "/products/clear/panel-longi-solar.webp",
     specifications: {
       "Rated AC Output": "8,000W Continuous / 16,000W Surge (10s)",
       "Nominal DC Voltage": "48Vdc",
@@ -117,7 +117,7 @@ export const invertersList: Product[] = [
     price: "₦4,150,000",
     numeric_price: 4150000,
     tier: "premium",
-    image_url: "/src/assets/bg-commercial-solar.jpg",
+    image_url: "/products/clear/panel-canadian-solar.webp",
     specifications: {
       "Rated AC Output": "12,000W Three-Phase 380V/400V",
       "Nominal DC Voltage": "48Vdc (Low Voltage High-Safety Architecture)",
@@ -153,7 +153,7 @@ export const invertersList: Product[] = [
     price: "₦1,450,000",
     numeric_price: 1450000,
     tier: "mid",
-    image_url: "/src/assets/offer-solar.jpg",
+    image_url: "/products/clear/inverter-growatt-must.webp",
     specifications: {
       "Rated AC Output": "5,000W Pure Sine Wave",
       "Nominal DC Voltage": "48Vdc",
@@ -186,7 +186,7 @@ export const invertersList: Product[] = [
     price: "₦1,750,000",
     numeric_price: 1750000,
     tier: "premium",
-    image_url: "/src/assets/cat-solar.jpg",
+    image_url: "/products/clear/inverter-deye-hybrid.webp",
     specifications: {
       "Rated AC Output": "6,000W Continuous",
       "Nominal DC Voltage": "48Vdc",
@@ -251,7 +251,7 @@ export const invertersList: Product[] = [
     price: "₦1,420,000",
     numeric_price: 1420000,
     tier: "mid",
-    image_url: "/src/assets/bg-panel-closeup.jpg",
+    image_url: "/products/clear/inverter-deye-hybrid.webp",
     specifications: {
       "Rated AC Output": "5,000W",
       "DC Battery Voltage": "48Vdc",
@@ -287,7 +287,7 @@ export const batteriesList: Product[] = [
     price: "₦1,450,000",
     numeric_price: 1450000,
     tier: "premium",
-    image_url: "/src/assets/feature-battery.jpg",
+    image_url: "/products/clear/battery-felicity-lifepo4.webp",
     specifications: {
       "Nominal Energy": "5.12 kWh (5,120 Wh)",
       "Nominal Voltage": "51.2 Vdc (16S Configuration)",
@@ -325,7 +325,7 @@ export const batteriesList: Product[] = [
     price: "₦2,850,000",
     numeric_price: 2850000,
     tier: "premium",
-    image_url: "/src/assets/bg-bundle.jpg",
+    image_url: "/products/clear/battery-powerwall-rack.webp",
     specifications: {
       "Nominal Energy": "10.24 kWh",
       "Nominal Voltage": "51.2 Vdc",
@@ -362,7 +362,7 @@ export const batteriesList: Product[] = [
     price: "₦4,100,000",
     numeric_price: 4100000,
     tier: "premium",
-    image_url: "/src/assets/feature-battery.jpg",
+    image_url: "/products/clear/battery-felicity-lifepo4.webp",
     specifications: {
       "Nominal Energy": "15.36 kWh",
       "Nominal Voltage": "51.2 Vdc",
@@ -396,7 +396,7 @@ export const batteriesList: Product[] = [
     price: "₦1,250,000",
     numeric_price: 1250000,
     tier: "mid",
-    image_url: "/src/assets/bg-circuit.jpg",
+    image_url: "/products/clear/battery-powerwall-rack.webp",
     specifications: {
       "Nominal Energy": "4.8 kWh",
       "Nominal Voltage": "48Vdc",
@@ -428,7 +428,7 @@ export const batteriesList: Product[] = [
     price: "₦420,000",
     numeric_price: 420000,
     tier: "entry",
-    image_url: "/src/assets/bg-circuit.jpg",
+    image_url: "/products/clear/battery-powerwall-rack.webp",
     specifications: {
       "Capacity": "1,000Wh (270,000mAh)",
       "AC Output": "1000W Pure Sine Wave (Surge 2000W)",
@@ -465,7 +465,7 @@ export const solarPanelsList: Product[] = [
     price: "₦145,000",
     numeric_price: 145000,
     tier: "premium",
-    image_url: "/src/assets/feature-solar-panel.jpg",
+    image_url: "/products/clear/panel-longi-solar.webp",
     specifications: {
       "Peak Power (Pmax)": "550 Wp",
       "Open Circuit Voltage (Voc)": "49.80 V",
@@ -502,7 +502,7 @@ export const solarPanelsList: Product[] = [
     price: "₦168,000",
     numeric_price: 168000,
     tier: "premium",
-    image_url: "/src/assets/bg-commercial-solar.jpg",
+    image_url: "/products/clear/panel-canadian-solar.webp",
     specifications: {
       "Peak Power (Pmax)": "600 Wp",
       "Module Efficiency": "22.8%",
@@ -535,7 +535,7 @@ export const solarPanelsList: Product[] = [
     price: "₦148,000",
     numeric_price: 148000,
     tier: "premium",
-    image_url: "/src/assets/feature-solar-panel.jpg",
+    image_url: "/products/clear/panel-longi-solar.webp",
     specifications: {
       "Power Rating": "550 Wp",
       "Efficiency": "21.3%",
@@ -571,7 +571,7 @@ export const smartLocksList: Product[] = [
     price: "₦285,000",
     numeric_price: 285000,
     tier: "premium",
-    image_url: "/src/assets/bg-smartlock-elite.jpg",
+    image_url: "/products/clear/lock-face-recognition.webp",
     specifications: {
       "Unlock Methods": "3D Face, Palm Vein, Fingerprint, Passcode, RFID Card, App, Key",
       "User Capacity": "100 Faces, 100 Fingerprints, 100 Passcodes, 100 Cards",
@@ -607,7 +607,7 @@ export const smartLocksList: Product[] = [
     price: "₦300,000",
     numeric_price: 300000,
     tier: "premium",
-    image_url: "/src/assets/bg-smartlock-elite.jpg",
+    image_url: "/products/clear/lock-face-recognition.webp",
     specifications: {
       "Unlock Modes": "Face ID, Fingerprint, RFID Card, Passcode, App, Mechanical Key",
       "Waterproof Rating": "IP66 Weather-Resistant",
@@ -639,7 +639,7 @@ export const smartLocksList: Product[] = [
     price: "₦280,000",
     numeric_price: 280000,
     tier: "mid",
-    image_url: "/src/assets/bg-smartlock-apex.jpg",
+    image_url: "/products/clear/lock-fingerprint-handle.webp",
     specifications: {
       "Unlock Modes": "Fingerprint, Passcode, Card, Tuya App, Physical Key",
       "Capacity": "100 Fingerprints, 50 RFID Cards",
@@ -670,7 +670,7 @@ export const smartLocksList: Product[] = [
     price: "₦280,000",
     numeric_price: 280000,
     tier: "mid",
-    image_url: "/src/assets/bg-smartlock-apex.jpg",
+    image_url: "/products/clear/lock-fingerprint-handle.webp",
     specifications: {
       "Camera": "HD Night-Vision Camera with Two-Way Audio",
       "Screen": "Indoor Color Display",
@@ -701,7 +701,7 @@ export const smartLocksList: Product[] = [
     price: "₦220,000",
     numeric_price: 220000,
     tier: "affordable",
-    image_url: "/src/assets/bg-smartlock-pro.jpg",
+    image_url: "/products/clear/lock-slim-aluminum.webp",
     specifications: {
       "Lock Width": "38 mm Narrow Profile",
       "Door Types": "Aluminum Profile, Sliding Doors, Wooden Doors",
@@ -732,7 +732,7 @@ export const smartLocksList: Product[] = [
     price: "₦220,000",
     numeric_price: 220000,
     tier: "affordable",
-    image_url: "/src/assets/bg-smartlock-pro.jpg",
+    image_url: "/products/clear/lock-slim-aluminum.webp",
     specifications: {
       "Passcode Types": "Timed, Permanent, One-time, Cyclic, Custom",
       "Communication": "Bluetooth 5.0 BLE (Gateway compatible)",
@@ -763,7 +763,7 @@ export const smartLocksList: Product[] = [
     price: "₦180,000",
     numeric_price: 180000,
     tier: "affordable",
-    image_url: "/src/assets/bg-smartlock-pro.jpg",
+    image_url: "/products/clear/lock-slim-aluminum.webp",
     specifications: {
       "Fingerprint Capacity": "100 Users",
       "Card Capacity": "50 Cards",
@@ -793,7 +793,7 @@ export const smartLocksList: Product[] = [
     price: "₦216,000",
     numeric_price: 216000,
     tier: "mid",
-    image_url: "/src/assets/bg-smartlock-base.jpg",
+    image_url: "/products/clear/lock-fingerprint-handle.webp",
     specifications: {
       "Access Sides": "Dual Biometric (Front & Back)",
       "Waterproofing": "IP65 Outdoor Gate Ready",
@@ -824,7 +824,7 @@ export const smartLocksList: Product[] = [
     price: "₦198,000",
     numeric_price: 198000,
     tier: "entry",
-    image_url: "/src/assets/bg-smartlock-base.jpg",
+    image_url: "/products/clear/lock-fingerprint-handle.webp",
     specifications: {
       "Glass Thickness": "10mm - 12mm Frameless Glass",
       "Installation": "No Hole Drilling Clamp System",
@@ -854,7 +854,7 @@ export const smartLocksList: Product[] = [
     price: "₦80,000",
     numeric_price: 80000,
     tier: "entry",
-    image_url: "/src/assets/bg-smartlock-accessory.jpg",
+    image_url: "/products/clear/lock-padlock-smart.webp",
     specifications: {
       "Protection": "IP67 Submersible Waterproof",
       "Material": "Zinc Alloy Body + Stainless Steel Shackle",
@@ -885,7 +885,7 @@ export const smartLocksList: Product[] = [
     price: "₦1,450,000",
     numeric_price: 1450000,
     tier: "premium",
-    image_url: "/src/assets/bg-smartlock-hotel.jpg",
+    image_url: "/products/clear/lock-hotel-rfid.webp",
     specifications: {
       "System Includes": "10x Hotel Smart Locks, 1x Card Encoder, 100x RFID Cards, Management Software",
       "Software": "Windows PC Software & Cloud Web Portal",
@@ -1109,7 +1109,7 @@ export const cctvList: Product[] = [
     price: "₦35,000",
     numeric_price: 35000,
     tier: "entry",
-    image_url: "/src/assets/feature-cctv.jpg",
+    image_url: "/products/clear/camera-ptz-outdoor.webp",
     specifications: {
       "Resolution": "1080p Full HD (1920 x 1080)",
       "FOV": "360° Panoramic View (Pan/Tilt)",
@@ -1143,7 +1143,7 @@ export const cctvList: Product[] = [
     price: "₦58,000",
     numeric_price: 58000,
     tier: "mid",
-    image_url: "/src/assets/feature-security.jpg",
+    image_url: "/products/clear/camera-ptz-solar.webp",
     specifications: {
       "Resolution": "2K QHD (4 Megapixels)",
       "Weatherproofing": "IP66 Heavy Rain & Dust Proof",
@@ -1175,7 +1175,7 @@ export const cctvList: Product[] = [
     price: "₦64,000",
     numeric_price: 64000,
     tier: "mid",
-    image_url: "/src/assets/offer-security.jpg",
+    image_url: "/products/clear/camera-dome.webp",
     specifications: {
       "Resolution": "4MP (2560 x 1440)",
       "Vandal Rating": "IK10 Impact Proof",
