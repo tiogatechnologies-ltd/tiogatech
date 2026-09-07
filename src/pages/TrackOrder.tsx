@@ -109,14 +109,18 @@ const TrackOrder = () => {
 
     try {
       const local = JSON.parse(localStorage.getItem(`tioga_order_${ref}`) || "null");
-      if (local && local.order_number) {
+      if (local && (local.order_number || local.tracking_id)) {
         setOrder(local);
         if (local.phone || local.email) setContact(local.phone || local.email);
         return;
       }
 
       const recent: any[] = JSON.parse(localStorage.getItem("tioga_recent_orders") || "[]");
-      const found = recent.find((o) => o.order_number?.toUpperCase() === ref);
+      const found = recent.find((o) =>
+        o.order_number?.toUpperCase() === ref ||
+        o.tracking_id?.toUpperCase() === ref ||
+        o.tracking_number?.toUpperCase() === ref
+      );
       if (found) {
         setOrder(found);
         if (found.phone || found.email) setContact(found.phone || found.email);
@@ -126,7 +130,11 @@ const TrackOrder = () => {
 
     if (user) {
       (async () => {
-        const { data } = await supabase.from("orders").select("*").eq("order_number", ref).maybeSingle();
+        const { data } = await supabase
+          .from("orders")
+          .select("*")
+          .or(`order_number.eq.${ref},tracking_id.eq.${ref},tracking_number.eq.${ref}`)
+          .maybeSingle();
         if (data) {
           setOrder(data as TrackedOrder);
         }
@@ -139,7 +147,7 @@ const TrackOrder = () => {
     const ref = orderNumber.trim().toUpperCase();
     const who = contact.trim();
     if (!ref || !who) {
-      setError("Enter your order number and the email or phone used at checkout.");
+      setError("Enter your order number or tracking ID, and the email or phone used at checkout.");
       return;
     }
     setLoading(true);
@@ -162,7 +170,11 @@ const TrackOrder = () => {
       }
 
       const recent: any[] = JSON.parse(localStorage.getItem("tioga_recent_orders") || "[]");
-      const found = recent.find((o) => o.order_number?.toUpperCase() === ref);
+      const found = recent.find((o) =>
+        o.order_number?.toUpperCase() === ref ||
+        o.tracking_id?.toUpperCase() === ref ||
+        o.tracking_number?.toUpperCase() === ref
+      );
       if (found) {
         const fPhone = (found.phone || "").replace(/\D/g, "");
         const fEmail = (found.email || "").toLowerCase();
@@ -177,7 +189,11 @@ const TrackOrder = () => {
     // 2. If authenticated user, check database directly
     if (user) {
       try {
-        const { data: dbOrder } = await supabase.from("orders").select("*").eq("order_number", ref).maybeSingle();
+        const { data: dbOrder } = await supabase
+          .from("orders")
+          .select("*")
+          .or(`order_number.eq.${ref},tracking_id.eq.${ref},tracking_number.eq.${ref}`)
+          .maybeSingle();
         if (dbOrder) {
           setOrder(dbOrder as TrackedOrder);
           setLoading(false);
@@ -204,7 +220,6 @@ const TrackOrder = () => {
       const { data: dbMatches } = await supabase
         .from("orders")
         .select("*")
-        .eq("order_number", ref)
         .maybeSingle();
 
       if (dbMatches) {
@@ -295,7 +310,14 @@ const TrackOrder = () => {
               <div className="rounded-2xl border border-border bg-card p-4 sm:p-6 space-y-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <p className="font-mono text-sm text-muted-foreground">{order.order_number}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="font-mono text-sm font-bold text-foreground">{order.order_number}</p>
+                      {(order.tracking_id || order.tracking_number) && (
+                        <span className="inline-flex items-center gap-1 font-mono text-xs px-2 py-0.5 rounded-md bg-primary/10 border border-primary/20 text-primary font-bold">
+                          Tracking: {order.tracking_id || order.tracking_number}
+                        </span>
+                      )}
+                    </div>
                     <h2 className="font-display text-lg font-bold">Hi {order.full_name.split(" ")[0]}, here's your order</h2>
                     <p className="text-xs text-muted-foreground">
                       Placed {new Date(order.created_at).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" })}

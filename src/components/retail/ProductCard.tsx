@@ -199,11 +199,18 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
         {/* Category & Rating */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary">
-            {product.category}
-          </span>
-          <div className="flex items-center gap-1 font-medium text-amber-500">
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-1">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
+              {product.category}
+            </span>
+            {(product.serial_number || product.sku) && (
+              <span className="shrink-0 px-1.5 py-0.5 rounded bg-muted/80 text-[9px] font-mono font-bold text-muted-foreground border border-border">
+                {product.serial_number || product.sku}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
             <Star size={13} fill="currentColor" />
             <span className="text-foreground font-bold">{product.rating || "5.0"}</span>
             <span className="text-muted-foreground text-[10px]">({product.review_count || 12})</span>

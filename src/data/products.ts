@@ -20,11 +20,15 @@ export interface Product {
   stock_status?: "in_stock" | "low_stock" | "preorder";
   is_featured?: boolean;
   warranty_years?: number;
+  serial_number?: string;
+  sku?: string;
 }
 
 export const invertersList: Product[] = [
   {
     id: "a0000000-0000-0000-0000-000000000001",
+    serial_number: "TG-INV-0001",
+    sku: "TG-INV-0001",
     name: "Deye 5kW Hybrid Inverter (SUN-5K-SG03LP1-EU)",
     category: "Inverters",
     series: "Deye SG03 Series",
@@ -62,6 +66,8 @@ export const invertersList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000002",
+    serial_number: "TG-INV-0002",
+    sku: "TG-INV-0002",
     name: "Deye 8kW Hybrid Inverter (SUN-8K-SG01LP1-EU)",
     category: "Inverters",
     series: "Deye SG01 Series",
@@ -99,6 +105,8 @@ export const invertersList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000003",
+    serial_number: "TG-INV-0003",
+    sku: "TG-INV-0003",
     name: "Deye 12kW Three-Phase Hybrid Inverter (SUN-12K-SG04LP3-EU)",
     category: "Inverters",
     series: "Deye SG04 Series",
@@ -136,6 +144,8 @@ export const invertersList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000004",
+    serial_number: "TG-INV-0004",
+    sku: "TG-INV-0004",
     name: "SRNE HFP4850S80-145 5kW Parallel Hybrid Inverter",
     category: "Inverters",
     series: "SRNE Top Picks",
@@ -169,6 +179,8 @@ export const invertersList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000005",
+    serial_number: "TG-INV-0005",
+    sku: "TG-INV-0005",
     name: "SRNE HYP4860S100-H 6kW High-Voltage Hybrid Inverter",
     category: "Inverters",
     series: "SRNE Top Picks",
@@ -202,6 +214,8 @@ export const invertersList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000006",
+    serial_number: "TG-INV-0006",
+    sku: "TG-INV-0006",
     name: "Growatt SPF 5000 ES Off-Grid Inverter",
     category: "Inverters",
     series: "Growatt SPF Series",
@@ -234,6 +248,8 @@ export const invertersList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000007",
+    serial_number: "TG-INV-0007",
+    sku: "TG-INV-0007",
     name: "Luxpower SNA5000 Wide-Voltage Hybrid Inverter",
     category: "Inverters",
     series: "Luxpower SNA Series",
@@ -269,6 +285,8 @@ export const invertersList: Product[] = [
 export const batteriesList: Product[] = [
   {
     id: "a0000000-0000-0000-0000-000000000008",
+    serial_number: "TG-BAT-0001",
+    sku: "TG-BAT-0001",
     name: "Felicity Solar 5.12kWh 100Ah LiFePO4 Battery (FL-LPBF48100)",
     category: "Batteries",
     series: "Felicity LPBF Series",
@@ -307,6 +325,8 @@ export const batteriesList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000009",
+    serial_number: "TG-BAT-0002",
+    sku: "TG-BAT-0002",
     name: "Felicity Solar 10.24kWh 200Ah LiFePO4 Battery Wall-Mount (FL-LPBF48200)",
     category: "Batteries",
     series: "Felicity LPBF Series",
@@ -345,6 +365,8 @@ export const batteriesList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000010",
+    serial_number: "TG-BAT-0003",
+    sku: "TG-BAT-0003",
     name: "Felicity Solar 15.36kWh 300Ah Commercial Storage Battery",
     category: "Batteries",
     series: "Felicity High-Cap",
@@ -380,6 +402,8 @@ export const batteriesList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000011",
+    serial_number: "TG-BAT-0004",
+    sku: "TG-BAT-0004",
     name: "AlpSolarr Pulse S2 Compact Energy Storage Unit",
     category: "Batteries",
     series: "AlpSolarr Systems",
@@ -411,6 +435,8 @@ export const batteriesList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000012",
+    serial_number: "TG-BAT-0005",
+    sku: "TG-BAT-0005",
     name: "Itel 1000W Portable Emergency Power Station",
     category: "Batteries",
     series: "Itel Power Solutions",
@@ -447,6 +473,8 @@ export const batteriesList: Product[] = [
 export const solarPanelsList: Product[] = [
   {
     id: "a0000000-0000-0000-0000-000000000013",
+    serial_number: "TG-SOL-0001",
+    sku: "TG-SOL-0001",
     name: "Longi 550W Hi-MO 5 Tier-1 Mono PERC Solar Panel",
     category: "Solar Panels",
     series: "Longi Hi-MO 5",
@@ -485,6 +513,8 @@ export const solarPanelsList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000014",
+    serial_number: "TG-SOL-0002",
+    sku: "TG-SOL-0002",
     name: "Longi 600W Hi-MO 6 Explorer Bifacial Solar Panel",
     category: "Solar Panels",
     series: "Longi Hi-MO 6",
@@ -519,6 +549,8 @@ export const solarPanelsList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000015",
+    serial_number: "TG-SOL-0003",
+    sku: "TG-SOL-0003",
     name: "Canadian Solar 550W HiKu6 Monocrystalline Panel",
     category: "Solar Panels",
     series: "Canadian Solar HiKu6",
@@ -553,6 +585,8 @@ export const solarPanelsList: Product[] = [
 export const smartLocksList: Product[] = [
   {
     id: "a0000000-0000-0000-0000-000000000016",
+    serial_number: "TG-LCK-0001",
+    sku: "TG-LCK-0001",
     name: "STAMA Model K209 Elite 3D Face Recognition Smart Lock",
     category: "Smart Locks",
     series: "Elite Series",
@@ -590,6 +624,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000017",
+    serial_number: "TG-LCK-0002",
+    sku: "TG-LCK-0002",
     name: "STAMA Model S7 Premier-Lux Custom Israeli Edition",
     category: "Smart Locks",
     series: "Elite Series",
@@ -622,6 +658,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000018",
+    serial_number: "TG-LCK-0003",
+    sku: "TG-LCK-0003",
     name: "STAMA Model D20 Apex-Lux Biometric Smart Lock",
     category: "Smart Locks",
     series: "Apex Series",
@@ -654,6 +692,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000019",
+    serial_number: "TG-LCK-0004",
+    sku: "TG-LCK-0004",
     name: "STAMA Model H11 Apex Video Intercom Smart Lock",
     category: "Smart Locks",
     series: "Apex Series",
@@ -685,6 +725,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000020",
+    serial_number: "TG-LCK-0005",
+    sku: "TG-LCK-0005",
     name: "STAMA SL02 Slim-Profile Smart Lock for Glass & Aluminum Doors",
     category: "Smart Locks",
     series: "Pro Series",
@@ -716,6 +758,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000021",
+    serial_number: "TG-LCK-0006",
+    sku: "TG-LCK-0006",
     name: "STAMA TF5 Connected Shortlet Access Smart Lock",
     category: "Smart Locks",
     series: "Pro Series",
@@ -747,6 +791,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000022",
+    serial_number: "TG-LCK-0007",
+    sku: "TG-LCK-0007",
     name: "STAMA N22 Accessible Biometric Security Lock",
     category: "Smart Locks",
     series: "Pro Series",
@@ -777,6 +823,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000023",
+    serial_number: "TG-LCK-0008",
+    sku: "TG-LCK-0008",
     name: "STAMA V80 Heavy-Duty Smart Gate & Security Lock",
     category: "Smart Locks",
     series: "Base Series",
@@ -808,6 +856,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000024",
+    serial_number: "TG-LCK-0009",
+    sku: "TG-LCK-0009",
     name: "STAMA G290 Frameless Glass Door Smart Lock",
     category: "Smart Locks",
     series: "Base Series",
@@ -838,6 +888,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000025",
+    serial_number: "TG-LCK-0010",
+    sku: "TG-LCK-0010",
     name: "STAMA KT14 Rugged Biometric Smart Padlock",
     category: "Smart Locks",
     series: "Smart Padlocks",
@@ -869,6 +921,8 @@ export const smartLocksList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000026",
+    serial_number: "TG-LCK-0011",
+    sku: "TG-LCK-0011",
     name: "STAMA Smart Hotel Access & Management Ecosystem",
     category: "Smart Locks",
     series: "Hotel Management Suite",
@@ -902,6 +956,8 @@ export const smartLocksList: Product[] = [
 export const smartHomeList: Product[] = [
   {
     id: "a0000000-0000-0000-0000-000000000027",
+    serial_number: "TG-AUT-0001",
+    sku: "TG-AUT-0001",
     name: "Tioga 8-Gang WiFi & Zigbee Smart Glass Touch Wall Switch",
     category: "Home Automation",
     series: "Smart Touch Series",
@@ -936,6 +992,8 @@ export const smartHomeList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000028",
+    serial_number: "TG-AUT-0002",
+    sku: "TG-AUT-0002",
     name: "Tioga 4-Gang Zigbee Smart Wall Touch Switch",
     category: "Home Automation",
     series: "Smart Touch Series",
@@ -966,6 +1024,8 @@ export const smartHomeList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000029",
+    serial_number: "TG-AUT-0003",
+    sku: "TG-AUT-0003",
     name: "Tioga 1-Gang WiFi Smart Relay Switch (In-Wall)",
     category: "Home Automation",
     series: "Smart Switch Base",
@@ -997,6 +1057,8 @@ export const smartHomeList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000030",
+    serial_number: "TG-AUT-0004",
+    sku: "TG-AUT-0004",
     name: "Tioga Granite Smart Control Panel Display with Voice",
     category: "Home Automation",
     series: "Smart Control Hubs",
@@ -1029,6 +1091,8 @@ export const smartHomeList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000031",
+    serial_number: "TG-AUT-0005",
+    sku: "TG-AUT-0005",
     name: "Tioga Smart WiFi Water Heater 40A Heavy-Duty Switch",
     category: "Home Automation",
     series: "High-Power Controls",
@@ -1059,6 +1123,8 @@ export const smartHomeList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000035",
+    serial_number: "TG-AUT-0006",
+    sku: "TG-AUT-0006",
     name: "Tioga Smart Universal WiFi IR/RF Remote Controller Hub",
     category: "Home Automation",
     series: "Smart Accessories",
@@ -1092,6 +1158,8 @@ export const smartHomeList: Product[] = [
 export const cctvList: Product[] = [
   {
     id: "a0000000-0000-0000-0000-000000000032",
+    serial_number: "TG-CAM-0001",
+    sku: "TG-CAM-0001",
     name: "Tioga 1080p Smart WiFi Indoor Pan/Tilt Security Camera",
     category: "CCTV",
     series: "Smart Vision",
@@ -1126,6 +1194,8 @@ export const cctvList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000033",
+    serial_number: "TG-CAM-0002",
+    sku: "TG-CAM-0002",
     name: "Tioga 2K HD Outdoor Weatherproof IP66 Security Bullet Camera",
     category: "CCTV",
     series: "Pro Surveillance",
@@ -1159,6 +1229,8 @@ export const cctvList: Product[] = [
   },
   {
     id: "a0000000-0000-0000-0000-000000000034",
+    serial_number: "TG-CAM-0003",
+    sku: "TG-CAM-0003",
     name: "Tioga 4MP Vandal-Proof Commercial Dome Camera",
     category: "CCTV",
     series: "Pro Surveillance",

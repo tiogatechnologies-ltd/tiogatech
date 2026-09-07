@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle2, Package, MessageCircle, Loader2, AlertCircle } from "lucide-react";
+import { CheckCircle2, Package, MessageCircle, Loader2, AlertCircle, Copy } from "lucide-react";
+import { toast } from "sonner";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
@@ -12,12 +13,24 @@ const CheckoutSuccess = () => {
   const { contact } = useSiteContact();
   const [params] = useSearchParams();
   const orderNumber = params.get("order");
+  const trackingParam = params.get("tracking");
   const method = params.get("method");
   const reference = params.get("reference") || params.get("trxref");
   const [verify, setVerify] = useState<Verify>({ status: "idle" });
+  const [trackingId, setTrackingId] = useState<string | null>(trackingParam || null);
   const { clear } = useCart();
 
   useEffect(() => {
+    // Check local storage for trackingId if not in URL param
+    if (!trackingId && orderNumber) {
+      try {
+        const local = JSON.parse(localStorage.getItem(`tioga_order_${orderNumber}`) || "{}");
+        if (local.tracking_id || local.tracking_number) {
+          setTrackingId(local.tracking_id || local.tracking_number);
+        }
+      } catch {}
+    }
+
     if (method !== "paystack" || !reference) {
       if (orderNumber) clear();
       return;
@@ -93,7 +106,26 @@ const CheckoutSuccess = () => {
         <h1 className="text-2xl font-display font-bold text-foreground mb-1">
           {verify.status === "checking" ? "Verifying payment..." : verify.status === "failed" ? "Payment not confirmed" : "Order received!"}
         </h1>
-        {orderNumber && <p className="text-sm text-muted-foreground mb-5">Order number: <span className="font-mono text-foreground font-semibold">{orderNumber}</span></p>}
+        {orderNumber && <p className="text-sm text-muted-foreground mb-3">Order number: <span className="font-mono text-foreground font-semibold">{orderNumber}</span></p>}
+
+        {trackingId && (
+          <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-foreground mb-5 flex items-center justify-between gap-3 text-left">
+            <div>
+              <span className="text-[10px] uppercase tracking-wider font-bold text-primary block">Automated Tracking ID</span>
+              <span className="font-mono text-base font-bold text-foreground">{trackingId}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                navigator.clipboard.writeText(trackingId);
+                toast.success("Tracking ID copied to clipboard!");
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border bg-card text-xs font-semibold text-foreground hover:bg-muted transition-colors shrink-0"
+            >
+              <Copy size={13} /> Copy ID
+            </button>
+          </div>
+        )}
 
         {method === "paystack" && verify.status === "success" && (
           <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-foreground mb-5">
@@ -123,7 +155,7 @@ const CheckoutSuccess = () => {
         )}
 
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <Link to={orderNumber ? `/track?order=${encodeURIComponent(orderNumber)}` : "/track"} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"><Package size={14} /> Track this order</Link>
+          <Link to={trackingId ? `/track?order=${encodeURIComponent(trackingId)}` : orderNumber ? `/track?order=${encodeURIComponent(orderNumber)}` : "/track"} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"><Package size={14} /> Track this order</Link>
           <Link to="/account" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground">View my orders</Link>
           <a href={whatsappLink(contact)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground"><MessageCircle size={14} /> Chat with us</a>
         </div>

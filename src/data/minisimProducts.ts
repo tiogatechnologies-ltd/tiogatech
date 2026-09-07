@@ -19,7 +19,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0001.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -42,7 +42,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0001",
+    "sku": "TG-SN-0001"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000002",
@@ -61,7 +63,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0002.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -84,7 +86,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0002",
+    "sku": "TG-SN-0002"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000003",
@@ -103,7 +107,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0003.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -126,7 +130,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0003",
+    "sku": "TG-SN-0003"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000004",
@@ -145,7 +151,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0004.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -168,7 +174,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0004",
+    "sku": "TG-SN-0004"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000005",
@@ -187,7 +195,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-scene.webp",
+    "image_url": "/products/items/product-0005.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -209,7 +217,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0005",
+    "sku": "TG-SN-0005"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000006",
@@ -228,7 +238,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦42,000",
     "numeric_price": 42000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0006.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -250,7 +260,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0006",
+    "sku": "TG-SN-0006"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000007",
@@ -270,7 +282,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-dimmer.webp",
+    "image_url": "/products/items/product-0007.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -292,7 +304,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0007",
+    "sku": "TG-SN-0007"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000008",
@@ -312,7 +326,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0008.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -334,7 +348,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0008",
+    "sku": "TG-SN-0008"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000009",
@@ -354,7 +370,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0009.webp",
     "specifications": {
       "Rated Current": "30A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -378,7 +394,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0009",
+    "sku": "TG-SN-0009"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000010",
@@ -398,7 +416,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0010.webp",
     "specifications": {
       "Rated Current": "20A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -420,7 +438,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0010",
+    "sku": "TG-SN-0010"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000011",
@@ -440,7 +460,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0011.webp",
     "specifications": {
       "Rated Current": "20A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -463,7 +483,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0011",
+    "sku": "TG-SN-0011"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000012",
@@ -483,7 +505,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0012.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Google Assistant",
@@ -505,7 +527,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0012",
+    "sku": "TG-SN-0012"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000013",
@@ -525,7 +549,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-double.webp",
+    "image_url": "/products/items/product-0013.webp",
     "specifications": {
       "Rated Current": "15A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -550,7 +574,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0013",
+    "sku": "TG-SN-0013"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000014",
@@ -570,7 +596,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0014.webp",
     "specifications": {
       "Rated Current": "16A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -593,7 +619,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0014",
+    "sku": "TG-SN-0014"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000015",
@@ -613,7 +641,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-double.webp",
+    "image_url": "/products/items/product-0015.webp",
     "specifications": {
       "Rated Current": "16A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -636,7 +664,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0015",
+    "sku": "TG-SN-0015"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000016",
@@ -656,7 +686,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦44,000",
     "numeric_price": 44000,
     "tier": "affordable",
-    "image_url": "/products/clear/power-strip-smart.webp",
+    "image_url": "/products/items/product-0016.webp",
     "specifications": {
       "Rated Current": "13A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -675,7 +705,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0016",
+    "sku": "TG-SN-0016"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000018",
@@ -694,7 +726,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0017.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -717,7 +749,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0017",
+    "sku": "TG-SN-0017"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000019",
@@ -736,7 +770,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0018.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -759,7 +793,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0018",
+    "sku": "TG-SN-0018"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000020",
@@ -778,7 +814,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0019.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -801,7 +837,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0019",
+    "sku": "TG-SN-0019"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000021",
@@ -820,7 +858,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0020.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -843,7 +881,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0020",
+    "sku": "TG-SN-0020"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000022",
@@ -863,7 +903,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0021.webp",
     "specifications": {
       "Rated Current": "30A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -888,7 +928,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0021",
+    "sku": "TG-SN-0021"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000023",
@@ -908,7 +950,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0022.webp",
     "specifications": {
       "Rated Current": "13A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -933,7 +975,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0022",
+    "sku": "TG-SN-0022"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000024",
@@ -953,7 +997,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦41,000",
     "numeric_price": 41000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-double.webp",
+    "image_url": "/products/items/product-0023.webp",
     "specifications": {
       "Rated Current": "15A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -978,7 +1022,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0023",
+    "sku": "TG-SN-0023"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000025",
@@ -998,7 +1044,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦96,000",
     "numeric_price": 96000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0024.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -1020,7 +1066,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0024",
+    "sku": "TG-SN-0024"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000026",
@@ -1040,7 +1088,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦96,000",
     "numeric_price": 96000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0025.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -1063,7 +1111,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0025",
+    "sku": "TG-SN-0025"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000027",
@@ -1083,7 +1133,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100,000",
     "numeric_price": 100000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0026.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -1107,7 +1157,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0026",
+    "sku": "TG-SN-0026"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000028",
@@ -1127,7 +1179,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0027.webp",
     "specifications": {
       "Rated Current": "16A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1151,7 +1203,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0027",
+    "sku": "TG-SN-0027"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000029",
@@ -1171,7 +1225,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-double.webp",
+    "image_url": "/products/items/product-0028.webp",
     "specifications": {
       "Rated Current": "16A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1195,7 +1249,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0028",
+    "sku": "TG-SN-0028"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000031",
@@ -1217,7 +1273,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0029.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1241,7 +1297,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0029",
+    "sku": "TG-SN-0029"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000032",
@@ -1263,7 +1321,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0030.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1287,7 +1345,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0030",
+    "sku": "TG-SN-0030"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000033",
@@ -1309,7 +1369,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0031.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1333,7 +1393,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0031",
+    "sku": "TG-SN-0031"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000034",
@@ -1355,7 +1417,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,500",
     "numeric_price": 29500,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0032.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1379,7 +1441,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0032",
+    "sku": "TG-SN-0032"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000035",
@@ -1401,7 +1465,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-dimmer.webp",
+    "image_url": "/products/items/product-0033.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1425,7 +1489,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0033",
+    "sku": "TG-SN-0033"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000036",
@@ -1445,7 +1511,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0034.webp",
     "specifications": {
       "Rated Current": "13A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1470,7 +1536,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0034",
+    "sku": "TG-SN-0034"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000037",
@@ -1490,7 +1558,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦42,000",
     "numeric_price": 42000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-double.webp",
+    "image_url": "/products/items/product-0035.webp",
     "specifications": {
       "Rated Current": "15A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1515,7 +1583,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0035",
+    "sku": "TG-SN-0035"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000039",
@@ -1537,7 +1607,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0036.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1561,7 +1631,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0036",
+    "sku": "TG-SN-0036"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000040",
@@ -1583,7 +1655,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0037.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1607,7 +1679,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0037",
+    "sku": "TG-SN-0037"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000041",
@@ -1629,7 +1703,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0038.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1653,7 +1727,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0038",
+    "sku": "TG-SN-0038"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000042",
@@ -1675,7 +1751,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0039.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1699,7 +1775,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0039",
+    "sku": "TG-SN-0039"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000043",
@@ -1721,7 +1799,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-dimmer.webp",
+    "image_url": "/products/items/product-0040.webp",
     "specifications": {
       "Rated Power": "5 w",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1745,7 +1823,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0040",
+    "sku": "TG-SN-0040"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000044",
@@ -1765,7 +1845,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,500",
     "numeric_price": 33500,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0041.webp",
     "specifications": {
       "Rated Current": "13A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1790,7 +1870,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0041",
+    "sku": "TG-SN-0041"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000045",
@@ -1810,7 +1892,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,500",
     "numeric_price": 43500,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-double.webp",
+    "image_url": "/products/items/product-0042.webp",
     "specifications": {
       "Rated Current": "15A",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1835,7 +1917,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0042",
+    "sku": "TG-SN-0042"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000047",
@@ -1857,7 +1941,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0043.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1881,7 +1965,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0043",
+    "sku": "TG-SN-0043"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000048",
@@ -1903,7 +1989,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0044.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1927,7 +2013,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0044",
+    "sku": "TG-SN-0044"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000049",
@@ -1949,7 +2037,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0045.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -1973,7 +2061,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0045",
+    "sku": "TG-SN-0045"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000050",
@@ -1995,7 +2085,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0046.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -2019,7 +2109,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0046",
+    "sku": "TG-SN-0046"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000053",
@@ -2039,7 +2131,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,500",
     "numeric_price": 28500,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0047.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -2057,7 +2149,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0047",
+    "sku": "TG-SN-0047"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000054",
@@ -2079,7 +2173,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0048.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2103,7 +2197,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0048",
+    "sku": "TG-SN-0048"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000055",
@@ -2125,7 +2221,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0049.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2149,7 +2245,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0049",
+    "sku": "TG-SN-0049"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000056",
@@ -2171,7 +2269,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0050.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2195,7 +2293,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0050",
+    "sku": "TG-SN-0050"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000057",
@@ -2217,7 +2317,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0051.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2241,7 +2341,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0051",
+    "sku": "TG-SN-0051"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000058",
@@ -2263,7 +2365,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0052.webp",
     "specifications": {
       "Operating Voltage": "100-250V",
       "Rated Power": "6600W",
@@ -2289,7 +2391,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0052",
+    "sku": "TG-SN-0052"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000060",
@@ -2311,7 +2415,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,500",
     "numeric_price": 24500,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0053.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2335,7 +2439,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0053",
+    "sku": "TG-SN-0053"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000061",
@@ -2357,7 +2463,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,500",
     "numeric_price": 25500,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0054.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2381,7 +2487,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0054",
+    "sku": "TG-SN-0054"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000062",
@@ -2403,7 +2511,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,500",
     "numeric_price": 26500,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0055.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2427,7 +2535,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0055",
+    "sku": "TG-SN-0055"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000063",
@@ -2449,7 +2559,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0056.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2473,7 +2583,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0056",
+    "sku": "TG-SN-0056"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000064",
@@ -2495,7 +2607,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0057.webp",
     "specifications": {
       "Operating Voltage": "100-250V",
       "Rated Power": "6600W",
@@ -2521,7 +2633,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0057",
+    "sku": "TG-SN-0057"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000066",
@@ -2541,7 +2655,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0058.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -2564,7 +2678,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0058",
+    "sku": "TG-SN-0058"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000067",
@@ -2586,7 +2702,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0059.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2611,7 +2727,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0059",
+    "sku": "TG-SN-0059"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000068",
@@ -2633,7 +2751,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0060.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2658,7 +2776,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0060",
+    "sku": "TG-SN-0060"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000069",
@@ -2680,7 +2800,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0061.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2705,7 +2825,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0061",
+    "sku": "TG-SN-0061"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000071",
@@ -2727,7 +2849,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0062.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2752,7 +2874,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0062",
+    "sku": "TG-SN-0062"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000072",
@@ -2774,7 +2898,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0063.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2799,7 +2923,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0063",
+    "sku": "TG-SN-0063"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000073",
@@ -2821,7 +2947,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0064.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2846,7 +2972,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0064",
+    "sku": "TG-SN-0064"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000074",
@@ -2868,7 +2996,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0065.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "10A",
@@ -2893,7 +3021,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0065",
+    "sku": "TG-SN-0065"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000076",
@@ -2915,7 +3045,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0066.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -2940,7 +3070,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0066",
+    "sku": "TG-SN-0066"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000077",
@@ -2962,7 +3094,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0067.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -2987,7 +3119,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0067",
+    "sku": "TG-SN-0067"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000078",
@@ -3009,7 +3143,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0068.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -3034,7 +3168,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0068",
+    "sku": "TG-SN-0068"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000079",
@@ -3055,7 +3191,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0069.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -3078,7 +3214,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0069",
+    "sku": "TG-SN-0069"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000080",
@@ -3100,7 +3238,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0070.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -3125,7 +3263,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0070",
+    "sku": "TG-SN-0070"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000081",
@@ -3147,7 +3287,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0071.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Current": "16A",
@@ -3172,7 +3312,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0071",
+    "sku": "TG-SN-0071"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000083",
@@ -3193,7 +3335,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦52,000",
     "numeric_price": 52000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0072.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3217,7 +3359,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0072",
+    "sku": "TG-SN-0072"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000084",
@@ -3239,7 +3383,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦57,000",
     "numeric_price": 57000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0073.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3264,7 +3408,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0073",
+    "sku": "TG-SN-0073"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000085",
@@ -3286,7 +3432,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦63,000",
     "numeric_price": 63000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0074.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3311,7 +3457,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0074",
+    "sku": "TG-SN-0074"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000086",
@@ -3333,7 +3481,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0075.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3358,7 +3506,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0075",
+    "sku": "TG-SN-0075"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000087",
@@ -3378,7 +3528,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0076.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "4000W",
@@ -3403,7 +3553,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0076",
+    "sku": "TG-SN-0076"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000089",
@@ -3424,7 +3576,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,000",
     "numeric_price": 43000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0077.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3448,7 +3600,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0077",
+    "sku": "TG-SN-0077"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000090",
@@ -3470,7 +3624,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0078.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3495,7 +3649,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0078",
+    "sku": "TG-SN-0078"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000091",
@@ -3517,7 +3673,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦49,000",
     "numeric_price": 49000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0079.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "600W",
@@ -3542,7 +3698,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0079",
+    "sku": "TG-SN-0079"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000092",
@@ -3563,7 +3721,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦51,000",
     "numeric_price": 51000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0080.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Voice Control": "Amazon Alexa, Google Assistant",
@@ -3585,7 +3743,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0080",
+    "sku": "TG-SN-0080"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000094",
@@ -3605,7 +3765,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦52,000",
     "numeric_price": 52000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0081.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -3622,7 +3782,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0081",
+    "sku": "TG-SN-0081"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000095",
@@ -3644,7 +3806,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0082.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3668,7 +3830,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0082",
+    "sku": "TG-SN-0082"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000096",
@@ -3690,7 +3854,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0083.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3714,7 +3878,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0083",
+    "sku": "TG-SN-0083"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000097",
@@ -3736,7 +3902,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0084.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3760,7 +3926,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0084",
+    "sku": "TG-SN-0084"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000098",
@@ -3782,7 +3950,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0085.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3806,7 +3974,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0085",
+    "sku": "TG-SN-0085"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000099",
@@ -3828,7 +3998,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0086.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "4400W",
@@ -3853,7 +4023,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0086",
+    "sku": "TG-SN-0086"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000100",
@@ -3875,7 +4047,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0087.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3899,7 +4071,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0087",
+    "sku": "TG-SN-0087"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000101",
@@ -3921,7 +4095,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0088.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3945,7 +4119,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0088",
+    "sku": "TG-SN-0088"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000102",
@@ -3967,7 +4143,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0089.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -3991,7 +4167,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0089",
+    "sku": "TG-SN-0089"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000103",
@@ -4013,7 +4191,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦37,000",
     "numeric_price": 37000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0090.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "600W/ gang",
@@ -4037,7 +4215,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0090",
+    "sku": "TG-SN-0090"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000104",
@@ -4059,7 +4239,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0091.webp",
     "specifications": {
       "Operating Voltage": "100v",
       "Rated Power": "4400W",
@@ -4084,7 +4264,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0091",
+    "sku": "TG-SN-0091"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000107",
@@ -4103,7 +4285,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0092.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -4120,7 +4302,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0092",
+    "sku": "TG-SN-0092"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000108",
@@ -4140,7 +4324,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-scene.webp",
+    "image_url": "/products/items/product-0093.webp",
     "specifications": {
       "Operating Voltage": "110-250V",
       "Rated Power": "300W",
@@ -4164,7 +4348,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0093",
+    "sku": "TG-SN-0093"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000109",
@@ -4184,7 +4370,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦58,000",
     "numeric_price": 58000,
     "tier": "mid",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0094.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -4206,7 +4392,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0094",
+    "sku": "TG-SN-0094"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000110",
@@ -4228,7 +4416,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦38,000",
     "numeric_price": 38000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-dimmer.webp",
+    "image_url": "/products/items/product-0095.webp",
     "specifications": {
       "Operating Voltage": "240v",
       "Rated Current": "10a",
@@ -4249,7 +4437,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0095",
+    "sku": "TG-SN-0095"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000112",
@@ -4269,7 +4459,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,000",
     "numeric_price": 43000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0096.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -4289,7 +4479,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0096",
+    "sku": "TG-SN-0096"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000113",
@@ -4311,7 +4503,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0097.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4336,7 +4528,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0097",
+    "sku": "TG-SN-0097"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000114",
@@ -4358,7 +4552,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0098.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4383,7 +4577,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0098",
+    "sku": "TG-SN-0098"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000115",
@@ -4405,7 +4601,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0099.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4430,7 +4626,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0099",
+    "sku": "TG-SN-0099"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000116",
@@ -4452,7 +4650,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0100.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4477,7 +4675,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0100",
+    "sku": "TG-SN-0100"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000117",
@@ -4499,7 +4699,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦19,000",
     "numeric_price": 19000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0101.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4524,7 +4724,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0101",
+    "sku": "TG-SN-0101"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000118",
@@ -4546,7 +4748,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0102.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4571,7 +4773,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0102",
+    "sku": "TG-SN-0102"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000119",
@@ -4593,7 +4797,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0103.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4618,7 +4822,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0103",
+    "sku": "TG-SN-0103"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000120",
@@ -4638,7 +4844,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0104.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -4662,7 +4868,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0104",
+    "sku": "TG-SN-0104"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000121",
@@ -4684,7 +4892,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-heater-ac.webp",
+    "image_url": "/products/items/product-0105.webp",
     "specifications": {
       "Operating Voltage": "100-250V",
       "Rated Power": "6600W",
@@ -4710,7 +4918,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0105",
+    "sku": "TG-SN-0105"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000122",
@@ -4732,7 +4942,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0106.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4757,7 +4967,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0106",
+    "sku": "TG-SN-0106"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000123",
@@ -4779,7 +4991,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0107.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4804,7 +5016,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0107",
+    "sku": "TG-SN-0107"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000124",
@@ -4826,7 +5040,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0108.webp",
     "specifications": {
       "Operating Voltage": "160 - 250V",
       "Rated Power": "1 w",
@@ -4851,7 +5065,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0108",
+    "sku": "TG-SN-0108"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000125",
@@ -4871,7 +5087,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦13,000",
     "numeric_price": 13000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0109.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "100W",
@@ -4891,7 +5107,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0109",
+    "sku": "TG-SN-0109"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000126",
@@ -4911,7 +5129,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0110.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "200W",
@@ -4931,7 +5149,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0110",
+    "sku": "TG-SN-0110"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000127",
@@ -4951,7 +5171,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦19,000",
     "numeric_price": 19000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0111.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "300W",
@@ -4971,7 +5191,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0111",
+    "sku": "TG-SN-0111"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000128",
@@ -4991,7 +5213,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-4gang-white.webp",
+    "image_url": "/products/items/product-0112.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "400W",
@@ -5011,7 +5233,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0112",
+    "sku": "TG-SN-0112"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000129",
@@ -5031,7 +5255,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-1gang-white.webp",
+    "image_url": "/products/items/product-0113.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "100W",
@@ -5052,7 +5276,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0113",
+    "sku": "TG-SN-0113"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000130",
@@ -5072,7 +5298,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0114.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "200W",
@@ -5093,7 +5319,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0114",
+    "sku": "TG-SN-0114"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000131",
@@ -5113,7 +5341,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-3gang-white.webp",
+    "image_url": "/products/items/product-0115.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "300W",
@@ -5134,7 +5362,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0115",
+    "sku": "TG-SN-0115"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000132",
@@ -5154,7 +5384,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0116.webp",
     "specifications": {
       "Operating Voltage": "200-240V",
       "Rated Power": "400W",
@@ -5175,7 +5405,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0116",
+    "sku": "TG-SN-0116"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000133",
@@ -5195,7 +5427,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,500",
     "numeric_price": 16500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0117.webp",
     "specifications": {
       "Operating Voltage": "90-250V",
       "Rated Power": "3 w",
@@ -5217,7 +5449,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0117",
+    "sku": "TG-SN-0117"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000134",
@@ -5237,7 +5471,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0118.webp",
     "specifications": {
       "Operating Voltage": "90-250V",
       "Rated Power": "2 w",
@@ -5259,7 +5493,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0118",
+    "sku": "TG-SN-0118"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000135",
@@ -5279,7 +5515,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,500",
     "numeric_price": 15500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0119.webp",
     "specifications": {
       "Operating Voltage": "90- 250VAC",
       "Rated Power": "500W",
@@ -5302,7 +5538,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0119",
+    "sku": "TG-SN-0119"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000136",
@@ -5322,7 +5560,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,500",
     "numeric_price": 16500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0120.webp",
     "specifications": {
       "Operating Voltage": "90- 250VAC",
       "Rated Power": "500W",
@@ -5345,7 +5583,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0120",
+    "sku": "TG-SN-0120"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000137",
@@ -5365,7 +5605,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦19,500",
     "numeric_price": 19500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0121.webp",
     "specifications": {
       "Operating Voltage": "90-250V",
       "Rated Power": "500W",
@@ -5387,7 +5627,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0121",
+    "sku": "TG-SN-0121"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000138",
@@ -5407,7 +5649,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,500",
     "numeric_price": 10500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-remote.webp",
+    "image_url": "/products/items/product-0122.webp",
     "specifications": {
       "Operating Voltage": "1527 V",
       "Rated Power": "108W",
@@ -5428,7 +5670,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0122",
+    "sku": "TG-SN-0122"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000139",
@@ -5448,7 +5692,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦14,500",
     "numeric_price": 14500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-remote.webp",
+    "image_url": "/products/items/product-0123.webp",
     "specifications": {
       "Operating Voltage": "1527 V",
       "Rated Power": "108W",
@@ -5469,7 +5713,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0123",
+    "sku": "TG-SN-0123"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000140",
@@ -5489,7 +5735,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦165,000",
     "numeric_price": 165000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0124.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -5510,7 +5756,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0124",
+    "sku": "TG-SN-0124"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000141",
@@ -5530,7 +5778,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0125.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -5551,7 +5799,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0125",
+    "sku": "TG-SN-0125"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000143",
@@ -5571,7 +5821,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0126.webp",
     "specifications": {
       "Available Finishes": "Black, White Gold",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -5590,7 +5840,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0126",
+    "sku": "TG-SN-0126"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000144",
@@ -5610,7 +5862,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0127.webp",
     "specifications": {
       "Available Finishes": "Black, White Gold",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -5629,7 +5881,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0127",
+    "sku": "TG-SN-0127"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000145",
@@ -5649,7 +5903,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦19,000",
     "numeric_price": 19000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0128.webp",
     "specifications": {
       "Available Finishes": "Black, White Gold",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -5669,7 +5923,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0128",
+    "sku": "TG-SN-0128"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000146",
@@ -5689,7 +5945,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0129.webp",
     "specifications": {
       "Available Finishes": "Black, White Gold",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -5709,7 +5965,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0129",
+    "sku": "TG-SN-0129"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000147",
@@ -5729,7 +5987,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0130.webp",
     "specifications": {
       "Rated Current": "30A",
       "Available Finishes": "Black, White"
@@ -5750,7 +6008,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0130",
+    "sku": "TG-SN-0130"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000148",
@@ -5770,7 +6030,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0131.webp",
     "specifications": {
       "Rated Current": "30A",
       "Available Finishes": "Black, White"
@@ -5791,7 +6051,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0131",
+    "sku": "TG-SN-0131"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000149",
@@ -5811,7 +6073,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,500",
     "numeric_price": 17500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0132.webp",
     "specifications": {
       "Available Finishes": "Black, White"
     },
@@ -5831,7 +6093,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0132",
+    "sku": "TG-SN-0132"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000150",
@@ -5851,7 +6115,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0133.webp",
     "specifications": {
       "Available Finishes": "Black, White"
     },
@@ -5871,7 +6135,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0133",
+    "sku": "TG-SN-0133"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000151",
@@ -5891,7 +6157,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,500",
     "numeric_price": 21500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0134.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Available Finishes": "Black, White"
@@ -5912,7 +6178,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0134",
+    "sku": "TG-SN-0134"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000153",
@@ -5934,7 +6202,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦53,000",
     "numeric_price": 53000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0135.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -5955,7 +6223,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0135",
+    "sku": "TG-SN-0135"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000154",
@@ -5976,7 +6246,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0136.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -5995,7 +6265,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0136",
+    "sku": "TG-SN-0136"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000155",
@@ -6017,7 +6289,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0137.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -6037,7 +6309,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0137",
+    "sku": "TG-SN-0137"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000156",
@@ -6059,7 +6333,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0138.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -6078,7 +6352,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0138",
+    "sku": "TG-SN-0138"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000157",
@@ -6098,7 +6374,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0139.webp",
     "specifications": {
       "Operating Voltage": "0 V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -6118,7 +6394,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0139",
+    "sku": "TG-SN-0139"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000158",
@@ -6139,7 +6417,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦112,000",
     "numeric_price": 112000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0140.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -6160,7 +6438,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0140",
+    "sku": "TG-SN-0140"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000159",
@@ -6181,7 +6461,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0141.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -6200,7 +6480,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0141",
+    "sku": "TG-SN-0141"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000160",
@@ -6220,7 +6502,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0142.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -6240,7 +6522,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0142",
+    "sku": "TG-SN-0142"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000161",
@@ -6260,7 +6544,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0143.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -6277,7 +6561,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0143",
+    "sku": "TG-SN-0143"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000162",
@@ -6297,7 +6583,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦67,000",
     "numeric_price": 67000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0144.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -6315,7 +6601,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0144",
+    "sku": "TG-SN-0144"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000164",
@@ -6336,7 +6624,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0145.webp",
     "specifications": {
       "Rated Power": "3000 W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -6355,7 +6643,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0145",
+    "sku": "TG-SN-0145"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000165",
@@ -6377,7 +6667,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦120,000",
     "numeric_price": 120000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0146.webp",
     "specifications": {
       "Operating Voltage": "12v",
       "Rated Current": "1A",
@@ -6397,7 +6687,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0146",
+    "sku": "TG-SN-0146"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000166",
@@ -6419,7 +6711,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0147.webp",
     "specifications": {
       "Operating Voltage": "12v",
       "Rated Current": "1A",
@@ -6439,7 +6731,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0147",
+    "sku": "TG-SN-0147"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000167",
@@ -6461,7 +6755,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0148.webp",
     "specifications": {
       "Operating Voltage": "100-240V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -6481,7 +6775,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0148",
+    "sku": "TG-SN-0148"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000168",
@@ -6503,7 +6799,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0149.webp",
     "specifications": {
       "Rated Power": "30w",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -6521,7 +6817,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0149",
+    "sku": "TG-SN-0149"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000169",
@@ -6541,7 +6839,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦97,000",
     "numeric_price": 97000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-poe-network.webp",
+    "image_url": "/products/items/product-0150.webp",
     "specifications": {
       "Rated Power": "110w",
       "Resolution": "9mp"
@@ -6560,7 +6858,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0150",
+    "sku": "TG-SN-0150"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000170",
@@ -6582,7 +6882,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦165,000",
     "numeric_price": 165000,
     "tier": "premium",
-    "image_url": "/products/clear/switch-poe-network.webp",
+    "image_url": "/products/items/product-0151.webp",
     "specifications": {
       "Rated Power": "30w",
       "Connectivity": "Ethernet PoE (802.3af/at)"
@@ -6600,7 +6900,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0151",
+    "sku": "TG-SN-0151"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000171",
@@ -6622,7 +6924,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/clear/switch-poe-network.webp",
+    "image_url": "/products/items/product-0152.webp",
     "specifications": {
       "Rated Power": "30w",
       "Connectivity": "Ethernet PoE (802.3af/at)"
@@ -6640,7 +6942,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0152",
+    "sku": "TG-SN-0152"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000173",
@@ -6660,7 +6964,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦165,000",
     "numeric_price": 165000,
     "tier": "premium",
-    "image_url": "/products/clear/panel-touch-4inch.webp",
+    "image_url": "/products/items/product-0153.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -6680,7 +6984,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0153",
+    "sku": "TG-SN-0153"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000174",
@@ -6700,7 +7006,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦115,000",
     "numeric_price": 115000,
     "tier": "mid",
-    "image_url": "/products/clear/panel-touch-6inch.webp",
+    "image_url": "/products/items/product-0154.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -6720,7 +7026,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0154",
+    "sku": "TG-SN-0154"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000175",
@@ -6740,7 +7048,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦178,000",
     "numeric_price": 178000,
     "tier": "premium",
-    "image_url": "/products/clear/panel-touch-6inch.webp",
+    "image_url": "/products/items/product-0155.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -6761,7 +7069,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0155",
+    "sku": "TG-SN-0155"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000176",
@@ -6781,7 +7091,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/clear/panel-touch-4inch.webp",
+    "image_url": "/products/items/product-0156.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa"
@@ -6802,7 +7112,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0156",
+    "sku": "TG-SN-0156"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000177",
@@ -6822,7 +7134,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/clear/panel-touch-4inch.webp",
+    "image_url": "/products/items/product-0157.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa"
@@ -6843,7 +7155,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0157",
+    "sku": "TG-SN-0157"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000178",
@@ -6863,7 +7177,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦330,000",
     "numeric_price": 330000,
     "tier": "premium",
-    "image_url": "/products/clear/panel-touch-6inch.webp",
+    "image_url": "/products/items/product-0158.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -6883,7 +7197,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0158",
+    "sku": "TG-SN-0158"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000179",
@@ -6905,7 +7221,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦280,000",
     "numeric_price": 280000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-179.webp",
+    "image_url": "/products/items/product-0159.webp",
     "specifications": {
       "Rated Power": "40W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -6926,7 +7242,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0159",
+    "sku": "TG-SN-0159"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000180",
@@ -6948,7 +7266,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦285,000",
     "numeric_price": 285000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-180.webp",
+    "image_url": "/products/items/product-0160.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -6969,7 +7287,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0160",
+    "sku": "TG-SN-0160"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000181",
@@ -6991,7 +7311,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦355,000",
     "numeric_price": 355000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0161.webp",
     "specifications": {
       "Rated Power": "40W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -7012,7 +7332,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0161",
+    "sku": "TG-SN-0161"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000182",
@@ -7034,7 +7356,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦390,000",
     "numeric_price": 390000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0162.webp",
     "specifications": {
       "Rated Power": "40W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -7055,7 +7377,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0162",
+    "sku": "TG-SN-0162"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000183",
@@ -7077,7 +7401,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦395,000",
     "numeric_price": 395000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0163.webp",
     "specifications": {
       "Rated Power": "80W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7099,7 +7423,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0163",
+    "sku": "TG-SN-0163"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000184",
@@ -7121,7 +7447,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦245,000",
     "numeric_price": 245000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0164.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -7141,7 +7467,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0164",
+    "sku": "TG-SN-0164"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000185",
@@ -7161,7 +7489,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦395,000",
     "numeric_price": 395000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0165.webp",
     "specifications": {
       "Rated Power": "40W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7183,7 +7511,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0165",
+    "sku": "TG-SN-0165"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000186",
@@ -7205,7 +7535,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦495,000",
     "numeric_price": 495000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0166.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -7226,7 +7556,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0166",
+    "sku": "TG-SN-0166"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000187",
@@ -7248,7 +7580,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦550,000",
     "numeric_price": 550000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-187.webp",
+    "image_url": "/products/items/product-0167.webp",
     "specifications": {
       "Rated Power": "40W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7270,7 +7602,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0167",
+    "sku": "TG-SN-0167"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000188",
@@ -7291,7 +7625,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦410,000",
     "numeric_price": 410000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0168.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7313,7 +7647,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0168",
+    "sku": "TG-SN-0168"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000189",
@@ -7334,7 +7670,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦520,000",
     "numeric_price": 520000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0169.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -7354,7 +7690,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0169",
+    "sku": "TG-SN-0169"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000190",
@@ -7376,7 +7714,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦620,000",
     "numeric_price": 620000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0170.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -7396,7 +7734,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0170",
+    "sku": "TG-SN-0170"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000191",
@@ -7418,7 +7758,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0171.webp",
     "specifications": {
       "Operating Voltage": "100-240v",
       "Rated Power": "25w",
@@ -7441,7 +7781,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0171",
+    "sku": "TG-SN-0171"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000192",
@@ -7463,7 +7805,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦145,000",
     "numeric_price": 145000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-remote.webp",
+    "image_url": "/products/items/product-0172.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -7484,7 +7826,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0172",
+    "sku": "TG-SN-0172"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000193",
@@ -7506,7 +7850,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0173.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -7526,7 +7870,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0173",
+    "sku": "TG-SN-0173"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000194",
@@ -7546,7 +7892,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦85,000",
     "numeric_price": 85000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0174.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -7564,7 +7910,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0174",
+    "sku": "TG-SN-0174"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000195",
@@ -7586,7 +7934,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0175.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -7603,7 +7951,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0175",
+    "sku": "TG-SN-0175"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000196",
@@ -7624,7 +7974,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦160,000",
     "numeric_price": 160000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0176.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "480*480"
@@ -7645,7 +7995,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0176",
+    "sku": "TG-SN-0176"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000197",
@@ -7667,7 +8019,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0177.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -7690,7 +8042,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0177",
+    "sku": "TG-SN-0177"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000198",
@@ -7712,7 +8066,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦255,000",
     "numeric_price": 255000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0178.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -7735,7 +8089,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0178",
+    "sku": "TG-SN-0178"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000199",
@@ -7754,7 +8110,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦470,000",
     "numeric_price": 470000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0179.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -7773,7 +8129,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0179",
+    "sku": "TG-SN-0179"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000200",
@@ -7793,7 +8151,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0180.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -7814,7 +8172,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0180",
+    "sku": "TG-SN-0180"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000202",
@@ -7836,7 +8196,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦350,000",
     "numeric_price": 350000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0181.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Current": "1A",
@@ -7858,7 +8218,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0181",
+    "sku": "TG-SN-0181"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000203",
@@ -7880,7 +8242,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦265,000",
     "numeric_price": 265000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0182.webp",
     "specifications": {
       "Dimensions": "1280*800",
       "Resolution": "1280*800"
@@ -7899,7 +8261,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0182",
+    "sku": "TG-SN-0182"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000204",
@@ -7921,7 +8285,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦420,000",
     "numeric_price": 420000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0183.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "25W",
@@ -7944,7 +8308,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0183",
+    "sku": "TG-SN-0183"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000205",
@@ -7963,7 +8329,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦135,000",
     "numeric_price": 135000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0184.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Connectivity": "Ethernet PoE (802.3af/at)"
@@ -7980,7 +8346,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0184",
+    "sku": "TG-SN-0184"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000206",
@@ -8000,7 +8368,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦135,000",
     "numeric_price": 135000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0185.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8017,7 +8385,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0185",
+    "sku": "TG-SN-0185"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000208",
@@ -8037,7 +8407,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0186.webp",
     "specifications": {
       "Rated Current": "32A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8058,7 +8428,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0186",
+    "sku": "TG-SN-0186"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000209",
@@ -8078,7 +8450,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0187.webp",
     "specifications": {
       "Rated Current": "63A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8100,7 +8472,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0187",
+    "sku": "TG-SN-0187"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000210",
@@ -8119,7 +8493,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0188.webp",
     "specifications": {
       "Rated Current": "80A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8141,7 +8515,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0188",
+    "sku": "TG-SN-0188"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000211",
@@ -8161,7 +8537,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0189.webp",
     "specifications": {
       "Rated Current": "100A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8183,7 +8559,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0189",
+    "sku": "TG-SN-0189"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000212",
@@ -8202,7 +8580,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦85,000",
     "numeric_price": 85000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0190.webp",
     "specifications": {
       "Rated Current": "100A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8224,7 +8602,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0190",
+    "sku": "TG-SN-0190"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000213",
@@ -8243,7 +8623,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦95,000",
     "numeric_price": 95000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0191.webp",
     "specifications": {
       "Rated Current": "100A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8265,7 +8645,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0191",
+    "sku": "TG-SN-0191"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000214",
@@ -8284,7 +8666,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100,000",
     "numeric_price": 100000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0192.webp",
     "specifications": {
       "Rated Current": "125A",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -8306,7 +8688,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0192",
+    "sku": "TG-SN-0192"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000215",
@@ -8328,7 +8712,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0193.webp",
     "specifications": {
       "Operating Voltage": "90V",
       "Rated Current": "63A",
@@ -8349,7 +8733,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0193",
+    "sku": "TG-SN-0193"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000216",
@@ -8369,7 +8755,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0194.webp",
     "specifications": {
       "Rated Current": "63A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -8391,7 +8777,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0194",
+    "sku": "TG-SN-0194"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000217",
@@ -8411,7 +8799,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0195.webp",
     "specifications": {
       "Rated Current": "63A",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -8433,7 +8821,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0195",
+    "sku": "TG-SN-0195"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000218",
@@ -8453,7 +8843,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/meter-digital-power.webp",
+    "image_url": "/products/items/product-0196.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8472,7 +8862,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0196",
+    "sku": "TG-SN-0196"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000219",
@@ -8492,7 +8884,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/clear/meter-digital-power.webp",
+    "image_url": "/products/items/product-0197.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Current": "63A",
@@ -8514,7 +8906,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0197",
+    "sku": "TG-SN-0197"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000220",
@@ -8534,7 +8928,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/clear/meter-digital-power.webp",
+    "image_url": "/products/items/product-0198.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Current": "63A",
@@ -8556,7 +8950,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0198",
+    "sku": "TG-SN-0198"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000222",
@@ -8576,7 +8972,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦5,000",
     "numeric_price": 5000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0199.webp",
     "specifications": {
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC",
       "Dimensions": "86x86"
@@ -8595,7 +8991,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0199",
+    "sku": "TG-SN-0199"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000223",
@@ -8615,7 +9013,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦9,000",
     "numeric_price": 9000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-double.webp",
+    "image_url": "/products/items/product-0200.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Panel Material": "Tempered Crystal Glass + Flame Retardant PC"
@@ -8634,7 +9032,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0200",
+    "sku": "TG-SN-0200"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000225",
@@ -8654,7 +9054,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦210,000",
     "numeric_price": 210000,
     "tier": "premium",
-    "image_url": "/products/clear/socket-popup.webp",
+    "image_url": "/products/items/product-0201.webp",
     "specifications": {
       "Operating Voltage": "250V",
       "Rated Power": "30W",
@@ -8674,7 +9074,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0201",
+    "sku": "TG-SN-0201"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000226",
@@ -8693,7 +9095,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0202.webp",
     "specifications": {
       "Rated Power": "54 w",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -8714,7 +9116,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0202",
+    "sku": "TG-SN-0202"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000227",
@@ -8734,7 +9138,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0203.webp",
     "specifications": {
       "Rated Power": "15W"
     },
@@ -8752,7 +9156,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0203",
+    "sku": "TG-SN-0203"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000228",
@@ -8772,7 +9178,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0204.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8793,7 +9199,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0204",
+    "sku": "TG-SN-0204"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000229",
@@ -8812,7 +9220,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/clear/socket-popup.webp",
+    "image_url": "/products/items/product-0205.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8833,7 +9241,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0205",
+    "sku": "TG-SN-0205"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000230",
@@ -8852,7 +9262,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/clear/socket-popup.webp",
+    "image_url": "/products/items/product-0206.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -8873,7 +9283,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0206",
+    "sku": "TG-SN-0206"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000231",
@@ -8893,7 +9305,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0207.webp",
     "specifications": {
       "Rated Power": "15W",
       "Housing Material": "Aerospace Aluminum Alloy",
@@ -8913,7 +9325,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0207",
+    "sku": "TG-SN-0207"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000232",
@@ -8933,7 +9347,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0208.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -8952,7 +9366,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0208",
+    "sku": "TG-SN-0208"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000233",
@@ -8971,7 +9387,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦105,000",
     "numeric_price": 105000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0209.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -8990,7 +9406,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0209",
+    "sku": "TG-SN-0209"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000234",
@@ -9009,7 +9427,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦120,000",
     "numeric_price": 120000,
     "tier": "mid",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0210.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -9027,7 +9445,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0210",
+    "sku": "TG-SN-0210"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000235",
@@ -9047,7 +9467,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/socket-single-universal.webp",
+    "image_url": "/products/items/product-0211.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -9068,7 +9488,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0211",
+    "sku": "TG-SN-0211"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000236",
@@ -9088,7 +9510,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦13,000",
     "numeric_price": 13000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0212.webp",
     "specifications": {
       "Operating Voltage": "9V",
       "Rated Power": "15W",
@@ -9109,7 +9531,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0212",
+    "sku": "TG-SN-0212"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000237",
@@ -9129,7 +9553,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0213.webp",
     "specifications": {
       "Rated Power": "5w"
     },
@@ -9146,7 +9570,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0213",
+    "sku": "TG-SN-0213"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000238",
@@ -9166,7 +9592,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0214.webp",
     "specifications": {
       "Rated Power": "5w"
     },
@@ -9183,7 +9609,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0214",
+    "sku": "TG-SN-0214"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000239",
@@ -9203,7 +9631,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0215.webp",
     "specifications": {
       "Rated Power": "15w"
     },
@@ -9220,7 +9648,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0215",
+    "sku": "TG-SN-0215"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000240",
@@ -9240,7 +9670,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0216.webp",
     "specifications": {
       "Rated Power": "15w"
     },
@@ -9258,7 +9688,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0216",
+    "sku": "TG-SN-0216"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000241",
@@ -9278,7 +9710,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦13,000",
     "numeric_price": 13000,
     "tier": "affordable",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0217.webp",
     "specifications": {
       "Rated Power": "15W"
     },
@@ -9296,7 +9728,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0217",
+    "sku": "TG-SN-0217"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000243",
@@ -9316,7 +9750,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/remote-ir-universal.webp",
+    "image_url": "/products/items/product-0218.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9338,7 +9772,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0218",
+    "sku": "TG-SN-0218"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000244",
@@ -9357,7 +9793,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/remote-ir-universal.webp",
+    "image_url": "/products/items/product-0219.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9379,7 +9815,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0219",
+    "sku": "TG-SN-0219"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000245",
@@ -9399,7 +9837,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0220.webp",
     "specifications": {
       "Rated Power": "5W",
       "Rated Current": "3A",
@@ -9421,7 +9859,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0220",
+    "sku": "TG-SN-0220"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000246",
@@ -9441,7 +9881,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/remote-ir-universal.webp",
+    "image_url": "/products/items/product-0221.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -9462,7 +9902,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0221",
+    "sku": "TG-SN-0221"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000247",
@@ -9482,7 +9924,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦49,000",
     "numeric_price": 49000,
     "tier": "affordable",
-    "image_url": "/products/clear/remote-ir-universal.webp",
+    "image_url": "/products/items/product-0222.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -9502,7 +9944,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0222",
+    "sku": "TG-SN-0222"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000248",
@@ -9521,7 +9965,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0223.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "16A",
@@ -9543,7 +9987,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0223",
+    "sku": "TG-SN-0223"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000249",
@@ -9562,7 +10008,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0224.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "16A",
@@ -9584,7 +10030,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0224",
+    "sku": "TG-SN-0224"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000250",
@@ -9603,7 +10051,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0225.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "16A",
@@ -9627,7 +10075,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0225",
+    "sku": "TG-SN-0225"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000251",
@@ -9646,7 +10096,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0226.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "16A",
@@ -9668,7 +10118,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0226",
+    "sku": "TG-SN-0226"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000252",
@@ -9687,7 +10139,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0227.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9706,7 +10158,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0227",
+    "sku": "TG-SN-0227"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000253",
@@ -9725,7 +10179,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0228.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9744,7 +10198,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0228",
+    "sku": "TG-SN-0228"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000254",
@@ -9766,7 +10222,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,500",
     "numeric_price": 18500,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0229.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -9785,7 +10241,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0229",
+    "sku": "TG-SN-0229"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000255",
@@ -9805,7 +10263,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦50,000",
     "numeric_price": 50000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0230.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9824,7 +10282,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0230",
+    "sku": "TG-SN-0230"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000256",
@@ -9843,7 +10303,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦14,000",
     "numeric_price": 14000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0231.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa"
@@ -9863,7 +10323,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0231",
+    "sku": "TG-SN-0231"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000257",
@@ -9883,7 +10345,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0232.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9902,7 +10364,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0232",
+    "sku": "TG-SN-0232"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000258",
@@ -9922,7 +10386,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0233.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -9941,7 +10405,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0233",
+    "sku": "TG-SN-0233"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000259",
@@ -9961,7 +10427,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/remote-ir-universal.webp",
+    "image_url": "/products/items/product-0234.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -9981,7 +10447,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0234",
+    "sku": "TG-SN-0234"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000260",
@@ -10001,7 +10469,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0235.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10021,7 +10489,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0235",
+    "sku": "TG-SN-0235"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000261",
@@ -10041,7 +10511,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0236.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -10062,7 +10532,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0236",
+    "sku": "TG-SN-0236"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000262",
@@ -10082,7 +10554,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/clear/remote-ir-universal.webp",
+    "image_url": "/products/items/product-0237.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
@@ -10103,7 +10575,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0237",
+    "sku": "TG-SN-0237"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000263",
@@ -10122,7 +10596,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦95,000",
     "numeric_price": 95000,
     "tier": "mid",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0238.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10142,7 +10616,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0238",
+    "sku": "TG-SN-0238"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000264",
@@ -10162,7 +10638,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0239.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10182,7 +10658,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0239",
+    "sku": "TG-SN-0239"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000265",
@@ -10202,7 +10680,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,500",
     "numeric_price": 23500,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-smoke-alarm.webp",
+    "image_url": "/products/items/product-0240.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -10221,7 +10699,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0240",
+    "sku": "TG-SN-0240"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000266",
@@ -10241,7 +10721,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-smoke-alarm.webp",
+    "image_url": "/products/items/product-0241.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -10259,7 +10739,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0241",
+    "sku": "TG-SN-0241"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000267",
@@ -10279,7 +10761,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-smoke-alarm.webp",
+    "image_url": "/products/items/product-0242.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -10299,7 +10781,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0242",
+    "sku": "TG-SN-0242"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000268",
@@ -10319,7 +10803,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,500",
     "numeric_price": 24500,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-smoke-alarm.webp",
+    "image_url": "/products/items/product-0243.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10337,7 +10821,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0243",
+    "sku": "TG-SN-0243"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000269",
@@ -10357,7 +10843,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-smoke-alarm.webp",
+    "image_url": "/products/items/product-0244.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -10376,7 +10862,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0244",
+    "sku": "TG-SN-0244"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000270",
@@ -10398,7 +10886,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-siren-strobe.webp",
+    "image_url": "/products/items/product-0245.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -10418,7 +10906,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0245",
+    "sku": "TG-SN-0245"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000271",
@@ -10440,7 +10930,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-siren-strobe.webp",
+    "image_url": "/products/items/product-0246.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10460,7 +10950,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0246",
+    "sku": "TG-SN-0246"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000272",
@@ -10481,7 +10973,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-water-leak.webp",
+    "image_url": "/products/items/product-0247.webp",
     "specifications": {
       "Rated Power": "65 W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -10502,7 +10994,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0247",
+    "sku": "TG-SN-0247"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000273",
@@ -10522,7 +11016,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-gas-leak.webp",
+    "image_url": "/products/items/product-0248.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -10541,7 +11035,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0248",
+    "sku": "TG-SN-0248"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000274",
@@ -10561,7 +11057,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-gas-leak.webp",
+    "image_url": "/products/items/product-0249.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -10579,7 +11075,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0249",
+    "sku": "TG-SN-0249"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000275",
@@ -10599,7 +11097,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0250.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -10620,7 +11118,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0250",
+    "sku": "TG-SN-0250"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000276",
@@ -10640,7 +11140,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0251.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -10661,7 +11161,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0251",
+    "sku": "TG-SN-0251"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000277",
@@ -10681,7 +11183,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/remote-ir-universal.webp",
+    "image_url": "/products/items/product-0252.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -10699,7 +11201,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0252",
+    "sku": "TG-SN-0252"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000278",
@@ -10718,7 +11222,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-temp-humidity.webp",
+    "image_url": "/products/items/product-0253.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -10739,7 +11243,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0253",
+    "sku": "TG-SN-0253"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000279",
@@ -10759,7 +11265,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,500",
     "numeric_price": 18500,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-water-leak.webp",
+    "image_url": "/products/items/product-0254.webp",
     "specifications": {
       "Operating Voltage": "3V",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -10779,7 +11285,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0254",
+    "sku": "TG-SN-0254"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000280",
@@ -10798,7 +11306,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦125,000",
     "numeric_price": 125000,
     "tier": "mid",
-    "image_url": "/products/clear/sensor-water-leak.webp",
+    "image_url": "/products/items/product-0255.webp",
     "specifications": {
       "Operating Voltage": "6V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -10820,7 +11328,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0255",
+    "sku": "TG-SN-0255"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000282",
@@ -10840,7 +11350,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0256.webp",
     "specifications": {
       "Operating Voltage": "120-277V"
     },
@@ -10859,7 +11369,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0256",
+    "sku": "TG-SN-0256"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000283",
@@ -10879,7 +11391,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0257.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -10900,7 +11412,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0257",
+    "sku": "TG-SN-0257"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000284",
@@ -10920,7 +11434,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0258.webp",
     "specifications": {
       "Operating Voltage": "240V",
       "Rated Current": "5A"
@@ -10941,7 +11455,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0258",
+    "sku": "TG-SN-0258"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000285",
@@ -10961,7 +11477,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦8,000",
     "numeric_price": 8000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0259.webp",
     "specifications": {
       "Rated Power": "9 W"
     },
@@ -10981,7 +11497,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0259",
+    "sku": "TG-SN-0259"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000286",
@@ -11001,7 +11519,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,000",
     "numeric_price": 10000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0260.webp",
     "specifications": {
       "Rated Power": "12W"
     },
@@ -11021,7 +11539,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0260",
+    "sku": "TG-SN-0260"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000287",
@@ -11040,7 +11560,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦7,000",
     "numeric_price": 7000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0261.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -11058,7 +11578,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0261",
+    "sku": "TG-SN-0261"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000288",
@@ -11077,7 +11599,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0262.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -11097,7 +11619,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0262",
+    "sku": "TG-SN-0262"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000290",
@@ -11119,7 +11643,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦220,000",
     "numeric_price": 220000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0263.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa",
@@ -11141,7 +11665,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0263",
+    "sku": "TG-SN-0263"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000291",
@@ -11163,7 +11689,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦235,000",
     "numeric_price": 235000,
     "tier": "premium",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0264.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11185,7 +11711,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0264",
+    "sku": "TG-SN-0264"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000292",
@@ -11207,7 +11735,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦295,000",
     "numeric_price": 295000,
     "tier": "premium",
-    "image_url": "/products/clear/switch-2gang-white.webp",
+    "image_url": "/products/items/product-0265.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa",
@@ -11229,7 +11757,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0265",
+    "sku": "TG-SN-0265"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000293",
@@ -11249,7 +11779,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦180,000",
     "numeric_price": 180000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0266.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa",
@@ -11271,7 +11801,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0266",
+    "sku": "TG-SN-0266"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000294",
@@ -11291,7 +11823,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦190,000",
     "numeric_price": 190000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0267.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa",
@@ -11313,7 +11845,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0267",
+    "sku": "TG-SN-0267"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000295",
@@ -11333,7 +11867,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0268.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -11353,7 +11887,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0268",
+    "sku": "TG-SN-0268"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000296",
@@ -11375,7 +11911,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0269.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -11393,7 +11929,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0269",
+    "sku": "TG-SN-0269"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000297",
@@ -11413,7 +11951,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦50,000",
     "numeric_price": 50000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0270.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -11434,7 +11972,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0270",
+    "sku": "TG-SN-0270"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000298",
@@ -11453,7 +11993,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦215,000",
     "numeric_price": 215000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0271.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Dimensions": "1024 * 600",
@@ -11472,7 +12012,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0271",
+    "sku": "TG-SN-0271"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000299",
@@ -11494,7 +12036,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0272.webp",
     "specifications": {
       "Dimensions": "1280*800",
       "Resolution": "1080p"
@@ -11515,7 +12057,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0272",
+    "sku": "TG-SN-0272"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000300",
@@ -11536,7 +12080,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦136,000",
     "numeric_price": 136000,
     "tier": "mid",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0273.webp",
     "specifications": {
       "Rated Power": "65 w",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11557,7 +12101,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0273",
+    "sku": "TG-SN-0273"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000301",
@@ -11577,7 +12123,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100,000",
     "numeric_price": 100000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0274.webp",
     "specifications": {
       "Operating Voltage": "12-24V",
       "Rated Power": "65 W",
@@ -11599,7 +12145,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0274",
+    "sku": "TG-SN-0274"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000302",
@@ -11618,7 +12166,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦95,000",
     "numeric_price": 95000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0275.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa, Google Assistant",
@@ -11637,7 +12185,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0275",
+    "sku": "TG-SN-0275"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000303",
@@ -11657,7 +12207,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0276.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa, Google Assistant",
@@ -11677,7 +12227,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0276",
+    "sku": "TG-SN-0276"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000304",
@@ -11697,7 +12249,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦12,000",
     "numeric_price": 12000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0277.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -11718,7 +12270,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0277",
+    "sku": "TG-SN-0277"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000305",
@@ -11738,7 +12292,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100,000",
     "numeric_price": 100000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0278.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa, Google Assistant",
       "Resolution": "3mp"
@@ -11757,7 +12311,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0278",
+    "sku": "TG-SN-0278"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000306",
@@ -11777,7 +12333,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0279.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -11794,7 +12350,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0279",
+    "sku": "TG-SN-0279"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000307",
@@ -11814,7 +12372,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0280.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -11834,7 +12392,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0280",
+    "sku": "TG-SN-0280"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000308",
@@ -11854,7 +12414,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0281.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11873,7 +12433,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0281",
+    "sku": "TG-SN-0281"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000310",
@@ -11894,7 +12456,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦140,000",
     "numeric_price": 140000,
     "tier": "mid",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0282.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11916,7 +12478,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0282",
+    "sku": "TG-SN-0282"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000311",
@@ -11937,7 +12501,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦160,000",
     "numeric_price": 160000,
     "tier": "premium",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0283.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -11959,7 +12523,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0283",
+    "sku": "TG-SN-0283"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000312",
@@ -11979,7 +12545,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦14,000",
     "numeric_price": 14000,
     "tier": "affordable",
-    "image_url": "/products/clear/remote-ir-universal.webp",
+    "image_url": "/products/items/product-0284.webp",
     "specifications": {
       "Wireless Protocol": "RF 433MHz"
     },
@@ -11999,7 +12565,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0284",
+    "sku": "TG-SN-0284"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000313",
@@ -12019,7 +12587,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-siren-strobe.webp",
+    "image_url": "/products/items/product-0285.webp",
     "specifications": {
       "Wireless Protocol": "RF 433MHz"
     },
@@ -12039,7 +12607,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0285",
+    "sku": "TG-SN-0285"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000314",
@@ -12059,7 +12629,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦52,000",
     "numeric_price": 52000,
     "tier": "mid",
-    "image_url": "/products/clear/wifi-mesh-repeater.webp",
+    "image_url": "/products/items/product-0286.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -12079,7 +12649,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0286",
+    "sku": "TG-SN-0286"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000315",
@@ -12099,7 +12671,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0287.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12120,7 +12692,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0287",
+    "sku": "TG-SN-0287"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000316",
@@ -12140,7 +12714,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,500",
     "numeric_price": 10500,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0288.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12161,7 +12735,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0288",
+    "sku": "TG-SN-0288"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000317",
@@ -12183,7 +12759,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦12,000",
     "numeric_price": 12000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0289.webp",
     "specifications": {
       "Operating Voltage": "3V",
       "Wireless Protocol": "RF 433MHz",
@@ -12203,7 +12779,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0289",
+    "sku": "TG-SN-0289"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000318",
@@ -12223,7 +12801,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,500",
     "numeric_price": 10500,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0290.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12244,7 +12822,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0290",
+    "sku": "TG-SN-0290"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000319",
@@ -12264,7 +12844,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0291.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12285,7 +12865,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0291",
+    "sku": "TG-SN-0291"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000320",
@@ -12305,7 +12887,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-smoke-alarm.webp",
+    "image_url": "/products/items/product-0292.webp",
     "specifications": {
       "Wireless Protocol": "RF 433MHz"
     },
@@ -12325,7 +12907,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0292",
+    "sku": "TG-SN-0292"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000321",
@@ -12345,7 +12929,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-gas-leak.webp",
+    "image_url": "/products/items/product-0293.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Rated Current": "1A"
@@ -12366,7 +12950,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0293",
+    "sku": "TG-SN-0293"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000322",
@@ -12388,7 +12974,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-siren-strobe.webp",
+    "image_url": "/products/items/product-0294.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Rated Current": "1A",
@@ -12407,7 +12993,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0294",
+    "sku": "TG-SN-0294"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000323",
@@ -12427,7 +13015,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-siren-strobe.webp",
+    "image_url": "/products/items/product-0295.webp",
     "specifications": {
       "Operating Voltage": "7V",
       "Wireless Protocol": "RF 433MHz",
@@ -12448,7 +13036,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0295",
+    "sku": "TG-SN-0295"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000324",
@@ -12468,7 +13058,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0296.webp",
     "specifications": {
       "Operating Voltage": "3V"
     },
@@ -12486,7 +13076,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0296",
+    "sku": "TG-SN-0296"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000325",
@@ -12506,7 +13098,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0297.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12526,7 +13118,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0297",
+    "sku": "TG-SN-0297"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000326",
@@ -12546,7 +13140,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-door-window.webp",
+    "image_url": "/products/items/product-0298.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -12567,7 +13161,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0298",
+    "sku": "TG-SN-0298"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000328",
@@ -12588,7 +13184,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0299.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12605,7 +13201,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0299",
+    "sku": "TG-SN-0299"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000329",
@@ -12626,7 +13224,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0300.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12643,7 +13241,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0300",
+    "sku": "TG-SN-0300"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000330",
@@ -12665,7 +13265,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150,000",
     "numeric_price": 150000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0301.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12683,7 +13283,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0301",
+    "sku": "TG-SN-0301"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000331",
@@ -12703,7 +13305,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0302.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -12722,7 +13324,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0302",
+    "sku": "TG-SN-0302"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000332",
@@ -12743,7 +13347,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0303.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -12762,7 +13366,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0303",
+    "sku": "TG-SN-0303"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000333",
@@ -12782,7 +13388,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-face-recognition.webp",
+    "image_url": "/products/items/product-0304.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12802,7 +13408,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0304",
+    "sku": "TG-SN-0304"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000334",
@@ -12822,7 +13430,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-face-recognition.webp",
+    "image_url": "/products/items/product-0305.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12842,7 +13450,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0305",
+    "sku": "TG-SN-0305"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000335",
@@ -12862,7 +13472,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦195,000",
     "numeric_price": 195000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-face-recognition.webp",
+    "image_url": "/products/items/product-0306.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12882,7 +13492,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0306",
+    "sku": "TG-SN-0306"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000336",
@@ -12903,7 +13515,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150,000",
     "numeric_price": 150000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0307.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -12921,7 +13533,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0307",
+    "sku": "TG-SN-0307"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000337",
@@ -12942,7 +13556,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦250,000",
     "numeric_price": 250000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0308.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa, Google Assistant"
@@ -12963,7 +13577,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0308",
+    "sku": "TG-SN-0308"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000338",
@@ -12984,7 +13600,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦145,000",
     "numeric_price": 145000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0309.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13002,7 +13618,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0309",
+    "sku": "TG-SN-0309"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000339",
@@ -13024,7 +13642,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦370,000",
     "numeric_price": 370000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0310.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13044,7 +13662,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0310",
+    "sku": "TG-SN-0310"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000340",
@@ -13065,7 +13685,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0311.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13084,7 +13704,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0311",
+    "sku": "TG-SN-0311"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000341",
@@ -13103,7 +13725,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-face-recognition.webp",
+    "image_url": "/products/items/product-0312.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa"
@@ -13124,7 +13746,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0312",
+    "sku": "TG-SN-0312"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000342",
@@ -13144,7 +13768,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-face-recognition.webp",
+    "image_url": "/products/items/product-0313.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
       "Voice Control": "Amazon Alexa"
@@ -13165,7 +13789,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0313",
+    "sku": "TG-SN-0313"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000343",
@@ -13185,7 +13811,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-face-recognition.webp",
+    "image_url": "/products/items/product-0314.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13205,7 +13831,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0314",
+    "sku": "TG-SN-0314"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000344",
@@ -13226,7 +13854,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦140,000",
     "numeric_price": 140000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0315.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -13244,7 +13872,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0315",
+    "sku": "TG-SN-0315"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000345",
@@ -13264,7 +13894,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦225,000",
     "numeric_price": 225000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-face-recognition.webp",
+    "image_url": "/products/items/product-0316.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13284,7 +13914,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0316",
+    "sku": "TG-SN-0316"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000346",
@@ -13304,7 +13936,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦280,000",
     "numeric_price": 280000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-face-recognition.webp",
+    "image_url": "/products/items/product-0317.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13324,7 +13956,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0317",
+    "sku": "TG-SN-0317"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000347",
@@ -13346,7 +13980,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150,000",
     "numeric_price": 150000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0318.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13363,7 +13997,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0318",
+    "sku": "TG-SN-0318"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000348",
@@ -13383,7 +14019,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦270,000",
     "numeric_price": 270000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0319.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13400,7 +14036,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0319",
+    "sku": "TG-SN-0319"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000349",
@@ -13422,7 +14060,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦195,000",
     "numeric_price": 195000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0320.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -13440,7 +14078,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0320",
+    "sku": "TG-SN-0320"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000350",
@@ -13460,7 +14100,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦270,000",
     "numeric_price": 270000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0321.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13479,7 +14119,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0321",
+    "sku": "TG-SN-0321"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000351",
@@ -13499,7 +14141,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0322.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -13516,7 +14158,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0322",
+    "sku": "TG-SN-0322"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000352",
@@ -13537,7 +14181,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦290,000",
     "numeric_price": 290000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0323.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13557,7 +14201,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0323",
+    "sku": "TG-SN-0323"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000353",
@@ -13578,7 +14224,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦255,000",
     "numeric_price": 255000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0324.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13598,7 +14244,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0324",
+    "sku": "TG-SN-0324"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000354",
@@ -13619,7 +14267,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦255,000",
     "numeric_price": 255000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0325.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13639,7 +14287,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0325",
+    "sku": "TG-SN-0325"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000355",
@@ -13659,7 +14309,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦270,000",
     "numeric_price": 270000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0326.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -13677,7 +14327,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0326",
+    "sku": "TG-SN-0326"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000356",
@@ -13697,7 +14349,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0327.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -13716,7 +14368,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0327",
+    "sku": "TG-SN-0327"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000357",
@@ -13736,7 +14390,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0328.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -13755,7 +14409,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0328",
+    "sku": "TG-SN-0328"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000358",
@@ -13775,7 +14431,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0329.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13795,7 +14451,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0329",
+    "sku": "TG-SN-0329"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000359",
@@ -13815,7 +14473,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦170,000",
     "numeric_price": 170000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0330.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13835,7 +14493,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0330",
+    "sku": "TG-SN-0330"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000360",
@@ -13855,7 +14515,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦220,000",
     "numeric_price": 220000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0331.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13875,7 +14535,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0331",
+    "sku": "TG-SN-0331"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000361",
@@ -13895,7 +14557,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦220,000",
     "numeric_price": 220000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0332.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -13915,7 +14577,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0332",
+    "sku": "TG-SN-0332"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000362",
@@ -13937,7 +14601,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦180,000",
     "numeric_price": 180000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-glass-door.webp",
+    "image_url": "/products/items/product-0333.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -13956,7 +14620,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0333",
+    "sku": "TG-SN-0333"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000363",
@@ -13977,7 +14643,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦240,000",
     "numeric_price": 240000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0334.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -13995,7 +14661,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0334",
+    "sku": "TG-SN-0334"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000364",
@@ -14017,7 +14685,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0335.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14035,7 +14703,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0335",
+    "sku": "TG-SN-0335"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000365",
@@ -14055,7 +14725,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0336.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14076,7 +14746,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0336",
+    "sku": "TG-SN-0336"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000366",
@@ -14096,7 +14768,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0337.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -14112,7 +14784,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0337",
+    "sku": "TG-SN-0337"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000367",
@@ -14132,7 +14806,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-padlock-smart.webp",
+    "image_url": "/products/items/product-0338.webp",
     "specifications": {
       "Rated Power": "66 W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -14151,7 +14825,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0338",
+    "sku": "TG-SN-0338"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000368",
@@ -14170,7 +14846,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-padlock-smart.webp",
+    "image_url": "/products/items/product-0339.webp",
     "specifications": {
       "Rated Power": "66 W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -14188,7 +14864,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0339",
+    "sku": "TG-SN-0339"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000369",
@@ -14208,7 +14886,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0340.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14229,7 +14907,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0340",
+    "sku": "TG-SN-0340"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000370",
@@ -14249,7 +14929,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0341.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14266,7 +14946,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0341",
+    "sku": "TG-SN-0341"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000371",
@@ -14286,7 +14968,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦190,000",
     "numeric_price": 190000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0342.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14307,7 +14989,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0342",
+    "sku": "TG-SN-0342"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000372",
@@ -14327,7 +15011,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-padlock-smart.webp",
+    "image_url": "/products/items/product-0343.webp",
     "specifications": {
       "Operating Voltage": "7V",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14345,7 +15029,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0343",
+    "sku": "TG-SN-0343"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000373",
@@ -14367,7 +15053,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-padlock-smart.webp",
+    "image_url": "/products/items/product-0344.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -14385,7 +15071,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0344",
+    "sku": "TG-SN-0344"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000374",
@@ -14405,7 +15093,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,500",
     "numeric_price": 18500,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0345.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14423,7 +15111,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0345",
+    "sku": "TG-SN-0345"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000375",
@@ -14443,7 +15133,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0346.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14463,7 +15153,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0346",
+    "sku": "TG-SN-0346"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000377",
@@ -14483,7 +15175,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦320,000",
     "numeric_price": 320000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0347.webp",
     "specifications": {
       "Housing Material": "Aerospace Aluminum Alloy"
     },
@@ -14503,7 +15195,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0347",
+    "sku": "TG-SN-0347"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000378",
@@ -14522,7 +15216,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦300,000",
     "numeric_price": 300000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0348.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14543,7 +15237,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0348",
+    "sku": "TG-SN-0348"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000379",
@@ -14563,7 +15259,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦120,000",
     "numeric_price": 120000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0349.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -14580,7 +15276,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0349",
+    "sku": "TG-SN-0349"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000380",
@@ -14600,7 +15298,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦160,000",
     "numeric_price": 160000,
     "tier": "premium",
-    "image_url": "/products/clear/lock-glass-door.webp",
+    "image_url": "/products/items/product-0350.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -14619,7 +15317,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0350",
+    "sku": "TG-SN-0350"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000381",
@@ -14639,7 +15339,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0351.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -14654,7 +15354,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0351",
+    "sku": "TG-SN-0351"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000382",
@@ -14674,7 +15376,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0352.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -14692,7 +15394,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0352",
+    "sku": "TG-SN-0352"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000384",
@@ -14712,7 +15416,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0353.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -14732,7 +15436,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0353",
+    "sku": "TG-SN-0353"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000385",
@@ -14753,7 +15459,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0354.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -14773,7 +15479,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0354",
+    "sku": "TG-SN-0354"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000386",
@@ -14795,7 +15503,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦41,000",
     "numeric_price": 41000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0355.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -14815,7 +15523,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0355",
+    "sku": "TG-SN-0355"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000387",
@@ -14837,7 +15547,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,000",
     "numeric_price": 43000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0356.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -14857,7 +15567,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0356",
+    "sku": "TG-SN-0356"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000389",
@@ -14877,7 +15589,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-mini-spy.webp",
+    "image_url": "/products/items/product-0357.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -14897,7 +15609,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0357",
+    "sku": "TG-SN-0357"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000390",
@@ -14919,7 +15633,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-mini-spy.webp",
+    "image_url": "/products/items/product-0358.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -14940,7 +15654,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0358",
+    "sku": "TG-SN-0358"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000391",
@@ -14962,7 +15678,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-mini-spy.webp",
+    "image_url": "/products/items/product-0359.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Rated Current": "1A",
@@ -14984,7 +15700,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0359",
+    "sku": "TG-SN-0359"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000392",
@@ -15004,7 +15722,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0360.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -15026,7 +15744,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0360",
+    "sku": "TG-SN-0360"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000393",
@@ -15047,7 +15767,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦46,000",
     "numeric_price": 46000,
     "tier": "affordable",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0361.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -15067,7 +15787,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0361",
+    "sku": "TG-SN-0361"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000394",
@@ -15089,7 +15811,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦52,000",
     "numeric_price": 52000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0362.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -15110,7 +15832,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0362",
+    "sku": "TG-SN-0362"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000395",
@@ -15132,7 +15856,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0363.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -15154,7 +15878,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0363",
+    "sku": "TG-SN-0363"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000396",
@@ -15176,7 +15902,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0364.webp",
     "specifications": {
       "Rated Power": "66 w",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -15197,7 +15923,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0364",
+    "sku": "TG-SN-0364"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000397",
@@ -15218,7 +15946,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-dome.webp",
+    "image_url": "/products/items/product-0365.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -15239,7 +15967,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0365",
+    "sku": "TG-SN-0365"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000398",
@@ -15260,7 +15990,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0366.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -15280,7 +16010,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0366",
+    "sku": "TG-SN-0366"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000399",
@@ -15301,7 +16033,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-solar.webp",
+    "image_url": "/products/items/product-0367.webp",
     "specifications": {
       "Rated Power": "5W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -15322,7 +16054,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0367",
+    "sku": "TG-SN-0367"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000400",
@@ -15344,7 +16078,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-solar.webp",
+    "image_url": "/products/items/product-0368.webp",
     "specifications": {
       "Rated Power": "5W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -15364,7 +16098,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0368",
+    "sku": "TG-SN-0368"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000401",
@@ -15386,7 +16122,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-solar.webp",
+    "image_url": "/products/items/product-0369.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -15404,7 +16140,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0369",
+    "sku": "TG-SN-0369"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000402",
@@ -15426,7 +16164,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦103,000",
     "numeric_price": 103000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-solar.webp",
+    "image_url": "/products/items/product-0370.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -15449,7 +16187,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0370",
+    "sku": "TG-SN-0370"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000403",
@@ -15471,7 +16211,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦340,000",
     "numeric_price": 340000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0371.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "3MP"
@@ -15492,7 +16232,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0371",
+    "sku": "TG-SN-0371"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000404",
@@ -15513,7 +16255,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦460,000",
     "numeric_price": 460000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0372.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -15534,7 +16276,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0372",
+    "sku": "TG-SN-0372"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000405",
@@ -15553,7 +16297,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦550,000",
     "numeric_price": 550000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0373.webp",
     "specifications": {
       "Rated Power": "5W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -15574,7 +16318,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0373",
+    "sku": "TG-SN-0373"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000406",
@@ -15596,7 +16342,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦700,000",
     "numeric_price": 700000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-solar.webp",
+    "image_url": "/products/items/product-0374.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "4mp"
@@ -15617,7 +16363,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0374",
+    "sku": "TG-SN-0374"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000407",
@@ -15639,7 +16387,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦280,000",
     "numeric_price": 280000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0375.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Resolution": "0MP"
@@ -15660,7 +16408,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0375",
+    "sku": "TG-SN-0375"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000408",
@@ -15682,7 +16432,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦480,000",
     "numeric_price": 480000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0376.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Resolution": "0MP"
@@ -15703,7 +16453,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0376",
+    "sku": "TG-SN-0376"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000409",
@@ -15725,7 +16477,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦160,000",
     "numeric_price": 160000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0377.webp",
     "specifications": {
       "Operating Voltage": "265 v",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -15748,7 +16500,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0377",
+    "sku": "TG-SN-0377"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000410",
@@ -15769,7 +16523,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-bullet.webp",
+    "image_url": "/products/items/product-0378.webp",
     "specifications": {
       "Rated Power": "66 W",
       "Resolution": "5MP"
@@ -15790,7 +16544,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0378",
+    "sku": "TG-SN-0378"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000411",
@@ -15811,7 +16567,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-dome.webp",
+    "image_url": "/products/items/product-0379.webp",
     "specifications": {
       "Rated Power": "66 W",
       "Resolution": "5MP"
@@ -15832,7 +16588,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0379",
+    "sku": "TG-SN-0379"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000412",
@@ -15853,7 +16611,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-indoor.webp",
+    "image_url": "/products/items/product-0380.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "3MP"
@@ -15874,7 +16632,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0380",
+    "sku": "TG-SN-0380"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000413",
@@ -15894,7 +16654,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/sensor-pir-motion.webp",
+    "image_url": "/products/items/product-0381.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -15912,7 +16672,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0381",
+    "sku": "TG-SN-0381"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000414",
@@ -15934,7 +16696,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦400,000",
     "numeric_price": 400000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-solar.webp",
+    "image_url": "/products/items/product-0382.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -15954,7 +16716,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0382",
+    "sku": "TG-SN-0382"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000415",
@@ -15976,7 +16740,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦440,000",
     "numeric_price": 440000,
     "tier": "premium",
-    "image_url": "/products/clear/camera-ptz-solar.webp",
+    "image_url": "/products/items/product-0383.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "8MP"
@@ -15997,7 +16761,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0383",
+    "sku": "TG-SN-0383"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000417",
@@ -16016,7 +16782,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-indoor.webp",
+    "image_url": "/products/items/product-0384.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "iCSee App",
@@ -16035,7 +16801,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0384",
+    "sku": "TG-SN-0384"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000418",
@@ -16055,7 +16823,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-indoor.webp",
+    "image_url": "/products/items/product-0385.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "V380 Pro App",
@@ -16077,7 +16845,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0385",
+    "sku": "TG-SN-0385"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000419",
@@ -16097,7 +16867,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦20,000",
     "numeric_price": 20000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0386.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -16116,7 +16886,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0386",
+    "sku": "TG-SN-0386"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000420",
@@ -16136,7 +16908,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-indoor.webp",
+    "image_url": "/products/items/product-0387.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -16156,7 +16928,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0387",
+    "sku": "TG-SN-0387"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000421",
@@ -16177,7 +16951,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦35,000",
     "numeric_price": 35000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-indoor.webp",
+    "image_url": "/products/items/product-0388.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -16199,7 +16973,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0388",
+    "sku": "TG-SN-0388"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000422",
@@ -16220,7 +16996,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-indoor.webp",
+    "image_url": "/products/items/product-0389.webp",
     "specifications": {
       "Operating Voltage": "265 v",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -16242,7 +17018,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0389",
+    "sku": "TG-SN-0389"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000423",
@@ -16264,7 +17042,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0390.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -16285,7 +17063,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0390",
+    "sku": "TG-SN-0390"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000424",
@@ -16307,7 +17087,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦36,000",
     "numeric_price": 36000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0391.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -16327,7 +17107,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0391",
+    "sku": "TG-SN-0391"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000425",
@@ -16349,7 +17131,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-mini-spy.webp",
+    "image_url": "/products/items/product-0392.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "iCSee App",
@@ -16369,7 +17151,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0392",
+    "sku": "TG-SN-0392"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000426",
@@ -16391,7 +17175,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦60,000",
     "numeric_price": 60000,
     "tier": "mid",
-    "image_url": "/products/clear/camera-ptz-indoor.webp",
+    "image_url": "/products/items/product-0393.webp",
     "specifications": {
       "Rated Power": "67 w",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -16413,7 +17197,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0393",
+    "sku": "TG-SN-0393"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000427",
@@ -16433,7 +17219,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-bullet.webp",
+    "image_url": "/products/items/product-0394.webp",
     "specifications": {
       "Rated Power": "1080 w",
       "Dimensions": "1020 x 1080",
@@ -16451,7 +17237,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0394",
+    "sku": "TG-SN-0394"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000428",
@@ -16473,7 +17261,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0395.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -16494,7 +17282,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0395",
+    "sku": "TG-SN-0395"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000429",
@@ -16514,7 +17304,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0396.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "CamHipro App",
@@ -16536,7 +17326,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0396",
+    "sku": "TG-SN-0396"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000430",
@@ -16558,7 +17350,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦32,000",
     "numeric_price": 32000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-indoor.webp",
+    "image_url": "/products/items/product-0397.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "3MP"
@@ -16577,7 +17369,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0397",
+    "sku": "TG-SN-0397"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000431",
@@ -16599,7 +17393,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0398.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Amazon Alexa, Google Assistant",
@@ -16620,7 +17414,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0398",
+    "sku": "TG-SN-0398"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000432",
@@ -16640,7 +17436,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-mini-spy.webp",
+    "image_url": "/products/items/product-0399.webp",
     "specifications": {
       "Resolution": "1080P"
     },
@@ -16660,7 +17456,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0399",
+    "sku": "TG-SN-0399"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000433",
@@ -16681,7 +17479,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-mini-spy.webp",
+    "image_url": "/products/items/product-0400.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Resolution": "1080P"
@@ -16702,7 +17500,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0400",
+    "sku": "TG-SN-0400"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000434",
@@ -16722,7 +17522,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0401.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -16743,7 +17543,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0401",
+    "sku": "TG-SN-0401"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000435",
@@ -16763,7 +17565,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦12,000",
     "numeric_price": 12000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0402.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -16782,7 +17584,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0402",
+    "sku": "TG-SN-0402"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000436",
@@ -16802,7 +17606,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦13,000",
     "numeric_price": 13000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-ptz-outdoor.webp",
+    "image_url": "/products/items/product-0403.webp",
     "specifications": {
       "Operating Voltage": "5V",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -16821,7 +17625,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0403",
+    "sku": "TG-SN-0403"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000437",
@@ -16841,7 +17647,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0404.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Resolution": "2MP"
@@ -16862,7 +17668,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0404",
+    "sku": "TG-SN-0404"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000438",
@@ -16882,7 +17690,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦23,000",
     "numeric_price": 23000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-mini-spy.webp",
+    "image_url": "/products/items/product-0405.webp",
     "specifications": {
       "Dimensions": "1920 x 1080",
       "Resolution": "1920 x 1080"
@@ -16902,7 +17710,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0405",
+    "sku": "TG-SN-0405"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000439",
@@ -16922,7 +17732,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-mini-spy.webp",
+    "image_url": "/products/items/product-0406.webp",
     "specifications": {
       "Resolution": "1080P"
     },
@@ -16941,7 +17751,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0406",
+    "sku": "TG-SN-0406"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000441",
@@ -16963,7 +17775,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦128,000",
     "numeric_price": 128000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0407.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -16983,7 +17795,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0407",
+    "sku": "TG-SN-0407"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000442",
@@ -17005,7 +17819,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦133,000",
     "numeric_price": 133000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0408.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -17025,7 +17839,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0408",
+    "sku": "TG-SN-0408"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000443",
@@ -17047,7 +17863,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦138,000",
     "numeric_price": 138000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0409.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17067,7 +17883,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0409",
+    "sku": "TG-SN-0409"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000444",
@@ -17089,7 +17907,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦143,000",
     "numeric_price": 143000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0410.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -17109,7 +17927,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0410",
+    "sku": "TG-SN-0410"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000445",
@@ -17131,7 +17951,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦148,000",
     "numeric_price": 148000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0411.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17151,7 +17971,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0411",
+    "sku": "TG-SN-0411"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000446",
@@ -17173,7 +17995,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦153,000",
     "numeric_price": 153000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0412.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -17193,7 +18015,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0412",
+    "sku": "TG-SN-0412"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000447",
@@ -17215,7 +18039,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦158,000",
     "numeric_price": 158000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0413.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17235,7 +18059,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0413",
+    "sku": "TG-SN-0413"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000448",
@@ -17257,7 +18083,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦163,000",
     "numeric_price": 163000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0414.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)"
     },
@@ -17277,7 +18103,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0414",
+    "sku": "TG-SN-0414"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000449",
@@ -17299,7 +18127,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦168,000",
     "numeric_price": 168000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0415.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -17319,7 +18147,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0415",
+    "sku": "TG-SN-0415"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000450",
@@ -17341,7 +18171,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦173,000",
     "numeric_price": 173000,
     "tier": "premium",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0416.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -17363,7 +18193,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0416",
+    "sku": "TG-SN-0416"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000451",
@@ -17383,7 +18215,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦63,000",
     "numeric_price": 63000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0417.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -17402,7 +18234,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0417",
+    "sku": "TG-SN-0417"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000452",
@@ -17421,7 +18255,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦66,000",
     "numeric_price": 66000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0418.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -17440,7 +18274,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0418",
+    "sku": "TG-SN-0418"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000453",
@@ -17460,7 +18296,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-remote.webp",
+    "image_url": "/products/items/product-0419.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "115W",
@@ -17482,7 +18318,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0419",
+    "sku": "TG-SN-0419"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000454",
@@ -17502,7 +18340,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦85,000",
     "numeric_price": 85000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0420.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -17523,7 +18361,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0420",
+    "sku": "TG-SN-0420"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000455",
@@ -17543,7 +18383,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0421.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -17564,7 +18404,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0421",
+    "sku": "TG-SN-0421"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000456",
@@ -17584,7 +18426,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0422.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -17605,7 +18447,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0422",
+    "sku": "TG-SN-0422"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000457",
@@ -17625,7 +18469,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0423.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
@@ -17646,7 +18490,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0423",
+    "sku": "TG-SN-0423"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000458",
@@ -17666,7 +18512,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-remote.webp",
+    "image_url": "/products/items/product-0424.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17685,7 +18531,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0424",
+    "sku": "TG-SN-0424"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000459",
@@ -17705,7 +18553,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-remote.webp",
+    "image_url": "/products/items/product-0425.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17723,7 +18571,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0425",
+    "sku": "TG-SN-0425"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000460",
@@ -17743,7 +18593,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦30,000",
     "numeric_price": 30000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-remote.webp",
+    "image_url": "/products/items/product-0426.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17761,7 +18611,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0426",
+    "sku": "TG-SN-0426"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000461",
@@ -17781,7 +18633,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-remote.webp",
+    "image_url": "/products/items/product-0427.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17800,7 +18652,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0427",
+    "sku": "TG-SN-0427"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000462",
@@ -17820,7 +18674,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦1,000",
     "numeric_price": 1000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0428.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17837,7 +18691,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0428",
+    "sku": "TG-SN-0428"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000463",
@@ -17857,7 +18713,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦4,500",
     "numeric_price": 4500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0429.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17876,7 +18732,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0429",
+    "sku": "TG-SN-0429"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000464",
@@ -17896,7 +18754,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦100",
     "numeric_price": 100,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0430.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17917,7 +18775,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0430",
+    "sku": "TG-SN-0430"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000465",
@@ -17937,7 +18797,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150",
     "numeric_price": 150,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0431.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17956,7 +18816,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0431",
+    "sku": "TG-SN-0431"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000466",
@@ -17976,7 +18838,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦6,000",
     "numeric_price": 6000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0432.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -17996,7 +18858,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0432",
+    "sku": "TG-SN-0432"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000467",
@@ -18016,7 +18880,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦3,500",
     "numeric_price": 3500,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0433.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18035,7 +18899,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0433",
+    "sku": "TG-SN-0433"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000468",
@@ -18055,7 +18921,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦6,000",
     "numeric_price": 6000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0434.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18074,7 +18940,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0434",
+    "sku": "TG-SN-0434"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000469",
@@ -18094,7 +18962,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦11,000",
     "numeric_price": 11000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0435.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18112,7 +18980,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0435",
+    "sku": "TG-SN-0435"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000470",
@@ -18132,7 +19002,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/curtain-motor-track.webp",
+    "image_url": "/products/items/product-0436.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18149,7 +19019,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0436",
+    "sku": "TG-SN-0436"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000471",
@@ -18168,7 +19040,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0437.webp",
     "specifications": {
       "Operating Voltage": "10V",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -18188,7 +19060,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0437",
+    "sku": "TG-SN-0437"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000472",
@@ -18209,7 +19083,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦125,000",
     "numeric_price": 125000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0438.webp",
     "specifications": {
       "Operating Voltage": "10V",
       "Rated Power": "4W",
@@ -18235,7 +19109,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0438",
+    "sku": "TG-SN-0438"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000473",
@@ -18255,7 +19131,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0439.webp",
     "specifications": {
       "Operating Voltage": "10V",
       "Rated Power": "4W",
@@ -18281,7 +19157,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0439",
+    "sku": "TG-SN-0439"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000475",
@@ -18301,7 +19179,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0440.webp",
     "specifications": {
       "Rated Power": "15W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -18319,7 +19197,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0440",
+    "sku": "TG-SN-0440"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000476",
@@ -18341,7 +19221,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦115,000",
     "numeric_price": 115000,
     "tier": "mid",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0441.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "20W",
@@ -18359,7 +19239,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0441",
+    "sku": "TG-SN-0441"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000477",
@@ -18380,7 +19262,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0442.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -18397,7 +19279,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0442",
+    "sku": "TG-SN-0442"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000478",
@@ -18416,7 +19300,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0443.webp",
     "specifications": {
       "Operating Voltage": "220V",
       "Rated Power": "1 w",
@@ -18438,7 +19322,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0443",
+    "sku": "TG-SN-0443"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000479",
@@ -18460,7 +19346,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦205,000",
     "numeric_price": 205000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0444.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -18482,7 +19368,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0444",
+    "sku": "TG-SN-0444"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000480",
@@ -18504,7 +19392,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦280,000",
     "numeric_price": 280000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0445.webp",
     "specifications": {
       "Operating Voltage": "110V",
       "Rated Power": "30W",
@@ -18526,7 +19414,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0445",
+    "sku": "TG-SN-0445"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000481",
@@ -18547,7 +19437,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦385,000",
     "numeric_price": 385000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0446.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Dimensions": "1024*600",
@@ -18569,7 +19459,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0446",
+    "sku": "TG-SN-0446"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000482",
@@ -18589,7 +19481,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦390,000",
     "numeric_price": 390000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0447.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh",
       "Voice Control": "Amazon Alexa"
@@ -18608,7 +19500,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0447",
+    "sku": "TG-SN-0447"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000483",
@@ -18629,7 +19523,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦400,000",
     "numeric_price": 400000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0448.webp",
     "specifications": {
       "Rated Power": "30W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -18649,7 +19543,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0448",
+    "sku": "TG-SN-0448"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000484",
@@ -18671,7 +19567,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦495,000",
     "numeric_price": 495000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0449.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -18691,7 +19587,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0449",
+    "sku": "TG-SN-0449"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000485",
@@ -18713,7 +19611,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦510,000",
     "numeric_price": 510000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0450.webp",
     "specifications": {
       "Rated Power": "20W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -18734,7 +19632,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0450",
+    "sku": "TG-SN-0450"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000486",
@@ -18754,7 +19654,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0451.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -18773,7 +19673,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0451",
+    "sku": "TG-SN-0451"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000487",
@@ -18795,7 +19697,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦250,000",
     "numeric_price": 250000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0452.webp",
     "specifications": {
       "Rated Power": "50W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -18816,7 +19718,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0452",
+    "sku": "TG-SN-0452"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000488",
@@ -18838,7 +19742,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0453.webp",
     "specifications": {
       "Rated Power": "35W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -18859,7 +19763,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0453",
+    "sku": "TG-SN-0453"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000489",
@@ -18881,7 +19787,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦435,000",
     "numeric_price": 435000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0454.webp",
     "specifications": {
       "Rated Power": "50W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
@@ -18902,7 +19808,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0454",
+    "sku": "TG-SN-0454"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000490",
@@ -18924,7 +19832,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦380,000",
     "numeric_price": 380000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0455.webp",
     "specifications": {
       "Rated Power": "80W"
     },
@@ -18944,7 +19852,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0455",
+    "sku": "TG-SN-0455"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000491",
@@ -18964,7 +19874,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦210,000",
     "numeric_price": 210000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0456.webp",
     "specifications": {
       "Rated Power": "80W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -18983,7 +19893,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0456",
+    "sku": "TG-SN-0456"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000492",
@@ -19005,7 +19917,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦115,000",
     "numeric_price": 115000,
     "tier": "mid",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0457.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n"
     },
@@ -19022,7 +19934,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0457",
+    "sku": "TG-SN-0457"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000493",
@@ -19041,7 +19955,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦140,000",
     "numeric_price": 140000,
     "tier": "mid",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0458.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Voice Control": "Google Assistant"
@@ -19059,7 +19973,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0458",
+    "sku": "TG-SN-0458"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000494",
@@ -19081,7 +19997,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦375,000",
     "numeric_price": 375000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0459.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -19101,7 +20017,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0459",
+    "sku": "TG-SN-0459"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000495",
@@ -19123,7 +20041,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦680,000",
     "numeric_price": 680000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0460.webp",
     "specifications": {
       "Rated Power": "110W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -19142,7 +20060,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0460",
+    "sku": "TG-SN-0460"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000496",
@@ -19164,7 +20084,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦315,000",
     "numeric_price": 315000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0461.webp",
     "specifications": {
       "Rated Power": "60W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -19184,7 +20104,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0461",
+    "sku": "TG-SN-0461"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000497",
@@ -19205,7 +20127,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦201,000",
     "numeric_price": 201000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0462.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -19223,7 +20145,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0462",
+    "sku": "TG-SN-0462"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000498",
@@ -19243,7 +20167,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦1,400,000",
     "numeric_price": 1400000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0463.webp",
     "specifications": {
       "Rated Power": "50W"
     },
@@ -19262,7 +20186,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0463",
+    "sku": "TG-SN-0463"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000499",
@@ -19283,7 +20209,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦1,050,000",
     "numeric_price": 1050000,
     "tier": "premium",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0464.webp",
     "specifications": {
       "Rated Power": "50 w"
     },
@@ -19301,7 +20227,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0464",
+    "sku": "TG-SN-0464"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000500",
@@ -19322,7 +20250,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦105,000",
     "numeric_price": 105000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0465.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -19341,7 +20269,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0465",
+    "sku": "TG-SN-0465"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000503",
@@ -19361,7 +20291,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0466.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -19382,7 +20312,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0466",
+    "sku": "TG-SN-0466"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000504",
@@ -19402,7 +20334,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0467.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -19423,7 +20355,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0467",
+    "sku": "TG-SN-0467"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000505",
@@ -19443,7 +20377,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦75,000",
     "numeric_price": 75000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0468.webp",
     "specifications": {
       "Rated Power": "40W"
     },
@@ -19463,7 +20397,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0468",
+    "sku": "TG-SN-0468"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000506",
@@ -19483,7 +20419,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦63,000",
     "numeric_price": 63000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0469.webp",
     "specifications": {
       "Rated Power": "40W"
     },
@@ -19503,7 +20439,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0469",
+    "sku": "TG-SN-0469"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000507",
@@ -19523,7 +20461,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0470.webp",
     "specifications": {
       "Rated Power": "80W"
     },
@@ -19543,7 +20481,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0470",
+    "sku": "TG-SN-0470"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000508",
@@ -19563,7 +20503,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦58,000",
     "numeric_price": 58000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0471.webp",
     "specifications": {
       "Rated Power": "80W"
     },
@@ -19579,7 +20519,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0471",
+    "sku": "TG-SN-0471"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000509",
@@ -19599,7 +20541,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0472.webp",
     "specifications": {
       "Rated Power": "100W",
       "Dimensions": "273*106mm",
@@ -19621,7 +20563,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0472",
+    "sku": "TG-SN-0472"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000510",
@@ -19641,7 +20585,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0473.webp",
     "specifications": {
       "Rated Power": "100W",
       "Wireless Protocol": "Bluetooth BLE / Mesh",
@@ -19664,7 +20608,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0473",
+    "sku": "TG-SN-0473"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000511",
@@ -19683,7 +20629,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0474.webp",
     "specifications": {
       "Rated Power": "30W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -19703,7 +20649,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0474",
+    "sku": "TG-SN-0474"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000512",
@@ -19723,7 +20671,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0475.webp",
     "specifications": {
       "Rated Power": "30W"
     },
@@ -19743,7 +20691,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0475",
+    "sku": "TG-SN-0475"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000514",
@@ -19762,7 +20712,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0476.webp",
     "specifications": {
       "Rated Power": "10w"
     },
@@ -19778,7 +20728,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0476",
+    "sku": "TG-SN-0476"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000515",
@@ -19798,7 +20750,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦50,000",
     "numeric_price": 50000,
     "tier": "affordable",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0477.webp",
     "specifications": {
       "Rated Power": "50W"
     },
@@ -19818,7 +20770,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0477",
+    "sku": "TG-SN-0477"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000516",
@@ -19838,7 +20792,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦62,000",
     "numeric_price": 62000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0478.webp",
     "specifications": {
       "Rated Power": "80W"
     },
@@ -19858,7 +20812,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0478",
+    "sku": "TG-SN-0478"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000517",
@@ -19878,7 +20834,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦78,000",
     "numeric_price": 78000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0479.webp",
     "specifications": {
       "Rated Power": "100W"
     },
@@ -19897,7 +20853,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0479",
+    "sku": "TG-SN-0479"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000518",
@@ -19917,7 +20875,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/clear/audio-wall-amplifier.webp",
+    "image_url": "/products/items/product-0480.webp",
     "specifications": {
       "Rated Power": "40W"
     },
@@ -19937,7 +20895,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0480",
+    "sku": "TG-SN-0480"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000519",
@@ -19957,7 +20917,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0481.webp",
     "specifications": {
       "Rated Power": "80 W",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -19977,7 +20937,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0481",
+    "sku": "TG-SN-0481"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000520",
@@ -19996,7 +20958,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0482.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -20016,7 +20978,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0482",
+    "sku": "TG-SN-0482"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000521",
@@ -20038,7 +21002,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦80,000",
     "numeric_price": 80000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0483.webp",
     "specifications": {
       "Rated Power": "50W"
     },
@@ -20057,7 +21021,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0483",
+    "sku": "TG-SN-0483"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000522",
@@ -20079,7 +21045,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0484.webp",
     "specifications": {
       "Rated Power": "60W"
     },
@@ -20098,7 +21064,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0484",
+    "sku": "TG-SN-0484"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000523",
@@ -20120,7 +21088,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦110,000",
     "numeric_price": 110000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0485.webp",
     "specifications": {
       "Rated Power": "50W",
       "Dimensions": "171×169×278",
@@ -20141,7 +21109,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0485",
+    "sku": "TG-SN-0485"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000524",
@@ -20163,7 +21133,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦400,000",
     "numeric_price": 400000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0486.webp",
     "specifications": {
       "Rated Power": "100W",
       "Dimensions": "280*383*323mm",
@@ -20181,7 +21151,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0486",
+    "sku": "TG-SN-0486"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000525",
@@ -20203,7 +21175,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦670,000",
     "numeric_price": 670000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0487.webp",
     "specifications": {
       "Rated Power": "150W"
     },
@@ -20219,7 +21191,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0487",
+    "sku": "TG-SN-0487"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000526",
@@ -20241,7 +21215,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦105,000",
     "numeric_price": 105000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0488.webp",
     "specifications": {
       "Operating Voltage": "100V",
       "Rated Power": "20W",
@@ -20261,7 +21235,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0488",
+    "sku": "TG-SN-0488"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000527",
@@ -20283,7 +21259,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦200,000",
     "numeric_price": 200000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0489.webp",
     "specifications": {
       "Rated Power": "30W",
       "Dimensions": "285×187",
@@ -20305,7 +21281,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0489",
+    "sku": "TG-SN-0489"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000528",
@@ -20327,7 +21305,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦350,000",
     "numeric_price": 350000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-hivi-sound.webp",
+    "image_url": "/products/items/product-0490.webp",
     "specifications": {
       "Rated Power": "100 w",
       "Wireless Protocol": "Bluetooth BLE / Mesh"
@@ -20348,7 +21326,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0490",
+    "sku": "TG-SN-0490"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000529",
@@ -20368,7 +21348,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦400,000",
     "numeric_price": 400000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0491.webp",
     "specifications": {
       "Rated Power": "150W"
     },
@@ -20385,7 +21365,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0491",
+    "sku": "TG-SN-0491"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000530",
@@ -20405,7 +21387,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦375,000",
     "numeric_price": 375000,
     "tier": "premium",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0492.webp",
     "specifications": {
       "Rated Power": "100W"
     },
@@ -20421,7 +21403,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0492",
+    "sku": "TG-SN-0492"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000531",
@@ -20441,7 +21425,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦140,000",
     "numeric_price": 140000,
     "tier": "mid",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0493.webp",
     "specifications": {
       "Rated Power": "30W"
     },
@@ -20461,7 +21445,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0493",
+    "sku": "TG-SN-0493"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000532",
@@ -20481,7 +21467,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0494.webp",
     "specifications": {
       "Rated Power": "10W"
     },
@@ -20501,7 +21487,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0494",
+    "sku": "TG-SN-0494"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000534",
@@ -20521,7 +21509,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦70,000",
     "numeric_price": 70000,
     "tier": "mid",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0495.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20540,7 +21528,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0495",
+    "sku": "TG-SN-0495"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000535",
@@ -20560,7 +21550,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0496.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20578,7 +21568,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0496",
+    "sku": "TG-SN-0496"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000536",
@@ -20598,7 +21590,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦125,000",
     "numeric_price": 125000,
     "tier": "mid",
-    "image_url": "/products/clear/lock-fingerprint-handle.webp",
+    "image_url": "/products/items/product-0497.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20618,7 +21610,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0497",
+    "sku": "TG-SN-0497"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000537",
@@ -20638,7 +21632,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦68,000",
     "numeric_price": 68000,
     "tier": "mid",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0498.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20654,7 +21648,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0498",
+    "sku": "TG-SN-0498"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000538",
@@ -20673,7 +21669,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦120,000",
     "numeric_price": 120000,
     "tier": "mid",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0499.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20689,7 +21685,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0499",
+    "sku": "TG-SN-0499"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000539",
@@ -20710,7 +21708,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦210,000",
     "numeric_price": 210000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0500.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20728,7 +21726,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0500",
+    "sku": "TG-SN-0500"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000540",
@@ -20749,7 +21749,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦150,000",
     "numeric_price": 150000,
     "tier": "mid",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0501.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -20768,7 +21768,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0501",
+    "sku": "TG-SN-0501"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000541",
@@ -20788,7 +21790,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦250,000",
     "numeric_price": 250000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0502.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20806,7 +21808,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0502",
+    "sku": "TG-SN-0502"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000542",
@@ -20826,7 +21830,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦665,000",
     "numeric_price": 665000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0503.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20846,7 +21850,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0503",
+    "sku": "TG-SN-0503"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000543",
@@ -20866,7 +21872,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦700,000",
     "numeric_price": 700000,
     "tier": "premium",
-    "image_url": "/products/minisim/minisim-543.webp",
+    "image_url": "/products/items/product-0504.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20886,7 +21892,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0504",
+    "sku": "TG-SN-0504"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000544",
@@ -20906,7 +21914,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦350,000",
     "numeric_price": 350000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0505.webp",
     "specifications": {
       "Voice Control": "Amazon Alexa"
     },
@@ -20926,7 +21934,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0505",
+    "sku": "TG-SN-0505"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000545",
@@ -20946,7 +21956,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦215,000",
     "numeric_price": 215000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0506.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -20965,7 +21975,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0506",
+    "sku": "TG-SN-0506"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000546",
@@ -20985,7 +21997,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦520,000",
     "numeric_price": 520000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0507.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21003,7 +22015,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0507",
+    "sku": "TG-SN-0507"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000547",
@@ -21023,7 +22037,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦620,000",
     "numeric_price": 620000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0508.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21041,7 +22055,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0508",
+    "sku": "TG-SN-0508"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000548",
@@ -21061,7 +22077,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦95,000",
     "numeric_price": 95000,
     "tier": "mid",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0509.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -21080,7 +22096,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0509",
+    "sku": "TG-SN-0509"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000549",
@@ -21100,7 +22118,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0510.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -21118,7 +22136,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0510",
+    "sku": "TG-SN-0510"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000550",
@@ -21138,7 +22158,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦380,000",
     "numeric_price": 380000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0511.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -21157,7 +22177,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0511",
+    "sku": "TG-SN-0511"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000551",
@@ -21177,7 +22199,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦270,000",
     "numeric_price": 270000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0512.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21198,7 +22220,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0512",
+    "sku": "TG-SN-0512"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000552",
@@ -21218,7 +22242,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0513.webp",
     "specifications": {
       "Panel Material": "High-Grade Acrylic with Metal Trim"
     },
@@ -21236,7 +22260,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0513",
+    "sku": "TG-SN-0513"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000553",
@@ -21256,7 +22282,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0514.webp",
     "specifications": {
       "Voice Control": "Google Assistant"
     },
@@ -21276,7 +22302,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0514",
+    "sku": "TG-SN-0514"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000554",
@@ -21296,7 +22324,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0515.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21314,7 +22342,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0515",
+    "sku": "TG-SN-0515"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000555",
@@ -21334,7 +22364,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0516.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21355,7 +22385,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0516",
+    "sku": "TG-SN-0516"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000556",
@@ -21375,7 +22407,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0517.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21394,7 +22426,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0517",
+    "sku": "TG-SN-0517"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000557",
@@ -21414,7 +22448,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0518.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21435,7 +22469,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0518",
+    "sku": "TG-SN-0518"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000558",
@@ -21455,7 +22491,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0519.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21474,7 +22510,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0519",
+    "sku": "TG-SN-0519"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000559",
@@ -21494,7 +22532,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦16,000",
     "numeric_price": 16000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0520.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -21514,7 +22552,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0520",
+    "sku": "TG-SN-0520"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000560",
@@ -21534,7 +22574,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦15,000",
     "numeric_price": 15000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0521.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -21555,7 +22595,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0521",
+    "sku": "TG-SN-0521"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000562",
@@ -21575,7 +22617,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦14,000",
     "numeric_price": 14000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0522.webp",
     "specifications": {
       "Rated Power": "9W",
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
@@ -21594,7 +22636,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0522",
+    "sku": "TG-SN-0522"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000563",
@@ -21614,7 +22658,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0523.webp",
     "specifications": {
       "Rated Power": "7 W",
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
@@ -21633,7 +22677,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0523",
+    "sku": "TG-SN-0523"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000564",
@@ -21652,7 +22698,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0524.webp",
     "specifications": {
       "Wireless Protocol": "Zigbee 3.0 (2.4GHz)",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -21673,7 +22719,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0524",
+    "sku": "TG-SN-0524"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000566",
@@ -21693,7 +22741,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦175,000",
     "numeric_price": 175000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0525.webp",
     "specifications": {
       "Rated Power": "16W"
     },
@@ -21712,7 +22760,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0525",
+    "sku": "TG-SN-0525"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000567",
@@ -21734,7 +22784,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦185,000",
     "numeric_price": 185000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0526.webp",
     "specifications": {
       "Rated Power": "16W"
     },
@@ -21753,7 +22803,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0526",
+    "sku": "TG-SN-0526"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000568",
@@ -21775,7 +22827,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦215,000",
     "numeric_price": 215000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0527.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "16W"
@@ -21794,7 +22846,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0527",
+    "sku": "TG-SN-0527"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000569",
@@ -21816,7 +22870,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0528.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "16W"
@@ -21835,7 +22889,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0528",
+    "sku": "TG-SN-0528"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000570",
@@ -21857,7 +22913,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦255,000",
     "numeric_price": 255000,
     "tier": "premium",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0529.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "16W"
@@ -21876,7 +22932,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0529",
+    "sku": "TG-SN-0529"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000571",
@@ -21896,7 +22954,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦85,000",
     "numeric_price": 85000,
     "tier": "mid",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0530.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "16W"
@@ -21917,7 +22975,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0530",
+    "sku": "TG-SN-0530"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000573",
@@ -21937,7 +22997,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0531.webp",
     "specifications": {
       "Dimensions": "1000*32*57 mm"
     },
@@ -21957,7 +23017,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0531",
+    "sku": "TG-SN-0531"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000574",
@@ -21977,7 +23039,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0532.webp",
     "specifications": {
       "Dimensions": "2000*32*57 mm"
     },
@@ -21997,7 +23059,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0532",
+    "sku": "TG-SN-0532"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000575",
@@ -22017,7 +23081,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦24,000",
     "numeric_price": 24000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0533.webp",
     "specifications": {
       "Dimensions": "1000*32*57 mm"
     },
@@ -22037,7 +23101,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0533",
+    "sku": "TG-SN-0533"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000576",
@@ -22057,7 +23123,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0534.webp",
     "specifications": {
       "Dimensions": "2000*32*57 mm"
     },
@@ -22077,7 +23143,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0534",
+    "sku": "TG-SN-0534"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000577",
@@ -22097,7 +23165,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-spotlight-led.webp",
+    "image_url": "/products/items/product-0535.webp",
     "specifications": {
       "Rated Power": "18W",
       "Dimensions": "410*25*41mm"
@@ -22114,7 +23182,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0535",
+    "sku": "TG-SN-0535"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000578",
@@ -22134,7 +23204,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-linear-flood.webp",
+    "image_url": "/products/items/product-0536.webp",
     "specifications": {
       "Rated Power": "18W",
       "Dimensions": "410*25*41mm"
@@ -22151,7 +23221,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0536",
+    "sku": "TG-SN-0536"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000579",
@@ -22171,7 +23243,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦41,000",
     "numeric_price": 41000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-linear-flood.webp",
+    "image_url": "/products/items/product-0537.webp",
     "specifications": {
       "Rated Power": "27W",
       "Dimensions": "600*25*41mm"
@@ -22189,7 +23261,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0537",
+    "sku": "TG-SN-0537"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000580",
@@ -22209,7 +23283,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦38,000",
     "numeric_price": 38000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-spotlight-led.webp",
+    "image_url": "/products/items/product-0538.webp",
     "specifications": {
       "Rated Power": "18W",
       "Dimensions": "220*25*105mm"
@@ -22227,7 +23301,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0538",
+    "sku": "TG-SN-0538"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000581",
@@ -22247,7 +23323,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦39,000",
     "numeric_price": 39000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-linear-flood.webp",
+    "image_url": "/products/items/product-0539.webp",
     "specifications": {
       "Rated Power": "9W",
       "Dimensions": "220*25*105mm"
@@ -22265,7 +23341,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0539",
+    "sku": "TG-SN-0539"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000582",
@@ -22285,7 +23363,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-spotlight-led.webp",
+    "image_url": "/products/items/product-0540.webp",
     "specifications": {
       "Rated Power": "7W"
     },
@@ -22301,7 +23379,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0540",
+    "sku": "TG-SN-0540"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000583",
@@ -22321,7 +23401,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦33,000",
     "numeric_price": 33000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-spotlight-led.webp",
+    "image_url": "/products/items/product-0541.webp",
     "specifications": {
       "Rated Power": "20W"
     },
@@ -22338,7 +23418,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0541",
+    "sku": "TG-SN-0541"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000584",
@@ -22358,7 +23440,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-spotlight-led.webp",
+    "image_url": "/products/items/product-0542.webp",
     "specifications": {
       "Rated Power": "10W"
     },
@@ -22374,7 +23456,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0542",
+    "sku": "TG-SN-0542"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000585",
@@ -22394,7 +23478,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦2,500",
     "numeric_price": 2500,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0543.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22410,7 +23494,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0543",
+    "sku": "TG-SN-0543"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000586",
@@ -22430,7 +23516,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦4,500",
     "numeric_price": 4500,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0544.webp",
     "specifications": {
       "Dimensions": "20*2"
     },
@@ -22445,7 +23531,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0544",
+    "sku": "TG-SN-0544"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000587",
@@ -22465,7 +23553,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦2,500",
     "numeric_price": 2500,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0545.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22481,7 +23569,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0545",
+    "sku": "TG-SN-0545"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000588",
@@ -22501,7 +23591,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦3,500",
     "numeric_price": 3500,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0546.webp",
     "specifications": {
       "Wireless Protocol": "Bluetooth BLE / Mesh"
     },
@@ -22517,7 +23607,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0546",
+    "sku": "TG-SN-0546"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000589",
@@ -22537,7 +23629,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦3,000",
     "numeric_price": 3000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0547.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22554,7 +23646,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0547",
+    "sku": "TG-SN-0547"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000590",
@@ -22574,7 +23668,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦5,000",
     "numeric_price": 5000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0548.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22591,7 +23685,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0548",
+    "sku": "TG-SN-0548"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000591",
@@ -22611,7 +23707,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/gateway-zigbee-hub.webp",
+    "image_url": "/products/items/product-0549.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22627,7 +23723,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0549",
+    "sku": "TG-SN-0549"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000592",
@@ -22647,7 +23745,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0550.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22664,7 +23762,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0550",
+    "sku": "TG-SN-0550"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000593",
@@ -22684,7 +23784,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0551.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -22701,7 +23801,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0551",
+    "sku": "TG-SN-0551"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000595",
@@ -22721,7 +23823,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦76,000",
     "numeric_price": 76000,
     "tier": "mid",
-    "image_url": "/products/clear/stair-step-lighting.webp",
+    "image_url": "/products/items/product-0552.webp",
     "specifications": {
       "Operating Voltage": "12V"
     },
@@ -22741,7 +23843,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0552",
+    "sku": "TG-SN-0552"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000596",
@@ -22761,7 +23865,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦50,000",
     "numeric_price": 50000,
     "tier": "affordable",
-    "image_url": "/products/clear/stair-step-lighting.webp",
+    "image_url": "/products/items/product-0553.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "300W"
@@ -22779,7 +23883,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 26,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0553",
+    "sku": "TG-SN-0553"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000597",
@@ -22799,7 +23905,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦51,000",
     "numeric_price": 51000,
     "tier": "mid",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0554.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "200W"
@@ -22818,7 +23924,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0554",
+    "sku": "TG-SN-0554"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000598",
@@ -22838,7 +23946,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0555.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "100W"
@@ -22855,7 +23963,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 28,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0555",
+    "sku": "TG-SN-0555"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000599",
@@ -22875,7 +23985,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦27,000",
     "numeric_price": 27000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0556.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "100W"
@@ -22892,7 +24002,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0556",
+    "sku": "TG-SN-0556"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000600",
@@ -22912,7 +24024,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦37,000",
     "numeric_price": 37000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0557.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "100W"
@@ -22929,7 +24041,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 10,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0557",
+    "sku": "TG-SN-0557"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000601",
@@ -22949,7 +24063,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0558.webp",
     "specifications": {
       "Operating Voltage": "24V",
       "Rated Power": "350W",
@@ -22969,7 +24083,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0558",
+    "sku": "TG-SN-0558"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000602",
@@ -22989,7 +24105,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦18,000",
     "numeric_price": 18000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0559.webp",
     "specifications": {
       "Operating Voltage": "24V"
     },
@@ -23006,7 +24122,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0559",
+    "sku": "TG-SN-0559"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000603",
@@ -23026,7 +24144,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦28,000",
     "numeric_price": 28000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0560.webp",
     "specifications": {
       "Operating Voltage": "24V"
     },
@@ -23043,7 +24161,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 13,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0560",
+    "sku": "TG-SN-0560"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000604",
@@ -23063,7 +24183,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0561.webp",
     "specifications": {
       "Operating Voltage": "24V"
     },
@@ -23081,7 +24201,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0561",
+    "sku": "TG-SN-0561"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000605",
@@ -23101,7 +24223,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦17,000",
     "numeric_price": 17000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0562.webp",
     "specifications": {
       "Operating Voltage": "12V"
     },
@@ -23121,7 +24243,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0562",
+    "sku": "TG-SN-0562"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000606",
@@ -23143,7 +24267,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦21,000",
     "numeric_price": 21000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0563.webp",
     "specifications": {
       "Operating Voltage": "24Vdc",
       "Rated Power": "10W"
@@ -23161,7 +24285,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0563",
+    "sku": "TG-SN-0563"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000607",
@@ -23183,7 +24309,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦42,000",
     "numeric_price": 42000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0564.webp",
     "specifications": {
       "Operating Voltage": "24Vdc",
       "Rated Power": "12W"
@@ -23202,7 +24328,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0564",
+    "sku": "TG-SN-0564"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000608",
@@ -23224,7 +24352,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦31,000",
     "numeric_price": 31000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0565.webp",
     "specifications": {
       "Operating Voltage": "24Vdc",
       "Rated Power": "10W"
@@ -23242,7 +24370,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0565",
+    "sku": "TG-SN-0565"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000609",
@@ -23262,7 +24392,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦47,000",
     "numeric_price": 47000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0566.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23281,7 +24411,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0566",
+    "sku": "TG-SN-0566"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000610",
@@ -23303,7 +24435,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦29,000",
     "numeric_price": 29000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0567.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -23323,7 +24455,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 20,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0567",
+    "sku": "TG-SN-0567"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000611",
@@ -23345,7 +24479,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦48,000",
     "numeric_price": 48000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0568.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -23365,7 +24499,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0568",
+    "sku": "TG-SN-0568"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000612",
@@ -23385,7 +24521,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,000",
     "numeric_price": 10000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0569.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23402,7 +24538,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0569",
+    "sku": "TG-SN-0569"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000613",
@@ -23422,7 +24560,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦55,000",
     "numeric_price": 55000,
     "tier": "mid",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0570.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23442,7 +24580,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 23,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0570",
+    "sku": "TG-SN-0570"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000614",
@@ -23462,7 +24602,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦90,000",
     "numeric_price": 90000,
     "tier": "mid",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0571.webp",
     "specifications": {
       "Operating Voltage": "12V",
       "Rated Power": "18W",
@@ -23485,7 +24625,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 24,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0571",
+    "sku": "TG-SN-0571"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000615",
@@ -23505,7 +24647,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0572.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23526,7 +24668,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 25,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0572",
+    "sku": "TG-SN-0572"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000617",
@@ -23546,7 +24690,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦1,150,000",
     "numeric_price": 1150000,
     "tier": "premium",
-    "image_url": "/products/clear/track-magnetic-rail.webp",
+    "image_url": "/products/items/product-0573.webp",
     "specifications": {
       "Resolution": "4K"
     },
@@ -23566,7 +24710,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 27,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0573",
+    "sku": "TG-SN-0573"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000619",
@@ -23586,7 +24732,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦43,000",
     "numeric_price": 43000,
     "tier": "affordable",
-    "image_url": "/products/clear/speaker-ceiling-coaxial.webp",
+    "image_url": "/products/items/product-0574.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23605,7 +24751,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 29,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0574",
+    "sku": "TG-SN-0574"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000621",
@@ -23625,7 +24773,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦230,000",
     "numeric_price": 230000,
     "tier": "premium",
-    "image_url": "/products/clear/vacuum-robot-smart.webp",
+    "image_url": "/products/items/product-0575.webp",
     "specifications": {
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)"
     },
@@ -23644,7 +24792,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 11,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0575",
+    "sku": "TG-SN-0575"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000622",
@@ -23664,7 +24814,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦495,000",
     "numeric_price": 495000,
     "tier": "premium",
-    "image_url": "/products/clear/vacuum-robot-smart.webp",
+    "image_url": "/products/items/product-0576.webp",
     "specifications": {
       "Wireless Protocol": "Wi-Fi 2.4GHz IEEE 802.11b/g/n",
       "Mobile App": "Tuya Smart / Smart Life (iOS & Android)",
@@ -23686,7 +24836,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 12,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 3
+    "warranty_years": 3,
+    "serial_number": "TG-SN-0576",
+    "sku": "TG-SN-0576"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000624",
@@ -23706,7 +24858,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦65,000",
     "numeric_price": 65000,
     "tier": "mid",
-    "image_url": "/products/clear/hotel-keycard-switch.webp",
+    "image_url": "/products/items/product-0577.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23724,7 +24876,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 14,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0577",
+    "sku": "TG-SN-0577"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000625",
@@ -23744,7 +24898,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦40,000",
     "numeric_price": 40000,
     "tier": "affordable",
-    "image_url": "/products/clear/hotel-keycard-switch.webp",
+    "image_url": "/products/items/product-0578.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23761,7 +24915,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 15,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0578",
+    "sku": "TG-SN-0578"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000626",
@@ -23781,7 +24937,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦22,000",
     "numeric_price": 22000,
     "tier": "affordable",
-    "image_url": "/products/clear/hotel-keycard-switch.webp",
+    "image_url": "/products/items/product-0579.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23799,7 +24955,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 16,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0579",
+    "sku": "TG-SN-0579"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000627",
@@ -23819,7 +24977,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦34,000",
     "numeric_price": 34000,
     "tier": "affordable",
-    "image_url": "/products/clear/hotel-keycard-switch.webp",
+    "image_url": "/products/items/product-0580.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23836,7 +24994,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 17,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0580",
+    "sku": "TG-SN-0580"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000628",
@@ -23856,7 +25016,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦26,000",
     "numeric_price": 26000,
     "tier": "affordable",
-    "image_url": "/products/clear/hotel-keycard-switch.webp",
+    "image_url": "/products/items/product-0581.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23873,7 +25033,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 18,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0581",
+    "sku": "TG-SN-0581"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000629",
@@ -23893,7 +25055,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦10,000",
     "numeric_price": 10000,
     "tier": "affordable",
-    "image_url": "/products/clear/camera-doorbell-video.webp",
+    "image_url": "/products/items/product-0582.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23909,7 +25071,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 19,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0582",
+    "sku": "TG-SN-0582"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000631",
@@ -23929,7 +25093,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦45,000",
     "numeric_price": 45000,
     "tier": "affordable",
-    "image_url": "/products/clear/panel-touch-10inch.webp",
+    "image_url": "/products/items/product-0583.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23950,7 +25114,9 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 21,
     "stock_status": "in_stock",
     "is_featured": false,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0583",
+    "sku": "TG-SN-0583"
   },
   {
     "id": "b0000000-0000-0000-0000-000000000632",
@@ -23970,7 +25136,7 @@ export const MINISIM_PRODUCTS: Product[] = [
     "price": "₦25,000",
     "numeric_price": 25000,
     "tier": "affordable",
-    "image_url": "/products/clear/panel-touch-4inch.webp",
+    "image_url": "/products/items/product-0584.webp",
     "specifications": {
       "Compatibility": "Standard Universal Installation",
       "Certifications": "CE, RoHS Compliant"
@@ -23991,6 +25157,8 @@ export const MINISIM_PRODUCTS: Product[] = [
     "review_count": 22,
     "stock_status": "in_stock",
     "is_featured": true,
-    "warranty_years": 2
+    "warranty_years": 2,
+    "serial_number": "TG-SN-0584",
+    "sku": "TG-SN-0584"
   }
 ];

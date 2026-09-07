@@ -20,6 +20,8 @@ export interface RetailProduct {
   stock_status?: "in_stock" | "low_stock" | "pre_order" | "out_of_stock";
   is_featured?: boolean;
   warranty_years?: number;
+  serial_number?: string;
+  sku?: string;
   created_at?: string;
 }
 

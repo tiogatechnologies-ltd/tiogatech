@@ -511,6 +511,14 @@ export const ProductDetail = () => {
                   {product.name}
                 </h1>
                 <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
+                  {(product.serial_number || product.sku) && (
+                    <>
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-primary/10 border border-primary/20 text-primary font-mono text-[11px] font-bold">
+                        <span>SN: {product.serial_number || product.sku}</span>
+                      </div>
+                      <span>·</span>
+                    </>
+                  )}
                   <div className="flex items-center gap-1 font-medium text-amber-500">
                     <Star size={14} fill="currentColor" />
                     <span className="text-foreground font-bold">{product.rating || "5.0"}</span>
@@ -726,11 +734,18 @@ export const ProductDetail = () => {
                 <div className="p-5 sm:p-6 border-b border-border bg-muted/30 flex items-center justify-between">
                   <h3 className="font-display text-lg font-bold text-foreground">Specification Sheet</h3>
                   <span className="text-[11px] font-mono font-semibold text-muted-foreground">
-                    SKU: TIOGA-{product.id.slice(0, 8).toUpperCase()}
+                    SKU: {product.sku || product.serial_number || `TIOGA-${product.id.slice(0, 8).toUpperCase()}`}
                   </span>
                 </div>
 
                 <div className="divide-y divide-border">
+                  {/* Serial Number Row */}
+                  {(product.serial_number || product.sku) && (
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
+                      <span className="text-muted-foreground font-medium">Serial Number</span>
+                      <span className="font-mono font-bold text-primary sm:text-right">{product.serial_number || product.sku}</span>
+                    </div>
+                  )}
                   {/* Category & Series rows */}
                   <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors">
                     <span className="text-muted-foreground font-medium">Hardware Class</span>

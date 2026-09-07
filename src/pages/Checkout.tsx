@@ -198,6 +198,7 @@ const Checkout = () => {
     };
 
     const orderNumber = `TOG-${Math.floor(100000 + Math.random() * 900000)}`;
+    const trackingId = `TRK-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
     const itemsSummary = items
       .map((i, n) => `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` (${i.price})` : ""}`)
       .join("\n");
@@ -205,6 +206,8 @@ const Checkout = () => {
 
     const orderPayload = {
       order_number: orderNumber,
+      tracking_id: trackingId,
+      tracking_number: trackingId,
       full_name: `${form.first_name} ${form.last_name}`.trim(),
       phone: form.phone.trim(),
       email: form.email?.trim() || null,
@@ -238,6 +241,7 @@ const Checkout = () => {
       const existingOrders = JSON.parse(localStorage.getItem("tioga_recent_orders") || "[]");
       localStorage.setItem("tioga_recent_orders", JSON.stringify([orderPayload, ...existingOrders.filter((o: any) => o.order_number !== orderNumber)].slice(0, 20)));
       localStorage.setItem(`tioga_order_${orderNumber}`, JSON.stringify(orderPayload));
+      localStorage.setItem(`tioga_order_${trackingId}`, JSON.stringify(orderPayload));
     } catch {}
 
     // Remember address for authenticated users
@@ -286,7 +290,7 @@ const Checkout = () => {
             clear();
             setSubmitting(false);
             toast.success("Payment confirmed! Your order has been placed.");
-            navigate(`/checkout/success?order=${orderNumber}&method=paystack&reference=${encodeURIComponent(response.reference)}&amount=${total}`);
+            navigate(`/checkout/success?order=${orderNumber}&tracking=${trackingId}&method=paystack&reference=${encodeURIComponent(response.reference)}&amount=${total}`);
           },
           onClose: () => {
             setSubmitting(false);
@@ -304,11 +308,11 @@ const Checkout = () => {
     if (payment === "whatsapp") {
       clear();
       const msg = items.map((i, n) => `${n + 1}. ${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price ? ` - ${i.price}` : ""}`).join("\n");
-      const text = encodeURIComponent(`Hi Tioga, I just placed order ${orderNumber}.\n\n${msg}\n\nTotal: ${formNGN(total)}\nName: ${form.first_name} ${form.last_name}\nPhone: ${form.phone}\nAddress: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}`);
+      const text = encodeURIComponent(`Hi Tioga, I just placed order ${orderNumber} (Tracking: ${trackingId}).\n\n${msg}\n\nTotal: ${formNGN(total)}\nName: ${form.first_name} ${form.last_name}\nPhone: ${form.phone}\nAddress: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}`);
       window.open(`https://wa.me/${whatsappDigits(contact)}?text=${text}`, "_blank", "noopener,noreferrer");
       setSubmitting(false);
       toast.success("Order placed! Connecting with sales team on WhatsApp...");
-      navigate(`/checkout/success?order=${orderNumber}&method=whatsapp`);
+      navigate(`/checkout/success?order=${orderNumber}&tracking=${trackingId}&method=whatsapp`);
       return;
     }
 
@@ -316,7 +320,7 @@ const Checkout = () => {
       clear();
       setSubmitting(false);
       toast.success("Order placed! Please send payment to complete your order.");
-      navigate(`/checkout/success?order=${orderNumber}&method=bank_transfer`);
+      navigate(`/checkout/success?order=${orderNumber}&tracking=${trackingId}&method=bank_transfer`);
       return;
     }
   };
