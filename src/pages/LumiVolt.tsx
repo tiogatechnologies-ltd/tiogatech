@@ -18,6 +18,7 @@ import LumiVoltSizer from "@/components/LumiVoltSizer";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const pillars = [
   { icon: Sun, title: "Rooftop Solar", desc: "Tier-1 panels sized for your roof and daily load, engineered for Nigerian sun hours." },
@@ -114,7 +115,9 @@ const LumiVolt = () => {
                 <div className="w-12 h-12 mx-auto rounded-xl bg-gold/15 flex items-center justify-center mb-3">
                   <s.icon className="text-gold" size={22} />
                 </div>
-                <p className="text-3xl sm:text-4xl font-display font-bold text-primary mb-1">{s.stat}</p>
+                <p className="text-3xl sm:text-4xl font-display font-bold text-primary mb-1">
+                  <AnimatedCounter value={s.stat} />
+                </p>
                 <p className="text-sm font-semibold text-foreground">{s.label}</p>
               </div>
             ))}

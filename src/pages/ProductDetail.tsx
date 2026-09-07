@@ -46,6 +46,7 @@ import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productIm
 import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 interface Product {
   id: string;
@@ -553,7 +554,11 @@ export const ProductDetail = () => {
                     <span className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold block mb-0.5">Special Promo Price</span>
                     <div className="flex items-baseline gap-3 flex-wrap">
                       <span className="font-display text-3xl sm:text-4xl font-black text-foreground">
-                        {formatPrice(product.price)}
+                        {numPrice > 0 ? (
+                          <AnimatedCounter target={numPrice} prefix="₦" />
+                        ) : (
+                          formatPrice(product.price)
+                        )}
                       </span>
                       {wasPrice && savedAmount && (
                         <div className="flex flex-col">
@@ -561,7 +566,7 @@ export const ProductDetail = () => {
                             ₦{Math.round(wasPrice).toLocaleString("en-NG")}
                           </span>
                           <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                            <Tag size={11} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")} ({pct}%)
+                            <Tag size={11} /> Save <AnimatedCounter target={Math.round(savedAmount)} prefix="₦" /> ({pct}%)
                           </span>
                         </div>
                       )}

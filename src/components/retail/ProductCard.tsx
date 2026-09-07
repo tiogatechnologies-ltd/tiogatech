@@ -21,6 +21,7 @@ import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
 import { PROMO_LIFT, soldCount, savingsPct } from "@/lib/promoDisplay";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
 
 interface CardProps {
@@ -254,7 +255,11 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
             <div className="min-w-0 flex-1">
               {/* Main Price */}
               <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
-                {fmt(product.numeric_price, product.price)}
+                {product.numeric_price ? (
+                  <AnimatedCounter target={product.numeric_price} prefix="₦" />
+                ) : (
+                  fmt(product.numeric_price, product.price)
+                )}
               </p>
               {/* Was Price (slashed) */}
               {wasPrice && savedAmount && (
@@ -263,14 +268,14 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
                     ₦{Math.round(wasPrice).toLocaleString("en-NG")}
                   </span>
                   <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
-                    <Tag size={9} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
+                    <Tag size={9} /> Save <AnimatedCounter target={Math.round(savedAmount)} prefix="₦" />
                   </span>
                 </div>
               )}
               {/* Monthly payment hint */}
               {monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                  Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
+                  Or from <strong className="text-primary"><AnimatedCounter target={monthlyEst} prefix="₦" suffix="/mo" /></strong>
                 </p>
               )}
             </div>

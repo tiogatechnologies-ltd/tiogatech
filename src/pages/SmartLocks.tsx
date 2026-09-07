@@ -14,6 +14,7 @@ import bgSmartLockApex from "@/assets/bg-smartlock-apex.jpg";
 import bgSmartLockHotel from "@/assets/bg-smartlock-hotel.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const fmt = (item: SmartLock) =>
   item.price_label?.trim() ||
@@ -197,7 +198,11 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
             <div className="min-w-0 flex-1">
               {/* Main Price */}
               <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
-                {fmt(lock)}
+                {lock.price ? (
+                  <AnimatedCounter target={lock.price} prefix="₦" />
+                ) : (
+                  fmt(lock)
+                )}
               </p>
               {/* Was Price (slashed) */}
               {wasPriceVal && savedAmount && (
@@ -206,13 +211,13 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
                     ₦{Math.round(wasPriceVal).toLocaleString("en-NG")}
                   </span>
                   <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
-                    <Tag size={9} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
+                    <Tag size={9} /> Save <AnimatedCounter target={Math.round(savedAmount)} prefix="₦" />
                   </span>
                 </div>
               )}
               {monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                  Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
+                  Or from <strong className="text-primary"><AnimatedCounter target={monthlyEst} prefix="₦" suffix="/mo" /></strong>
                 </p>
               )}
             </div>

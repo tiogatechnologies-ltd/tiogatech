@@ -14,6 +14,7 @@ import { trackConversion } from "@/lib/tracking";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const fmtPrice = (n: number | null) =>
   n == null ? "Price on Request" : `₦${Math.round(n).toLocaleString("en-NG")}`;
@@ -196,7 +197,11 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
             <div className="min-w-0 flex-1">
               {/* Main Price */}
               <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
-                {fmtPrice(pkg.total_price)}
+                {pkg.total_price != null ? (
+                  <AnimatedCounter target={pkg.total_price} prefix="₦" />
+                ) : (
+                  "Price on Request"
+                )}
               </p>
               {/* Was Price (slashed) */}
               {wasPriceVal && savedAmount && (
@@ -205,13 +210,13 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
                     {fmtPrice(wasPriceVal)}
                   </span>
                   <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
-                    <Tag size={9} /> Save {fmtPrice(savedAmount)}
+                    <Tag size={9} /> Save <AnimatedCounter target={savedAmount} prefix="₦" />
                   </span>
                 </div>
               )}
               {monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                  Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
+                  Or from <strong className="text-primary"><AnimatedCounter target={monthlyEst} prefix="₦" suffix="/mo" /></strong>
                 </p>
               )}
             </div>

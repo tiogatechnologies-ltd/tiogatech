@@ -47,7 +47,7 @@ export const invertersList: Product[] = [
     price: "₦1,850,000",
     numeric_price: 1850000,
     tier: "premium",
-    image_url: "/products/clear/inverter-deye-hybrid.webp",
+    image_url: "/products/core/deye-5kw-hybrid.webp",
     specifications: {
       "Rated AC Output": "5,000W Continuous / 10,000W Peak Surge",
       "Nominal DC Voltage": "48Vdc (40V - 60V Range)",
@@ -86,7 +86,7 @@ export const invertersList: Product[] = [
     price: "₦2,650,000",
     numeric_price: 2650000,
     tier: "premium",
-    image_url: "/products/clear/panel-longi-solar.webp",
+    image_url: "/products/core/deye-8kw-hybrid.webp",
     specifications: {
       "Rated AC Output": "8,000W Continuous / 16,000W Surge (10s)",
       "Nominal DC Voltage": "48Vdc",
@@ -125,7 +125,7 @@ export const invertersList: Product[] = [
     price: "₦4,150,000",
     numeric_price: 4150000,
     tier: "premium",
-    image_url: "/products/clear/panel-canadian-solar.webp",
+    image_url: "/products/core/deye-12kw-three-phase.webp",
     specifications: {
       "Rated AC Output": "12,000W Three-Phase 380V/400V",
       "Nominal DC Voltage": "48Vdc (Low Voltage High-Safety Architecture)",
@@ -163,7 +163,7 @@ export const invertersList: Product[] = [
     price: "₦1,450,000",
     numeric_price: 1450000,
     tier: "mid",
-    image_url: "/products/clear/inverter-growatt-must.webp",
+    image_url: "/products/core/srne-5kw-hybrid.webp",
     specifications: {
       "Rated AC Output": "5,000W Pure Sine Wave",
       "Nominal DC Voltage": "48Vdc",
@@ -198,7 +198,7 @@ export const invertersList: Product[] = [
     price: "₦1,750,000",
     numeric_price: 1750000,
     tier: "premium",
-    image_url: "/products/clear/inverter-deye-hybrid.webp",
+    image_url: "/products/core/srne-6kw-hybrid.webp",
     specifications: {
       "Rated AC Output": "6,000W Continuous",
       "Nominal DC Voltage": "48Vdc",
@@ -233,7 +233,7 @@ export const invertersList: Product[] = [
     price: "₦1,380,000",
     numeric_price: 1380000,
     tier: "mid",
-    image_url: "/src/assets/bg-solar-field.jpg",
+    image_url: "/products/core/growatt-5kw-spf.webp",
     specifications: {
       "Rated AC Output": "5,000W Continuous",
       "Nominal Battery Voltage": "48Vdc",
@@ -267,7 +267,7 @@ export const invertersList: Product[] = [
     price: "₦1,420,000",
     numeric_price: 1420000,
     tier: "mid",
-    image_url: "/products/clear/inverter-deye-hybrid.webp",
+    image_url: "/products/core/luxpower-5kw-sna.webp",
     specifications: {
       "Rated AC Output": "5,000W",
       "DC Battery Voltage": "48Vdc",
@@ -305,7 +305,7 @@ export const batteriesList: Product[] = [
     price: "₦1,450,000",
     numeric_price: 1450000,
     tier: "premium",
-    image_url: "/products/clear/battery-felicity-lifepo4.webp",
+    image_url: "/products/core/felicity-5kwh-lifepo4.webp",
     specifications: {
       "Nominal Energy": "5.12 kWh (5,120 Wh)",
       "Nominal Voltage": "51.2 Vdc (16S Configuration)",
@@ -345,7 +345,7 @@ export const batteriesList: Product[] = [
     price: "₦2,850,000",
     numeric_price: 2850000,
     tier: "premium",
-    image_url: "/products/clear/battery-powerwall-rack.webp",
+    image_url: "/products/core/felicity-10kwh-powerwall.webp",
     specifications: {
       "Nominal Energy": "10.24 kWh",
       "Nominal Voltage": "51.2 Vdc",
@@ -384,7 +384,7 @@ export const batteriesList: Product[] = [
     price: "₦4,100,000",
     numeric_price: 4100000,
     tier: "premium",
-    image_url: "/products/clear/battery-felicity-lifepo4.webp",
+    image_url: "/products/core/felicity-15kwh-battery.webp",
     specifications: {
       "Nominal Energy": "15.36 kWh",
       "Nominal Voltage": "51.2 Vdc",
@@ -420,7 +420,7 @@ export const batteriesList: Product[] = [
     price: "₦1,250,000",
     numeric_price: 1250000,
     tier: "mid",
-    image_url: "/products/clear/battery-powerwall-rack.webp",
+    image_url: "/products/core/alpsolar-pulse-s2.webp",
     specifications: {
       "Nominal Energy": "4.8 kWh",
       "Nominal Voltage": "48Vdc",
@@ -454,7 +454,7 @@ export const batteriesList: Product[] = [
     price: "₦420,000",
     numeric_price: 420000,
     tier: "entry",
-    image_url: "/products/clear/battery-powerwall-rack.webp",
+    image_url: "/products/core/itel-1000w-powerstation.webp",
     specifications: {
       "Capacity": "1,000Wh (270,000mAh)",
       "AC Output": "1000W Pure Sine Wave (Surge 2000W)",
@@ -493,7 +493,7 @@ export const solarPanelsList: Product[] = [
     price: "₦145,000",
     numeric_price: 145000,
     tier: "premium",
-    image_url: "/products/clear/panel-longi-solar.webp",
+    image_url: "/products/core/longi-550w-himo5.webp",
     specifications: {
       "Peak Power (Pmax)": "550 Wp",
       "Open Circuit Voltage (Voc)": "49.80 V",
@@ -532,7 +532,7 @@ export const solarPanelsList: Product[] = [
     price: "₦168,000",
     numeric_price: 168000,
     tier: "premium",
-    image_url: "/products/clear/panel-canadian-solar.webp",
+    image_url: "/products/core/longi-600w-himo6.webp",
     specifications: {
       "Peak Power (Pmax)": "600 Wp",
       "Module Efficiency": "22.8%",
@@ -567,7 +567,7 @@ export const solarPanelsList: Product[] = [
     price: "₦148,000",
     numeric_price: 148000,
     tier: "premium",
-    image_url: "/products/clear/panel-longi-solar.webp",
+    image_url: "/products/core/canadian-solar-550w.webp",
     specifications: {
       "Power Rating": "550 Wp",
       "Efficiency": "21.3%",
@@ -605,7 +605,7 @@ export const smartLocksList: Product[] = [
     price: "₦285,000",
     numeric_price: 285000,
     tier: "premium",
-    image_url: "/products/clear/lock-face-recognition.webp",
+    image_url: "/products/core/stama-k209-face-lock.webp",
     specifications: {
       "Unlock Methods": "3D Face, Palm Vein, Fingerprint, Passcode, RFID Card, App, Key",
       "User Capacity": "100 Faces, 100 Fingerprints, 100 Passcodes, 100 Cards",
@@ -643,7 +643,7 @@ export const smartLocksList: Product[] = [
     price: "₦300,000",
     numeric_price: 300000,
     tier: "premium",
-    image_url: "/products/clear/lock-face-recognition.webp",
+    image_url: "/products/core/stama-s7-premier.webp",
     specifications: {
       "Unlock Modes": "Face ID, Fingerprint, RFID Card, Passcode, App, Mechanical Key",
       "Waterproof Rating": "IP66 Weather-Resistant",
@@ -677,7 +677,7 @@ export const smartLocksList: Product[] = [
     price: "₦280,000",
     numeric_price: 280000,
     tier: "mid",
-    image_url: "/products/clear/lock-fingerprint-handle.webp",
+    image_url: "/products/core/stama-d20-apex.webp",
     specifications: {
       "Unlock Modes": "Fingerprint, Passcode, Card, Tuya App, Physical Key",
       "Capacity": "100 Fingerprints, 50 RFID Cards",
@@ -710,7 +710,7 @@ export const smartLocksList: Product[] = [
     price: "₦280,000",
     numeric_price: 280000,
     tier: "mid",
-    image_url: "/products/clear/lock-fingerprint-handle.webp",
+    image_url: "/products/core/stama-h11-intercom.webp",
     specifications: {
       "Camera": "HD Night-Vision Camera with Two-Way Audio",
       "Screen": "Indoor Color Display",
@@ -743,7 +743,7 @@ export const smartLocksList: Product[] = [
     price: "₦220,000",
     numeric_price: 220000,
     tier: "affordable",
-    image_url: "/products/clear/lock-slim-aluminum.webp",
+    image_url: "/products/core/stama-sl02-aluminum.webp",
     specifications: {
       "Lock Width": "38 mm Narrow Profile",
       "Door Types": "Aluminum Profile, Sliding Doors, Wooden Doors",
@@ -776,7 +776,7 @@ export const smartLocksList: Product[] = [
     price: "₦220,000",
     numeric_price: 220000,
     tier: "affordable",
-    image_url: "/products/clear/lock-slim-aluminum.webp",
+    image_url: "/products/core/stama-tf5-shortlet.webp",
     specifications: {
       "Passcode Types": "Timed, Permanent, One-time, Cyclic, Custom",
       "Communication": "Bluetooth 5.0 BLE (Gateway compatible)",
@@ -809,7 +809,7 @@ export const smartLocksList: Product[] = [
     price: "₦180,000",
     numeric_price: 180000,
     tier: "affordable",
-    image_url: "/products/clear/lock-slim-aluminum.webp",
+    image_url: "/products/core/stama-n22-security.webp",
     specifications: {
       "Fingerprint Capacity": "100 Users",
       "Card Capacity": "50 Cards",
@@ -841,7 +841,7 @@ export const smartLocksList: Product[] = [
     price: "₦216,000",
     numeric_price: 216000,
     tier: "mid",
-    image_url: "/products/clear/lock-fingerprint-handle.webp",
+    image_url: "/products/core/stama-v80-gate.webp",
     specifications: {
       "Access Sides": "Dual Biometric (Front & Back)",
       "Waterproofing": "IP65 Outdoor Gate Ready",
@@ -874,7 +874,7 @@ export const smartLocksList: Product[] = [
     price: "₦198,000",
     numeric_price: 198000,
     tier: "entry",
-    image_url: "/products/clear/lock-fingerprint-handle.webp",
+    image_url: "/products/core/stama-g290-glass.webp",
     specifications: {
       "Glass Thickness": "10mm - 12mm Frameless Glass",
       "Installation": "No Hole Drilling Clamp System",
@@ -906,7 +906,7 @@ export const smartLocksList: Product[] = [
     price: "₦80,000",
     numeric_price: 80000,
     tier: "entry",
-    image_url: "/products/clear/lock-padlock-smart.webp",
+    image_url: "/products/core/stama-kt14-padlock.webp",
     specifications: {
       "Protection": "IP67 Submersible Waterproof",
       "Material": "Zinc Alloy Body + Stainless Steel Shackle",
@@ -939,7 +939,7 @@ export const smartLocksList: Product[] = [
     price: "₦1,450,000",
     numeric_price: 1450000,
     tier: "premium",
-    image_url: "/products/clear/lock-hotel-rfid.webp",
+    image_url: "/products/core/stama-hotel-system.webp",
     specifications: {
       "System Includes": "10x Hotel Smart Locks, 1x Card Encoder, 100x RFID Cards, Management Software",
       "Software": "Windows PC Software & Cloud Web Portal",
@@ -975,7 +975,7 @@ export const smartHomeList: Product[] = [
     price: "₦68,000",
     numeric_price: 68000,
     tier: "mid",
-    image_url: "/src/assets/feature-smart-automation-device.jpg",
+    image_url: "/products/core/tioga-8gang-switch.webp",
     specifications: {
       "Gang Channels": "8 Channels (Up to 500W per gang)",
       "Wireless Protocol": "WiFi 2.4GHz + Zigbee 3.0",
@@ -1010,7 +1010,7 @@ export const smartHomeList: Product[] = [
     price: "₦48,000",
     numeric_price: 48000,
     tier: "mid",
-    image_url: "/src/assets/feature-control-panel.jpg",
+    image_url: "/products/core/tioga-4gang-zigbee.webp",
     specifications: {
       "Channels": "4 Gangs",
       "Wireless": "Zigbee 3.0",
@@ -1042,7 +1042,7 @@ export const smartHomeList: Product[] = [
     price: "₦18,000",
     numeric_price: 18000,
     tier: "entry",
-    image_url: "/src/assets/feature-smart-app.jpg",
+    image_url: "/products/core/tioga-1gang-relay.webp",
     specifications: {
       "Max Current": "16A (3,500W Max)",
       "Protocol": "WiFi 2.4GHz",
@@ -1075,7 +1075,7 @@ export const smartHomeList: Product[] = [
     price: "₦215,000",
     numeric_price: 215000,
     tier: "premium",
-    image_url: "/src/assets/feature-tablet-monitor.jpg",
+    image_url: "/products/core/tioga-granite-display.webp",
     specifications: {
       "Display": "4-inch IPS HD Touchscreen (480 x 480)",
       "Wireless": "WiFi + Zigbee 3.0 + Bluetooth",
@@ -1109,7 +1109,7 @@ export const smartHomeList: Product[] = [
     price: "₦38,000",
     numeric_price: 38000,
     tier: "entry",
-    image_url: "/src/assets/feature-smart-automation-device.jpg",
+    image_url: "/products/core/tioga-water-heater-40a.webp",
     specifications: {
       "Max Current": "40A Resistive Load (8,000W Max)",
       "Protocol": "WiFi 2.4GHz",
@@ -1141,7 +1141,7 @@ export const smartHomeList: Product[] = [
     price: "₦24,000",
     numeric_price: 24000,
     tier: "entry",
-    image_url: "/src/assets/hero-smart-home.jpg",
+    image_url: "/products/core/tioga-universal-ir-hub.webp",
     specifications: {
       "Coverage": "8m 360° IR Radius + 433MHz RF",
       "Compatibility": "Universal (LG, Samsung, Panasonic, Gree, Sony, etc.)",
@@ -1177,7 +1177,7 @@ export const cctvList: Product[] = [
     price: "₦35,000",
     numeric_price: 35000,
     tier: "entry",
-    image_url: "/products/clear/camera-ptz-outdoor.webp",
+    image_url: "/products/core/tioga-1080p-ptz-indoor.webp",
     specifications: {
       "Resolution": "1080p Full HD (1920 x 1080)",
       "FOV": "360° Panoramic View (Pan/Tilt)",
@@ -1213,7 +1213,7 @@ export const cctvList: Product[] = [
     price: "₦58,000",
     numeric_price: 58000,
     tier: "mid",
-    image_url: "/products/clear/camera-ptz-solar.webp",
+    image_url: "/products/core/tioga-2k-outdoor-bullet.webp",
     specifications: {
       "Resolution": "2K QHD (4 Megapixels)",
       "Weatherproofing": "IP66 Heavy Rain & Dust Proof",
@@ -1247,7 +1247,7 @@ export const cctvList: Product[] = [
     price: "₦64,000",
     numeric_price: 64000,
     tier: "mid",
-    image_url: "/products/clear/camera-dome.webp",
+    image_url: "/products/core/tioga-4mp-dome-camera.webp",
     specifications: {
       "Resolution": "4MP (2560 x 1440)",
       "Vandal Rating": "IK10 Impact Proof",

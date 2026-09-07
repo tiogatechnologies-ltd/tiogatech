@@ -11,6 +11,7 @@ import featureCctv from "@/assets/feature-cctv.jpg";
 import featureSecurity from "@/assets/feature-security.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 import { supabase } from "@/integrations/supabase/client";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 type CctvPackage = {
   id: string;
@@ -88,10 +89,13 @@ const STATIC_FALLBACK: CctvPackage[] = [
   },
 ];
 
-// Resolve the image for a package - prefer DB image_url, else fall back by index.
+// Resolve the image for a package - prefer DB image_url, else fall back by index/id.
 const resolveImage = (pkg: CctvPackage, idx: number) => {
   if (pkg.image_url) return pkg.image_url;
-  return idx % 2 === 0 ? featureCctv : featureSecurity;
+  if (pkg.id === "cctv-4ch" || idx === 0) return "/products/core/pkg-cctv-4ch-kit.webp";
+  if (pkg.id === "cctv-8ch" || idx === 1) return "/products/core/pkg-cctv-8ch-kit.webp";
+  if (pkg.id === "cctv-solar-ptz" || idx === 2) return "/products/core/pkg-cctv-solar-ptz.webp";
+  return idx % 2 === 0 ? "/products/core/pkg-cctv-4ch-kit.webp" : "/products/core/pkg-cctv-8ch-kit.webp";
 };
 
 export const CCTV = () => {
@@ -258,7 +262,7 @@ export const CCTV = () => {
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Complete Installed Package</p>
                     {pkg.price != null ? (
                       <p className="text-2xl font-display font-bold text-foreground">
-                        ₦{pkg.price.toLocaleString("en-NG")}
+                        <AnimatedCounter target={pkg.price} prefix="₦" />
                       </p>
                     ) : (
                       <p className="text-sm font-semibold text-primary">Contact for pricing</p>
