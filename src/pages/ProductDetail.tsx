@@ -63,6 +63,9 @@ interface Product {
   brand?: string;
   rating?: number;
   review_count?: number;
+  numeric_price?: number;
+  serial_number?: string;
+  sku?: string;
 }
 
 const categoryLabels: Record<string, string> = {
@@ -147,6 +150,7 @@ export const ProductDetail = () => {
         specifications: p.specifications || {},
         stock_qty: p.stock_qty,
         brand: p.brand || inferBrand(p.name, p.category),
+        numeric_price: parsePriceNaira(p.price) || undefined,
       }));
 
       const staticList: Product[] = STATIC_PRODUCTS.map((p) => ({
@@ -163,6 +167,9 @@ export const ProductDetail = () => {
         specifications: p.specifications || {},
         stock_qty: p.stock_qty,
         brand: p.brand || inferBrand(p.name, p.category),
+        numeric_price: p.numeric_price,
+        serial_number: p.serial_number,
+        sku: p.sku,
       }));
 
       const all = mergeProducts(staticList, dbList);
@@ -207,16 +214,16 @@ export const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (!product) return;
-    for (let i = 0; i < quantity; i++) {
-      addToCart({
-        refId: product.id,
-        type: "product",
-        name: product.name,
-        price: product.price,
-        image: images[0] || product.image_url,
-        category: product.category,
-      });
-    }
+    addToCart({
+      refId: product.id,
+      type: "product",
+      name: product.name,
+      price: product.price,
+      numericPrice: product.numeric_price,
+      image: images[0] || product.image_url,
+      category: product.category,
+      quantity,
+    });
     trackConversion("cart_add", { product_id: product.id, quantity, source: "pdp" });
     toast.success(`Added ${quantity} × ${product.name} to cart`);
   };
@@ -591,7 +598,7 @@ export const ProductDetail = () => {
                       type="button"
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                       disabled={quantity <= 1}
-                      className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground disabled:opacity-40 transition-colors"
+                      className="h-8 w-8 grid place-items-center rounded-lg hover:bg-muted text-muted-foreground disabled:opacity-40 transition-colors"
                       aria-label="Decrease quantity"
                     >
                       <Minus size={14} />
@@ -602,7 +609,7 @@ export const ProductDetail = () => {
                     <button
                       type="button"
                       onClick={() => setQuantity((q) => q + 1)}
-                      className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
+                      className="h-8 w-8 grid place-items-center rounded-lg hover:bg-muted text-muted-foreground transition-colors"
                       aria-label="Increase quantity"
                     >
                       <Plus size={14} />

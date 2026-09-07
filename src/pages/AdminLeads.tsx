@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Trash2, Eye, X, Download, Search, MessageCircle, Mail, Plus, Clock, UserPlus, Loader2 } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
+import { customerWhatsappLink } from "@/lib/customerWhatsapp";
 
 const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
@@ -289,7 +290,7 @@ const AdminLeads = () => {
                       <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{new Date(lead.created_at).toLocaleDateString()}</td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex justify-end gap-1">
-                          <a href={`https://wa.me/${lead.phone.replace(/\D/g, "")}?text=Hi ${encodeURIComponent(lead.full_name)}, this is Tioga Technologies. Thanks for your interest!`}
+                          <a href={customerWhatsappLink(lead.phone, `Hi ${lead.full_name}, this is Tioga Technologies. Thanks for your interest!`)}
                             target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg hover:bg-green-50 text-muted-foreground hover:text-green-600" title="WhatsApp">
                             <MessageCircle size={14} />
                           </a>
@@ -494,7 +495,7 @@ const AdminLeads = () => {
 
             <div className="px-6 pb-6 space-y-2">
               <div className="flex gap-2">
-                <a href={`https://wa.me/${viewing.phone.replace(/\D/g, "")}?text=Hi ${encodeURIComponent(viewing.full_name)}, this is Tioga Technologies.`}
+                <a href={customerWhatsappLink(viewing.phone, `Hi ${viewing.full_name}, this is Tioga Technologies.`)}
                   target="_blank" rel="noopener noreferrer"
                   className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-green-200 px-4 py-2.5 text-sm font-medium text-green-700 hover:bg-green-50 transition-all">
                   <MessageCircle size={14} /> WhatsApp

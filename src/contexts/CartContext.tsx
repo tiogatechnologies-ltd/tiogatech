@@ -49,7 +49,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       const existing = prev.find((x) => x.id === key);
       const qty = item.quantity ?? 1;
       if (existing) {
-        return prev.map((x) => (x.id === key ? { ...x, quantity: x.quantity + qty } : x));
+        // Refresh price/image/name on every add, not just quantity - stops a stale
+        // cached line item (e.g. from before a price fix) from silently overriding
+        // the current values forever.
+        return prev.map((x) => (x.id === key ? { ...item, id: key, quantity: x.quantity + qty } : x));
       }
       return [...prev, { ...item, id: key, quantity: qty }];
     });

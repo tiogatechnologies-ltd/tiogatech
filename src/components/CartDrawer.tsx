@@ -132,11 +132,11 @@ const CartDrawer = () => {
                     {i.price && <p className="text-xs text-primary font-bold mt-0.5">{i.price}</p>}
                     <div className="flex items-center justify-between mt-2">
                       <div className="inline-flex items-center rounded-full border border-border">
-                        <button onClick={() => updateQty(i.id, i.quantity - 1)} className="h-7 w-7 grid place-items-center text-muted-foreground hover:text-foreground"><Minus size={12} /></button>
+                        <button onClick={() => updateQty(i.id, i.quantity - 1)} className="h-8 w-8 grid place-items-center text-muted-foreground hover:text-foreground" aria-label="Decrease quantity"><Minus size={13} /></button>
                         <span className="text-xs font-semibold w-6 text-center">{i.quantity}</span>
-                        <button onClick={() => updateQty(i.id, i.quantity + 1)} className="h-7 w-7 grid place-items-center text-muted-foreground hover:text-foreground"><Plus size={12} /></button>
+                        <button onClick={() => updateQty(i.id, i.quantity + 1)} className="h-8 w-8 grid place-items-center text-muted-foreground hover:text-foreground" aria-label="Increase quantity"><Plus size={13} /></button>
                       </div>
-                      <button onClick={() => remove(i.id)} className="text-muted-foreground hover:text-destructive" aria-label="Remove"><Trash2 size={14} /></button>
+                      <button onClick={() => remove(i.id)} className="h-8 w-8 grid place-items-center text-muted-foreground hover:text-destructive" aria-label="Remove"><Trash2 size={14} /></button>
                     </div>
                   </div>
                 </div>

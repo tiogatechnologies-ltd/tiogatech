@@ -442,7 +442,10 @@ export function downloadReportPdf(data: ReportData, filename: string) {
 }
 
 export function whatsappShareUrl(message: string, phone?: string) {
-  const base = phone ? `https://wa.me/${phone}` : "https://wa.me/";
+  // Nigerian numbers are entered locally ("0801...") - wa.me needs the
+  // country code with no leading 0, or the link silently fails to resolve.
+  const digits = phone ? phone.replace(/\D/g, "").replace(/^0/, "234") : "";
+  const base = digits ? `https://wa.me/${digits}` : "https://wa.me/";
   return `${base}?text=${encodeURIComponent(message)}`;
 }
 

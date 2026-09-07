@@ -95,10 +95,11 @@ export async function fetchPackageImagesMap(): Promise<Record<string, string>> {
       .eq("key", "package_images")
       .maybeSingle();
 
-    if (error || !data || !data.value) {
+    const row = data as { value?: Record<string, string> } | null;
+    if (error || !row || !row.value) {
       cachedPackageImages = cachedPackageImages || {};
     } else {
-      cachedPackageImages = (data.value as Record<string, string>) || {};
+      cachedPackageImages = row.value || {};
     }
     lastFetchTime = now;
     return cachedPackageImages;

@@ -36,6 +36,7 @@ const emptyProduct: Omit<Product, "id"> = {
 
 export const AdminProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [dbIds, setDbIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Product | null>(null);
   const [creating, setCreating] = useState(false);
@@ -60,6 +61,7 @@ export const AdminProducts = () => {
       const dbList = (data as Product[]) ?? [];
       const combined = mergeProducts(PRODUCTS as any[], dbList);
       setProducts(combined as Product[]);
+      setDbIds(new Set(dbList.map((d) => d.id)));
     } catch (err) {
       console.error("Products fetch error:", err);
       setProducts(PRODUCTS as any[]);
@@ -143,6 +145,15 @@ export const AdminProducts = () => {
     });
   };
 
+  // Seed products ship hardcoded in src/data/products.ts to keep the catalog
+  // populated before real inventory exists. They render in this table but
+  // have no row in `products` - update/delete .eq("id", ...) calls against
+  // them match zero rows and Supabase reports that as success, so every
+  // edit/delete/toggle on a seed product used to silently do nothing while
+  // still showing a success toast. Upserting on save "graduates" the seed
+  // product into a real row (mergeProducts already prefers DB rows by id).
+  const isSeedOnly = (id: string) => !dbIds.has(id);
+
   const handleSave = async () => {
     const payload = {
       ...form,
@@ -153,7 +164,9 @@ export const AdminProducts = () => {
       specifications: form.specifications || {},
     };
     if (editing) {
-      const { error } = await supabase.from("products").update(payload).eq("id", editing.id);
+      const { error } = isSeedOnly(editing.id)
+        ? await supabase.from("products").upsert({ ...payload, id: editing.id })
+        : await supabase.from("products").update(payload).eq("id", editing.id);
       if (error) { toast.error("Failed to update"); return; }
       toast.success("Product updated");
     } else {
@@ -166,6 +179,10 @@ export const AdminProducts = () => {
   };
 
   const handleDelete = async (id: string) => {
+    if (isSeedOnly(id)) {
+      toast.error("This is a seed product, not saved to the catalog yet", { description: "Edit and save it first, then you can delete it." });
+      return;
+    }
     if (!confirm("Delete this product?")) return;
     const { error } = await supabase.from("products").delete().eq("id", id);
     if (error) {
@@ -177,7 +194,9 @@ export const AdminProducts = () => {
   };
 
   const toggleActive = async (p: Product) => {
-    const { error } = await supabase.from("products").update({ is_active: !p.is_active }).eq("id", p.id);
+    const { error } = isSeedOnly(p.id)
+      ? await supabase.from("products").upsert({ ...p, is_active: !p.is_active })
+      : await supabase.from("products").update({ is_active: !p.is_active }).eq("id", p.id);
     if (error) {
       toast.error("Failed to update product", { description: error.message });
       return;
@@ -210,7 +229,10 @@ export const AdminProducts = () => {
     const total = selectedIds.size;
     let failed = 0;
     for (const id of selectedIds) {
-      const { error } = await supabase.from("products").update({ is_active: active }).eq("id", id);
+      const p = products.find((x) => x.id === id);
+      const { error } = isSeedOnly(id) && p
+        ? await supabase.from("products").upsert({ ...p, is_active: active })
+        : await supabase.from("products").update({ is_active: active }).eq("id", id);
       if (error) failed++;
     }
     setSelectedIds(new Set());
@@ -223,19 +245,24 @@ export const AdminProducts = () => {
   };
 
   const bulkDelete = async () => {
-    if (!confirm(`Delete ${selectedIds.size} products?`)) return;
-    const total = selectedIds.size;
+    const deletable = [...selectedIds].filter((id) => !isSeedOnly(id));
+    const skipped = selectedIds.size - deletable.length;
+    if (deletable.length === 0) {
+      toast.error("All selected products are seed products - save them first, then delete.");
+      return;
+    }
+    if (!confirm(`Delete ${deletable.length} product(s)?${skipped ? ` (${skipped} seed product(s) will be skipped)` : ""}`)) return;
     let failed = 0;
-    for (const id of selectedIds) {
+    for (const id of deletable) {
       const { error } = await supabase.from("products").delete().eq("id", id);
       if (error) failed++;
     }
     setSelectedIds(new Set());
     fetchProducts();
     if (failed > 0) {
-      toast.error(`${failed} of ${total} products failed to delete`);
+      toast.error(`${failed} of ${deletable.length} products failed to delete`);
     } else {
-      toast.success("Products deleted");
+      toast.success(skipped ? `${deletable.length} products deleted, ${skipped} seed product(s) skipped` : "Products deleted");
     }
   };
 
@@ -320,7 +347,12 @@ export const AdminProducts = () => {
                             <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground shrink-0"><ImageIcon size={16} /></div>
                           )}
                           <div className="min-w-0">
-                            <p className="font-medium text-foreground truncate">{p.name}</p>
+                            <div className="flex items-center gap-1.5">
+                              <p className="font-medium text-foreground truncate">{p.name}</p>
+                              {isSeedOnly(p.id) && (
+                                <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-700" title="Not saved to the catalog yet - edit and save to make it a real product">Seed</span>
+                              )}
+                            </div>
                             {p.series && <p className="text-xs text-muted-foreground truncate">{p.series}</p>}
                           </div>
                         </div>
@@ -337,7 +369,12 @@ export const AdminProducts = () => {
                         <div className="flex items-center justify-end gap-1">
                           <button onClick={() => handleDuplicate(p)} className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all" title="Duplicate"><Plus size={14} /></button>
                           <button onClick={() => openEdit(p)} className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all" title="Edit"><Pencil size={14} /></button>
-                          <button onClick={() => handleDelete(p.id)} className="p-1.5 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-all" title="Delete"><Trash2 size={14} /></button>
+                          <button
+                            onClick={() => handleDelete(p.id)}
+                            disabled={isSeedOnly(p.id)}
+                            className="p-1.5 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
+                            title={isSeedOnly(p.id) ? "Seed product - save it first, then you can delete it" : "Delete"}
+                          ><Trash2 size={14} /></button>
                         </div>
                       </td>
                     </tr>

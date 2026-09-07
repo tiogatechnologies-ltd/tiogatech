@@ -3,6 +3,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Search, Mail, Phone, MessageCircle, X, Download, Wrench } from "lucide-react";
+import { customerWhatsappLink } from "@/lib/customerWhatsapp";
 
 interface RequestRow {
   id: string;
@@ -29,7 +30,7 @@ const statusStyle: Record<string, string> = {
   lost: "bg-destructive/10 text-destructive",
 };
 
-const waLink = (phone: string) => `https://wa.me/${phone.replace(/[^0-9]/g, "").replace(/^0/, "234")}`;
+const waLink = customerWhatsappLink;
 
 const AdminCustomRequests = () => {
   const [items, setItems] = useState<RequestRow[]>([]);

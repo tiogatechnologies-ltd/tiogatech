@@ -109,7 +109,7 @@ const TrackOrder = () => {
 
     try {
       const local = JSON.parse(localStorage.getItem(`tioga_order_${ref}`) || "null");
-      if (local && (local.order_number || local.tracking_id)) {
+      if (local && local.order_number) {
         setOrder(local);
         if (local.phone || local.email) setContact(local.phone || local.email);
         return;
@@ -118,7 +118,6 @@ const TrackOrder = () => {
       const recent: any[] = JSON.parse(localStorage.getItem("tioga_recent_orders") || "[]");
       const found = recent.find((o) =>
         o.order_number?.toUpperCase() === ref ||
-        o.tracking_id?.toUpperCase() === ref ||
         o.tracking_number?.toUpperCase() === ref
       );
       if (found) {
@@ -133,7 +132,7 @@ const TrackOrder = () => {
         const { data } = await supabase
           .from("orders")
           .select("*")
-          .or(`order_number.eq.${ref},tracking_id.eq.${ref},tracking_number.eq.${ref}`)
+          .or(`order_number.eq.${ref},tracking_number.eq.${ref}`)
           .maybeSingle();
         if (data) {
           setOrder(data as TrackedOrder);
@@ -172,7 +171,6 @@ const TrackOrder = () => {
       const recent: any[] = JSON.parse(localStorage.getItem("tioga_recent_orders") || "[]");
       const found = recent.find((o) =>
         o.order_number?.toUpperCase() === ref ||
-        o.tracking_id?.toUpperCase() === ref ||
         o.tracking_number?.toUpperCase() === ref
       );
       if (found) {
@@ -192,7 +190,7 @@ const TrackOrder = () => {
         const { data: dbOrder } = await supabase
           .from("orders")
           .select("*")
-          .or(`order_number.eq.${ref},tracking_id.eq.${ref},tracking_number.eq.${ref}`)
+          .or(`order_number.eq.${ref},tracking_number.eq.${ref}`)
           .maybeSingle();
         if (dbOrder) {
           setOrder(dbOrder as TrackedOrder);
@@ -220,6 +218,7 @@ const TrackOrder = () => {
       const { data: dbMatches } = await supabase
         .from("orders")
         .select("*")
+        .or(`order_number.eq.${ref},tracking_number.eq.${ref}`)
         .maybeSingle();
 
       if (dbMatches) {
@@ -312,9 +311,9 @@ const TrackOrder = () => {
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <p className="font-mono text-sm font-bold text-foreground">{order.order_number}</p>
-                      {(order.tracking_id || order.tracking_number) && (
+                      {order.tracking_number && (
                         <span className="inline-flex items-center gap-1 font-mono text-xs px-2 py-0.5 rounded-md bg-primary/10 border border-primary/20 text-primary font-bold">
-                          Tracking: {order.tracking_id || order.tracking_number}
+                          Tracking: {order.tracking_number}
                         </span>
                       )}
                     </div>

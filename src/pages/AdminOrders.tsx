@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import OrderSerials from "@/components/admin/OrderSerials";
 import { PRODUCTS } from "@/data/products";
 import { resolveProductImage } from "@/lib/productImages";
+import { customerWhatsappLink } from "@/lib/customerWhatsapp";
 
 interface Order {
   id: string;
@@ -288,7 +289,7 @@ const AdminOrders = () => {
                       <select value={o.status} onChange={(e) => updateStatus(o.id, e.target.value)} className="rounded-lg border border-input bg-background px-2 py-1.5 text-xs">
                         {STATUSES.map((s) => <option key={s} value={s} className="capitalize">{s}</option>)}
                       </select>
-                      <a href={`https://wa.me/${o.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-green-500/10 text-green-600 hover:bg-green-500/20" title="WhatsApp"><MessageCircle size={14} /></a>
+                      <a href={customerWhatsappLink(o.phone)} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-green-500/10 text-green-600 hover:bg-green-500/20" title="WhatsApp"><MessageCircle size={14} /></a>
                       {o.email && (
                         <button
                           onClick={() => resendEmail(o.id)}
