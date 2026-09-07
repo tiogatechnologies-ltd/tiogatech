@@ -4,7 +4,7 @@ import {
   ChevronRight, ShoppingBag, ShieldCheck, Loader2, Share2,
   Zap, CheckCircle2, Wrench, Clock, ArrowRight, Check,
   Sun, Battery, Cpu, Flame, TrendingDown, Tag, Users, Star,
-  ChevronDown, ChevronUp, Phone, MessageCircle, Home, Laptop, Store, Building2,
+  ChevronDown, ChevronUp, Phone, MessageCircle, Home, Laptop, Store, Building2, Sliders,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -327,12 +327,20 @@ export const SolarPackageDetail = () => {
                   </button>
                 </div>
                 <FlexiblePaymentButton itemName={`${pkg.inverter} Solar Package`} itemType="package" itemId={pkg.id} price={pkg.total_price} />
-                <button
-                  onClick={() => openLeadForm(`solar_pdp_${pkg.id}`)}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3 text-sm font-semibold text-foreground hover:bg-muted transition-all"
-                >
-                  Request Custom Engineering
-                </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <Link
+                    to={`/customize/solar/${pkg.id}`}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-primary/40 bg-primary/5 py-3 text-sm font-semibold text-primary hover:bg-primary/10 transition-all text-center"
+                  >
+                    <Sliders size={16} /> Customize Components
+                  </Link>
+                  <button
+                    onClick={() => openLeadForm(`solar_pdp_${pkg.id}`)}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3 text-sm font-semibold text-foreground hover:bg-muted transition-all"
+                  >
+                    Custom Engineering
+                  </button>
+                </div>
               </div>
 
               {/* WhatsApp */}

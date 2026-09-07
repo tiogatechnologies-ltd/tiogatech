@@ -4,7 +4,7 @@ import {
   ChevronRight, ShoppingBag, ShieldCheck, Loader2, Share2,
   Zap, CheckCircle2, Wrench, ArrowRight, Star,
   Flame, TrendingDown, Tag, Users, Phone, MessageCircle,
-  ChevronDown, ChevronUp, Music, Home, Lightbulb, Shield,
+  ChevronDown, ChevronUp, Music, Home, Lightbulb, Shield, Sliders,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -302,12 +302,20 @@ export const AutomationPackageDetail = () => {
                 {pkg.price && pkg.price > 500_000 && (
                   <FlexiblePaymentButton itemName={`${pkg.name} Home Automation`} itemType="package" itemId={pkg.id} price={pkg.price} />
                 )}
-                <button
-                  onClick={() => openLeadForm(`automation_pdp_${pkg.id}`)}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3 text-sm font-semibold text-foreground hover:bg-muted transition-all"
-                >
-                  Schedule Free Consultation
-                </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <Link
+                    to={`/customize/automation/${pkg.id}`}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-primary/40 bg-primary/5 py-3 text-sm font-semibold text-primary hover:bg-primary/10 transition-all text-center"
+                  >
+                    <Sliders size={16} /> Customize Package
+                  </Link>
+                  <button
+                    onClick={() => openLeadForm(`automation_pdp_${pkg.id}`)}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3 text-sm font-semibold text-foreground hover:bg-muted transition-all"
+                  >
+                    Free Consultation
+                  </button>
+                </div>
               </div>
 
               <a
