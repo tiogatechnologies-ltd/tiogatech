@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Music, Home, ShoppingBag, TrendingDown, Flame, Tag, Loader2, Star, ShoppingCart, Heart, Eye, Users } from "lucide-react";
+import { Check, ArrowRight, Music, Home, ShoppingBag, TrendingDown, Tag, Loader2, Star, ShoppingCart, Heart, Eye } from "lucide-react";
 import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/useHomeAutomationPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";

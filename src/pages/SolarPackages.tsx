@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Sun, Battery, Zap, Cpu, Check, ShoppingBag, ArrowRight, Calculator, TrendingDown, Flame, Tag, Star, ShoppingCart, Heart, Eye, Users } from "lucide-react";
+import { Sun, Battery, Zap, Cpu, Check, ShoppingBag, ArrowRight, Calculator, TrendingDown, Flame, Tag, Star, ShoppingCart, Heart, Eye } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";

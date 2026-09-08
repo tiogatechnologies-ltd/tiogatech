@@ -9,6 +9,7 @@ import {
   Newspaper, Send, ShoppingBag, Share2, Wallet, LineChart, Globe, Tag,
   ScrollText, Calendar, Search, Calculator, Zap, Plus, Minus, Pin, PinOff, ShieldCheck,
   Building2, Wrench, BookOpen, TrendingUp, Award, Camera,
+  Star, LifeBuoy, Receipt, ClipboardList, Image as ImageIcon, Bot, UserPlus, Percent,
 } from "lucide-react";
 
 
@@ -24,6 +25,9 @@ type NavItem = {
 };
 type NavGroup = { label: string; roles?: AppRole[]; items: NavItem[] }
 
+// Grouped so every page has exactly one obvious home, and each item carries a
+// distinct icon - several used to share one (Zap on three items, Layout on two,
+// FileText on four), which made the sidebar hard to scan.
 const navGroups: NavGroup[] = [
   {
     label: "Overview & Analytics",
@@ -44,72 +48,38 @@ const navGroups: NavGroup[] = [
           { label: "System Performance", path: "/admin/analytics?tab=performance" },
         ],
       },
-      { label: "Executive Reports", icon: FileText, path: "/admin/reports", roles: ["admin", "staff"] },
-      { label: "Approval Workflows", icon: ShieldCheck, path: "/admin/approvals", roles: ["admin", "staff"] },
+      { label: "Executive Reports", icon: LineChart, path: "/admin/reports", roles: ["admin", "staff"] },
+      { label: "Approval Workflows", icon: ClipboardList, path: "/admin/approvals", roles: ["admin", "staff"] },
     ],
   },
   {
-    label: "Products & Solutions",
+    // Everything that defines what we sell and how much of it we hold. Retail
+    // stock and warehouse stock now sit side by side instead of in different
+    // top-level groups.
+    label: "Catalog & Inventory",
     roles: ["admin", "staff", "engineer"],
     items: [
-      { label: "Retail Hero & Flash Deals", icon: Zap, path: "/admin/retail-promotions", roles: ["admin", "staff"] },
       {
         label: "Product Catalog",
         icon: Package,
         path: "/admin/products",
         children: [
           { label: "All Products", path: "/admin/products" },
-          { label: "Inventory Stock", path: "/admin/inventory" },
+          { label: "Retail Stock Levels", path: "/admin/inventory" },
+          { label: "Warehouses & Serials", path: "/admin/warehouse" },
         ],
       },
-      { label: "Solar Packages (3kVA–20kVA)", icon: Sun, path: "/admin/solar-packages" },
+      { label: "Solar Packages (3kVA-20kVA)", icon: Sun, path: "/admin/solar-packages" },
       { label: "Smart Locks & Security", icon: Lock, path: "/admin/smart-locks" },
       { label: "Home Automation Systems", icon: Home, path: "/admin/home-automation" },
-      { label: "CCTV & Surveillance Packages", icon: Camera, path: "/admin/cctv-packages" },
-      {
-        label: "Solar Sizing & Audits",
-        icon: Calculator,
-        path: "/admin/lumivolt-sizings",
-        children: [
-          { label: "LumiVolt Sizings", path: "/admin/lumivolt-sizings" },
-          { label: "Solar Energy Assessments", path: "/admin/assessments" },
-          { label: "Custom Project Requests", path: "/admin/custom-requests" },
-        ],
-      },
-    ],
-  },
-
-  {
-    label: "Supply Chain & Field ERP",
-    roles: ["admin", "staff", "engineer"],
-    items: [
-      { label: "Warehouses & Serial Registry", icon: Building2, path: "/admin/warehouse", roles: ["admin", "staff"] },
-      { label: "Work Orders & Field Dispatch", icon: Wrench, path: "/admin/work-orders", roles: ["admin", "staff", "engineer"] },
-      { label: "Warranty Claims & OEM RMA", icon: ShieldCheck, path: "/admin/warranty", roles: ["admin", "staff"] },
+      { label: "CCTV & Surveillance", icon: Camera, path: "/admin/cctv-packages" },
+      { label: "Product Reviews", icon: Star, path: "/admin/reviews", roles: ["admin", "staff"] },
+      { label: "Storefront Hero & Flash Deals", icon: Percent, path: "/admin/retail-promotions", roles: ["admin", "staff"] },
     ],
   },
   {
-    label: "Finance & Accounting",
-    roles: ["admin", "staff", "engineer"],
-    items: [
-      { label: "Invoices & VAT (FIRS)", icon: FileText, path: "/admin/invoices", roles: ["admin", "staff"] },
-      { label: "General Ledger & P&L", icon: BookOpen, path: "/admin/accounting", roles: ["admin", "staff"] },
-      { label: "Job Costing & Margins", icon: TrendingUp, path: "/admin/job-profitability", roles: ["admin", "staff"] },
-      { label: "Engineer HSE & Bonuses", icon: Award, path: "/admin/engineer-commissions", roles: ["admin", "staff", "engineer"] },
-      {
-        label: "Lease-to-Own Financing",
-        icon: Wallet,
-        path: "/admin/finance/applications",
-        roles: ["admin", "staff"],
-        children: [
-          { label: "Finance Applications", path: "/admin/finance/applications" },
-          { label: "Repayment Schedules", path: "/admin/finance/schedules" },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Sales, CRM & Affiliates",
+    // The customer journey end to end: enquiry, sizing, quote, order, support.
+    label: "Sales, Orders & CRM",
     roles: ["admin", "staff"],
     items: [
       {
@@ -125,11 +95,20 @@ const navGroups: NavGroup[] = [
         ],
       },
       { label: "CRM Leads Pipeline", icon: Users, path: "/admin/leads" },
-      { label: "Customer Directory", icon: Users, path: "/admin/customers" },
+      { label: "Customer Directory", icon: UserRoundCheck, path: "/admin/customers" },
+      {
+        label: "Sizing, Audits & Requests",
+        icon: Calculator,
+        path: "/admin/lumivolt-sizings",
+        children: [
+          { label: "LumiVolt Sizings", path: "/admin/lumivolt-sizings" },
+          { label: "Solar Energy Assessments", path: "/admin/assessments" },
+          { label: "Custom Project Requests", path: "/admin/custom-requests" },
+        ],
+      },
       { label: "Quotations & Proposals", icon: FileText, path: "/admin/quotes" },
-      { label: "Support Tickets & SLA", icon: FileText, path: "/admin/tickets" },
+      { label: "Support Tickets & SLA", icon: LifeBuoy, path: "/admin/tickets" },
       { label: "Discounts & Promo Codes", icon: Tag, path: "/admin/discounts" },
-      { label: "Product Reviews", icon: Tag, path: "/admin/reviews" },
       {
         label: "Affiliate Program",
         icon: Share2,
@@ -141,7 +120,34 @@ const navGroups: NavGroup[] = [
           { label: "Partner Analytics", path: "/admin/affiliates/analytics" },
         ],
       },
-      { label: "Early Access Waitlist", icon: Smartphone, path: "/admin/waitlist" },
+    ],
+  },
+  {
+    // Work that happens after the sale, on site.
+    label: "Operations & Field Service",
+    roles: ["admin", "staff", "engineer"],
+    items: [
+      { label: "Work Orders & Dispatch", icon: Wrench, path: "/admin/work-orders", roles: ["admin", "staff", "engineer"] },
+      { label: "Warranty Claims & OEM RMA", icon: ShieldCheck, path: "/admin/warranty", roles: ["admin", "staff"] },
+      { label: "Engineer HSE & Bonuses", icon: Award, path: "/admin/engineer-commissions", roles: ["admin", "staff", "engineer"] },
+    ],
+  },
+  {
+    label: "Finance & Accounting",
+    roles: ["admin", "staff"],
+    items: [
+      { label: "Invoices & VAT (FIRS)", icon: Receipt, path: "/admin/invoices" },
+      { label: "General Ledger & P&L", icon: BookOpen, path: "/admin/accounting" },
+      { label: "Job Costing & Margins", icon: TrendingUp, path: "/admin/job-profitability" },
+      {
+        label: "Lease-to-Own Financing",
+        icon: Wallet,
+        path: "/admin/finance/applications",
+        children: [
+          { label: "Finance Applications", path: "/admin/finance/applications" },
+          { label: "Repayment Schedules", path: "/admin/finance/schedules" },
+        ],
+      },
     ],
   },
   {
@@ -160,15 +166,6 @@ const navGroups: NavGroup[] = [
         ],
       },
       {
-        label: "Careers & Recruitment",
-        icon: Briefcase,
-        path: "/admin/careers",
-        children: [
-          { label: "Job Listings", path: "/admin/careers" },
-          { label: "Candidate Applications", path: "/admin/career-applications" },
-        ],
-      },
-      {
         label: "Landing & Web Pages",
         icon: Layout,
         path: "/admin/landing",
@@ -179,26 +176,43 @@ const navGroups: NavGroup[] = [
           { label: "Form Builder", path: "/admin/forms" },
         ],
       },
-      { label: "Media & Cloud Storage", icon: Layout, path: "/admin/storage" },
+      { label: "Media & Cloud Storage", icon: ImageIcon, path: "/admin/storage" },
+      { label: "Early Access Waitlist", icon: Smartphone, path: "/admin/waitlist" },
+      {
+        label: "Careers & Recruitment",
+        icon: Briefcase,
+        path: "/admin/careers",
+        children: [
+          { label: "Job Listings", path: "/admin/careers" },
+          { label: "Candidate Applications", path: "/admin/career-applications" },
+        ],
+      },
     ],
   },
   {
     label: "Staff & Administration",
     roles: ["admin"],
     items: [
-      { label: "Staff & User Management", icon: UserRoundCheck, path: "/admin/users" },
-      { label: "Role Permissions Matrix", icon: ShieldCheck, path: "/admin/roles" },
+      {
+        label: "Staff & Permissions",
+        icon: UserPlus,
+        path: "/admin/users",
+        children: [
+          { label: "Staff & User Management", path: "/admin/users" },
+          { label: "Role Permissions Matrix", path: "/admin/roles" },
+        ],
+      },
       { label: "System Automations", icon: Zap, path: "/admin/automations" },
-      { label: "Audit Trail Log", icon: ScrollText, path: "/admin/audit-log" },
       {
         label: "AI Platform Usage",
-        icon: Zap,
+        icon: Bot,
         path: "/admin/ai-subscriptions",
         children: [
           { label: "AI Subscriptions", path: "/admin/ai-subscriptions" },
           { label: "Credit Consumption", path: "/admin/ai-usage" },
         ],
       },
+      { label: "Audit Trail Log", icon: ScrollText, path: "/admin/audit-log" },
       { label: "Website & System Settings", icon: Settings, path: "/admin/settings" },
     ],
   },

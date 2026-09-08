@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ChevronRight, ShoppingBag, ShieldCheck, Loader2, Share2,
   Zap, CheckCircle2, Wrench, Clock, ArrowRight, Check,
-  Sun, Battery, Cpu, Flame, TrendingDown, Tag, Users, Star,
+  Sun, Battery, Cpu, Flame, TrendingDown, Tag,
   ChevronDown, ChevronUp, Phone, MessageCircle, Home, Laptop, Store, Building2, Sliders,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
+import { useLandingContent } from "@/hooks/useLandingContent";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 // Cosmetic promo helpers - real prices never change
@@ -42,6 +43,7 @@ const IDEAL_FOR = [
 
 export const SolarPackageDetail = () => {
   const { contact } = useSiteContact();
+  const { content: flashDeal } = useLandingContent("flash_deal");
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { add } = useCart();
@@ -292,14 +294,21 @@ export const SolarPackageDetail = () => {
                 </p>
               </div>
 
-              {/* Urgency */}
-              <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-sm">
-                <Flame size={16} className="shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold">Bundle pricing valid this week only.</span>
-                  <span className="text-xs block mt-0.5 opacity-80">Contact us to lock in this price before month-end.</span>
+              {/* The flash deal an admin has actually scheduled, if any. This
+                  slot used to hold a permanent "Bundle pricing valid this week
+                  only - lock in before month-end" notice that was hardcoded, so
+                  it was never true and never expired. */}
+              {flashDeal?.is_active && flashDeal.headline && (
+                <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-sm">
+                  <Flame size={16} className="shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold">{flashDeal.headline}</span>
+                    {flashDeal.description && (
+                      <span className="text-xs block mt-0.5 opacity-80">{flashDeal.description}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* CTA buttons */}
               <div className="flex flex-col gap-3">

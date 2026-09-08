@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
-import { Battery, Sun, Zap, Cpu, Check, ArrowRight, ShoppingBag, Users, Clock, Tag, TrendingDown, Flame, Loader2 } from "lucide-react";
+import { Battery, Sun, Zap, Cpu, Check, ArrowRight, ShoppingBag, Clock, Tag, TrendingDown, Flame, Loader2 } from "lucide-react";
 import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";

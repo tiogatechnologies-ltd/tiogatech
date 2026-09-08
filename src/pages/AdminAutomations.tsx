@@ -100,6 +100,19 @@ const AdminAutomations = () => {
 
       {loading ? (
         <div className="flex justify-center py-16"><Loader2 className="animate-spin text-muted-foreground" /></div>
+      ) : rules.length === 0 ? (
+        <Card className="p-6">
+          <h2 className="text-sm font-bold text-foreground">No automation rules configured</h2>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+            The rule table exists but has never been populated, so nothing on this page is currently controlling anything.
+            The scheduled jobs behind it — installment reminders, overdue marking, auto-charge and the monthly AI credit
+            top-up — also need to be registered with the database scheduler before they will run.
+          </p>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Run <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">supabase/manual/001_enable_automations.sql</code>{" "}
+            once in the Supabase SQL editor, then refresh this page.
+          </p>
+        </Card>
       ) : (
         <div className="space-y-6">
           {grouped.map(([category, items]) => (

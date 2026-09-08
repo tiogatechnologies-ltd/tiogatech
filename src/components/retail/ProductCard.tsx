@@ -11,8 +11,6 @@ import {
   Zap,
   Shield,
   TrendingDown,
-  Flame,
-  Users,
   Tag,
 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";

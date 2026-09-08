@@ -22,7 +22,6 @@ import {
   Flame,
   TrendingDown,
   Tag,
-  Users,
   Star,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";

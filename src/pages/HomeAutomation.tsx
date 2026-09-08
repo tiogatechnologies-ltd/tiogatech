@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Lightbulb, Smartphone, Music, Wifi, Check, ShoppingBag, Eye, ShieldCheck, Cpu, Sliders, Zap, TrendingDown, Tag, Star, ShoppingCart, Heart, Users, Flame, ArrowRight } from "lucide-react";
+import { Home, Lightbulb, Smartphone, Music, Wifi, Check, ShoppingBag, Eye, ShieldCheck, Cpu, Sliders, Zap, TrendingDown, Tag, Star, ShoppingCart, Heart, ArrowRight } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";

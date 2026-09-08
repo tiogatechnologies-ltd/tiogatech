@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Lock, KeyRound, Building2, ShoppingBag, TrendingDown, Flame, Tag, Loader2, Star, ShoppingCart, Heart, Eye, Users } from "lucide-react";
+import { Check, ArrowRight, Lock, KeyRound, Building2, ShoppingBag, TrendingDown, Tag, Loader2, Star, ShoppingCart, Heart, Eye } from "lucide-react";
 import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
