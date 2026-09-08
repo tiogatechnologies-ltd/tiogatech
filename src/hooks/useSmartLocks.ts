@@ -28,16 +28,48 @@ export type SmartLock = {
 
 import { fetchPackageImagesMap } from "@/lib/packageImages";
 
-const pickImage = (item: { id: string; category: string; series: string; image_url?: string | null }, imgMap: Record<string, string> = {}) => {
-  if (item.image_url) return item.image_url;
+export function getSmartLockImage(item: { id?: string; category?: string; series?: string; model?: string; name?: string; image_url?: string | null }): string {
+  const m = `${item.model || ""} ${item.name || ""}`.toLowerCase();
+  const s = (item.series || "").toLowerCase();
+  const cat = (item.category || "").toLowerCase();
+
+  // Model-specific authentic matching
+  if (m.includes("k209")) return "/products/core/stama-k209-face-lock.webp";
+  if (m.includes("s7") || m.includes("premier")) return "/products/core/stama-s7-premier.webp";
+  if (m.includes("d20") && !m.includes("kt14")) return "/products/core/stama-d20-apex.webp";
+  if (m.includes("h11")) return "/products/core/stama-h11-intercom.webp";
+  if (m.includes("f27")) return "/products/core/stama-s7-premier.webp";
+  if (m.includes("t8")) return "/products/core/stama-d20-apex.webp";
+  if (m.includes("sl02")) return "/products/core/stama-sl02-aluminum.webp";
+  if (m.includes("tfs") || m.includes("tf5") || m.includes("n14") || m.includes("b16")) return "/products/core/stama-tf5-shortlet.webp";
+  if (m.includes("n22")) return "/products/core/stama-n22-security.webp";
+  if (m.includes("x04")) return "/products/core/stama-d20-apex.webp";
+  if (m.includes("g290") || m.includes("glass")) return "/products/core/stama-g290-glass.webp";
+  if (m.includes("v80") || m.includes("gate") || m.includes("conventional")) return "/products/core/stama-v80-gate.webp";
+  if (m.includes("kt14") || m.includes("padlock")) return "/products/core/stama-kt14-padlock.webp";
+  if (cat === "hotel" || m.includes("hotel")) return "/products/core/stama-hotel-system.webp";
+
+  // Accessories
+  if (cat === "accessory" || s.includes("access")) {
+    if (m.includes("battery")) return "/products/clear/battery-felicity-lifepo4.webp";
+    if (m.includes("remote")) return "/products/clear/curtain-remote.webp";
+    if (m.includes("gateway")) return "/products/core/tioga-universal-ir-hub.webp";
+    if (m.includes("card") || m.includes("rfid")) return "/products/clear/hotel-keycard-switch.webp";
+  }
+
+  // Fallbacks by series
+  if (s.includes("elite")) return "/products/core/stama-s7-premier.webp";
+  if (s.includes("apex")) return "/products/core/stama-d20-apex.webp";
+  if (s.includes("pro")) return "/products/core/stama-sl02-aluminum.webp";
+  return "/products/clear/lock-fingerprint-handle.webp";
+}
+
+const pickImage = (item: { id: string; category: string; series: string; model?: string; name?: string; image_url?: string | null }, imgMap: Record<string, string> = {}) => {
+  if (item.image_url && typeof item.image_url === "string" && item.image_url.trim().length > 0 && !item.image_url.startsWith("/products/minisim/")) {
+    return item.image_url;
+  }
   if (imgMap[item.id]) return imgMap[item.id];
-  if (item.category === "hotel") return bgHotel;
-  if (item.category === "accessory") return bgAccessory;
-  const s = item.series.toLowerCase();
-  if (s.includes("elite")) return bgElite;
-  if (s.includes("apex")) return bgApex;
-  if (s.includes("pro")) return bgPro;
-  return bgBase;
+  return getSmartLockImage(item);
 };
 
 export const useSmartLocks = () => {

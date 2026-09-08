@@ -149,38 +149,32 @@ export function getDefaultPackageImage(
 ): string {
   if (category === "solar") {
     const num = typeof identifier === "number" ? identifier : Number(identifier) || 0;
-    const solarImages = [
-      bgRooftopInstall,
-      bgPanelCloseup,
-      bgCommercialSolar,
-      featureBattery,
-      featureSolarPanel,
-      bgSolarRoof,
-      bgSolarField,
-      bgSolarAerial,
-      bgLumivoltRoof,
-      offerSolar,
-    ];
-    return solarImages[num % solarImages.length];
+    if (num >= 17) return "/products/core/deye-12kw-three-phase.webp";
+    if (num === 8 || num === 7) return "/products/core/pkg-solar-commercial.webp";
+    if (num >= 4) return "/products/core/felicity-10kwh-powerwall.webp";
+    if (num === 3) return "/products/core/deye-8kw-hybrid.webp";
+    if (num === 2) return "/products/core/deye-5kw-hybrid.webp";
+    return "/products/core/pkg-solar-residential.webp";
   }
 
   if (category === "automation") {
     const tier = String(identifier || "").toLowerCase();
-    if (tier.includes("aura") || tier.includes("sprout")) return featureSmartDevice;
-    if (tier.includes("riviera") || tier.includes("ibiza")) return heroSmartHome;
-    return bgLagosApartment;
+    if (tier.includes("aura") || tier.includes("sprout")) return "/products/core/pkg-automation-aura.webp";
+    if (tier.includes("riviera") || tier.includes("ibiza")) return "/products/core/pkg-automation-riviera.webp";
+    return "/products/core/pkg-automation-apex.webp";
   }
 
   if (category === "lock") {
     const s = String(identifier || "").toLowerCase();
-    if (s.includes("hotel")) return bgSmartlockHotel;
-    if (s.includes("accessory")) return bgSmartlockAccessory;
-    if (s.includes("elite")) return bgSmartlockElite;
-    if (s.includes("apex")) return bgSmartlockApex;
-    if (s.includes("pro")) return bgSmartlockPro;
-    return bgSmartlockBase;
+    if (s.includes("hotel")) return "/products/core/stama-hotel-system.webp";
+    if (s.includes("gateway")) return "/products/core/tioga-universal-ir-hub.webp";
+    if (s.includes("padlock") || s.includes("kt14")) return "/products/core/stama-kt14-padlock.webp";
+    if (s.includes("elite") || s.includes("k209") || s.includes("s7")) return "/products/core/stama-s7-premier.webp";
+    if (s.includes("apex") || s.includes("d20") || s.includes("h11")) return "/products/core/stama-d20-apex.webp";
+    if (s.includes("pro") || s.includes("sl02")) return "/products/core/stama-sl02-aluminum.webp";
+    return "/products/clear/lock-fingerprint-handle.webp";
   }
 
   // cctv
-  return featureCctv;
+  return "/products/core/pkg-cctv-4ch-kit.webp";
 }

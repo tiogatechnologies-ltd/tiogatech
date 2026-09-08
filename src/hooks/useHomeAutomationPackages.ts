@@ -5,13 +5,13 @@ import bgSprout from "@/assets/feature-smart-automation-device.jpg";
 import bgIbiza from "@/assets/hero-smart-home.jpg";
 
 const IMAGE_BY_TIER: Record<string, string> = {
-  Apex: bgAscentia,
-  Aura: bgSprout,
-  Riviera: bgIbiza,
+  Apex: "/products/core/pkg-automation-apex.webp",
+  Aura: "/products/core/pkg-automation-aura.webp",
+  Riviera: "/products/core/pkg-automation-riviera.webp",
   // legacy fallbacks
-  Ascentia: bgAscentia,
-  Sprout: bgSprout,
-  Ibiza: bgIbiza,
+  Ascentia: "/products/core/pkg-automation-apex.webp",
+  Sprout: "/products/core/pkg-automation-aura.webp",
+  Ibiza: "/products/core/pkg-automation-riviera.webp",
 };
 
 export type HomeAutomationPackage = {
