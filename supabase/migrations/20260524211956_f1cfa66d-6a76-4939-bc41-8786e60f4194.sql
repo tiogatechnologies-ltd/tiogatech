@@ -8,13 +8,18 @@ EXCEPTION
 END $$;
 
 -- 2) Lock down realtime.messages so only admins can subscribe
-ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "Admins can receive realtime" ON realtime.messages;
-CREATE POLICY "Admins can receive realtime"
-ON realtime.messages
-FOR SELECT
-TO authenticated
-USING (public.has_role(auth.uid(), 'admin'::public.app_role));
+DO $$
+BEGIN
+  ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;
+  DROP POLICY IF EXISTS "Admins can receive realtime" ON realtime.messages;
+  CREATE POLICY "Admins can receive realtime"
+  ON realtime.messages
+  FOR SELECT
+  TO authenticated
+  USING (public.has_role(auth.uid(), 'admin'::public.app_role));
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END $$;
 
 -- 3) Tighten career CV upload path: require {uuid}/filename
 DROP POLICY IF EXISTS "Anyone can upload career CVs" ON storage.objects;
