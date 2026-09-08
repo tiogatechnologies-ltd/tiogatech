@@ -1,6 +1,11 @@
 
--- 1) Remove page_views from realtime publication
-ALTER PUBLICATION supabase_realtime DROP TABLE public.page_views;
+-- 1) Remove page_views from realtime publication if present
+DO $$
+BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.page_views;
+EXCEPTION
+  WHEN undefined_object THEN NULL;
+END $$;
 
 -- 2) Lock down realtime.messages so only admins can subscribe
 ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;

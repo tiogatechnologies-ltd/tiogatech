@@ -96,9 +96,9 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
 
       {/* Slide Content Grid: Left Text Column + Right Floating Product Showcase */}
       <div className="relative z-10 w-full p-6 sm:p-10 md:p-12 lg:p-14">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-12 items-center">
           {/* Left Column: Text & CTAs */}
-          <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-white">
+          <div className="md:col-span-7 space-y-4 sm:space-y-5 text-white">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`content-${slide.id}`}
@@ -167,7 +167,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
           </div>
 
           {/* Right Column: Floating Product Showcase */}
-          <div className="lg:col-span-5 flex items-center justify-center relative min-h-[260px] sm:min-h-[300px] lg:min-h-[380px]">
+          <div className="md:col-span-5 flex items-center justify-center relative min-h-[260px] sm:min-h-[300px] md:min-h-[340px] lg:min-h-[380px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`showcase-${slide.id}`}
