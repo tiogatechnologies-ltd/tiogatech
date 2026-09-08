@@ -33,6 +33,9 @@ import { mergeProducts } from "@/lib/mergeProducts";
 import { normalizeCategory } from "@/lib/productBrand";
 import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
 import { productPath } from "@/lib/productSlug";
+import bgSolarHero from "@/assets/bg-commercial-solar.jpg";
+import bgInverterHero from "@/assets/bg-panel-closeup.jpg";
+import bgSmartLockHero from "@/assets/bg-smartlock-apex.jpg";
 
 type SourceType = "product" | "solar_package" | "smart_lock" | "automation_package" | "custom";
 
@@ -539,9 +542,6 @@ const AdminRetailPromotions = () => {
         <div>
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="font-display text-2xl font-bold text-foreground">Retail Store Promotions</h1>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-              <Sparkles size={12} /> Auto-Sync & Presets Enabled
-            </span>
           </div>
           <p className="text-sm text-muted-foreground mt-1">
             Manage your retail hero carousel and top promotional countdown bar. Selecting any catalog product or package
@@ -553,7 +553,7 @@ const AdminRetailPromotions = () => {
         <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 space-y-2.5">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2">
-              <Sparkles size={16} className="text-primary shrink-0" />
+              <Zap size={16} className="text-primary shrink-0" />
               <span className="text-xs font-bold text-foreground uppercase tracking-wider">
                 1-Click Quick Add Presets:
               </span>

@@ -139,6 +139,16 @@ const Checkout = () => {
     const parsed = schema.safeParse(dataToValidate);
     if (!parsed.success) { toast.error(parsed.error.errors[0].message); return; }
 
+    // Card payment is verified server-side against the signed-in owner of the
+    // order, so stop guests here instead of creating an orphan pending order
+    // they can never pay for.
+    if (payment === "paystack" && !user) {
+      toast.error("Please sign in to pay by card", {
+        description: "WhatsApp checkout works without an account.",
+      });
+      return;
+    }
+
     // Flexible payment plan → create a finance_applications row (admin-approved before any charge)
     if (payment === "flexible") {
       if (total < 1_000_000) { toast.error("Flexible payment requires a total of at least ₦1,000,000."); return; }
@@ -205,7 +215,8 @@ const Checkout = () => {
 
     const orderPayload = {
       order_number: orderNumber,
-      tracking_id: trackingId,
+      // NOTE: `orders` has no tracking_id column - inserting one made PostgREST
+      // reject the whole INSERT, so every checkout failed before Paystack ran.
       tracking_number: trackingId,
       full_name: `${form.first_name} ${form.last_name}`.trim(),
       phone: form.phone.trim(),
@@ -290,7 +301,12 @@ const Checkout = () => {
       } catch (paystackErr: any) {
         setSubmitting(false);
         console.error("Paystack launch error:", paystackErr);
-        toast.error(paystackErr?.message || "Could not open Paystack. Your cart items are preserved.");
+        // The order row is already saved, so the customer never loses the order -
+        // point them at a channel that works instead of a dead end.
+        toast.error(paystackErr?.message || "Could not open Paystack.", {
+          description: `Your order ${orderNumber} is saved. Choose "WhatsApp assistance" to finish payment with our team.`,
+          duration: 9000,
+        });
       }
       return;
     }
@@ -411,6 +427,23 @@ const Checkout = () => {
                   <p className="text-xs text-muted-foreground mt-1">Secure checkout on Paystack. Pay by card, bank transfer, USSD or another available channel.</p>
                 </div>
               </label>
+              {payment === "paystack" && !user && !authLoading && (
+                <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 ml-2 text-xs text-foreground space-y-2">
+                  <p className="font-semibold">Sign in to pay by card</p>
+                  <p className="text-muted-foreground">
+                    Card payments are tied to your account so we can verify the transaction and show it in your order history.
+                    You can also place the order and finish payment over{" "}
+                    <button type="button" onClick={() => setPayment("whatsapp")} className="underline font-semibold text-foreground">WhatsApp</button>{" "}
+                    without an account.
+                  </p>
+                  <Link
+                    to={`/auth?next=${encodeURIComponent("/checkout")}`}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 font-semibold text-primary-foreground"
+                  >
+                    Sign in / Create account
+                  </Link>
+                </div>
+              )}
 
 
 
