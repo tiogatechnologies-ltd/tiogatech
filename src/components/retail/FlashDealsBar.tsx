@@ -1,21 +1,49 @@
 import { useState, useEffect } from "react";
 import { Flame, Clock, Truck, Tag } from "lucide-react";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
-export const FlashDealsBar = () => {
-  // 48-hour cyclical countdown timer
-  const [timeLeft, setTimeLeft] = useState({ hours: 14, minutes: 35, seconds: 48 });
+interface FlashDealContent {
+  is_active: boolean;
+  headline: string;
+  discount_label: string;
+  discount_code: string;
+  description: string;
+  perk_label: string;
+  ends_at: string; // ISO
+}
+
+const useCountdown = (endsAt: string | undefined) => {
+  const [left, setLeft] = useState<{ h: number; m: number; s: number } | null>(null);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: 59, seconds: 59 };
-        if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        return { hours: 24, minutes: 0, seconds: 0 };
-      });
-    }, 1000);
+    if (!endsAt) { setLeft(null); return; }
+    const end = new Date(endsAt).getTime();
+    if (Number.isNaN(end)) { setLeft(null); return; }
+
+    const tick = () => {
+      const diff = end - Date.now();
+      if (diff <= 0) { setLeft({ h: 0, m: 0, s: 0 }); return; }
+      const h = Math.floor(diff / 3_600_000);
+      const m = Math.floor((diff % 3_600_000) / 60_000);
+      const s = Math.floor((diff % 60_000) / 1000);
+      setLeft({ h, m, s });
+    };
+    tick();
+    const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [endsAt]);
+
+  return left;
+};
+
+export const FlashDealsBar = () => {
+  const { content, loading } = useLandingContent("flash_deal");
+  const deal = content as FlashDealContent | null;
+  const timeLeft = useCountdown(deal?.ends_at);
+
+  if (loading || !deal || !deal.is_active) return null;
+  // Real deadline has passed - stop showing a dead countdown.
+  if (timeLeft && timeLeft.h === 0 && timeLeft.m === 0 && timeLeft.s === 0) return null;
 
   const format = (n: number) => n.toString().padStart(2, "0");
 
@@ -30,53 +58,65 @@ export const FlashDealsBar = () => {
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs sm:text-sm font-display font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                Mid-Month Energy Flash Deals
+                {deal.headline}
               </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500 text-midnight text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
-                <Tag size={10} /> Up to 15% Off
-              </span>
+              {deal.discount_label && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500 text-midnight text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
+                  <Tag size={10} /> {deal.discount_label}
+                </span>
+              )}
             </div>
-            <p className="text-xs text-foreground/80 mt-1">
-              Apply code{" "}
-              <strong className="text-amber-700 dark:text-amber-400 font-mono bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded font-bold">
-                TIOGA2026
-              </strong>{" "}
-              at checkout for free 24-hour expedited dispatch on all inverter and battery storage orders.
-            </p>
+            {deal.description && (
+              <p className="text-xs text-foreground/80 mt-1">
+                {deal.discount_code && (
+                  <>
+                    Apply code{" "}
+                    <strong className="text-amber-700 dark:text-amber-400 font-mono bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded font-bold">
+                      {deal.discount_code}
+                    </strong>{" "}
+                  </>
+                )}
+                {deal.description}
+              </p>
+            )}
           </div>
         </div>
 
         {/* Right Section: Standout Countdown & Fast Delivery */}
         <div className="flex items-center gap-4 sm:gap-6 w-full lg:w-auto justify-between lg:justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-amber-500/20">
-          {/* Live Countdown Timer */}
-          <div className="flex items-center gap-2 text-xs font-semibold">
-            <div className="flex items-center gap-1 text-amber-700 dark:text-amber-400">
-              <Clock size={14} />
-              <span className="font-bold">Ends In:</span>
+          {/* Live Countdown Timer - counts down to a real, admin-set deadline */}
+          {timeLeft && (
+            <div className="flex items-center gap-2 text-xs font-semibold">
+              <div className="flex items-center gap-1 text-amber-700 dark:text-amber-400">
+                <Clock size={14} />
+                <span className="font-bold">Ends In:</span>
+              </div>
+              <div className="flex items-center gap-1 font-mono text-sm font-bold">
+                <div className="px-2.5 py-1 rounded-xl bg-card border border-amber-500/35 text-foreground shadow-xs">
+                  {format(timeLeft.h)}
+                  <span className="text-[9px] text-muted-foreground font-sans ml-0.5">h</span>
+                </div>
+                <span className="text-amber-500 font-bold">:</span>
+                <div className="px-2.5 py-1 rounded-xl bg-card border border-amber-500/35 text-foreground shadow-xs">
+                  {format(timeLeft.m)}
+                  <span className="text-[9px] text-muted-foreground font-sans ml-0.5">m</span>
+                </div>
+                <span className="text-amber-500 font-bold">:</span>
+                <div className="px-2.5 py-1 rounded-xl bg-card border border-amber-500/40 text-amber-700 dark:text-amber-400 shadow-xs">
+                  {format(timeLeft.s)}
+                  <span className="text-[9px] text-muted-foreground font-sans ml-0.5">s</span>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-1 font-mono text-sm font-bold">
-              <div className="px-2.5 py-1 rounded-xl bg-card border border-amber-500/35 text-foreground shadow-xs">
-                {format(timeLeft.hours)}
-                <span className="text-[9px] text-muted-foreground font-sans ml-0.5">h</span>
-              </div>
-              <span className="text-amber-500 font-bold">:</span>
-              <div className="px-2.5 py-1 rounded-xl bg-card border border-amber-500/35 text-foreground shadow-xs">
-                {format(timeLeft.minutes)}
-                <span className="text-[9px] text-muted-foreground font-sans ml-0.5">m</span>
-              </div>
-              <span className="text-amber-500 font-bold">:</span>
-              <div className="px-2.5 py-1 rounded-xl bg-card border border-amber-500/40 text-amber-700 dark:text-amber-400 shadow-xs">
-                {format(timeLeft.seconds)}
-                <span className="text-[9px] text-muted-foreground font-sans ml-0.5">s</span>
-              </div>
-            </div>
-          </div>
+          )}
 
           {/* Value Badge */}
-          <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-xl">
-            <Truck size={14} />
-            <span>24h Dispatch</span>
-          </div>
+          {deal.perk_label && (
+            <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-xl">
+              <Truck size={14} />
+              <span>{deal.perk_label}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

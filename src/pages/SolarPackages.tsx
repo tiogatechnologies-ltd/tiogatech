@@ -15,6 +15,7 @@ import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const fmtPrice = (n: number | null) =>
   n == null ? "Price on Request" : `₦${Math.round(n).toLocaleString("en-NG")}`;
@@ -263,6 +264,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
 export const SolarPackages = () => {
   const { packages, loading } = useSolarPackages();
+  const { content: flashDeal } = useLandingContent("flash_deal");
   const [filter, setFilter] = useState<"all" | "lithium" | "tubular" | "high_voltage">("all");
 
   const filtered = useMemo(() => {
@@ -315,20 +317,24 @@ export const SolarPackages = () => {
       <main className="flex-1 section-padding py-12">
         <div className="section-container">
 
-          {/* Promo banner */}
-          <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl bg-primary text-primary-foreground">
-            <div className="flex items-center gap-3">
-              <Flame size={20} className="shrink-0" />
-              <div>
-                <p className="text-xs font-extrabold uppercase tracking-wider">Mid-Month Bundle Deals - Up to 17% Off</p>
-                <p className="text-[11px] text-primary-foreground/80 mt-0.5">Pre-engineered systems priced below individual component retail. Limited slots this month.</p>
+          {/* Promo banner - controlled from Admin > Retail Hero & Flash Deals */}
+          {flashDeal?.is_active && (
+            <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl bg-primary text-primary-foreground">
+              <div className="flex items-center gap-3">
+                <Flame size={20} className="shrink-0" />
+                <div>
+                  <p className="text-xs font-extrabold uppercase tracking-wider">{flashDeal.headline}{flashDeal.discount_label ? ` - ${flashDeal.discount_label}` : ""}</p>
+                  {flashDeal.description && <p className="text-[11px] text-primary-foreground/80 mt-0.5">{flashDeal.description}</p>}
+                </div>
               </div>
+              {flashDeal.discount_code && (
+                <div className="flex items-center gap-2 shrink-0">
+                  <Tag size={14} />
+                  <span className="text-xs font-bold">Code: <span className="font-mono bg-primary-foreground/20 px-2 py-0.5 rounded">{flashDeal.discount_code}</span></span>
+                </div>
+              )}
             </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <Tag size={14} />
-              <span className="text-xs font-bold">Code: <span className="font-mono bg-primary-foreground/20 px-2 py-0.5 rounded">TIOGA2026</span></span>
-            </div>
-          </div>
+          )}
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>

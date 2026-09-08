@@ -86,6 +86,7 @@ const AdminLeads = lazy(() => import("./pages/AdminLeads.tsx"));
 const AdminSettings = lazy(() => import("./pages/AdminSettings.tsx"));
 const AdminFormQuestions = lazy(() => import("./pages/AdminFormQuestions.tsx"));
 const AdminLandingPage = lazy(() => import("./pages/AdminLandingPage.tsx"));
+const AdminRetailPromotions = lazy(() => import("./pages/AdminRetailPromotions.tsx"));
 const AdminContent = lazy(() => import("./pages/AdminContent.tsx"));
 const AdminEmail = lazy(() => import("./pages/AdminEmail.tsx"));
 const AdminEmailStatus = lazy(() => import("./pages/AdminEmailStatus.tsx"));
@@ -261,6 +262,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/leads" element={<Admin><AdminLeads /></Admin>} />
           <Route path="/admin/forms" element={<Admin><AdminFormQuestions /></Admin>} />
           <Route path="/admin/landing" element={<Admin><AdminLandingPage /></Admin>} />
+          <Route path="/admin/retail-promotions" element={<Admin><AdminRetailPromotions /></Admin>} />
           <Route path="/admin/content" element={<Admin><AdminContent /></Admin>} />
           <Route path="/admin/orders" element={<Admin><AdminOrders /></Admin>} />
           <Route path="/admin/email" element={<Admin><AdminEmail /></Admin>} />

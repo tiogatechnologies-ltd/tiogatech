@@ -14,6 +14,7 @@ import catSolar from "@/assets/bg-rooftop-install.jpg";
 import catLocks from "@/assets/stock-smart-lock.png";
 import catAutomation from "@/assets/bg-lagos-apartment.jpg";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 import SolarPackagesSection from "@/components/SolarPackagesSection";
 import SmartLocksSection from "@/components/SmartLocksSection";
@@ -83,6 +84,7 @@ const TRUST_STATS = [
 
 const Packages = () => {
   const [active, setActive] = useState<CategoryKey>("all");
+  const { content: flashDeal } = useLandingContent("flash_deal");
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -201,21 +203,25 @@ const Packages = () => {
         </div>
       </div>
 
-      {/* Promo banner */}
-      <div className="bg-amber-500/10 border-b border-amber-500/20">
-        <div className="section-container py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
-          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-amber-800 dark:text-amber-300 font-semibold min-w-0">
-            <Flame size={14} className="shrink-0 text-amber-700" />
-            <span className="truncate">Mid-Month Deals - Up to 17% Off</span>
-            <span className="text-xs opacity-80 hidden sm:inline">Pre-engineered systems priced below individual component retail.</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 shrink-0 ml-auto sm:ml-0">
-            <Tag size={12} />
-            <span>Code:</span>
-            <span className="font-mono bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded text-[11px]">TIOGA2026</span>
+      {/* Promo banner - controlled from Admin > Retail Hero & Flash Deals, same deal as /retail */}
+      {flashDeal?.is_active && (
+        <div className="bg-amber-500/10 border-b border-amber-500/20">
+          <div className="section-container py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-amber-800 dark:text-amber-300 font-semibold min-w-0">
+              <Flame size={14} className="shrink-0 text-amber-700" />
+              <span className="truncate">{flashDeal.headline}{flashDeal.discount_label ? ` - ${flashDeal.discount_label}` : ""}</span>
+              {flashDeal.description && <span className="text-xs opacity-80 hidden sm:inline">{flashDeal.description}</span>}
+            </div>
+            {flashDeal.discount_code && (
+              <div className="flex items-center gap-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 shrink-0 ml-auto sm:ml-0">
+                <Tag size={12} />
+                <span>Code:</span>
+                <span className="font-mono bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded text-[11px]">{flashDeal.discount_code}</span>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Sticky category tab bar */}
       <div className="sticky top-[60px] z-30 bg-background/90 backdrop-blur-xl border-b border-border shadow-sm">

@@ -388,7 +388,7 @@ export const Retail = () => {
       <main className="flex-1 section-padding py-4 sm:py-8 pt-[72px] sm:pt-[84px]">
         <div className="section-container px-3 sm:px-6">
           {/* Hero Carousel */}
-          <RetailHeroCarousel />
+          <RetailHeroCarousel productCount={products.length} />
 
           {/* Flash Deals Urgency Bar */}
           <FlashDealsBar />

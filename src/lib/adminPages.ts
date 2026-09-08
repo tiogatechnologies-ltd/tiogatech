@@ -65,6 +65,7 @@ export const ADMIN_PAGES: AdminPage[] = [
   { key: "careers", label: "Job Openings", group: "Marketing & Content", path: "/admin/careers", defaultRoles: [] },
   { key: "career_applications", label: "Career Applications", group: "Marketing & Content", path: "/admin/career-applications", defaultRoles: ["staff"] },
   { key: "landing", label: "Landing Sections", group: "Marketing & Content", path: "/admin/landing", defaultRoles: [] },
+  { key: "retail_promotions", label: "Retail Hero & Flash Deals", group: "Marketing & Content", path: "/admin/retail-promotions", defaultRoles: ["staff"] },
   { key: "content_pages", label: "Static Web Pages", group: "Marketing & Content", path: "/admin/content", defaultRoles: [] },
   { key: "forms", label: "Form Builder", group: "Marketing & Content", path: "/admin/forms", defaultRoles: [] },
   { key: "storage", label: "Media & Cloud Storage", group: "Marketing & Content", path: "/admin/storage", defaultRoles: ["staff", "engineer"] },

@@ -47,6 +47,7 @@ import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 interface Product {
   id: string;
@@ -113,6 +114,7 @@ export const ProductDetail = () => {
   const { slug = "" } = useParams();
   const navigate = useNavigate();
   const { add: addToCart } = useCart();
+  const { content: flashDeal } = useLandingContent("flash_deal");
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isInCompare, toggleCompare } = useProductCompare();
 
@@ -582,13 +584,15 @@ export const ProductDetail = () => {
                   )}
                 </div>
 
-                {/* Urgency promo banner */}
-                <div className="flex items-center gap-2 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-700 dark:text-amber-400">
-                  <Flame size={15} className="shrink-0 text-amber-500" />
-                  <span className="font-medium">
-                    Flash promo: Use code <strong className="font-mono bg-amber-500/20 px-1.5 py-0.5 rounded font-bold">TIOGA2026</strong> for free expedited transit.
-                  </span>
-                </div>
+                {/* Flash deal banner - controlled from Admin > Retail Hero & Flash Deals */}
+                {flashDeal?.is_active && flashDeal.discount_code && (
+                  <div className="flex items-center gap-2 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-700 dark:text-amber-400">
+                    <Flame size={15} className="shrink-0 text-amber-500" />
+                    <span className="font-medium">
+                      {flashDeal.headline ? `${flashDeal.headline}: ` : "Flash promo: "}Use code <strong className="font-mono bg-amber-500/20 px-1.5 py-0.5 rounded font-bold">{flashDeal.discount_code}</strong>{flashDeal.description ? ` - ${flashDeal.description}` : " for a limited-time discount."}
+                    </span>
+                  </div>
+                )}
 
                 <FlexiblePaymentButton itemName={product.name} itemType="product" itemId={product.id} />
               </div>

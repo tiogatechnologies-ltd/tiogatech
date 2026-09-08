@@ -174,6 +174,7 @@ const navGroups: NavGroup[] = [
         roles: ["admin"],
         children: [
           { label: "Landing Sections", path: "/admin/landing" },
+          { label: "Retail Hero & Flash Deals", path: "/admin/retail-promotions" },
           { label: "Static Web Pages", path: "/admin/content" },
           { label: "Form Builder", path: "/admin/forms" },
         ],
