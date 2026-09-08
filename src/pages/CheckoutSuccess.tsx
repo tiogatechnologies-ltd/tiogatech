@@ -31,7 +31,10 @@ const CheckoutSuccess = () => {
       } catch {}
     }
 
-    if (method !== "paystack" || !reference) {
+    // Verify whenever Paystack sent us back a reference. The `method` param is
+    // absent when Paystack uses the dashboard-level callback URL, and skipping
+    // verification there showed an unverified "Order received!" screen.
+    if (!reference) {
       if (orderNumber) clear();
       return;
     }
@@ -41,17 +44,25 @@ const CheckoutSuccess = () => {
     (async () => {
       try {
         const { data, error } = await supabase.functions.invoke("paystack-verify", {
-          body: { reference, order_number: orderNumber },
+          // order_number may be absent on a bare dashboard callback; the function
+          // then resolves it from the transaction metadata.
+          body: orderNumber ? { reference, order_number: orderNumber } : { reference },
         });
-        if (error || !data?.success || data?.order_number !== orderNumber) {
+        if (error || !data?.success) {
           throw new Error(data?.error || error?.message || "Payment was not confirmed");
         }
-        try {
-          const local = JSON.parse(localStorage.getItem(`tioga_order_${orderNumber}`) || "{}");
-          local.payment_status = "paid";
-          local.payment_reference = data.reference;
-          localStorage.setItem(`tioga_order_${orderNumber}`, JSON.stringify(local));
-        } catch {}
+        if (orderNumber && data?.order_number !== orderNumber) {
+          throw new Error("Payment did not match this order");
+        }
+        const confirmedOrder = orderNumber || data?.order_number || null;
+        if (confirmedOrder) {
+          try {
+            const local = JSON.parse(localStorage.getItem(`tioga_order_${confirmedOrder}`) || "{}");
+            local.payment_status = "paid";
+            local.payment_reference = data.reference;
+            localStorage.setItem(`tioga_order_${confirmedOrder}`, JSON.stringify(local));
+          } catch {}
+        }
         setVerify({ status: "success", amount: Number(data.amount_ngn) || undefined });
         clear();
       } catch (err) {
@@ -92,12 +103,12 @@ const CheckoutSuccess = () => {
           </div>
         )}
 
-        {method === "paystack" && verify.status === "success" && (
+        {verify.status === "success" && (
           <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-foreground mb-5">
             Paystack confirmed your payment{verify.amount ? ` of ₦${verify.amount.toLocaleString("en-NG")}` : ""}. Our engineering and fulfillment team has been notified to process your order.
           </div>
         )}
-        {method === "paystack" && verify.status === "failed" && (
+        {verify.status === "failed" && (
           <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-foreground mb-5 text-left">
             We could not confirm this Paystack transaction automatically. If your account was debited, please chat with us with reference <span className="font-mono font-bold">{reference}</span>.
           </div>

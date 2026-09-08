@@ -15,14 +15,20 @@ Deno.serve(async (req) => {
         status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const BodySchema = z.object({ reference: z.string().min(6).max(120), order_number: z.string().min(3).max(80) });
+    // order_number is optional: when Paystack redirects using the dashboard-level
+    // callback URL it only appends ?reference=, so we recover the order from the
+    // transaction's own metadata instead of failing to verify.
+    const BodySchema = z.object({
+      reference: z.string().min(6).max(120),
+      order_number: z.string().min(3).max(80).optional(),
+    });
     const parsed = BodySchema.safeParse(await req.json().catch(() => ({})));
     if (!parsed.success) {
-      return new Response(JSON.stringify({ error: "A valid reference and order number are required" }), {
+      return new Response(JSON.stringify({ error: "A valid reference is required" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const { reference, order_number } = parsed.data;
+    const { reference } = parsed.data;
     const authHeader = req.headers.get("Authorization");
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
@@ -32,17 +38,30 @@ Deno.serve(async (req) => {
     const { data: authData } = await authed.auth.getUser();
     if (!authData.user) return new Response(JSON.stringify({ error: "Please sign in." }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     const admin = createClient(supabaseUrl, serviceKey);
-    const { data: order } = await admin.from("orders").select("order_number, user_id, total, payment_status").eq("order_number", order_number).maybeSingle();
-    if (!order || order.user_id !== authData.user.id) return new Response(JSON.stringify({ error: "Order not found." }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+    // Ask Paystack first so the order can be resolved from transaction metadata
+    // when the caller did not supply an order number.
     const r = await fetch(`https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`, {
       headers: { Authorization: `Bearer ${SECRET}` },
     });
     const j = await r.json();
     const paidAmount = j?.data?.amount ? Number(j.data.amount) / 100 : 0;
     const metadataOrder = j?.data?.metadata?.order_number;
-    const success = j?.data?.status === "success" && metadataOrder === order_number && paidAmount === Number(order.total);
+    const orderNumber = parsed.data.order_number ?? metadataOrder;
+    if (!orderNumber) {
+      return new Response(JSON.stringify({ error: "Could not resolve an order for this payment." }), {
+        status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { data: order } = await admin.from("orders").select("order_number, user_id, total, payment_status").eq("order_number", orderNumber).maybeSingle();
+    if (!order || order.user_id !== authData.user.id) return new Response(JSON.stringify({ error: "Order not found." }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+    // Still require the transaction's own metadata to name this exact order and
+    // the amount to match, so a reference can never confirm a different order.
+    const success = j?.data?.status === "success" && metadataOrder === orderNumber && paidAmount === Number(order.total);
     if (success && order.payment_status !== "paid") {
-      await admin.from("orders").update({ payment_status: "paid", payment_reference: reference, status: "confirmed" }).eq("order_number", order_number).eq("user_id", authData.user.id);
+      await admin.from("orders").update({ payment_status: "paid", payment_reference: reference, status: "confirmed" }).eq("order_number", orderNumber).eq("user_id", authData.user.id);
     }
     return new Response(JSON.stringify({
       success,
