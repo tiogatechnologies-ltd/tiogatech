@@ -12,7 +12,6 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
 import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 import { useLandingContent } from "@/hooks/useLandingContent";
-import { resolveFlashDeal } from "@/lib/retailPromotionsDefaults";
 
 const fmtPrice = (n: number | null) =>
   n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`;
@@ -258,8 +257,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
 
 const SolarPackagesSection = () => {
   const { packages, loading } = useSolarPackages();
-  const { content: flashDealRaw } = useLandingContent("flash_deal");
-  const flashDeal = useMemo(() => resolveFlashDeal(flashDealRaw), [flashDealRaw]);
+  const { content: flashDeal } = useLandingContent("flash_deal");
   const [tab, setTab] = useState<"lithium" | "tubular" | "high_voltage">("lithium");
   const [searchParams] = useSearchParams();
 

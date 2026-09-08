@@ -12,16 +12,36 @@ import { mergeProducts } from "@/lib/mergeProducts";
 import { normalizeCategory } from "@/lib/productBrand";
 import { resolveProductImage } from "@/lib/productImages";
 import { productPath } from "@/lib/productSlug";
-import {
-  DEFAULT_HERO_SLIDES,
-  DEFAULT_FLASH_DEAL,
-  type HeroSlideContent,
-  type FlashDealContent,
-  type SourceType,
-} from "@/lib/retailPromotionsDefaults";
 
-type HeroSlide = HeroSlideContent;
-type FlashDeal = FlashDealContent;
+type SourceType = "product" | "solar_package" | "smart_lock" | "automation_package" | "custom";
+
+interface HeroSlide {
+  id: string;
+  is_active: boolean;
+  source_type: SourceType;
+  source_id: string | null;
+  badge: string;
+  headline: string;
+  subheadline: string;
+  highlight_text: string;
+  discount_pct: number | null;
+  price_ngn: number | null;
+  image_url: string;
+  cta_text: string;
+  cta_link: string;
+  secondary_cta_text: string;
+  secondary_cta_link: string;
+}
+
+interface FlashDeal {
+  is_active: boolean;
+  headline: string;
+  discount_label: string;
+  discount_code: string;
+  description: string;
+  perk_label: string;
+  ends_at: string; // ISO
+}
 
 const emptySlide = (): HeroSlide => ({
   id: crypto.randomUUID(),
@@ -41,7 +61,15 @@ const emptySlide = (): HeroSlide => ({
   secondary_cta_link: "",
 });
 
-const defaultFlashDeal: FlashDeal = DEFAULT_FLASH_DEAL;
+const defaultFlashDeal: FlashDeal = {
+  is_active: false,
+  headline: "Mid-Month Energy Flash Deals",
+  discount_label: "Up to 15% Off",
+  discount_code: "TIOGA2026",
+  description: "Apply this code at checkout for free 24-hour expedited dispatch on all inverter and battery storage orders.",
+  perk_label: "24h Dispatch",
+  ends_at: "",
+};
 
 const naira = (n: number | null) => (n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`);
 
@@ -60,7 +88,7 @@ const toDatetimeLocal = (iso: string) => {
 };
 
 const AdminRetailPromotions = () => {
-  const [slides, setSlides] = useState<HeroSlide[]>(DEFAULT_HERO_SLIDES as HeroSlide[]);
+  const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [flashDeal, setFlashDeal] = useState<FlashDeal>(defaultFlashDeal);
   const [loading, setLoading] = useState(true);
   const [savingHero, setSavingHero] = useState(false);
@@ -87,17 +115,8 @@ const AdminRetailPromotions = () => {
       const flashRow = (data as any[])?.find((r) => r.section_key === "flash_deal");
       const heroContent = heroRow?.content as { slides?: HeroSlide[] } | undefined;
       const flashContent = flashRow?.content as Partial<FlashDeal> | undefined;
-
-      const loadedSlides = (Array.isArray(heroContent?.slides) && heroContent.slides.length > 0)
-        ? heroContent.slides
-        : (DEFAULT_HERO_SLIDES as HeroSlide[]);
-
-      const loadedFlash = flashContent
-        ? { ...DEFAULT_FLASH_DEAL, ...flashContent }
-        : DEFAULT_FLASH_DEAL;
-
-      setSlides(loadedSlides);
-      setFlashDeal(loadedFlash);
+      setSlides(Array.isArray(heroContent?.slides) ? heroContent.slides! : []);
+      setFlashDeal(flashContent ? { ...defaultFlashDeal, ...flashContent } : defaultFlashDeal);
       setDbProducts(prodData || []);
       setLoading(false);
     };
@@ -219,25 +238,13 @@ const AdminRetailPromotions = () => {
               <Flame size={18} className="text-amber-500" />
               <h2 className="font-display text-lg font-bold text-foreground">Flash Deals Bar</h2>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setFlashDeal(DEFAULT_FLASH_DEAL);
-                  toast.info("Reset flash deal to defaults. Click Save Flash Deal to apply.");
-                }}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 text-foreground transition-all"
-              >
-                <RefreshCw size={12} /> Reset to Defaults
-              </button>
-              <button
-                onClick={() => setFlashDeal((f) => ({ ...f, is_active: !f.is_active }))}
-                className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${flashDeal.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
-              >
-                {flashDeal.is_active ? <Eye size={12} /> : <EyeOff size={12} />}
-                {flashDeal.is_active ? "Visible on site" : "Hidden"}
-              </button>
-            </div>
+            <button
+              onClick={() => setFlashDeal((f) => ({ ...f, is_active: !f.is_active }))}
+              className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${flashDeal.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
+            >
+              {flashDeal.is_active ? <Eye size={12} /> : <EyeOff size={12} />}
+              {flashDeal.is_active ? "Visible on site" : "Hidden"}
+            </button>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-3.5">
@@ -287,21 +294,9 @@ const AdminRetailPromotions = () => {
               <GalleryHorizontal size={18} className="text-primary" />
               <h2 className="font-display text-lg font-bold text-foreground">Hero Carousel Slides</h2>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setSlides(DEFAULT_HERO_SLIDES as HeroSlide[]);
-                  toast.info("Reset slides to curated defaults. Click Save Hero Slides to apply.");
-                }}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 text-foreground transition-all"
-              >
-                <RefreshCw size={12} /> Reset to Defaults
-              </button>
-              <button onClick={addSlide} className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20">
-                <Plus size={12} /> Add Slide
-              </button>
-            </div>
+            <button onClick={addSlide} className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20">
+              <Plus size={12} /> Add Slide
+            </button>
           </div>
 
           {slides.length === 0 && (
