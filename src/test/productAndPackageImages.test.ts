@@ -125,5 +125,25 @@ describe("Product and Package Real Images", () => {
       expect(p.numeric_price).toBeGreaterThan(0);
     }
   });
+
+  it("ensures zero duplicate product images across all products in the catalog", () => {
+    const imageUrlMap = new Map<string, string[]>();
+    for (const p of PRODUCTS) {
+      if (!p.image_url) continue;
+      const list = imageUrlMap.get(p.image_url) || [];
+      list.push(p.name);
+      imageUrlMap.set(p.image_url, list);
+    }
+
+    const duplicates = [...imageUrlMap.entries()].filter(([_, names]) => names.length > 1);
+    expect(
+      duplicates,
+      `No two products should share the same image. Duplicates found: ${JSON.stringify(duplicates)}`
+    ).toEqual([]);
+
+    const srneProducts = PRODUCTS.filter((p) => p.brand === "SRNE");
+    const uniqueSrneImages = new Set(srneProducts.map((p) => p.image_url));
+    expect(uniqueSrneImages.size).toBe(srneProducts.length);
+  });
 });
 

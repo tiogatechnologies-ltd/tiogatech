@@ -301,7 +301,7 @@ export const invertersList: Product[] = [
     price: "₦549,600",
     numeric_price: 549600,
     tier: "mid",
-    image_url: "/products/srne/srne-inverter-hf.webp",
+    image_url: "/products/srne/srne-inv-afp-5kw.webp",
     specifications: {
       "Rated AC Output": "5,000W Continuous (48Vdc)",
       "MPPT Charge Current": "80A",
@@ -337,7 +337,7 @@ export const invertersList: Product[] = [
     price: "₦788,400",
     numeric_price: 788400,
     tier: "premium",
-    image_url: "/products/srne/srne-inverter-asp.webp",
+    image_url: "/products/srne/srne-inv-aep-6kw.webp",
     specifications: {
       "Rated AC Output": "6,000W Continuous (48Vdc)",
       "MPPT Charge Current": "135A",
@@ -374,7 +374,7 @@ export const invertersList: Product[] = [
     price: "₦1,269,600",
     numeric_price: 1269600,
     tier: "premium",
-    image_url: "/products/srne/srne-inverter-asp.webp",
+    image_url: "/products/srne/srne-inv-hesp-6kw.webp",
     specifications: {
       "Rated AC Output": "6,000W Grid & Off-Grid",
       "MPPT Charge Current": "100A",
@@ -410,7 +410,7 @@ export const invertersList: Product[] = [
     price: "₦1,443,600",
     numeric_price: 1443600,
     tier: "premium",
-    image_url: "/products/srne/srne-inverter-asp.webp",
+    image_url: "/products/srne/srne-inv-asp-10kw.webp",
     specifications: {
       "Rated AC Output": "10,000W Continuous (48Vdc)",
       "MPPT Charge Current": "200A",
@@ -446,7 +446,7 @@ export const invertersList: Product[] = [
     price: "₦1,536,000",
     numeric_price: 1536000,
     tier: "premium",
-    image_url: "/products/srne/srne-inverter-asp.webp",
+    image_url: "/products/srne/srne-inv-asp-12kw.webp",
     specifications: {
       "Rated AC Output": "12,000W Continuous (48Vdc)",
       "MPPT Charge Current": "200A",
@@ -482,7 +482,7 @@ export const invertersList: Product[] = [
     price: "₦2,738,400",
     numeric_price: 2738400,
     tier: "premium",
-    image_url: "/products/srne/srne-inverter-asp.webp",
+    image_url: "/products/srne/srne-inv-asp-16kw.webp",
     specifications: {
       "Rated AC Output": "16,000W Continuous (48Vdc)",
       "MPPT Charge Current": "300A",
@@ -518,7 +518,7 @@ export const invertersList: Product[] = [
     price: "₦4,808,400",
     numeric_price: 4808400,
     tier: "premium",
-    image_url: "/products/srne/srne-inverter-hesp.webp",
+    image_url: "/products/srne/srne-inv-hesp-20kw.webp",
     specifications: {
       "Rated AC Output": "20,000W Continuous",
       "MPPT Charge Current": "350A",
@@ -742,7 +742,7 @@ export const batteriesList: Product[] = [
     price: "₦639,600",
     numeric_price: 639600,
     tier: "affordable",
-    image_url: "/products/srne/srne-battery-eos-wall.webp",
+    image_url: "/products/srne/srne-bat-eos02b-12.webp",
     specifications: {
       "Nominal Voltage": "12.8 Vdc",
       "Capacity": "200 Ah (2.56 kWh)",
@@ -778,7 +778,7 @@ export const batteriesList: Product[] = [
     price: "₦756,000",
     numeric_price: 756000,
     tier: "affordable",
-    image_url: "/products/srne/srne-battery-eos-wall.webp",
+    image_url: "/products/srne/srne-bat-eos02b-24.webp",
     specifications: {
       "Nominal Voltage": "25.6 Vdc",
       "Capacity": "100 Ah (2.56 kWh)",
@@ -814,7 +814,7 @@ export const batteriesList: Product[] = [
     price: "₦1,617,600",
     numeric_price: 1617600,
     tier: "mid",
-    image_url: "/products/srne/srne-battery-eos-wall.webp",
+    image_url: "/products/srne/srne-bat-eos08b-24.webp",
     specifications: {
       "Nominal Voltage": "25.6 Vdc",
       "Capacity": "280 Ah (7.16 kWh)",
@@ -850,7 +850,7 @@ export const batteriesList: Product[] = [
     price: "₦1,202,400",
     numeric_price: 1202400,
     tier: "mid",
-    image_url: "/products/srne/srne-battery-se05b-wall.webp",
+    image_url: "/products/srne/srne-bat-se05b-wall.webp",
     specifications: {
       "Nominal Voltage": "51.2 Vdc",
       "Capacity": "100 Ah (5.12 kWh)",
@@ -887,7 +887,7 @@ export const batteriesList: Product[] = [
     price: "₦2,164,800",
     numeric_price: 2164800,
     tier: "premium",
-    image_url: "/products/srne/srne-battery-powerwall.webp",
+    image_url: "/products/srne/srne-bat-se10b-wall.webp",
     specifications: {
       "Nominal Voltage": "51.2 Vdc",
       "Capacity": "205 Ah (10.49 kWh)",
@@ -924,7 +924,7 @@ export const batteriesList: Product[] = [
     price: "₦2,779,200",
     numeric_price: 2779200,
     tier: "premium",
-    image_url: "/products/srne/srne-battery-tower.webp",
+    image_url: "/products/srne/srne-bat-se15b-tower.webp",
     specifications: {
       "Nominal Voltage": "51.2 Vdc",
       "Capacity": "280 Ah (14.33 kWh)",
@@ -961,7 +961,7 @@ export const batteriesList: Product[] = [
     price: "₦3,002,400",
     numeric_price: 3002400,
     tier: "premium",
-    image_url: "/products/srne/srne-battery-eos-pro.webp",
+    image_url: "/products/srne/srne-bat-se16b-pro.webp",
     specifications: {
       "Nominal Voltage": "51.2 Vdc",
       "Capacity": "314 Ah (16.07 kWh)",
@@ -999,7 +999,7 @@ export const batteriesList: Product[] = [
     price: "₦1,462,800",
     numeric_price: 1462800,
     tier: "premium",
-    image_url: "/products/srne/srne-battery-eos-pro.webp",
+    image_url: "/products/srne/srne-bat-eos05b-pro.webp",
     specifications: {
       "Nominal Voltage": "51.2 Vdc",
       "Capacity": "100 Ah (5.12 kWh)",
@@ -1035,7 +1035,7 @@ export const batteriesList: Product[] = [
     price: "₦3,206,400",
     numeric_price: 3206400,
     tier: "premium",
-    image_url: "/products/srne/srne-battery-eos-pro.webp",
+    image_url: "/products/srne/srne-bat-eos10b-pro.webp",
     specifications: {
       "Nominal Voltage": "51.2 Vdc",
       "Capacity": "200 Ah (10.24 kWh)",
@@ -1071,7 +1071,7 @@ export const batteriesList: Product[] = [
     price: "₦3,640,800",
     numeric_price: 3640800,
     tier: "premium",
-    image_url: "/products/srne/srne-battery-eos-pro.webp",
+    image_url: "/products/srne/srne-bat-eos15b-pro.webp",
     specifications: {
       "Nominal Voltage": "51.2 Vdc",
       "Capacity": "314 Ah (16.07 kWh)",
