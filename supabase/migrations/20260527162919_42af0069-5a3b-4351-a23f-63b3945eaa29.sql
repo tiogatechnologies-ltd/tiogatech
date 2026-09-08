@@ -39,11 +39,13 @@ GRANT ALL ON public.newsletter_broadcasts TO service_role;
 
 ALTER TABLE public.newsletter_broadcasts ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins read broadcasts" ON public.newsletter_broadcasts;
 CREATE POLICY "Admins read broadcasts"
 ON public.newsletter_broadcasts FOR SELECT
 TO authenticated
 USING (has_role(auth.uid(), 'admin'::app_role));
 
+DROP POLICY IF EXISTS "Admins insert broadcasts" ON public.newsletter_broadcasts;
 CREATE POLICY "Admins insert broadcasts"
 ON public.newsletter_broadcasts FOR INSERT
 TO authenticated
