@@ -3,25 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Tag, ChevronLeft, ChevronRight, Package } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
-import bgSolarHero from "@/assets/bg-commercial-solar.jpg";
-
-interface HeroSlideContent {
-  id: string;
-  is_active: boolean;
-  badge: string;
-  headline: string;
-  subheadline: string;
-  highlight_text: string;
-  discount_pct: number | null;
-  image_url: string;
-  cta_text: string;
-  cta_link: string;
-  secondary_cta_text?: string;
-  secondary_cta_link?: string;
-}
+import { DEFAULT_HERO_SLIDES, type HeroSlideContent } from "@/lib/retailPromotionsDefaults";
 
 interface RetailHeroCarouselProps {
-  /** Real, currently-loaded catalog size - used only for the honest fallback slide below. */
+  /** Real, currently-loaded catalog size */
   productCount?: number;
 }
 
@@ -35,24 +20,11 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
     [content]
   );
 
-  // No admin-configured slide yet: show one honest, non-promotional slide built
-  // from the real catalog size already loaded on this page - never fake copy.
-  const fallbackSlide: HeroSlideContent | null = loading
-    ? null
-    : {
-        id: "fallback",
-        is_active: true,
-        badge: "Tioga Retail Store",
-        headline: productCount > 0 ? `${productCount} Products In Stock` : "Shop the Full Catalog",
-        subheadline: "Solar inverters, lithium batteries, panels, smart locks and home automation hardware — in stock and ready to ship nationwide.",
-        highlight_text: "",
-        discount_pct: null,
-        image_url: bgSolarHero,
-        cta_text: "Browse Catalog",
-        cta_link: "/retail",
-      };
-
-  const slides = configuredSlides.length > 0 ? configuredSlides : fallbackSlide ? [fallbackSlide] : [];
+  const slides = useMemo(() => {
+    if (configuredSlides.length > 0) return configuredSlides;
+    if (loading) return [];
+    return DEFAULT_HERO_SLIDES;
+  }, [configuredSlides, loading]);
 
   useEffect(() => {
     if (current >= slides.length) setCurrent(0);

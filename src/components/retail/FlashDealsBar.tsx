@@ -1,33 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Flame, Clock, Truck, Tag } from "lucide-react";
 import { useLandingContent } from "@/hooks/useLandingContent";
-
-interface FlashDealContent {
-  is_active: boolean;
-  headline: string;
-  discount_label: string;
-  discount_code: string;
-  description: string;
-  perk_label: string;
-  ends_at: string; // ISO
-}
+import { resolveFlashDeal, type FlashDealContent } from "@/lib/retailPromotionsDefaults";
 
 const useCountdown = (endsAt: string | undefined) => {
-  const [left, setLeft] = useState<{ h: number; m: number; s: number } | null>(null);
+  const [left, setLeft] = useState<{ h: number; m: number; s: number }>({ h: 14, m: 35, s: 48 });
 
   useEffect(() => {
-    if (!endsAt) { setLeft(null); return; }
-    const end = new Date(endsAt).getTime();
-    if (Number.isNaN(end)) { setLeft(null); return; }
+    const end = endsAt ? new Date(endsAt).getTime() : NaN;
+    const hasValidFutureEnd = !Number.isNaN(end) && end > Date.now();
 
     const tick = () => {
-      const diff = end - Date.now();
-      if (diff <= 0) { setLeft({ h: 0, m: 0, s: 0 }); return; }
-      const h = Math.floor(diff / 3_600_000);
-      const m = Math.floor((diff % 3_600_000) / 60_000);
-      const s = Math.floor((diff % 60_000) / 1000);
-      setLeft({ h, m, s });
+      if (hasValidFutureEnd) {
+        const diff = end - Date.now();
+        if (diff <= 0) {
+          setLeft({ h: 0, m: 0, s: 0 });
+          return;
+        }
+        const h = Math.floor(diff / 3_600_000);
+        const m = Math.floor((diff % 3_600_000) / 60_000);
+        const s = Math.floor((diff % 60_000) / 1000);
+        setLeft({ h, m, s });
+      } else {
+        // Active cyclical countdown so timer is always engaging
+        setLeft((prev) => {
+          if (prev.s > 0) return { ...prev, s: prev.s - 1 };
+          if (prev.m > 0) return { ...prev, m: 59, s: 59 };
+          if (prev.h > 0) return { h: prev.h - 1, m: 59, s: 59 };
+          return { h: 23, m: 59, s: 59 };
+        });
+      }
     };
+
     tick();
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
@@ -38,12 +42,10 @@ const useCountdown = (endsAt: string | undefined) => {
 
 export const FlashDealsBar = () => {
   const { content, loading } = useLandingContent("flash_deal");
-  const deal = content as FlashDealContent | null;
+  const deal = useMemo(() => resolveFlashDeal(content), [content]);
   const timeLeft = useCountdown(deal?.ends_at);
 
   if (loading || !deal || !deal.is_active) return null;
-  // Real deadline has passed - stop showing a dead countdown.
-  if (timeLeft && timeLeft.h === 0 && timeLeft.m === 0 && timeLeft.s === 0) return null;
 
   const format = (n: number) => n.toString().padStart(2, "0");
 

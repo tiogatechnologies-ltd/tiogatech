@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -15,6 +15,7 @@ import catLocks from "@/assets/stock-smart-lock.png";
 import catAutomation from "@/assets/bg-lagos-apartment.jpg";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { resolveFlashDeal } from "@/lib/retailPromotionsDefaults";
 
 import SolarPackagesSection from "@/components/SolarPackagesSection";
 import SmartLocksSection from "@/components/SmartLocksSection";
@@ -84,7 +85,8 @@ const TRUST_STATS = [
 
 const Packages = () => {
   const [active, setActive] = useState<CategoryKey>("all");
-  const { content: flashDeal } = useLandingContent("flash_deal");
+  const { content: flashDealRaw } = useLandingContent("flash_deal");
+  const flashDeal = useMemo(() => resolveFlashDeal(flashDealRaw), [flashDealRaw]);
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});

@@ -48,6 +48,7 @@ import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { resolveFlashDeal } from "@/lib/retailPromotionsDefaults";
 
 interface Product {
   id: string;
@@ -114,7 +115,8 @@ export const ProductDetail = () => {
   const { slug = "" } = useParams();
   const navigate = useNavigate();
   const { add: addToCart } = useCart();
-  const { content: flashDeal } = useLandingContent("flash_deal");
+  const { content: flashDealRaw } = useLandingContent("flash_deal");
+  const flashDeal = useMemo(() => resolveFlashDeal(flashDealRaw), [flashDealRaw]);
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isInCompare, toggleCompare } = useProductCompare();
 

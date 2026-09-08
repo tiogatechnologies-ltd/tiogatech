@@ -16,6 +16,7 @@ import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { resolveFlashDeal } from "@/lib/retailPromotionsDefaults";
 
 const fmtPrice = (n: number | null) =>
   n == null ? "Price on Request" : `₦${Math.round(n).toLocaleString("en-NG")}`;
@@ -264,7 +265,8 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
 export const SolarPackages = () => {
   const { packages, loading } = useSolarPackages();
-  const { content: flashDeal } = useLandingContent("flash_deal");
+  const { content: flashDealRaw } = useLandingContent("flash_deal");
+  const flashDeal = useMemo(() => resolveFlashDeal(flashDealRaw), [flashDealRaw]);
   const [filter, setFilter] = useState<"all" | "lithium" | "tubular" | "high_voltage">("all");
 
   const filtered = useMemo(() => {
