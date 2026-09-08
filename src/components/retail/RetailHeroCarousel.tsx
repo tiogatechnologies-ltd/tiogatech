@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Tag, ChevronLeft, ChevronRight, Package } from "lucide-react";
+import { ArrowRight, Tag, ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
-import bgSolarHero from "@/assets/bg-commercial-solar.jpg";
+import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 
 interface HeroSlideContent {
   id: string;
@@ -35,21 +35,22 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
     [content]
   );
 
-  // No admin-configured slide yet: show one honest, non-promotional slide built
-  // from the real catalog size already loaded on this page - never fake copy.
+  // Honest fallback slide when admin hasn't configured custom slides yet
   const fallbackSlide: HeroSlideContent | null = loading
     ? null
     : {
         id: "fallback",
         is_active: true,
-        badge: "Tioga Retail Store",
-        headline: productCount > 0 ? `${productCount} Products In Stock` : "Shop the Full Catalog",
-        subheadline: "Solar inverters, lithium batteries, panels, smart locks and home automation hardware — in stock and ready to ship nationwide.",
-        highlight_text: "",
+        badge: "Official Distributor Guarantee",
+        headline: productCount > 0 ? `${productCount} Tier-1 Hardware Products In Stock` : "Shop the Full Catalog",
+        subheadline: "Solar inverters, lithium batteries, Tier-1 panels, smart locks and home automation hardware — in stock and ready to ship nationwide.",
+        highlight_text: "Official Manufacturer Warranties · Nationwide Delivery",
         discount_pct: null,
-        image_url: bgSolarHero,
+        image_url: "/products/clear/inverter-deye-hybrid.webp",
         cta_text: "Browse Catalog",
         cta_link: "/retail",
+        secondary_cta_text: "Load Sizing Calculator",
+        secondary_cta_link: "/energy-calculator",
       };
 
   const slides = configuredSlides.length > 0 ? configuredSlides : fallbackSlide ? [fallbackSlide] : [];
@@ -73,83 +74,150 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
   const slide = slides[current] || slides[0];
 
   return (
-    <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-border/60 bg-midnight min-h-[380px] sm:min-h-[460px] md:min-h-[500px] flex items-center mb-6 sm:mb-10 group">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={slide.id}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="absolute inset-0"
-        >
-          <img
-            src={slide.image_url}
-            alt={slide.headline}
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-midnight/80" />
-        </motion.div>
-      </AnimatePresence>
+    <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#060913] min-h-[420px] sm:min-h-[480px] md:min-h-[520px] flex items-center mb-6 sm:mb-10 group">
+      {/* Dynamic Atmospheric Multi-Layered Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#060a17] via-[#0a1228] to-[#040711]" />
 
-      {/* Slide Content */}
-      <div className="relative z-10 p-5 sm:p-8 md:p-12 lg:p-16 max-w-2xl text-white">
-        <motion.div
-          key={`content-${slide.id}`}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="space-y-3 sm:space-y-4"
-        >
-          <div className="flex items-center gap-2 flex-wrap">
-            {slide.badge && (
-              <p className="text-[11px] sm:text-xs font-semibold text-gold uppercase tracking-widest">
-                {slide.badge}
-              </p>
-            )}
-            {slide.discount_pct != null && slide.discount_pct > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold text-midnight text-[10px] font-extrabold uppercase tracking-wider">
-                <Tag size={10} /> Save {slide.discount_pct}%
-              </span>
-            )}
-          </div>
+      {/* Subtle Tech Grid Texture */}
+      <img
+        src={bgTechMesh}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none"
+      />
 
-          <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-tight tracking-tight text-white drop-shadow-md">
-            {slide.headline}
-          </h1>
+      {/* Dynamic Ambient Lighting Glow Orbs */}
+      <div className="absolute -top-32 -left-24 w-[400px] h-[400px] rounded-full bg-amber-500/15 blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-32 left-1/3 w-[450px] h-[450px] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[350px] sm:w-[480px] h-[350px] sm:h-[480px] rounded-full bg-gradient-to-tr from-amber-500/20 via-primary/20 to-transparent blur-[90px] pointer-events-none" />
 
-          {slide.subheadline && (
-            <p className="text-xs sm:text-sm md:text-base text-gray-200 leading-relaxed drop-shadow line-clamp-2 sm:line-clamp-3">
-              {slide.subheadline}
-            </p>
-          )}
+      {/* Subtle Glass Rim Reflection */}
+      <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/10 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]" />
 
-          {slide.highlight_text && (
-            <div className="text-xs font-medium text-emerald-400 flex items-center gap-1.5">
-              <Package size={13} />
-              <span>{slide.highlight_text}</span>
-            </div>
-          )}
-
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
-            <Link
-              to={slide.cta_link}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-gold hover:bg-gold-light text-midnight font-bold text-xs sm:text-sm shadow-lg transition-all"
-            >
-              <span>{slide.cta_text}</span>
-              <ArrowRight size={15} />
-            </Link>
-
-            {slide.secondary_cta_text && slide.secondary_cta_link && (
-              <Link
-                to={slide.secondary_cta_link}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/20 transition-all text-center"
+      {/* Slide Content Grid: Left Text Column + Right Floating Product Showcase */}
+      <div className="relative z-10 w-full p-6 sm:p-10 md:p-12 lg:p-14">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Left Column: Text & CTAs */}
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-white">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`content-${slide.id}`}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="space-y-3 sm:space-y-4"
               >
-                <span>{slide.secondary_cta_text}</span>
-              </Link>
-            )}
+                {/* Eyebrow Badge & Discount Tag */}
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  {slide.badge && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                      {slide.badge}
+                    </span>
+                  )}
+                  {slide.discount_pct != null && slide.discount_pct > 0 && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 text-midnight text-[11px] font-black uppercase tracking-wider shadow-md">
+                      <Tag size={11} /> Save {slide.discount_pct}%
+                    </span>
+                  )}
+                </div>
+
+                {/* Headline */}
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.15] tracking-tight text-white drop-shadow-md">
+                  {slide.headline}
+                </h1>
+
+                {/* Subheadline */}
+                {slide.subheadline && (
+                  <p className="text-xs sm:text-sm md:text-base text-gray-300/90 leading-relaxed max-w-xl line-clamp-3">
+                    {slide.subheadline}
+                  </p>
+                )}
+
+                {/* Highlight line */}
+                {slide.highlight_text && (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs sm:text-sm font-semibold backdrop-blur-md">
+                    <ShieldCheck size={16} className="shrink-0" />
+                    <span>{slide.highlight_text}</span>
+                  </div>
+                )}
+
+                {/* CTAs */}
+                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <Link
+                    to={slide.cta_link}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-midnight font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+                  >
+                    <span>{slide.cta_text}</span>
+                    <ArrowRight size={15} />
+                  </Link>
+
+                  {slide.secondary_cta_text && slide.secondary_cta_link && (
+                    <Link
+                      to={slide.secondary_cta_link}
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
+                    >
+                      <span>{slide.secondary_cta_text}</span>
+                    </Link>
+                  )}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
-        </motion.div>
+
+          {/* Right Column: Floating Product Showcase */}
+          <div className="lg:col-span-5 flex items-center justify-center relative min-h-[260px] sm:min-h-[300px] lg:min-h-[380px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`showcase-${slide.id}`}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="relative flex items-center justify-center w-full max-w-[360px] sm:max-w-[420px]"
+              >
+                {/* Glowing Circular Halo & Glass Pedestal */}
+                <div className="absolute w-56 h-56 sm:w-72 sm:h-72 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md shadow-2xl pointer-events-none" />
+                <div className="absolute w-44 h-44 sm:w-56 sm:h-56 rounded-full bg-gradient-to-tr from-amber-500/15 via-primary/20 to-transparent blur-xl pointer-events-none" />
+
+                {/* Floating Product Image Container */}
+                <motion.div
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="relative z-10 w-full h-[230px] sm:h-[280px] lg:h-[330px] flex items-center justify-center p-2"
+                >
+                  <img
+                    src={slide.image_url}
+                    alt={slide.headline}
+                    className="max-h-full max-w-full object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.7)] filter transition-transform duration-500 hover:scale-105"
+                  />
+                </motion.div>
+
+                {/* Floating In-Stock Tag (Top-Left) */}
+                <div className="absolute -top-2 left-2 sm:left-4 z-20 hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-midnight/85 backdrop-blur-md border border-white/15 text-[11px] font-bold text-white shadow-lg">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>In Stock · Fast Dispatch</span>
+                </div>
+
+                {/* Floating Guarantee Tag (Bottom-Right) */}
+                <div className="absolute -bottom-2 right-2 sm:right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-midnight/85 backdrop-blur-md border border-amber-500/30 text-[11px] font-bold text-amber-400 shadow-lg">
+                  <ShieldCheck size={13} className="text-amber-400" />
+                  <span>Official Warranty</span>
+                </div>
+
+                {/* Soft ground shadow beneath the floating product */}
+                <div className="absolute -bottom-4 w-44 sm:w-56 h-5 bg-black/60 rounded-full blur-xl pointer-events-none" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
 
       {/* Nav Controls */}
@@ -158,7 +226,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
           <button
             onClick={prevSlide}
             aria-label="Previous Slide"
-            className="p-1.5 sm:p-2 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-md border border-white/10 transition-all"
+            className="p-1.5 sm:p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/15 transition-all"
           >
             <ChevronLeft size={16} />
           </button>
@@ -169,7 +237,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 onClick={() => { setAutoplay(false); setCurrent(idx); }}
                 aria-label={`Slide ${idx + 1}`}
                 className={`h-1.5 sm:h-2 rounded-full transition-all ${
-                  idx === current ? "w-5 sm:w-6 bg-gold" : "w-1.5 sm:w-2 bg-white/40 hover:bg-white/70"
+                  idx === current ? "w-5 sm:w-6 bg-amber-400" : "w-1.5 sm:w-2 bg-white/40 hover:bg-white/70"
                 }`}
               />
             ))}
@@ -177,7 +245,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
           <button
             onClick={nextSlide}
             aria-label="Next Slide"
-            className="p-1.5 sm:p-2 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-md border border-white/10 transition-all"
+            className="p-1.5 sm:p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/15 transition-all"
           >
             <ChevronRight size={16} />
           </button>
@@ -186,3 +254,5 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
     </div>
   );
 };
+
+export default RetailHeroCarousel;
