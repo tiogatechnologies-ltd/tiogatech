@@ -17,6 +17,8 @@ interface Product {
   features: string[];
   best_for: string;
   price: string | null;
+  /** Genuine previous price. Only set when the product really cost more before. */
+  compare_at_price?: number | null;
   tier: string;
   is_active: boolean;
   sort_order: number;
@@ -25,12 +27,16 @@ interface Product {
   specifications: Record<string, string> | null;
 }
 
+// `compare_at_price` is not in the generated type map until the migration has
+// been applied and types regenerated, so writes go through an untyped handle.
+const productsTable = () => (supabase as any).from("products");
+
 const tiers = ["premium", "mid", "affordable", "entry"];
 const categories = ["solar", "smart_locks", "smarthome", "cctv", "Inverters", "Batteries", "Solar Panels", "Smart Locks", "Home Automation", "CCTV"];
 
 const emptyProduct: Omit<Product, "id"> = {
   name: "", category: "solar", series: "", description: "", features: [],
-  best_for: "", price: "", tier: "entry", is_active: true, sort_order: 0,
+  best_for: "", price: "", compare_at_price: null, tier: "entry", is_active: true, sort_order: 0,
   image_url: null, tags: [], specifications: {},
 };
 
@@ -50,7 +56,18 @@ export const AdminProducts = () => {
   const [specKey, setSpecKey] = useState("");
   const [specVal, setSpecVal] = useState("");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [supportsCompareAt, setSupportsCompareAt] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Probe once for the compare-at column so the field is hidden (rather than
+  // breaking every save) on installs where the migration has not been run.
+  useEffect(() => {
+    supabase
+      .from("products")
+      .select("compare_at_price")
+      .limit(1)
+      .then(({ error }) => setSupportsCompareAt(!error));
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -87,6 +104,7 @@ export const AdminProducts = () => {
     setForm({
       name: p.name, category: p.category, series: p.series, description: p.description,
       features: p.features || [], best_for: p.best_for, price: p.price, tier: p.tier,
+      compare_at_price: p.compare_at_price ?? null,
       is_active: p.is_active, sort_order: p.sort_order, image_url: p.image_url,
       tags: p.tags || [], specifications: (p.specifications as Record<string, string>) || {},
     });
@@ -155,7 +173,7 @@ export const AdminProducts = () => {
   const isSeedOnly = (id: string) => !dbIds.has(id);
 
   const handleSave = async () => {
-    const payload = {
+    const payload: Record<string, any> = {
       ...form,
       features: featuresText.split("\n").map((f) => f.trim()).filter(Boolean),
       series: form.series?.trim() || null,
@@ -163,14 +181,18 @@ export const AdminProducts = () => {
       tags: form.tags || [],
       specifications: form.specifications || {},
     };
+    // `compare_at_price` is a newer column. PostgREST rejects an entire
+    // statement that names a column the table does not have, so omit it until
+    // the migration has been applied rather than failing every save.
+    if (!supportsCompareAt) delete payload.compare_at_price;
     if (editing) {
       const { error } = isSeedOnly(editing.id)
-        ? await supabase.from("products").upsert({ ...payload, id: editing.id })
-        : await supabase.from("products").update(payload).eq("id", editing.id);
+        ? await productsTable().upsert({ ...payload, id: editing.id })
+        : await productsTable().update(payload).eq("id", editing.id);
       if (error) { toast.error("Failed to update"); return; }
       toast.success("Product updated");
     } else {
-      const { error } = await supabase.from("products").insert(payload);
+      const { error } = await productsTable().insert(payload);
       if (error) { toast.error("Failed to create"); return; }
       toast.success("Product created");
     }
@@ -195,7 +217,7 @@ export const AdminProducts = () => {
 
   const toggleActive = async (p: Product) => {
     const { error } = isSeedOnly(p.id)
-      ? await supabase.from("products").upsert({ ...p, is_active: !p.is_active })
+      ? await productsTable().upsert({ ...p, is_active: !p.is_active })
       : await supabase.from("products").update({ is_active: !p.is_active }).eq("id", p.id);
     if (error) {
       toast.error("Failed to update product", { description: error.message });
@@ -208,6 +230,7 @@ export const AdminProducts = () => {
     setForm({
       name: `${p.name} (Copy)`, category: p.category, series: p.series, description: p.description,
       features: p.features || [], best_for: p.best_for, price: p.price, tier: p.tier,
+      compare_at_price: p.compare_at_price ?? null,
       is_active: false, sort_order: p.sort_order + 1, image_url: p.image_url,
       tags: p.tags || [], specifications: (p.specifications as Record<string, string>) || {},
     });
@@ -231,7 +254,7 @@ export const AdminProducts = () => {
     for (const id of selectedIds) {
       const p = products.find((x) => x.id === id);
       const { error } = isSeedOnly(id) && p
-        ? await supabase.from("products").upsert({ ...p, is_active: active })
+        ? await productsTable().upsert({ ...p, is_active: active })
         : await supabase.from("products").update({ is_active: active }).eq("id", id);
       if (error) failed++;
     }
@@ -465,6 +488,25 @@ export const AdminProducts = () => {
                     <input className={inputClass} value={form.price ?? ""} onChange={(e) => setForm({ ...form, price: e.target.value })} placeholder="e.g. ₦250,000" />
                   </div>
                 </div>
+
+                {supportsCompareAt && (
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                      Previous price (optional)
+                    </label>
+                    <input
+                      type="number"
+                      className={inputClass}
+                      value={form.compare_at_price ?? ""}
+                      onChange={(e) => setForm({ ...form, compare_at_price: e.target.value ? Number(e.target.value) : null })}
+                      placeholder="Leave blank if the price has not been reduced"
+                    />
+                    <p className="mt-1 text-[11px] text-muted-foreground">
+                      Shown struck through next to the current price, with the real saving. Only enter a price this product
+                      genuinely sold at — leave blank and no discount is advertised.
+                    </p>
+                  </div>
+                )}
 
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">Description</label>

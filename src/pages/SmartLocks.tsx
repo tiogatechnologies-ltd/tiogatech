@@ -13,7 +13,7 @@ import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import bgSmartLockApex from "@/assets/bg-smartlock-apex.jpg";
 import bgSmartLockHotel from "@/assets/bg-smartlock-hotel.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const fmt = (item: SmartLock) =>
@@ -29,10 +29,11 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
   const isSaved = isInWishlist(lock.id);
 
   const hasPrice = !!(lock.price && lock.price > 0);
-  const pct = hasPrice ? savingsPct(lock.id) : null;
-  const wasPriceVal = hasPrice ? calcWasPrice(lock.price!) : null;
-  const savedAmount = hasPrice && wasPriceVal ? wasPriceVal - lock.price! : null;
-  const sold = soldCount(lock.id);
+  // Strikethrough only appears when a genuine previous price is recorded.
+  const compareAt = (lock as any).compare_at_price ?? null;
+  const pct = savingsPct(lock.price, compareAt);
+  const wasPriceVal = calcWasPrice(lock.price, compareAt);
+  const savedAmount = calcSavedAmount(lock.price, compareAt);
   const monthlyEst = lock.price ? Math.round(lock.price / 3) : null;
 
   const handleAdd = (e?: React.MouseEvent) => {
@@ -183,14 +184,6 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
           </div>
         )}
 
-        {/* Social Proof Urgency */}
-        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3 flex-wrap">
-          <Users size={11} className="text-emerald-500 shrink-0" />
-          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
-          <span className="opacity-50">·</span>
-          <Flame size={11} className="text-amber-500 shrink-0" />
-          <span className="text-amber-700 dark:text-amber-400 font-semibold">In demand</span>
-        </div>
 
         {/* Price & Financing */}
         <div className="mt-auto pt-3 border-t border-border/60">

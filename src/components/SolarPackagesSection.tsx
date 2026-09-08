@@ -10,7 +10,7 @@ import { trackConversion } from "@/lib/tracking";
 
 import { useWishlist } from "@/hooks/useWishlist";
 import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
-import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
 const fmtPrice = (n: number | null) =>
@@ -25,10 +25,11 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
   const isSaved = isInWishlist(p.id);
 
   // Cosmetic promo values - real price is always p.total_price
-  const pct = savingsPct(p.package_number);
-  const wasPrice = calcWasPrice(p.total_price);
-  const savedAmount = wasPrice - p.total_price;
-  const sold = soldCount(p.package_number);
+  // Strikethrough only appears when a genuine previous price is recorded.
+  const compareAt = (p as any).compare_at_price ?? null;
+  const pct = savingsPct(p.total_price, compareAt);
+  const wasPrice = calcWasPrice(p.total_price, compareAt);
+  const savedAmount = calcSavedAmount(p.total_price, compareAt);
   const monthlyEst = Math.round(p.total_price / 3);
 
   const handleAdd = (e?: React.MouseEvent) => {
@@ -180,14 +181,6 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
           </span>
         </div>
 
-        {/* Social Proof Urgency */}
-        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3 flex-wrap">
-          <Users size={11} className="text-emerald-500 shrink-0" />
-          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
-          <span className="opacity-50">·</span>
-          <Flame size={11} className="text-amber-500 shrink-0" />
-          <span className="text-amber-700 dark:text-amber-400 font-semibold">In demand</span>
-        </div>
 
         {/* Price & Financing */}
         <div className="mt-auto pt-3 border-t border-border/60">

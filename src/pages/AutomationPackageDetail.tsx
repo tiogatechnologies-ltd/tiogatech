@@ -16,7 +16,7 @@ import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/u
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { PROMO_LIFT as AUTO_PROMO_LIFT, savingsPct as autoSavingsPct } from "@/lib/promoDisplay";
+import { savingsPct as autoSavingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
@@ -136,9 +136,10 @@ export const AutomationPackageDetail = () => {
     );
   }
 
-  const pct = pkg.price ? autoSavingsPct(pkg.id) : null;
-  const wasPrice = pkg.price ? Math.round(pkg.price * AUTO_PROMO_LIFT) : null;
-  const savedAmount = pkg.price && wasPrice ? wasPrice - pkg.price : null;
+  const compareAt = (pkg as any).compare_at_price ?? null;
+  const pct = autoSavingsPct(pkg.price, compareAt);
+  const wasPrice = calcWasPrice(pkg.price, compareAt);
+  const savedAmount = calcSavedAmount(pkg.price, compareAt);
   const tierIcons = TIER_FEATURES[pkg.tier] ?? TIER_FEATURES["Riviera"];
 
   const jsonLd = [

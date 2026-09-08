@@ -20,7 +20,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
-import { PROMO_LIFT, soldCount, savingsPct } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
 
@@ -48,10 +48,10 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
 
   // Cosmetic promo values - real price is always product.numeric_price
   const hasPrice = !!(product.numeric_price && product.numeric_price > 0);
-  const pct = hasPrice ? savingsPct(product.id) : null;
-  const wasPrice = hasPrice ? Math.round(product.numeric_price! * PROMO_LIFT) : null;
-  const savedAmount = hasPrice && wasPrice ? wasPrice - product.numeric_price! : null;
-  const sold = soldCount(product.id);
+  const compareAt = (product as any).compare_at_price ?? null;
+  const pct = savingsPct(product.numeric_price, compareAt);
+  const wasPrice = calcWasPrice(product.numeric_price, compareAt);
+  const savedAmount = calcSavedAmount(product.numeric_price, compareAt);
   const monthlyEst = product.numeric_price ? Math.round(product.numeric_price / 3) : null;
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -211,11 +211,15 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
               </span>
             )}
           </div>
-          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
-            <Star size={13} fill="currentColor" />
-            <span className="text-foreground font-bold">{product.rating || "5.0"}</span>
-            <span className="text-muted-foreground text-[10px]">({product.review_count || 12})</span>
-          </div>
+          {/* Only real ratings. This used to fall back to 5.0 with 12 reviews
+              for every product, including ones nobody had reviewed. */}
+          {product.rating && product.review_count ? (
+            <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
+              <Star size={13} fill="currentColor" />
+              <span className="text-foreground font-bold">{product.rating}</span>
+              <span className="text-muted-foreground text-[10px]">({product.review_count})</span>
+            </div>
+          ) : null}
         </div>
 
         {/* Product Title */}
@@ -240,14 +244,6 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
           </div>
         )}
 
-        {/* Sold count urgency */}
-        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3 flex-wrap">
-          <Users size={11} className="text-emerald-500 shrink-0" />
-          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} sold this week</span>
-          <span className="opacity-50">·</span>
-          <Flame size={11} className="text-amber-500 shrink-0" />
-          <span className="text-amber-700 dark:text-amber-400 font-semibold">In demand</span>
-        </div>
 
         {/* Price & Financing */}
         <div className="mt-auto pt-3 border-t border-border/60">

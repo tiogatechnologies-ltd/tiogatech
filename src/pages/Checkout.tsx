@@ -13,6 +13,7 @@ import DirectDebitConsent from "@/components/DirectDebitConsent";
 import { resolveProductImage } from "@/lib/productImages";
 import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
+import { useSiteSetting, parseServiceAreas } from "@/hooks/useSiteSetting";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
 
@@ -30,6 +31,9 @@ const schema = z.object({
 
 const Checkout = () => {
   const { contact } = useSiteContact();
+  const { settings: shipping } = useSiteSetting("shipping");
+  const { settings: paymentSettings } = useSiteSetting("payment");
+  const { settings: features } = useSiteSetting("features");
   const navigate = useNavigate();
   const { items, count, clear } = useCart();
   const { user, profile, loading: authLoading } = useAuth();
@@ -98,18 +102,46 @@ const Checkout = () => {
   }, [user]);
 
   const subtotal = useMemo(() => items.reduce((s, i) => s + ((i.numericPrice || 0) * i.quantity), 0), [items]);
-  // Free delivery only in Abuja (FCT) and Jos (Plateau) - our office locations. Elsewhere: ₦15,000 flat.
+  // Delivery pricing comes from Admin > Settings > Delivery, Tax & Promotions.
+  // "Service areas" are the states we cover from our own offices, so they ship
+  // free; everywhere else pays the default fee unless the order clears the
+  // free-shipping threshold (a threshold of 0 disables that rule).
+  const freeAreas = useMemo(() => parseServiceAreas(shipping.service_areas), [shipping.service_areas]);
   const isFreeDeliveryState = (s: string) => {
     const v = (s || "").toLowerCase();
-    return v.includes("abuja") || v.includes("fct") || v.includes("plateau") || v.includes("jos");
+    return freeAreas.some((area) => v.includes(area));
   };
   const shippingFee = useMemo(() => {
     if (delivery === "pickup") return 0;
     if (subtotal <= 0) return 0;
-    return isFreeDeliveryState(form.state) ? 0 : 15000;
-  }, [subtotal, delivery, form.state]);
+    if (isFreeDeliveryState(form.state)) return 0;
+    const threshold = Number(shipping.free_shipping_threshold_ngn) || 0;
+    if (threshold > 0 && subtotal >= threshold) return 0;
+    return Math.max(0, Number(shipping.default_shipping_fee_ngn) || 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subtotal, delivery, form.state, freeAreas, shipping.free_shipping_threshold_ngn, shipping.default_shipping_fee_ngn]);
   const total = subtotal + shippingFee;
   const flexBreakdown = useMemo(() => calcPlan(total, flexMonths, financeConfig), [total, flexMonths, financeConfig]);
+
+  // Paystack's hosted page bundles card, bank transfer and USSD into one
+  // checkout, so the two admin toggles gate that single option together and
+  // only change how it is described.
+  const onlineEnabled = paymentSettings.accept_card || paymentSettings.accept_bank_transfer;
+  const onlineLabel = paymentSettings.accept_card && paymentSettings.accept_bank_transfer
+    ? "Card / Bank Transfer"
+    : paymentSettings.accept_card ? "Card payment" : "Bank Transfer";
+  const onlineChannels = paymentSettings.accept_card && paymentSettings.accept_bank_transfer
+    ? "card, bank transfer"
+    : paymentSettings.accept_card ? "card" : "bank transfer";
+
+  // If an admin switches off whatever is currently selected, fall back to a
+  // method that is still live rather than leaving a dead radio checked.
+  useEffect(() => {
+    if (payment === "paystack" && !onlineEnabled) setPayment("whatsapp");
+    if (payment === "flexible" && !features.flexible_payment_enabled) {
+      setPayment(onlineEnabled ? "paystack" : "whatsapp");
+    }
+  }, [payment, onlineEnabled, features.flexible_payment_enabled]);
 
   useEffect(() => {
     (async () => {
@@ -141,11 +173,15 @@ const Checkout = () => {
 
     // Card payment is verified server-side against the signed-in owner of the
     // order, so stop guests here instead of creating an orphan pending order
-    // they can never pay for.
-    if (payment === "paystack" && !user) {
-      toast.error("Please sign in to pay by card", {
-        description: "WhatsApp checkout works without an account.",
+    // they can never pay for. Admin > Settings can additionally require an
+    // account for every method, not just card.
+    if (!user && (payment === "paystack" || !paymentSettings.allow_guest_checkout)) {
+      toast.error("Please sign in to continue", {
+        description: payment === "paystack" && paymentSettings.allow_guest_checkout
+          ? "Card payments need an account. WhatsApp checkout works without one."
+          : "An account is required to place an order.",
       });
+      navigate(`/auth?next=${encodeURIComponent("/checkout")}`);
       return;
     }
 
@@ -408,8 +444,9 @@ const Checkout = () => {
               </div>
               <p className="text-[11px] text-muted-foreground mt-1">
                 {isFreeDeliveryState(form.state)
-                  ? "Free local delivery - you're in one of our office cities (Abuja / Jos)."
-                  : "Flat ₦15,000 delivery fee outside Abuja and Jos. Select an Abuja or Plateau address to qualify for free delivery."}
+                  ? `Free local delivery - ${shipping.service_areas} are covered from our own offices.`
+                  : `Flat ${formNGN(Number(shipping.default_shipping_fee_ngn) || 0)} delivery fee outside ${shipping.service_areas}.`}
+                {shipping.delivery_eta_days ? ` Estimated ${shipping.delivery_eta_days} working days.` : ""}
               </p>
             </section>
           )}
@@ -420,14 +457,16 @@ const Checkout = () => {
             <p className="text-xs text-muted-foreground mb-3">All transactions are secure. <Lock size={10} className="inline" /></p>
             <div className="space-y-2">
               {/* 1. Card / Bank Transfer through Paystack */}
+              {onlineEnabled && (
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "paystack" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                 <input type="radio" checked={payment === "paystack"} onChange={() => setPayment("paystack")} className="mt-1" />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">Card / Bank Transfer</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Instant</span></div>
-                  <p className="text-xs text-muted-foreground mt-1">Secure checkout on Paystack. Pay by card, bank transfer, USSD or another available channel.</p>
+                  <div className="flex items-center gap-2"><CreditCard size={16} className="text-primary" /><span className="font-semibold text-sm text-foreground">{onlineLabel}</span><span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">Instant</span></div>
+                  <p className="text-xs text-muted-foreground mt-1">Secure checkout on Paystack. Pay by {onlineChannels}, USSD or another available channel.</p>
                 </div>
               </label>
-              {payment === "paystack" && !user && !authLoading && (
+              )}
+              {onlineEnabled && payment === "paystack" && !user && !authLoading && (
                 <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 ml-2 text-xs text-foreground space-y-2">
                   <p className="font-semibold">Sign in to pay by card</p>
                   <p className="text-muted-foreground">
@@ -448,6 +487,7 @@ const Checkout = () => {
 
 
               {/* 3. Flexible payment plan */}
+              {features.flexible_payment_enabled && (
               <label className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer ${payment === "flexible" ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
                 <input type="radio" checked={payment === "flexible"} onChange={() => setPayment("flexible")} className="mt-1" />
                 <div className="flex-1">
@@ -455,7 +495,8 @@ const Checkout = () => {
                   <p className="text-xs text-muted-foreground mt-1">Pay 30% deposit today, then spread the balance across 3, 6 or 12 months. Minimum ₦1,000,000.</p>
                 </div>
               </label>
-              {payment === "flexible" && (
+              )}
+              {features.flexible_payment_enabled && payment === "flexible" && (
                 <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 space-y-3 ml-2">
                   {total < 1_000_000 && (
                     <p className="text-xs text-destructive">Flexible payment requires a total of at least ₦1,000,000. Your cart total is {formNGN(total)}.</p>

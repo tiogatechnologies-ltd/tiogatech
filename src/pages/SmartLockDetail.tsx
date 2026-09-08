@@ -16,7 +16,7 @@ import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { PROMO_LIFT, savingsPct } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
@@ -130,9 +130,10 @@ export const SmartLockDetail = () => {
     );
   }
 
-  const pct = lock.price ? savingsPct(lock.id) : null;
-  const wasPrice = lock.price ? Math.round(lock.price * PROMO_LIFT) : null;
-  const savedAmount = lock.price && wasPrice ? wasPrice - lock.price : null;
+  const compareAt = (lock as any).compare_at_price ?? null;
+  const pct = savingsPct(lock.price, compareAt);
+  const wasPrice = calcWasPrice(lock.price, compareAt);
+  const savedAmount = calcSavedAmount(lock.price, compareAt);
   const categoryLabel = lock.category === "hotel" ? "Hotel Ecosystem" : lock.category === "accessory" ? "Smart Lock Accessory" : `${lock.series}`;
 
   const jsonLd = [

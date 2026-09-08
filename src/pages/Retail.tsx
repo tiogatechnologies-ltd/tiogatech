@@ -198,8 +198,8 @@ export const Retail = () => {
           specifications: p.specifications || {},
           tags: p.tags || [],
           brand: p.brand || inferBrand(p.name, p.category),
-          rating: p.rating || 5.0,
-          review_count: p.review_count || 14,
+          rating: p.rating ?? undefined,
+          review_count: p.review_count ?? undefined,
           stock_status: (p.stock_status as any) || "in_stock",
           is_featured: p.is_featured ?? true,
           warranty_years: p.warranty_years || 5,
@@ -251,8 +251,8 @@ export const Retail = () => {
             specifications: p.specifications || {},
             tags: p.tags || [],
             brand: p.brand || inferBrand(p.name, p.category),
-            rating: p.rating || 5.0,
-            review_count: p.review_count || 14,
+            rating: p.rating ?? undefined,
+            review_count: p.review_count ?? undefined,
             stock_status: (p.stock_status as any) || "in_stock",
             is_featured: true,
             warranty_years: 5,
@@ -323,7 +323,7 @@ export const Retail = () => {
     }).sort((a, b) => {
       if (sortBy === "price-asc") return (a.numeric_price || 0) - (b.numeric_price || 0);
       if (sortBy === "price-desc") return (b.numeric_price || 0) - (a.numeric_price || 0);
-      if (sortBy === "rating") return (b.rating || 5) - (a.rating || 5);
+      if (sortBy === "rating") return (b.rating ?? 0) - (a.rating ?? 0);
       return 0;
     });
   }, [products, selectedCategory, selectedBrands, selectedCapacities, priceRange, searchQuery, sortBy]);

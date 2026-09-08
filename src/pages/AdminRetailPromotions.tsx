@@ -85,13 +85,16 @@ const emptySlide = (): HeroSlide => ({
   secondary_cta_link: "/energy-calculator",
 });
 
+// Nothing invented here: an unconfigured flash deal is empty and inactive, so
+// the storefront can never advertise a promotion or a coupon code that the
+// business has not actually created.
 const defaultFlashDeal: FlashDeal = {
   is_active: false,
-  headline: "Mid-Month Energy Flash Deals",
-  discount_label: "Up to 15% Off",
-  discount_code: "TIOGA2026",
-  description: "Apply this code at checkout for free 24-hour expedited dispatch on all inverter and battery storage orders.",
-  perk_label: "24h Dispatch",
+  headline: "",
+  discount_label: "",
+  discount_code: "",
+  description: "",
+  perk_label: "",
   ends_at: "",
 };
 
@@ -290,37 +293,35 @@ const PRESET_TEMPLATES = [
   },
 ];
 
-// Flash Deals Preset Templates
+// Copy templates only. These deliberately carry no coupon code - the code is
+// chosen from the codes that actually exist in Discounts, so a preset can never
+// publish one the customer cannot redeem.
 const FLASH_DEAL_PRESETS = [
   {
     label: "24h Free Expedited Dispatch",
     headline: "24-Hour Expedited Delivery Promo",
     discount_label: "Free Express Shipping",
-    discount_code: "DISPATCH24",
-    description: "Use code at checkout for prioritized 24-hour dispatch and safe transit on all inverters and batteries.",
+    description: "Prioritized 24-hour dispatch and insured transit on all inverters and batteries.",
     perk_label: "24h Dispatch",
   },
   {
-    label: "Mid-Month Clean Energy Sale",
-    headline: "Mid-Month Clean Energy Flash Deal",
-    discount_label: "Up to 15% Off",
-    discount_code: "TIOGA2026",
-    description: "Instant discount and verified warehouse guarantee on all tier-1 hybrid inverters and lithium storage.",
+    label: "Clean Energy Sale",
+    headline: "Clean Energy Flash Deal",
+    discount_label: "Limited-Time Discount",
+    description: "Verified warehouse stock and full manufacturer warranty on tier-1 hybrid inverters and lithium storage.",
     perk_label: "Official Warranty",
   },
   {
     label: "LiFePO4 Free Breaker Kit",
     headline: "LiFePO4 Battery Upgrade Special",
     discount_label: "Free Breaker Kit",
-    discount_code: "POWERUP",
     description: "Order any lithium battery storage and receive a certified DC breaker and connection accessory pack free.",
     perk_label: "Free Kit",
   },
   {
     label: "Smart Lock Free Installation",
     headline: "STAMA Smart Security Flash Deal",
-    discount_label: "Free Lagos Setup",
-    discount_code: "SMARTLOCK",
+    discount_label: "Free Setup",
     description: "Complimentary on-site professional installation and smartphone sync for all biometric locks.",
     perk_label: "Free Install",
   },
@@ -372,6 +373,8 @@ const AdminRetailPromotions = () => {
   const { packages: autoPackages } = useHomeAutomationPackages();
 
   const [dbProducts, setDbProducts] = useState<any[]>([]);
+  // Real, currently-redeemable codes - the flash deal can only advertise one of these.
+  const [liveCodes, setLiveCodes] = useState<Array<{ id: string; code: string; type: string; value: number }>>([]);
   const products = useMemo(() => {
     const staticList = STATIC_PRODUCTS.map((p) => ({ ...p, category: normalizeCategory(p.category) }));
     const dbList = dbProducts.map((p) => ({ ...p, category: normalizeCategory(p.category) }));
@@ -380,9 +383,10 @@ const AdminRetailPromotions = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const [{ data }, { data: prodData }] = await Promise.all([
+      const [{ data }, { data: prodData }, { data: codeData }] = await Promise.all([
         supabase.from("landing_content").select("*").in("section_key", ["retail_hero", "flash_deal"]),
         supabase.from("products").select("*").eq("is_active", true),
+        supabase.from("discounts").select("id, code, type, value").eq("active", true).order("code"),
       ]);
       const heroRow = (data as any[])?.find((r) => r.section_key === "retail_hero");
       const flashRow = (data as any[])?.find((r) => r.section_key === "flash_deal");
@@ -391,6 +395,7 @@ const AdminRetailPromotions = () => {
       setSlides(Array.isArray(heroContent?.slides) ? heroContent.slides! : []);
       setFlashDeal(flashContent ? { ...defaultFlashDeal, ...flashContent } : defaultFlashDeal);
       setDbProducts(prodData || []);
+      setLiveCodes((codeData as any[]) || []);
       setLoading(false);
     };
     fetch();
@@ -613,16 +618,19 @@ const AdminRetailPromotions = () => {
                   key={idx}
                   type="button"
                   onClick={() => {
+                    // Copy only - the existing coupon code is preserved so a
+                    // preset never silently swaps in a different offer.
                     setFlashDeal((prev) => ({
                       ...prev,
                       headline: p.headline,
                       discount_label: p.discount_label,
-                      discount_code: p.discount_code,
                       description: p.description,
                       perk_label: p.perk_label,
                       is_active: true,
                     }));
-                    toast.success(`Loaded preset: ${p.label}`);
+                    toast.success(`Loaded preset: ${p.label}`, {
+                      description: "Pick the coupon code it should advertise before saving.",
+                    });
                   }}
                   className="px-2.5 py-1 rounded-lg bg-muted hover:bg-muted/80 border border-border text-[11px] font-medium text-foreground transition-all"
                 >
@@ -653,12 +661,32 @@ const AdminRetailPromotions = () => {
             </div>
             <div>
               <label className={labelClass}>Coupon code</label>
-              <input
+              {/* Picked from real codes in Discounts. A free-text field here let
+                  the storefront advertise a code that did not exist, so the
+                  customer only found out when it failed at checkout. */}
+              <select
                 className={`${inputClass} font-mono uppercase`}
                 value={flashDeal.discount_code}
-                onChange={(e) => setFlashDeal((f) => ({ ...f, discount_code: e.target.value.toUpperCase() }))}
-                placeholder="e.g. TIOGA2026"
-              />
+                onChange={(e) => setFlashDeal((f) => ({ ...f, discount_code: e.target.value }))}
+              >
+                <option value="">No code (perk only)</option>
+                {liveCodes.map((d) => (
+                  <option key={d.id} value={d.code}>
+                    {d.code} — {d.type === "percent" ? `${d.value}% off` : `₦${Number(d.value).toLocaleString("en-NG")} off`}
+                  </option>
+                ))}
+              </select>
+              {flashDeal.discount_code && !liveCodes.some((d) => d.code === flashDeal.discount_code) && (
+                <p className="mt-1 text-[11px] font-semibold text-destructive">
+                  “{flashDeal.discount_code}” is not an active discount code. Customers who try it will be rejected at checkout —
+                  create it in Discounts &amp; Promo Codes or pick another.
+                </p>
+              )}
+              {liveCodes.length === 0 && (
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  No active codes yet. Create one in Discounts &amp; Promo Codes first.
+                </p>
+              )}
             </div>
             <div>
               <label className={labelClass}>Perk badge (right side)</label>

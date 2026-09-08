@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star, Shield, Check, Heart, ArrowRight, X, TrendingDown, Tag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { useWishlist } from "@/hooks/useWishlist";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
@@ -21,13 +22,9 @@ const fmt = (n?: number | null, fallback?: string | null) => {
   return "Price on Request";
 };
 
-const PROMO_LIFT = 1.13;
-const hashNum = (id: string, mod: number, offset = 0) => {
-  let h = 0;
-  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) & 0xffff;
-  return offset + (h % mod);
-};
-const savingsPct = (id: string) => hashNum(id, 9, 8);
+// This modal kept a private copy of the old fabricated-discount helpers
+// (price * 1.13 and a hash-derived "save X%"). It now uses the shared helpers,
+// which only report a discount when a real previous price is recorded.
 
 export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) => {
   const { add } = useCart();
@@ -39,9 +36,10 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
 
   const isSaved = isInWishlist(product.id);
   const hasPrice = !!(product.numeric_price && product.numeric_price > 0);
-  const pct = hasPrice ? savingsPct(product.id) : null;
-  const wasPrice = hasPrice ? Math.round(product.numeric_price! * PROMO_LIFT) : null;
-  const savedAmount = hasPrice && wasPrice ? wasPrice - product.numeric_price! : null;
+  const compareAt = (product as any).compare_at_price ?? null;
+  const pct = savingsPct(product.numeric_price, compareAt);
+  const wasPrice = calcWasPrice(product.numeric_price, compareAt);
+  const savedAmount = calcSavedAmount(product.numeric_price, compareAt);
 
   const handleAddToCart = () => {
     add({
@@ -93,11 +91,13 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
                 <span className="uppercase tracking-wider font-bold text-primary text-[10px]">
                   {product.category}
                 </span>
-                <div className="flex items-center gap-1 text-amber-500 font-semibold">
-                  <Star size={14} fill="currentColor" />
-                  <span className="text-foreground">{product.rating || "5.0"}</span>
-                  <span className="text-muted-foreground text-xs">({product.review_count || 12} reviews)</span>
-                </div>
+                {product.rating && product.review_count ? (
+                  <div className="flex items-center gap-1 text-amber-500 font-semibold">
+                    <Star size={14} fill="currentColor" />
+                    <span className="text-foreground">{product.rating}</span>
+                    <span className="text-muted-foreground text-xs">({product.review_count} {product.review_count === 1 ? "review" : "reviews"})</span>
+                  </div>
+                ) : null}
               </div>
 
               <DialogTitle className="text-xl font-display font-bold text-foreground leading-snug">

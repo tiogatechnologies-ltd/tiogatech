@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useSiteContact } from "@/hooks/useSiteContact";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 
 const db = supabase as any;
 
@@ -65,6 +66,7 @@ const statusColors: Record<string, string> = {
 };
 
 const AdminInvoices = () => {
+  const { settings: tax } = useSiteSetting("tax");
   const { contact } = useSiteContact();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
@@ -91,7 +93,7 @@ const AdminInvoices = () => {
   const [notes, setNotes] = useState("");
 
   const [items, setItems] = useState<InvoiceItem[]>([
-    { description: "5kVA Solar Inverter + 10kWh Lithium Battery System", quantity: 1, unit_price: 3500000, total: 3500000 },
+    { description: "", quantity: 1, unit_price: 0, total: 0 },
   ]);
 
   const fetchInvoices = async () => {
@@ -130,9 +132,11 @@ const AdminInvoices = () => {
     setItems(updated);
   };
 
-  // Math calculations
+  // Math calculations. VAT rate and document prefix come from
+  // Admin > Settings > Delivery, Tax & Promotions.
+  const vatRate = (Number(tax.vat_percent) || 0) / 100;
   const subtotal = items.reduce((sum, item) => sum + (item.total || 0), 0);
-  const vatAmount = vatApplicable ? Math.round(subtotal * 0.075) : 0; // FIRS 7.5%
+  const vatAmount = vatApplicable ? Math.round(subtotal * vatRate) : 0;
   const whtAmount = whtApplicable ? Math.round(subtotal * 0.05) : 0; // 5% WHT
   const totalAmount = Math.max(0, subtotal + vatAmount - whtAmount - Number(discountAmount || 0));
   const balanceDue = Math.max(0, totalAmount - Number(depositPaid || 0));
@@ -146,7 +150,8 @@ const AdminInvoices = () => {
 
     try {
       const prefix = invoiceType === "tax_invoice" ? "INV" : invoiceType === "proforma" ? "PRO" : "REC";
-      const invoiceNo = `TIO-${prefix}-${new Date().toISOString().slice(2, 7).replace("-", "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const org = (tax.invoice_prefix || "TIO").trim().toUpperCase().replace(/[^A-Z0-9]/g, "") || "TIO";
+      const invoiceNo = `${org}-${prefix}-${new Date().toISOString().slice(2, 7).replace("-", "")}-${Math.floor(1000 + Math.random() * 9000)}`;
 
       const invoicePayload = {
         invoice_no: invoiceNo,
@@ -571,7 +576,7 @@ const AdminInvoices = () => {
                         onChange={(e) => setVatApplicable(e.target.checked)}
                         className="rounded text-primary"
                       />
-                      <span>Apply 7.5% FIRS VAT</span>
+                      <span>Apply {tax.vat_percent}% FIRS VAT</span>
                     </label>
                     <span className="font-mono text-foreground">{vatApplicable ? `+₦${vatAmount.toLocaleString()}` : "₦0"}</span>
                   </div>

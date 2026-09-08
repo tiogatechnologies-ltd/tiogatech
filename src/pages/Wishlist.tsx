@@ -69,8 +69,8 @@ export const Wishlist = () => {
           specifications: p.specifications || {},
           tags: p.tags || [],
           brand: p.brand || inferBrand(p.name, p.category),
-          rating: p.rating || 5.0,
-          review_count: p.review_count || 14,
+          rating: p.rating ?? undefined,
+          review_count: p.review_count ?? undefined,
         }));
 
         setAllProducts(mergeProducts(staticList, dbList));

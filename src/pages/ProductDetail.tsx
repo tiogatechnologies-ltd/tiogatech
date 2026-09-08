@@ -39,7 +39,7 @@ import { trackConversion } from "@/lib/tracking";
 import { matchesSlug, productPath } from "@/lib/productSlug";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
-import { PROMO_LIFT, soldCount, savingsPct } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
@@ -317,10 +317,10 @@ export const ProductDetail = () => {
   const isWishlisted = isInWishlist(product.id);
 
   // Cosmetic promo calculations
-  const pct = numPrice > 0 ? savingsPct(product.id) : null;
-  const wasPrice = numPrice > 0 ? Math.round(numPrice * PROMO_LIFT) : null;
-  const savedAmount = numPrice > 0 && wasPrice ? wasPrice - numPrice : null;
-  const sold = soldCount(product.id);
+  const compareAt = (product as any).compare_at_price ?? null;
+  const pct = savingsPct(numPrice, compareAt);
+  const wasPrice = calcWasPrice(numPrice, compareAt);
+  const savedAmount = calcSavedAmount(numPrice, compareAt);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -529,20 +529,15 @@ export const ProductDetail = () => {
                       <span>·</span>
                     </>
                   )}
-                  <div className="flex items-center gap-1 font-medium text-amber-500">
-                    <Star size={14} fill="currentColor" />
-                    <span className="text-foreground font-bold">{product.rating || "5.0"}</span>
-                    <span className="text-muted-foreground">({product.review_count || 14} reviews)</span>
-                  </div>
-                  <span>·</span>
-                  <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-semibold">
-                    <Users size={13} />
-                    <span>{sold} purchased this week</span>
-                  </div>
-                  <span>·</span>
-                  <span className="text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1">
-                    <Flame size={13} /> In High Demand
-                  </span>
+                  {/* Only shown once real reviews exist - it used to fall back
+                      to a 5.0 rating and 14 reviews for products with none. */}
+                  {product.rating && product.review_count ? (
+                    <div className="flex items-center gap-1 font-medium text-amber-500">
+                      <Star size={14} fill="currentColor" />
+                      <span className="text-foreground font-bold">{product.rating}</span>
+                      <span className="text-muted-foreground">({product.review_count} {product.review_count === 1 ? "review" : "reviews"})</span>
+                    </div>
+                  ) : null}
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed pt-1">
                   {product.description}

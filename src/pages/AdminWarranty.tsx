@@ -96,7 +96,7 @@ const AdminWarranty = () => {
   const [newCustomerEmail, setNewCustomerEmail] = useState("");
   const [newProduct, setNewProduct] = useState("");
   const [newSerial, setNewSerial] = useState("");
-  const [newManufacturer, setNewManufacturer] = useState("Felicity Solar");
+  const [newManufacturer, setNewManufacturer] = useState("");
   const [newIssue, setNewIssue] = useState("");
   const [newLoanerSerial, setNewLoanerSerial] = useState("");
   const [newDiagnosis, setNewDiagnosis] = useState("");

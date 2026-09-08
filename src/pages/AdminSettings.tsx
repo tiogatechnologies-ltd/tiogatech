@@ -5,43 +5,47 @@ import { toast } from "sonner";
 import { Search, Save, Building2, Phone, Search as SearchIcon, Truck, ShieldCheck, CreditCard, Bell, Image as ImageIcon, Plug, Database, FileSliders, Tag, Users, ScrollText, Globe, RefreshCw, CloudUpload, ExternalLink, Loader2 } from "lucide-react";
 import { bumpGlobalCache } from "@/lib/cache";
 import { invalidateSiteContactCache } from "@/hooks/useSiteContact";
+import { invalidateSettingsCache } from "@/hooks/useSiteSetting";
 
 type Section = { id: string; label: string; icon: any; group: string; adminOnly?: boolean; members: string[]; keywords?: string };
 
 // Panes group one or more underlying `site_settings` keys. The storage keys are
 // unchanged - merging only affects how the panes are presented.
 const SECTIONS: Section[] = [
-  { id: "brand", label: "Brand & Contact", icon: Building2, group: "Storefront", members: ["general", "branding", "social", "contact"], keywords: "site name tagline hero currency language logo favicon colour og image facebook instagram twitter linkedin tiktok youtube telegram phone email address whatsapp business hours" },
-  { id: "seo", label: "SEO & Tracking", icon: SearchIcon, group: "Storefront", members: ["seo"], keywords: "meta analytics pixel tag manager verification robots" },
+  { id: "brand", label: "Brand & Contact", icon: Building2, group: "Storefront", members: ["general", "social", "contact"], keywords: "site name tagline facebook instagram twitter linkedin tiktok youtube telegram phone email address whatsapp business hours" },
+  { id: "seo", label: "SEO & Tracking", icon: SearchIcon, group: "Storefront", members: ["seo"], keywords: "meta analytics pixel tag manager verification robots og image" },
 
-  { id: "payment", label: "Payments & Financing", icon: CreditCard, group: "Commerce", members: ["payment", "finance"], keywords: "paystack bank transfer card flexible payment easy flex deposit tenure interest" },
-  { id: "selling", label: "Delivery, Tax & Promotions", icon: Truck, group: "Commerce", members: ["shipping", "tax", "discounts", "affiliate"], keywords: "delivery fee pickup shipping vat invoice discount coupon stacking affiliate commission payout cookie" },
+  { id: "payment", label: "Payments & Financing", icon: CreditCard, group: "Commerce", members: ["payment", "finance"], keywords: "paystack bank transfer card guest checkout flexible payment easy flex deposit tenure interest" },
+  { id: "selling", label: "Delivery, Tax & Promotions", icon: Truck, group: "Commerce", members: ["shipping", "tax", "discounts", "affiliate"], keywords: "delivery fee pickup shipping vat invoice discount coupon affiliate commission payout cookie" },
 
-  { id: "notif", label: "Notifications & Email", icon: Bell, group: "Comms", members: ["notif", "email"], keywords: "alerts digest from name sender template footer" },
+  { id: "notif", label: "Notifications & Email", icon: Bell, group: "Comms", members: ["notif", "email"], keywords: "alerts from name sender template footer" },
 
-  { id: "system", label: "System & Access", icon: ShieldCheck, group: "System", adminOnly: true, members: ["integrations", "security", "admins", "features", "backups"], keywords: "gmail telegram whatsapp openai verification session timeout ip allowlist admins users roles ai chat recommender sizing store toggle backup retention export drive" },
+  { id: "system", label: "System & Access", icon: ShieldCheck, group: "System", adminOnly: true, members: ["admins", "features", "backups"], keywords: "admins users roles ai chat recommender sizing store toggle backup export drive cache purge" },
 
 ];
 
 
+// Every field below is read by something. Controls that wrote a value nothing
+// ever consumed (hero copy, theme colour, "connected service" booleans, session
+// timeout / IP allowlist / HIBP - all owned by Supabase Auth, not by a jsonb
+// row) were removed rather than left as decoration an admin could trust.
 const defaults: Record<string, any> = {
-  general: { site_name: "Tioga Technologies", tagline: "Powering Nigerian homes and businesses", hero_title: "Reliable Power. Smarter Living.", hero_subtitle: "Solar, smart home, and security solutions across Nigeria.", default_currency: "NGN", default_language: "en" },
-  branding: { logo_url: "", favicon_url: "/favicon.ico", primary_color_hex: "", og_image_url: "" },
+  general: { site_name: "Tioga Technologies", tagline: "Powering Nigerian homes and businesses" },
   contact: { phone: "+234 903 596 6388", email: "sales@tiogatechnologies.com", support_email: "support@tiogatechnologies.com", address: "No 7, Commercial Layout, Abattoir Rd, LGA, behind Airforce Primary School, Jos 930103, Plateau State, Nigeria", whatsapp: "+2348178000023", business_hours: "Mon to Fri · 10:00 AM to 6:00 PM WAT" },
   social: { facebook: "", instagram: "", twitter: "", linkedin: "", tiktok: "", youtube: "", telegram: "", whatsapp_community: "" },
   seo: { meta_title: "Tioga Technologies - Solar, Smart Home, Security in Nigeria", meta_description: "Reliable solar, smart home and security systems with flexible financing across Nigeria.", og_image_url: "", google_analytics_id: "", meta_pixel_id: "", google_tag_manager_id: "", google_site_verification: "", robots_index: true },
-  payment: { paystack_public_key: "", bank_name: "", bank_account_name: "Tioga Technologies", bank_account_number: "", accept_bank_transfer: true, accept_card: true, accept_pay_on_delivery: false, allow_guest_checkout: true },
+  payment: { bank_name: "", bank_account_name: "Tioga Technologies", bank_account_number: "", accept_bank_transfer: true, accept_card: true, allow_guest_checkout: true },
   finance: { deposit_pct: 0.30, tenures_months: [3, 6, 12, 24], vat_pct: 0.075, install_pct: 0.10, insurance_pct: 0.02, management_pct: 0.01, min_finance_amount_ngn: 500000, max_finance_amount_ngn: 50000000, finance_terms_url: "/finance", interest_tiers: [{ min: 1000000, max: 5000000, rate: 0.09 }, { min: 5000001, max: 7500000, rate: 0.15 }, { min: 7500001, max: null, rate: 0.25 }] },
-  shipping: { free_shipping_threshold_ngn: 500000, default_shipping_fee_ngn: 6000, delivery_eta_days: "3-7", service_areas: "Lagos, Abuja, Port Harcourt, Ibadan", pickup_address: "Ikeja, Lagos" },
+  // Defaults mirror the delivery rules the storefront already applied, so an
+  // untouched install behaves exactly as before this became configurable.
+  shipping: { free_shipping_threshold_ngn: 0, default_shipping_fee_ngn: 15000, delivery_eta_days: "3-7", service_areas: "Abuja, FCT, Jos, Plateau", pickup_address: "No 7, Commercial Layout, Abattoir Rd, Jos, Plateau State" },
   tax: { vat_percent: 7.5, vat_inclusive: true, invoice_prefix: "TIO", invoice_footer: "Thank you for your business." },
-  discounts: { allow_stacking: false, show_code_field: true },
+  discounts: { show_code_field: true },
   affiliate: { default_commission_percent: 5, min_payout_ngn: 50000, cookie_window_days: 30, auto_approve_applications: false, payout_schedule: "monthly" },
-  notif: { notify_email: "sales@tiogatechnologies.com", notify_on_new_lead: true, notify_on_conversion: true, notify_on_order: true, notify_on_affiliate_application: true, notify_on_payout_request: true, notify_on_new_user: false, notify_on_finance_application: true, daily_digest: false },
-  email: { from_name: "Tioga Technologies", from_email: "sales@tiogatechnologies.com", footer_text: "Tioga Technologies, Lagos, Nigeria" },
-  integrations: { gmail_connected: true, telegram_bot_token: "", whatsapp_business_id: "", openai_enabled: true },
-  security: { require_email_verification: true, allow_guest_checkout: true, session_timeout_minutes: 60, admin_ip_allowlist: "", hibp_password_check: true },
+  notif: { notify_email: "sales@tiogatechnologies.com", notify_on_new_lead: true, notify_on_order: true, notify_on_affiliate_application: true, notify_on_finance_application: true },
+  email: { from_name: "Tioga Technologies", from_email: "sales@tiogatechnologies.com", footer_text: "Tioga Technologies, Jos, Nigeria" },
   features: { ai_chat_enabled: true, ai_recommender_enabled: true, ai_solar_sizing_enabled: true, flexible_payment_enabled: true, store_enabled: true },
-  backups: { auto_backup_enabled: false, backup_retention_days: 30 },
+  backups: {},
   admins: {},
 };
 
@@ -124,10 +128,10 @@ const AdminSettings = () => {
       for (const k of changed) {
         await supabase.from("site_settings").upsert({ key: k, value: data[k] }, { onConflict: "key" });
       }
-      if (changed.includes("payment") && data.payment?.paystack_public_key) {
-        try { localStorage.setItem("tioga_paystack_public_key", data.payment.paystack_public_key.trim()); } catch {}
-      }
       if (changed.includes("contact")) invalidateSiteContactCache();
+      // Storefront reads shipping/payment/tax/features/affiliate/seo through the
+      // settings cache, so drop it or open tabs keep serving the old values.
+      invalidateSettingsCache();
       setOriginal(data); toast.success("Settings saved");
     } catch (e: any) { toast.error(e?.message || "Save failed"); }
     finally { setSaving(false); }
@@ -283,27 +287,10 @@ const AdminSettings = () => {
               {/* GENERAL */}
               <section id="sec-general" className={paneCls("general")}>
                 <header><h2 className="font-display text-xl font-bold">General</h2><p className="text-xs text-muted-foreground">Core site identity and defaults.</p></header>
-                <Card title="Site identity">
+                <Card title="Site identity" desc="Homepage hero copy lives in Landing & Web Pages; logo and theme colour ship with the build.">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <Field label="Site name"><input className={inputClass} value={data.general.site_name} onChange={(e) => set("general", { site_name: e.target.value })} /></Field>
                     <Field label="Tagline"><input className={inputClass} value={data.general.tagline} onChange={(e) => set("general", { tagline: e.target.value })} /></Field>
-                    <Field label="Hero title"><input className={inputClass} value={data.general.hero_title} onChange={(e) => set("general", { hero_title: e.target.value })} /></Field>
-                    <Field label="Hero subtitle"><input className={inputClass} value={data.general.hero_subtitle} onChange={(e) => set("general", { hero_subtitle: e.target.value })} /></Field>
-                    <Field label="Default currency"><input className={inputClass} value={data.general.default_currency} onChange={(e) => set("general", { default_currency: e.target.value })} /></Field>
-                    <Field label="Default language"><input className={inputClass} value={data.general.default_language} onChange={(e) => set("general", { default_language: e.target.value })} /></Field>
-                  </div>
-                </Card>
-              </section>
-
-              {/* BRANDING */}
-              <section id="sec-branding" className={paneCls("branding")}>
-                <header><h2 className="font-display text-xl font-bold">Branding</h2></header>
-                <Card title="Logo & visuals">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <Field label="Logo URL"><input className={inputClass} value={data.branding.logo_url} onChange={(e) => set("branding", { logo_url: e.target.value })} placeholder="https://…" /></Field>
-                    <Field label="Favicon URL"><input className={inputClass} value={data.branding.favicon_url} onChange={(e) => set("branding", { favicon_url: e.target.value })} /></Field>
-                    <Field label="Primary color (hex)"><input className={inputClass} value={data.branding.primary_color_hex} onChange={(e) => set("branding", { primary_color_hex: e.target.value })} placeholder="#16a34a" /></Field>
-                    <Field label="OG image URL" hint="1200×630 recommended"><input className={inputClass} value={data.branding.og_image_url} onChange={(e) => set("branding", { og_image_url: e.target.value })} /></Field>
                   </div>
                 </Card>
               </section>
@@ -356,23 +343,28 @@ const AdminSettings = () => {
               {/* PAYMENT */}
               <section id="sec-payment" className={paneCls("payment")}>
                 <header><h2 className="font-display text-xl font-bold">Payments</h2></header>
-                <Card title="Paystack" desc="Public key only. Secret key is managed in backend secrets.">
-                  <Field label="Paystack public key"><input className={inputClass} value={data.payment.paystack_public_key} onChange={(e) => set("payment", { paystack_public_key: e.target.value })} placeholder="pk_live_…" /></Field>
+                <Card title="Paystack" desc="Both keys live in Supabase secrets - checkout runs server-side, so no key is ever exposed to the browser.">
+                  <p className="text-xs text-muted-foreground">
+                    Set <code className="font-mono text-foreground">PAYSTACK_SECRET_KEY</code> under Project Settings &rarr; Edge Functions &rarr; Secrets.
+                    The callback URL in your Paystack dashboard should point at <code className="font-mono text-foreground">/checkout/success</code>.
+                  </p>
                 </Card>
-                <Card title="Bank transfer">
+                <Card title="Bank transfer" desc="Shown to customers who ask for a manual transfer.">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <Field label="Bank name"><input className={inputClass} value={data.payment.bank_name} onChange={(e) => set("payment", { bank_name: e.target.value })} /></Field>
                     <Field label="Account name"><input className={inputClass} value={data.payment.bank_account_name} onChange={(e) => set("payment", { bank_account_name: e.target.value })} /></Field>
                     <Field label="Account number"><input className={inputClass} value={data.payment.bank_account_number} onChange={(e) => set("payment", { bank_account_number: e.target.value })} /></Field>
                   </div>
                 </Card>
-                <Card title="Accepted methods">
+                <Card title="Accepted methods" desc="Card and bank transfer share one Paystack checkout; switching both off hides it and leaves WhatsApp as the only route.">
                   <div className="grid sm:grid-cols-2 gap-2">
                     <Toggle label="Card (Paystack)" value={!!data.payment.accept_card} onChange={(v) => set("payment", { accept_card: v })} />
-                    <Toggle label="Bank transfer" value={!!data.payment.accept_bank_transfer} onChange={(v) => set("payment", { accept_bank_transfer: v })} />
-                    <Toggle label="Pay on delivery" value={!!data.payment.accept_pay_on_delivery} onChange={(v) => set("payment", { accept_pay_on_delivery: v })} />
+                    <Toggle label="Bank transfer (Paystack)" value={!!data.payment.accept_bank_transfer} onChange={(v) => set("payment", { accept_bank_transfer: v })} />
                     <Toggle label="Allow guest checkout" value={!!data.payment.allow_guest_checkout} onChange={(v) => set("payment", { allow_guest_checkout: v })} />
                   </div>
+                  <p className="mt-3 text-[11px] text-muted-foreground">
+                    Card payment always requires an account - the transaction is verified against its signed-in owner. Guest checkout controls the WhatsApp route.
+                  </p>
                 </Card>
               </section>
 
@@ -401,12 +393,12 @@ const AdminSettings = () => {
               {/* SHIPPING */}
               <section id="sec-shipping" className={paneCls("shipping")}>
                 <header><h2 className="font-display text-xl font-bold">Shipping & Pickup</h2></header>
-                <Card title="Rates and areas">
+                <Card title="Rates and areas" desc="Applied live at checkout.">
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <Field label="Free shipping threshold (NGN)"><input type="number" className={inputClass} value={data.shipping.free_shipping_threshold_ngn} onChange={(e) => set("shipping", { free_shipping_threshold_ngn: +e.target.value })} /></Field>
-                    <Field label="Default shipping fee (NGN)"><input type="number" className={inputClass} value={data.shipping.default_shipping_fee_ngn} onChange={(e) => set("shipping", { default_shipping_fee_ngn: +e.target.value })} /></Field>
+                    <Field label="Default shipping fee (NGN)" hint="Charged outside your service areas."><input type="number" className={inputClass} value={data.shipping.default_shipping_fee_ngn} onChange={(e) => set("shipping", { default_shipping_fee_ngn: +e.target.value })} /></Field>
+                    <Field label="Free shipping threshold (NGN)" hint="Orders at or above this ship free anywhere. 0 disables it."><input type="number" className={inputClass} value={data.shipping.free_shipping_threshold_ngn} onChange={(e) => set("shipping", { free_shipping_threshold_ngn: +e.target.value })} /></Field>
                     <Field label="Delivery ETA (days)"><input className={inputClass} value={data.shipping.delivery_eta_days} onChange={(e) => set("shipping", { delivery_eta_days: e.target.value })} /></Field>
-                    <Field label="Service areas"><input className={inputClass} value={data.shipping.service_areas} onChange={(e) => set("shipping", { service_areas: e.target.value })} /></Field>
+                    <Field label="Service areas" hint="Comma-separated states/cities you deliver to free from your own offices."><input className={inputClass} value={data.shipping.service_areas} onChange={(e) => set("shipping", { service_areas: e.target.value })} /></Field>
                     <Field label="Pickup address"><input className={inputClass} value={data.shipping.pickup_address} onChange={(e) => set("shipping", { pickup_address: e.target.value })} /></Field>
                   </div>
                 </Card>
@@ -429,10 +421,8 @@ const AdminSettings = () => {
               <section id="sec-discounts" className={paneCls("discounts")}>
                 <header><h2 className="font-display text-xl font-bold">Discounts</h2><p className="text-xs text-muted-foreground">Manage codes in the Discounts page.</p></header>
                 <Card title="Behavior">
-                  <div className="grid sm:grid-cols-2 gap-2">
-                    <Toggle label="Allow stacking codes" value={!!data.discounts.allow_stacking} onChange={(v) => set("discounts", { allow_stacking: v })} />
-                    <Toggle label="Show discount code field at checkout" value={!!data.discounts.show_code_field} onChange={(v) => set("discounts", { show_code_field: v })} />
-                  </div>
+                  <Toggle label="Show discount code field at checkout" value={!!data.discounts.show_code_field} onChange={(v) => set("discounts", { show_code_field: v })} />
+                  <p className="mt-3 text-[11px] text-muted-foreground">One code per order - codes are validated server-side and cannot be stacked.</p>
                 </Card>
               </section>
 
@@ -453,13 +443,18 @@ const AdminSettings = () => {
               {/* NOTIF */}
               <section id="sec-notif" className={paneCls("notif")}>
                 <header><h2 className="font-display text-xl font-bold">Notifications</h2></header>
-                <Card title="Notification email">
+                <Card title="Notification email" desc="Where internal alerts are delivered. Every admin account is copied too.">
                   <Field label="Notification email"><input className={inputClass} value={data.notif.notify_email} onChange={(e) => set("notif", { notify_email: e.target.value })} /></Field>
                 </Card>
                 <Card title="What to alert me about">
                   <div className="grid sm:grid-cols-2 gap-2">
-                    {(["notify_on_new_lead","notify_on_conversion","notify_on_order","notify_on_affiliate_application","notify_on_payout_request","notify_on_finance_application","notify_on_new_user","daily_digest"] as const).map((k) => (
-                      <Toggle key={k} label={k.replace(/^notify_on_|_/g, " ").trim().replace(/^\w/, (c) => c.toUpperCase())} value={!!data.notif[k]} onChange={(v) => set("notif", { [k]: v })} />
+                    {([
+                      ["notify_on_new_lead", "New lead captured"],
+                      ["notify_on_order", "New order placed"],
+                      ["notify_on_affiliate_application", "Affiliate application"],
+                      ["notify_on_finance_application", "Finance application"],
+                    ] as const).map(([k, label]) => (
+                      <Toggle key={k} label={label} value={!!data.notif[k]} onChange={(v) => set("notif", { [k]: v })} />
                     ))}
                   </div>
                 </Card>
@@ -477,50 +472,27 @@ const AdminSettings = () => {
                 </Card>
               </section>
 
-              {/* INTEGRATIONS */}
-              <section id="sec-integrations" className={paneCls("integrations")}>
-                <header><h2 className="font-display text-xl font-bold">Integrations</h2></header>
-                <Card title="Connected services">
-                  <div className="space-y-2">
-                    {[
-                      { k: "gmail_connected", l: "Gmail (LumiVolt) - connected via connector" },
-                      { k: "openai_enabled", l: "Lovable AI Gateway" },
-                    ].map((r) => (
-                      <Toggle key={r.k} label={r.l} value={!!data.integrations[r.k]} onChange={(v) => set("integrations", { [r.k]: v })} />
-                    ))}
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4 mt-4">
-                    <Field label="Telegram bot token"><input className={inputClass} value={data.integrations.telegram_bot_token} onChange={(e) => set("integrations", { telegram_bot_token: e.target.value })} /></Field>
-                    <Field label="WhatsApp Business ID"><input className={inputClass} value={data.integrations.whatsapp_business_id} onChange={(e) => set("integrations", { whatsapp_business_id: e.target.value })} /></Field>
-                  </div>
-                </Card>
-              </section>
-
-              {/* SECURITY */}
-              <section id="sec-security" className={paneCls("security")}>
-                <header><h2 className="font-display text-xl font-bold">Security</h2></header>
-                <Card title="Authentication">
-                  <div className="grid sm:grid-cols-2 gap-2">
-                    <Toggle label="Require email verification" value={!!data.security.require_email_verification} onChange={(v) => set("security", { require_email_verification: v })} />
-                    <Toggle label="Allow guest checkout" value={!!data.security.allow_guest_checkout} onChange={(v) => set("security", { allow_guest_checkout: v })} />
-                    <Toggle label="HIBP leaked password check" value={!!data.security.hibp_password_check} onChange={(v) => set("security", { hibp_password_check: v })} />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4 mt-4">
-                    <Field label="Session timeout (minutes)"><input type="number" className={inputClass} value={data.security.session_timeout_minutes} onChange={(e) => set("security", { session_timeout_minutes: +e.target.value })} /></Field>
-                    <Field label="Admin IP allowlist" hint="Comma-separated, leave blank to allow all"><input className={inputClass} value={data.security.admin_ip_allowlist} onChange={(e) => set("security", { admin_ip_allowlist: e.target.value })} /></Field>
-                  </div>
-                </Card>
-              </section>
-
               {/* FEATURES */}
               <section id="sec-features" className={paneCls("features")}>
                 <header><h2 className="font-display text-xl font-bold">Feature Flags</h2></header>
                 <Card title="Toggle features">
                   <div className="grid sm:grid-cols-2 gap-2">
-                    {(["ai_chat_enabled","ai_recommender_enabled","ai_solar_sizing_enabled","flexible_payment_enabled","store_enabled"] as const).map((k) => (
-                      <Toggle key={k} label={k.replace(/_/g," ").replace(/^\w/, (c) => c.toUpperCase())} value={!!data.features[k]} onChange={(v) => set("features", { [k]: v })} />
+                    {([
+                      ["ai_chat_enabled", "AI chat assistant"],
+                      ["ai_recommender_enabled", "AI product recommender"],
+                      ["ai_solar_sizing_enabled", "AI solar sizing"],
+                      ["flexible_payment_enabled", "Flexible payment plan at checkout"],
+                      ["store_enabled", "Online store & checkout"],
+                    ] as const).map(([k, label]) => (
+                      <Toggle key={k} label={label} value={!!data.features[k]} onChange={(v) => set("features", { [k]: v })} />
                     ))}
                   </div>
+                </Card>
+                <Card title="Authentication & access" desc="Managed by Supabase, not by this page.">
+                  <p className="text-xs text-muted-foreground">
+                    Email verification, password strength and leaked-password checks, session length and MFA are configured in
+                    Supabase Dashboard &rarr; Authentication. Staff roles and per-page permissions live in Staff &amp; User Management and the Role Permissions Matrix.
+                  </p>
                 </Card>
               </section>
 
@@ -623,17 +595,22 @@ function GoogleDriveBackupCard() {
     }
   };
 
+  // Count first, then confirm against that count. The old flow deleted straight
+  // from a generic confirm(), so nobody could see what was about to go.
   const handlePurge = async () => {
-    if (!confirm("Are you sure you want to purge all mock & test records? Real user accounts and genuine products will be preserved.")) return;
     setPurging(true);
     try {
       const { purgeAllMockData } = await import("@/lib/purgeMockData");
+      const preview = await purgeAllMockData({ dryRun: true });
+      if (!preview.success) { toast.error(preview.message); return; }
+      if (preview.results.length === 0) { toast.success(preview.message); return; }
+
+      const breakdown = preview.results.map((r) => `  • ${r.table}: ${r.count}`).join("\n");
+      if (!confirm(`${preview.message}\n\n${breakdown}\n\nDelete these permanently? Customers, orders, leads and catalog items are never touched.`)) return;
+
       const res = await purgeAllMockData();
-      if (res.success) {
-        toast.success(res.message);
-      } else {
-        toast.error(res.message);
-      }
+      if (res.success) toast.success(res.message);
+      else toast.error(res.message);
     } catch (err: any) {
       toast.error(err.message || "Purge failed");
     } finally {
@@ -671,11 +648,13 @@ function GoogleDriveBackupCard() {
         )}
       </Card>
 
-      <Card title="Database Maintenance & Test Data Purge" desc="Safely clean out automated test records (TEST invoices, mock work orders, test tickets) while keeping real users and genuine catalog items.">
+      <Card title="Remove QA test records" desc="Clears ERP documents whose reference number contains TEST — test invoices, work orders, RMAs, journal entries, serials.">
         <div className="flex flex-wrap items-center justify-between gap-3 p-2 bg-rose-500/5 rounded-2xl border border-rose-500/20">
           <div>
-            <p className="text-sm font-bold text-foreground">Purge All Mock / QA Test Data</p>
-            <p className="text-xs text-muted-foreground">Deletes sample test records from all 24 database tables.</p>
+            <p className="text-sm font-bold text-foreground">Find and remove test documents</p>
+            <p className="text-xs text-muted-foreground">
+              Shows you exactly what it found before deleting anything. Customers, orders, leads, tickets and catalog items are never touched.
+            </p>
           </div>
           <button
             onClick={handlePurge}
@@ -683,7 +662,7 @@ function GoogleDriveBackupCard() {
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-destructive text-destructive-foreground text-sm font-semibold hover:brightness-110 disabled:opacity-60"
           >
             {purging ? <Loader2 size={14} className="animate-spin" /> : <Database size={14} />}
-            {purging ? "Purging..." : "Purge All Mock Data"}
+            {purging ? "Checking…" : "Scan for test records"}
           </button>
         </div>
       </Card>

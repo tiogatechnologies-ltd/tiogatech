@@ -1,24 +1,42 @@
 /**
- * Cosmetic "was price" / urgency display helpers shared across product and
- * package detail/listing pages. Display only - real prices are never changed.
+ * Price-comparison helpers shared across product and package listings.
+ *
+ * These used to fabricate everything they returned: the "was" price was just
+ * `price * 1.12`, and "save X%", "N sold this week" and "N people viewing" were
+ * derived from a hash of the row id. Customers were shown discounts that never
+ * happened and sales counts that were never counted.
+ *
+ * Now a strikethrough only appears when an admin has entered a genuine previous
+ * price that is actually higher than the current one. No value here is invented.
  */
-export const PROMO_LIFT = 1.12;
 
-function hashSeed(seed: string | number): number {
-  const s = String(seed);
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) & 0xffff;
-  return h;
-}
+/** The genuine previous price, or null when there is nothing real to compare to. */
+export const wasPrice = (
+  price: number | null | undefined,
+  compareAt: number | null | undefined,
+): number | null => {
+  const now = Number(price);
+  const before = Number(compareAt);
+  if (!Number.isFinite(now) || !Number.isFinite(before)) return null;
+  if (now <= 0 || before <= now) return null;
+  return Math.round(before);
+};
 
-/** Deterministic fake "N people viewing" count, roughly 3-18. */
-export const viewerCount = (seed: string | number): number => 3 + (hashSeed(seed) % 16);
+/** Amount saved against the genuine previous price, or null. */
+export const savedAmount = (
+  price: number | null | undefined,
+  compareAt: number | null | undefined,
+): number | null => {
+  const before = wasPrice(price, compareAt);
+  return before === null ? null : before - Math.round(Number(price));
+};
 
-/** Deterministic fake "save X%" figure, roughly 7-17. */
-export const savingsPct = (seed: string | number): number => 7 + (hashSeed(seed) % 11);
-
-/** Deterministic fake "N sold" count, roughly 3-24. */
-export const soldCount = (seed: string | number): number => 3 + (hashSeed(seed) % 22);
-
-/** Cosmetic "was" price derived from the real price via PROMO_LIFT. */
-export const wasPrice = (price: number): number => Math.round(price * PROMO_LIFT);
+/** Real percentage off, rounded. Null when there is no genuine previous price. */
+export const savingsPct = (
+  price: number | null | undefined,
+  compareAt: number | null | undefined,
+): number | null => {
+  const before = wasPrice(price, compareAt);
+  if (before === null) return null;
+  return Math.round(((before - Number(price)) / before) * 100);
+};

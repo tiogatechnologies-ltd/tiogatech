@@ -27,7 +27,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import type { AppRole } from "@/contexts/AuthContext";
-import { purgeAllMockData } from "@/lib/purgeMockData";
 
 interface UserProfile {
   id: string;
@@ -76,8 +75,6 @@ const AdminUsers = () => {
   // Modals
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
-  const [showPurgeModal, setShowPurgeModal] = useState(false);
-  const [purging, setPurging] = useState(false);
 
   // New/Edit User Form State
   const [formEmail, setFormEmail] = useState("");
@@ -251,19 +248,6 @@ const AdminUsers = () => {
     }
   };
 
-  const handlePurgeMockData = async () => {
-    setPurging(true);
-    const res = await purgeAllMockData();
-    setPurging(false);
-    setShowPurgeModal(false);
-    if (res.success) {
-      toast.success(res.message);
-      loadUsers();
-    } else {
-      toast.error(res.message);
-    }
-  };
-
   // Filtering
   const isStaff = (u: UserProfile) => u.roles.some((r) => ["admin", "staff", "engineer"].includes(r));
 
@@ -304,12 +288,6 @@ const AdminUsers = () => {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setShowPurgeModal(true)}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/30 dark:border-rose-900 dark:text-rose-400 px-4 py-2 text-xs font-semibold transition-all"
-            >
-              <Trash2 size={14} /> Purge Mock Data
-            </button>
             <button
               onClick={() => {
                 setEditingUser(null);
@@ -655,54 +633,6 @@ const AdminUsers = () => {
           </div>
         )}
 
-        {/* MODAL: PURGE MOCK DATA */}
-        {showPurgeModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-card rounded-3xl border border-destructive/30 shadow-2xl w-full max-w-md overflow-hidden">
-              <div className="p-6 space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center mx-auto">
-                  <AlertTriangle size={26} />
-                </div>
-                <div className="text-center space-y-1">
-                  <h3 className="font-display font-bold text-foreground text-lg">Clean Mock & Test Data</h3>
-                  <p className="text-xs text-muted-foreground">
-                    Safely wipe all test invoices (`TEST-`), QA test leads, test work orders, and sample commissions across all database tables.
-                  </p>
-                </div>
-
-                <div className="bg-muted/40 p-3 rounded-2xl text-xs space-y-1 border border-border">
-                  <p className="font-semibold text-foreground">What will be preserved:</p>
-                  <ul className="list-disc list-inside text-muted-foreground space-y-0.5 text-[11px]">
-                    <li>All real staff & admin user profiles</li>
-                    <li>Official warehouse locations</li>
-                    <li>All genuine products & solar packages</li>
-                    <li>Live website & store settings</li>
-                  </ul>
-                </div>
-
-                <div className="flex gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowPurgeModal(false)}
-                    disabled={purging}
-                    className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold hover:bg-muted"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handlePurgeMockData}
-                    disabled={purging}
-                    className="flex-1 rounded-xl bg-destructive text-destructive-foreground py-2.5 text-sm font-semibold hover:brightness-110 flex items-center justify-center gap-1.5"
-                  >
-                    {purging ? <Loader2 size={15} className="animate-spin" /> : <Trash2 size={15} />}
-                    {purging ? "Purging..." : "Purge All Mock Data"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </AdminLayout>
   );

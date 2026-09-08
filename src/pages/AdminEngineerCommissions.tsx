@@ -68,17 +68,17 @@ const AdminEngineerCommissions = () => {
   const [engName, setEngName] = useState("");
   const [engPhone, setEngPhone] = useState("");
   const [woNo, setWoNo] = useState("");
-  const [kwpSize, setKwpSize] = useState(5.0);
-  const [ratePerKwp, setRatePerKwp] = useState(15000);
-  const [bonus, setBonus] = useState(10000);
+  const [kwpSize, setKwpSize] = useState(0);
+  const [ratePerKwp, setRatePerKwp] = useState(0);
+  const [bonus, setBonus] = useState(0);
 
   // Cert Form
   const [certEngName, setCertEngName] = useState("");
-  const [certName, setCertName] = useState("NEMSA Certified Solar Competency Certificate");
+  const [certName, setCertName] = useState("");
   const [certNo, setCertNo] = useState("");
-  const [certAuthority, setCertAuthority] = useState("Nigerian Electricity Management Services Agency");
+  const [certAuthority, setCertAuthority] = useState("");
   const [issuedDate, setIssuedDate] = useState(new Date().toISOString().slice(0, 10));
-  const [expiryDate, setExpiryDate] = useState("2027-12-31");
+  const [expiryDate, setExpiryDate] = useState("");
 
   const fetchData = async () => {
     setLoading(true);

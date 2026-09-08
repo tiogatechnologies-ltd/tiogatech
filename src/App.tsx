@@ -19,6 +19,7 @@ import RouteFade from "@/components/RouteFade";
 import LeadFormHost from "@/components/LeadFormHost";
 import { CartProvider } from "@/contexts/CartContext";
 import PreloadCritical from "@/components/PreloadCritical";
+import SiteAnalytics from "@/components/SiteAnalytics";
 import DeferredMount from "@/components/DeferredMount";
 import EnergyCalculatorDialog from "@/components/EnergyCalculatorDialog";
 import WaitlistDialog from "@/components/WaitlistDialog";
@@ -328,6 +329,7 @@ const App = () => (
               <PageTracker />
               <CacheBoot />
               <PreloadCritical />
+              <SiteAnalytics />
               <ScrollToTop />
               <SmoothScroll />
               <AutoReveal />

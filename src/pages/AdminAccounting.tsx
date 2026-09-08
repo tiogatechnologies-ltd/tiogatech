@@ -86,9 +86,11 @@ const AdminAccounting = () => {
   const [jrnNarration, setJrnNarration] = useState("");
   const [jrnRefType, setJrnRefType] = useState("manual");
   const [jrnRefNo, setJrnRefNo] = useState("");
+  // Two blank lines so a double entry can be typed straight away. Never
+  // pre-fill amounts or accounts - a posted entry is a financial record.
   const [jrnLines, setJrnLines] = useState<JournalEntryLine[]>([
-    { account_code: "1020", account_name: "Access Bank Plc", debit: 1500000, credit: 0 },
-    { account_code: "4010", account_name: "Solar System Sales Revenue", debit: 0, credit: 1500000 },
+    { account_code: "", account_name: "", debit: 0, credit: 0 },
+    { account_code: "", account_name: "", debit: 0, credit: 0 },
   ]);
 
   const fetchData = async () => {

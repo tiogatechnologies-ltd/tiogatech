@@ -16,7 +16,7 @@ import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { PROMO_LIFT, savingsPct } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
@@ -133,9 +133,11 @@ export const SolarPackageDetail = () => {
     );
   }
 
-  const pct = savingsPct(pkg.package_number);
-  const wasPrice = Math.round(pkg.total_price * PROMO_LIFT);
-  const savedAmount = wasPrice - pkg.total_price;
+  // Strikethrough only appears when a genuine previous price is recorded.
+  const compareAt = (pkg as any).compare_at_price ?? null;
+  const pct = savingsPct(pkg.total_price, compareAt);
+  const wasPrice = calcWasPrice(pkg.total_price, compareAt);
+  const savedAmount = calcSavedAmount(pkg.total_price, compareAt);
   const batteryLabel = pkg.battery_type === "lithium" ? "Lithium LiFePO₄" : pkg.battery_type === "high_voltage" ? "High Voltage" : "Tubular / Gel";
 
   const jsonLd = [
@@ -262,20 +264,9 @@ export const SolarPackageDetail = () => {
                 </button>
               </div>
 
-              {/* Social proof */}
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-1">
-                  {[1,2,3,4,5].map((s) => (
-                    <Star key={s} size={14} className="fill-gold text-gold" />
-                  ))}
-                  <span className="text-xs text-muted-foreground ml-1">4.9 (38 installs)</span>
-                </div>
-                <span className="text-xs text-muted-foreground">·</span>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Users size={12} className="text-emerald-500" />
-                  <span className="text-emerald-700 dark:text-emerald-400 font-semibold">3 purchased this week</span>
-                </div>
-              </div>
+              {/* A hardcoded "4.9 (38 installs) · 3 purchased this week" used to
+                  sit here. Nothing counted those, so it is gone rather than
+                  presented to customers as a real figure. */}
 
               {/* Price block */}
               <div className="p-5 rounded-2xl bg-muted/40 border border-border">

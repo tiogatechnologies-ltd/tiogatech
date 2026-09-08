@@ -50,11 +50,11 @@ const AdminJobCosting = () => {
   const [woNo, setWoNo] = useState("");
   const [clientName, setClientName] = useState("");
   const [systemDesc, setSystemDesc] = useState("");
-  const [contractRev, setContractRev] = useState(5000000);
-  const [hardwareCogs, setHardwareCogs] = useState(3200000);
-  const [laborCost, setLaborCost] = useState(250000);
-  const [logisticsCost, setLogisticsCost] = useState(80000);
-  const [miscCost, setMiscCost] = useState(40000);
+  const [contractRev, setContractRev] = useState(0);
+  const [hardwareCogs, setHardwareCogs] = useState(0);
+  const [laborCost, setLaborCost] = useState(0);
+  const [logisticsCost, setLogisticsCost] = useState(0);
+  const [miscCost, setMiscCost] = useState(0);
   const [completedDate, setCompletedDate] = useState(new Date().toISOString().slice(0, 10));
 
   const fetchJobs = async () => {

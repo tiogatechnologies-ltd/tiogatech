@@ -13,7 +13,7 @@ import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { PROMO_LIFT, savingsPct, soldCount, wasPrice as calcWasPrice } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
@@ -28,10 +28,11 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
   const isSaved = isInWishlist(pkg.id);
 
-  const pct = savingsPct(pkg.package_number);
-  const wasPriceVal = calcWasPrice(pkg.total_price);
-  const savedAmount = wasPriceVal - pkg.total_price;
-  const sold = soldCount(pkg.package_number);
+  // Strikethrough only appears when a genuine previous price is recorded.
+  const compareAt = (pkg as any).compare_at_price ?? null;
+  const pct = savingsPct(pkg.total_price, compareAt);
+  const wasPriceVal = calcWasPrice(pkg.total_price, compareAt);
+  const savedAmount = calcSavedAmount(pkg.total_price, compareAt);
   const monthlyEst = Math.round(pkg.total_price / 3);
 
   const handleAdd = (e?: React.MouseEvent) => {
@@ -183,14 +184,6 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           </span>
         </div>
 
-        {/* Social Proof Urgency */}
-        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-3 flex-wrap">
-          <Users size={11} className="text-emerald-500 shrink-0" />
-          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{sold} installed this month</span>
-          <span className="opacity-50">·</span>
-          <Flame size={11} className="text-amber-500 shrink-0" />
-          <span className="text-amber-700 dark:text-amber-400 font-semibold">In demand</span>
-        </div>
 
         {/* Price & Financing */}
         <div className="mt-auto pt-3 border-t border-border/60">
