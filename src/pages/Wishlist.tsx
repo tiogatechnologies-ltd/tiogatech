@@ -50,8 +50,9 @@ export const Wishlist = () => {
           specifications: p.specifications || {},
           tags: p.tags || [],
           brand: p.brand || inferBrand(p.name, p.category),
-          rating: 5.0,
-          review_count: 14,
+          rating: p.rating ?? undefined,
+          review_count: p.review_count ?? undefined,
+          compare_at_price: p.compare_at_price ?? null,
         }));
 
         const staticList: RetailProduct[] = STATIC_PRODUCTS.map((p) => ({
@@ -71,6 +72,7 @@ export const Wishlist = () => {
           brand: p.brand || inferBrand(p.name, p.category),
           rating: p.rating ?? undefined,
           review_count: p.review_count ?? undefined,
+          compare_at_price: null,
         }));
 
         setAllProducts(mergeProducts(staticList, dbList));

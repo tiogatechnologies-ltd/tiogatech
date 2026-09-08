@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { data: order } = await admin.from("orders").select("order_number, user_id, total, payment_status").eq("order_number", orderNumber).maybeSingle();
+    const { data: order } = await admin.from("orders").select("id, order_number, user_id, email, total, payment_status, discount_code, discount_amount").eq("order_number", orderNumber).maybeSingle();
     if (!order || order.user_id !== authData.user.id) return new Response(JSON.stringify({ error: "Order not found." }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
     // Still require the transaction's own metadata to name this exact order and
@@ -62,6 +62,29 @@ Deno.serve(async (req) => {
     const success = j?.data?.status === "success" && metadataOrder === orderNumber && paidAmount === Number(order.total);
     if (success && order.payment_status !== "paid") {
       await admin.from("orders").update({ payment_status: "paid", payment_reference: reference, status: "confirmed" }).eq("order_number", orderNumber).eq("user_id", authData.user.id);
+
+      // Record the redemption now that money has actually moved. Nothing wrote
+      // this table before, so `max_uses` and `per_customer_cap` never fired -
+      // a "10 uses only" code stayed usable forever. The payment_status guard
+      // above makes this run once per order even if verify is called again.
+      if (order.discount_code) {
+        try {
+          const { data: d } = await admin.from("discounts").select("id, uses_count").eq("code", order.discount_code).maybeSingle();
+          if (d) {
+            await admin.from("discount_redemptions").insert({
+              discount_id: d.id,
+              user_id: authData.user.id,
+              email: order.email ?? authData.user.email ?? null,
+              order_id: order.id,
+              amount_discounted: Number(order.discount_amount) || 0,
+            });
+            await admin.from("discounts").update({ uses_count: (Number(d.uses_count) || 0) + 1 }).eq("id", d.id);
+          }
+        } catch (e) {
+          // Never fail a confirmed payment over bookkeeping.
+          console.error("discount redemption logging failed", e);
+        }
+      }
     }
     return new Response(JSON.stringify({
       success,

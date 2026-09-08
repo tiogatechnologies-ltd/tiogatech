@@ -36,6 +36,11 @@ export interface TaxSettings {
   invoice_footer: string;
 }
 
+export interface DiscountSettings {
+  /** Hides the coupon input at checkout when the shop is not running promos. */
+  show_code_field: boolean;
+}
+
 export interface FeatureSettings {
   ai_chat_enabled: boolean;
   ai_recommender_enabled: boolean;
@@ -98,6 +103,9 @@ export const SETTING_DEFAULTS = {
     flexible_payment_enabled: true,
     store_enabled: true,
   } as FeatureSettings,
+  discounts: {
+    show_code_field: true,
+  } as DiscountSettings,
   affiliate: {
     default_commission_percent: 5,
     min_payout_ngn: 50000,

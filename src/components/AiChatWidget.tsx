@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { MessageCircle, X, Send, Loader2, ExternalLink, RotateCcw } from "lucide-react";
@@ -17,6 +18,7 @@ const loadInitial = (): Msg[] => {
 };
 
 const AiChatWidget = () => {
+  const { settings: features, loaded: featuresLoaded } = useSiteSetting("features");
   const { user, loading: authLoading } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -63,6 +65,10 @@ const AiChatWidget = () => {
   };
 
   const reset = () => { setMessages([]); try { localStorage.removeItem(STORAGE_KEY); } catch {} };
+
+  // Admin > Settings > System & Access can switch the assistant off. Wait for
+  // the row so the widget does not flash in and out on a slow connection.
+  if (featuresLoaded && !features.ai_chat_enabled) return null;
 
   return (
     <>

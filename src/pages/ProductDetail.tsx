@@ -470,8 +470,8 @@ export const ProductDetail = () => {
                           ...product,
                           numeric_price: numPrice,
                           brand: product.brand || "Tioga Certified",
-                          rating: 5.0,
-                          review_count: 14,
+                          rating: product.rating ?? undefined,
+                          review_count: product.review_count ?? undefined,
                         } as unknown as RetailProduct);
                       }
                     }}
@@ -530,11 +530,14 @@ export const ProductDetail = () => {
                   )}
                   {/* Only shown once real reviews exist - it used to fall back
                       to a 5.0 rating and 14 reviews for products with none. */}
-                  {product.rating && product.review_count ? (
+                  {/* Averaged from the reviews actually left on this product.
+                      This used to fall back to a 5.0 rating and 14 reviews for
+                      products nobody had reviewed. */}
+                  {reviewStats && reviewStats.count > 0 ? (
                     <div className="flex items-center gap-1 font-medium text-amber-500">
                       <Star size={14} fill="currentColor" />
-                      <span className="text-foreground font-bold">{product.rating}</span>
-                      <span className="text-muted-foreground">({product.review_count} {product.review_count === 1 ? "review" : "reviews"})</span>
+                      <span className="text-foreground font-bold">{reviewStats.average.toFixed(1)}</span>
+                      <span className="text-muted-foreground">({reviewStats.count} {reviewStats.count === 1 ? "review" : "reviews"})</span>
                     </div>
                   ) : null}
                 </div>

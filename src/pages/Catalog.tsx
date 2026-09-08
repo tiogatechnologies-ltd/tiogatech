@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useState, useEffect, useMemo } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -61,6 +62,7 @@ interface AIRecommendation {
 }
 
 export const Catalog = () => {
+  const { settings: features } = useSiteSetting("features");
   const location = useLocation();
   const navigate = useNavigate();
   const { add: addToCart } = useCart();
@@ -154,6 +156,7 @@ export const Catalog = () => {
           brand: p.brand || inferBrand(p.name, p.category),
           rating: p.rating ?? undefined,
           review_count: p.review_count ?? undefined,
+          compare_at_price: null, // seed catalog has no recorded previous price
           stock_status: (p.stock_status as any) || "in_stock",
           is_featured: p.is_featured ?? true,
           warranty_years: p.warranty_years || 5,
@@ -176,8 +179,9 @@ export const Catalog = () => {
             specifications: p.specifications || {},
             tags: p.tags || [],
             brand: p.brand || inferBrand(p.name, p.category),
-            rating: 5.0,
-            review_count: 14,
+            rating: p.rating ?? undefined,
+            review_count: p.review_count ?? undefined,
+            compare_at_price: p.compare_at_price ?? null,
             stock_status: "in_stock",
             is_featured: true,
             warranty_years: 5,
@@ -206,6 +210,7 @@ export const Catalog = () => {
               brand: p.brand || inferBrand(p.name, p.category),
               rating: p.rating ?? undefined,
               review_count: p.review_count ?? undefined,
+              compare_at_price: null,
               stock_status: (p.stock_status as any) || "in_stock",
               is_featured: true,
               warranty_years: 5,
@@ -223,9 +228,10 @@ export const Catalog = () => {
     };
   }, []);
 
-  // Fetch AI recommendations if state provided
+  // Fetch AI recommendations if state provided. Admin > Settings can switch the
+  // recommender off, in which case the page falls back to plain browsing.
   useEffect(() => {
-    if (!hasState) return;
+    if (!hasState || !features.ai_recommender_enabled) return;
     setAiLoading(true);
     supabase.functions
       .invoke("ai-recommend", {

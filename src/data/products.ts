@@ -57,8 +57,6 @@ export const invertersList: Product[] = [
       "Warranty": "5-Year Manufacturer Replacement Warranty",
       "Dimensions": "330 x 580 x 232 mm (20.5 kg)"
     },
-    rating: 5.0,
-    review_count: 18,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -96,8 +94,6 @@ export const invertersList: Product[] = [
       "Warranty": "5-Year Official Replacement Warranty",
       "Dimensions": "420 x 670 x 233 mm (32 kg)"
     },
-    rating: 5.0,
-    review_count: 14,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -135,8 +131,6 @@ export const invertersList: Product[] = [
       "Warranty": "5-Year Enterprise Warranty",
       "Dimensions": "422 x 699 x 279 mm (33.6 kg)"
     },
-    rating: 5.0,
-    review_count: 8,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -171,8 +165,6 @@ export const invertersList: Product[] = [
       "Parallel Capability": "Up to 6 units (Single or 3-Phase)",
       "Warranty": "2-Year Comprehensive Warranty"
     },
-    rating: 4.9,
-    review_count: 12,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["inverter", "srne", "5kw", "parallel", "solar"]
@@ -206,8 +198,6 @@ export const invertersList: Product[] = [
       "Max Solar PV Input": "8,000W",
       "Warranty": "3-Year Warranty"
     },
-    rating: 5.0,
-    review_count: 9,
     stock_status: "in_stock",
     warranty_years: 3,
     tags: ["inverter", "srne", "6kw", "solar", "hybrid"]
@@ -240,8 +230,6 @@ export const invertersList: Product[] = [
       "Max PV Open Circuit": "450Vdc",
       "Warranty": "2-Year Warranty"
     },
-    rating: 4.8,
-    review_count: 15,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["inverter", "growatt", "5kw", "offgrid"]
@@ -274,8 +262,6 @@ export const invertersList: Product[] = [
       "MPPT Trackers": "2 Trackers (100V - 480V)",
       "Warranty": "2-Year Warranty"
     },
-    rating: 4.9,
-    review_count: 11,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["inverter", "luxpower", "5kw", "hybrid"]
@@ -309,8 +295,6 @@ export const invertersList: Product[] = [
       "Parallel Capability": "Up to 6 units",
       "Warranty": "2-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 22,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 2,
@@ -346,8 +330,6 @@ export const invertersList: Product[] = [
       "Parallel Units": "Up to 6 units",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 19,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -382,8 +364,6 @@ export const invertersList: Product[] = [
       "Protection": "Waterproof / IP65",
       "Warranty": "5-Year Manufacturer Warranty"
     },
-    rating: 5.0,
-    review_count: 15,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -418,8 +398,6 @@ export const invertersList: Product[] = [
       "Parallel Units": "Up to 6 units (60kW)",
       "Warranty": "2-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 18,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 2,
@@ -454,8 +432,6 @@ export const invertersList: Product[] = [
       "Parallel Operation": "Up to 6 units",
       "Warranty": "2-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 24,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 2,
@@ -490,8 +466,6 @@ export const invertersList: Product[] = [
       "Parallel Units": "Up to 6 units (96kW)",
       "Warranty": "2-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 14,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 2,
@@ -526,8 +500,6 @@ export const invertersList: Product[] = [
       "Protection Rating": "IP65 Waterproof",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 12,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -569,8 +541,6 @@ export const batteriesList: Product[] = [
       "Warranty": "5-Year Official Replacement Warranty",
       "Dimensions": "480 x 440 x 175 mm (42 kg)"
     },
-    rating: 5.0,
-    review_count: 22,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -609,8 +579,6 @@ export const batteriesList: Product[] = [
       "Warranty": "5-Year Official Replacement Warranty",
       "Dimensions": "650 x 500 x 240 mm (83 kg)"
     },
-    rating: 5.0,
-    review_count: 27,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -647,8 +615,6 @@ export const batteriesList: Product[] = [
       "Warranty": "5-Year Enterprise Warranty",
       "Weight": "125 kg"
     },
-    rating: 5.0,
-    review_count: 6,
     stock_status: "in_stock",
     warranty_years: 5,
     tags: ["battery", "lifepo4", "15kwh", "commercial", "felicity"]
@@ -680,8 +646,6 @@ export const batteriesList: Product[] = [
       "Cycle Life": "5,000+ Cycles",
       "Warranty": "3-Year Warranty"
     },
-    rating: 4.8,
-    review_count: 10,
     stock_status: "in_stock",
     warranty_years: 3,
     tags: ["battery", "alpsolar", "compact", "storage"]
@@ -715,8 +679,6 @@ export const batteriesList: Product[] = [
       "Weight": "9.2 kg",
       "Warranty": "1-Year Warranty"
     },
-    rating: 4.7,
-    review_count: 19,
     stock_status: "in_stock",
     warranty_years: 1,
     tags: ["portable", "powerstation", "itel", "emergency", "battery"]
@@ -750,8 +712,6 @@ export const batteriesList: Product[] = [
       "Parallel Limit": "Up to 4 units in parallel",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 16,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -786,8 +746,6 @@ export const batteriesList: Product[] = [
       "Parallel Limit": "Up to 4 units",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 21,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -822,8 +780,6 @@ export const batteriesList: Product[] = [
       "Parallel Limit": "Up to 4 units",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 14,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -859,8 +815,6 @@ export const batteriesList: Product[] = [
       "Max Parallel": "16 units (81.92 kWh)",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 31,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -896,8 +850,6 @@ export const batteriesList: Product[] = [
       "Parallel Capability": "Up to 16 units",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 26,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -933,8 +885,6 @@ export const batteriesList: Product[] = [
       "Parallel Limits": "Up to 16 units",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 17,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -971,8 +921,6 @@ export const batteriesList: Product[] = [
       "Max Parallel": "16 units (257.12 kWh)",
       "Warranty": "5-Year Official Warranty"
     },
-    rating: 5.0,
-    review_count: 28,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 5,
@@ -1007,8 +955,6 @@ export const batteriesList: Product[] = [
       "Display": "Smart Circular LED Display",
       "Warranty": "10-Year Official Manufacturer Warranty"
     },
-    rating: 5.0,
-    review_count: 25,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 10,
@@ -1043,8 +989,6 @@ export const batteriesList: Product[] = [
       "Max Parallel": "16 units (163.84 kWh)",
       "Warranty": "10-Year Official Manufacturer Warranty"
     },
-    rating: 5.0,
-    review_count: 20,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 10,
@@ -1080,8 +1024,6 @@ export const batteriesList: Product[] = [
       "Max Parallel": "16 units (257.12 kWh)",
       "Warranty": "10-Year Official Manufacturer Warranty"
     },
-    rating: 5.0,
-    review_count: 34,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 10,
@@ -1123,8 +1065,6 @@ export const solarPanelsList: Product[] = [
       "Power Warranty": "25-Year Linear Power Output Warranty",
       "Dimensions": "2278 x 1134 x 35 mm (27.5 kg)"
     },
-    rating: 5.0,
-    review_count: 35,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 25,
@@ -1159,8 +1099,6 @@ export const solarPanelsList: Product[] = [
       "Warranty": "30-Year Performance Warranty",
       "Dimensions": "2384 x 1134 x 35 mm (32 kg)"
     },
-    rating: 5.0,
-    review_count: 16,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 30,
@@ -1193,8 +1131,6 @@ export const solarPanelsList: Product[] = [
       "Warranty": "25-Year Power Guarantee",
       "Dimensions": "2278 x 1134 x 35 mm (27.6 kg)"
     },
-    rating: 4.9,
-    review_count: 18,
     stock_status: "in_stock",
     warranty_years: 25,
     tags: ["solar panel", "canadian solar", "550w", "tier-1"]
@@ -1233,8 +1169,6 @@ export const solarPanelsList: Product[] = [
       "Warranty": "25-Year Power Performance Guarantee",
       "Dimensions": "2382 x 1134 x 30 mm (28.5 kg)"
     },
-    rating: 5.0,
-    review_count: 24,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 25,
@@ -1274,8 +1208,6 @@ export const solarPanelsList: Product[] = [
       "Warranty": "30-Year Linear Power Warranty",
       "Dimensions": "2382 x 1134 x 30 mm (33.1 kg)"
     },
-    rating: 5.0,
-    review_count: 27,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 30,
@@ -1314,8 +1246,6 @@ export const solarPanelsList: Product[] = [
       "Warranty": "30-Year Performance Warranty",
       "Dimensions": "2382 x 1134 x 30 mm (32.4 kg)"
     },
-    rating: 5.0,
-    review_count: 32,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 30,
@@ -1354,8 +1284,6 @@ export const solarPanelsList: Product[] = [
       "Warranty": "30-Year Performance Warranty",
       "Dimensions": "2384 x 1303 x 33 mm (37.5 kg)"
     },
-    rating: 5.0,
-    review_count: 19,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 30,
@@ -1396,8 +1324,6 @@ export const smartLocksList: Product[] = [
       "Battery": "5000mAh Rechargeable Lithium Pack",
       "Warranty": "2-Year Complete Hardware Warranty"
     },
-    rating: 5.0,
-    review_count: 31,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 2,
@@ -1431,8 +1357,6 @@ export const smartLocksList: Product[] = [
       "Mortise": "Stainless Steel 6068 Anti-Drill Mortise",
       "Warranty": "2-Year Warranty"
     },
-    rating: 5.0,
-    review_count: 17,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["smart lock", "stama", "s7", "waterproof", "face id"]
@@ -1465,8 +1389,6 @@ export const smartLocksList: Product[] = [
       "Material": "High-Density Zinc Alloy",
       "Warranty": "2-Year Warranty"
     },
-    rating: 4.9,
-    review_count: 24,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["smart lock", "stama", "d20", "fingerprint", "security"]
@@ -1498,8 +1420,6 @@ export const smartLocksList: Product[] = [
       "Unlock": "Face, Fingerprint, Passcode, App, Card, Key",
       "Warranty": "2-Year Warranty"
     },
-    rating: 4.9,
-    review_count: 19,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["smart lock", "stama", "h11", "video doorbell", "camera"]
@@ -1531,8 +1451,6 @@ export const smartLocksList: Product[] = [
       "App Control": "TTlock / Tuya App with Bluetooth & Gateway",
       "Warranty": "18-Month Warranty"
     },
-    rating: 4.8,
-    review_count: 14,
     stock_status: "in_stock",
     warranty_years: 1.5,
     tags: ["smart lock", "stama", "sl02", "aluminum door", "sliding door"]
@@ -1564,8 +1482,6 @@ export const smartLocksList: Product[] = [
       "Battery": "4x AA Alkaline (12-Month Battery Life)",
       "Warranty": "18-Month Warranty"
     },
-    rating: 5.0,
-    review_count: 26,
     stock_status: "in_stock",
     warranty_years: 1.5,
     tags: ["smart lock", "stama", "tf5", "airbnb", "shortlet", "hotel"]
@@ -1596,8 +1512,6 @@ export const smartLocksList: Product[] = [
       "Card Capacity": "50 Cards",
       "Warranty": "1-Year Warranty"
     },
-    rating: 4.8,
-    review_count: 11,
     stock_status: "in_stock",
     warranty_years: 1,
     tags: ["smart lock", "stama", "n22", "fingerprint"]
@@ -1629,8 +1543,6 @@ export const smartLocksList: Product[] = [
       "Remote": "433MHz RF Remote Included",
       "Warranty": "18-Month Warranty"
     },
-    rating: 4.9,
-    review_count: 15,
     stock_status: "in_stock",
     warranty_years: 1.5,
     tags: ["smart lock", "gate lock", "stama", "v80", "waterproof", "iron gate"]
@@ -1661,8 +1573,6 @@ export const smartLocksList: Product[] = [
       "Installation": "No Hole Drilling Clamp System",
       "Warranty": "1-Year Warranty"
     },
-    rating: 4.7,
-    review_count: 9,
     stock_status: "in_stock",
     warranty_years: 1,
     tags: ["smart lock", "glass door", "stama", "g290", "office"]
@@ -1694,8 +1604,6 @@ export const smartLocksList: Product[] = [
       "Battery": "USB Rechargeable Lithium",
       "Warranty": "1-Year Warranty"
     },
-    rating: 4.8,
-    review_count: 28,
     stock_status: "in_stock",
     warranty_years: 1,
     tags: ["padlock", "biometric", "stama", "kt14", "waterproof", "security"]
@@ -1726,8 +1634,6 @@ export const smartLocksList: Product[] = [
       "Software": "Windows PC Software & Cloud Web Portal",
       "Warranty": "2-Year Enterprise Warranty"
     },
-    rating: 5.0,
-    review_count: 5,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["hotel", "smart lock", "stama", "hospitality", "access control"]
@@ -1764,8 +1670,6 @@ export const smartHomeList: Product[] = [
       "Voltage": "100V - 250V AC 50/60Hz",
       "Warranty": "2-Year Warranty"
     },
-    rating: 5.0,
-    review_count: 16,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 2,
@@ -1797,8 +1701,6 @@ export const smartHomeList: Product[] = [
       "Wireless": "Zigbee 3.0",
       "Warranty": "2-Year Warranty"
     },
-    rating: 4.9,
-    review_count: 21,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["smart switch", "zigbee", "4 gang", "automation"]
@@ -1830,8 +1732,6 @@ export const smartHomeList: Product[] = [
       "Dimensions": "41 x 41 x 20 mm",
       "Warranty": "1-Year Warranty"
     },
-    rating: 4.8,
-    review_count: 34,
     stock_status: "in_stock",
     warranty_years: 1,
     tags: ["relay", "smart switch", "wifi", "retrofit", "automation"]
@@ -1863,8 +1763,6 @@ export const smartHomeList: Product[] = [
       "Built-in Gateway": "Yes (Up to 100 sub-devices)",
       "Warranty": "2-Year Warranty"
     },
-    rating: 5.0,
-    review_count: 12,
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 2,
@@ -1896,8 +1794,6 @@ export const smartHomeList: Product[] = [
       "Protocol": "WiFi 2.4GHz",
       "Warranty": "18-Month Warranty"
     },
-    rating: 4.9,
-    review_count: 17,
     stock_status: "in_stock",
     warranty_years: 1.5,
     tags: ["boiler switch", "water heater", "40a", "heavy duty", "automation"]
@@ -1928,8 +1824,6 @@ export const smartHomeList: Product[] = [
       "Compatibility": "Universal (LG, Samsung, Panasonic, Gree, Sony, etc.)",
       "Warranty": "1-Year Warranty"
     },
-    rating: 4.8,
-    review_count: 22,
     stock_status: "in_stock",
     warranty_years: 1,
     tags: ["remote hub", "ir remote", "automation", "ac control", "tioga iot"]
@@ -1967,8 +1861,6 @@ export const cctvList: Product[] = [
       "Storage": "MicroSD slot up to 128GB + Cloud",
       "Warranty": "1-Year Warranty"
     },
-    rating: 4.9,
-    review_count: 29,
     stock_status: "in_stock",
     warranty_years: 1,
     tags: ["cctv", "camera", "indoor", "wifi", "ptz", "security"]
@@ -2002,8 +1894,6 @@ export const cctvList: Product[] = [
       "Alarm": "Motion Siren & Flashing Strobe",
       "Warranty": "2-Year Warranty"
     },
-    rating: 5.0,
-    review_count: 21,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["cctv", "camera", "outdoor", "ip66", "2k", "bullet", "security"]
@@ -2035,8 +1925,6 @@ export const cctvList: Product[] = [
       "Power": "12Vdc / PoE (802.3af)",
       "Warranty": "2-Year Warranty"
     },
-    rating: 4.9,
-    review_count: 14,
     stock_status: "in_stock",
     warranty_years: 2,
     tags: ["cctv", "dome camera", "vandal proof", "commercial", "security"]

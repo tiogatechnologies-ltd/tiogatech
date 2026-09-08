@@ -34,6 +34,7 @@ const Checkout = () => {
   const { settings: shipping } = useSiteSetting("shipping");
   const { settings: paymentSettings } = useSiteSetting("payment");
   const { settings: features } = useSiteSetting("features");
+  const { settings: discountSettings } = useSiteSetting("discounts");
   const navigate = useNavigate();
   const { items, count, clear } = useCart();
   const { user, profile, loading: authLoading } = useAuth();
@@ -43,6 +44,12 @@ const Checkout = () => {
   const [delivery, setDelivery] = useState<"ship" | "pickup">("ship");
   const [payment, setPayment] = useState<"paystack" | "whatsapp" | "flexible">("paystack");
   const [discountCode, setDiscountCode] = useState("");
+  // The Apply button had no handler: a customer could type a valid code, click
+  // it, and still be charged full price. Codes are checked by the
+  // validate-discount function, which owns the expiry / usage-cap / minimum
+  // rules, so the browser never decides what a code is worth.
+  const [discount, setDiscount] = useState<{ code: string; amount_off: number; description?: string } | null>(null);
+  const [applyingCode, setApplyingCode] = useState(false);
 
   // Flexible plan state
   const [flexMonths, setFlexMonths] = useState<number>(6);
@@ -120,8 +127,45 @@ const Checkout = () => {
     return Math.max(0, Number(shipping.default_shipping_fee_ngn) || 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subtotal, delivery, form.state, freeAreas, shipping.free_shipping_threshold_ngn, shipping.default_shipping_fee_ngn]);
-  const total = subtotal + shippingFee;
+  // A discount can never exceed the goods value, and never eats the delivery fee.
+  const discountAmount = Math.min(discount?.amount_off ?? 0, subtotal);
+  const total = Math.max(0, subtotal - discountAmount) + shippingFee;
   const flexBreakdown = useMemo(() => calcPlan(total, flexMonths, financeConfig), [total, flexMonths, financeConfig]);
+
+  // The code was validated against the old subtotal, so drop it when the cart
+  // changes rather than silently honouring a minimum-spend code below its
+  // minimum.
+  useEffect(() => {
+    if (discount) setDiscount(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subtotal]);
+
+  const applyDiscount = async () => {
+    const code = discountCode.trim().toUpperCase();
+    if (!code) { toast.error("Enter a discount code"); return; }
+    if (subtotal <= 0) { toast.error("Add something to your cart first"); return; }
+    setApplyingCode(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("validate-discount", {
+        body: { code, subtotal_ngn: subtotal, email: form.email?.trim() || undefined },
+      });
+      if (error) throw error;
+      if (!data?.valid) {
+        setDiscount(null);
+        toast.error(data?.reason || "That code is not valid");
+        return;
+      }
+      setDiscount({ code: data.code, amount_off: Number(data.amount_off) || 0, description: data.description });
+      toast.success(`Code ${data.code} applied`, {
+        description: `You save ${formNGN(Number(data.amount_off) || 0)}.`,
+      });
+    } catch (e: any) {
+      setDiscount(null);
+      toast.error(e?.message || "Could not check that code right now");
+    } finally {
+      setApplyingCode(false);
+    }
+  };
 
   // Paystack's hosted page bundles card, bank transfer and USSD into one
   // checkout, so the two admin toggles gate that single option together and
@@ -271,7 +315,10 @@ const Checkout = () => {
       shipping_address: shippingAddress,
       billing_address: shippingAddress,
       user_id: user?.id || null,
-      discount_code: discountCode || null,
+      // Only record a code that actually validated - the raw input box used to
+      // be stored even when the code was wrong or had expired.
+      discount_code: discount?.code ?? null,
+      discount_amount: discountAmount || null,
       ...attributionForOrder(),
     };
 
@@ -381,7 +428,7 @@ const Checkout = () => {
       </button>
       {summaryOpen && (
         <div className="lg:hidden border-b border-border bg-muted/30 p-4">
-          <OrderSummary items={items} subtotal={subtotal} shippingFee={shippingFee} total={total} discountCode={discountCode} setDiscountCode={setDiscountCode} />
+          <OrderSummary items={items} subtotal={subtotal} shippingFee={shippingFee} total={total} discountCode={discountCode} setDiscountCode={setDiscountCode} discount={discount} discountAmount={discountAmount} applyingCode={applyingCode} onApplyDiscount={applyDiscount} showCodeField={discountSettings.show_code_field} />
         </div>
       )}
 
@@ -559,14 +606,14 @@ const Checkout = () => {
 
         {/* Right: summary */}
         <aside className="hidden lg:block bg-muted/30 border-l border-border p-8">
-          <OrderSummary items={items} subtotal={subtotal} shippingFee={shippingFee} total={total} discountCode={discountCode} setDiscountCode={setDiscountCode} />
+          <OrderSummary items={items} subtotal={subtotal} shippingFee={shippingFee} total={total} discountCode={discountCode} setDiscountCode={setDiscountCode} discount={discount} discountAmount={discountAmount} applyingCode={applyingCode} onApplyDiscount={applyDiscount} showCodeField={discountSettings.show_code_field} />
         </aside>
       </div>
     </div>
   );
 };
 
-const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDiscountCode }: any) => (
+const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDiscountCode, discount, discountAmount, applyingCode, onApplyDiscount, showCodeField }: any) => (
   <div className="space-y-4">
     <ul className="space-y-3">
       {items.map((i: any) => (
@@ -591,12 +638,37 @@ const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDi
         </li>
       ))}
     </ul>
-    <div className="flex gap-2 pt-2">
-      <input value={discountCode} onChange={(e) => setDiscountCode(e.target.value)} placeholder="Discount code" className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm" />
-      <button className="rounded-xl border border-border bg-card px-4 text-sm font-semibold hover:bg-muted">Apply</button>
-    </div>
+    {showCodeField && (
+      <div className="pt-2 space-y-2">
+        <div className="flex gap-2">
+          <input
+            value={discountCode}
+            onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); onApplyDiscount(); } }}
+            placeholder="Discount code"
+            className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm font-mono uppercase"
+          />
+          <button
+            type="button"
+            onClick={onApplyDiscount}
+            disabled={applyingCode}
+            className="rounded-xl border border-border bg-card px-4 text-sm font-semibold hover:bg-muted disabled:opacity-60"
+          >
+            {applyingCode ? "Checking…" : "Apply"}
+          </button>
+        </div>
+        {discount && (
+          <p className="text-[11px] font-semibold text-primary">
+            Code {discount.code} applied{discount.description ? ` — ${discount.description}` : ""}.
+          </p>
+        )}
+      </div>
+    )}
     <div className="pt-3 space-y-1.5 text-sm border-t border-border">
       <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="font-semibold text-foreground">{formNGN(subtotal)}</span></div>
+      {discountAmount > 0 && (
+        <div className="flex justify-between"><span className="text-muted-foreground">Discount ({discount?.code})</span><span className="font-semibold text-primary">-{formNGN(discountAmount)}</span></div>
+      )}
       <div className="flex justify-between"><span className="text-muted-foreground">Delivery</span><span className="font-semibold text-foreground">{shippingFee === 0 ? "FREE" : formNGN(shippingFee)}</span></div>
       <div className="flex justify-between pt-2 border-t border-border"><span className="font-display font-bold text-base text-foreground">Total</span><span className="font-display font-bold text-xl text-foreground">{formNGN(total)}</span></div>
     </div>
