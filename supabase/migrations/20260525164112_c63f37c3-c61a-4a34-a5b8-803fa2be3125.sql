@@ -1,6 +1,6 @@
 
 -- ===== Blog Posts =====
-CREATE TABLE public.blog_posts (
+CREATE TABLE IF NOT EXISTS public.blog_posts (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   slug text NOT NULL UNIQUE,
   title text NOT NULL,
@@ -19,28 +19,31 @@ CREATE TABLE public.blog_posts (
   updated_at timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_blog_posts_published ON public.blog_posts (published, published_at DESC);
-CREATE INDEX idx_blog_posts_slug ON public.blog_posts (slug);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_published ON public.blog_posts (published, published_at DESC);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON public.blog_posts (slug);
 
 ALTER TABLE public.blog_posts ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can read published blog posts" ON public.blog_posts;
 CREATE POLICY "Anyone can read published blog posts"
   ON public.blog_posts FOR SELECT
   TO anon, authenticated
   USING (published = true);
 
+DROP POLICY IF EXISTS "Admins full access on blog_posts" ON public.blog_posts;
 CREATE POLICY "Admins full access on blog_posts"
   ON public.blog_posts FOR ALL
   TO authenticated
   USING (public.has_role(auth.uid(), 'admin'::app_role))
   WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
+DROP TRIGGER IF EXISTS trg_blog_posts_updated_at ON public.blog_posts;
 CREATE TRIGGER trg_blog_posts_updated_at
   BEFORE UPDATE ON public.blog_posts
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
 -- ===== Newsletter Subscribers =====
-CREATE TABLE public.newsletter_subscribers (
+CREATE TABLE IF NOT EXISTS public.newsletter_subscribers (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email text NOT NULL UNIQUE,
   full_name text,
@@ -51,11 +54,12 @@ CREATE TABLE public.newsletter_subscribers (
   updated_at timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_newsletter_email ON public.newsletter_subscribers (email);
-CREATE INDEX idx_newsletter_token ON public.newsletter_subscribers (unsubscribe_token);
+CREATE INDEX IF NOT EXISTS idx_newsletter_email ON public.newsletter_subscribers (email);
+CREATE INDEX IF NOT EXISTS idx_newsletter_token ON public.newsletter_subscribers (unsubscribe_token);
 
 ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can subscribe to newsletter" ON public.newsletter_subscribers;
 CREATE POLICY "Anyone can subscribe to newsletter"
   ON public.newsletter_subscribers FOR INSERT
   TO anon, authenticated
@@ -66,22 +70,26 @@ CREATE POLICY "Anyone can subscribe to newsletter"
     AND length(btrim(source)) BETWEEN 1 AND 60
   );
 
+DROP POLICY IF EXISTS "Admins can read newsletter subscribers" ON public.newsletter_subscribers;
 CREATE POLICY "Admins can read newsletter subscribers"
   ON public.newsletter_subscribers FOR SELECT
   TO authenticated
   USING (public.has_role(auth.uid(), 'admin'::app_role));
 
+DROP POLICY IF EXISTS "Admins can update newsletter subscribers" ON public.newsletter_subscribers;
 CREATE POLICY "Admins can update newsletter subscribers"
   ON public.newsletter_subscribers FOR UPDATE
   TO authenticated
   USING (public.has_role(auth.uid(), 'admin'::app_role))
   WITH CHECK (public.has_role(auth.uid(), 'admin'::app_role));
 
+DROP POLICY IF EXISTS "Admins can delete newsletter subscribers" ON public.newsletter_subscribers;
 CREATE POLICY "Admins can delete newsletter subscribers"
   ON public.newsletter_subscribers FOR DELETE
   TO authenticated
   USING (public.has_role(auth.uid(), 'admin'::app_role));
 
+DROP TRIGGER IF EXISTS trg_newsletter_updated_at ON public.newsletter_subscribers;
 CREATE TRIGGER trg_newsletter_updated_at
   BEFORE UPDATE ON public.newsletter_subscribers
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
