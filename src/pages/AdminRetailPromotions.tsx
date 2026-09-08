@@ -13,7 +13,6 @@ import {
   GalleryHorizontal,
   Eye,
   EyeOff,
-  Sparkles,
   Clock,
   Tag,
   Image as ImageIcon,
@@ -34,10 +33,6 @@ import { mergeProducts } from "@/lib/mergeProducts";
 import { normalizeCategory } from "@/lib/productBrand";
 import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
 import { productPath } from "@/lib/productSlug";
-
-import bgSolarHero from "@/assets/bg-commercial-solar.jpg";
-import bgInverterHero from "@/assets/bg-panel-closeup.jpg";
-import bgSmartLockHero from "@/assets/bg-smartlock-apex.jpg";
 
 type SourceType = "product" | "solar_package" | "smart_lock" | "automation_package" | "custom";
 
@@ -80,7 +75,7 @@ const emptySlide = (): HeroSlide => ({
   highlight_text: "Up to 5-Year Warranty · Nationwide Dispatch",
   discount_pct: null,
   price_ngn: null,
-  image_url: bgSolarHero,
+  image_url: "/products/clear/inverter-deye-hybrid.webp",
   cta_text: "Shop Now",
   cta_link: "/retail",
   secondary_cta_text: "Load Sizing Calculator",
@@ -227,7 +222,7 @@ const PRESET_TEMPLATES = [
   {
     key: "deye-5kw",
     label: "Deye 5kW Hybrid Inverter",
-    short: "⚡ Deye 5kW",
+    short: "Deye 5kW",
     type: "product" as SourceType,
     findId: (prods: any[]) =>
       prods.find((p) => p.name?.toLowerCase().includes("deye") && p.name?.toLowerCase().includes("5k"))?.id ||
@@ -236,7 +231,7 @@ const PRESET_TEMPLATES = [
   {
     key: "deye-8kw",
     label: "Deye 8kW / 10kW Commercial",
-    short: "⚡ Deye 8kW+",
+    short: "Deye 8kW+",
     type: "product" as SourceType,
     findId: (prods: any[]) =>
       prods.find((p) => p.name?.toLowerCase().includes("deye") && (p.name?.toLowerCase().includes("8k") || p.name?.toLowerCase().includes("10k") || p.name?.toLowerCase().includes("12k")))?.id,
@@ -244,7 +239,7 @@ const PRESET_TEMPLATES = [
   {
     key: "srne-battery",
     label: "SRNE 5.12kWh LiFePO4 Battery",
-    short: "🔋 SRNE Battery",
+    short: "SRNE Battery",
     type: "product" as SourceType,
     findId: (prods: any[]) =>
       prods.find((p) => p.name?.toLowerCase().includes("srne") && (p.name?.toLowerCase().includes("5.12") || p.name?.toLowerCase().includes("eos05") || p.name?.toLowerCase().includes("se05")))?.id ||
@@ -253,7 +248,7 @@ const PRESET_TEMPLATES = [
   {
     key: "srne-inv",
     label: "SRNE High-Yield Inverter",
-    short: "⚡ SRNE Inverter",
+    short: "SRNE Inverter",
     type: "product" as SourceType,
     findId: (prods: any[]) =>
       prods.find((p) => p.name?.toLowerCase().includes("srne") && p.category?.toLowerCase().includes("inverter"))?.id,
@@ -261,7 +256,7 @@ const PRESET_TEMPLATES = [
   {
     key: "solar-pack-5kva",
     label: "5kVA Turnkey Solar Package",
-    short: "☀️ 5kVA Pack",
+    short: "5kVA Pack",
     type: "solar_package" as SourceType,
     findId: (_: any[], pkgs: any[]) =>
       pkgs.find((p) => p.inverter?.includes("5kVA") || p.package_number === 2)?.id || pkgs[0]?.id,
@@ -269,7 +264,7 @@ const PRESET_TEMPLATES = [
   {
     key: "solar-pack-10kva",
     label: "10kVA Turnkey Solar Package",
-    short: "☀️ 10kVA Pack",
+    short: "10kVA Pack",
     type: "solar_package" as SourceType,
     findId: (_: any[], pkgs: any[]) =>
       pkgs.find((p) => p.inverter?.includes("10kVA") || p.package_number === 3)?.id || pkgs[1]?.id,
@@ -277,7 +272,7 @@ const PRESET_TEMPLATES = [
   {
     key: "smart-lock-3d",
     label: "STAMA 3D Face ID Lock",
-    short: "🔒 3D Smart Lock",
+    short: "3D Smart Lock",
     type: "smart_lock" as SourceType,
     findId: (_: any[], __: any[], locks: any[]) =>
       locks.find((l) => l.name?.toLowerCase().includes("3d") || l.name?.toLowerCase().includes("face"))?.id || locks[0]?.id,
@@ -285,7 +280,7 @@ const PRESET_TEMPLATES = [
   {
     key: "solar-panels-tier1",
     label: "Tier-1 Solar Panels (Longi/Jinko)",
-    short: "☀️ Tier-1 Panels",
+    short: "Tier-1 Panels",
     type: "product" as SourceType,
     findId: (prods: any[]) =>
       prods.find((p) => p.category?.toLowerCase().includes("panel") || p.name?.toLowerCase().includes("longi") || p.name?.toLowerCase().includes("jinko") || p.name?.toLowerCase().includes("ja solar"))?.id,
@@ -295,7 +290,7 @@ const PRESET_TEMPLATES = [
 // Flash Deals Preset Templates
 const FLASH_DEAL_PRESETS = [
   {
-    label: "⚡ 24h Free Expedited Dispatch",
+    label: "24h Free Expedited Dispatch",
     headline: "24-Hour Expedited Delivery Promo",
     discount_label: "Free Express Shipping",
     discount_code: "DISPATCH24",
@@ -303,7 +298,7 @@ const FLASH_DEAL_PRESETS = [
     perk_label: "24h Dispatch",
   },
   {
-    label: "☀️ Mid-Month Clean Energy Sale",
+    label: "Mid-Month Clean Energy Sale",
     headline: "Mid-Month Clean Energy Flash Deal",
     discount_label: "Up to 15% Off",
     discount_code: "TIOGA2026",
@@ -311,7 +306,7 @@ const FLASH_DEAL_PRESETS = [
     perk_label: "Official Warranty",
   },
   {
-    label: "🔋 LiFePO4 Free Breaker Kit",
+    label: "LiFePO4 Free Breaker Kit",
     headline: "LiFePO4 Battery Upgrade Special",
     discount_label: "Free Breaker Kit",
     discount_code: "POWERUP",
@@ -319,7 +314,7 @@ const FLASH_DEAL_PRESETS = [
     perk_label: "Free Kit",
   },
   {
-    label: "🔒 Smart Lock Free Installation",
+    label: "Smart Lock Free Installation",
     headline: "STAMA Smart Security Flash Deal",
     discount_label: "Free Lagos Setup",
     discount_code: "SMARTLOCK",
@@ -610,7 +605,7 @@ const AdminRetailPromotions = () => {
           {/* Flash Deal Presets */}
           <div className="space-y-1.5 pt-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-              ⚡ Flash Deal Presets:
+              Quick Presets:
             </span>
             <div className="flex items-center gap-2 flex-wrap">
               {FLASH_DEAL_PRESETS.map((p, idx) => (
@@ -846,8 +841,8 @@ const AdminRetailPromotions = () => {
                 {/* Quick Presets for this Slide */}
                 <div className="p-3 rounded-xl bg-muted/30 border border-border/80 flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
-                    <Sparkles size={14} className="text-primary shrink-0" />
-                    <span>Quick-Fill Slide:</span>
+                    <Tag size={13} className="text-primary shrink-0" />
+                    <span>Quick Templates:</span>
                   </div>
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {PRESET_TEMPLATES.map((tpl) => (

@@ -5,7 +5,6 @@ import {
   Image as ImageIcon,
   Check,
   X,
-  Sparkles,
   Link2,
   FolderOpen,
   Loader2,
@@ -194,7 +193,7 @@ export const PackageImagePicker = ({
                         : "bg-muted text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    <Sparkles size={13} /> Stock Library
+                    <FolderOpen size={13} /> Stock Library
                   </button>
                   <button
                     type="button"

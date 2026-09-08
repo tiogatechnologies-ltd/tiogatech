@@ -101,13 +101,13 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Top Image Container */}
-      <div className="relative aspect-square w-full overflow-hidden bg-muted/20">
-        <Link to={productPath(product)} className="block w-full h-full">
+      <div className="relative aspect-square w-full overflow-hidden bg-muted/15 flex items-center justify-center p-3 sm:p-4">
+        <Link to={productPath(product)} className="w-full h-full flex items-center justify-center">
           <img
             src={resolveProductImage(product.image_url, product.category, product.name)}
             alt={product.name}
             loading="lazy"
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
           />
         </Link>
 

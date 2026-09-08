@@ -185,7 +185,7 @@ const Hero = ({ onApply }: HeroProps) => {
                   <Home className="text-white" size={18} />
                   <p className="text-sm font-semibold text-white">Smart Home</p>
                 </div>
-                <span className="text-[10px] text-emerald-300 bg-emerald-500/20 border border-emerald-400/30 px-2 py-0.5 rounded-full font-medium shadow-sm">ONLINE</span>
+                <span className="text-[11px] text-emerald-300 font-semibold tracking-wider uppercase">Online</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {[

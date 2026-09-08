@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Tag, ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
@@ -108,20 +108,21 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 transition={{ duration: 0.4, ease: "easeOut" }}
                 className="space-y-3 sm:space-y-4"
               >
-                {/* Eyebrow Badge & Discount Tag */}
-                <div className="flex items-center gap-2.5 flex-wrap">
-                  {slide.badge && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
-                      <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-                      {slide.badge}
-                    </span>
-                  )}
-                  {slide.discount_pct != null && slide.discount_pct > 0 && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 text-midnight text-[11px] font-black uppercase tracking-wider shadow-md">
-                      <Tag size={11} /> Save {slide.discount_pct}%
-                    </span>
-                  )}
-                </div>
+                {/* Eyebrow & Promotion Label */}
+                {(slide.badge || (slide.discount_pct != null && slide.discount_pct > 0)) && (
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    {slide.badge && (
+                      <span className="text-xs sm:text-sm font-semibold tracking-wider text-amber-400 uppercase">
+                        {slide.badge}
+                      </span>
+                    )}
+                    {slide.discount_pct != null && slide.discount_pct > 0 && (
+                      <span className="text-xs sm:text-sm font-bold text-amber-300">
+                        {slide.badge ? "· " : ""}Save {slide.discount_pct}%
+                      </span>
+                    )}
+                  </div>
+                )}
 
                 {/* Headline */}
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.15] tracking-tight text-white drop-shadow-md">
@@ -137,8 +138,8 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
 
                 {/* Highlight line */}
                 {slide.highlight_text && (
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs sm:text-sm font-semibold backdrop-blur-md">
-                    <ShieldCheck size={16} className="shrink-0" />
+                  <div className="flex items-center gap-2 text-emerald-400 text-xs sm:text-sm font-medium">
+                    <ShieldCheck size={16} className="shrink-0 text-emerald-400" />
                     <span>{slide.highlight_text}</span>
                   </div>
                 )}
@@ -200,17 +201,6 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                   />
                 </motion.div>
 
-                {/* Floating In-Stock Tag (Top-Left) */}
-                <div className="absolute -top-2 left-2 sm:left-4 z-20 hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-midnight/85 backdrop-blur-md border border-white/15 text-[11px] font-bold text-white shadow-lg">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>In Stock · Fast Dispatch</span>
-                </div>
-
-                {/* Floating Guarantee Tag (Bottom-Right) */}
-                <div className="absolute -bottom-2 right-2 sm:right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-midnight/85 backdrop-blur-md border border-amber-500/30 text-[11px] font-bold text-amber-400 shadow-lg">
-                  <ShieldCheck size={13} className="text-amber-400" />
-                  <span>Official Warranty</span>
-                </div>
 
                 {/* Soft ground shadow beneath the floating product */}
                 <div className="absolute -bottom-4 w-44 sm:w-56 h-5 bg-black/60 rounded-full blur-xl pointer-events-none" />

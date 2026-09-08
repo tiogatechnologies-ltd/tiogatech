@@ -332,7 +332,7 @@ export const AdminProducts = () => {
                 ) : filtered.length === 0 ? (
                   <tr><td colSpan={7} className="p-6 text-center text-xs text-muted-foreground">No products found.</td></tr>
                 ) : filtered.map((p) => {
-                  const resolvedImg = resolveProductImage(p.image_url, p.category);
+                  const resolvedImg = resolveProductImage(p.image_url, p.category, p.name);
 
                   return (
                     <tr key={p.id} className="hover:bg-muted/30 transition-colors">
@@ -396,21 +396,37 @@ export const AdminProducts = () => {
               <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
                 {/* Image upload */}
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground mb-1 block">Product Image</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-medium text-muted-foreground">Product Image (PNG Cutout Recommended)</label>
+                    <span className="text-[10px] text-muted-foreground">Transparent PNG / WebP</span>
+                  </div>
                   {imagePreview ? (
-                    <div className="relative rounded-xl overflow-hidden bg-muted border border-border h-36 flex items-center justify-center p-2">
-                      <img src={resolveProductImage(imagePreview, form.category)} alt="" className="max-h-full max-w-full object-contain" />
+                    <div className="relative rounded-xl overflow-hidden bg-muted/30 border border-border h-36 flex items-center justify-center p-3">
+                      <img src={resolveProductImage(imagePreview, form.category, form.name)} alt="" className="max-h-full max-w-full object-contain drop-shadow-sm" />
                       <div className="absolute top-2 right-2 flex gap-1">
-                        <button onClick={() => fileInputRef.current?.click()} className="p-1.5 rounded-lg bg-card/90 hover:bg-card shadow-sm text-foreground"><Upload size={14} /></button>
-                        <button onClick={removeImage} className="p-1.5 rounded-lg bg-card/90 hover:bg-card shadow-sm text-destructive"><X size={14} /></button>
+                        <button type="button" onClick={() => fileInputRef.current?.click()} className="p-1.5 rounded-lg bg-card/90 hover:bg-card shadow-sm text-foreground"><Upload size={14} /></button>
+                        <button type="button" onClick={removeImage} className="p-1.5 rounded-lg bg-card/90 hover:bg-card shadow-sm text-destructive"><X size={14} /></button>
                       </div>
                     </div>
                   ) : (
-                    <button onClick={() => fileInputRef.current?.click()} disabled={uploading} className="w-full h-32 rounded-xl border-2 border-dashed border-border hover:border-primary/40 bg-muted/30 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-all">
-                      {uploading ? <span className="text-sm animate-pulse">Uploading...</span> : <><Upload size={20} /><span className="text-xs">Click to upload (max 5MB)</span></>}
+                    <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading} className="w-full h-28 rounded-xl border-2 border-dashed border-border hover:border-primary/40 bg-muted/30 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-all">
+                      {uploading ? <span className="text-sm animate-pulse">Uploading...</span> : <><Upload size={20} /><span className="text-xs">Click to upload PNG product cutout (max 5MB)</span></>}
                     </button>
                   )}
-                  <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                  <input ref={fileInputRef} type="file" accept="image/png,image/webp,image/jpeg,image/*" className="hidden" onChange={handleImageUpload} />
+                  <div className="mt-2">
+                    <input
+                      type="text"
+                      className="w-full rounded-xl border border-border bg-muted/20 px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground"
+                      placeholder="Or enter direct PNG/WebP image URL..."
+                      value={form.image_url ?? ""}
+                      onChange={(e) => {
+                        const val = e.target.value.trim();
+                        setForm({ ...form, image_url: val || null });
+                        setImagePreview(val || null);
+                      }}
+                    />
+                  </div>
                 </div>
 
                 {editing && (

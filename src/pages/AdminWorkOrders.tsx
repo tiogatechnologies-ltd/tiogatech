@@ -65,10 +65,10 @@ const statusColors: Record<string, string> = {
 };
 
 const jobTypeLabels: Record<string, string> = {
-  solar_installation: "☀️ Solar Power Installation",
-  smart_home_setup: "🏠 Smart Home Automation",
-  security_cctv: "🔒 Smart Lock & CCTV Security",
-  maintenance_repair: "🔧 Maintenance & Inspection",
+  solar_installation: "Solar Power Installation",
+  smart_home_setup: "Smart Home Automation",
+  security_cctv: "Smart Lock & CCTV Security",
+  maintenance_repair: "Maintenance & Inspection",
 };
 
 const AdminWorkOrders = () => {
@@ -444,10 +444,10 @@ const AdminWorkOrders = () => {
                       onChange={(e) => setJobType(e.target.value as any)}
                       className="w-full rounded-xl border border-border bg-muted/50 px-3 py-2 text-xs font-semibold text-foreground"
                     >
-                      <option value="solar_installation">☀️ Solar Power Installation</option>
-                      <option value="smart_home_setup">🏠 Smart Home Setup</option>
-                      <option value="security_cctv">🔒 Smart Lock & CCTV Security</option>
-                      <option value="maintenance_repair">🔧 Maintenance & Repair</option>
+                      <option value="solar_installation">Solar Power Installation</option>
+                      <option value="smart_home_setup">Smart Home Setup</option>
+                      <option value="security_cctv">Smart Lock & CCTV Security</option>
+                      <option value="maintenance_repair">Maintenance & Repair</option>
                     </select>
                   </div>
                   <div>
