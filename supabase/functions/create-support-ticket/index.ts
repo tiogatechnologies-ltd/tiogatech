@@ -95,13 +95,21 @@ export async function createSupportTicket(input: {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const body = await req.json();
+    const body = await req.json().catch(() => ({}));
+    // `message` is required - without this guard a missing field threw inside
+    // createSupportTicket and surfaced as an opaque 500 instead of a 400.
+    const message = typeof body?.message === "string" ? body.message.trim() : "";
+    if (!message) {
+      return new Response(JSON.stringify({ ok: false, error: "message is required" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const ticket = await createSupportTicket({
       userId: body.userId,
       userName: body.userName || body.user_name,
       userContact: body.userContact || body.user_contact,
       subject: body.subject,
-      message: body.message,
+      message,
       conversationContext: body.conversationContext || body.conversation_context,
       channel: body.channel,
     });
