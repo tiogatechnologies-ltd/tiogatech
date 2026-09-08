@@ -1,4 +1,6 @@
-// Verify a Paystack transaction by reference.
+// Verify a Paystack transaction and confirm its matching order.
+import { createClient } from "npm:@supabase/supabase-js@2.45.0";
+import { z } from "npm:zod@3.23.8";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -13,21 +15,40 @@ Deno.serve(async (req) => {
         status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const url = new URL(req.url);
-    const reference = url.searchParams.get("reference") || (await req.json().catch(() => ({}))).reference;
-    if (!reference) {
-      return new Response(JSON.stringify({ error: "reference is required" }), {
+    const BodySchema = z.object({ reference: z.string().min(6).max(120), order_number: z.string().min(3).max(80) });
+    const parsed = BodySchema.safeParse(await req.json().catch(() => ({})));
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: "A valid reference and order number are required" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    const { reference, order_number } = parsed.data;
+    const authHeader = req.headers.get("Authorization");
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!authHeader || !supabaseUrl || !anonKey || !serviceKey) throw new Error("Payment service is not configured");
+    const authed = createClient(supabaseUrl, anonKey, { global: { headers: { Authorization: authHeader } } });
+    const { data: authData } = await authed.auth.getUser();
+    if (!authData.user) return new Response(JSON.stringify({ error: "Please sign in." }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    const admin = createClient(supabaseUrl, serviceKey);
+    const { data: order } = await admin.from("orders").select("order_number, user_id, total, payment_status").eq("order_number", order_number).maybeSingle();
+    if (!order || order.user_id !== authData.user.id) return new Response(JSON.stringify({ error: "Order not found." }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     const r = await fetch(`https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`, {
       headers: { Authorization: `Bearer ${SECRET}` },
     });
     const j = await r.json();
+    const paidAmount = j?.data?.amount ? Number(j.data.amount) / 100 : 0;
+    const metadataOrder = j?.data?.metadata?.order_number;
+    const success = j?.data?.status === "success" && metadataOrder === order_number && paidAmount === Number(order.total);
+    if (success && order.payment_status !== "paid") {
+      await admin.from("orders").update({ payment_status: "paid", payment_reference: reference, status: "confirmed" }).eq("order_number", order_number).eq("user_id", authData.user.id);
+    }
     return new Response(JSON.stringify({
-      success: j?.data?.status === "success",
+      success,
+      order_number: metadataOrder,
       status: j?.data?.status,
-      amount_ngn: j?.data?.amount ? j.data.amount / 100 : null,
+      amount_ngn: paidAmount || null,
       currency: j?.data?.currency,
       reference: j?.data?.reference,
       paid_at: j?.data?.paid_at,

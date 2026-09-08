@@ -25,6 +25,7 @@ Deno.serve(async (req) => {
   const metadata = data?.metadata ?? {};
   const scheduleId: string | null = metadata?.schedule_id ?? null;
   const applicationId: string | null = metadata?.application_id ?? null;
+  const orderNumber: string | null = metadata?.order_number ?? null;
   const isLiquidation: boolean = !!metadata?.liquidation;
   const status = data?.status === "success" ? "success" : (data?.status || type || "unknown");
   const amountNgn = data?.amount ? Number(data.amount) / 100 : null;
@@ -48,6 +49,15 @@ Deno.serve(async (req) => {
 
   // charge.success handling
   if (type === "charge.success" && status === "success") {
+    // 0) Regular store order. Amount must match before the order is confirmed.
+    if (metadata?.purpose === "order_checkout" && orderNumber) {
+      const { data: order } = await admin.from("orders").select("total, payment_status").eq("order_number", orderNumber).maybeSingle();
+      if (order && Number(order.total) === amountNgn && order.payment_status !== "paid") {
+        await admin.from("orders").update({ payment_status: "paid", payment_reference: reference, status: "confirmed" }).eq("order_number", orderNumber);
+      }
+      return new Response("ok", { status: 200 });
+    }
+
     // 0) AI subscription activation (purpose: ai_subscription)
     if (metadata?.purpose === "ai_subscription" && metadata?.user_id) {
       const plan = (metadata?.plan === "business" ? "business" : "starter") as "starter" | "business";
