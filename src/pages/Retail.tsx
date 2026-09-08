@@ -45,24 +45,103 @@ import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
 import type { RetailProduct } from "@/types/retail";
 
+import { ArrowRight, Check } from "lucide-react";
+
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating" | "newest";
 
-const CATEGORY_TABS = [
-  { key: "all", label: "All Hardware", icon: Layers },
-  { key: "Smart Switches & Sockets", label: "Smart Switches", icon: Zap },
-  { key: "Smart Control Panels", label: "Control Panels", icon: Tv },
-  { key: "Smart Door Locks", label: "Smart Locks", icon: Lock },
-  { key: "CCTV & Cameras", label: "CCTV & Cameras", icon: Camera },
-  { key: "Smart Sensors & Alarms", label: "Sensors & Alarms", icon: Shield },
-  { key: "Smart Curtains & Motors", label: "Curtains & Blinds", icon: SlidersHorizontal },
-  { key: "Smart Audio & Intercom", label: "Audio & Sound", icon: Volume2 },
-  { key: "Smart Lighting & Track", label: "Lighting & Track", icon: Lightbulb },
-  { key: "Gateways & Networking", label: "Gateways & Mesh", icon: Radio },
-  { key: "Smart Breakers & Energy", label: "Smart Breakers", icon: Zap },
-  { key: "Smart Hotel & Commercial", label: "Hotel & Commercial", icon: Award },
-  { key: "Inverters", label: "Solar Inverters", icon: Zap },
-  { key: "Batteries", label: "LiFePO4 Batteries", icon: Battery },
-  { key: "Solar Panels", label: "Solar Panels", icon: Zap },
+export interface RetailCategoryCard {
+  key: string;
+  title: string;
+  subtitle: string;
+  tag: string;
+  image: string;
+}
+
+export const RETAIL_CATEGORY_CARDS: RetailCategoryCard[] = [
+  {
+    key: "Smart Switches & Sockets",
+    title: "Smart Switches & Sockets",
+    subtitle: "Tempered Glass & Zigbee Relays",
+    tag: "16A • Touch & Voice",
+    image: "/products/categories/cat-switches.png",
+  },
+  {
+    key: "Smart Control Panels",
+    title: "Smart Control Panels",
+    subtitle: "In-Wall Multi-Touch Hubs",
+    tag: "Granite & Linux IPS",
+    image: "/products/categories/cat-control-panels.png",
+  },
+  {
+    key: "Smart Door Locks",
+    title: "Smart Door Locks",
+    subtitle: "3D Face ID, Biometrics & NFC",
+    tag: "STAMA Flagship",
+    image: "/products/categories/cat-smart-locks.png",
+  },
+  {
+    key: "CCTV & Cameras",
+    title: "Safety & Security",
+    subtitle: "4G Solar PTZ & 4K AI Cameras",
+    tag: "Tioga Vision HD",
+    image: "/products/categories/cat-cctv.png",
+  },
+  {
+    key: "Inverters",
+    title: "Solar Inverters",
+    subtitle: "Deye, Growatt & SRNE Hybrid",
+    tag: "Zero-Flicker UPS",
+    image: "/products/categories/cat-inverters.png",
+  },
+  {
+    key: "Batteries",
+    title: "LiFePO4 Batteries",
+    subtitle: "Felicity & Powerwall Storage",
+    tag: "6,000+ Cycles",
+    image: "/products/categories/cat-batteries.png",
+  },
+  {
+    key: "Solar Panels",
+    title: "Solar Panels",
+    subtitle: "Tier-1 Monocrystalline Modules",
+    tag: "Longi & Canadian Solar",
+    image: "/products/categories/cat-solar-panels.png",
+  },
+  {
+    key: "Smart Lighting & Track",
+    title: "Smart Lighting & Track",
+    subtitle: "Magnetic Rails & LED Spotlights",
+    tag: "Dimmable • CCT",
+    image: "/products/categories/cat-lighting.png",
+  },
+  {
+    key: "Smart Curtains & Motors",
+    title: "Curtains & Shading",
+    subtitle: "Motorized Tracks & Smart Blinds",
+    tag: "Silent Heavy-Duty",
+    image: "/products/categories/cat-curtains.png",
+  },
+  {
+    key: "Smart Audio & Intercom",
+    title: "AV Systems & Sound",
+    subtitle: "Coaxial Ceiling Speakers & Amps",
+    tag: "Multi-Zone Hi-Fi",
+    image: "/products/categories/cat-audio.png",
+  },
+  {
+    key: "Gateways & Networking",
+    title: "Network & Control",
+    subtitle: "Multi-Mode Zigbee Gateways & IR",
+    tag: "Mesh Bridge",
+    image: "/products/categories/cat-gateways.png",
+  },
+  {
+    key: "Smart Sensors & Alarms",
+    title: "Sensors & Alarms",
+    subtitle: "PIR Motion, Gas, Water & Smoke",
+    tag: "Instant Alerts",
+    image: "/products/categories/cat-sensors.png",
+  },
 ];
 
 export const Retail = () => {
@@ -205,13 +284,15 @@ export const Retail = () => {
           (sel.includes("switch") && pCat.includes("switch")) ||
           (sel.includes("lock") && pCat.includes("lock")) ||
           ((sel.includes("camera") || sel.includes("cctv")) && (pCat.includes("camera") || pCat.includes("cctv"))) ||
-          ((sel.includes("audio") || sel.includes("sound")) && (pCat.includes("audio") || pCat.includes("sound"))) ||
-          (sel.includes("curtain") && pCat.includes("curtain")) ||
+          ((sel.includes("audio") || sel.includes("sound") || sel.includes("intercom")) && (pCat.includes("audio") || pCat.includes("sound") || pCat.includes("intercom"))) ||
+          ((sel.includes("curtain") || sel.includes("motor") || sel.includes("shading")) && (pCat.includes("curtain") || pCat.includes("motor") || pCat.includes("shading") || pCat.includes("blind"))) ||
           (sel.includes("light") && pCat.includes("light")) ||
-          (sel.includes("panel") && pCat.includes("panel") && !pCat.includes("solar")) ||
+          (sel.includes("panel") && pCat.includes("panel") && !pCat.includes("solar") && !sel.includes("solar")) ||
           (sel.includes("solar") && pCat.includes("solar")) ||
           (sel.includes("battery") && pCat.includes("batter")) ||
-          (sel.includes("inverter") && pCat.includes("inverter"));
+          (sel.includes("inverter") && pCat.includes("inverter")) ||
+          ((sel.includes("gateway") || sel.includes("network")) && (pCat.includes("gateway") || pCat.includes("network") || pCat.includes("mesh"))) ||
+          (sel.includes("sensor") && pCat.includes("sensor"));
         if (!matches) return false;
       }
       if (selectedBrands.length > 0 && (!p.brand || !selectedBrands.includes(p.brand))) {
@@ -279,7 +360,7 @@ export const Retail = () => {
     setCurrentPage(1);
   };
 
-  const handleCategorySelect = (catKey: string) => {
+  const handleCategorySelect = (catKey: string, scrollToCatalog = false) => {
     if (catKey === "all") {
       setSelectedCategory(null);
       setSearchParams({});
@@ -288,6 +369,11 @@ export const Retail = () => {
       setSearchParams({ category: catKey });
     }
     setCurrentPage(1);
+    if (scrollToCatalog) {
+      setTimeout(() => {
+        document.getElementById("catalog-grid-top")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
   };
 
   return (
@@ -350,27 +436,106 @@ export const Retail = () => {
             </div>
           </div>
 
-          {/* Quick Category Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
-            {CATEGORY_TABS.map((tab) => {
-              const Icon = tab.icon;
-              const active =
-                tab.key === "all" ? selectedCategory === null : selectedCategory?.toLowerCase() === tab.key.toLowerCase();
-              return (
+          {/* Category Cards Grid Showcase */}
+          <div className="mb-10">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-4">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-semibold tracking-wide uppercase mb-1">
+                  <span>Hardware Categories</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-display font-bold text-foreground">
+                  Shop By Category
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Select a hardware category to browse dedicated products and solutions.
+                </p>
+              </div>
+
+              {selectedCategory && (
                 <button
-                  key={tab.key}
-                  onClick={() => handleCategorySelect(tab.key)}
-                  className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 ${
-                    active
-                      ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-[1.02]"
-                      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted"
-                  }`}
+                  onClick={() => handleCategorySelect("all", true)}
+                  className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:text-primary/80 transition-colors self-start sm:self-auto py-1 px-3 rounded-lg bg-primary/5 hover:bg-primary/10 border border-primary/20"
                 >
-                  <Icon size={14} />
-                  <span>{tab.label}</span>
+                  <span>Showing: <strong>{selectedCategory}</strong></span>
+                  <span className="text-muted-foreground underline">View All Hardware</span>
                 </button>
-              );
-            })}
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+              {RETAIL_CATEGORY_CARDS.map((cat) => {
+                const isSelected = selectedCategory?.toLowerCase() === cat.key.toLowerCase();
+                return (
+                  <div
+                    key={cat.key}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleCategorySelect(cat.key, true)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleCategorySelect(cat.key, true);
+                      }
+                    }}
+                    className={`group relative flex items-center justify-between p-4 sm:p-5 rounded-2xl sm:rounded-3xl cursor-pointer transition-all duration-300 text-left border ${
+                      isSelected
+                        ? "bg-primary/[0.07] dark:bg-primary/10 border-primary shadow-md shadow-primary/10 ring-2 ring-primary/30"
+                        : "bg-card/90 hover:bg-card border-border/80 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
+                    }`}
+                  >
+                    {/* Left details */}
+                    <div className="flex-1 pr-2 min-w-0">
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                        {cat.tag}
+                      </span>
+                      <h3 className="font-display font-bold text-sm sm:text-base text-foreground leading-snug truncate group-hover:text-primary transition-colors">
+                        {cat.title}
+                      </h3>
+                      <p className="text-[11px] sm:text-xs text-muted-foreground line-clamp-1 mt-0.5 mb-3">
+                        {cat.subtitle}
+                      </p>
+
+                      <span
+                        className={`inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all ${
+                          isSelected
+                            ? "bg-primary text-primary-foreground shadow-xs"
+                            : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs group-hover:gap-1.5"
+                        }`}
+                      >
+                        {isSelected ? (
+                          <>
+                            <Check size={12} className="stroke-[3]" />
+                            <span>Active Filter</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Shop Now</span>
+                            <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                          </>
+                        )}
+                      </span>
+                    </div>
+
+                    {/* Right hardware PNG thumbnail */}
+                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0 flex items-center justify-center">
+                      <div
+                        className={`absolute inset-0 rounded-2xl bg-gradient-to-br transition-opacity duration-300 ${
+                          isSelected
+                            ? "from-primary/15 to-transparent opacity-100"
+                            : "from-muted/50 to-transparent opacity-60 group-hover:opacity-100"
+                        }`}
+                      />
+                      <img
+                        src={cat.image}
+                        alt={cat.title}
+                        loading="lazy"
+                        className="relative z-10 w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* Controls Bar: Search, Mobile Filters, Sort, Grid/List */}
