@@ -4,31 +4,47 @@
 -- Run this ONCE in the Supabase SQL editor:
 --   https://supabase.com/dashboard/project/xwxskzwceghftlcsbyyh/sql/new
 --
--- It has to be applied by hand because the remote migration history is out of
--- sync: roughly 70 migrations were applied through the dashboard without being
--- recorded, so `supabase db push` tries to replay them and fails on the first
+-- BEFORE RUNNING:
+--   1. Invent a long random string - this is your cron shared secret.
+--   2. Add it under Project Settings -> Edge Functions -> Secrets as
+--      CRON_SHARED_SECRET (same place PAYSTACK_SECRET_KEY lives).
+--   3. Replace PUT_YOUR_CRON_SHARED_SECRET_HERE below with that same value.
+--
+-- The secret only grants the ability to trigger these four jobs. No Supabase
+-- service-role key is stored in the database and no Vault entry is required.
+--
+-- This has to be applied by hand because the remote migration history is out
+-- of sync: roughly 70 migrations were applied through the dashboard without
+-- being recorded, so `supabase db push` replays them and fails on the first
 -- CREATE TABLE. Everything below is idempotent - safe to run more than once.
 -- ============================================================================
 
 
 -- ---------------------------------------------------------------------------
+-- 0. Extensions the scheduler needs
+-- ---------------------------------------------------------------------------
+CREATE EXTENSION IF NOT EXISTS pg_cron;
+CREATE EXTENSION IF NOT EXISTS pg_net;
+
+
+-- ---------------------------------------------------------------------------
 -- 1. Real compare-at price
---    Replaces the fabricated strikethrough price (price * 1.12) that the
---    storefront used to show on every product. NULL = no previous price = no
---    strikethrough. Admin > Product Catalog exposes the field once this exists.
+--    Backs the struck-through list price. NULL means no recorded previous
+--    price, in which case the storefront falls back to the markup configured
+--    in Admin > Settings > Delivery, Tax & Promotions.
 -- ---------------------------------------------------------------------------
 ALTER TABLE public.products
   ADD COLUMN IF NOT EXISTS compare_at_price numeric;
 
 COMMENT ON COLUMN public.products.compare_at_price IS
-  'Optional genuine previous/list price in NGN. Must exceed price to display; NULL hides the strikethrough.';
+  'Optional genuine previous/list price in NGN. Must exceed price to display; NULL falls back to the configured markup.';
 
 
 -- ---------------------------------------------------------------------------
 -- 2. Seed the automation rules
 --    Admin > System Automations reads this table. It was created but never
---    populated, so the page showed "0/0 rules" and its toggles controlled
---    nothing. Each key below corresponds to a deployed Edge Function.
+--    populated, so the page showed no rules and its toggles controlled
+--    nothing. Each key corresponds to a deployed Edge Function.
 -- ---------------------------------------------------------------------------
 INSERT INTO public.automation_settings (key, label, category, description, enabled, config) VALUES
   ('finance_installment_reminder',
@@ -62,8 +78,8 @@ ON CONFLICT (key) DO UPDATE
   SET label = EXCLUDED.label,
       category = EXCLUDED.category,
       description = EXCLUDED.description;
-      -- enabled and config are intentionally NOT overwritten: re-running this
-      -- script must not silently re-enable a rule an admin switched off.
+      -- enabled and config are deliberately NOT overwritten: re-running this
+      -- must not silently re-enable a rule an admin switched off.
 
 
 -- ---------------------------------------------------------------------------
@@ -73,22 +89,16 @@ ON CONFLICT (key) DO UPDATE
 --    was ever sent, nothing was ever marked overdue, no installment was ever
 --    auto-charged, and monthly AI credits were never topped up.
 --
---    Reuses the vault secret the email queue already relies on. If that secret
---    is missing this block raises a clear error instead of creating jobs that
---    would silently 401 forever.
+--    Each function rejects any caller that does not present this secret.
 -- ---------------------------------------------------------------------------
 DO $$
 DECLARE
-  svc_key text;
+  cron_secret text := 'PUT_YOUR_CRON_SHARED_SECRET_HERE';
   base_url text := 'https://xwxskzwceghftlcsbyyh.supabase.co/functions/v1/';
 BEGIN
-  SELECT decrypted_secret INTO svc_key
-  FROM vault.decrypted_secrets
-  WHERE name = 'email_queue_service_role_key';
-
-  IF svc_key IS NULL THEN
+  IF cron_secret = 'PUT_YOUR_CRON_SHARED_SECRET_HERE' OR length(cron_secret) < 16 THEN
     RAISE EXCEPTION
-      'Vault secret "email_queue_service_role_key" not found. The email queue cron created it; if it is missing, add the service_role key to Vault first.';
+      'Replace PUT_YOUR_CRON_SHARED_SECRET_HERE with the same value you saved as CRON_SHARED_SECRET under Edge Functions -> Secrets (at least 16 characters).';
   END IF;
 
   -- Drop first so re-running updates the schedule rather than erroring.
@@ -101,34 +111,35 @@ BEGIN
     'reset-free-credits-daily'
   );
 
-  -- 07:00 UTC = 08:00 WAT. Order matters: mark overdue, then remind, then charge.
+  -- Times are UTC; WAT is UTC+1. Order matters: mark overdue, then remind,
+  -- then charge, so each step sees the previous step's result.
   PERFORM cron.schedule('finance-mark-overdue-daily', '0 6 * * *', format(
     $q$SELECT net.http_post(
          url := %L,
-         headers := jsonb_build_object('Content-Type','application/json','Authorization','Bearer %s'),
+         headers := jsonb_build_object('Content-Type','application/json','x-cron-secret',%L),
          body := '{}'::jsonb
-       )$q$, base_url || 'check-overdue-and-deadlines', svc_key));
+       )$q$, base_url || 'check-overdue-and-deadlines', cron_secret));
 
   PERFORM cron.schedule('finance-reminders-daily', '0 7 * * *', format(
     $q$SELECT net.http_post(
          url := %L,
-         headers := jsonb_build_object('Content-Type','application/json','Authorization','Bearer %s'),
+         headers := jsonb_build_object('Content-Type','application/json','x-cron-secret',%L),
          body := '{}'::jsonb
-       )$q$, base_url || 'finance-reminders', svc_key));
+       )$q$, base_url || 'finance-reminders', cron_secret));
 
   PERFORM cron.schedule('finance-auto-charge-daily', '0 8 * * *', format(
     $q$SELECT net.http_post(
          url := %L,
-         headers := jsonb_build_object('Content-Type','application/json','Authorization','Bearer %s'),
+         headers := jsonb_build_object('Content-Type','application/json','x-cron-secret',%L),
          body := '{}'::jsonb
-       )$q$, base_url || 'auto-charge-due', svc_key));
+       )$q$, base_url || 'auto-charge-due', cron_secret));
 
   PERFORM cron.schedule('reset-free-credits-daily', '30 0 * * *', format(
     $q$SELECT net.http_post(
          url := %L,
-         headers := jsonb_build_object('Content-Type','application/json','Authorization','Bearer %s'),
+         headers := jsonb_build_object('Content-Type','application/json','x-cron-secret',%L),
          body := '{}'::jsonb
-       )$q$, base_url || 'reset-monthly-free-credits', svc_key));
+       )$q$, base_url || 'reset-monthly-free-credits', cron_secret));
 END $$;
 
 

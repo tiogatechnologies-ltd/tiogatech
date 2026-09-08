@@ -5,7 +5,15 @@ project_id = "xwxskzwceghftlcsbyyh"
     verify_jwt = false
   [functions.auth-email-hook]
     verify_jwt = false
+  # The four scheduled jobs below authenticate with CRON_SHARED_SECRET (sent as
+  # an x-cron-secret header), so pg_cron never has to carry a Supabase key.
   [functions.auto-charge-due]
+    verify_jwt = false
+  [functions.finance-reminders]
+    verify_jwt = false
+  [functions.check-overdue-and-deadlines]
+    verify_jwt = false
+  [functions.reset-monthly-free-credits]
     verify_jwt = false
   [functions.backup-to-drive]
     verify_jwt = true

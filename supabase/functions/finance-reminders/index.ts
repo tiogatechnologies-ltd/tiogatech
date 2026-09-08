@@ -5,7 +5,7 @@ import { brandedEmail } from "../_shared/email-layout.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-cron-secret",
 };
 
 // finance_schedules statuses are seeded by the application trigger as
@@ -21,7 +21,23 @@ const DEFAULT_DAYS_BEFORE = 3;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+  // This function emails every customer with an outstanding installment, and it
+  // previously had no authentication of any kind - anyone who knew the URL could
+  // trigger a mass send. It now requires the same shared secret as the other
+  // scheduled jobs, or a service-role caller.
+  const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const CRON_SECRET = Deno.env.get("CRON_SHARED_SECRET");
+  const authHeader = req.headers.get("Authorization");
+  const cronHeader = req.headers.get("x-cron-secret");
+  const isAuthed = authHeader === `Bearer ${SERVICE_KEY}` || (!!CRON_SECRET && cronHeader === CRON_SECRET);
+  if (!isAuthed) {
+    return new Response(JSON.stringify({ error: "unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const supabase = createClient(Deno.env.get("SUPABASE_URL")!, SERVICE_KEY);
 
   // Respect the admin toggle. A missing row means "not configured" - default
   // to running, so an un-seeded install still sends its reminders.
