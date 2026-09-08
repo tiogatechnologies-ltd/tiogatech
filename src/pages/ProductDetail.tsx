@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -38,7 +39,7 @@ import { trackConversion } from "@/lib/tracking";
 import { matchesSlug, productPath } from "@/lib/productSlug";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
@@ -109,6 +110,8 @@ const formatPrice = (price?: string | null): string => {
 
 
 export const ProductDetail = () => {
+  // Declared here, above the loading / not-found early returns.
+  const { settings: promos } = useSiteSetting("promotions");
   const { contact } = useSiteContact();
   const { slug = "" } = useParams();
   const navigate = useNavigate();
@@ -316,7 +319,7 @@ export const ProductDetail = () => {
   const isWishlisted = isInWishlist(product.id);
 
   // Cosmetic promo calculations
-  const compareAt = (product as any).compare_at_price ?? null;
+  const compareAt = resolveCompareAt(numPrice, (product as any).compare_at_price, promos);
   const pct = savingsPct(numPrice, compareAt);
   const wasPrice = calcWasPrice(numPrice, compareAt);
   const savedAmount = calcSavedAmount(numPrice, compareAt);

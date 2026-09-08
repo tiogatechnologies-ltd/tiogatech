@@ -36,6 +36,17 @@ export interface TaxSettings {
   invoice_footer: string;
 }
 
+export interface PromotionSettings {
+  /** Master switch for the struck-through "was" price across the storefront. */
+  show_compare_at_price: boolean;
+  /**
+   * List-price markup, as a percentage above the selling price, used for any
+   * item that has no genuine previous price recorded against it. Setting a real
+   * `compare_at_price` on a product always overrides this.
+   */
+  default_markup_pct: number;
+}
+
 export interface DiscountSettings {
   /** Hides the coupon input at checkout when the shop is not running promos. */
   show_code_field: boolean;
@@ -103,6 +114,10 @@ export const SETTING_DEFAULTS = {
     flexible_payment_enabled: true,
     store_enabled: true,
   } as FeatureSettings,
+  promotions: {
+    show_compare_at_price: true,
+    default_markup_pct: 12,
+  } as PromotionSettings,
   discounts: {
     show_code_field: true,
   } as DiscountSettings,

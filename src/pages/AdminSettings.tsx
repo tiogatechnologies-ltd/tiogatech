@@ -16,7 +16,7 @@ const SECTIONS: Section[] = [
   { id: "seo", label: "SEO & Tracking", icon: SearchIcon, group: "Storefront", members: ["seo"], keywords: "meta analytics pixel tag manager verification robots og image" },
 
   { id: "payment", label: "Payments & Financing", icon: CreditCard, group: "Commerce", members: ["payment", "finance"], keywords: "paystack bank transfer card guest checkout flexible payment easy flex deposit tenure interest" },
-  { id: "selling", label: "Delivery, Tax & Promotions", icon: Truck, group: "Commerce", members: ["shipping", "tax", "discounts", "affiliate"], keywords: "delivery fee pickup shipping vat invoice discount coupon affiliate commission payout cookie" },
+  { id: "selling", label: "Delivery, Tax & Promotions", icon: Truck, group: "Commerce", members: ["shipping", "tax", "discounts", "promotions", "affiliate"], keywords: "delivery fee pickup shipping vat invoice discount coupon slashed struck crossed out was price list price markup save badge affiliate commission payout cookie" },
 
   { id: "notif", label: "Notifications & Email", icon: Bell, group: "Comms", members: ["notif", "email"], keywords: "alerts from name sender template footer" },
 
@@ -40,6 +40,7 @@ const defaults: Record<string, any> = {
   // untouched install behaves exactly as before this became configurable.
   shipping: { free_shipping_threshold_ngn: 0, default_shipping_fee_ngn: 15000, delivery_eta_days: "3-7", service_areas: "Abuja, FCT, Jos, Plateau", pickup_address: "No 7, Commercial Layout, Abattoir Rd, Jos, Plateau State" },
   tax: { vat_percent: 7.5, vat_inclusive: true, invoice_prefix: "TIO", invoice_footer: "Thank you for your business." },
+  promotions: { show_compare_at_price: true, default_markup_pct: 12 },
   discounts: { show_code_field: true },
   affiliate: { default_commission_percent: 5, min_payout_ngn: 50000, cookie_window_days: 30, auto_approve_applications: false, payout_schedule: "monthly" },
   notif: { notify_email: "sales@tiogatechnologies.com", notify_on_new_lead: true, notify_on_order: true, notify_on_affiliate_application: true, notify_on_finance_application: true },
@@ -423,6 +424,35 @@ const AdminSettings = () => {
                 <Card title="Behavior">
                   <Toggle label="Show discount code field at checkout" value={!!data.discounts.show_code_field} onChange={(v) => set("discounts", { show_code_field: v })} />
                   <p className="mt-3 text-[11px] text-muted-foreground">One code per order - codes are validated server-side and cannot be stacked.</p>
+                </Card>
+                <Card
+                  title="Struck-through list price"
+                  desc="Shows a crossed-out higher price and a Save % badge on product and package cards."
+                >
+                  <Toggle
+                    label="Show a struck-through list price"
+                    value={!!data.promotions.show_compare_at_price}
+                    onChange={(v) => set("promotions", { show_compare_at_price: v })}
+                  />
+                  <div className="mt-4 max-w-xs">
+                    <Field
+                      label="List price markup (%)"
+                      hint="How far above the selling price the crossed-out figure sits. 12% on ₦500,000 shows ₦560,000 and a Save 11% badge."
+                    >
+                      <input
+                        type="number"
+                        min={0}
+                        max={90}
+                        className={inputClass}
+                        value={data.promotions.default_markup_pct}
+                        onChange={(e) => set("promotions", { default_markup_pct: Math.max(0, Math.min(90, +e.target.value)) })}
+                      />
+                    </Field>
+                  </div>
+                  <p className="mt-3 text-[11px] text-muted-foreground">
+                    This markup is the fallback. Any product with a <strong className="text-foreground">Previous price</strong> filled in
+                    under Product Catalog uses that real figure instead, and keeps showing it even if this is switched off.
+                  </p>
                 </Card>
               </section>
 

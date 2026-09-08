@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -13,7 +14,7 @@ import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import bgSmartLockApex from "@/assets/bg-smartlock-apex.jpg";
 import bgSmartLockHotel from "@/assets/bg-smartlock-hotel.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const fmt = (item: SmartLock) =>
@@ -30,7 +31,8 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
 
   const hasPrice = !!(lock.price && lock.price > 0);
   // Strikethrough only appears when a genuine previous price is recorded.
-  const compareAt = (lock as any).compare_at_price ?? null;
+  const { settings: promos } = useSiteSetting("promotions");
+  const compareAt = resolveCompareAt(lock.price, (lock as any).compare_at_price, promos);
   const pct = savingsPct(lock.price, compareAt);
   const wasPriceVal = calcWasPrice(lock.price, compareAt);
   const savedAmount = calcSavedAmount(lock.price, compareAt);

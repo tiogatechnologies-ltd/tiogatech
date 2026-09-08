@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -16,7 +17,7 @@ import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
@@ -42,6 +43,8 @@ const IDEAL_FOR = [
 ];
 
 export const SolarPackageDetail = () => {
+  // Declared here, above the loading/not-found early returns.
+  const { settings: promos } = useSiteSetting("promotions");
   const { contact } = useSiteContact();
   const { content: flashDeal } = useLandingContent("flash_deal");
   const { id } = useParams<{ id: string }>();
@@ -136,7 +139,7 @@ export const SolarPackageDetail = () => {
   }
 
   // Strikethrough only appears when a genuine previous price is recorded.
-  const compareAt = (pkg as any).compare_at_price ?? null;
+  const compareAt = resolveCompareAt(pkg.total_price, (pkg as any).compare_at_price, promos);
   const pct = savingsPct(pkg.total_price, compareAt);
   const wasPrice = calcWasPrice(pkg.total_price, compareAt);
   const savedAmount = calcSavedAmount(pkg.total_price, compareAt);

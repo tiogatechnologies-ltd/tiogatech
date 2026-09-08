@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -16,7 +17,7 @@ import { useHomeAutomationPackages, type HomeAutomationPackage } from "@/hooks/u
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { savingsPct as autoSavingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct as autoSavingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
@@ -55,6 +56,8 @@ const TIER_FEATURES: Record<string, { icon: typeof Home; label: string }[]> = {
 };
 
 export const AutomationPackageDetail = () => {
+  // Declared here, above the loading/not-found early returns.
+  const { settings: promos } = useSiteSetting("promotions");
   const { contact } = useSiteContact();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -136,7 +139,7 @@ export const AutomationPackageDetail = () => {
     );
   }
 
-  const compareAt = (pkg as any).compare_at_price ?? null;
+  const compareAt = resolveCompareAt(pkg.price, (pkg as any).compare_at_price, promos);
   const pct = autoSavingsPct(pkg.price, compareAt);
   const wasPrice = calcWasPrice(pkg.price, compareAt);
   const savedAmount = calcSavedAmount(pkg.price, compareAt);

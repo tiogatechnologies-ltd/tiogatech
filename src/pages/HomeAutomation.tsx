@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -13,7 +14,7 @@ import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import bgAutomation from "@/assets/bg-voltai-ai.jpg";
 import featureApp from "@/assets/feature-smart-app.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const fmt = (p: HomeAutomationPackage) =>
@@ -29,7 +30,8 @@ const PackageCard = ({ pkg, i }: { pkg: HomeAutomationPackage; i: number }) => {
 
   const hasPrice = !!(pkg.price && pkg.price > 0);
   // Strikethrough only appears when a genuine previous price is recorded.
-  const compareAt = (pkg as any).compare_at_price ?? null;
+  const { settings: promos } = useSiteSetting("promotions");
+  const compareAt = resolveCompareAt(pkg.price, (pkg as any).compare_at_price, promos);
   const pct = savingsPct(pkg.price, compareAt);
   const wasPriceVal = calcWasPrice(pkg.price, compareAt);
   const savedAmount = calcSavedAmount(pkg.price, compareAt);

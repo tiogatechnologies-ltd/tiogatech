@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -18,7 +19,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
 
@@ -38,15 +39,18 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
   const { add } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isInCompare, toggleCompare } = useProductCompare();
+  const { settings: promos } = useSiteSetting("promotions");
   const [isHovered, setIsHovered] = useState(false);
   const [addedAnimation, setAddedAnimation] = useState(false);
 
   const isSaved = isInWishlist(product.id);
   const isCompared = isInCompare(product.id);
 
-  // Cosmetic promo values - real price is always product.numeric_price
+  // The struck-through price. Uses this product's recorded previous price when
+  // one is set, otherwise the list-price markup from Admin > Settings. The real
+  // charge is always product.numeric_price.
   const hasPrice = !!(product.numeric_price && product.numeric_price > 0);
-  const compareAt = (product as any).compare_at_price ?? null;
+  const compareAt = resolveCompareAt(product.numeric_price, (product as any).compare_at_price, promos);
   const pct = savingsPct(product.numeric_price, compareAt);
   const wasPrice = calcWasPrice(product.numeric_price, compareAt);
   const savedAmount = calcSavedAmount(product.numeric_price, compareAt);

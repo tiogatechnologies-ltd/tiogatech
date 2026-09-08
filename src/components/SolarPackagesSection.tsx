@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
@@ -10,7 +11,7 @@ import { trackConversion } from "@/lib/tracking";
 
 import { useWishlist } from "@/hooks/useWishlist";
 import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
 const fmtPrice = (n: number | null) =>
@@ -26,7 +27,8 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
 
   // Cosmetic promo values - real price is always p.total_price
   // Strikethrough only appears when a genuine previous price is recorded.
-  const compareAt = (p as any).compare_at_price ?? null;
+  const { settings: promos } = useSiteSetting("promotions");
+  const compareAt = resolveCompareAt(p.total_price, (p as any).compare_at_price, promos);
   const pct = savingsPct(p.total_price, compareAt);
   const wasPrice = calcWasPrice(p.total_price, compareAt);
   const savedAmount = calcSavedAmount(p.total_price, compareAt);

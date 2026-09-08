@@ -1,10 +1,11 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star, Shield, Check, Heart, ArrowRight, X, TrendingDown, Tag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { useWishlist } from "@/hooks/useWishlist";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
@@ -22,13 +23,15 @@ const fmt = (n?: number | null, fallback?: string | null) => {
   return "Price on Request";
 };
 
-// This modal kept a private copy of the old fabricated-discount helpers
-// (price * 1.13 and a hash-derived "save X%"). It now uses the shared helpers,
-// which only report a discount when a real previous price is recorded.
+// This modal kept a private copy of the compare-at helpers (a hardcoded
+// price * 1.13 and a hash-derived "save X%"). It now uses the shared helpers,
+// so the markup is set once in Admin > Settings instead of per component.
 
 export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) => {
   const { add } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
+  // Must stay above the early return below - hooks cannot run conditionally.
+  const { settings: promos } = useSiteSetting("promotions");
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
@@ -36,7 +39,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
 
   const isSaved = isInWishlist(product.id);
   const hasPrice = !!(product.numeric_price && product.numeric_price > 0);
-  const compareAt = (product as any).compare_at_price ?? null;
+  const compareAt = resolveCompareAt(product.numeric_price, (product as any).compare_at_price, promos);
   const pct = savingsPct(product.numeric_price, compareAt);
   const wasPrice = calcWasPrice(product.numeric_price, compareAt);
   const savedAmount = calcSavedAmount(product.numeric_price, compareAt);

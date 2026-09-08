@@ -54,6 +54,23 @@ export const AnimatedCounter = ({
     const element = ref.current;
     if (!element) return;
 
+    // The counter starts at 0, so anything that stops the animation from
+    // running leaves a price reading "₦0" - a throttled background tab, an
+    // in-app browser, reduced-motion users, or a crawler that renders the page
+    // without scrolling. This safety net guarantees the real figure is shown
+    // even when the animation never gets a frame.
+    const settle = () => { started.current = true; setCurrent(finalTarget!); };
+
+    const reducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion || typeof IntersectionObserver === "undefined") {
+      settle();
+      return;
+    }
+
+    const fallback = window.setTimeout(() => { if (!started.current) settle(); }, duration + 1500);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
@@ -71,13 +88,15 @@ export const AnimatedCounter = ({
             }
           };
           requestAnimationFrame(tick);
+          // If frames never arrive, land on the real number anyway.
+          window.setTimeout(() => setCurrent((c) => (c === finalTarget! ? c : finalTarget!)), duration + 500);
         }
       },
       { threshold: 0.25 }
     );
 
     observer.observe(element);
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); window.clearTimeout(fallback); };
   }, [finalTarget, duration]);
 
   if (finalTarget === null) {

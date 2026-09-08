@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -13,7 +14,7 @@ import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { trackConversion } from "@/lib/tracking";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
@@ -29,7 +30,8 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
   const isSaved = isInWishlist(pkg.id);
 
   // Strikethrough only appears when a genuine previous price is recorded.
-  const compareAt = (pkg as any).compare_at_price ?? null;
+  const { settings: promos } = useSiteSetting("promotions");
+  const compareAt = resolveCompareAt(pkg.total_price, (pkg as any).compare_at_price, promos);
   const pct = savingsPct(pkg.total_price, compareAt);
   const wasPriceVal = calcWasPrice(pkg.total_price, compareAt);
   const savedAmount = calcSavedAmount(pkg.total_price, compareAt);

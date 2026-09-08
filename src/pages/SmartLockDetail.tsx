@@ -1,3 +1,4 @@
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -16,7 +17,7 @@ import { useSmartLocks, type SmartLock } from "@/hooks/useSmartLocks";
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
@@ -43,6 +44,8 @@ const FEATURES_MAP: Record<string, { icon: typeof Fingerprint; label: string }> 
 };
 
 export const SmartLockDetail = () => {
+  // Declared here, above the loading/not-found early returns.
+  const { settings: promos } = useSiteSetting("promotions");
   const { contact } = useSiteContact();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -130,7 +133,7 @@ export const SmartLockDetail = () => {
     );
   }
 
-  const compareAt = (lock as any).compare_at_price ?? null;
+  const compareAt = resolveCompareAt(lock.price, (lock as any).compare_at_price, promos);
   const pct = savingsPct(lock.price, compareAt);
   const wasPrice = calcWasPrice(lock.price, compareAt);
   const savedAmount = calcSavedAmount(lock.price, compareAt);
