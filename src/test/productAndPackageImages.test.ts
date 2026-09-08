@@ -1,4 +1,4 @@
-﻿import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
 import { PRODUCTS } from "@/data/products";
@@ -103,4 +103,27 @@ describe("Product and Package Real Images", () => {
     expect(fs.existsSync(path.resolve("public" + auraImg))).toBe(true);
     expect(fs.existsSync(path.resolve("public" + rivieraImg))).toBe(true);
   });
+
+  it("all new SRNE inverters, SRNE batteries and solar panels exist with authentic photos on disk", () => {
+    const srneProducts = PRODUCTS.filter((p) => p.brand === "SRNE");
+    expect(srneProducts.length).toBeGreaterThanOrEqual(17);
+
+    for (const p of srneProducts) {
+      expect(p.image_url).toBeTruthy();
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `SRNE image should exist on disk: ${filePath}`).toBe(true);
+      expect(p.numeric_price).toBeGreaterThan(0);
+    }
+
+    const newPanels = PRODUCTS.filter((p) => ["Longi", "JA Solar", "Jinko"].includes(p.brand || "") && ["610W", "620W", "630W", "725W"].some(w => p.name.includes(w)));
+    expect(newPanels.length).toBe(4);
+
+    for (const p of newPanels) {
+      expect(p.image_url).toBeTruthy();
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Panel image should exist on disk: ${filePath}`).toBe(true);
+      expect(p.numeric_price).toBeGreaterThan(0);
+    }
+  });
 });
+
