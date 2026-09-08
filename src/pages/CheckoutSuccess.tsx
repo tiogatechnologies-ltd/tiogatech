@@ -40,58 +40,23 @@ const CheckoutSuccess = () => {
 
     (async () => {
       try {
-        // 1. Check local order backup
-        if (orderNumber) {
-          try {
-            const local = JSON.parse(localStorage.getItem(`tioga_order_${orderNumber}`) || "{}");
-            if (local.payment_status === "paid") {
-              setVerify({ status: "success", amount: Number(local.total) || undefined });
-              clear();
-              return;
-            }
-          } catch {}
+        const { data, error } = await supabase.functions.invoke("paystack-verify", {
+          body: { reference, order_number: orderNumber },
+        });
+        if (error || !data?.success || data?.order_number !== orderNumber) {
+          throw new Error(data?.error || error?.message || "Payment was not confirmed");
         }
-
-        // 2. Check Supabase orders table
-        if (orderNumber) {
-          const { data } = await supabase
-            .from("orders")
-            .select("payment_status, total")
-            .eq("order_number", orderNumber)
-            .maybeSingle();
-          if (data && data.payment_status === "paid") {
-            setVerify({ status: "success", amount: Number(data.total) || undefined });
-            clear();
-            return;
-          }
-        }
-
-        // 3. Fallback: if reference is present from Paystack popup callback
-        if (reference && (reference.startsWith("tioga_") || reference.length >= 6)) {
-          if (orderNumber) {
-            await supabase
-              .from("orders")
-              .update({
-                payment_status: "paid",
-                payment_reference: reference,
-                status: "confirmed",
-              } as any)
-              .eq("order_number", orderNumber);
-          }
-          const amtParam = params.get("amount");
-          setVerify({ status: "success", amount: amtParam ? Number(amtParam) : undefined });
-          clear();
-          return;
-        }
-
-        setVerify({ status: "failed" });
+        try {
+          const local = JSON.parse(localStorage.getItem(`tioga_order_${orderNumber}`) || "{}");
+          local.payment_status = "paid";
+          local.payment_reference = data.reference;
+          localStorage.setItem(`tioga_order_${orderNumber}`, JSON.stringify(local));
+        } catch {}
+        setVerify({ status: "success", amount: Number(data.amount_ngn) || undefined });
+        clear();
       } catch (err) {
-        if (reference) {
-          setVerify({ status: "success" });
-          clear();
-        } else {
-          setVerify({ status: "failed" });
-        }
+        console.error("Payment verification failed:", err);
+        setVerify({ status: "failed" });
       }
     })();
   }, [method, reference, orderNumber, clear, params]);
@@ -135,19 +100,6 @@ const CheckoutSuccess = () => {
         {method === "paystack" && verify.status === "failed" && (
           <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-foreground mb-5 text-left">
             We could not confirm this Paystack transaction automatically. If your account was debited, please chat with us with reference <span className="font-mono font-bold">{reference}</span>.
-          </div>
-        )}
-        {method === "bank_transfer" && (
-          <div className="rounded-2xl border border-border bg-muted/40 p-5 text-left text-sm mb-5 space-y-3">
-            <p className="font-semibold text-foreground">Official Bank Details for Transfer</p>
-            <div className="rounded-xl border border-border bg-background p-3.5 space-y-1.5 font-mono text-xs">
-              <div className="flex justify-between"><span className="text-muted-foreground">Bank:</span><span className="font-bold text-foreground">Guaranty Trust Bank (GTBank)</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Account Name:</span><span className="font-bold text-foreground">Tioga Technologies Limited</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Account Number:</span><span className="font-bold text-primary text-sm">0824918237</span></div>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Please include order number <strong className="text-foreground">{orderNumber}</strong> in the transfer narration, and send proof of payment to WhatsApp for instant confirmation.
-            </p>
           </div>
         )}
         {method === "whatsapp" && (
