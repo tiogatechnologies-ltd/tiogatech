@@ -73,13 +73,13 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
       id={`pkg-${pkg.package_number}`}
     >
       {/* Top Image Container */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/20">
-        <Link to={`/packages/solar/${pkg.id}`} className="block w-full h-full">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/15 flex items-center justify-center">
+        <Link to={`/packages/solar/${pkg.id}`} className="block w-full h-full p-3 sm:p-4 flex items-center justify-center">
           <img
             src={pkg.image}
             alt={pkg.inverter}
             loading="lazy"
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(pkg);
             }}

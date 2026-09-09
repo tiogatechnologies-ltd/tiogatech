@@ -68,15 +68,15 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
       id={`lock-${p.id}`}
     >
       {/* Top Image Container */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/20">
-        <Link to={`/packages/lock/${p.id}`} className="block w-full h-full">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/15 flex items-center justify-center">
+        <Link to={`/packages/lock/${p.id}`} className="block w-full h-full p-3 sm:p-4 flex items-center justify-center">
           <img
             src={p.image}
             alt={p.name}
             loading="lazy"
             width={1024}
             height={768}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
           />
         </Link>
 
@@ -313,21 +313,6 @@ const SmartLocksSection = () => {
           {filtered.map((p, i) => (
             <LockCard key={`${tab}-${p.id}`} p={p} i={i} />
           ))}
-        </div>
-
-        <div className="mt-12 rounded-3xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-          <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground tracking-tight mb-2 no-clip">
-            Need help choosing the right lock?
-          </h3>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-5 text-sm">
-            Tell us your door type, users, and budget. We will recommend the perfect STAMA model, including hotel-scale deployments.
-          </p>
-          <button
-            onClick={() => openLeadForm("smart_locks_custom")}
-            className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
-          >
-            Get my recommendation
-          </button>
         </div>
       </div>
     </section>

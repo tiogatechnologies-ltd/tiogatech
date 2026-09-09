@@ -202,11 +202,11 @@ export const SolarPackageDetail = () => {
 
             {/* Left: Image */}
             <div className="lg:col-span-6 lg:sticky lg:top-28 space-y-4">
-              <div className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] aspect-[4/3]">
+              <div className="relative rounded-3xl overflow-hidden bg-muted/15 border border-border shadow-[var(--shadow-card)] aspect-[4/3] flex items-center justify-center p-6 pb-20">
                 <img
                   src={pkg.image}
                   alt={`${pkg.inverter} Solar System`}
-                  className="w-full h-full object-cover"
+                  className="max-w-full max-h-full object-contain drop-shadow-md transition-transform duration-500 hover:scale-105"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(pkg);
                   }}
@@ -498,11 +498,11 @@ export const SolarPackageDetail = () => {
                     to={`/packages/solar/${r.id}`}
                     className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all"
                   >
-                    <div className="relative h-36 overflow-hidden">
+                    <div className="relative h-40 bg-muted/15 flex items-center justify-center overflow-hidden p-3 pb-16">
                       <img
                         src={r.image}
                         alt={r.inverter}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="max-w-full max-h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(r);
                         }}

@@ -283,21 +283,6 @@ const HomeAutomationSection = () => {
             <PackageCard key={p.id} p={p} i={i} />
           ))}
         </div>
-
-        <div className="mt-12 rounded-3xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-          <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground tracking-tight mb-2 no-clip">
-            Want a custom blend?
-          </h3>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-5 text-sm">
-            Mix and match features across tiers. Tell us your home size and goals and we will design a tailored automation plan.
-          </p>
-          <button
-            onClick={() => openLeadForm("home_automation_custom")}
-            className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
-          >
-            Design my smart home
-          </button>
-        </div>
       </div>
     </section>
   );

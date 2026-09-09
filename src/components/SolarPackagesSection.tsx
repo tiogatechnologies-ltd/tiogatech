@@ -70,13 +70,13 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
       id={`pkg-${p.package_number}`}
     >
       {/* Top Image Container */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/20">
-        <Link to={`/packages/solar/${p.id}`} className="block w-full h-full">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/15 flex items-center justify-center">
+        <Link to={`/packages/solar/${p.id}`} className="block w-full h-full p-3 sm:p-4 flex items-center justify-center">
           <img
             src={p.image}
             alt={p.inverter}
             loading="lazy"
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(p);
             }}
@@ -344,21 +344,6 @@ const SolarPackagesSection = () => {
           {filtered.map((p, i) => (
             <PackageCard key={p.id} p={p} i={i} />
           ))}
-        </div>
-
-        <div className="mt-12 rounded-3xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-          <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground tracking-tight mb-2 no-clip">
-            None of these fit perfectly?
-          </h3>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-5 text-sm">
-            Tell us your load profile and budget. Our LumiVolt AI will design a custom package in under 2 minutes.
-          </p>
-          <button
-            onClick={() => openLeadForm("solar_packages_custom")}
-            className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md shadow-accent/30"
-          >
-            Build my custom package
-          </button>
         </div>
       </div>
     </section>
