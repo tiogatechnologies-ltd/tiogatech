@@ -7,7 +7,7 @@ import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
-import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
+import { useSolarPackages, type SolarPackage, getSolarPackageImage } from "@/hooks/useSolarPackages";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
@@ -80,6 +80,9 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
             alt={pkg.inverter}
             loading="lazy"
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(pkg);
+            }}
           />
         </Link>
 

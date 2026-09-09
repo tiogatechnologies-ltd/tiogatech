@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { Battery, Sun, Zap, Cpu, Check, ArrowRight, ShoppingBag, Clock, Tag, TrendingDown, Flame, Loader2 } from "lucide-react";
-import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
+import { useSolarPackages, type SolarPackage, getSolarPackageImage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
@@ -77,6 +77,9 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
             alt={p.inverter}
             loading="lazy"
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(p);
+            }}
           />
         </Link>
 

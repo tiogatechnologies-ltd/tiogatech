@@ -59,38 +59,54 @@ describe("Product and Package Real Images", () => {
     expect(fs.existsSync(path.resolve("public" + resolved12k))).toBe(true);
   });
 
-  it("all 19 solar package capacities resolve to real hardware images", () => {
+  it("all 19 solar package capacities resolve to real hardware images and are 100% unique", () => {
+    const images = new Set<string>();
     for (let i = 1; i <= 19; i++) {
       const img = getSolarPackageImage({ package_number: i });
       expect(img).toBeTruthy();
       expect(fs.existsSync(path.resolve("public" + img)), `Solar pkg #${i} image must exist: ${img}`).toBe(true);
-      expect(img.startsWith("/products/core/")).toBe(true);
+      expect(img.startsWith("/products/packages/")).toBe(true);
+      images.add(img);
     }
+    // Zero duplicate images across the 19 packages
+    expect(images.size).toBe(19);
   });
 
-  it("smart lock models resolve to authentic hardware images", () => {
+  it("smart lock models and accessories resolve to authentic hardware images with zero duplicates", () => {
     const models = [
       { name: "Premier-Lux K209", model: "K209", series: "Elite Series", category: "lock" },
       { name: "Premier-Lux S7", model: "S7", series: "Elite Series", category: "lock" },
+      { name: "Apex-Lux F27 Wi-Fi", model: "F27", series: "Apex Series", category: "lock" },
+      { name: "Apex Custom Israeli T8", model: "T8", series: "Apex Series", category: "lock" },
       { name: "E-Pro D20", model: "D20", series: "Apex Series", category: "lock" },
       { name: "H11", model: "H11", series: "Apex Series", category: "lock" },
       { name: "Wi-Fi SL02", model: "SL02", series: "Pro Series", category: "lock" },
-      { name: "BLE TFS", model: "TFS", series: "Pro Series", category: "lock" },
+      { name: "Standard-Pro N14 BLE", model: "N14", series: "Pro Series", category: "lock" },
       { name: "N22", model: "N22", series: "Pro Series", category: "lock" },
+      { name: "Pro X04", model: "X04", series: "Pro Series", category: "lock" },
+      { name: "Basic-Pro B16", model: "B16", series: "Pro Series", category: "lock" },
+      { name: "BLE TFS", model: "TFS", series: "Pro Series", category: "lock" },
       { name: "G290 Glass", model: "G290", series: "Base Series", category: "lock" },
       { name: "V80 Gate", model: "V80", series: "Base Series", category: "lock" },
       { name: "KT14 Padlock", model: "KT14", series: "Base Series", category: "lock" },
       { name: "STAMA Hotel System", model: "Hotel", series: "Hotel Ecosystem", category: "hotel" },
+      { name: "Lock Replacement Battery", model: "BATTERY", series: "Accessories", category: "accessory" },
+      { name: "Wireless Remote", model: "REMOTE", series: "Accessories", category: "accessory" },
+      { name: "Wi-Fi Gateway", model: "GATEWAY", series: "Accessories", category: "accessory" },
+      { name: "RFID Access Card", model: "RFID", series: "Accessories", category: "accessory" },
     ];
 
+    const images = new Set<string>();
     for (const item of models) {
       const img = getSmartLockImage(item);
       expect(img).toBeTruthy();
       expect(fs.existsSync(path.resolve("public" + img)), `Lock ${item.name} image must exist: ${img}`).toBe(true);
+      images.add(img);
     }
+    expect(images.size).toBe(models.length);
   });
 
-  it("home automation packages resolve to authentic pkg-automation images", () => {
+  it("home automation packages resolve to authentic pkg-automation images and are unique", () => {
     const apexImg = getDefaultPackageImage("automation", "Apex");
     const auraImg = getDefaultPackageImage("automation", "Aura");
     const rivieraImg = getDefaultPackageImage("automation", "Riviera");
@@ -102,6 +118,26 @@ describe("Product and Package Real Images", () => {
     expect(fs.existsSync(path.resolve("public" + apexImg))).toBe(true);
     expect(fs.existsSync(path.resolve("public" + auraImg))).toBe(true);
     expect(fs.existsSync(path.resolve("public" + rivieraImg))).toBe(true);
+
+    const set = new Set([apexImg, auraImg, rivieraImg]);
+    expect(set.size).toBe(3);
+  });
+
+  it("CCTV packages resolve to authentic pkg-cctv images and are unique", () => {
+    const cctv4 = getDefaultPackageImage("cctv", "4ch");
+    const cctv8 = getDefaultPackageImage("cctv", "8ch");
+    const cctvPtz = getDefaultPackageImage("cctv", "ptz");
+
+    expect(cctv4).toBe("/products/core/pkg-cctv-4ch-kit.webp");
+    expect(cctv8).toBe("/products/core/pkg-cctv-8ch-kit.webp");
+    expect(cctvPtz).toBe("/products/core/pkg-cctv-solar-ptz.webp");
+
+    expect(fs.existsSync(path.resolve("public" + cctv4))).toBe(true);
+    expect(fs.existsSync(path.resolve("public" + cctv8))).toBe(true);
+    expect(fs.existsSync(path.resolve("public" + cctvPtz))).toBe(true);
+
+    const set = new Set([cctv4, cctv8, cctvPtz]);
+    expect(set.size).toBe(3);
   });
 
   it("all new SRNE inverters, SRNE batteries and solar panels exist with authentic photos on disk", () => {

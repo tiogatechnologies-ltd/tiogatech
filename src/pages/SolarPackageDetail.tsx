@@ -13,7 +13,7 @@ import SEO from "@/components/SEO";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { useCart } from "@/contexts/CartContext";
 import { trackConversion } from "@/lib/tracking";
-import { useSolarPackages, type SolarPackage } from "@/hooks/useSolarPackages";
+import { useSolarPackages, type SolarPackage, getSolarPackageImage } from "@/hooks/useSolarPackages";
 import { openLeadForm } from "@/components/SiteHeader";
 import { toast } from "sonner";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
@@ -207,6 +207,9 @@ export const SolarPackageDetail = () => {
                   src={pkg.image}
                   alt={`${pkg.inverter} Solar System`}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(pkg);
+                  }}
                 />
                 {/* Badges on image */}
                 <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
@@ -496,7 +499,14 @@ export const SolarPackageDetail = () => {
                     className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all"
                   >
                     <div className="relative h-36 overflow-hidden">
-                      <img src={r.image} alt={r.inverter} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img
+                        src={r.image}
+                        alt={r.inverter}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(r);
+                        }}
+                      />
                       <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
                         <p className="text-[10px] text-white/70 mb-0.5">#{r.package_number}</p>
                         <p className="text-sm font-bold text-white leading-tight line-clamp-2">{r.inverter}</p>
