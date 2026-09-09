@@ -115,8 +115,8 @@ export const SETTING_DEFAULTS = {
     store_enabled: true,
   } as FeatureSettings,
   promotions: {
-    show_compare_at_price: true,
-    default_markup_pct: 12,
+    show_compare_at_price: false,
+    default_markup_pct: 0,
   } as PromotionSettings,
   discounts: {
     show_code_field: true,

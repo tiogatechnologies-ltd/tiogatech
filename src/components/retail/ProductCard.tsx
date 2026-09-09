@@ -23,11 +23,14 @@ import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, r
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
 
+import type { GridColumnOption } from "@/components/retail/ColumnGridSwitcher";
+
 interface CardProps {
   product: RetailProduct;
   onQuickView?: (product: RetailProduct) => void;
   customBadge?: string;
   layout?: "grid" | "list";
+  columns?: GridColumnOption;
 }
 
 const fmt = (n?: number | null, fallback?: string | null) => {
@@ -36,13 +39,15 @@ const fmt = (n?: number | null, fallback?: string | null) => {
   return "Price on Request";
 };
 
-export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid" }: CardProps) => {
+export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid", columns }: CardProps) => {
   const { add } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isInCompare, toggleCompare } = useProductCompare();
   const { settings: promos } = useSiteSetting("promotions");
   const [isHovered, setIsHovered] = useState(false);
   const [addedAnimation, setAddedAnimation] = useState(false);
+
+  const isCompact = columns === 4 || columns === 5;
 
   const isSaved = isInWishlist(product.id);
   const isCompared = isInCompare(product.id);
@@ -209,7 +214,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
       </div>
 
       {/* Content Container */}
-      <div className="p-4 sm:p-5 flex flex-col flex-1">
+      <div className={`${isCompact ? "p-3 sm:p-3.5" : "p-4 sm:p-5"} flex flex-col flex-1`}>
         {/* Category & Rating */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-1">
           <div className="flex items-center gap-1.5 min-w-0">
@@ -236,15 +241,15 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
         {/* Product Title */}
         <Link
           to={productPath(product)}
-          className="font-display font-bold text-sm text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug mb-2"
+          className={`font-display font-bold ${isCompact ? "text-xs sm:text-sm leading-snug" : "text-sm leading-snug"} text-foreground hover:text-primary transition-colors line-clamp-2 mb-2 min-h-[2.25rem]`}
         >
           {product.name}
         </Link>
 
         {/* Highlights / Specs Chips */}
         {product.specifications && Object.keys(product.specifications).length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {Object.entries(product.specifications).slice(0, 2).map(([key, val]) => (
+          <div className="flex flex-wrap gap-1.5 mb-2.5">
+            {Object.entries(product.specifications).slice(0, isCompact ? 1 : 2).map(([key, val]) => (
               <span
                 key={key}
                 className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium max-w-full truncate"
@@ -255,13 +260,12 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
           </div>
         )}
 
-
         {/* Price & Financing */}
-        <div className="mt-auto pt-3 border-t border-border/60">
+        <div className="mt-auto pt-2.5 border-t border-border/60">
           <div className="flex items-start justify-between gap-1.5 mb-1.5 flex-wrap">
             <div className="min-w-0 flex-1">
               {/* Main Price */}
-              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
+              <p className={`${isCompact ? "text-sm sm:text-base" : "text-base sm:text-lg"} font-display font-bold text-foreground leading-tight`}>
                 {product.numeric_price ? (
                   <AnimatedCounter target={product.numeric_price} prefix="₦" />
                 ) : (

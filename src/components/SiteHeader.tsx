@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, MessageCircle, ChevronDown } from "lucide-react";
+import { Menu, X, MessageCircle, ChevronDown, Sun, Moon } from "lucide-react";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import { cn } from "@/lib/utils";
@@ -226,6 +226,26 @@ const SiteHeader = () => {
         </nav>
 
         <div className="flex items-center gap-1 sm:gap-2">
+          {/* Theme Toggle for all visitors */}
+          <button
+            type="button"
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className={cn(
+              "p-2 rounded-full transition-colors",
+              onDark
+                ? "text-primary-foreground hover:bg-primary-foreground/10"
+                : "text-foreground hover:bg-muted"
+            )}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDark ? (
+              <Sun size={17} className="text-amber-400 hover:rotate-45 transition-transform" />
+            ) : (
+              <Moon size={17} className="text-slate-700 dark:text-primary" />
+            )}
+          </button>
+
           <CartButton onDark={onDark} />
           <AccountButton onDark={onDark} />
           {/* Quote button - liquid glass accent pill */}
@@ -321,6 +341,20 @@ const SiteHeader = () => {
             >
               Get a Quote / Enquiry
             </button>
+            <div className="flex items-center justify-between px-3 py-2.5 rounded-xl border border-border bg-card/60 mt-1">
+              <span className="text-sm font-semibold text-foreground flex items-center gap-2">
+                {isDark ? <Moon size={16} className="text-primary" /> : <Sun size={16} className="text-amber-500" />}
+                <span>{isDark ? "Dark Mode" : "Light Mode"}</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => setTheme(isDark ? "light" : "dark")}
+                className="px-3 py-1 rounded-lg bg-muted text-xs font-bold text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                Switch to {isDark ? "Light" : "Dark"}
+              </button>
+            </div>
+
             <a
               href={whatsappLink(contact)}
               target="_blank"

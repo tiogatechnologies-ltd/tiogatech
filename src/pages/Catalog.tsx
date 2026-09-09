@@ -86,21 +86,22 @@ export const Catalog = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [gridColumns, setGridColumns] = useState<GridColumnOption>(3);
+  const [showDesktopFilters, setShowDesktopFilters] = useState(true);
 
   const getGridColsClass = (cols: GridColumnOption) => {
     switch (cols) {
       case 2:
         return "grid-cols-1 sm:grid-cols-2";
       case 3:
-        return "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3";
+        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
       case 4:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4";
+        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
       case 5:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5";
+        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5";
       case "list":
         return "grid-cols-1";
       default:
-        return "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3";
+        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
     }
   };
 
@@ -792,6 +793,17 @@ export const Catalog = () => {
                 </Select>
               </div>
 
+              {/* Desktop Filter Toggle Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowDesktopFilters((prev) => !prev)}
+                className="hidden lg:inline-flex h-10 rounded-xl gap-2 text-xs font-semibold"
+              >
+                <SlidersHorizontal size={14} />
+                <span>{showDesktopFilters ? "Hide Filters" : "Show Filters"}</span>
+              </Button>
+
               {/* Column Grid Switcher (2, 3, 4, 5 columns, List View) */}
               <div className="hidden sm:flex items-center">
                 <ColumnGridSwitcher
@@ -827,38 +839,40 @@ export const Catalog = () => {
           </div>
 
           {/* Main Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className={`grid grid-cols-1 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-1"} gap-8`}>
             {/* Desktop Filter Sidebar */}
-            <div className="hidden lg:block lg:col-span-1">
-              <div className="sticky top-24 p-6 rounded-3xl bg-card border border-border/80 shadow-[var(--shadow-card)]">
-                <ProductFilterSidebar
-                  filters={{
-                    category: selectedCategory === "ai-picks" ? null : selectedCategory,
-                    brands: selectedBrands,
-                    capacities: selectedCapacities,
-                    priceRange,
-                    inStockOnly,
-                    tier: null,
-                  }}
-                  onChange={(f) => {
-                    setSelectedCategory(f.category);
-                    setSelectedBrands(f.brands);
-                    setSelectedCapacities(f.capacities);
-                    setPriceRange(f.priceRange);
-                    setInStockOnly(f.inStockOnly);
-                  }}
-                  categories={categories}
-                  brands={brands}
-                  capacities={capacities}
-                  maxPrice={15_000_000}
-                  totalResults={filteredProducts.length}
-                  onReset={handleResetFilters}
-                />
+            {showDesktopFilters && (
+              <div className="hidden lg:block lg:col-span-1">
+                <div className="sticky top-24 p-6 rounded-3xl bg-card border border-border/80 shadow-[var(--shadow-card)]">
+                  <ProductFilterSidebar
+                    filters={{
+                      category: selectedCategory === "ai-picks" ? null : selectedCategory,
+                      brands: selectedBrands,
+                      capacities: selectedCapacities,
+                      priceRange,
+                      inStockOnly,
+                      tier: null,
+                    }}
+                    onChange={(f) => {
+                      setSelectedCategory(f.category);
+                      setSelectedBrands(f.brands);
+                      setSelectedCapacities(f.capacities);
+                      setPriceRange(f.priceRange);
+                      setInStockOnly(f.inStockOnly);
+                    }}
+                    categories={categories}
+                    brands={brands}
+                    capacities={capacities}
+                    maxPrice={15_000_000}
+                    totalResults={filteredProducts.length}
+                    onReset={handleResetFilters}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Product Cards Grid with Pagination */}
-            <div className="lg:col-span-3">
+            <div className={showDesktopFilters ? "lg:col-span-3" : "lg:col-span-1"}>
               {loading ? (
                 <div className="py-20 flex items-center justify-center">
                   <Loader2 className="animate-spin text-primary" size={28} />
@@ -908,6 +922,7 @@ export const Catalog = () => {
                           onQuickView={setQuickViewProduct}
                           customBadge={customBadge}
                           layout={gridColumns === "list" ? "list" : "grid"}
+                          columns={gridColumns}
                         />
                       );
                     })}

@@ -40,7 +40,7 @@ const defaults: Record<string, any> = {
   // untouched install behaves exactly as before this became configurable.
   shipping: { free_shipping_threshold_ngn: 0, default_shipping_fee_ngn: 15000, delivery_eta_days: "3-7", service_areas: "Abuja, FCT, Jos, Plateau", pickup_address: "No 7, Commercial Layout, Abattoir Rd, Jos, Plateau State" },
   tax: { vat_percent: 7.5, vat_inclusive: true, invoice_prefix: "TIO", invoice_footer: "Thank you for your business." },
-  promotions: { show_compare_at_price: true, default_markup_pct: 12 },
+  promotions: { show_compare_at_price: false, default_markup_pct: 0 },
   discounts: { show_code_field: true },
   affiliate: { default_commission_percent: 5, min_payout_ngn: 50000, cookie_window_days: 30, auto_approve_applications: false, payout_schedule: "monthly" },
   notif: { notify_email: "sales@tiogatechnologies.com", notify_on_new_lead: true, notify_on_order: true, notify_on_affiliate_application: true, notify_on_finance_application: true },

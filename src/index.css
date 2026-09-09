@@ -80,8 +80,8 @@ html.lenis, html.lenis body { height: auto; }
     --popover: 217 33% 13%;
     --popover-foreground: 210 40% 98%;
 
-    /* Emerald green with high contrast on dark surfaces */
-    --primary: 152 75% 38%;
+    /* Vivid emerald green with high contrast (>= 6.8:1) on dark surfaces */
+    --primary: 152 85% 45%;
     --primary-foreground: 0 0% 100%;
 
     /* Midnight navy - deep brand surface */
@@ -89,8 +89,8 @@ html.lenis, html.lenis body { height: auto; }
     --secondary-foreground: 210 40% 98%;
     --midnight: 215 64% 7%;
 
-    --muted: 217 30% 16%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 217 28% 18%;
+    --muted-foreground: 215 25% 78%;
 
     /* Solar gold - CTA accent */
     --accent: 51 100% 50%;
@@ -100,12 +100,12 @@ html.lenis, html.lenis body { height: auto; }
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 217 30% 20%;
-    --input: 217 30% 20%;
-    --ring: 152 75% 38%;
+    --border: 217 25% 24%;
+    --input: 217 25% 24%;
+    --ring: 152 85% 45%;
 
     /* Custom tokens */
-    --hero-gradient: linear-gradient(135deg, hsla(152, 75%, 25%, 0.8), hsla(215, 64%, 8%, 0.98));
+    --hero-gradient: linear-gradient(135deg, hsla(152, 85%, 28%, 0.8), hsla(215, 64%, 8%, 0.98));
     --glass-bg: hsla(217, 33%, 13%, 0.75);
     --glass-border: hsla(210, 40%, 98%, 0.12);
     --shadow-card: 0 4px 24px -4px hsla(0, 0%, 0%, 0.4);
@@ -113,12 +113,12 @@ html.lenis, html.lenis body { height: auto; }
 
     --sidebar-background: 217 33% 9%;
     --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 152 75% 38%;
+    --sidebar-primary: 152 85% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 217 30% 16%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 30% 20%;
-    --sidebar-ring: 152 75% 38%;
+    --sidebar-border: 217 25% 24%;
+    --sidebar-ring: 152 85% 45%;
   }
 }
 
@@ -415,4 +415,44 @@ html.lenis, html.lenis body { height: auto; }
   display: none;
   width: 0;
   height: 0;
+}
+
+/* ---------- Dark Mode High-Contrast & Text Visibility Enhancements ---------- */
+.dark .text-emerald-700,
+.dark .text-emerald-800,
+.dark .text-green-700,
+.dark .text-green-800 {
+  color: #34d399 !important; /* emerald-400 vivid high-contrast */
+}
+
+.dark .text-emerald-600,
+.dark .text-green-600 {
+  color: #4ade80 !important; /* green-400 */
+}
+
+.dark .bg-emerald-500\/10 {
+  background-color: rgba(16, 185, 129, 0.18) !important;
+}
+
+.dark .border-emerald-500\/30 {
+  border-color: rgba(52, 211, 153, 0.45) !important;
+}
+
+/* Ensure secondary and muted texts have crystal-clear readability */
+.dark .text-slate-600,
+.dark .text-gray-600,
+.dark .text-zinc-600 {
+  color: hsl(215 25% 78%) !important;
+}
+
+.dark .text-slate-500,
+.dark .text-gray-500,
+.dark .text-zinc-500 {
+  color: hsl(215 22% 74%) !important;
+}
+
+/* Cards & containers in dark mode have distinct border separation */
+.dark .border-border\/80,
+.dark .border-border\/60 {
+  border-color: hsl(217 25% 24%) !important;
 }

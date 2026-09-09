@@ -25,6 +25,7 @@ import {
   Lock,
 } from "lucide-react";
 import { invalidateLandingCache } from "@/hooks/useLandingContent";
+import { invalidateSettingsCache } from "@/hooks/useSiteSetting";
 import { useSolarPackages } from "@/hooks/useSolarPackages";
 import { useSmartLocks } from "@/hooks/useSmartLocks";
 import { useHomeAutomationPackages } from "@/hooks/useHomeAutomationPackages";
@@ -364,9 +365,17 @@ const SECONDARY_CTA_SUGGESTIONS = [
 const AdminRetailPromotions = () => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [flashDeal, setFlashDeal] = useState<FlashDeal>(defaultFlashDeal);
+  const [promoSettings, setPromoSettings] = useState<{
+    show_compare_at_price: boolean;
+    default_markup_pct: number;
+  }>({
+    show_compare_at_price: false,
+    default_markup_pct: 0,
+  });
   const [loading, setLoading] = useState(true);
   const [savingHero, setSavingHero] = useState(false);
   const [savingFlash, setSavingFlash] = useState(false);
+  const [savingPromo, setSavingPromo] = useState(false);
 
   const { packages: solarPackages } = useSolarPackages();
   const { items: smartLocks } = useSmartLocks();
@@ -383,10 +392,11 @@ const AdminRetailPromotions = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const [{ data }, { data: prodData }, { data: codeData }] = await Promise.all([
+      const [{ data }, { data: prodData }, { data: codeData }, { data: promoData }] = await Promise.all([
         supabase.from("landing_content").select("*").in("section_key", ["retail_hero", "flash_deal"]),
         supabase.from("products").select("*").eq("is_active", true),
         supabase.from("discounts").select("id, code, type, value").eq("active", true).order("code"),
+        supabase.from("site_settings").select("*").eq("key", "promotions").maybeSingle(),
       ]);
       const heroRow = (data as any[])?.find((r) => r.section_key === "retail_hero");
       const flashRow = (data as any[])?.find((r) => r.section_key === "flash_deal");
@@ -394,6 +404,13 @@ const AdminRetailPromotions = () => {
       const flashContent = flashRow?.content as Partial<FlashDeal> | undefined;
       setSlides(Array.isArray(heroContent?.slides) ? heroContent.slides! : []);
       setFlashDeal(flashContent ? { ...defaultFlashDeal, ...flashContent } : defaultFlashDeal);
+      if (promoData?.value) {
+        const val = promoData.value as any;
+        setPromoSettings({
+          show_compare_at_price: !!val.show_compare_at_price,
+          default_markup_pct: Number(val.default_markup_pct) || 0,
+        });
+      }
       setDbProducts(prodData || []);
       setLiveCodes((codeData as any[]) || []);
       setLoading(false);
@@ -423,6 +440,18 @@ const AdminRetailPromotions = () => {
     if (error) { toast.error("Failed to save flash deal", { description: error.message }); return; }
     toast.success("Flash deal bar updated");
     invalidateLandingCache();
+  };
+
+  const savePromo = async () => {
+    setSavingPromo(true);
+    const { error } = await supabase.from("site_settings").upsert(
+      { key: "promotions", value: promoSettings, updated_at: new Date().toISOString() },
+      { onConflict: "key" }
+    );
+    setSavingPromo(false);
+    if (error) { toast.error("Failed to save promotional pricing", { description: error.message }); return; }
+    toast.success("Promotional pricing and Save % badges updated");
+    invalidateSettingsCache();
   };
 
   const updateSlide = (id: string, patch: Partial<HeroSlide>) => {
@@ -761,6 +790,128 @@ const AdminRetailPromotions = () => {
             >
               <Save size={14} /> {savingFlash ? "Saving..." : "Save Flash Deal"}
             </button>
+          </div>
+        </section>
+
+        {/* STOREWIDE PROMOTIONAL PRICING & "SAVE %" BADGES */}
+        <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 space-y-5 shadow-xs">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <Tag size={20} />
+              </div>
+              <div>
+                <h2 className="font-display text-lg font-bold text-foreground leading-tight">
+                  Storewide Promotional Pricing &amp; "Save %" Badges
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Control struck-through list prices and discount badges across product listings
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                setPromoSettings((p) => ({ ...p, show_compare_at_price: !p.show_compare_at_price }))
+              }
+              className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3.5 py-1.5 rounded-full transition-all ${
+                promoSettings.show_compare_at_price
+                  ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30"
+                  : "bg-muted text-muted-foreground border border-border"
+              }`}
+            >
+              {promoSettings.show_compare_at_price ? (
+                <>
+                  <Check size={13} className="text-emerald-500" />
+                  <span>Storewide Badges Active</span>
+                </>
+              ) : (
+                <>
+                  <EyeOff size={13} />
+                  <span>Disabled (Clean Real Pricing)</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          <div className="space-y-4 pt-1">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Default List Price Markup (%)</label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    min={0}
+                    max={90}
+                    className={inputClass}
+                    value={promoSettings.default_markup_pct}
+                    onChange={(e) =>
+                      setPromoSettings((p) => ({
+                        ...p,
+                        default_markup_pct: Math.max(0, Math.min(90, Number(e.target.value) || 0)),
+                      }))
+                    }
+                    placeholder="e.g. 0 for none, or 12"
+                  />
+                  <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground">
+                    %
+                  </span>
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-1.5">
+                  Set to 0% to disable artificial markups. Setting to 12% previously caused all products to display "Save 11%".
+                </p>
+              </div>
+
+              <div>
+                <label className={labelClass}>How It Works</label>
+                <div className="text-xs text-muted-foreground space-y-1 rounded-xl bg-muted/40 p-3 border border-border">
+                  <p>
+                    • <strong className="text-foreground">Individual Previous Price</strong>: Any product with a previous price entered in Product Catalog will always show its real discount.
+                  </p>
+                  <p>
+                    • <strong className="text-foreground">Storewide Fallback</strong>: When enabled, this percentage is added as a fallback to items without a recorded previous price.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {promoSettings.show_compare_at_price && promoSettings.default_markup_pct > 0 ? (
+              <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs space-y-1">
+                <p className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                  <Tag size={13} />
+                  Live Preview on a ₦500,000 Product:
+                </p>
+                <p className="text-foreground/90">
+                  Selling Price: <strong>₦500,000</strong> · Struck-through:{" "}
+                  <span className="line-through text-muted-foreground">
+                    ₦{Math.round(500000 * (1 + promoSettings.default_markup_pct / 100)).toLocaleString("en-NG")}
+                  </span>{" "}
+                  · Badge:{" "}
+                  <span className="inline-block px-1.5 py-0.5 rounded bg-red-600 text-white font-extrabold text-[10px]">
+                    Save {Math.round((promoSettings.default_markup_pct / (100 + promoSettings.default_markup_pct)) * 100)}%
+                  </span>
+                </p>
+              </div>
+            ) : (
+              <div className="p-3.5 rounded-xl bg-muted/40 border border-border text-xs text-muted-foreground flex items-center gap-2">
+                <Check size={14} className="text-emerald-500 shrink-0" />
+                <span>
+                  Storewide markup is <strong className="text-foreground">Disabled</strong>. Products will only display a crossed-out price if you specifically assigned an authentic Previous Price to them.
+                </span>
+              </div>
+            )}
+
+            <div className="flex justify-end pt-1">
+              <button
+                type="button"
+                onClick={savePromo}
+                disabled={savingPromo}
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
+              >
+                <Save size={14} /> {savingPromo ? "Saving..." : "Save Promotional Pricing"}
+              </button>
+            </div>
           </div>
         </section>
 
