@@ -34,6 +34,7 @@ import { ProductFilterSidebar } from "@/components/retail/ProductFilterSidebar";
 import { ProductCard } from "@/components/retail/ProductCard";
 import { QuickViewModal } from "@/components/retail/QuickViewModal";
 import { ProductCompareTray } from "@/components/retail/ProductCompareTray";
+import { ColumnGridSwitcher, type GridColumnOption } from "@/components/retail/ColumnGridSwitcher";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -149,7 +150,30 @@ export const Retail = () => {
   const [products, setProducts] = useState<RetailProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [gridColumns, setGridColumns] = useState<GridColumnOption>(3);
+
+  const getGridColsClass = (cols: GridColumnOption) => {
+    switch (cols) {
+      case 2:
+        return "grid-cols-1 sm:grid-cols-2";
+      case 3:
+        return "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3";
+      case 4:
+        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4";
+      case 5:
+        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5";
+      case "list":
+        return "grid-cols-1";
+      default:
+        return "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3";
+    }
+  };
+
+  const getGridGapClass = (cols: GridColumnOption) => {
+    if (cols === 5) return "gap-3 sm:gap-3.5";
+    if (cols === 4) return "gap-3.5 sm:gap-4";
+    return "gap-4 sm:gap-6";
+  };
   const [sortBy, setSortBy] = useState<SortOption>("featured");
   const [quickViewProduct, setQuickViewProduct] = useState<RetailProduct | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
@@ -664,22 +688,32 @@ export const Retail = () => {
                 </Select>
               </div>
 
-              {/* Grid / List View Toggle */}
-              <div className="hidden md:flex items-center border border-border rounded-xl bg-muted/30 p-0.5 h-10">
+              {/* Column Grid Switcher (2, 3, 4, 5 columns, List View) */}
+              <div className="hidden sm:flex items-center">
+                <ColumnGridSwitcher
+                  value={gridColumns}
+                  onChange={setGridColumns}
+                />
+              </div>
+
+              {/* Mobile 2-col / List View Toggle */}
+              <div className="flex sm:hidden items-center border border-border rounded-xl bg-muted/30 p-0.5 h-10 col-span-1 justify-center">
                 <button
-                  onClick={() => setViewMode("grid")}
+                  type="button"
+                  onClick={() => setGridColumns(2)}
                   aria-label="Grid View"
                   className={`p-2 rounded-lg transition-colors ${
-                    viewMode === "grid" ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                    gridColumns !== "list" ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Grid size={14} />
                 </button>
                 <button
-                  onClick={() => setViewMode("list")}
+                  type="button"
+                  onClick={() => setGridColumns("list")}
                   aria-label="List View"
                   className={`p-2 rounded-lg transition-colors ${
-                    viewMode === "list" ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                    gridColumns === "list" ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <List size={14} />
@@ -742,17 +776,14 @@ export const Retail = () => {
               ) : (
                 <>
                   <div
-                    className={`grid gap-4 sm:gap-6 ${
-                      viewMode === "grid"
-                        ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
-                        : "grid-cols-1"
-                    }`}
+                    className={`grid ${getGridGapClass(gridColumns)} ${getGridColsClass(gridColumns)}`}
                   >
                     {displayedProducts.map((product) => (
                       <ProductCard
                         key={product.id}
                         product={product}
                         onQuickView={setQuickViewProduct}
+                        layout={gridColumns === "list" ? "list" : "grid"}
                       />
                     ))}
                   </div>

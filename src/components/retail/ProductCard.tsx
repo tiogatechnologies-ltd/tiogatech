@@ -27,6 +27,7 @@ interface CardProps {
   product: RetailProduct;
   onQuickView?: (product: RetailProduct) => void;
   customBadge?: string;
+  layout?: "grid" | "list";
 }
 
 const fmt = (n?: number | null, fallback?: string | null) => {
@@ -35,7 +36,7 @@ const fmt = (n?: number | null, fallback?: string | null) => {
   return "Price on Request";
 };
 
-export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) => {
+export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid" }: CardProps) => {
   const { add } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isInCompare, toggleCompare } = useProductCompare();
@@ -98,12 +99,20 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.25 }}
-      className="group relative rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] hover:shadow-xl hover:border-primary/40 transition-all duration-300 flex flex-col overflow-hidden"
+      className={`group relative rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] hover:shadow-xl hover:border-primary/40 transition-all duration-300 flex ${
+        layout === "list" ? "flex-col sm:flex-row items-stretch" : "flex-col"
+      } overflow-hidden`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Top Image Container */}
-      <div className="relative aspect-square w-full overflow-hidden bg-muted/15 flex items-center justify-center p-3 sm:p-4">
+      <div
+        className={`relative ${
+          layout === "list"
+            ? "w-full sm:w-60 shrink-0 aspect-square sm:aspect-auto sm:min-h-[220px]"
+            : "aspect-square w-full"
+        } overflow-hidden bg-muted/15 flex items-center justify-center p-3 sm:p-4`}
+      >
         <Link to={productPath(product)} className="w-full h-full flex items-center justify-center">
           <img
             src={resolveProductImage(product.image_url, product.category, product.name)}
@@ -285,10 +294,12 @@ export const ProductCard = ({ product, onQuickView, customBadge }: CardProps) =>
             </span>
           </div>
 
-          {/* Quick Add Button (always visible on mobile) */}
+          {/* Quick Add Button (always visible on mobile, or in list layout on desktop) */}
           <button
             onClick={handleAddToCart}
-            className={`mt-2 w-full py-2 px-4 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-2 transition-all lg:hidden ${
+            className={`mt-2 w-full py-2 px-4 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-2 transition-all ${
+              layout === "list" ? "flex sm:w-auto sm:self-start" : "lg:hidden"
+            } ${
               addedAnimation
                 ? "bg-emerald-600 text-white"
                 : "bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
