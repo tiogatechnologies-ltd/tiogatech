@@ -226,26 +226,6 @@ const SiteHeader = () => {
         </nav>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          {/* Theme Toggle for all visitors */}
-          <button
-            type="button"
-            onClick={() => setTheme(isDark ? "light" : "dark")}
-            className={cn(
-              "p-2 rounded-full transition-colors",
-              onDark
-                ? "text-primary-foreground hover:bg-primary-foreground/10"
-                : "text-foreground hover:bg-muted"
-            )}
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDark ? (
-              <Sun size={17} className="text-amber-400 hover:rotate-45 transition-transform" />
-            ) : (
-              <Moon size={17} className="text-slate-700 dark:text-primary" />
-            )}
-          </button>
-
           <CartButton onDark={onDark} />
           <AccountButton onDark={onDark} />
           {/* Quote button - liquid glass accent pill */}
