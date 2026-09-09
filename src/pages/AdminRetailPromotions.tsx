@@ -23,6 +23,10 @@ import {
   Battery,
   Sun,
   Lock,
+  Search,
+  SlidersHorizontal,
+  RotateCcw,
+  Sparkles,
 } from "lucide-react";
 import { invalidateLandingCache } from "@/hooks/useLandingContent";
 import { invalidateSettingsCache } from "@/hooks/useSiteSetting";
@@ -368,10 +372,21 @@ const AdminRetailPromotions = () => {
   const [promoSettings, setPromoSettings] = useState<{
     show_compare_at_price: boolean;
     default_markup_pct: number;
+    badge_format?: "save_pct" | "save_amount" | "pct_off";
+    product_overrides?: Record<string, {
+      compare_at_price?: number | null;
+      discount_pct?: number | null;
+      custom_badge?: string | null;
+      exclude?: boolean;
+    }>;
   }>({
-    show_compare_at_price: false,
-    default_markup_pct: 0,
+    show_compare_at_price: true,
+    default_markup_pct: 12,
+    badge_format: "save_pct",
+    product_overrides: {},
   });
+  const [productPromoSearch, setProductPromoSearch] = useState("");
+  const [productPromoFilter, setProductPromoFilter] = useState<"all" | "overrides" | "excluded">("all");
   const [loading, setLoading] = useState(true);
   const [savingHero, setSavingHero] = useState(false);
   const [savingFlash, setSavingFlash] = useState(false);
@@ -390,6 +405,53 @@ const AdminRetailPromotions = () => {
     return mergeProducts(staticList as any[], dbList as any[]);
   }, [dbProducts]);
 
+  const updateProductOverride = (productId: string, patch: {
+    compare_at_price?: number | null;
+    discount_pct?: number | null;
+    custom_badge?: string | null;
+    exclude?: boolean;
+  }) => {
+    setPromoSettings((prev) => {
+      const currentOverrides = prev.product_overrides || {};
+      const currentItem = currentOverrides[productId] || {};
+      const updatedItem = { ...currentItem, ...patch };
+
+      const newOverrides = { ...currentOverrides, [productId]: updatedItem };
+      return {
+        ...prev,
+        product_overrides: newOverrides,
+      };
+    });
+  };
+
+  const removeProductOverride = (productId: string) => {
+    setPromoSettings((prev) => {
+      const newOverrides = { ...(prev.product_overrides || {}) };
+      delete newOverrides[productId];
+      return {
+        ...prev,
+        product_overrides: newOverrides,
+      };
+    });
+  };
+
+  const filteredPromoProducts = useMemo(() => {
+    return products.filter((p) => {
+      const matchSearch =
+        !productPromoSearch ||
+        p.name.toLowerCase().includes(productPromoSearch.toLowerCase()) ||
+        p.category.toLowerCase().includes(productPromoSearch.toLowerCase());
+
+      const override = promoSettings.product_overrides?.[p.id];
+      const hasCustom = !!(override?.compare_at_price || override?.discount_pct || override?.custom_badge);
+      const isExcluded = !!override?.exclude;
+
+      if (productPromoFilter === "overrides") return matchSearch && hasCustom && !isExcluded;
+      if (productPromoFilter === "excluded") return matchSearch && isExcluded;
+      return matchSearch;
+    });
+  }, [products, productPromoSearch, productPromoFilter, promoSettings.product_overrides]);
+
   useEffect(() => {
     const fetch = async () => {
       const [{ data }, { data: prodData }, { data: codeData }, { data: promoData }] = await Promise.all([
@@ -407,8 +469,10 @@ const AdminRetailPromotions = () => {
       if (promoData?.value) {
         const val = promoData.value as any;
         setPromoSettings({
-          show_compare_at_price: !!val.show_compare_at_price,
-          default_markup_pct: Number(val.default_markup_pct) || 0,
+          show_compare_at_price: val.show_compare_at_price !== undefined ? !!val.show_compare_at_price : true,
+          default_markup_pct: val.default_markup_pct !== undefined ? Number(val.default_markup_pct) : 12,
+          badge_format: val.badge_format || "save_pct",
+          product_overrides: val.product_overrides || {},
         });
       }
       setDbProducts(prodData || []);
@@ -902,14 +966,246 @@ const AdminRetailPromotions = () => {
               </div>
             )}
 
-            <div className="flex justify-end pt-1">
+            {/* BADGE FORMAT SELECTION */}
+            <div className="pt-2 border-t border-border/60">
+              <label className={labelClass}>Badge Display Format</label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-1">
+                {[
+                  { id: "save_pct", label: "Save {pct}% (e.g. Save 11%)" },
+                  { id: "pct_off", label: "{pct}% OFF (e.g. 11% OFF)" },
+                  { id: "save_amount", label: "Save ₦ (e.g. Save ₦60,000)" },
+                ].map((f) => (
+                  <button
+                    key={f.id}
+                    type="button"
+                    onClick={() => setPromoSettings((p) => ({ ...p, badge_format: f.id as any }))}
+                    className={`p-2.5 rounded-xl border text-xs font-semibold text-left transition-all ${
+                      (promoSettings.badge_format || "save_pct") === f.id
+                        ? "bg-primary/10 border-primary text-primary shadow-xs"
+                        : "bg-muted/40 border-border text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* PRODUCT-SPECIFIC PROMO OVERRIDES */}
+            <div className="pt-6 border-t border-border/80 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h3 className="font-display text-base font-bold text-foreground flex items-center gap-2">
+                    <Sparkles size={16} className="text-primary" />
+                    Product-Specific Promo Overrides
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Customize slashed prices, percentage discounts, or promotional badges for any specific item
+                  </p>
+                </div>
+
+                {/* Filter Pills */}
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => setProductPromoFilter("all")}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                      productPromoFilter === "all"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    All ({products.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setProductPromoFilter("overrides")}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                      productPromoFilter === "overrides"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Customized ({Object.values(promoSettings.product_overrides || {}).filter((o: any) => o.compare_at_price || o.discount_pct || o.custom_badge).length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setProductPromoFilter("excluded")}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                      productPromoFilter === "excluded"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Excluded ({Object.values(promoSettings.product_overrides || {}).filter((o: any) => o.exclude).length})
+                  </button>
+                </div>
+              </div>
+
+              {/* Search Bar */}
+              <div className="relative">
+                <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  value={productPromoSearch}
+                  onChange={(e) => setProductPromoSearch(e.target.value)}
+                  placeholder="Search Deye inverters, Felicity batteries, Longi panels, Smart locks..."
+                  className="w-full pl-9 pr-4 py-2 rounded-xl bg-background border border-border text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                />
+                {productPromoSearch && (
+                  <button
+                    type="button"
+                    onClick={() => setProductPromoSearch("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              {/* Product Overrides List */}
+              <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
+                {filteredPromoProducts.length === 0 ? (
+                  <div className="text-center py-8 text-xs text-muted-foreground border border-dashed border-border rounded-xl">
+                    No products found matching "{productPromoSearch}"
+                  </div>
+                ) : (
+                  filteredPromoProducts.map((p) => {
+                    const price = p.numeric_price || parsePriceNaira(p.price) || 0;
+                    const override = promoSettings.product_overrides?.[p.id];
+                    const isExcluded = !!override?.exclude;
+                    const hasCustom = !!(override?.compare_at_price || override?.discount_pct || override?.custom_badge);
+
+                    // Effective Compare Price
+                    let effCompare: number | null = null;
+                    if (!isExcluded) {
+                      if (override?.compare_at_price && override.compare_at_price > price) {
+                        effCompare = override.compare_at_price;
+                      } else if (override?.discount_pct && override.discount_pct > 0) {
+                        effCompare = Math.round(price / (1 - override.discount_pct / 100));
+                      } else if (promoSettings.show_compare_at_price && promoSettings.default_markup_pct > 0) {
+                        effCompare = Math.round(price * (1 + promoSettings.default_markup_pct / 100));
+                      }
+                    }
+
+                    const effSavingsPct = effCompare && effCompare > price ? Math.round(((effCompare - price) / effCompare) * 100) : null;
+
+                    return (
+                      <div
+                        key={p.id}
+                        className={`p-3.5 rounded-xl border transition-all ${
+                          isExcluded
+                            ? "bg-muted/30 border-dashed border-border opacity-70"
+                            : hasCustom
+                            ? "bg-card border-primary/40 shadow-xs"
+                            : "bg-card border-border"
+                        }`}
+                      >
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                          {/* Product Info */}
+                          <div className="flex items-center gap-3 min-w-0 flex-1">
+                            <div className="w-12 h-12 rounded-lg bg-muted/20 border border-border p-1 shrink-0 flex items-center justify-center overflow-hidden">
+                              <img
+                                src={resolveProductImage(p.image_url, p.category, p.name)}
+                                alt={p.name}
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h4 className="font-display font-bold text-xs text-foreground truncate max-w-sm">
+                                  {p.name}
+                                </h4>
+                                <span className="text-[10px] px-1.5 py-0.2 rounded bg-muted text-muted-foreground font-semibold uppercase">
+                                  {p.category}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground flex-wrap">
+                                <span>Selling Price: <strong className="text-foreground">₦{price.toLocaleString("en-NG")}</strong></span>
+                                {isExcluded ? (
+                                  <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">• Excluded (Normal Price)</span>
+                                ) : effCompare ? (
+                                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-[11px]">
+                                    • Strikethrough: <span className="line-through">₦{effCompare.toLocaleString("en-NG")}</span> ({effSavingsPct}% off)
+                                  </span>
+                                ) : null}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Override Inputs */}
+                          <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap shrink-0">
+                            {/* Custom Compare At Price */}
+                            <div className="w-32">
+                              <input
+                                type="number"
+                                placeholder="Strikethrough ₦"
+                                value={override?.compare_at_price || ""}
+                                disabled={isExcluded}
+                                onChange={(e) => {
+                                  const val = e.target.value ? Number(e.target.value) : null;
+                                  updateProductOverride(p.id, { compare_at_price: val, discount_pct: null });
+                                }}
+                                className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-40"
+                              />
+                            </div>
+
+                            {/* Custom Badge */}
+                            <div className="w-28">
+                              <input
+                                type="text"
+                                placeholder="Badge tag"
+                                value={override?.custom_badge || ""}
+                                disabled={isExcluded}
+                                onChange={(e) => {
+                                  updateProductOverride(p.id, { custom_badge: e.target.value || null });
+                                }}
+                                className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-40"
+                              />
+                            </div>
+
+                            {/* Exclude Toggle Button */}
+                            <button
+                              type="button"
+                              onClick={() => updateProductOverride(p.id, { exclude: !isExcluded })}
+                              className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                                isExcluded
+                                  ? "bg-amber-500/15 border-amber-500/40 text-amber-700 dark:text-amber-300"
+                                  : "bg-muted/40 border-border text-muted-foreground hover:text-foreground"
+                              }`}
+                              title={isExcluded ? "Click to include in promos" : "Click to exclude this product from discounts"}
+                            >
+                              {isExcluded ? "Excluded" : "Exclude"}
+                            </button>
+
+                            {/* Reset Button */}
+                            {hasCustom && (
+                              <button
+                                type="button"
+                                onClick={() => removeProductOverride(p.id)}
+                                className="p-1.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
+                                title="Reset to storewide default"
+                              >
+                                <RotateCcw size={14} />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-3 border-t border-border">
               <button
                 type="button"
                 onClick={savePromo}
                 disabled={savingPromo}
                 className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
               >
-                <Save size={14} /> {savingPromo ? "Saving..." : "Save Promotional Pricing"}
+                <Save size={14} /> {savingPromo ? "Saving..." : "Save All Promotional Pricing & Overrides"}
               </button>
             </div>
           </div>

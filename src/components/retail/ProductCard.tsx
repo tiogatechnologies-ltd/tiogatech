@@ -19,7 +19,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, resolvePromoBadge } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
 
@@ -39,6 +39,36 @@ const fmt = (n?: number | null, fallback?: string | null) => {
   return "Price on Request";
 };
 
+const formatSpecs = (specs: Record<string, string>, maxCount: number) => {
+  const result: { label: string; value: string }[] = [];
+  for (const [key, rawVal] of Object.entries(specs)) {
+    if (!rawVal) continue;
+    // Clean raw value: take first segment before / or (
+    const val = rawVal.split("/")[0].split("(")[0].trim();
+    let label = key;
+    if (key.includes("Rated AC Output") || key.includes("Power Output") || key.includes("Rated Power")) {
+      label = "Power";
+    } else if (key.includes("Nominal DC Voltage") || key.includes("Battery Voltage") || key.includes("Voltage")) {
+      label = "Voltage";
+    } else if (key.includes("Capacity") || key.includes("Usable Capacity")) {
+      label = "Capacity";
+    } else if (key.includes("Max Solar PV Input") || key.includes("PV Input")) {
+      label = "Max PV";
+    } else if (key.includes("MPPT")) {
+      label = "MPPT";
+    } else if (key.includes("Warranty")) {
+      label = "Warranty";
+    } else if (key.includes("Switch Time")) {
+      label = "UPS Switch";
+    } else if (key.includes("Resolution")) {
+      label = "Res";
+    }
+    result.push({ label, value: val });
+    if (result.length >= maxCount) break;
+  }
+  return result;
+};
+
 export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid", columns }: CardProps) => {
   const { add } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -52,14 +82,17 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
   const isSaved = isInWishlist(product.id);
   const isCompared = isInCompare(product.id);
 
-  // The struck-through price. Uses this product's recorded previous price when
-  // one is set, otherwise the list-price markup from Admin > Settings. The real
-  // charge is always product.numeric_price.
-  const hasPrice = !!(product.numeric_price && product.numeric_price > 0);
-  const compareAt = resolveCompareAt(product.numeric_price, (product as any).compare_at_price, promos);
+  // The struck-through price. Uses per-product override when set, otherwise storewide markup
+  const compareAt = resolveCompareAt(
+    product.numeric_price,
+    (product as any).compare_at_price,
+    promos,
+    product.id
+  );
   const pct = savingsPct(product.numeric_price, compareAt);
   const wasPrice = calcWasPrice(product.numeric_price, compareAt);
   const savedAmount = calcSavedAmount(product.numeric_price, compareAt);
+  const promoBadge = resolvePromoBadge(product.id, promos, customBadge);
   const monthlyEst = product.numeric_price ? Math.round(product.numeric_price / 3) : null;
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -129,57 +162,53 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
 
         {/* Gradient overlay for bottom legibility */}
         {/* Left Badges (top-left stack) */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[70%]">
           {pct && (
-            <span className="px-2 py-0.5 rounded-full bg-red-600/90 backdrop-blur-md border border-white/25 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
-              <TrendingDown size={10} /> Save {pct}%
+            <span className="px-2 py-0.5 rounded-full bg-red-600 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
+              <TrendingDown size={10} className="stroke-[2.5]" />
+              {promos?.badge_format === "pct_off" ? `${pct}% OFF` : `Save ${pct}%`}
             </span>
           )}
-          {customBadge && (
-            <span className="px-2 py-0.5 rounded-full bg-primary/90 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
-              {customBadge}
-            </span>
-          )}
-          {product.is_featured && !customBadge && !pct && (
-            <span className="px-2 py-0.5 rounded-full bg-gold/90 backdrop-blur-md border border-gold/40 text-midnight text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
-              Featured
+          {promoBadge && (
+            <span className="px-2 py-0.5 rounded-full bg-primary/95 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
+              <Zap size={10} /> {promoBadge}
             </span>
           )}
         </div>
 
         {/* Floating Action Buttons (top-right) */}
-        <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-10">
+        <div className={`absolute top-2.5 right-2.5 flex flex-col ${isCompact ? "gap-1" : "gap-1.5"} z-10`}>
           <button
             onClick={handleWishlist}
             aria-label={isSaved ? "Remove from Wishlist" : "Save to Wishlist"}
-            className={`p-2 rounded-full backdrop-blur-md transition-all shadow-md ${
+            className={`${isCompact ? "p-1.5" : "p-2"} rounded-full backdrop-blur-md transition-all shadow-md ${
               isSaved
-                ? "bg-red-500 text-white shadow-red-500/20 scale-110"
+                ? "bg-red-500 text-white shadow-red-500/20 scale-105"
                 : "bg-background/80 hover:bg-background text-muted-foreground hover:text-red-500"
             }`}
           >
-            <Heart size={15} fill={isSaved ? "currentColor" : "none"} />
+            <Heart size={isCompact ? 13 : 15} fill={isSaved ? "currentColor" : "none"} />
           </button>
 
           <button
             onClick={handleCompare}
             aria-label="Compare Product"
-            className={`p-2 rounded-full backdrop-blur-md transition-all shadow-md ${
+            className={`${isCompact ? "p-1.5" : "p-2"} rounded-full backdrop-blur-md transition-all shadow-md ${
               isCompared
-                ? "bg-primary text-primary-foreground scale-110"
+                ? "bg-primary text-primary-foreground scale-105"
                 : "bg-background/80 hover:bg-background text-muted-foreground hover:text-primary"
             }`}
           >
-            <SlidersHorizontal size={15} />
+            <SlidersHorizontal size={isCompact ? 13 : 15} />
           </button>
 
           {onQuickView && (
             <button
               onClick={handleQuickView}
               aria-label="Quick View"
-              className="p-2 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md"
+              className={`${isCompact ? "p-1.5" : "p-2"} rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md`}
             >
-              <Eye size={15} />
+              <Eye size={isCompact ? 13 : 15} />
             </button>
           )}
         </div>
@@ -215,56 +244,52 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
 
       {/* Content Container */}
       <div className={`${isCompact ? "p-3 sm:p-3.5" : "p-4 sm:p-5"} flex flex-col flex-1`}>
-        {/* Category & Rating */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-1">
+        {/* Category & Stock Status Header */}
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-1.5">
           <div className="flex items-center gap-1.5 min-w-0">
             <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
               {product.category}
             </span>
             {(product.serial_number || product.sku) && (
-              <span className="shrink-0 px-1.5 py-0.5 rounded bg-muted/80 text-[9px] font-mono font-bold text-muted-foreground border border-border">
+              <span className="shrink-0 px-1 py-0.2 rounded bg-muted/80 text-[8.5px] font-mono font-bold text-muted-foreground border border-border">
                 {product.serial_number || product.sku}
               </span>
             )}
           </div>
-          {/* Only real ratings. This used to fall back to 5.0 with 12 reviews
-              for every product, including ones nobody had reviewed. */}
-          {product.rating && product.review_count ? (
-            <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
-              <Star size={13} fill="currentColor" />
-              <span className="text-foreground font-bold">{product.rating}</span>
-              <span className="text-muted-foreground text-[10px]">({product.review_count})</span>
-            </div>
-          ) : null}
+          <span className="inline-flex items-center gap-1 text-[9.5px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            In Stock
+          </span>
         </div>
 
         {/* Product Title */}
         <Link
           to={productPath(product)}
-          className={`font-display font-bold ${isCompact ? "text-xs sm:text-sm leading-snug" : "text-sm leading-snug"} text-foreground hover:text-primary transition-colors line-clamp-2 mb-2 min-h-[2.25rem]`}
+          className={`font-display font-bold ${isCompact ? "text-xs leading-snug" : "text-sm leading-snug"} text-foreground hover:text-primary transition-colors line-clamp-2 mb-2 min-h-[2.2rem]`}
+          title={product.name}
         >
           {product.name}
         </Link>
 
-        {/* Highlights / Specs Chips */}
+        {/* Highlights / Specs Chips - CONCISE CLEAN FORMAT */}
         {product.specifications && Object.keys(product.specifications).length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-2.5">
-            {Object.entries(product.specifications).slice(0, isCompact ? 1 : 2).map(([key, val]) => (
+          <div className="flex flex-wrap gap-1 mb-2">
+            {formatSpecs(product.specifications, isCompact ? 1 : 2).map((spec, idx) => (
               <span
-                key={key}
-                className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium max-w-full truncate"
+                key={idx}
+                className="px-1.5 py-0.5 rounded-md bg-muted/60 text-[9px] sm:text-[10px] text-muted-foreground font-medium max-w-full truncate"
               >
-                <span className="truncate">{key}: <strong className="text-foreground">{val}</strong></span>
+                <span className="truncate">{spec.label}: <strong className="text-foreground">{spec.value}</strong></span>
               </span>
             ))}
           </div>
         )}
 
         {/* Price & Financing */}
-        <div className="mt-auto pt-2.5 border-t border-border/60">
-          <div className="flex items-start justify-between gap-1.5 mb-1.5 flex-wrap">
-            <div className="min-w-0 flex-1">
-              {/* Main Price */}
+        <div className="mt-auto pt-2 border-t border-border/60">
+          <div className="space-y-0.5">
+            {/* Price Row: Selling Price & Slashed Was Price */}
+            <div className="flex items-baseline gap-2 flex-wrap">
               <p className={`${isCompact ? "text-sm sm:text-base" : "text-base sm:text-lg"} font-display font-bold text-foreground leading-tight`}>
                 {product.numeric_price ? (
                   <AnimatedCounter target={product.numeric_price} prefix="₦" />
@@ -272,30 +297,27 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
                   fmt(product.numeric_price, product.price)
                 )}
               </p>
-              {/* Was Price (slashed) */}
-              {wasPrice && savedAmount && (
-                <div className="flex flex-wrap items-center gap-1 mt-0.5">
-                  <span className="text-xs text-muted-foreground line-through">
-                    ₦{Math.round(wasPrice).toLocaleString("en-NG")}
-                  </span>
-                  <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
-                    <Tag size={9} /> Save <AnimatedCounter target={Math.round(savedAmount)} prefix="₦" />
-                  </span>
-                </div>
-              )}
-              {/* Monthly payment hint */}
-              {monthlyEst && (
-                <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                  Or from <strong className="text-primary"><AnimatedCounter target={monthlyEst} prefix="₦" suffix="/mo" /></strong>
-                </p>
+              {wasPrice && (
+                <span className="text-xs text-muted-foreground line-through">
+                  ₦{Math.round(wasPrice).toLocaleString("en-NG")}
+                </span>
               )}
             </div>
 
-            {/* In stock badge */}
-            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              In Stock
-            </span>
+            {/* Slashed Save Badge */}
+            {savedAmount && pct && (
+              <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                <Tag size={9} />
+                <span>Save ₦{Math.round(savedAmount).toLocaleString("en-NG")} ({pct}%)</span>
+              </div>
+            )}
+
+            {/* Monthly payment hint */}
+            {monthlyEst && (
+              <p className="text-[9.5px] text-muted-foreground truncate">
+                From <strong className="text-primary font-bold">₦{Math.round(monthlyEst).toLocaleString("en-NG")}/mo</strong>
+              </p>
+            )}
           </div>
 
           {/* Quick Add Button (always visible on mobile, or in list layout on desktop) */}

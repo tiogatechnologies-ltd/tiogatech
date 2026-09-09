@@ -41,10 +41,16 @@ export interface PromotionSettings {
   show_compare_at_price: boolean;
   /**
    * List-price markup, as a percentage above the selling price, used for any
-   * item that has no genuine previous price recorded against it. Setting a real
-   * `compare_at_price` on a product always overrides this.
+   * item that has no genuine previous price recorded against it.
    */
   default_markup_pct: number;
+  badge_format?: "save_pct" | "save_amount" | "pct_off";
+  product_overrides?: Record<string, {
+    compare_at_price?: number | null;
+    discount_pct?: number | null;
+    custom_badge?: string | null;
+    exclude?: boolean;
+  }>;
 }
 
 export interface DiscountSettings {
@@ -115,8 +121,10 @@ export const SETTING_DEFAULTS = {
     store_enabled: true,
   } as FeatureSettings,
   promotions: {
-    show_compare_at_price: false,
-    default_markup_pct: 0,
+    show_compare_at_price: true,
+    default_markup_pct: 12,
+    badge_format: "save_pct",
+    product_overrides: {},
   } as PromotionSettings,
   discounts: {
     show_code_field: true,
