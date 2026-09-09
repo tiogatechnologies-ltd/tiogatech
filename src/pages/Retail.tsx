@@ -45,7 +45,7 @@ import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
 import type { RetailProduct } from "@/types/retail";
 
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, ShoppingBag } from "lucide-react";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating" | "newest";
 
@@ -440,16 +440,16 @@ export const Retail = () => {
           </div>
 
           {/* Category Cards Grid Showcase */}
-          <div className="mb-10">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-4">
+          <div className="mb-12">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-semibold tracking-wide uppercase mb-1">
-                  <span>Hardware Categories</span>
-                </div>
-                <h2 className="text-xl sm:text-2xl font-display font-bold text-foreground">
+                <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-1.5">
+                  Hardware Categories
+                </p>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-foreground tracking-tight">
                   Shop By Category
                 </h2>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-xl">
                   Select a hardware category to browse dedicated products and solutions.
                 </p>
               </div>
@@ -457,15 +457,15 @@ export const Retail = () => {
               {selectedCategory && (
                 <button
                   onClick={() => handleCategorySelect("all", true)}
-                  className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:text-primary/80 transition-colors self-start sm:self-auto py-1 px-3 rounded-lg bg-primary/5 hover:bg-primary/10 border border-primary/20"
+                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-primary hover:text-primary/80 transition-colors self-start sm:self-auto py-1.5 px-3.5 rounded-xl bg-primary/10 hover:bg-primary/15 border border-primary/25 shadow-xs"
                 >
                   <span>Showing: <strong>{selectedCategory}</strong></span>
-                  <span className="text-muted-foreground underline">View All Hardware</span>
+                  <span className="text-muted-foreground underline ml-1">View All Hardware</span>
                 </button>
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {RETAIL_CATEGORY_CARDS.map((cat) => {
                 const isSelected = selectedCategory?.toLowerCase() === cat.key.toLowerCase();
                 return (
@@ -480,59 +480,74 @@ export const Retail = () => {
                         handleCategorySelect(cat.key, true);
                       }
                     }}
-                    className={`group relative flex items-center justify-between p-4 sm:p-5 rounded-2xl sm:rounded-3xl cursor-pointer transition-all duration-300 text-left border ${
+                    className={`group relative flex items-center justify-between p-5 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl cursor-pointer transition-all duration-300 text-left border overflow-hidden ${
                       isSelected
-                        ? "bg-primary/[0.07] dark:bg-primary/10 border-primary shadow-md shadow-primary/10 ring-2 ring-primary/30"
-                        : "bg-card/90 hover:bg-card border-border/80 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
+                        ? "bg-primary/[0.08] dark:bg-primary/15 border-primary shadow-lg shadow-primary/10 ring-2 ring-primary/40"
+                        : "bg-gradient-to-br from-[#f8f9fb] via-[#f1f3f6] to-[#e8ebef] dark:from-slate-900/90 dark:via-slate-900/75 dark:to-slate-800/80 hover:from-white hover:to-[#e2e5e9] dark:hover:from-slate-800/90 dark:hover:to-slate-800/60 border-slate-200/90 dark:border-slate-800/80 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
                     }`}
                   >
-                    {/* Left details */}
-                    <div className="flex-1 pr-2 min-w-0">
-                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
-                        {cat.tag}
-                      </span>
-                      <h3 className="font-display font-bold text-sm sm:text-base text-foreground leading-snug truncate group-hover:text-primary transition-colors">
-                        {cat.title}
-                      </h3>
-                      <p className="text-[11px] sm:text-xs text-muted-foreground line-clamp-1 mt-0.5 mb-3">
-                        {cat.subtitle}
-                      </p>
-
-                      <span
-                        className={`inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all ${
-                          isSelected
-                            ? "bg-primary text-primary-foreground shadow-xs"
-                            : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs group-hover:gap-1.5"
-                        }`}
+                    {/* Ambient subtle concentric wave rings background (matching reference) */}
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.35] dark:opacity-[0.12] transition-opacity duration-500 group-hover:opacity-60">
+                      <svg
+                        className="absolute -right-16 -top-12 sm:-right-8 sm:-top-8 w-[320px] h-[320px] text-slate-400/50 dark:text-slate-500/30"
+                        viewBox="0 0 200 200"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
                       >
-                        {isSelected ? (
-                          <>
-                            <Check size={12} className="stroke-[3]" />
-                            <span>Active Filter</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Shop Now</span>
-                            <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
-                          </>
-                        )}
-                      </span>
+                        <circle cx="130" cy="90" r="30" strokeDasharray="3 3" opacity="0.35" />
+                        <circle cx="130" cy="90" r="55" opacity="0.45" />
+                        <circle cx="130" cy="90" r="80" opacity="0.55" />
+                        <circle cx="130" cy="90" r="105" opacity="0.65" />
+                        <circle cx="130" cy="90" r="130" opacity="0.45" />
+                        <circle cx="130" cy="90" r="155" opacity="0.25" />
+                      </svg>
                     </div>
 
-                    {/* Right hardware PNG thumbnail */}
-                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0 flex items-center justify-center">
-                      <div
-                        className={`absolute inset-0 rounded-2xl bg-gradient-to-br transition-opacity duration-300 ${
-                          isSelected
-                            ? "from-primary/15 to-transparent opacity-100"
-                            : "from-muted/50 to-transparent opacity-60 group-hover:opacity-100"
-                        }`}
-                      />
+                    {/* Left details */}
+                    <div className="relative z-10 flex-1 pr-3 min-w-0 flex flex-col justify-between self-stretch">
+                      <div>
+                        <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                          {cat.tag}
+                        </span>
+                        <h3 className="font-display font-bold text-lg sm:text-xl text-foreground leading-tight tracking-tight group-hover:text-primary transition-colors line-clamp-2 mb-1.5">
+                          {cat.title}
+                        </h3>
+                        <p className="text-[11px] sm:text-xs text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
+                          {cat.subtitle}
+                        </p>
+                      </div>
+
+                      <div className="pt-2">
+                        <span
+                          className={`inline-flex items-center gap-2 text-xs sm:text-sm font-semibold px-4 py-2 sm:py-2.5 rounded-xl transition-all shadow-sm ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground shadow-primary/25 ring-2 ring-primary/40"
+                              : "bg-[#43a047] hover:bg-[#388e3c] text-white shadow-emerald-600/20 group-hover:scale-105 active:scale-95"
+                          }`}
+                        >
+                          {isSelected ? (
+                            <>
+                              <Check size={15} className="stroke-[3]" />
+                              <span>Active Filter</span>
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingBag size={15} className="shrink-0" />
+                              <span>Shop Now</span>
+                            </>
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Right hardware floating 3D PNG */}
+                    <div className="relative z-10 w-32 h-32 sm:w-40 sm:h-40 lg:w-44 lg:h-44 shrink-0 flex items-center justify-center pointer-events-none">
                       <img
                         src={cat.image}
                         alt={cat.title}
                         loading="lazy"
-                        className="relative z-10 w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+                        className="max-w-full max-h-full object-contain drop-shadow-[0_16px_24px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_16px_24px_rgba(0,0,0,0.6)] group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500 ease-out"
                       />
                     </div>
                   </div>
