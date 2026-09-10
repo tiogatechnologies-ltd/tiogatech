@@ -89,10 +89,17 @@ async function fetchProducts() {
   }
 }
 
-// Mirrors src/lib/productSlug.ts
+// Must mirror src/lib/productSlug.ts EXACTLY. It previously used the FIRST 8
+// id characters and truncated names at 60, while the app uses the LAST 8 and
+// truncates at 70 - so every product URL in the sitemap pointed at a different
+// URL than the one the app links to and self-canonicalises to, splitting the
+// ranking signal for each product across two addresses.
 const kebab = (input) =>
-  String(input).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
-const productSlug = (p) => `${kebab(p.name)}-${String(p.id).replace(/-/g, "").slice(0, 8)}`;
+  String(input || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 70);
+const productSlug = (p) => {
+  const cleanId = String(p.id || "").replace(/[^a-zA-Z0-9]/g, "");
+  return `${kebab(p.name)}-${cleanId.slice(-8) || "item"}`;
+};
 
 function urlBlock({ loc, lastmod, changefreq, priority }) {
   return [
@@ -107,7 +114,43 @@ function urlBlock({ loc, lastmod, changefreq, priority }) {
     .join("\n");
 }
 
-const [posts, products] = await Promise.all([fetchBlogPosts(), fetchProducts()]);
+/**
+ * Detail pages for the package catalogues. These were missing from the sitemap
+ * entirely - only the listing pages were included - so every individual solar
+ * package, smart lock and automation package was invisible to search engines.
+ * Each route below matches the ":id" routes registered in src/App.tsx.
+ */
+async function fetchCatalogue(table, routePrefix) {
+  const client = getClient();
+  if (!client) return [];
+  try {
+    const { data, error } = await client
+      .from(table)
+      .select("id,updated_at")
+      .eq("is_active", true)
+      .limit(2000);
+    if (error) return [];
+    return (data || []).map((row) => ({
+      loc: `${BASE_URL}${routePrefix}/${row.id}`,
+      lastmod: row.updated_at ? new Date(row.updated_at).toISOString() : undefined,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+// NOTE: cctv_packages is deliberately absent. Unlike solar, locks and home
+// automation, CCTV has no /packages/cctv/:id route - the /cctv listing adds to
+// cart directly - so listing those URLs would feed 404s to search engines.
+// Add the route and a detail page first, then include it here.
+const [posts, products, solarPkgs, lockItems, autoPkgs] = await Promise.all([
+  fetchBlogPosts(),
+  fetchProducts(),
+  fetchCatalogue("solar_packages", "/packages/solar"),
+  fetchCatalogue("smart_locks", "/packages/lock"),
+  fetchCatalogue("home_automation_packages", "/packages/automation"),
+]);
+const cataloguePages = [...solarPkgs, ...lockItems, ...autoPkgs];
 
 const blocks = [
   ...STATIC_ENTRIES.map((e) =>
@@ -129,6 +172,9 @@ const blocks = [
       priority: "0.7",
     }),
   ),
+  ...cataloguePages.map((c) =>
+    urlBlock({ loc: escapeXml(c.loc), lastmod: c.lastmod, changefreq: "weekly", priority: "0.8" }),
+  ),
 ];
 
 const xml = [
@@ -140,4 +186,12 @@ const xml = [
 ].join("\n");
 
 writeFileSync(resolve("public/sitemap.xml"), xml);
-console.log(`sitemap.xml written (${STATIC_ENTRIES.length} static routes + ${posts.length} blog posts + ${products.length} products)`);
+console.log(
+  "sitemap.xml written: " +
+    [
+      STATIC_ENTRIES.length + " static routes",
+      posts.length + " blog posts",
+      products.length + " products",
+      cataloguePages.length + " package/lock pages",
+    ].join(" + "),
+);

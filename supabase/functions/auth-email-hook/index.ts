@@ -91,7 +91,10 @@ async function handlePreview(req: Request): Promise<Response> {
     return new Response(null, { headers: previewCorsHeaders })
   }
 
-  const apiKey = Deno.env.get('LOVABLE_API_KEY')
+  // Signing secret for the Supabase Auth hook. Historically this was the
+  // Lovable platform key; AUTH_HOOK_SECRET lets it be set independently so
+  // password-reset and confirmation emails keep working after leaving Lovable.
+  const apiKey = Deno.env.get('AUTH_HOOK_SECRET') ?? Deno.env.get('LOVABLE_API_KEY')
   const authHeader = req.headers.get('Authorization')
 
   if (!apiKey || authHeader !== `Bearer ${apiKey}`) {
@@ -132,10 +135,10 @@ async function handlePreview(req: Request): Promise<Response> {
 
 // Webhook handler - verifies signature and sends email
 async function handleWebhook(req: Request): Promise<Response> {
-  const apiKey = Deno.env.get('LOVABLE_API_KEY')
+  const apiKey = Deno.env.get('AUTH_HOOK_SECRET') ?? Deno.env.get('LOVABLE_API_KEY')
 
   if (!apiKey) {
-    console.error('LOVABLE_API_KEY not configured')
+    console.error('No auth hook secret configured. Set AUTH_HOOK_SECRET to the value configured under Supabase Auth > Email Hook.')
     return new Response(
       JSON.stringify({ error: 'Server configuration error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

@@ -39,6 +39,10 @@ project_id = "xwxskzwceghftlcsbyyh"
     verify_jwt = true
   [functions.sizing-report]
     verify_jwt = false
+  # Must be reachable by search-engine crawlers, which send no JWT. Without
+  # this it answered 401 and the sitemap was effectively invisible to Google.
+  [functions.sitemap-xml]
+    verify_jwt = false
   # Guests can check a coupon before signing in; the function only reads
   # discount rules and never exposes a secret.
   [functions.validate-discount]

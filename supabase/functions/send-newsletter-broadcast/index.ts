@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 import { sendMail } from "../_shared/mailer.ts";
+import { activeTransport } from "../_shared/email-transport.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -65,10 +66,15 @@ serve(async (req) => {
       .eq("confirmed", true)
       .eq("unsubscribed", false);
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      return new Response(JSON.stringify({ error: "Email transport not configured" }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    // This sends via sendMail, which queues and is drained by
+    // process-email-queue - so the check is whether ANY transport is
+    // configured, not whether the Lovable key specifically is present.
+    if (!activeTransport()) {
+      return new Response(JSON.stringify({
+        error: "Email transport not configured",
+        detail: "Set RESEND_API_KEY (or LOVABLE_API_KEY) in Supabase Edge Function secrets.",
+      }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
