@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { resolveAiGateway, aiChatCompletion } from "../_shared/ai-gateway.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -19,8 +20,10 @@ serve(async (req) => {
     const body = await req.json();
     const { category, appliances, totalWatts, budget, formContext } = body;
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    const gw = resolveAiGateway();
+    if (!gw) {
+      return new Response(JSON.stringify({ error: "AI recommendations are not configured. Set OPENROUTER_API_KEY (or OPENAI_API_KEY) in Supabase Edge Function secrets." }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     const effectiveCategory = category || formContext?.category || "solar";
 
@@ -90,14 +93,7 @@ ${productList}
 
 Based on the customer's needs and budget, recommend the TOP 3-5 products that best match. If a combo package fits, recommend it first. Then recommend individual components that complement it.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+    const response = await aiChatCompletion(gw, {
         messages: [{ role: "user", content: prompt }],
         tools: [{
           type: "function",
@@ -125,7 +121,6 @@ Based on the customer's needs and budget, recommend the TOP 3-5 products that be
           },
         }],
         tool_choice: { type: "function", function: { name: "recommend_products" } },
-      }),
     });
 
     if (!response.ok) {

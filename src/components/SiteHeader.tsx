@@ -105,7 +105,10 @@ const SiteHeader = () => {
     closeTimer.current = window.setTimeout(() => setProductsDesktopOpen(false), 140);
   };
 
-  const { resolvedTheme } = useTheme();
+  // setTheme is still needed by the light/dark switch inside the mobile menu.
+  // Removing the header toggle left this call site without it, which broke the
+  // build.
+  const { resolvedTheme, setTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
   // Only allow transparent-over-dark on the landing route. Every other page has a

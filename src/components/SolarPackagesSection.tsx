@@ -28,7 +28,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
   // Cosmetic promo values - real price is always p.total_price
   // Strikethrough only appears when a genuine previous price is recorded.
   const { settings: promos } = useSiteSetting("promotions");
-  const compareAt = resolveCompareAt(p.total_price, (p as any).compare_at_price, promos);
+  const compareAt = resolveCompareAt(p.total_price, (p as any).compare_at_price, promos, p.id);
   const pct = savingsPct(p.total_price, compareAt);
   const wasPrice = calcWasPrice(p.total_price, compareAt);
   const savedAmount = calcSavedAmount(p.total_price, compareAt);

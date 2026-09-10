@@ -1,6 +1,6 @@
 // AI solar sizing: free-text description -> recommended system + matching package.
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
-import { corsHeaders } from "../_shared/ai-gateway.ts";
+import { corsHeaders, resolveAiGateway, aiChatCompletion } from "../_shared/ai-gateway.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -10,8 +10,8 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "description is required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const key = Deno.env.get("LOVABLE_API_KEY");
-    if (!key) return new Response(JSON.stringify({ error: "Missing LOVABLE_API_KEY" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    const gw = resolveAiGateway();
+    if (!gw) return new Response(JSON.stringify({ error: "AI sizing is not configured. Set OPENROUTER_API_KEY (or OPENAI_API_KEY) in Supabase Edge Function secrets." }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
     const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     const { data: packages } = await admin.from("solar_packages").select("name, slug, capacity_kva, battery_kwh, price_ngn, suitable_for").eq("is_active", true).order("price_ngn");
@@ -37,14 +37,9 @@ Return JSON ONLY in this schema:
   "confidence": "low" | "medium" | "high"
 }`;
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" },
-      }),
+    const res = await aiChatCompletion(gw, {
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" },
     });
 
     if (!res.ok) {

@@ -1,10 +1,10 @@
 // Site-wide AI chat assistant — simple JSON request/response with tool calling. v2
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
-import { corsHeaders } from "../_shared/ai-gateway.ts";
+import { corsHeaders, resolveAiGateway, aiChatCompletion } from "../_shared/ai-gateway.ts";
 import { notifyAdminsOfTicket } from "../_shared/support-notify.ts";
 
 const WHATSAPP = "2348178000023";
-const KEY = Deno.env.get("LOVABLE_API_KEY")!;
+const GATEWAY = resolveAiGateway();
 const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
 const TOOL_SPECS = [
@@ -92,12 +92,9 @@ function keywordEscalation(text: string): boolean {
 
 async function classifyEscalation(userText: string, priorText: string): Promise<boolean> {
   if (keywordEscalation(userText)) return true;
+  if (!GATEWAY) return false;
   try {
-    const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+    const r = await aiChatCompletion(GATEWAY, {
         messages: [
           { role: "system", content: `Classify the user's latest message. Reply with exactly one word: "escalate" or "continue".
 Reply "escalate" when the user asks to be connected to a human/live agent/staff, asks to open a support ticket, files a complaint, or is repeating an unresolved problem after the assistant already failed to help.
@@ -106,7 +103,6 @@ Reply "continue" for normal product questions, recommendations, pricing, financi
         ],
         temperature: 0,
         max_tokens: 3,
-      }),
     });
     if (!r.ok) return false;
     const j = await r.json();
@@ -178,7 +174,7 @@ async function identifyRequester(user: any) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    if (!KEY) return new Response(JSON.stringify({ error: "Missing LOVABLE_API_KEY" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    if (!GATEWAY) return new Response(JSON.stringify({ error: "AI is not configured. Set OPENROUTER_API_KEY (or OPENAI_API_KEY) in Supabase Edge Function secrets.", text: "The assistant is temporarily unavailable. Please use WhatsApp or the contact form and we will get right back to you." }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     const { messages, user } = await req.json();
 
     // Extract latest user text + prior context
@@ -239,15 +235,11 @@ Keep answers to 1-3 short paragraphs unless asked for more.`;
     // Agentic loop: up to 4 tool rounds
     const toolEvents: any[] = [];
     for (let i = 0; i < 4; i++) {
-      const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "google/gemini-2.5-flash", messages: openaiMessages, tools: TOOL_SPECS, tool_choice: "auto" }),
-      });
+      const r = await aiChatCompletion(GATEWAY, { messages: openaiMessages, tools: TOOL_SPECS, tool_choice: "auto" });
       if (!r.ok) {
         const txt = await r.text();
         const status = r.status === 429 ? 429 : r.status === 402 ? 402 : 500;
-        const msg = status === 429 ? "Rate limited, please try again in a moment." : status === 402 ? "AI credits exhausted. Please add credits in workspace settings." : "AI error";
+        const msg = status === 429 ? "Rate limited, please try again in a moment." : status === 402 ? "AI credits exhausted. Top up your AI provider account." : "AI error";
         console.error("ai-chat gateway", r.status, txt);
         return new Response(JSON.stringify({ error: msg, text: msg, tool_events: [] }), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }

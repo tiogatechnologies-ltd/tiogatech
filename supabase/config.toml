@@ -31,8 +31,10 @@ project_id = "xwxskzwceghftlcsbyyh"
     verify_jwt = false
   [functions.preview-transactional-email]
     verify_jwt = false
+  # Authenticates itself: a service-role JWT, or CRON_SHARED_SECRET from the
+  # scheduler. Gateway JWT is off so pg_cron need not hold a Supabase key.
   [functions.process-email-queue]
-    verify_jwt = true
+    verify_jwt = false
   [functions.send-transactional-email]
     verify_jwt = true
   [functions.sizing-report]

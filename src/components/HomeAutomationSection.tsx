@@ -25,7 +25,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
   const hasPrice = !!(p.price && p.price > 0);
   // Strikethrough only appears when a genuine previous price is recorded.
   const { settings: promos } = useSiteSetting("promotions");
-  const compareAt = resolveCompareAt(p.price, (p as any).compare_at_price, promos);
+  const compareAt = resolveCompareAt(p.price, (p as any).compare_at_price, promos, p.id);
   const pct = savingsPct(p.price, compareAt);
   const wasPriceVal = calcWasPrice(p.price, compareAt);
   const savedAmount = calcSavedAmount(p.price, compareAt);

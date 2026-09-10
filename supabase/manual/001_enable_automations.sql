@@ -108,8 +108,22 @@ BEGIN
     'finance-reminders-daily',
     'finance-mark-overdue-daily',
     'finance-auto-charge-daily',
-    'reset-free-credits-daily'
+    'reset-free-credits-daily',
+    'process-email-queue'
   );
+
+  -- Drains the outbound email queue. NOTHING has ever drained it, so every
+  -- order confirmation, support acknowledgement and password email since
+  -- launch is still sitting in pgmq. Messages past their TTL (15 min for auth,
+  -- 60 min for transactional) are discarded to a dead-letter queue rather than
+  -- delivered, so switching this on does not blast a backlog at customers.
+  -- Requires RESEND_API_KEY (or LOVABLE_API_KEY) to actually send.
+  PERFORM cron.schedule('process-email-queue', '* * * * *', format(
+    $q$SELECT net.http_post(
+         url := %L,
+         headers := jsonb_build_object('Content-Type','application/json','x-cron-secret',%L),
+         body := '{}'::jsonb
+       )$q$, base_url || 'process-email-queue', cron_secret));
 
   -- Times are UTC; WAT is UTC+1. Order matters: mark overdue, then remind,
   -- then charge, so each step sees the previous step's result.

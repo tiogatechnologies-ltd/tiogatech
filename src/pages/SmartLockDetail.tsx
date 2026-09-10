@@ -133,7 +133,7 @@ export const SmartLockDetail = () => {
     );
   }
 
-  const compareAt = resolveCompareAt(lock.price, (lock as any).compare_at_price, promos);
+  const compareAt = resolveCompareAt(lock.price, (lock as any).compare_at_price, promos, lock.id);
   const pct = savingsPct(lock.price, compareAt);
   const wasPrice = calcWasPrice(lock.price, compareAt);
   const savedAmount = calcSavedAmount(lock.price, compareAt);

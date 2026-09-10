@@ -32,7 +32,7 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
   const hasPrice = !!(lock.price && lock.price > 0);
   // Strikethrough only appears when a genuine previous price is recorded.
   const { settings: promos } = useSiteSetting("promotions");
-  const compareAt = resolveCompareAt(lock.price, (lock as any).compare_at_price, promos);
+  const compareAt = resolveCompareAt(lock.price, (lock as any).compare_at_price, promos, lock.id);
   const pct = savingsPct(lock.price, compareAt);
   const wasPriceVal = calcWasPrice(lock.price, compareAt);
   const savedAmount = calcSavedAmount(lock.price, compareAt);

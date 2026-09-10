@@ -139,7 +139,7 @@ export const SolarPackageDetail = () => {
   }
 
   // Strikethrough only appears when a genuine previous price is recorded.
-  const compareAt = resolveCompareAt(pkg.total_price, (pkg as any).compare_at_price, promos);
+  const compareAt = resolveCompareAt(pkg.total_price, (pkg as any).compare_at_price, promos, pkg.id);
   const pct = savingsPct(pkg.total_price, compareAt);
   const wasPrice = calcWasPrice(pkg.total_price, compareAt);
   const savedAmount = calcSavedAmount(pkg.total_price, compareAt);

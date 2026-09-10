@@ -139,7 +139,7 @@ export const AutomationPackageDetail = () => {
     );
   }
 
-  const compareAt = resolveCompareAt(pkg.price, (pkg as any).compare_at_price, promos);
+  const compareAt = resolveCompareAt(pkg.price, (pkg as any).compare_at_price, promos, pkg.id);
   const pct = autoSavingsPct(pkg.price, compareAt);
   const wasPrice = calcWasPrice(pkg.price, compareAt);
   const savedAmount = calcSavedAmount(pkg.price, compareAt);
