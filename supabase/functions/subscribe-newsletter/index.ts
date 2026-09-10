@@ -15,7 +15,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { email, full_name, source } = await req.json();
+    const { email, full_name, source } = await req.json().catch(() => ({}));
 
     if (!email || typeof email !== "string" || !EMAIL_RE.test(email.trim()) || email.length > 255) {
       return new Response(JSON.stringify({ error: "Please enter a valid email" }), {

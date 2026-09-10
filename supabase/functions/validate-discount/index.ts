@@ -5,7 +5,7 @@ import { corsHeaders } from "../_shared/ai-gateway.ts";
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const { code, subtotal_ngn, email } = await req.json();
+    const { code, subtotal_ngn, email } = await req.json().catch(() => ({}));
     if (!code || typeof subtotal_ngn !== "number") {
       return new Response(JSON.stringify({ error: "code and subtotal_ngn required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }

@@ -61,7 +61,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const body = (await req.json()) as OrderPayload;
+    const body = (await req.json().catch(() => ({}))) as OrderPayload;
 
     // Validate
     if (!body.full_name || body.full_name.trim().length < 2) {

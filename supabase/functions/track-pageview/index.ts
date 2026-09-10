@@ -25,7 +25,7 @@ serve(async (req) => {
       session_id, page_path, referrer, user_agent,
       utm_source, utm_medium, utm_campaign, utm_term, utm_content,
       landing_path, is_new_session,
-    } = await req.json();
+    } = await req.json().catch(() => ({}));
 
     if (!session_id || !page_path) {
       return new Response(JSON.stringify({ error: "session_id and page_path required" }), {

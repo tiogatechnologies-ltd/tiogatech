@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
     } else {
       // JSON body (from the app's unsubscribe page)
       try {
-        const body = await req.json()
+        const body = await req.json().catch(() => ({}))
         if (body.token) {
           token = body.token
         }

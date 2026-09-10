@@ -15,7 +15,7 @@ const digits = (s: string) => s.replace(/\D/g, "");
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const { order_number, contact } = await req.json();
+    const { order_number, contact } = await req.json().catch(() => ({}));
     if (!order_number || !contact) return json({ error: "order_number and contact required" }, 400);
 
     const ref = String(order_number).trim().toUpperCase();
