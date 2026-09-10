@@ -10,8 +10,15 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianG
 import { toast } from "sonner";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminSEO from "@/components/AdminSEO";
+import { fetchAllRows } from "@/lib/fetchAllRows";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePermissions } from "@/hooks/usePermissions";
+
+// Revenue and chart figures are summed from fetched rows, so a silently
+// truncated response would understate them. Page through instead, and keep the
+// { data } shape the rest of this block expects.
+const pagedRows = <T,>(build: () => any) =>
+  fetchAllRows<T>(build).then((r) => ({ data: r.rows }));
 
 const NGN = (n: number) => `₦${(n || 0).toLocaleString("en-NG", { maximumFractionDigits: 0 })}`;
 const STATUS_COLORS: Record<string, string> = {
@@ -73,8 +80,8 @@ const AdminDashboard = () => {
         recentFinance, recentCareer, recentAffApps, topItems, pendFinance, pendCareer, pendAff,
         assessToday, assessPending, customOpen,
       ] = await Promise.all([
-        supabase.from("orders").select("total").gte("created_at", today.toISOString()).neq("status", "cancelled"),
-        supabase.from("orders").select("total").gte("created_at", weekAgo.toISOString()).neq("status", "cancelled"),
+        pagedRows(() => supabase.from("orders").select("total").gte("created_at", today.toISOString()).neq("status", "cancelled")),
+        pagedRows(() => supabase.from("orders").select("total").gte("created_at", weekAgo.toISOString()).neq("status", "cancelled")),
         supabase.from("orders").select("id", { count: "exact", head: true }).in("status", ["new", "pending", "processing"]),
         supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", today.toISOString()),
         supabase.from("profiles").select("id", { count: "exact", head: true }).gte("created_at", weekAgo.toISOString()),
@@ -83,9 +90,9 @@ const AdminDashboard = () => {
         supabase.from("products").select("id, name, stock_qty, low_stock_threshold").lte("stock_qty", 5).order("stock_qty", { ascending: true }).limit(8),
         supabase.from("newsletter_subscribers").select("id", { count: "exact", head: true }).eq("confirmed", true).eq("unsubscribed", false),
         supabase.from("products").select("id", { count: "exact", head: true }),
-        supabase.from("orders").select("created_at, total, status").gte("created_at", month.toISOString()),
-        supabase.from("leads").select("created_at").gte("created_at", month.toISOString()),
-        supabase.from("orders").select("status").gte("created_at", weekAgo.toISOString()),
+        pagedRows(() => supabase.from("orders").select("created_at, total, status").gte("created_at", month.toISOString())),
+        pagedRows(() => supabase.from("leads").select("created_at").gte("created_at", month.toISOString())),
+        pagedRows(() => supabase.from("orders").select("status").gte("created_at", weekAgo.toISOString())),
         supabase.from("orders").select("id, order_number, full_name, total, created_at").order("created_at", { ascending: false }).limit(4),
         supabase.from("leads").select("id, full_name, created_at").order("created_at", { ascending: false }).limit(4),
         supabase.from("finance_applications").select("id, full_name, status, created_at").order("created_at", { ascending: false }).limit(6),

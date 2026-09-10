@@ -300,6 +300,15 @@ export const CCTV = () => {
                       <Camera size={14} /> Add System to Cart
                     </button>
 
+                    {/* CCTV was the only product line with no detail page, so
+                        these cards had nowhere to link to. */}
+                    <Link
+                      to={`/packages/cctv/${pkg.id}`}
+                      className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-primary/40 bg-primary/5 hover:bg-primary/10 text-[11px] font-semibold text-primary transition-colors"
+                    >
+                      View Full Details
+                    </Link>
+
                     <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                       <button
                         onClick={() => openLeadForm(`cctv_${pkg.id}`)}

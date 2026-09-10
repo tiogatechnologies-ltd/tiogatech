@@ -439,4 +439,22 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://tiogatechnologies.com/packages/cctv/a1b2c3d4-0001-0001-0001-000000000001</loc>
+    <lastmod>2026-09-04T09:07:19.789Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tiogatechnologies.com/packages/cctv/a1b2c3d4-0002-0002-0002-000000000002</loc>
+    <lastmod>2026-09-04T09:07:19.789Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tiogatechnologies.com/packages/cctv/a1b2c3d4-0003-0003-0003-000000000003</loc>
+    <lastmod>2026-09-04T09:07:19.789Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

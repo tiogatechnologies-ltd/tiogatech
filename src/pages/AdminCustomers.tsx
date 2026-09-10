@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
 import { Search, Users as UsersIcon, Mail, Download, X, Tag as TagIcon, Loader2, Trash2 } from "lucide-react";
+import { fetchAllRows } from "@/lib/fetchAllRows";
 
 interface OrderLite { id: string; order_number: string | null; total: number | null; status: string | null; payment_status: string | null; created_at: string; user_id: string | null; email: string | null; }
 interface NoteRow { id: string; user_id: string; body: string; pinned: boolean | null; created_at: string; }
@@ -38,9 +39,14 @@ const SEGMENTS: { key: Segment; label: string }[] = [
   { key: "dormant", label: "Dormant" },
 ];
 
+// PostgREST caps rows silently; surfacing the real total stops a partial list
+// from reading as the full customer base.
+const PROFILE_PAGE_SIZE = 1000;
+
 const AdminCustomers = () => {
   const { user } = useAuth();
   const [rows, setRows] = useState<Customer[]>([]);
+  const [totalProfiles, setTotalProfiles] = useState<number | null>(null);
   const [orders, setOrders] = useState<OrderLite[]>([]);
   const [tags, setTags] = useState<TagRow[]>([]);
   const [notes, setNotes] = useState<NoteRow[]>([]);
@@ -55,9 +61,18 @@ const AdminCustomers = () => {
   const load = async () => {
     setLoading(true);
     // Single pass: profiles + all orders + tags + notes, then aggregate client-side (no N+1).
+    // Per-customer spend is summed from these rows, so a capped response would
+    // understate lifetime value. Orders are paged in full; the profile list is
+    // bounded with an explicit limit and the count is surfaced below.
     const [profRes, orderRes, tagRes, noteRes] = await Promise.all([
-      supabase.from("profiles").select("id, email, full_name, phone, created_at").order("created_at", { ascending: false }),
-      supabase.from("orders").select("id, order_number, total, status, payment_status, created_at, user_id, email").order("created_at", { ascending: false }).limit(1000),
+      supabase
+        .from("profiles")
+        .select("id, email, full_name, phone, created_at", { count: "exact" })
+        .order("created_at", { ascending: false })
+        .limit(PROFILE_PAGE_SIZE),
+      fetchAllRows<OrderLite>(() =>
+        supabase.from("orders").select("id, order_number, total, status, payment_status, created_at, user_id, email").order("created_at", { ascending: false }),
+      ).then((r) => ({ data: r.rows })),
       supabase.from("customer_tags").select("id, user_id, tag"),
       supabase.from("customer_notes").select("id, user_id, body, pinned, created_at").order("created_at", { ascending: false }),
     ]);
@@ -80,6 +95,7 @@ const AdminCustomers = () => {
     setOrders(allOrders);
     setTags((tagRes.data || []) as TagRow[]);
     setNotes((noteRes.data || []) as NoteRow[]);
+    setTotalProfiles((profRes as any).count ?? null);
     setRows(enriched);
     setLoading(false);
   };
@@ -154,7 +170,12 @@ const AdminCustomers = () => {
         <div className="flex items-start justify-between flex-wrap gap-3">
           <div>
             <h1 className="font-display text-2xl font-bold flex items-center gap-2"><UsersIcon size={22} />Customers</h1>
-            <p className="text-sm text-muted-foreground">{rows.length} total · LTV based on paid + pending orders</p>
+            <p className="text-sm text-muted-foreground">
+              {totalProfiles !== null && totalProfiles > rows.length
+                ? `Showing the ${rows.length.toLocaleString()} most recent of ${totalProfiles.toLocaleString()} customers`
+                : `${rows.length.toLocaleString()} total`}
+              {" · LTV based on paid + pending orders"}
+            </p>
           </div>
           <div className="flex gap-2">
             <button onClick={emailSegment} className="px-3 py-2 rounded-lg border border-border text-sm hover:bg-muted inline-flex items-center gap-1.5"><Mail size={14} />Email segment</button>

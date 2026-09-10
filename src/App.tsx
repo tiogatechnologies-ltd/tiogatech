@@ -61,6 +61,7 @@ const Packages = lazy(() => import("./pages/Packages.tsx"));
 const SolarPackageDetail = lazy(() => import("./pages/SolarPackageDetail.tsx"));
 const SmartLockDetail = lazy(() => import("./pages/SmartLockDetail.tsx"));
 const AutomationPackageDetail = lazy(() => import("./pages/AutomationPackageDetail.tsx"));
+const CctvPackageDetail = lazy(() => import("./pages/CctvPackageDetail.tsx"));
 const EnergyCalculator = lazy(() => import("./pages/EnergyCalculator.tsx"));
 const Customize = lazy(() => import("./pages/Customize.tsx"));
 const Career = lazy(() => import("./pages/Career.tsx"));
@@ -208,6 +209,7 @@ const AnimatedRoutes = () => {
           <Route path="/packages/lock/:id" element={<RouteFade><SmartLockDetail /></RouteFade>} />
           <Route path="/packages/locks/:id" element={<RouteFade><SmartLockDetail /></RouteFade>} />
           <Route path="/packages/automation/:id" element={<RouteFade><AutomationPackageDetail /></RouteFade>} />
+          <Route path="/packages/cctv/:id" element={<RouteFade><CctvPackageDetail /></RouteFade>} />
           <Route path="/energy-calculator" element={<RouteFade><EnergyCalculator /></RouteFade>} />
           <Route path="/customize/:type/:id" element={<RouteFade><Customize /></RouteFade>} />
 

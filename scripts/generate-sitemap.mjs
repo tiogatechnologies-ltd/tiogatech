@@ -139,18 +139,15 @@ async function fetchCatalogue(table, routePrefix) {
   }
 }
 
-// NOTE: cctv_packages is deliberately absent. Unlike solar, locks and home
-// automation, CCTV has no /packages/cctv/:id route - the /cctv listing adds to
-// cart directly - so listing those URLs would feed 404s to search engines.
-// Add the route and a detail page first, then include it here.
-const [posts, products, solarPkgs, lockItems, autoPkgs] = await Promise.all([
+const [posts, products, solarPkgs, lockItems, autoPkgs, cctvPkgs] = await Promise.all([
   fetchBlogPosts(),
   fetchProducts(),
   fetchCatalogue("solar_packages", "/packages/solar"),
   fetchCatalogue("smart_locks", "/packages/lock"),
   fetchCatalogue("home_automation_packages", "/packages/automation"),
+  fetchCatalogue("cctv_packages", "/packages/cctv"),
 ]);
-const cataloguePages = [...solarPkgs, ...lockItems, ...autoPkgs];
+const cataloguePages = [...solarPkgs, ...lockItems, ...autoPkgs, ...cctvPkgs];
 
 const blocks = [
   ...STATIC_ENTRIES.map((e) =>
