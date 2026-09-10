@@ -216,26 +216,34 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
           <button
             onClick={prevSlide}
             aria-label="Previous Slide"
-            className="p-1.5 sm:p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/15 transition-all"
+            className="grid place-items-center h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/15 transition-all"
           >
             <ChevronLeft size={16} />
           </button>
-          <div className="flex items-center gap-1 px-1">
+          <div className="flex items-center px-1">
             {slides.map((s, idx) => (
+              // The visible dot stays small, but the button itself is a full
+              // touch target - the pill alone was only 6px tall, far below the
+              // ~44px minimum, so it was very hard to tap on a phone.
               <button
                 key={s.id}
                 onClick={() => { setAutoplay(false); setCurrent(idx); }}
-                aria-label={`Slide ${idx + 1}`}
-                className={`h-1.5 sm:h-2 rounded-full transition-all ${
-                  idx === current ? "w-5 sm:w-6 bg-amber-400" : "w-1.5 sm:w-2 bg-white/40 hover:bg-white/70"
-                }`}
-              />
+                aria-label={`Go to slide ${idx + 1} of ${slides.length}`}
+                aria-current={idx === current ? "true" : undefined}
+                className="grid place-items-center h-10 w-5 sm:h-11 sm:w-6 group"
+              >
+                <span
+                  className={`block h-1.5 sm:h-2 rounded-full transition-all ${
+                    idx === current ? "w-5 sm:w-6 bg-amber-400" : "w-1.5 sm:w-2 bg-white/40 group-hover:bg-white/70"
+                  }`}
+                />
+              </button>
             ))}
           </div>
           <button
             onClick={nextSlide}
             aria-label="Next Slide"
-            className="p-1.5 sm:p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/15 transition-all"
+            className="grid place-items-center h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/15 transition-all"
           >
             <ChevronRight size={16} />
           </button>

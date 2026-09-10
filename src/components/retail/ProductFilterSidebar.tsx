@@ -140,7 +140,12 @@ export const ProductFilterSidebar = ({
                 key={brand}
                 className="flex items-center gap-2 text-xs text-foreground hover:text-primary cursor-pointer transition-colors"
               >
+                {/* Checkbox renders a button[role=checkbox], and a button does
+                    not take its name from a wrapping <label> the way a real
+                    input does - so without this a screen reader announced 36
+                    filters as an unnamed "checkbox". */}
                 <Checkbox
+                  aria-label={`Filter by brand: ${brand}`}
                   checked={filters.brands.includes(brand)}
                   onCheckedChange={() => toggleBrand(brand)}
                 />
@@ -162,6 +167,8 @@ export const ProductFilterSidebar = ({
                 <button
                   key={cap}
                   onClick={() => toggleCapacity(cap)}
+                  aria-pressed={active}
+                  aria-label={`Filter by capacity: ${cap}`}
                   className={`px-2.5 py-1 rounded-md text-xs font-medium border transition-all ${
                     active
                       ? "bg-primary text-primary-foreground border-primary shadow-xs font-bold"
@@ -181,6 +188,7 @@ export const ProductFilterSidebar = ({
         <h4 className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Availability</h4>
         <label className="flex items-center gap-2 text-xs text-foreground cursor-pointer">
           <Checkbox
+            aria-label="Show only items in stock and ready for immediate dispatch"
             checked={filters.inStockOnly}
             onCheckedChange={(checked) => onChange({ ...filters, inStockOnly: Boolean(checked) })}
           />

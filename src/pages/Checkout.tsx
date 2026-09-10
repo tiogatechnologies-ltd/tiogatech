@@ -435,6 +435,10 @@ const Checkout = () => {
       <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_400px] gap-0">
         {/* Left: form */}
         <main className="p-4 sm:p-8 lg:p-10 space-y-7">
+          {/* The page had no h1 at all, so assistive tech and search engines had
+              no title for it. Visually hidden - the surrounding UI already makes
+              the context obvious to sighted users. */}
+          <h1 className="sr-only">Checkout</h1>
           {/* Contact */}
           <section>
             <div className="flex items-center justify-between mb-3">

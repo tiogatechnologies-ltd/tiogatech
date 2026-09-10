@@ -104,7 +104,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           <button
             onClick={handleWishlist}
             aria-label={isSaved ? "Remove from Wishlist" : "Save to Wishlist"}
-            className={`p-2 rounded-full backdrop-blur-md transition-all shadow-md ${
+            className={`h-10 w-10 grid place-items-center rounded-full backdrop-blur-md transition-all shadow-md ${
               isSaved
                 ? "bg-red-500 text-white shadow-red-500/20 scale-110"
                 : "bg-background/80 hover:bg-background text-muted-foreground hover:text-red-500"
@@ -116,7 +116,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           <Link
             to={`/packages/solar/${pkg.id}`}
             aria-label="View Details"
-            className="p-2 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md flex items-center justify-center"
+            className="h-10 w-10 grid place-items-center rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md"
           >
             <Eye size={15} />
           </Link>

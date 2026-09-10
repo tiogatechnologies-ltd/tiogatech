@@ -181,7 +181,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
           <button
             onClick={handleWishlist}
             aria-label={isSaved ? "Remove from Wishlist" : "Save to Wishlist"}
-            className={`${isCompact ? "p-1.5" : "p-2"} rounded-full backdrop-blur-md transition-all shadow-md ${
+            className={`${isCompact ? "h-9 w-9" : "h-10 w-10"} grid place-items-center rounded-full backdrop-blur-md transition-all shadow-md ${
               isSaved
                 ? "bg-red-500 text-white shadow-red-500/20 scale-105"
                 : "bg-background/80 hover:bg-background text-muted-foreground hover:text-red-500"
@@ -193,7 +193,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
           <button
             onClick={handleCompare}
             aria-label="Compare Product"
-            className={`${isCompact ? "p-1.5" : "p-2"} rounded-full backdrop-blur-md transition-all shadow-md ${
+            className={`${isCompact ? "h-9 w-9" : "h-10 w-10"} grid place-items-center rounded-full backdrop-blur-md transition-all shadow-md ${
               isCompared
                 ? "bg-primary text-primary-foreground scale-105"
                 : "bg-background/80 hover:bg-background text-muted-foreground hover:text-primary"
@@ -206,7 +206,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
             <button
               onClick={handleQuickView}
               aria-label="Quick View"
-              className={`${isCompact ? "p-1.5" : "p-2"} rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md`}
+              className={`${isCompact ? "h-9 w-9" : "h-10 w-10"} grid place-items-center rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md`}
             >
               <Eye size={isCompact ? 13 : 15} />
             </button>
