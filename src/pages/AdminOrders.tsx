@@ -84,8 +84,13 @@ const STATUS_COLORS: Record<string, string> = {
   cancelled: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
 };
 
+// Page weight cap. Paired with an exact count so a partial list is visible as
+// partial rather than passing for the whole order book.
+const ORDER_PAGE_SIZE = 500;
+
 const AdminOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [totalOrders, setTotalOrders] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -115,10 +120,18 @@ const AdminOrders = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(500);
+    // Capped at 500 for page weight. Fetch the true count alongside so a busy
+    // shop is never shown a partial book of orders as if it were complete -
+    // search and the status tabs filter these rows client-side.
+    const { data, error, count } = await supabase
+      .from("orders")
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false })
+      .limit(ORDER_PAGE_SIZE);
     setLoading(false);
     if (error) { toast.error("Failed to load orders"); return; }
     setOrders((data || []) as Order[]);
+    setTotalOrders(count ?? null);
   };
 
   useEffect(() => {
@@ -209,7 +222,11 @@ const AdminOrders = () => {
       <div className="space-y-5">
         <div className="flex flex-wrap items-center gap-3">
           <h2 className="font-display text-xl font-bold text-foreground">Orders</h2>
-          <span className="text-xs text-muted-foreground">{orders.length} total</span>
+          <span className="text-xs text-muted-foreground">
+            {totalOrders !== null && totalOrders > orders.length
+              ? `Showing ${orders.length.toLocaleString()} most recent of ${totalOrders.toLocaleString()}`
+              : `${orders.length.toLocaleString()} total`}
+          </span>
         </div>
 
         <div className="flex flex-wrap gap-2">
