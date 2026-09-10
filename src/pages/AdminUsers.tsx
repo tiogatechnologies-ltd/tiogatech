@@ -64,7 +64,12 @@ const roleBadgeColors: Record<string, string> = {
   customer: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800",
 };
 
+// Matches PostgREST default max-rows; raising this alone will not help unless
+// the server setting is raised too.
+const PROFILE_PAGE_SIZE = 1000;
+
 const AdminUsers = () => {
+  const [totalProfiles, setTotalProfiles] = useState<number | null>(null);
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [customRoles, setCustomRoles] = useState<CustomRole[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,14 +93,22 @@ const AdminUsers = () => {
   const loadUsers = async () => {
     setLoading(true);
     try {
+      // PostgREST caps rows silently, so an unbounded select would show the
+      // first N accounts as if they were everyone. Ask for an exact count too
+      // and tell the admin when the list is partial.
       const [profRes, rolesRes, crRes, ucrRes] = await Promise.all([
-        supabase.from("profiles").select("*").order("created_at", { ascending: false }),
+        supabase
+          .from("profiles")
+          .select("*", { count: "exact" })
+          .order("created_at", { ascending: false })
+          .limit(PROFILE_PAGE_SIZE),
         supabase.from("user_roles").select("*"),
         supabase.from("custom_roles").select("*"),
         supabase.from("user_custom_roles").select("*"),
       ]);
 
       const profiles = (profRes.data || []) as any[];
+      setTotalProfiles(profRes.count ?? null);
       const userRoles = (rolesRes.data || []) as any[];
       const customRoleMap: Record<string, string> = {};
       (ucrRes.data || []).forEach((r: any) => {
@@ -286,6 +299,13 @@ const AdminUsers = () => {
             <p className="text-sm text-muted-foreground">
               Manage corporate staff, field engineers, sales officers, permissions, and customer accounts.
             </p>
+            {/* Never let a truncated list look like the whole list. */}
+            {totalProfiles !== null && totalProfiles > users.length && (
+              <p className="mt-1.5 inline-flex items-center gap-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:text-amber-400">
+                <AlertTriangle size={12} />
+                Showing the {users.length.toLocaleString()} most recent of {totalProfiles.toLocaleString()} accounts. Search and filters apply to these only.
+              </p>
+            )}
           </div>
           <div className="flex flex-wrap gap-2">
             <button
