@@ -36,7 +36,6 @@ import SEO from "@/components/SEO";
 import { ProductCard } from "@/components/retail/ProductCard";
 import { ProductFilterSidebar } from "@/components/retail/ProductFilterSidebar";
 import { QuickViewModal } from "@/components/retail/QuickViewModal";
-import { ProductCompareTray } from "@/components/retail/ProductCompareTray";
 import { ColumnGridSwitcher, type GridColumnOption } from "@/components/retail/ColumnGridSwitcher";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -1007,9 +1006,6 @@ export const Catalog = () => {
           </div>
         </div>
       </main>
-
-      {/* Floating Comparison Tray */}
-      <ProductCompareTray />
 
       {/* Quick View Modal */}
       <QuickViewModal

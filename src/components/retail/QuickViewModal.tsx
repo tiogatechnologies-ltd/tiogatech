@@ -3,10 +3,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Star, Shield, Check, Heart, ArrowRight, X, TrendingDown, Tag } from "lucide-react";
+import { ShoppingCart, Star, Shield, Check, Heart, ArrowRight, X, TrendingDown, Tag, SlidersHorizontal } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { useWishlist } from "@/hooks/useWishlist";
+import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
@@ -30,6 +31,7 @@ const fmt = (n?: number | null, fallback?: string | null) => {
 export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) => {
   const { add } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { isInCompare, toggleCompare } = useProductCompare();
   // Must stay above the early return below - hooks cannot run conditionally.
   const { settings: promos } = useSiteSetting("promotions");
   const [quantity, setQuantity] = useState(1);
@@ -38,6 +40,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
   if (!product) return null;
 
   const isSaved = isInWishlist(product.id);
+  const isCompared = isInCompare(product.id);
   const hasPrice = !!(product.numeric_price && product.numeric_price > 0);
   const compareAt = resolveCompareAt(product.numeric_price, (product as any).compare_at_price, promos, product.id);
   const pct = savingsPct(product.numeric_price, compareAt);
@@ -181,8 +184,20 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
                   variant="outline"
                   onClick={() => toggleWishlist(product.id, product.name)}
                   className={`p-3 rounded-xl ${isSaved ? "text-red-500 border-red-300" : ""}`}
+                  title={isSaved ? "Remove from Wishlist" : "Add to Wishlist"}
+                  aria-label="Wishlist Product"
                 >
                   <Heart size={16} fill={isSaved ? "currentColor" : "none"} />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => toggleCompare(product)}
+                  className={`p-3 rounded-xl ${isCompared ? "text-primary border-primary/50 bg-primary/10" : ""}`}
+                  title={isCompared ? "Remove from Compare" : "Add to Compare"}
+                  aria-label="Compare Product"
+                >
+                  <SlidersHorizontal size={16} />
                 </Button>
               </div>
 

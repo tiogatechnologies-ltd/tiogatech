@@ -24,7 +24,10 @@ import {
   TrendingDown,
   Tag,
   Star,
+  Scale,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
@@ -118,7 +121,7 @@ export const ProductDetail = () => {
   const { add: addToCart } = useCart();
   const { content: flashDeal } = useLandingContent("flash_deal");
   const { isInWishlist, toggleWishlist } = useWishlist();
-  const { isInCompare, toggleCompare } = useProductCompare();
+  const { isInCompare, toggleCompare, openCompareModal, count: compareCount } = useProductCompare();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [related, setRelated] = useState<Product[]>([]);
@@ -129,6 +132,29 @@ export const ProductDetail = () => {
   const [copiedLink, setCopiedLink] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reviewStats, setReviewStats] = useState<{ average: number; count: number } | null>(null);
+
+  const handleToggleCompare = (p: Product) => {
+    toggleCompare({
+      id: p.id,
+      name: p.name,
+      category: p.category,
+      series: p.series || null,
+      description: p.description,
+      features: p.features || [],
+      best_for: p.best_for || "Residential & commercial applications",
+      price: p.price,
+      numeric_price: p.numeric_price || parsePriceNaira(p.price) || undefined,
+      tier: (p.tier as any) || "premium",
+      image_url: p.image_url,
+      specifications: p.specifications || {},
+      brand: p.brand || inferBrand(p.name, p.category),
+      rating: p.rating,
+      review_count: p.review_count,
+      stock_status: "in_stock",
+      serial_number: p.serial_number,
+      sku: p.sku,
+    } as unknown as RetailProduct);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -468,23 +494,20 @@ export const ProductDetail = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      if (product) {
-                        toggleCompare({
-                          ...product,
-                          numeric_price: numPrice,
-                          brand: product.brand || "Tioga Certified",
-                          rating: product.rating ?? undefined,
-                          review_count: product.review_count ?? undefined,
-                        } as unknown as RetailProduct);
-                      }
+                      if (product) handleToggleCompare(product);
                     }}
                     aria-label="Compare product"
-                    className={`p-2 rounded-xl border transition-all ${
+                    className={cn(
+                      "p-2 rounded-xl border transition-all",
                       product && isInCompare(product.id)
-                        ? "border-primary bg-primary/10 text-primary"
+                        ? "border-primary bg-primary/10 text-primary shadow-sm"
                         : "border-border bg-card text-muted-foreground hover:text-primary hover:border-primary/40"
-                    }`}
-                    title={product && isInCompare(product.id) ? "Remove from comparison" : "Add to comparison"}
+                    )}
+                    title={
+                      product && isInCompare(product.id)
+                        ? `In comparison (${compareCount}/4) · Click to remove`
+                        : "Add to comparison"
+                    }
                   >
                     <SlidersHorizontal size={16} />
                   </button>
@@ -650,6 +673,41 @@ export const ProductDetail = () => {
                   </button>
                 </div>
 
+                {/* Compare Action Row */}
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (product) handleToggleCompare(product);
+                    }}
+                    className={cn(
+                      "flex-1 inline-flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-xs font-bold transition-all shadow-sm",
+                      product && isInCompare(product.id)
+                        ? "border-primary/60 bg-primary/10 text-primary hover:bg-primary/20"
+                        : "border-border bg-card text-foreground hover:border-primary/50 hover:bg-muted"
+                    )}
+                  >
+                    <SlidersHorizontal size={15} className={product && isInCompare(product.id) ? "text-primary" : "text-muted-foreground"} />
+                    <span>
+                      {product && isInCompare(product.id)
+                        ? `In Comparison (${compareCount}/4)`
+                        : "Compare with Similar Models"}
+                    </span>
+                  </button>
+
+                  {compareCount >= 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={openCompareModal}
+                      className="rounded-2xl px-4 py-3 h-auto text-xs font-bold gap-1.5 shrink-0 border-primary/40 text-primary hover:bg-primary/10"
+                    >
+                      <Scale size={15} />
+                      <span>Matrix ({compareCount})</span>
+                    </Button>
+                  )}
+                </div>
+
                 {/* WhatsApp Sales Channel */}
                 <a
                   href={`https://wa.me/${whatsappDigits(contact)}?text=${waMsg}`}
@@ -809,6 +867,153 @@ export const ProductDetail = () => {
           </div>
         </section>
 
+        {/* Interactive Side-by-Side Model Comparison Section */}
+        {product && related.length > 0 && (
+          <section className="section-container py-12 border-t border-border space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
+                  <Scale size={15} />
+                  <span>Side-by-Side Comparison</span>
+                </div>
+                <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-foreground mt-1">
+                  Compare Against Similar {categoryLabels[product.category] ?? product.category}
+                </h2>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                  Evaluate specifications, pricing, warranties, and features against alternative models before you decide.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (!isInCompare(product.id)) {
+                      handleToggleCompare(product);
+                    }
+                    openCompareModal();
+                  }}
+                  className="rounded-2xl px-4 py-2.5 font-bold text-xs gap-2 shadow-md bg-primary text-primary-foreground hover:brightness-110"
+                >
+                  <Scale size={15} />
+                  <span>
+                    {compareCount >= 2
+                      ? `Open Comparison Matrix (${compareCount})`
+                      : "Launch Side-by-Side Matrix"}
+                  </span>
+                  <ArrowRight size={14} />
+                </Button>
+              </div>
+            </div>
+
+            {/* Quick Side-by-Side Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {[product, ...related.slice(0, 3)].map((item) => {
+                const isCurrent = item.id === product.id;
+                const inComp = isInCompare(item.id);
+                const itemNumPrice = item.numeric_price || parsePriceNaira(item.price) || 0;
+
+                return (
+                  <div
+                    key={item.id}
+                    className={cn(
+                      "rounded-3xl border bg-card p-5 flex flex-col justify-between transition-all duration-300 relative",
+                      isCurrent
+                        ? "border-primary/80 ring-2 ring-primary/20 shadow-lg"
+                        : "border-border hover:border-primary/40 hover:shadow-md"
+                    )}
+                  >
+                    {isCurrent && (
+                      <div className="absolute -top-3 left-4 px-3 py-0.5 rounded-full bg-primary text-primary-foreground font-extrabold text-[10px] uppercase tracking-wider shadow-sm">
+                        Current Model
+                      </div>
+                    )}
+
+                    <div className="space-y-3.5">
+                      <div className="aspect-[4/3] rounded-2xl bg-muted/20 overflow-hidden p-3 flex items-center justify-center">
+                        <img
+                          src={resolveProductImage(item.image_url, item.category)}
+                          alt={item.name}
+                          loading="lazy"
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                          {item.brand || "Tioga Certified"}
+                        </span>
+                        <h3 className="text-xs sm:text-sm font-bold text-foreground line-clamp-2 mt-0.5">
+                          {item.name}
+                        </h3>
+                      </div>
+
+                      <div>
+                        <p className="font-display font-black text-base text-foreground">
+                          {itemNumPrice > 0 ? `₦${itemNumPrice.toLocaleString("en-NG")}` : item.price || "Price on Request"}
+                        </p>
+                        {itemNumPrice > 0 && (
+                          <p className="text-[11px] text-muted-foreground mt-0.5">
+                            Spread: ~₦{Math.round(itemNumPrice / 6).toLocaleString("en-NG")}/mo
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Key Specs Preview (Top 2-3 specifications) */}
+                      {item.specifications && Object.keys(item.specifications).length > 0 && (
+                        <div className="pt-2 border-t border-border/60 space-y-1.5 text-[11px]">
+                          {Object.entries(item.specifications).slice(0, 3).map(([k, v]) => (
+                            <div key={k} className="flex items-center justify-between text-muted-foreground">
+                              <span className="truncate max-w-[100px]">{k}</span>
+                              <span className="font-semibold text-foreground truncate max-w-[120px]">{v}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="pt-4 mt-3 border-t border-border/60 flex flex-col gap-2">
+                      <Button
+                        type="button"
+                        variant={inComp ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleToggleCompare(item)}
+                        className={cn(
+                          "w-full rounded-xl text-xs font-bold gap-1.5 h-9",
+                          inComp
+                            ? "bg-primary text-primary-foreground hover:brightness-110"
+                            : "border-border hover:border-primary/50 text-foreground"
+                        )}
+                      >
+                        {inComp ? (
+                          <>
+                            <Check size={14} />
+                            <span>In Compare ({compareCount}/4)</span>
+                          </>
+                        ) : (
+                          <>
+                            <Plus size={14} />
+                            <span>Add to Compare</span>
+                          </>
+                        )}
+                      </Button>
+
+                      {!isCurrent && (
+                        <Link
+                          to={productPath(item)}
+                          className="text-center text-[11px] font-bold text-muted-foreground hover:text-primary transition-colors pt-0.5"
+                        >
+                          View Full Details &rarr;
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* Verified Customer Reviews Section */}
         <section className="section-container py-8 border-t border-border">
           <ProductReviews productId={product.id} onStats={setReviewStats} />
@@ -834,13 +1039,11 @@ export const ProductDetail = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {related.map((rel) => (
-                <button
+                <div
                   key={rel.id}
-                  type="button"
-                  onClick={() => navigate(productPath(rel))}
-                  className="text-left rounded-3xl border border-border bg-card p-4 flex flex-col justify-between hover:border-primary/50 hover:shadow-lg transition-all group"
+                  className="rounded-3xl border border-border bg-card p-4 flex flex-col justify-between hover:border-primary/50 hover:shadow-lg transition-all group relative"
                 >
-                  <div className="space-y-3">
+                  <Link to={productPath(rel)} className="space-y-3 block">
                     <div className="aspect-[4/3] rounded-2xl bg-muted/20 overflow-hidden p-3 flex items-center justify-center">
                       <img
                         src={resolveProductImage(rel.image_url, rel.category)}
@@ -857,17 +1060,33 @@ export const ProductDetail = () => {
                         {rel.name}
                       </h4>
                     </div>
-                  </div>
+                  </Link>
 
-                  <div className="pt-3 mt-3 border-t border-border/60 flex items-center justify-between">
+                  <div className="pt-3 mt-3 border-t border-border/60 flex items-center justify-between gap-2">
                     <span className="font-display font-bold text-sm text-foreground">
                       {formatPrice(rel.price)}
                     </span>
-                    <span className="text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">
-                      Details &rarr;
-                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleToggleCompare(rel);
+                      }}
+                      className={cn(
+                        "px-2.5 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1 transition-all border",
+                        isInCompare(rel.id)
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-muted/40 text-muted-foreground border-border hover:text-primary hover:border-primary/50"
+                      )}
+                      title={isInCompare(rel.id) ? "Remove from comparison" : "Add to comparison"}
+                      aria-label={`Compare ${rel.name}`}
+                    >
+                      {isInCompare(rel.id) ? <Check size={12} /> : <Plus size={12} />}
+                      <span>Compare</span>
+                    </button>
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           </section>
