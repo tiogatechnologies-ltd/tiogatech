@@ -125,4 +125,35 @@ describe("useProductCompare", () => {
     expect(hook1.current.isOpen).toBe(false);
     expect(hook2.current.isOpen).toBe(false);
   });
+
+  it("deduplicates products with matching names even if IDs differ (static vs DB row)", () => {
+    const { result } = renderHook(() => useProductCompare());
+    const staticItem = makeMockProduct("a000-static-id", "Deye 5kW Hybrid Inverter");
+    const dbItem = makeMockProduct("1111-db-uuid", "Deye 5kW Hybrid Inverter");
+
+    act(() => {
+      result.current.addCompare(staticItem);
+    });
+    expect(result.current.count).toBe(1);
+
+    // Attempting to add DB item with different ID but same name should not create duplicate
+    act(() => {
+      result.current.addCompare(dbItem);
+    });
+    expect(result.current.count).toBe(1);
+    expect(result.current.isInCompare("1111-db-uuid", "Deye 5kW Hybrid Inverter")).toBe(true);
+  });
+
+  it("isInCompare matches by ID or name", () => {
+    const { result } = renderHook(() => useProductCompare());
+    const item = makeMockProduct("p-100", "Felicity 5kWh Lithium Battery");
+
+    act(() => {
+      result.current.addCompare(item);
+    });
+
+    expect(result.current.isInCompare("p-100")).toBe(true);
+    expect(result.current.isInCompare("p-different", "Felicity 5kWh Lithium Battery")).toBe(true);
+    expect(result.current.isInCompare("p-different", "Non-existent")).toBe(false);
+  });
 });

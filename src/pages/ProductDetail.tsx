@@ -137,7 +137,7 @@ export const ProductDetail = () => {
     toggleCompare({
       id: p.id,
       name: p.name,
-      category: p.category,
+      category: normalizeCategory(p.category, p.name),
       series: p.series || null,
       description: p.description,
       features: p.features || [],
@@ -682,14 +682,14 @@ export const ProductDetail = () => {
                     }}
                     className={cn(
                       "flex-1 inline-flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-xs font-bold transition-all shadow-sm",
-                      product && isInCompare(product.id)
+                      product && isInCompare(product.id, product.name)
                         ? "border-primary/60 bg-primary/10 text-primary hover:bg-primary/20"
                         : "border-border bg-card text-foreground hover:border-primary/50 hover:bg-muted"
                     )}
                   >
-                    <SlidersHorizontal size={15} className={product && isInCompare(product.id) ? "text-primary" : "text-muted-foreground"} />
+                    <SlidersHorizontal size={15} className={product && isInCompare(product.id, product.name) ? "text-primary" : "text-muted-foreground"} />
                     <span>
-                      {product && isInCompare(product.id)
+                      {product && isInCompare(product.id, product.name)
                         ? `In Comparison (${compareCount}/4)`
                         : "Compare with Similar Models"}
                     </span>
@@ -888,7 +888,7 @@ export const ProductDetail = () => {
                 <Button
                   type="button"
                   onClick={() => {
-                    if (!isInCompare(product.id)) {
+                    if (!isInCompare(product.id, product.name)) {
                       handleToggleCompare(product);
                     }
                     openCompareModal();
@@ -910,7 +910,7 @@ export const ProductDetail = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {[product, ...related.slice(0, 3)].map((item) => {
                 const isCurrent = item.id === product.id;
-                const inComp = isInCompare(item.id);
+                const inComp = isInCompare(item.id, item.name);
                 const itemNumPrice = item.numeric_price || parsePriceNaira(item.price) || 0;
 
                 return (
@@ -973,30 +973,44 @@ export const ProductDetail = () => {
                     </div>
 
                     <div className="pt-4 mt-3 border-t border-border/60 flex flex-col gap-2">
-                      <Button
-                        type="button"
-                        variant={inComp ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handleToggleCompare(item)}
-                        className={cn(
-                          "w-full rounded-xl text-xs font-bold gap-1.5 h-9",
-                          inComp
-                            ? "bg-primary text-primary-foreground hover:brightness-110"
-                            : "border-border hover:border-primary/50 text-foreground"
+                      <div className="flex items-center gap-1.5 w-full">
+                        <Button
+                          type="button"
+                          variant={inComp ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => handleToggleCompare(item)}
+                          className={cn(
+                            "flex-1 rounded-xl text-xs font-bold gap-1.5 h-9",
+                            inComp
+                              ? "bg-primary text-primary-foreground hover:brightness-110"
+                              : "border-border hover:border-primary/50 text-foreground"
+                          )}
+                        >
+                          {inComp ? (
+                            <>
+                              <Check size={14} />
+                              <span>In Compare</span>
+                            </>
+                          ) : (
+                            <>
+                              <Plus size={14} />
+                              <span>Add to Compare</span>
+                            </>
+                          )}
+                        </Button>
+                        {inComp && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={openCompareModal}
+                            className="rounded-xl text-xs font-bold h-9 px-2.5 border-primary/40 text-primary hover:bg-primary/10 shrink-0"
+                            title="Open comparison matrix"
+                          >
+                            <Scale size={14} />
+                          </Button>
                         )}
-                      >
-                        {inComp ? (
-                          <>
-                            <Check size={14} />
-                            <span>In Compare ({compareCount}/4)</span>
-                          </>
-                        ) : (
-                          <>
-                            <Plus size={14} />
-                            <span>Add to Compare</span>
-                          </>
-                        )}
-                      </Button>
+                      </div>
 
                       {!isCurrent && (
                         <Link

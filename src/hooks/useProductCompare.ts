@@ -52,6 +52,12 @@ export const useProductCompare = () => {
     setIsOpen(false);
   }, [setIsOpen]);
 
+  const isSameProduct = (a: RetailProduct, b: RetailProduct): boolean => {
+    if (a.id && b.id && a.id === b.id) return true;
+    if (a.name && b.name && a.name.trim().toLowerCase() === b.name.trim().toLowerCase()) return true;
+    return false;
+  };
+
   const addCompare = useCallback((product: RetailProduct): boolean => {
     let current: RetailProduct[] = [];
     try {
@@ -61,7 +67,7 @@ export const useProductCompare = () => {
       current = compareItems;
     }
 
-    const exists = current.some((p) => p.id === product.id);
+    const exists = current.some((p) => isSameProduct(p, product));
     if (exists) {
       toast.info("Already in Compare", { description: `"${product.name}" is already in your comparison.` });
       return true;
@@ -91,9 +97,9 @@ export const useProductCompare = () => {
       current = compareItems;
     }
 
-    const exists = current.some((p) => p.id === product.id);
+    const exists = current.some((p) => isSameProduct(p, product));
     if (exists) {
-      const next = current.filter((p) => p.id !== product.id);
+      const next = current.filter((p) => !isSameProduct(p, product));
       setCompareItems(next);
       localStorage.setItem(COMPARE_KEY, JSON.stringify(next));
       window.dispatchEvent(new CustomEvent("tioga:compare-updated"));
@@ -115,7 +121,7 @@ export const useProductCompare = () => {
     toast.success("Added to Compare", { description: `"${product.name}" added (${next.length}/${MAX_COMPARE}).` });
   }, [compareItems]);
 
-  const removeCompare = useCallback((productId: string) => {
+  const removeCompare = useCallback((productIdOrName: string) => {
     let current: RetailProduct[] = [];
     try {
       const stored = localStorage.getItem(COMPARE_KEY);
@@ -124,7 +130,10 @@ export const useProductCompare = () => {
       current = compareItems;
     }
 
-    const next = current.filter((p) => p.id !== productId);
+    const target = productIdOrName.trim().toLowerCase();
+    const next = current.filter(
+      (p) => p.id !== productIdOrName && p.name.trim().toLowerCase() !== target
+    );
     setCompareItems(next);
     localStorage.setItem(COMPARE_KEY, JSON.stringify(next));
     window.dispatchEvent(new CustomEvent("tioga:compare-updated"));
@@ -139,7 +148,12 @@ export const useProductCompare = () => {
   }, [setIsOpen]);
 
   const isInCompare = useCallback(
-    (productId: string) => compareItems.some((p) => p.id === productId),
+    (productId: string, productName?: string) => {
+      const normName = productName ? productName.trim().toLowerCase() : null;
+      return compareItems.some(
+        (p) => p.id === productId || (normName && p.name.trim().toLowerCase() === normName)
+      );
+    },
     [compareItems]
   );
 

@@ -80,7 +80,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
   const isCompact = columns === 4 || columns === 5;
 
   const isSaved = isInWishlist(product.id);
-  const isCompared = isInCompare(product.id);
+  const isCompared = isInCompare(product.id, product.name);
 
   // The struck-through price. Uses per-product override when set, otherwise storewide markup
   const compareAt = resolveCompareAt(

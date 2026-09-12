@@ -40,7 +40,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
   if (!product) return null;
 
   const isSaved = isInWishlist(product.id);
-  const isCompared = isInCompare(product.id);
+  const isCompared = isInCompare(product.id, product.name);
   const hasPrice = !!(product.numeric_price && product.numeric_price > 0);
   const compareAt = resolveCompareAt(product.numeric_price, (product as any).compare_at_price, promos, product.id);
   const pct = savingsPct(product.numeric_price, compareAt);

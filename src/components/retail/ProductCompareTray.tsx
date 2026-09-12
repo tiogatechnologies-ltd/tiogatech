@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import {
   SlidersHorizontal,
   X,
@@ -27,9 +27,18 @@ import { useCart } from "@/contexts/CartContext";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
+import { supabase } from "@/integrations/supabase/client";
+import { mergeProducts } from "@/lib/mergeProducts";
+import { normalizeCategory, inferBrand } from "@/lib/productBrand";
 import type { RetailProduct } from "@/types/retail";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+
+const parsePriceNaira = (price?: string | null): number | null => {
+  if (!price) return null;
+  const digits = price.replace(/[^0-9]/g, "");
+  return digits ? parseInt(digits, 10) : null;
+};
 
 export const ProductCompareTray = () => {
   const {
@@ -45,13 +54,53 @@ export const ProductCompareTray = () => {
   const [highlightDiffs, setHighlightDiffs] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
   const [pickerSearch, setPickerSearch] = useState("");
+  const [selectedCat, setSelectedCat] = useState<string>("all");
+  const [dbCatalog, setDbCatalog] = useState<RetailProduct[]>([]);
+  const pickerRef = useRef<HTMLDivElement>(null);
 
-  // Normalize static products to RetailProduct format
+  // Fetch live products from Supabase to ensure authentic DB rows and IDs match
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from("products")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order")
+      .then(({ data }) => {
+        if (cancelled || !data) return;
+        const normalizedDb: RetailProduct[] = data.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          category: normalizeCategory(p.category, p.name),
+          series: p.series || null,
+          description: p.description || "",
+          features: Array.isArray(p.features) ? p.features : [],
+          best_for: p.best_for || "Residential & commercial applications",
+          price: p.price || null,
+          numeric_price: parsePriceNaira(p.price) || undefined,
+          tier: p.tier || "premium",
+          image_url: p.image_url || null,
+          specifications: p.specifications || {},
+          brand: p.brand || inferBrand(p.name, p.category),
+          rating: p.rating,
+          review_count: p.review_count,
+          stock_status: "in_stock",
+          serial_number: p.serial_number,
+          sku: p.sku,
+        }));
+        setDbCatalog(normalizedDb);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Merge static catalog with live DB items, ensuring normalized categories and matching IDs
   const catalogPool: RetailProduct[] = useMemo(() => {
-    return STATIC_PRODUCTS.map((p) => ({
+    const staticItems: RetailProduct[] = STATIC_PRODUCTS.map((p) => ({
       id: p.id,
       name: p.name,
-      category: p.category.toLowerCase().replace(/\s+/g, "_"),
+      category: normalizeCategory(p.category, p.name),
       series: p.series || null,
       description: p.description,
       features: p.features || [],
@@ -62,7 +111,7 @@ export const ProductCompareTray = () => {
       image_url: p.image_url || null,
       specifications: p.specifications || {},
       tags: p.tags || null,
-      brand: p.brand || "Tioga Certified",
+      brand: p.brand || inferBrand(p.name, p.category),
       rating: p.rating,
       review_count: p.review_count,
       stock_status: p.stock_status || "in_stock",
@@ -70,32 +119,79 @@ export const ProductCompareTray = () => {
       serial_number: p.serial_number,
       sku: p.sku,
     }));
-  }, []);
-
-  if (count === 0 && !isOpen) return null;
+    return mergeProducts(staticItems, dbCatalog);
+  }, [dbCatalog]);
 
   // Primary category of currently selected items for relevant suggestions
-  const primaryCategory = compareItems[0]?.category || "";
+  const primaryCategory = compareItems[0]?.category
+    ? normalizeCategory(compareItems[0].category, compareItems[0].name)
+    : "";
 
-  // Available products for picker (exclude currently selected)
-  const availableToPick = catalogPool.filter(
-    (p) => !compareItems.some((item) => item.id === p.id)
-  );
+  // Available products for picker (exclude currently selected by ID or name)
+  const availableToPick = useMemo(() => {
+    return catalogPool.filter(
+      (p) =>
+        !compareItems.some(
+          (item) =>
+            item.id === p.id ||
+            (item.name && p.name && item.name.trim().toLowerCase() === p.name.trim().toLowerCase())
+        )
+    );
+  }, [catalogPool, compareItems]);
 
-  // Suggestions filtered by current category or search
-  const filteredSuggestions = availableToPick.filter((p) => {
-    if (pickerSearch.trim()) {
-      const q = pickerSearch.toLowerCase();
-      return (
-        p.name.toLowerCase().includes(q) ||
-        (p.brand && p.brand.toLowerCase().includes(q)) ||
-        (p.category && p.category.toLowerCase().includes(q)) ||
-        (p.series && p.series.toLowerCase().includes(q))
+  // Unique categories in the available pool for fast filtering
+  const availableCategories = useMemo(() => {
+    const set = new Set<string>();
+    availableToPick.forEach((p) => {
+      const cat = normalizeCategory(p.category, p.name);
+      if (cat) set.add(cat);
+    });
+    return Array.from(set);
+  }, [availableToPick]);
+
+  // Suggestions filtered by search, category chip, or prioritized by primaryCategory
+  const filteredSuggestions = useMemo(() => {
+    const q = pickerSearch.trim().toLowerCase();
+    if (q) {
+      return availableToPick.filter((p) => {
+        const cat = normalizeCategory(p.category, p.name);
+        return (
+          p.name.toLowerCase().includes(q) ||
+          (p.brand && p.brand.toLowerCase().includes(q)) ||
+          cat.toLowerCase().includes(q) ||
+          (p.series && p.series.toLowerCase().includes(q))
+        );
+      });
+    }
+
+    if (selectedCat !== "all") {
+      return availableToPick.filter(
+        (p) => normalizeCategory(p.category, p.name) === selectedCat
       );
     }
-    // Default to matching category first, then others
-    return primaryCategory ? p.category === primaryCategory : true;
-  });
+
+    // Default: prioritize models in the same category first, followed by others
+    if (primaryCategory) {
+      const sameCat = availableToPick.filter(
+        (p) => normalizeCategory(p.category, p.name) === primaryCategory
+      );
+      const otherCats = availableToPick.filter(
+        (p) => normalizeCategory(p.category, p.name) !== primaryCategory
+      );
+      return [...sameCat, ...otherCats];
+    }
+
+    return availableToPick;
+  }, [availableToPick, pickerSearch, selectedCat, primaryCategory]);
+
+  // Top alternative suggestions in the same category (used for quick-add pills)
+  const quickAlternatives = useMemo(() => {
+    if (!primaryCategory) return availableToPick.slice(0, 3);
+    const same = availableToPick.filter(
+      (p) => normalizeCategory(p.category, p.name) === primaryCategory
+    );
+    return same.length > 0 ? same.slice(0, 3) : availableToPick.slice(0, 3);
+  }, [availableToPick, primaryCategory]);
 
   // Unique spec keys across compared items
   const allSpecKeys = Array.from(
@@ -126,6 +222,15 @@ export const ProductCompareTray = () => {
       setShowPicker(false);
     }
   };
+
+  const openPickerAndFocus = () => {
+    setShowPicker(true);
+    setTimeout(() => {
+      pickerRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 100);
+  };
+
+  if (count === 0 && !isOpen) return null;
 
   return (
     <>
@@ -252,21 +357,56 @@ export const ProductCompareTray = () => {
 
           {/* Quick Model Picker Drawer / Banner */}
           {showPicker && count < MAX_COMPARE && (
-            <div className="p-4 rounded-2xl bg-muted/40 border border-border mt-3 shrink-0 space-y-3 animate-in fade-in slide-in-from-top-2">
+            <div
+              ref={pickerRef}
+              className="p-4 rounded-2xl bg-muted/40 border border-border mt-3 shrink-0 space-y-3 animate-in fade-in slide-in-from-top-2"
+            >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 text-xs font-bold text-foreground">
                   <Sparkles size={15} className="text-primary" />
-                  <span>Add Product to Compare ({count}/{MAX_COMPARE})</span>
+                  <span>
+                    Add Hardware Model to Compare ({count}/{MAX_COMPARE})
+                  </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowPicker(false)}
-                  className="text-muted-foreground hover:text-foreground text-xs"
+                  className="p-1 rounded-lg text-muted-foreground hover:text-foreground text-xs transition-colors"
                 >
                   <X size={15} />
                 </button>
               </div>
 
+              {/* Category Filter Tabs */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCat("all")}
+                  className={`px-3 py-1 rounded-lg font-semibold transition-colors shrink-0 text-xs ${
+                    selectedCat === "all"
+                      ? "bg-primary text-primary-foreground shadow-xs"
+                      : "bg-card border border-border text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  All ({availableToPick.length})
+                </button>
+                {availableCategories.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedCat(cat)}
+                    className={`px-3 py-1 rounded-lg font-semibold transition-colors shrink-0 text-xs capitalize ${
+                      selectedCat === cat
+                        ? "bg-primary text-primary-foreground shadow-xs"
+                        : "bg-card border border-border text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              {/* Search Bar */}
               <div className="relative">
                 <Search
                   size={14}
@@ -275,65 +415,124 @@ export const ProductCompareTray = () => {
                 <Input
                   value={pickerSearch}
                   onChange={(e) => setPickerSearch(e.target.value)}
-                  placeholder={`Search ${primaryCategory ? primaryCategory.replace("_", " ") : "hardware"} models by name or brand...`}
-                  className="pl-9 h-9 text-xs rounded-xl bg-card border-border"
+                  placeholder={`Search by model name, brand (Deye, Felicity, Longi, STAMA), or specs...`}
+                  className="pl-9 pr-8 h-9 text-xs rounded-xl bg-card border-border"
                 />
+                {pickerSearch && (
+                  <button
+                    type="button"
+                    onClick={() => setPickerSearch("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-0.5"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
               </div>
 
               {/* Suggestions grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-44 overflow-y-auto pr-1">
-                {filteredSuggestions.slice(0, 9).map((prod) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto pr-1">
+                {filteredSuggestions.slice(0, 12).map((prod) => (
                   <div
                     key={prod.id}
-                    className="flex items-center justify-between p-2 rounded-xl bg-card border border-border/80 hover:border-primary/50 text-left gap-2 text-xs transition-colors"
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-card border border-border/80 hover:border-primary/50 text-left gap-2.5 text-xs transition-all shadow-2xs hover:shadow-xs group"
                   >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <img
-                        src={resolveProductImage(prod.image_url, prod.category)}
-                        alt={prod.name}
-                        className="w-8 h-8 object-contain rounded-lg shrink-0 bg-muted/20 p-0.5"
-                      />
-                      <div className="min-w-0">
-                        <p className="font-bold text-foreground truncate">{prod.name}</p>
-                        <p className="text-[11px] font-mono text-primary font-semibold">
-                          {prod.numeric_price ? `₦${prod.numeric_price.toLocaleString("en-NG")}` : prod.price || "Contact"}
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      <div className="w-10 h-10 rounded-lg bg-muted/20 border border-border/60 p-1 shrink-0 flex items-center justify-center overflow-hidden">
+                        <img
+                          src={resolveProductImage(prod.image_url, prod.category, prod.name)}
+                          alt={prod.name}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] uppercase font-bold text-primary truncate max-w-[80px]">
+                            {prod.brand || "Tioga"}
+                          </span>
+                          <span className="text-[9px] text-muted-foreground/80 px-1 py-0.2 rounded bg-muted">
+                            {prod.category}
+                          </span>
+                        </div>
+                        <p className="font-bold text-foreground truncate text-xs mt-0.5" title={prod.name}>
+                          {prod.name}
+                        </p>
+                        <p className="text-[11px] font-mono text-primary font-bold">
+                          {prod.numeric_price
+                            ? `₦${prod.numeric_price.toLocaleString("en-NG")}`
+                            : prod.price || "Contact for Price"}
                         </p>
                       </div>
                     </div>
                     <Button
                       size="sm"
                       onClick={() => handleQuickAdd(prod)}
-                      className="h-7 px-2.5 text-[11px] font-bold rounded-lg shrink-0"
+                      className="h-8 px-3 text-xs font-bold rounded-xl shrink-0 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all gap-1"
                     >
-                      <Plus size={12} className="mr-0.5" /> Add
+                      <Plus size={13} />
+                      <span>Add</span>
                     </Button>
                   </div>
                 ))}
                 {filteredSuggestions.length === 0 && (
-                  <p className="text-xs text-muted-foreground py-2 col-span-full text-center">
-                    No matching products found. Try a different search term.
-                  </p>
+                  <div className="text-xs text-muted-foreground py-6 col-span-full text-center border border-dashed border-border rounded-xl">
+                    <p className="font-medium">No matching models found.</p>
+                    <p className="text-[11px] mt-1 text-muted-foreground/70">
+                      Try clearing search or switching category tabs above.
+                    </p>
+                  </div>
                 )}
               </div>
             </div>
           )}
 
-          {/* If only 1 item selected, show a helpful invite banner */}
+          {/* If only 1 item selected, show a helpful invite banner with 1-click alternative pills */}
           {count === 1 && !showPicker && (
-            <div className="mt-3 p-3 rounded-2xl bg-primary/10 border border-primary/20 text-xs text-foreground flex items-center justify-between gap-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <AlertCircle size={16} className="text-primary shrink-0" />
-                <span>
-                  You have selected <strong>{compareItems[0]?.name}</strong>. Add at least one more product to compare specifications side by side!
-                </span>
+            <div className="mt-3 p-3.5 rounded-2xl bg-primary/10 border border-primary/20 text-xs text-foreground space-y-2 shrink-0 animate-in fade-in">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <AlertCircle size={16} className="text-primary shrink-0" />
+                  <span>
+                    Selected: <strong>{compareItems[0]?.name}</strong>. Add at least one more product to compare side-by-side:
+                  </span>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={openPickerAndFocus}
+                  className="text-xs h-7 rounded-xl font-bold gap-1 shrink-0 self-start sm:self-auto"
+                >
+                  <Search size={12} /> Browse Catalog ({availableToPick.length})
+                </Button>
               </div>
-              <Button
-                size="sm"
-                onClick={() => setShowPicker(true)}
-                className="text-xs h-7 rounded-xl font-bold gap-1 shrink-0"
-              >
-                <Plus size={12} /> Add Alternative Model
-              </Button>
+
+              {/* 1-Click Quick Add Recommended Alternatives */}
+              {quickAlternatives.length > 0 && (
+                <div className="flex items-center gap-2 overflow-x-auto pt-1 no-scrollbar">
+                  <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">
+                    Quick Add:
+                  </span>
+                  {quickAlternatives.map((alt) => (
+                    <button
+                      key={alt.id}
+                      type="button"
+                      onClick={() => handleQuickAdd(alt)}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-card border border-border/80 hover:border-primary text-foreground text-xs font-semibold shrink-0 transition-all hover:shadow-xs group"
+                    >
+                      <img
+                        src={resolveProductImage(alt.image_url, alt.category, alt.name)}
+                        alt=""
+                        className="w-5 h-5 object-contain"
+                      />
+                      <span className="truncate max-w-[140px] text-left">{alt.name}</span>
+                      <span className="font-mono text-primary text-[11px]">
+                        {alt.numeric_price ? `₦${(alt.numeric_price / 1000).toFixed(0)}k` : ""}
+                      </span>
+                      <span className="p-0.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        <Plus size={12} />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -409,7 +608,7 @@ export const ProductCompareTray = () => {
                     <th className="p-4 text-center min-w-[180px] align-middle">
                       <button
                         type="button"
-                        onClick={() => setShowPicker(true)}
+                        onClick={openPickerAndFocus}
                         className="w-full h-48 rounded-2xl border-2 border-dashed border-border hover:border-primary/60 bg-muted/10 hover:bg-primary/5 flex flex-col items-center justify-center p-4 gap-2 text-muted-foreground hover:text-primary transition-all group"
                       >
                         <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
