@@ -132,7 +132,7 @@ const Finance = () => {
 
       {/* CALCULATOR */}
       <section id="calculator" className="section-padding bg-muted/30 scroll-mt-20">
-        <div className="section-container max-w-6xl">
+        <div className="section-container">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3"><Calculator size={22} /></div>
             <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">Easy Flex repayment calculator</h2>

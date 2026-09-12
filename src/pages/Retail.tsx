@@ -159,9 +159,9 @@ export const Retail = () => {
       case 3:
         return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
       case 4:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
+        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-4";
       case 5:
-        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5";
+        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 3xl:grid-cols-5";
       case "list":
         return "grid-cols-1";
       default:
@@ -413,7 +413,7 @@ export const Retail = () => {
       <SiteHeader />
 
       <main className="flex-1 section-padding py-4 sm:py-8 pt-[72px] sm:pt-[84px]">
-        <div className="section-container px-3 sm:px-6">
+        <div className="section-container-wide px-3 sm:px-6">
           {/* Hero Carousel */}
           <RetailHeroCarousel productCount={products.length} />
 
@@ -489,7 +489,7 @@ export const Retail = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-4 sm:gap-6">
               {RETAIL_CATEGORY_CARDS.map((cat) => {
                 const isSelected = selectedCategory?.toLowerCase() === cat.key.toLowerCase();
                 return (

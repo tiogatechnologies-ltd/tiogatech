@@ -6,7 +6,7 @@ const Footer = () => {
   const { contact } = useSiteContact();
   return (
   <footer className="py-12 bg-secondary text-secondary-foreground/70 border-t border-secondary-foreground/10">
-    <div className="section-container">
+    <div className="section-container-wide">
       <div className="flex flex-col sm:flex-row justify-between gap-8">
         <div>
           <img src={tiogaLogoLight} alt="Tioga Technologies" className="h-10 w-auto" />

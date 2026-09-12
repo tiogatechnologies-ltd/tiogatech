@@ -164,7 +164,7 @@ const AdminSmartLocks = () => {
 
   return (
     <AdminLayout>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl 2xl:max-w-[1680px] 3xl:max-w-[1920px] mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-display font-bold text-foreground">Smart Locks & Hotel</h2>

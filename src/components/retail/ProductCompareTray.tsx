@@ -309,7 +309,7 @@ export const ProductCompareTray = () => {
 
       {/* Comparison Modal Table */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-6xl p-4 sm:p-6 lg:p-8 bg-card border-border rounded-3xl max-h-[92vh] flex flex-col overflow-hidden">
+        <DialogContent className="max-w-[min(96vw,1760px)] w-full p-4 sm:p-6 lg:p-8 bg-card border-border rounded-3xl max-h-[92vh] flex flex-col overflow-hidden">
           <DialogHeader className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border pb-4 gap-4 shrink-0">
             <div>
               <DialogTitle className="text-lg sm:text-2xl font-display font-bold text-foreground flex items-center gap-2.5">

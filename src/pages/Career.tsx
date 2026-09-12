@@ -353,7 +353,7 @@ const FeaturedRoles = ({ openRoles, onApply }: { openRoles: Job[]; onApply: (job
   const visible = showAll ? openRoles : openRoles.slice(0, 3);
   return (
     <>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 section-container">
         {visible.map((job, i) => (
           <JobCard key={job.id || job.title} job={job} index={i} onApply={onApply} />
         ))}

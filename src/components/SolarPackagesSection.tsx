@@ -340,7 +340,7 @@ const SolarPackagesSection = () => {
         </div>
 
 
-        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-4">
           {filtered.map((p, i) => (
             <PackageCard key={p.id} p={p} i={i} />
           ))}

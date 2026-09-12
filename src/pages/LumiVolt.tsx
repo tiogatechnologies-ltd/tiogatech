@@ -80,7 +80,7 @@ const LumiVolt = () => {
 
       {/* Project Overview */}
       <section className="section-padding">
-        <div className="section-container grid gap-8 lg:grid-cols-2 items-center max-w-6xl">
+        <div className="section-container grid gap-8 lg:grid-cols-2 items-center">
           <div className="relative rounded-3xl overflow-hidden border border-border aspect-[4/3] order-2 lg:order-1">
             <img src={bgRooftop} alt="LumiVolt rooftop solar install" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
           </div>
@@ -359,7 +359,7 @@ const LumiVolt = () => {
 
       {/* Testimonials */}
       <section className="section-padding">
-        <div className="section-container max-w-6xl">
+        <div className="section-container">
           <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Testimonials</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">What they say about us</h2>

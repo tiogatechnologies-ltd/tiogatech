@@ -178,7 +178,7 @@ const Account = () => {
       <SEO title="My Account - Tioga" description="Manage your Tioga profile, orders, financing, AI credits and role-specific dashboards." path="/account" />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
-        <div className="max-w-6xl mx-auto space-y-6">
+        <div className="max-w-6xl 2xl:max-w-7xl 3xl:max-w-[1680px] mx-auto space-y-6">
           {/* Header card */}
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-6">
             <div className="flex items-start justify-between gap-4 flex-wrap">

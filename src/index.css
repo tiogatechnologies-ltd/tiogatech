@@ -145,7 +145,103 @@ html.lenis, html.lenis body { height: auto; }
   }
 
   .section-container {
-    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
+  }
+  @media (min-width: 640px) {
+    .section-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .section-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .section-container {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+      max-width: 1440px;
+    }
+  }
+  @media (min-width: 1536px) {
+    .section-container {
+      padding-left: 3rem;
+      padding-right: 3rem;
+      max-width: 1680px;
+    }
+  }
+  @media (min-width: 1920px) {
+    .section-container {
+      padding-left: 4rem;
+      padding-right: 4rem;
+      max-width: 1840px;
+    }
+  }
+  @media (min-width: 2560px) {
+    .section-container {
+      padding-left: 5rem;
+      padding-right: 5rem;
+      max-width: 2160px;
+    }
+  }
+
+  .section-container-wide {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
+  }
+  @media (min-width: 640px) {
+    .section-container-wide {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .section-container-wide {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: min(96vw, 1380px);
+    }
+  }
+  @media (min-width: 1280px) {
+    .section-container-wide {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+      max-width: min(96vw, 1560px);
+    }
+  }
+  @media (min-width: 1536px) {
+    .section-container-wide {
+      padding-left: 3rem;
+      padding-right: 3rem;
+      max-width: min(95vw, 1800px);
+    }
+  }
+  @media (min-width: 1920px) {
+    .section-container-wide {
+      padding-left: 4rem;
+      padding-right: 4rem;
+      max-width: min(94vw, 2040px);
+    }
+  }
+  @media (min-width: 2560px) {
+    .section-container-wide {
+      padding-left: 5rem;
+      padding-right: 5rem;
+      max-width: min(92vw, 2400px);
+    }
   }
 
   .section-padding {

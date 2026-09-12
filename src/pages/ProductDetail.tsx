@@ -392,9 +392,8 @@ export const ProductDetail = () => {
             {/* Left Column: Image Gallery (Curved edges, filled frame & multi-angle thumbnails) */}
             <div className="lg:col-span-7 xl:col-span-7 lg:sticky lg:top-28 space-y-4">
               {/* Main Image Stage */}
-              {/* Main Image Stage */}
               <div
-                className="group relative aspect-[4/3] sm:aspect-square md:aspect-[4/3] w-full rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] flex items-center justify-center p-4 sm:p-10 transition-all hover:border-primary/40"
+                className="group relative aspect-[4/3] sm:aspect-square md:aspect-[4/3] max-h-[580px] 2xl:max-h-[640px] w-full rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] flex items-center justify-center p-4 sm:p-10 transition-all hover:border-primary/40"
               >
                 {images[activeIdx] ? (
                   <img

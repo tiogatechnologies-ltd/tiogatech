@@ -108,7 +108,7 @@ const Hero = ({ onApply }: HeroProps) => {
             </h1>
 
             <p
-              className={`text-base sm:text-lg lg:text-xl text-primary-foreground/90 max-w-xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
+              className={`text-base sm:text-lg lg:text-xl text-primary-foreground/90 max-w-xl 2xl:max-w-2xl leading-relaxed ${mounted ? "animate-fade-up" : "opacity-0"}`}
               style={{ animationDelay: "0.4s" }}
             >
               Solar, automation, and security in one seamless system.
@@ -154,7 +154,7 @@ const Hero = ({ onApply }: HeroProps) => {
           </div>
 
           {/* Right - floating liquid glass cards (hidden on small) */}
-          <div className="lg:col-span-5 relative hidden lg:block h-[520px]">
+          <div className="lg:col-span-5 relative hidden lg:block h-[520px] 2xl:h-[560px] max-w-lg ml-auto w-full">
             {/* Card 1 - Solar */}
             <div
               className={`absolute top-0 right-0 w-64 rounded-2xl bg-white/[0.08] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 border-t-white/40 p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_16px_36px_rgba(0,0,0,0.4)] ${mounted ? "animate-scale-in" : "opacity-0"}`}

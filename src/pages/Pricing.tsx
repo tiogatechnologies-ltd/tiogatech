@@ -134,7 +134,7 @@ const Pricing = () => {
       />
       <SiteHeader />
       <main className="flex-1 bg-muted/20 py-14 sm:py-20 px-4">
-        <div className="max-w-6xl mx-auto">
+        <div className="section-container">
           <div className="text-center mb-10 max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-3">
               AI Energy Intelligence

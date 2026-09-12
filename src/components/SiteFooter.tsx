@@ -67,8 +67,8 @@ const SiteFooter = () => {
 
   return (
     <footer className="bg-midnight text-primary-foreground border-t border-white/[0.12] relative">
-      <div className="section-container py-14">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <div className="section-container-wide py-14">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 2xl:gap-14">
           <div>
             <img src={tiogaLogoLight} alt="Tioga Technologies" className="h-10 w-auto" />
             <p className="mt-4 text-sm text-primary-foreground/65 max-w-xs leading-relaxed">

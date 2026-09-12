@@ -13,6 +13,18 @@ export default {
       },
     },
     extend: {
+      screens: {
+        xs: "475px",
+        "3xl": "1920px",
+        "4xl": "2560px",
+      },
+      maxWidth: {
+        "8xl": "88rem",
+        "9xl": "96rem",
+        "10xl": "115rem",
+        "11xl": "128rem",
+        "12xl": "150rem",
+      },
       fontFamily: {
         display: ["Plus Jakarta Sans", "Poppins", "sans-serif"],
         body: ["Inter", "sans-serif"],

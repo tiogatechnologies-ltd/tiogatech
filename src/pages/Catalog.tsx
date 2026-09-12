@@ -94,9 +94,9 @@ export const Catalog = () => {
       case 3:
         return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
       case 4:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
+        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-4";
       case 5:
-        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5";
+        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 3xl:grid-cols-5";
       case "list":
         return "grid-cols-1";
       default:
@@ -462,7 +462,7 @@ export const Catalog = () => {
       <SiteHeader />
 
       <main className="flex-1 section-padding py-4 sm:py-8 pt-[72px] sm:pt-[84px]">
-        <div className="section-container px-3 sm:px-6">
+        <div className="section-container-wide px-3 sm:px-6">
           {/* Top Hero Banner */}
           <div className="mb-6 sm:mb-8 p-6 sm:p-8 rounded-3xl bg-secondary text-secondary-foreground shadow-sm">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

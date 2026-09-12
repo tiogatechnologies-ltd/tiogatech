@@ -127,7 +127,7 @@ const SiteHeader = () => {
           : "bg-background/80 backdrop-blur-2xl backdrop-saturate-150 border-b border-border/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]",
       )}
     >
-      <div className="section-container flex items-center justify-between py-3 sm:py-4">
+      <div className="section-container-wide flex items-center justify-between py-3 sm:py-4">
         <Link to="/" className="flex items-center">
           <img
             src={onDark || isDark ? tiogaLogoLight : tiogaLogoDark}

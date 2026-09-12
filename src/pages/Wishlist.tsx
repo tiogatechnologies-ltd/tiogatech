@@ -121,7 +121,7 @@ export const Wishlist = () => {
       <SiteHeader />
 
       <main className="flex-1 section-padding py-12 pt-[84px] sm:pt-[96px]">
-        <div className="section-container max-w-5xl">
+        <div className="section-container">
           {/* Back link */}
           <Link
             to="/retail"
@@ -190,7 +190,7 @@ export const Wishlist = () => {
             </div>
           ) : (
             /* Items Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
               {savedProducts.map((product) => (
                 <div
                   key={product.id}

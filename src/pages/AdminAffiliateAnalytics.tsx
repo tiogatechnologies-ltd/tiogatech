@@ -204,7 +204,7 @@ const AdminAffiliateAnalytics = () => {
 
   return (
     <AdminLayout>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl 2xl:max-w-[1680px] 3xl:max-w-[1920px] mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div>
             <h1 className="text-2xl font-display font-bold text-foreground">

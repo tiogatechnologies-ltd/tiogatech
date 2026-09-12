@@ -415,7 +415,7 @@ const Checkout = () => {
 
       {/* Top bar */}
       <header className="border-b border-border bg-background sticky top-0 z-30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+        <div className="max-w-6xl 2xl:max-w-7xl 3xl:max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <Link to="/" className="font-display font-bold text-base sm:text-lg text-foreground">Tioga<span className="text-primary">.</span></Link>
           <Link to="/catalog" className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"><ArrowLeft size={12} /> Continue shopping</Link>
         </div>
@@ -432,7 +432,7 @@ const Checkout = () => {
         </div>
       )}
 
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_400px] gap-0">
+      <div className="max-w-6xl 2xl:max-w-7xl 3xl:max-w-[1600px] mx-auto grid lg:grid-cols-[1fr_400px] 2xl:grid-cols-[1fr_460px] gap-0">
         {/* Left: form */}
         <main className="p-4 sm:p-8 lg:p-10 space-y-7">
           {/* The page had no h1 at all, so assistive tech and search engines had

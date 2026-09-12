@@ -52,7 +52,7 @@ const TrustSection = () => {
           <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">You are in safe hands</h2>
           <p className="text-muted-foreground">We are not just selling products. We are building long-term relationships.</p>
         </div>
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {items.map((r: any, i: number) => {
             const Icon = icons[i % icons.length];
             return (
