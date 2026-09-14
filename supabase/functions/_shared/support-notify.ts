@@ -51,6 +51,9 @@ export async function notifyAdminsOfTicket(admin: any, ticket: any, opts?: { rea
         label: "ticket-created-admin-alert",
         idempotencyKey: `ticket-admin-${ticket.id}-${to}`,
         critical: true,
+        // `recipients` already IS the full admin list — CC'ing admins again
+        // here would cross-copy every admin onto every other admin's message.
+        copyAdmins: false,
       }).catch((e) => console.error("admin ticket alert failed", to, e)),
     ),
   );

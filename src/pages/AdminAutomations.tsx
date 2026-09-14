@@ -167,9 +167,13 @@ const AdminAutomations = () => {
 
       let resultMsg = "Triggered successfully";
       if (fnName) {
-        const { data, error } = await supabase.functions.invoke(fnName, { body: {} });
+        // These jobs require a service-role caller, which the browser never
+        // holds — route through admin-run-automation, which checks the
+        // caller is an admin and re-invokes the job with the service key.
+        const { data, error } = await supabase.functions.invoke("admin-run-automation", { body: { function: fnName } });
         if (error) throw error;
-        resultMsg = data?.message || data?.text || `Ran ${fnName}`;
+        if (data?.error) throw new Error(data.error);
+        resultMsg = data?.result?.message || data?.result?.text || `Ran ${fnName}`;
       }
 
       await supabase.from("automation_runs" as any).insert({

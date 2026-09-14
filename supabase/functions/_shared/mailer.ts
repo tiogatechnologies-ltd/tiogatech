@@ -202,28 +202,11 @@ export async function sendMail(opts: {
         },
       });
 
-      // Also ensure copies are directly sent to admins if queue is being processed
-      for (const adminEmail of ccRecipients) {
-        await supabase.rpc("enqueue_email", {
-          queue_name: "transactional_emails",
-          payload: {
-            message_id: crypto.randomUUID(),
-            to: adminEmail,
-            from,
-            sender_domain: SENDER_DOMAIN,
-            subject: `[Admin Copy] ${subject}`,
-            html,
-            text,
-            purpose: "transactional",
-            label: `${label}-admin-copy`,
-            idempotency_key: `${opts.idempotencyKey ?? messageId}-admin-${adminEmail}`,
-            queued_at: new Date().toISOString(),
-          },
-        }).catch(console.error);
-      }
-
       if (!enqueueError) return { ok: true, via: "queue" };
       console.error("email enqueue failed", enqueueError);
+      // Falls through to the Gmail fallback below — do not also enqueue
+      // separate admin-copy messages here; ccRecipients above already
+      // carries the admin CC on the single queued message.
     } catch (e) {
       console.error("queue transport error", e);
     }
