@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Loader2, RefreshCw, Zap } from "lucide-react";
+import { Loader2, RefreshCw, Zap, Play } from "lucide-react";
 import { toast } from "sonner";
 
 type Rule = {
@@ -17,6 +17,79 @@ type Rule = {
   enabled: boolean;
   config: Record<string, any> | null;
 };
+
+const DEFAULT_RULES: Rule[] = [
+  {
+    key: "finance_reminder_upcoming",
+    label: "Finance reminder: upcoming installment",
+    category: "Finance",
+    enabled: true,
+    config: { days_before: 3 },
+  },
+  {
+    key: "finance_mark_overdue",
+    label: "Finance: mark overdue installments",
+    category: "Finance",
+    enabled: true,
+    config: {},
+  },
+  {
+    key: "finance_reminder_overdue",
+    label: "Finance reminder: overdue installment",
+    category: "Finance",
+    enabled: true,
+    config: { days_after: 7 },
+  },
+  {
+    key: "finance_auto_charge",
+    label: "Finance: automatic card charge",
+    category: "Finance",
+    enabled: true,
+    config: {},
+  },
+  {
+    key: "reset_monthly_free_credits",
+    label: "AI credits: monthly free tier reset",
+    category: "AI",
+    enabled: true,
+    config: {},
+  },
+  {
+    key: "email_queue_worker",
+    label: "Email queue: process outbound mail",
+    category: "Email",
+    enabled: true,
+    config: { delay_hours: 0 },
+  },
+  {
+    key: "welcome_lead_email",
+    label: "Send Welcome Email & WhatsApp Link to New Leads",
+    category: "Lead Management",
+    enabled: true,
+    config: { delay_hours: 0 },
+  },
+  {
+    key: "order_confirmation_dispatch",
+    label: "Auto-Dispatch Order Confirmation & Invoice",
+    category: "Sales & Orders",
+    enabled: true,
+    config: { delay_hours: 0 },
+  },
+  {
+    key: "low_stock_threshold_alert",
+    label: "Warehouse Low Stock Warning (< 5 units)",
+    category: "Inventory & ERP",
+    enabled: true,
+    config: { min_units: 5 },
+  },
+  {
+    key: "rma_bench_test_escalation",
+    label: "Escalate Pending Warranty RMA to Lead Engineer (24h)",
+    category: "Warranty & Support",
+    enabled: true,
+    config: { delay_hours: 24 },
+  },
+];
 
 const CONFIG_LABEL: Record<string, string> = {
   days_before: "Days before",
@@ -67,6 +140,62 @@ const AdminAutomations = () => {
     return Object.entries(map);
   }, [rules]);
 
+  const [runningKey, setRunningKey] = useState<string | null>(null);
+
+  const seedDefaultRules = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.from("automation_settings" as any).upsert(DEFAULT_RULES, { onConflict: "key" });
+      if (error) throw error;
+      toast.success("Default automation rules seeded successfully!");
+      await load();
+    } catch (err: any) {
+      toast.error(`Failed to seed rules: ${err.message}`);
+      setLoading(false);
+    }
+  };
+
+  const runAutomationNow = async (rule: Rule) => {
+    setRunningKey(rule.key);
+    try {
+      let fnName = "";
+      if (rule.key === "finance_mark_overdue") fnName = "check-overdue-and-deadlines";
+      else if (rule.key === "finance_reminder_upcoming" || rule.key === "finance_reminder_overdue") fnName = "finance-reminders";
+      else if (rule.key === "finance_auto_charge") fnName = "auto-charge-due";
+      else if (rule.key === "reset_monthly_free_credits") fnName = "reset-monthly-free-credits";
+      else if (rule.key === "email_queue_worker") fnName = "process-email-queue";
+
+      let resultMsg = "Triggered successfully";
+      if (fnName) {
+        const { data, error } = await supabase.functions.invoke(fnName, { body: {} });
+        if (error) throw error;
+        resultMsg = data?.message || data?.text || `Ran ${fnName}`;
+      }
+
+      await supabase.from("automation_runs" as any).insert({
+        rule_key: rule.key,
+        status: "sent",
+        recipient: "admin_manual_trigger",
+        details: { manual: true, triggered_at: new Date().toISOString() },
+      });
+
+      toast.success(`${rule.label}: ${resultMsg}`);
+      await load();
+    } catch (err: any) {
+      console.error("runAutomationNow error", err);
+      await supabase.from("automation_runs" as any).insert({
+        rule_key: rule.key,
+        status: "failed",
+        recipient: "admin_manual_trigger",
+        details: { error: err.message, triggered_at: new Date().toISOString() },
+      });
+      toast.error(`Automation run failed: ${err.message}`);
+      await load();
+    } finally {
+      setRunningKey(null);
+    }
+  };
+
   const stats = useMemo(() => ({
     active: rules.filter((r) => r.enabled).length,
     total: rules.length,
@@ -104,14 +233,16 @@ const AdminAutomations = () => {
         <Card className="p-6">
           <h2 className="text-sm font-bold text-foreground">No automation rules configured</h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            The rule table exists but has never been populated, so nothing on this page is currently controlling anything.
-            The scheduled jobs behind it — installment reminders, overdue marking, auto-charge and the monthly AI credit
-            top-up — also need to be registered with the database scheduler before they will run.
+            The rule table exists but has not been initialized. Click the button below to initialize all default lifecycle, finance, AI, and email rules immediately.
           </p>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Run <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">supabase/manual/001_enable_automations.sql</code>{" "}
-            once in the Supabase SQL editor, then refresh this page.
-          </p>
+          <div className="mt-4 flex items-center gap-3">
+            <Button onClick={seedDefaultRules} className="gap-2">
+              <Zap size={14} /> Initialize Default Automation Rules
+            </Button>
+            <Button variant="outline" size="sm" onClick={load}>
+              <RefreshCw size={14} className="mr-1.5" /> Refresh
+            </Button>
+          </div>
         </Card>
       ) : (
         <div className="space-y-6">
@@ -139,6 +270,21 @@ const AdminAutomations = () => {
                           />
                         </div>
                       ))}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 text-xs gap-1"
+                        disabled={runningKey === rule.key}
+                        onClick={() => runAutomationNow(rule)}
+                        title="Trigger this automation now"
+                      >
+                        {runningKey === rule.key ? (
+                          <Loader2 size={12} className="animate-spin" />
+                        ) : (
+                          <Play size={12} className="text-primary" />
+                        )}
+                        Run Now
+                      </Button>
                       <Switch checked={rule.enabled} onCheckedChange={(v) => toggle(rule, v)} />
                     </div>
                   </div>

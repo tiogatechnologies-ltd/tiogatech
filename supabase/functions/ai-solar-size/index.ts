@@ -5,9 +5,24 @@ import { corsHeaders, resolveAiGateway, aiChatCompletion } from "../_shared/ai-g
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const { description, budget_ngn } = await req.json();
-    if (!description || typeof description !== "string") {
-      return new Response(JSON.stringify({ error: "description is required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    const body = await req.json().catch(() => ({}));
+    let description = typeof body.description === "string" ? body.description.trim() : "";
+    const budget_ngn = body.budget_ngn || body.budget;
+
+    if (!description && Array.isArray(body.appliances) && body.appliances.length > 0) {
+      const appList = body.appliances
+        .map((a: any) => (typeof a === "string" ? a : `${a.name || "Appliance"} (${a.watts || 0}W, ${a.hours || 0}h/day)`))
+        .join(", ");
+      description = `Customer home in ${body.location || "Nigeria"} running: ${appList}.`;
+    } else if (!description && body.notes) {
+      description = String(body.notes);
+    }
+
+    if (!description) {
+      return new Response(JSON.stringify({ error: "description or appliances list is required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const gw = resolveAiGateway();

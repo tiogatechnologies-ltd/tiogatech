@@ -53,6 +53,7 @@ const SolarPackages = lazy(() => import("./pages/SolarPackages.tsx"));
 const VoltAi = lazy(() => import("./pages/VoltAi.tsx"));
 const Finance = lazy(() => import("./pages/Finance.tsx"));
 const Contact = lazy(() => import("./pages/Contact.tsx"));
+const Support = lazy(() => import("./pages/Support.tsx"));
 const Blog = lazy(() => import("./pages/Blog.tsx"));
 const BlogPost = lazy(() => import("./pages/BlogPost.tsx"));
 const Privacy = lazy(() => import("./pages/Privacy.tsx"));
@@ -204,6 +205,7 @@ const AnimatedRoutes = () => {
           <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
           <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
           <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
+          <Route path="/support" element={<RouteFade><Support /></RouteFade>} />
           <Route path="/packages" element={<RouteFade><Packages /></RouteFade>} />
           <Route path="/packages/solar/:id" element={<RouteFade><SolarPackageDetail /></RouteFade>} />
           <Route path="/packages/lock/:id" element={<RouteFade><SmartLockDetail /></RouteFade>} />

@@ -96,22 +96,53 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
     const body = await req.json().catch(() => ({}));
-    // `message` is required - without this guard a missing field threw inside
-    // createSupportTicket and surfaced as an opaque 500 instead of a 400.
+
+    // Allow lookup of ticket status
+    if (body.action === "lookup" || body.action === "check" || (body.ticket_number && !body.message)) {
+      const rawNum = String(body.ticket_number || body.ticketNumber || "").toUpperCase().trim();
+      const num = rawNum.startsWith("TKT-") ? rawNum : `TKT-${rawNum}`;
+      const { data: ticket, error } = await admin
+        .from("support_tickets")
+        .select("ticket_number, status, subject, created_at, resolved_at, priority, user_name")
+        .eq("ticket_number", num)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!ticket) {
+        return new Response(JSON.stringify({ ok: false, error: `Ticket ${num} not found` }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      return new Response(JSON.stringify({ ok: true, ticket }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const message = typeof body?.message === "string" ? body.message.trim() : "";
     if (!message) {
       return new Response(JSON.stringify({ ok: false, error: "message is required" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const userContact = typeof (body.userContact || body.user_contact) === "string"
+      ? (body.userContact || body.user_contact).trim()
+      : "";
+    if (!userContact) {
+      return new Response(JSON.stringify({ ok: false, error: "A phone number or email address is required so our team can reach you." }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
     const ticket = await createSupportTicket({
       userId: body.userId,
-      userName: body.userName || body.user_name,
-      userContact: body.userContact || body.user_contact,
+      userName: body.userName || body.user_name || "Customer",
+      userContact,
       subject: body.subject,
       message,
       conversationContext: body.conversationContext || body.conversation_context,
-      channel: body.channel,
+      channel: body.channel || "web",
     });
     return new Response(JSON.stringify({ ok: true, ticket }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e: any) {
