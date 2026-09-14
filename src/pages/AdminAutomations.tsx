@@ -180,7 +180,7 @@ const AdminAutomations = () => {
         rule_key: rule.key,
         status: "sent",
         recipient: "admin_manual_trigger",
-        details: { manual: true, triggered_at: new Date().toISOString() },
+        detail: JSON.stringify({ manual: true, triggered_at: new Date().toISOString() }),
       });
 
       toast.success(`${rule.label}: ${resultMsg}`);
@@ -191,7 +191,7 @@ const AdminAutomations = () => {
         rule_key: rule.key,
         status: "failed",
         recipient: "admin_manual_trigger",
-        details: { error: err.message, triggered_at: new Date().toISOString() },
+        detail: JSON.stringify({ error: err.message, triggered_at: new Date().toISOString() }),
       });
       toast.error(`Automation run failed: ${err.message}`);
       await load();
