@@ -14,8 +14,13 @@ const GMAIL_GATEWAY = "https://connector-gateway.lovable.dev/google_mail/gmail/v
 
 /** Verified delegated sender subdomain — must match the email sender domain. */
 export const SENDER_DOMAIN = "notify.tiogatechnologies.com";
-/** Domain shown in the From header. */
-export const FROM_DOMAIN = "tiogatechnologies.com";
+/**
+ * Domain shown in the From header. Must match SENDER_DOMAIN: Resend rejects
+ * sends whose From address is on a domain that isn't verified there, and
+ * only notify.tiogatechnologies.com is verified - a From address on the
+ * root domain got every single automated email 403'd, silently.
+ */
+export const FROM_DOMAIN = SENDER_DOMAIN;
 
 /** The two admin addresses that must ALWAYS be copied on all automation emails. */
 export const ADMIN_COPY_EMAILS = [

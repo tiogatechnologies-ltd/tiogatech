@@ -11,10 +11,12 @@ const SITE_NAME = "tiogatech"
 // It MUST match the subdomain delegated to Lovable's nameservers — never the root domain.
 // The email API looks up this exact domain; a mismatch causes "No email domain record found".
 const SENDER_DOMAIN = "notify.tiogatechnologies.com"
-// FROM_DOMAIN is the domain shown in the From: header (e.g., "example.com").
-// When display_from_root is enabled, this can be the root domain for cleaner branding,
-// even though actual sending uses the subdomain above.
-const FROM_DOMAIN = "tiogatechnologies.com"
+// FROM_DOMAIN is the domain shown in the From: header. Resend (the transport
+// process-email-queue actually sends through) validates the From address's
+// domain directly against verified domains - there is no envelope-vs-display
+// split that lets this be the root domain while sending uses the subdomain.
+// It must equal SENDER_DOMAIN, or every send here gets 403'd.
+const FROM_DOMAIN = SENDER_DOMAIN
 
 // Generate a cryptographically random 32-byte hex token
 function generateToken(): string {

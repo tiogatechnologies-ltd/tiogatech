@@ -39,7 +39,12 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 const SITE_NAME = "tiogatech"
 const SENDER_DOMAIN = "notify.tiogatechnologies.com"
 const ROOT_DOMAIN = "tiogatechnologies.com"
-const FROM_DOMAIN = "tiogatechnologies.com" // Domain shown in From address (may be root or sender subdomain)
+// Must match SENDER_DOMAIN: Resend (and most ESPs) reject sends whose From
+// address is on a domain that isn't verified. Only notify.tiogatechnologies.com
+// is verified, so a From address on the root domain got 403'd on every send -
+// which, since auth_emails are processed before transactional_emails and a
+// 403 halts the whole batch, silently blocked every other queued email too.
+const FROM_DOMAIN = SENDER_DOMAIN
 
 // Sample data for preview mode ONLY (not used in actual email sending).
 // URLs are baked in at scaffold time from the project's real data.
