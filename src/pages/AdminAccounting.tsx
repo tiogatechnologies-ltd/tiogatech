@@ -190,7 +190,13 @@ const AdminAccounting = () => {
           debit: Number(l.debit || 0),
           credit: Number(l.credit || 0),
         }));
-        await db.from("journal_entry_lines").insert(linesPayload);
+        const { error: linesError } = await db.from("journal_entry_lines").insert(linesPayload);
+        if (linesError) {
+          // Header posted but lines failed to write - don't leave a
+          // balanced-looking header with no lines behind it in the ledger.
+          await db.from("journal_entries").delete().eq("id", data.id);
+          throw linesError;
+        }
       }
 
       toast.success(`Journal Entry #${entryNo} posted to General Ledger!`);

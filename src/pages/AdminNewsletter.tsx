@@ -4,8 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Download, Loader2, Mail, Trash2, Send, X } from "lucide-react";
 import { toast } from "sonner";
 
-const db = supabase as any;
-
 interface Subscriber {
   id: string;
   email: string;
@@ -92,12 +90,12 @@ const AdminNewsletter = () => {
       if (error) throw error;
       toast.success(`Broadcast sent to ${data?.sent ?? activeCount} subscribers`);
     } catch (e: any) {
-      // Record broadcast directly into newsletter_broadcasts table
-      await db.from("newsletter_broadcasts").insert({
-        subject,
-        sent_count: activeCount,
-      });
-      toast.success(`Broadcast queued and recorded for ${activeCount} subscribers`);
+      // send-newsletter-broadcast already records the broadcast (with html)
+      // on success, so a failure here means nothing sent - report it
+      // honestly rather than faking a "sent" record with no html, which
+      // used to violate the table's NOT NULL constraint and silently fail
+      // anyway while still telling the admin the broadcast went out.
+      toast.error(`Broadcast failed to send: ${e?.message || "unknown error"}`);
     } finally {
       setSending(false);
       setComposing(false);

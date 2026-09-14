@@ -68,11 +68,15 @@ const AdminFinanceSchedules = () => {
       .update({ status: "paid", paid_at: new Date().toISOString(), paid_reference: ref })
       .eq("id", row.id);
     if (error) return toast.error(error.message);
-    await supabase.from("finance_payments").insert({
+    const { error: payError } = await supabase.from("finance_payments").insert({
       application_id: row.application_id, schedule_id: row.id, amount_ngn: row.amount_ngn,
       method: "manual", reference: ref, verified: true, verified_at: new Date().toISOString(),
     });
-    toast.success("Marked as paid");
+    if (payError) {
+      toast.error(`Schedule marked paid, but the payment record failed to save: ${payError.message}`);
+    } else {
+      toast.success("Marked as paid");
+    }
     load();
     if (drillId === row.application_id) loadDetail(row.application_id);
   };
@@ -88,13 +92,17 @@ const AdminFinanceSchedules = () => {
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message || "Failed");
     } catch (err: any) {
       // Direct DB update
-      await supabase.from("finance_schedules").update({
+      const { error: updError } = await supabase.from("finance_schedules").update({
         original_due_date: row.original_due_date || row.due_date,
         due_date: newDate,
         override_reason: reason,
       }).eq("id", row.id);
+      if (updError) {
+        toast.error(`Failed to update due date: ${updError.message}`);
+        return;
+      }
 
-      await supabase.from("due_date_overrides").insert({
+      const { error: logError } = await supabase.from("due_date_overrides").insert({
         application_id: row.application_id,
           schedule_id: row.id,
         installment_no: row.installment_no,
@@ -102,6 +110,12 @@ const AdminFinanceSchedules = () => {
         new_due_date: newDate,
         reason,
       });
+      if (logError) {
+        toast.error(`Due date updated, but the change log failed to save: ${logError.message}`);
+        load();
+        if (drillId === row.application_id) loadDetail(row.application_id);
+        return;
+      }
     }
     toast.success("Due date updated and logged");
     load();

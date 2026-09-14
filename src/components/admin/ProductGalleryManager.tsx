@@ -132,7 +132,8 @@ const ProductGalleryManager = ({ productId }: Props) => {
 
   const remove = async (img: GalleryImage) => {
     if (!confirm("Remove this image?")) return;
-    await (supabase as any).from("product_images").delete().eq("id", img.id);
+    const { error } = await (supabase as any).from("product_images").delete().eq("id", img.id);
+    if (error) return toast.error("Failed to remove image");
     // Best effort: also remove the storage object if it lives in our bucket
     try {
       const marker = "/product-images/";
@@ -152,8 +153,11 @@ const ProductGalleryManager = ({ productId }: Props) => {
     if (target < 0 || target >= images.length) return;
     const a = images[idx];
     const b = images[target];
-    await (supabase as any).from("product_images").update({ sort_order: b.sort_order }).eq("id", a.id);
-    await (supabase as any).from("product_images").update({ sort_order: a.sort_order }).eq("id", b.id);
+    const [{ error: e1 }, { error: e2 }] = await Promise.all([
+      (supabase as any).from("product_images").update({ sort_order: b.sort_order }).eq("id", a.id),
+      (supabase as any).from("product_images").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ]);
+    if (e1 || e2) toast.error("Failed to reorder images");
     fetchImages();
   };
 

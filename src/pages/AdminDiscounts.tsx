@@ -36,7 +36,12 @@ const AdminDiscounts = () => {
     if (error) return toast.error(error.message);
     toast.success("Saved"); setEditing(null); load();
   };
-  const remove = async (id: string) => { if (!confirm("Delete this code?")) return; await supabase.from("discounts").delete().eq("id", id); load(); };
+  const remove = async (id: string) => {
+    if (!confirm("Delete this code?")) return;
+    const { error } = await supabase.from("discounts").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    load();
+  };
 
   return (
     <AdminLayout>

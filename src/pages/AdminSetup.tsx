@@ -28,18 +28,21 @@ const AdminSetup = () => {
     }
 
     if (data.user) {
-      // Assign admin role via edge function or direct database insertion
-      try {
-        const { error: roleError } = await supabase.functions.invoke("assign-admin-role", {
-          body: { user_id: data.user.id },
-        });
-        if (roleError) throw roleError;
-      } catch (e: any) {
-        // Direct database role insertion
-        await supabase.from("user_roles").insert({
-          user_id: data.user.id,
-          role: "admin",
-        });
+      // Assign admin role via the edge function. There is no client-side
+      // fallback: RLS on user_roles only lets an existing admin grant roles,
+      // so a direct insert here can never succeed for the very first admin -
+      // it used to fail silently and still claim "Admin account created!"
+      // while leaving the new user with no admin role at all.
+      const { data: roleData, error: roleError } = await supabase.functions.invoke("assign-admin-role", {
+        body: { user_id: data.user.id },
+      });
+      if (roleError || (roleData as any)?.error) {
+        toast.error(
+          (roleData as any)?.error || roleError?.message ||
+          "Account created, but admin role assignment failed. Contact an existing admin for access."
+        );
+        setSubmitting(false);
+        return;
       }
 
       toast.success("Admin account created! Signing you in...");

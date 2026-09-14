@@ -46,10 +46,15 @@ const AdminFinanceApplications = () => {
     } catch (e: any) {
       // 2. Direct database fallback
       const newStatus = approve ? "active" : "rejected";
-      await supabase.from("finance_applications").update({
+      const { error: updateError } = await supabase.from("finance_applications").update({
         status: newStatus,
         rejection_reason: approve ? null : (reason || "Application declined by administrator"),
       }).eq("id", selected.id);
+      if (updateError) {
+        toast.error(`Failed to update application: ${updateError.message}`);
+        setWorking(false);
+        return;
+      }
 
       if (approve) {
         // Generate schedule records directly
@@ -68,7 +73,14 @@ const AdminFinanceApplications = () => {
             is_deposit: false,
           });
         }
-        await supabase.from("finance_schedules").insert(schedules);
+        const { error: schedError } = await supabase.from("finance_schedules").insert(schedules);
+        if (schedError) {
+          toast.error(`Approved, but failed to generate payment schedule: ${schedError.message}. Fix this manually before the customer pays.`);
+          setWorking(false);
+          setSelected(null);
+          load();
+          return;
+        }
       }
       toast.success(approve ? "Application approved + schedule generated" : "Application rejected");
     } finally {
@@ -82,8 +94,12 @@ const AdminFinanceApplications = () => {
     if (!selected) return;
     if (!confirm(`Delete application from ${selected.full_name}? This also removes its schedules and payments and cannot be undone.`)) return;
     setWorking(true);
-    await supabase.from("finance_schedules").delete().eq("application_id", selected.id);
-    await supabase.from("finance_payments").delete().eq("application_id", selected.id);
+    const { error: schedDelError } = await supabase.from("finance_schedules").delete().eq("application_id", selected.id);
+    const { error: payDelError } = await supabase.from("finance_payments").delete().eq("application_id", selected.id);
+    if (schedDelError || payDelError) {
+      setWorking(false);
+      return toast.error(`Failed to remove schedules/payments: ${(schedDelError || payDelError)?.message}`);
+    }
     const { error } = await supabase.from("finance_applications").delete().eq("id", selected.id);
     setWorking(false);
     if (error) return toast.error(error.message);
