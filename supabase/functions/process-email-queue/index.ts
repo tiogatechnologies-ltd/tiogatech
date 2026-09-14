@@ -101,8 +101,14 @@ Deno.serve(async (req) => {
     }
 
     const token = authHeader.slice('Bearer '.length).trim()
+    // Projects on Supabase's newer API-key format issue an opaque
+    // sb_secret_... service key instead of a JWT, so it never carries a
+    // `role` claim to parse — checked first via exact match, same as the
+    // sibling cron functions. The JWT-claims path stays for projects still
+    // on the legacy JWT-based service_role key.
     const claims = parseJwtClaims(token)
-    if (claims?.role !== 'service_role') {
+    const isServiceRole = token === supabaseServiceKey || claims?.role === 'service_role'
+    if (!isServiceRole) {
       return new Response(
         JSON.stringify({ error: 'Forbidden' }),
         { status: 403, headers: { 'Content-Type': 'application/json' } }
