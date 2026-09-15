@@ -39,6 +39,8 @@ import { normalizeCategory } from "@/lib/productBrand";
 import { resolveCompareAt, savingsPct } from "@/lib/promoDisplay";
 import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
 import { productPath } from "@/lib/productSlug";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import bgSolarHero from "@/assets/bg-commercial-solar.jpg";
 import bgInverterHero from "@/assets/bg-panel-closeup.jpg";
 import bgSmartLockHero from "@/assets/bg-smartlock-apex.jpg";
@@ -398,6 +400,75 @@ const SECONDARY_CTA_SUGGESTIONS = [
   "Talk to an Engineer",
 ];
 
+interface CatalogSearchOption {
+  type: SourceType;
+  id: string;
+  label: string;
+  sub: string;
+}
+
+const TYPE_LABEL: Record<Exclude<SourceType, "custom">, string> = {
+  product: "Product",
+  solar_package: "Solar Package",
+  smart_lock: "Smart Lock",
+  automation_package: "Automation",
+};
+
+// Searches across the ENTIRE live catalog (every retail product plus every
+// package/lock/automation bundle) rather than a short curated preset list, so
+// any item in the store can be dropped into a hero slide with one click.
+const CatalogSearchPicker = ({
+  options,
+  onSelect,
+  label = "Search Any Product or Package",
+}: {
+  options: CatalogSearchOption[];
+  onSelect: (type: SourceType, id: string) => void;
+  label?: string;
+}) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 text-[11px] font-semibold text-primary transition-all"
+        >
+          <Search size={11} /> {label}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80 p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Search by name, SKU, category..." />
+          <CommandList>
+            <CommandEmpty>No matching product or package.</CommandEmpty>
+            <CommandGroup>
+              {options.map((o) => (
+                <CommandItem
+                  key={`${o.type}-${o.id}`}
+                  value={`${o.label} ${o.sub} ${TYPE_LABEL[o.type as Exclude<SourceType, "custom">]}`}
+                  onSelect={() => {
+                    onSelect(o.type, o.id);
+                    setOpen(false);
+                  }}
+                  className="cursor-pointer"
+                >
+                  <div className="flex flex-col min-w-0 py-0.5">
+                    <span className="text-xs font-medium text-foreground truncate">{o.label}</span>
+                    <span className="text-[10px] text-muted-foreground truncate">
+                      {TYPE_LABEL[o.type as Exclude<SourceType, "custom">]} · {o.sub}
+                    </span>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
 const AdminRetailPromotions = () => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [flashDeal, setFlashDeal] = useState<FlashDeal>(defaultFlashDeal);
@@ -503,6 +574,48 @@ const AdminRetailPromotions = () => {
     }
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [products]);
+
+  // Every retail product plus every package/lock/automation bundle, flattened
+  // into one searchable list for the Hero slide catalog picker.
+  const catalogSearchOptions = useMemo<CatalogSearchOption[]>(() => {
+    const opts: CatalogSearchOption[] = [];
+    for (const p of products as any[]) {
+      opts.push({ type: "product", id: p.id, label: p.name, sub: `${p.category} · ${p.price ?? "-"}` });
+    }
+    for (const p of solarPackages) {
+      opts.push({
+        type: "solar_package",
+        id: p.id,
+        label: p.inverter?.toLowerCase().includes("package") ? p.inverter : `Package #${p.package_number} - ${p.inverter}`,
+        sub: naira(p.total_price),
+      });
+    }
+    for (const p of smartLocks) {
+      opts.push({ type: "smart_lock", id: p.id, label: p.name, sub: p.price_label || naira(p.price) });
+    }
+    for (const p of autoPackages) {
+      opts.push({ type: "automation_package", id: p.id, label: p.name, sub: p.price_label || naira(p.price) });
+    }
+    return opts;
+  }, [products, solarPackages, smartLocks, autoPackages]);
+
+  // Adds a brand-new slide pre-filled from any catalog item (not limited to
+  // the curated Quick Presets), auto-filling real photo/copy/pricing.
+  const addSlideFromCatalogItem = (type: SourceType, id: string) => {
+    const newSlide = emptySlide();
+    const autoData = resolveDetailsFromItem(type, id, products, solarPackages, smartLocks, autoPackages);
+    Object.assign(newSlide, { source_type: type, source_id: id, ...(autoData || {}) });
+    setSlides((prev) => [...prev, newSlide]);
+    toast.success(autoData ? "Applied real product image & specifications" : "Slide added");
+  };
+
+  // Same as applyPresetToSlide, but for any catalog item rather than a
+  // preset key - fills an existing slide with any product or package.
+  const applyCatalogItemToSlide = (slideId: string, type: SourceType, id: string) => {
+    const autoData = resolveDetailsFromItem(type, id, products, solarPackages, smartLocks, autoPackages);
+    updateSlide(slideId, { source_type: type, source_id: id, ...(autoData || {}) });
+    toast.success(autoData ? "Applied real product image & specifications" : "Catalog item linked");
+  };
 
   const filteredPromoProducts = useMemo(() => {
     return products.filter((p) => {
@@ -836,6 +949,11 @@ const AdminRetailPromotions = () => {
                 <Plus size={12} className="opacity-70" />
               </button>
             ))}
+            <CatalogSearchPicker
+              options={catalogSearchOptions}
+              onSelect={(type, id) => addSlideFromCatalogItem(type, id)}
+              label="Or Add Any Product/Package"
+            />
           </div>
         </div>
 
@@ -1623,6 +1741,11 @@ const AdminRetailPromotions = () => {
                         {tpl.short}
                       </button>
                     ))}
+                    <CatalogSearchPicker
+                      options={catalogSearchOptions}
+                      onSelect={(type, id) => applyCatalogItemToSlide(slide.id, type, id)}
+                      label="Or Any Product/Package"
+                    />
                   </div>
                 </div>
 

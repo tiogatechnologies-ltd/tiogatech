@@ -205,7 +205,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 {(slide.badge || (slide.discount_pct != null && slide.discount_pct > 0)) && (
                   <div className="flex items-center gap-2 flex-wrap">
                     {slide.badge && (
-                      <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-amber-400 uppercase bg-amber-400/10 border border-amber-400/20 px-2.5 py-0.5 rounded-full">
+                      <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-amber-400 uppercase">
                         {slide.badge}
                       </span>
                     )}
