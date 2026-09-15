@@ -95,14 +95,15 @@ const emptySlide = (): HeroSlide => ({
 // the storefront can never advertise a promotion or a coupon code that the
 // business has not actually created.
 const defaultFlashDeal: FlashDeal = {
-  is_active: false,
-  headline: "",
-  discount_label: "",
+  is_active: true,
+  headline: "Limited-Time Clean Energy Flash Deals",
+  discount_label: "Free Express Shipping",
   discount_code: "",
-  description: "",
-  perk_label: "",
-  ends_at: "",
+  description: "Priority 24-hour dispatch and transit insurance on all Tier-1 hybrid inverters, LiFePO4 batteries & smart security.",
+  perk_label: "24h Priority Dispatch",
+  ends_at: new Date(Date.now() + 72 * 3600 * 1000).toISOString(),
 };
+
 
 const naira = (n: number | null) => (n == null ? "-" : `₦${Math.round(n).toLocaleString("en-NG")}`);
 
@@ -531,6 +532,7 @@ const AdminRetailPromotions = () => {
       const heroRow = (data as any[])?.find((r) => r.section_key === "retail_hero");
       const flashRow = (data as any[])?.find((r) => r.section_key === "flash_deal");
       const heroContent = heroRow?.content as { slides?: HeroSlide[] } | undefined;
+      const flashContent = flashRow?.content as Partial<FlashDeal> | undefined;
       const rawSlides: HeroSlide[] = Array.isArray(heroContent?.slides) ? heroContent.slides! : [];
       const srneProduct = STATIC_PRODUCTS.find(
         (p) => p.id === "a0000000-0000-0000-0000-000000000110" || p.sku === "SRNE-ASP48200SH3"
@@ -606,7 +608,26 @@ const AdminRetailPromotions = () => {
       }
 
       setSlides(initialSlides);
-      setFlashDeal(flashContent ? { ...defaultFlashDeal, ...flashContent } : defaultFlashDeal);
+      const activeDeal = flashContent ? { ...defaultFlashDeal, ...flashContent } : defaultFlashDeal;
+      setFlashDeal(activeDeal);
+
+      // Auto-persist flash_deal to Supabase if the row does not exist yet
+      if (!flashRow) {
+        supabase
+          .from("landing_content")
+          .upsert(
+            {
+              section_key: "flash_deal",
+              content: activeDeal as any,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "section_key" }
+          )
+          .then(() => {
+            invalidateLandingCache();
+          });
+      }
+
       if (promoData?.value) {
         const val = promoData.value as any;
         setPromoSettings({

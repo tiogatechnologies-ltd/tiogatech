@@ -1,11 +1,11 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 
-interface HeroSlideContent {
+export interface HeroSlideContent {
   id: string;
   is_active: boolean;
   badge: string;
@@ -33,9 +33,43 @@ export const FEATURED_SRNE_20KW_SLIDE: HeroSlideContent = {
   cta_text: "DM for Price & Specs",
   cta_link:
     "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
-  secondary_cta_text: "View Specifications",
+  secondary_cta_text: "View Full Specifications",
   secondary_cta_link: "/product/srne-20kw-48v-three-phase-mppt-inverter-charger-asp48200sh3-00000110",
 };
+
+export const DEFAULT_HERO_SLIDES: HeroSlideContent[] = [
+  FEATURED_SRNE_20KW_SLIDE,
+  {
+    id: "felicity-5kwh-lifepo4-featured",
+    is_active: true,
+    badge: "Tier-1 LiFePO4 Energy Storage",
+    headline: "Felicity Solar 5.12kWh 100Ah LiFePO4 Battery (FL-LPBF48100)",
+    subheadline:
+      "Tier-1 Grade-A Lithium Iron Phosphate (LiFePO4) battery module with 6,000+ deep cycles, built-in intelligent battery management system (BMS), and parallel expansion up to 15 units.",
+    highlight_text: "6,000+ Deep Cycles · Built-in Smart BMS Protection",
+    discount_pct: 5,
+    image_url: "/products/core/felicity-5kwh-lifepo4.webp",
+    cta_text: "Shop Now",
+    cta_link: "/product/felicity-solar-5-12kwh-100ah-lifepo4-battery-fl-lpbf48100-00000008",
+    secondary_cta_text: "Spread Payments",
+    secondary_cta_link: "/finance/apply",
+  },
+  {
+    id: "deye-5kw-hybrid-featured",
+    is_active: true,
+    badge: "Official Deye Distributor",
+    headline: "Deye 5kW Hybrid Inverter (SUN-5K-SG03LP1-EU)",
+    subheadline:
+      "Pure sine wave low-voltage single-phase hybrid solar inverter with dual MPPT tracker, color touch LCD screen, generator auto-start compatibility, and zero-flicker UPS transfer.",
+    highlight_text: "5-Year Replacement Warranty · Same-Day Lagos & Abuja Dispatch",
+    discount_pct: 5,
+    image_url: "/products/core/deye-5kw-hybrid.webp",
+    cta_text: "Shop Now",
+    cta_link: "/product/deye-5kw-hybrid-inverter-sun-5k-sg03lp1-eu-11111001",
+    secondary_cta_text: "Load Sizing Calculator",
+    secondary_cta_link: "/energy-calculator",
+  },
+];
 
 interface RetailHeroCarouselProps {
   /** Real, currently-loaded catalog size - used only for the honest fallback slide below. */
@@ -45,68 +79,95 @@ interface RetailHeroCarouselProps {
 export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps) => {
   const { content, loading } = useLandingContent("retail_hero");
   const [current, setCurrent] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const configuredSlides = useMemo(
     () => ((content?.slides as HeroSlideContent[]) || []).filter((s) => s.is_active && s.headline),
     [content]
   );
 
-  // Honest fallback slide when admin hasn't configured custom slides yet
-  const fallbackSlide: HeroSlideContent | null = loading
-    ? null
-    : {
-        id: "fallback",
-        is_active: true,
-        badge: "Official Distributor Guarantee",
-        headline: productCount > 0 ? `${productCount} Tier-1 Hardware Products In Stock` : "Shop the Full Catalog",
-        subheadline: "Solar inverters, lithium batteries, Tier-1 panels, smart locks and home automation hardware — in stock and ready to ship nationwide.",
-        highlight_text: "Official Manufacturer Warranties · Nationwide Delivery",
-        discount_pct: null,
-        image_url: "/products/clear/inverter-deye-hybrid.webp",
-        cta_text: "Browse Catalog",
-        cta_link: "/retail",
-        secondary_cta_text: "Load Sizing Calculator",
-        secondary_cta_link: "/energy-calculator",
-      };
-
   const slides = useMemo(() => {
-    const list = [...configuredSlides];
-    const hasSrne20kw = list.some(
+    // If no configured slides in database, start with the full default trio
+    const base = configuredSlides.length > 0 ? [...configuredSlides] : [...DEFAULT_HERO_SLIDES];
+
+    // Ensure the SRNE 20kW flagship slide is always present
+    const hasSrne20kw = base.some(
       (s) =>
         s.id === FEATURED_SRNE_20KW_SLIDE.id ||
         s.headline?.toLowerCase().includes("srne 20kw") ||
         s.headline?.toLowerCase().includes("srne 20 kw")
     );
     if (!hasSrne20kw) {
-      list.unshift(FEATURED_SRNE_20KW_SLIDE);
+      base.unshift(FEATURED_SRNE_20KW_SLIDE);
     }
-    if (list.length === 1 && fallbackSlide) {
-      list.push(fallbackSlide);
-    }
-    return list.filter((s) => s.is_active && s.headline);
-  }, [configuredSlides, fallbackSlide]);
 
-  useEffect(() => {
-    if (current >= slides.length) setCurrent(0);
-  }, [slides.length, current]);
+    return base.filter((s) => s.is_active && s.headline);
+  }, [configuredSlides]);
 
+  const totalSlides = slides.length;
+
+  // Keep current slide within bounds
   useEffect(() => {
-    if (!autoplay || slides.length <= 1) return;
+    if (current >= totalSlides) setCurrent(0);
+  }, [totalSlides, current]);
+
+  const nextSlide = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
+
+  const prevSlide = useCallback(() => {
+    setCurrent((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
+
+  // Autoplay with pause on hover/touch
+  useEffect(() => {
+    if (isPaused || totalSlides <= 1) return;
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
+      setCurrent((prev) => (prev + 1) % totalSlides);
     }, 6000);
     return () => clearInterval(timer);
-  }, [autoplay, slides.length]);
+  }, [isPaused, totalSlides]);
 
-  const nextSlide = () => { setAutoplay(false); setCurrent((prev) => (prev + 1) % slides.length); };
-  const prevSlide = () => { setAutoplay(false); setCurrent((prev) => (prev - 1 + slides.length) % slides.length); };
+  // Touch gesture handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+    touchEndX.current = null;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current == null || touchEndX.current == null) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 45) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   if (slides.length === 0) return null;
   const slide = slides[current] || slides[0];
 
   return (
-    <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#060913] min-h-[420px] sm:min-h-[480px] md:min-h-[520px] flex items-center mb-6 sm:mb-10 group">
+    <div
+      role="region"
+      aria-label="Featured Promotions Carousel"
+      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#060913] min-h-[440px] sm:min-h-[480px] md:min-h-[520px] flex items-center mb-6 sm:mb-10 group select-none"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Dynamic Atmospheric Multi-Layered Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#060a17] via-[#0a1228] to-[#040711]" />
 
@@ -127,24 +188,24 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
       <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/10 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]" />
 
       {/* Slide Content Grid: Left Text Column + Right Floating Product Showcase */}
-      <div className="relative z-10 w-full p-6 sm:p-10 md:p-12 lg:p-14">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-12 items-center">
+      <div className="relative z-10 w-full p-5 sm:p-8 md:p-12 lg:p-14 pb-16 sm:pb-12 md:pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-center">
           {/* Left Column: Text & CTAs */}
-          <div className="md:col-span-7 space-y-4 sm:space-y-5 text-white">
+          <div className="md:col-span-7 space-y-3.5 sm:space-y-4 md:space-y-5 text-white">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`content-${slide.id}`}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
                 className="space-y-3 sm:space-y-4"
               >
                 {/* Eyebrow & Promotion Label */}
                 {(slide.badge || (slide.discount_pct != null && slide.discount_pct > 0)) && (
-                  <div className="flex items-center gap-2.5 flex-wrap">
+                  <div className="flex items-center gap-2 flex-wrap">
                     {slide.badge && (
-                      <span className="text-xs sm:text-sm font-semibold tracking-wider text-amber-400 uppercase">
+                      <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-amber-400 uppercase bg-amber-400/10 border border-amber-400/20 px-2.5 py-0.5 rounded-full">
                         {slide.badge}
                       </span>
                     )}
@@ -157,13 +218,13 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 )}
 
                 {/* Headline */}
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.15] tracking-tight text-white drop-shadow-md">
+                <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.18] tracking-tight text-white drop-shadow-md">
                   {slide.headline}
                 </h1>
 
                 {/* Subheadline */}
                 {slide.subheadline && (
-                  <p className="text-xs sm:text-sm md:text-base text-gray-300/90 leading-relaxed max-w-xl line-clamp-4 md:line-clamp-none">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-300/90 leading-relaxed max-w-xl line-clamp-3 sm:line-clamp-4 md:line-clamp-none">
                     {slide.subheadline}
                   </p>
                 )}
@@ -183,7 +244,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                       href={slide.cta_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-midnight font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
@@ -191,7 +252,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                   ) : (
                     <Link
                       to={slide.cta_link}
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-midnight font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
@@ -204,14 +265,14 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                         href={slide.secondary_cta_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
                       >
                         <span>{slide.secondary_cta_text}</span>
                       </a>
                     ) : (
                       <Link
                         to={slide.secondary_cta_link}
-                        className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
                       >
                         <span>{slide.secondary_cta_text}</span>
                       </Link>
@@ -223,42 +284,43 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
           </div>
 
           {/* Right Column: Floating Product Showcase */}
-          <div className="md:col-span-5 flex items-center justify-center relative min-h-[260px] sm:min-h-[300px] md:min-h-[340px] lg:min-h-[380px]">
+          <div className="md:col-span-5 flex items-center justify-center relative min-h-[200px] sm:min-h-[260px] md:min-h-[320px] lg:min-h-[360px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`showcase-${slide.id}`}
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                initial={{ opacity: 0, scale: 0.92, y: 15 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="relative flex items-center justify-center w-full max-w-[360px] sm:max-w-[420px]"
+                exit={{ opacity: 0, scale: 0.92, y: -15 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="relative flex items-center justify-center w-full max-w-[320px] sm:max-w-[400px]"
               >
                 {/* Glowing Circular Halo & Glass Pedestal */}
-                <div className="absolute w-56 h-56 sm:w-72 sm:h-72 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md shadow-2xl pointer-events-none" />
-                <div className="absolute w-44 h-44 sm:w-56 sm:h-56 rounded-full bg-gradient-to-tr from-amber-500/15 via-primary/20 to-transparent blur-xl pointer-events-none" />
+                <div className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md shadow-2xl pointer-events-none" />
+                <div className="absolute w-36 h-36 sm:w-52 sm:h-52 rounded-full bg-gradient-to-tr from-amber-500/15 via-primary/20 to-transparent blur-xl pointer-events-none" />
 
                 {/* Floating Product Image Container */}
                 <motion.div
                   animate={{
-                    y: [0, -10, 0],
+                    y: [0, -8, 0],
                   }}
                   transition={{
                     duration: 4,
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="relative z-10 w-full h-[230px] sm:h-[280px] lg:h-[330px] flex items-center justify-center p-2"
+                  className="relative z-10 w-full h-[190px] sm:h-[250px] md:h-[280px] lg:h-[320px] flex items-center justify-center p-2"
                 >
                   <img
                     src={slide.image_url}
                     alt={slide.headline}
+                    loading="eager"
+                    decoding="async"
                     className="max-h-full max-w-full object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.7)] filter transition-transform duration-500 hover:scale-105"
                   />
                 </motion.div>
 
-
                 {/* Soft ground shadow beneath the floating product */}
-                <div className="absolute -bottom-4 w-44 sm:w-56 h-5 bg-black/60 rounded-full blur-xl pointer-events-none" />
+                <div className="absolute -bottom-4 w-40 sm:w-52 h-5 bg-black/60 rounded-full blur-xl pointer-events-none" />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -267,29 +329,26 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
 
       {/* Nav Controls */}
       {slides.length > 1 && (
-        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20 flex items-center gap-1.5 sm:gap-2">
+        <div className="absolute bottom-3 right-3 sm:bottom-5 sm:right-6 z-20 flex items-center gap-1.5 sm:gap-2">
           <button
             onClick={prevSlide}
             aria-label="Previous Slide"
-            className="grid place-items-center h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/15 transition-all"
+            className="grid place-items-center h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md border border-white/15 active:scale-95 transition-all shadow-md"
           >
             <ChevronLeft size={16} />
           </button>
           <div className="flex items-center px-1">
             {slides.map((s, idx) => (
-              // The visible dot stays small, but the button itself is a full
-              // touch target - the pill alone was only 6px tall, far below the
-              // ~44px minimum, so it was very hard to tap on a phone.
               <button
                 key={s.id}
-                onClick={() => { setAutoplay(false); setCurrent(idx); }}
+                onClick={() => setCurrent(idx)}
                 aria-label={`Go to slide ${idx + 1} of ${slides.length}`}
                 aria-current={idx === current ? "true" : undefined}
-                className="grid place-items-center h-10 w-5 sm:h-11 sm:w-6 group"
+                className="grid place-items-center h-9 w-5 sm:h-10 sm:w-6 group"
               >
                 <span
                   className={`block h-1.5 sm:h-2 rounded-full transition-all ${
-                    idx === current ? "w-5 sm:w-6 bg-amber-400" : "w-1.5 sm:w-2 bg-white/40 group-hover:bg-white/70"
+                    idx === current ? "w-5 sm:w-6 bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" : "w-1.5 sm:w-2 bg-white/40 group-hover:bg-white/70"
                   }`}
                 />
               </button>
@@ -298,7 +357,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
           <button
             onClick={nextSlide}
             aria-label="Next Slide"
-            className="grid place-items-center h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/15 transition-all"
+            className="grid place-items-center h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md border border-white/15 active:scale-95 transition-all shadow-md"
           >
             <ChevronRight size={16} />
           </button>
