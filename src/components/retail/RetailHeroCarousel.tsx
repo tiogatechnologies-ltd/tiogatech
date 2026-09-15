@@ -20,6 +20,23 @@ interface HeroSlideContent {
   secondary_cta_link?: string;
 }
 
+export const FEATURED_SRNE_20KW_SLIDE: HeroSlideContent = {
+  id: "srne-20kw-commercial",
+  is_active: true,
+  badge: "Commercial & Industrial Grade",
+  headline: "Meet the SRNE 20KW Three-Phase Inverter",
+  subheadline:
+    "Built for large homes, offices, hotels, workshops, and commercial applications. With 30KW PV input, 360A battery charge/discharge, dual MPPTs, 1,000V max PV voltage, and up to 120KW parallel capacity, it’s designed to handle serious power demands.",
+  highlight_text: "Distributors & Installers: High capacity project? Let’s talk · DM for price & full specifications",
+  discount_pct: null,
+  image_url: "/products/srne/srne-inv-asp-20kw.png",
+  cta_text: "DM for Price & Specs",
+  cta_link:
+    "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
+  secondary_cta_text: "View Specifications",
+  secondary_cta_link: "/product/srne-20kw-48v-three-phase-mppt-inverter-charger-asp48200sh3-00000110",
+};
+
 interface RetailHeroCarouselProps {
   /** Real, currently-loaded catalog size - used only for the honest fallback slide below. */
   productCount?: number;
@@ -53,7 +70,22 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
         secondary_cta_link: "/energy-calculator",
       };
 
-  const slides = configuredSlides.length > 0 ? configuredSlides : fallbackSlide ? [fallbackSlide] : [];
+  const slides = useMemo(() => {
+    const list = [...configuredSlides];
+    const hasSrne20kw = list.some(
+      (s) =>
+        s.id === FEATURED_SRNE_20KW_SLIDE.id ||
+        s.headline?.toLowerCase().includes("srne 20kw") ||
+        s.headline?.toLowerCase().includes("srne 20 kw")
+    );
+    if (!hasSrne20kw) {
+      list.unshift(FEATURED_SRNE_20KW_SLIDE);
+    }
+    if (list.length === 1 && fallbackSlide) {
+      list.push(fallbackSlide);
+    }
+    return list.filter((s) => s.is_active && s.headline);
+  }, [configuredSlides, fallbackSlide]);
 
   useEffect(() => {
     if (current >= slides.length) setCurrent(0);
@@ -131,7 +163,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
 
                 {/* Subheadline */}
                 {slide.subheadline && (
-                  <p className="text-xs sm:text-sm md:text-base text-gray-300/90 leading-relaxed max-w-xl line-clamp-3">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-300/90 leading-relaxed max-w-xl line-clamp-4 md:line-clamp-none">
                     {slide.subheadline}
                   </p>
                 )}
@@ -146,21 +178,44 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
 
                 {/* CTAs */}
                 <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                  <Link
-                    to={slide.cta_link}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-midnight font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
-                  >
-                    <span>{slide.cta_text}</span>
-                    <ArrowRight size={15} />
-                  </Link>
+                  {slide.cta_link?.startsWith("http") ? (
+                    <a
+                      href={slide.cta_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-midnight font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+                    >
+                      <span>{slide.cta_text}</span>
+                      <ArrowRight size={15} />
+                    </a>
+                  ) : (
+                    <Link
+                      to={slide.cta_link}
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-midnight font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+                    >
+                      <span>{slide.cta_text}</span>
+                      <ArrowRight size={15} />
+                    </Link>
+                  )}
 
                   {slide.secondary_cta_text && slide.secondary_cta_link && (
-                    <Link
-                      to={slide.secondary_cta_link}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
-                    >
-                      <span>{slide.secondary_cta_text}</span>
-                    </Link>
+                    slide.secondary_cta_link.startsWith("http") ? (
+                      <a
+                        href={slide.secondary_cta_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
+                      >
+                        <span>{slide.secondary_cta_text}</span>
+                      </a>
+                    ) : (
+                      <Link
+                        to={slide.secondary_cta_link}
+                        className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
+                      >
+                        <span>{slide.secondary_cta_text}</span>
+                      </Link>
+                    )
                   )}
                 </div>
               </motion.div>

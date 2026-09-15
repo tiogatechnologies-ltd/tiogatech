@@ -137,6 +137,23 @@ const resolveDetailsFromItem = (
     const img = resolveProductImage((p as any).image_url, p.category, p.name);
     const price = (p as any).numeric_price ?? parsePriceNaira((p as any).price);
 
+    if (p.sku === "SRNE-ASP48200SH3" || (name.toLowerCase().includes("srne") && name.toLowerCase().includes("20k"))) {
+      return {
+        headline: "Meet the SRNE 20KW Three-Phase Inverter",
+        subheadline:
+          "Built for large homes, offices, hotels, workshops, and commercial applications. With 30KW PV input, 360A battery charge/discharge, dual MPPTs, 1,000V max PV voltage, and up to 120KW parallel capacity, it’s designed to handle serious power demands.",
+        badge: "Commercial & Industrial Grade",
+        highlight_text: "Distributors & Installers: High capacity project? Let’s talk · DM for price & full specifications",
+        image_url: "/products/srne/srne-inv-asp-20kw.png",
+        price_ngn: price,
+        cta_text: "DM for Price & Specs",
+        cta_link:
+          "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
+        secondary_cta_text: "View Full Specifications",
+        secondary_cta_link: productPath(p as any),
+      };
+    }
+
     let badge = "Official Distributor Guarantee";
     let highlight = "5-Year Official Warranty · Nationwide Fast Dispatch";
     if (cat.includes("inverter") || name.toLowerCase().includes("inverter")) {
@@ -256,6 +273,14 @@ const PRESET_TEMPLATES = [
     findId: (prods: any[]) =>
       prods.find((p) => p.name?.toLowerCase().includes("srne") && (p.name?.toLowerCase().includes("5.12") || p.name?.toLowerCase().includes("eos05") || p.name?.toLowerCase().includes("se05")))?.id ||
       prods.find((p) => p.name?.toLowerCase().includes("srne") && p.category?.toLowerCase().includes("batter"))?.id,
+  },
+  {
+    key: "srne-20kw",
+    label: "SRNE 20kW Three-Phase Inverter",
+    short: "SRNE 20kW 3P",
+    type: "product" as SourceType,
+    findId: (prods: any[]) =>
+      prods.find((p) => p.sku === "SRNE-ASP48200SH3" || (p.name?.toLowerCase().includes("srne") && p.name?.toLowerCase().includes("20k")))?.id,
   },
   {
     key: "srne-inv",
