@@ -46,11 +46,12 @@ export function normalizeCategory(category: string | null | undefined, name?: st
 export function inferBrand(name: string, category: string | null | undefined): string {
   const n = name || "";
   if (n.includes("SRNE")) return "SRNE";
+  if (n.includes("Luxpower") || n.includes("LXP") || n.includes("SNA") || n.includes("Geta") || n.includes("PGEM") || n.includes("PSHIELD") || n.includes("PSTACK") || n.includes("ECO Beast") || n.includes("TriP") || n.includes("TRIP")) return "Luxpower";
   if (n.includes("Deye")) return "Deye";
   if (n.includes("Felicity")) return "Felicity";
   if (n.includes("Longi")) return "Longi";
   if (n.includes("JA Solar") || n.includes("JA ")) return "JA Solar";
   if (n.includes("Jinko")) return "Jinko";
-  if (normalizeCategory(category).includes("Lock")) return "STAMA";
+  if (normalizeCategory(category).includes("Lock")) return "Tioga Smart";
   return "Tioga";
 }

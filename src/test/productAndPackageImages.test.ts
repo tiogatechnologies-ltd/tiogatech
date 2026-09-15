@@ -162,6 +162,22 @@ describe("Product and Package Real Images", () => {
     }
   });
 
+  it("all Luxpower inverters and batteries exist with authentic photos on disk and +20% markup applied", () => {
+    const luxProducts = PRODUCTS.filter((p) => p.brand === "Luxpower");
+    expect(luxProducts.length).toBe(30);
+
+    for (const p of luxProducts) {
+      expect(p.image_url).toBeTruthy();
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Luxpower image should exist on disk: ${filePath}`).toBe(true);
+      expect(p.numeric_price).toBeGreaterThan(0);
+      expect(p.price).toMatch(/^₦[\d,]+$/);
+    }
+
+    const uniqueLuxImages = new Set(luxProducts.map((p) => p.image_url));
+    expect(uniqueLuxImages.size).toBe(luxProducts.length);
+  });
+
   it("ensures zero duplicate product images across all products in the catalog", () => {
     const imageUrlMap = new Map<string, string[]>();
     for (const p of PRODUCTS) {
