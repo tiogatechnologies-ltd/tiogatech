@@ -51,6 +51,24 @@ export interface PromotionSettings {
     custom_badge?: string | null;
     exclude?: boolean;
   }>;
+  /**
+   * Per-brand discount policy, e.g. { "Luxpower": { discount_pct: 20 } }.
+   * Applied to any item of that brand with no genuine previous price and no
+   * product-specific override. Lets different brands show different "Save %"
+   * badges instead of one storewide markup.
+   */
+  brand_overrides?: Record<string, {
+    discount_pct?: number | null;
+    exclude?: boolean;
+  }>;
+  /**
+   * When true (default), any product with no override, no genuine previous
+   * price, and no brand policy gets a varied 5%-20% "Save %" badge derived
+   * from its own id - so listings look like a real varied sale (Temu-style)
+   * instead of one identical percentage on every item. Set to false to fall
+   * back to one flat `default_markup_pct` for everything instead.
+   */
+  randomize_fallback_pct?: boolean;
 }
 
 export interface DiscountSettings {
@@ -125,6 +143,11 @@ export const SETTING_DEFAULTS = {
     default_markup_pct: 12,
     badge_format: "save_pct",
     product_overrides: {},
+    brand_overrides: {
+      Luxpower: { discount_pct: 20 },
+      SRNE: { discount_pct: 20 },
+    },
+    randomize_fallback_pct: true,
   } as PromotionSettings,
   discounts: {
     show_code_field: true,

@@ -345,7 +345,7 @@ export const ProductDetail = () => {
   const isWishlisted = isInWishlist(product.id);
 
   // Cosmetic promo calculations
-  const compareAt = resolveCompareAt(numPrice, (product as any).compare_at_price, promos, product.id);
+  const compareAt = resolveCompareAt(numPrice, (product as any).compare_at_price, promos, product.id, (product as any).brand);
   const pct = savingsPct(numPrice, compareAt);
   const wasPrice = calcWasPrice(numPrice, compareAt);
   const savedAmount = calcSavedAmount(numPrice, compareAt);

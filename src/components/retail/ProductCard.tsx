@@ -87,7 +87,8 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
     product.numeric_price,
     (product as any).compare_at_price,
     promos,
-    product.id
+    product.id,
+    product.brand
   );
   const pct = savingsPct(product.numeric_price, compareAt);
   const wasPrice = calcWasPrice(product.numeric_price, compareAt);

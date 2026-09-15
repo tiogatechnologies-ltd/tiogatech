@@ -36,6 +36,7 @@ import { useHomeAutomationPackages } from "@/hooks/useHomeAutomationPackages";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { mergeProducts } from "@/lib/mergeProducts";
 import { normalizeCategory } from "@/lib/productBrand";
+import { resolveCompareAt, savingsPct } from "@/lib/promoDisplay";
 import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
 import { productPath } from "@/lib/productSlug";
 import bgSolarHero from "@/assets/bg-commercial-solar.jpg";
@@ -379,11 +380,18 @@ const AdminRetailPromotions = () => {
       custom_badge?: string | null;
       exclude?: boolean;
     }>;
+    brand_overrides?: Record<string, {
+      discount_pct?: number | null;
+      exclude?: boolean;
+    }>;
+    randomize_fallback_pct?: boolean;
   }>({
     show_compare_at_price: true,
     default_markup_pct: 12,
     badge_format: "save_pct",
     product_overrides: {},
+    brand_overrides: {},
+    randomize_fallback_pct: true,
   });
   const [productPromoSearch, setProductPromoSearch] = useState("");
   const [productPromoFilter, setProductPromoFilter] = useState<"all" | "overrides" | "excluded">("all");
@@ -435,6 +443,36 @@ const AdminRetailPromotions = () => {
     });
   };
 
+  const updateBrandOverride = (brand: string, patch: { discount_pct?: number | null; exclude?: boolean }) => {
+    setPromoSettings((prev) => {
+      const currentOverrides = prev.brand_overrides || {};
+      const currentItem = currentOverrides[brand] || {};
+      const updatedItem = { ...currentItem, ...patch };
+      return {
+        ...prev,
+        brand_overrides: { ...currentOverrides, [brand]: updatedItem },
+      };
+    });
+  };
+
+  const removeBrandOverride = (brand: string) => {
+    setPromoSettings((prev) => {
+      const newOverrides = { ...(prev.brand_overrides || {}) };
+      delete newOverrides[brand];
+      return { ...prev, brand_overrides: newOverrides };
+    });
+  };
+
+  // Every distinct brand actually present in the live catalog, so the admin
+  // list never shows a brand nothing is sold under.
+  const catalogBrands = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of products as any[]) {
+      if (p.brand) set.add(p.brand);
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [products]);
+
   const filteredPromoProducts = useMemo(() => {
     return products.filter((p) => {
       const matchSearch =
@@ -473,6 +511,8 @@ const AdminRetailPromotions = () => {
           default_markup_pct: val.default_markup_pct !== undefined ? Number(val.default_markup_pct) : 12,
           badge_format: val.badge_format || "save_pct",
           product_overrides: val.product_overrides || {},
+          brand_overrides: val.brand_overrides || {},
+          randomize_fallback_pct: val.randomize_fallback_pct !== undefined ? !!val.randomize_fallback_pct : true,
         });
       }
       setDbProducts(prodData || []);
@@ -900,9 +940,46 @@ const AdminRetailPromotions = () => {
           </div>
 
           <div className="space-y-4 pt-1">
-            <div className="grid sm:grid-cols-2 gap-4">
+            {/* RANDOMIZED VS FLAT FALLBACK */}
+            <div className="p-3.5 rounded-xl bg-muted/30 border border-border">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div>
+                  <p className="text-xs font-bold text-foreground">Fallback Style for Unassigned Products</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5 max-w-md">
+                    Products with no Previous Price and no Brand Discount below. "Varied" gives every item its own
+                    stable 5%-20% off (like Temu/Shein listings) instead of one identical percentage everywhere.
+                  </p>
+                </div>
+                <div className="flex items-center rounded-xl border border-border overflow-hidden shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setPromoSettings((p) => ({ ...p, randomize_fallback_pct: true }))}
+                    className={`px-3 py-1.5 text-xs font-semibold transition-all ${
+                      promoSettings.randomize_fallback_pct !== false
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-card text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Varied 5%-20%
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPromoSettings((p) => ({ ...p, randomize_fallback_pct: false }))}
+                    className={`px-3 py-1.5 text-xs font-semibold transition-all ${
+                      promoSettings.randomize_fallback_pct === false
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-card text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    One Flat %
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className={`grid sm:grid-cols-2 gap-4 ${promoSettings.randomize_fallback_pct !== false ? "opacity-50 pointer-events-none" : ""}`}>
               <div>
-                <label className={labelClass}>Default List Price Markup (%)</label>
+                <label className={labelClass}>Flat Fallback Markup (%)</label>
                 <div className="relative">
                   <input
                     type="number"
@@ -923,7 +1000,7 @@ const AdminRetailPromotions = () => {
                   </span>
                 </div>
                 <p className="text-[11px] text-muted-foreground mt-1.5">
-                  Set to 0% to disable artificial markups. Setting to 12% previously caused all products to display "Save 11%".
+                  Only used when "One Flat %" is selected above. Set to 0% to disable.
                 </p>
               </div>
 
@@ -934,13 +1011,37 @@ const AdminRetailPromotions = () => {
                     • <strong className="text-foreground">Individual Previous Price</strong>: Any product with a previous price entered in Product Catalog will always show its real discount.
                   </p>
                   <p>
-                    • <strong className="text-foreground">Storewide Fallback</strong>: When enabled, this percentage is added as a fallback to items without a recorded previous price.
+                    • <strong className="text-foreground">Brand Discounts</strong>: Set below, e.g. Luxpower/SRNE at 20%.
+                  </p>
+                  <p>
+                    • <strong className="text-foreground">Fallback</strong>: Everything else, per the style picked above.
                   </p>
                 </div>
               </div>
             </div>
 
-            {promoSettings.show_compare_at_price && promoSettings.default_markup_pct > 0 ? (
+            {!promoSettings.show_compare_at_price ? (
+              <div className="p-3.5 rounded-xl bg-muted/40 border border-border text-xs text-muted-foreground flex items-center gap-2">
+                <Check size={14} className="text-emerald-500 shrink-0" />
+                <span>
+                  Storewide markup is <strong className="text-foreground">Disabled</strong>. Products will only display a crossed-out price if you specifically assigned an authentic Previous Price to them.
+                </span>
+              </div>
+            ) : promoSettings.randomize_fallback_pct !== false ? (
+              <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs space-y-1">
+                <p className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                  <Tag size={13} />
+                  Example on a ₦500,000 Product:
+                </p>
+                <p className="text-foreground/90">
+                  Each unassigned product gets its own stable badge somewhere between{" "}
+                  <span className="inline-block px-1.5 py-0.5 rounded bg-red-600 text-white font-extrabold text-[10px]">Save 5%</span>{" "}
+                  and{" "}
+                  <span className="inline-block px-1.5 py-0.5 rounded bg-red-600 text-white font-extrabold text-[10px]">Save 20%</span>{" "}
+                  - derived from its own product ID, so it never changes between visits.
+                </p>
+              </div>
+            ) : promoSettings.default_markup_pct > 0 ? (
               <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs space-y-1">
                 <p className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
                   <Tag size={13} />
@@ -957,14 +1058,7 @@ const AdminRetailPromotions = () => {
                   </span>
                 </p>
               </div>
-            ) : (
-              <div className="p-3.5 rounded-xl bg-muted/40 border border-border text-xs text-muted-foreground flex items-center gap-2">
-                <Check size={14} className="text-emerald-500 shrink-0" />
-                <span>
-                  Storewide markup is <strong className="text-foreground">Disabled</strong>. Products will only display a crossed-out price if you specifically assigned an authentic Previous Price to them.
-                </span>
-              </div>
-            )}
+            ) : null}
 
             {/* BADGE FORMAT SELECTION */}
             <div className="pt-2 border-t border-border/60">
@@ -988,6 +1082,90 @@ const AdminRetailPromotions = () => {
                     {f.label}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* PER-BRAND DISCOUNT POLICY */}
+            <div className="pt-6 border-t border-border/80 space-y-4">
+              <div>
+                <h3 className="font-display text-base font-bold text-foreground flex items-center gap-2">
+                  <Tag size={16} className="text-primary" />
+                  Brand Discount Defaults
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Set a different "Save %" for each brand - e.g. Luxpower and SRNE at 20% off, others at whatever you choose.
+                  Applies to any product of that brand with no individually recorded previous price and no product-specific
+                  override above, instead of falling back to the storewide markup.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                {catalogBrands.length === 0 ? (
+                  <div className="text-center py-6 text-xs text-muted-foreground border border-dashed border-border rounded-xl">
+                    No brands found in the catalog yet.
+                  </div>
+                ) : (
+                  catalogBrands.map((brand) => {
+                    const override = promoSettings.brand_overrides?.[brand];
+                    const isExcluded = !!override?.exclude;
+                    const hasCustom = override?.discount_pct != null && override.discount_pct > 0;
+                    return (
+                      <div
+                        key={brand}
+                        className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${
+                          isExcluded
+                            ? "bg-muted/30 border-dashed border-border opacity-70"
+                            : hasCustom
+                            ? "bg-card border-primary/40 shadow-xs"
+                            : "bg-card border-border"
+                        }`}
+                      >
+                        <span className="text-xs font-bold text-foreground truncate">{brand}</span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <div className="relative w-28">
+                            <input
+                              type="number"
+                              min={0}
+                              max={90}
+                              placeholder="e.g. 20"
+                              disabled={isExcluded}
+                              value={override?.discount_pct ?? ""}
+                              onChange={(e) => {
+                                const raw = e.target.value;
+                                const val = raw === "" ? null : Math.max(0, Math.min(90, Number(raw)));
+                                updateBrandOverride(brand, { discount_pct: val });
+                              }}
+                              className="w-full pl-2.5 pr-6 py-1.5 rounded-lg border border-border bg-background text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-40"
+                            />
+                            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">%</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => updateBrandOverride(brand, { exclude: !isExcluded })}
+                            className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                              isExcluded
+                                ? "bg-amber-500/15 border-amber-500/40 text-amber-700 dark:text-amber-300"
+                                : "bg-muted/40 border-border text-muted-foreground hover:text-foreground"
+                            }`}
+                            title={isExcluded ? "Click to re-enable this brand's discount badges" : "Click to exclude this brand from discount badges"}
+                          >
+                            {isExcluded ? "Excluded" : "Exclude"}
+                          </button>
+                          {(hasCustom || isExcluded) && (
+                            <button
+                              type="button"
+                              onClick={() => removeBrandOverride(brand)}
+                              className="p-1.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
+                              title="Reset to storewide default"
+                            >
+                              <RotateCcw size={14} />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
               </div>
             </div>
 
@@ -1076,19 +1254,10 @@ const AdminRetailPromotions = () => {
                     const isExcluded = !!override?.exclude;
                     const hasCustom = !!(override?.compare_at_price || override?.discount_pct || override?.custom_badge);
 
-                    // Effective Compare Price
-                    let effCompare: number | null = null;
-                    if (!isExcluded) {
-                      if (override?.compare_at_price && override.compare_at_price > price) {
-                        effCompare = override.compare_at_price;
-                      } else if (override?.discount_pct && override.discount_pct > 0) {
-                        effCompare = Math.round(price / (1 - override.discount_pct / 100));
-                      } else if (promoSettings.show_compare_at_price && promoSettings.default_markup_pct > 0) {
-                        effCompare = Math.round(price * (1 + promoSettings.default_markup_pct / 100));
-                      }
-                    }
-
-                    const effSavingsPct = effCompare && effCompare > price ? Math.round(((effCompare - price) / effCompare) * 100) : null;
+                    // Effective Compare Price - mirrors the exact storefront logic
+                    // (product override > genuine recorded price > brand policy > storewide markup)
+                    const effCompare = resolveCompareAt(price, (p as any).compare_at_price, promoSettings as any, p.id, p.brand);
+                    const effSavingsPct = savingsPct(price, effCompare);
 
                     return (
                       <div
