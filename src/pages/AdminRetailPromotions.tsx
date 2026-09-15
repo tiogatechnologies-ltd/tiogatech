@@ -280,7 +280,12 @@ const PRESET_TEMPLATES = [
     short: "SRNE 20kW 3P",
     type: "product" as SourceType,
     findId: (prods: any[]) =>
-      prods.find((p) => p.sku === "SRNE-ASP48200SH3" || (p.name?.toLowerCase().includes("srne") && p.name?.toLowerCase().includes("20k")))?.id,
+      prods.find(
+        (p) =>
+          p.id === "a0000000-0000-0000-0000-000000000110" ||
+          p.sku === "SRNE-ASP48200SH3" ||
+          (p.name?.toLowerCase().includes("srne") && (p.name?.toLowerCase().includes("20kw") || p.name?.toLowerCase().includes("20k")))
+      )?.id || "a0000000-0000-0000-0000-000000000110",
   },
   {
     key: "srne-inv",
@@ -526,8 +531,81 @@ const AdminRetailPromotions = () => {
       const heroRow = (data as any[])?.find((r) => r.section_key === "retail_hero");
       const flashRow = (data as any[])?.find((r) => r.section_key === "flash_deal");
       const heroContent = heroRow?.content as { slides?: HeroSlide[] } | undefined;
-      const flashContent = flashRow?.content as Partial<FlashDeal> | undefined;
-      setSlides(Array.isArray(heroContent?.slides) ? heroContent.slides! : []);
+      const rawSlides: HeroSlide[] = Array.isArray(heroContent?.slides) ? heroContent.slides! : [];
+      const srneProduct = STATIC_PRODUCTS.find(
+        (p) => p.id === "a0000000-0000-0000-0000-000000000110" || p.sku === "SRNE-ASP48200SH3"
+      );
+
+      const hasSrne = rawSlides.some(
+        (s) =>
+          s.id === "srne-20kw-commercial" ||
+          s.source_id === "a0000000-0000-0000-0000-000000000110" ||
+          s.headline?.toLowerCase().includes("srne 20kw") ||
+          s.headline?.toLowerCase().includes("srne 20 kw")
+      );
+
+      let initialSlides: HeroSlide[] = [...rawSlides];
+
+      if (!hasSrne) {
+        const srneSlide: HeroSlide = {
+          id: "srne-20kw-commercial",
+          is_active: true,
+          source_type: "product",
+          source_id: srneProduct?.id || "a0000000-0000-0000-0000-000000000110",
+          badge: "Commercial & Industrial Grade",
+          headline: "Meet the SRNE 20KW Three-Phase Inverter",
+          subheadline:
+            "Built for large homes, offices, hotels, workshops, and commercial applications. With 30KW PV input, 360A battery charge/discharge, dual MPPTs, 1,000V max PV voltage, and up to 120KW parallel capacity, it’s designed to handle serious power demands.",
+          highlight_text: "Distributors & Installers: High capacity project? Let’s talk · DM for price & full specifications",
+          discount_pct: null,
+          price_ngn: srneProduct?.numeric_price ?? 2706000,
+          image_url: "/products/srne/srne-inv-asp-20kw.png",
+          cta_text: "DM for Price & Specs",
+          cta_link:
+            "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
+          secondary_cta_text: "View Full Specifications",
+          secondary_cta_link: srneProduct
+            ? productPath(srneProduct as any)
+            : "/product/srne-20kw-48v-three-phase-mppt-inverter-charger-asp48200sh3-00000110",
+        };
+        initialSlides.unshift(srneSlide);
+
+        // Auto-persist into Supabase landing_content so the database permanently includes all slides
+        supabase
+          .from("landing_content")
+          .upsert(
+            {
+              section_key: "retail_hero",
+              content: { slides: initialSlides } as any,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "section_key" }
+          )
+          .then(() => {
+            invalidateLandingCache();
+          });
+      } else {
+        // Ensure any existing SRNE slide is fully connected with source_type: "product" and source_id
+        initialSlides = initialSlides.map((s) => {
+          if (
+            s.id === "srne-20kw-commercial" ||
+            s.source_id === "a0000000-0000-0000-0000-000000000110" ||
+            s.headline?.toLowerCase().includes("srne 20kw") ||
+            s.headline?.toLowerCase().includes("srne 20 kw")
+          ) {
+            return {
+              ...s,
+              source_type: "product",
+              source_id: "a0000000-0000-0000-0000-000000000110",
+              price_ngn: s.price_ngn ?? srneProduct?.numeric_price ?? 2706000,
+              image_url: s.image_url || "/products/srne/srne-inv-asp-20kw.png",
+            };
+          }
+          return s;
+        });
+      }
+
+      setSlides(initialSlides);
       setFlashDeal(flashContent ? { ...defaultFlashDeal, ...flashContent } : defaultFlashDeal);
       if (promoData?.value) {
         const val = promoData.value as any;
