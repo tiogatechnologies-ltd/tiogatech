@@ -29,7 +29,7 @@ export const AnimatedCounter = ({
   let finalTarget: number | null = target ?? null;
   let finalPrefix = prefix;
   let finalSuffix = suffix;
-  let rawDisplay = typeof value === "number" ? value.toLocaleString() : (value || "");
+  const rawDisplay = typeof value === "number" ? value.toLocaleString() : (value || "");
 
   if (finalTarget === null && typeof value === "string") {
     // Check for patterns like "100+", "250+", "₦1,850,000", "30%", "12-18%", "5.0", "$14B"

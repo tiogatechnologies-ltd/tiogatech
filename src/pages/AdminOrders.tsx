@@ -37,7 +37,7 @@ interface OrderItem {
 const findProductImg = (name: string, fallbackUrl?: string | null): string | null => {
   if (fallbackUrl) return resolveProductImage(fallbackUrl);
   if (!name) return null;
-  const clean = name.replace(/^\d+[\.\)]\s*/, "").split("(")[0].split("x")[0].trim().toLowerCase();
+  const clean = name.replace(/^\d+[.)]\s*/, "").split("(")[0].split("x")[0].trim().toLowerCase();
   if (!clean) return null;
   const match = PRODUCTS.find((p) => {
     const pn = p.name.toLowerCase();
@@ -54,7 +54,7 @@ const parseSummaryItems = (summary: string): OrderItem[] => {
     .map((l) => l.trim())
     .filter(Boolean)
     .map((line, idx) => {
-      const cleanLine = line.replace(/^\d+[\.\)]\s*/, "").trim();
+      const cleanLine = line.replace(/^\d+[.)]\s*/, "").trim();
       const priceMatch = cleanLine.match(/\((₦?[0-9,]+(\.[0-9]+)?)\)/);
       const price = priceMatch ? priceMatch[1] : null;
       let name = cleanLine.replace(/\s*\([^)]*\)/, "").trim();

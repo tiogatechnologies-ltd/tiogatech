@@ -67,19 +67,22 @@ const useCountdown = (endsAt: string | undefined) => {
 export const FlashDealsBar = () => {
   const { content } = useLandingContent("flash_deal");
 
-  // If admin explicitly disabled the flash deal, respect that choice
-  if (content && content.is_active === false) {
-    return null;
-  }
-
   // Merge loaded content with default fallback so the bar is always complete and working
   const deal: FlashDealContent = {
     ...DEFAULT_FLASH_DEAL,
     ...(content as Partial<FlashDealContent>),
   };
 
+  // Hooks must run on every render regardless of is_active, or React throws
+  // "Rendered fewer hooks than expected" the moment content finishes loading
+  // with is_active: false.
   const timeLeft = useCountdown(deal.ends_at);
   const format = (n: number) => n.toString().padStart(2, "0");
+
+  // If admin explicitly disabled the flash deal, respect that choice
+  if (content && content.is_active === false) {
+    return null;
+  }
 
   return (
     <aside
