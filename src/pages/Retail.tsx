@@ -188,7 +188,7 @@ export const Retail = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam || null);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedCapacities, setSelectedCapacities] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 15_000_000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50_000_000]);
   const [inStockOnly, setInStockOnly] = useState(false);
 
   useEffect(() => {
@@ -380,7 +380,7 @@ export const Retail = () => {
     setSelectedCategory(null);
     setSelectedBrands([]);
     setSelectedCapacities([]);
-    setPriceRange([0, 15_000_000]);
+    setPriceRange([0, 50_000_000]);
     setInStockOnly(false);
     setSearchQuery("");
     setSearchParams({});
@@ -638,7 +638,7 @@ export const Retail = () => {
                       categories={categories}
                       brands={brands}
                       capacities={capacities}
-                      maxPrice={15_000_000}
+                      maxPrice={50_000_000}
                       totalResults={filteredProducts.length}
                       onReset={handleResetFilters}
                     />
@@ -758,7 +758,7 @@ export const Retail = () => {
                     categories={categories}
                     brands={brands}
                     capacities={capacities}
-                    maxPrice={15_000_000}
+                    maxPrice={50_000_000}
                     totalResults={filteredProducts.length}
                     onReset={handleResetFilters}
                   />
