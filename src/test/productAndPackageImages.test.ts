@@ -162,21 +162,30 @@ describe("Product and Package Real Images", () => {
     }
   });
 
-  it("all Luxpower inverters and batteries exist with authentic photos on disk and +20% markup applied", () => {
+  it("all Luxpower inverters and batteries exist with authentic photos on disk and 20% off discount applied", () => {
     const luxProducts = PRODUCTS.filter((p) => p.brand === "Luxpower");
     expect(luxProducts.length).toBe(30);
 
     for (const p of luxProducts) {
       expect(p.image_url).toBeTruthy();
+      expect(p.image_url).toMatch(/\.png$/);
       const filePath = path.resolve("public" + p.image_url);
       expect(fs.existsSync(filePath), `Luxpower image should exist on disk: ${filePath}`).toBe(true);
       expect(p.numeric_price).toBeGreaterThan(0);
       expect(p.price).toMatch(/^₦[\d,]+$/);
+      expect(p.compare_at_price).toMatch(/^₦[\d,]+$/);
+
+      // Verify exact 20% off discount: selling price = basePrice * 0.80
+      const basePrice = parseInt(p.compare_at_price!.replace(/[^\d]/g, ""), 10);
+      const expectedDiscounted = Math.round(basePrice * 0.80);
+      expect(p.numeric_price).toBe(expectedDiscounted);
+      expect(p.price).toBe(`₦${expectedDiscounted.toLocaleString()}`);
     }
 
     const uniqueLuxImages = new Set(luxProducts.map((p) => p.image_url));
     expect(uniqueLuxImages.size).toBe(luxProducts.length);
   });
+
 
   it("ensures zero duplicate product images across all products in the catalog", () => {
     const imageUrlMap = new Map<string, string[]>();
