@@ -41,7 +41,7 @@ const Index = () => {
     <div className="min-h-screen scroll-smooth">
       <SEO
         title="Tioga Technologies - Solar & Smart Home in Nigeria"
-        description="Solar installation, battery backup, STAMA smart locks and home automation for homes and businesses in Lagos, Abuja, Port Harcourt and Jos. Get a tailored quote."
+        description="Solar installation, battery backup, smart locks and home automation for homes and businesses in Lagos, Abuja, Port Harcourt and Jos. Get a tailored quote."
         path="/"
         jsonLd={faqJsonLd}
       />

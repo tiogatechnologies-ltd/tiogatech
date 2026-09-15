@@ -154,7 +154,7 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
         {/* Category, Series & Rating */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
           <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
-            {lock.series || "STAMA Series"}{lock.model ? ` · ${lock.model}` : ""}{lock.badge ? ` · ${lock.badge}` : ""}
+            {lock.series || "Smart Series"}{lock.model ? ` · ${lock.model}` : ""}{lock.badge ? ` · ${lock.badge}` : ""}
           </span>
           <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
             <Star size={13} fill="currentColor" />
@@ -270,13 +270,13 @@ export const SmartLocks = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="STAMA Smart Locks - Biometric, 3D Face ID & Hotel Keyless Entry"
-        description="Explore STAMA intelligent door locks with 3D Face Recognition, biometric fingerprint, Tuya / TTLock app control, and hotel card access across Nigeria."
+        title="Smart Locks - Biometric, 3D Face ID & Hotel Keyless Entry"
+        description="Explore intelligent door locks with 3D Face Recognition, biometric fingerprint, Tuya / TTLock app control, and hotel card access across Nigeria."
         path="/smart-locks"
         jsonLd={[
           breadcrumbJsonLd([{ name: "Smart Locks", path: "/smart-locks" }]),
           serviceJsonLd({
-            name: "STAMA Smart Lock Supply and Installation",
+            name: "Smart Lock Supply and Installation",
             description: "Biometric and smart access locks for Nigerian homes, luxury apartments, and commercial hotels.",
             path: "/smart-locks",
             serviceType: "Access control and security installation",
@@ -286,11 +286,11 @@ export const SmartLocks = () => {
       <SiteHeader />
 
       <PageHero
-        eyebrow="STAMA Security Hardware · Powered by Tioga"
+        eyebrow="Smart Security Hardware · Powered by Tioga"
         title="Next-Generation Keyless Access & Smart Locks"
         subtitle="Military-grade security, biometric fingerprint, 3D structured-light facial recognition, and smartphone app control engineered for Nigerian homes, estates, and hotels."
         backgroundImage={bgSmartLockApex}
-        backgroundAlt="Luxury STAMA smart door lock installed on modern wooden door"
+        backgroundAlt="Luxury smart door lock installed on modern wooden door"
       >
         <div className="flex flex-wrap items-center justify-center gap-3">
           <button
@@ -361,7 +361,7 @@ export const SmartLocks = () => {
             <div>
               <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-2">Hardware Collection</p>
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight">
-                STAMA Smart Lock Models
+                Smart Lock Models
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base mt-2 max-w-xl">
                 Choose the exact form factor and security level for your main security door, wooden interior door, or hotel master suite.
@@ -403,7 +403,7 @@ export const SmartLocks = () => {
             <div className="max-w-2xl mb-8">
               <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-2">Technical Matrix</p>
               <h3 className="text-2xl sm:text-3xl font-display font-bold text-foreground">
-                STAMA Feature Comparison
+                Smart Lock Feature Comparison
               </h3>
               <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Detailed hardware capabilities across our smart lock product tiers.

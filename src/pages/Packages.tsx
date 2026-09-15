@@ -49,7 +49,7 @@ const CATEGORIES: {
     label: "Smart Lock Series",
     shortLabel: "Smart Locks",
     icon: Lock,
-    desc: "STAMA biometric home locks, Pro & Elite series, hotel access ecosystems, and accessories. All with fingerprint, PIN, card and app control.",
+    desc: "Biometric home locks, Pro & Elite series, hotel access ecosystems, and accessories. All with fingerprint, PIN, card and app control.",
     image: catLocks,
     stat: "20",
     statLabel: "Products",
@@ -148,7 +148,7 @@ const Packages = () => {
     <div className="min-h-screen flex flex-col">
       <SEO
         title="All Packages - Solar, Smart Locks & Home Automation | Tioga Technologies"
-        description="Browse all Tioga packages: 19 solar inverter systems (1KVA–40KVA), 20 STAMA smart lock products, and 3 home automation tiers. Bundle pricing up to 17% off. Installation in 48 hours."
+        description="Browse all Tioga packages: 19 solar inverter systems (1KVA–40KVA), 20 smart lock products, and 3 home automation tiers. Bundle pricing up to 17% off. Installation in 48 hours."
         path="/packages"
         jsonLd={[
           breadcrumbJsonLd([{ name: "Packages", path: "/packages" }]),
@@ -158,7 +158,7 @@ const Packages = () => {
             name: "Tioga Technologies - All Packages",
             description: "Curated solar, smart lock and home automation bundles for Nigerian homes and businesses.",
             url: "https://tiogatechnologies.com/packages",
-            about: ["Solar inverter systems", "STAMA smart locks", "Home automation bundles"],
+            about: ["Solar inverter systems", "Smart locks", "Home automation bundles"],
           },
         ]}
       />

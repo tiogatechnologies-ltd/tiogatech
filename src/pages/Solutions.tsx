@@ -32,7 +32,7 @@ const SOLUTIONS = [
   {
     id: "smart-security",
     title: "Biometric Smart Locks & AI CCTV",
-    brand: "STAMA & Security",
+    brand: "Smart Locks & Security",
     desc: "3D structured-light facial recognition locks, biometric semiconductors, and 24/7 ColorVu perimeter security cameras.",
     link: "/smart-locks",
     image: featureCctv,

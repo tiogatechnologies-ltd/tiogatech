@@ -20,7 +20,7 @@ const company = [
 const solutions = [
   { label: "Engineering Solutions", to: "/solutions" },
   { label: "Solar Packages", to: "/solar-packages" },
-  { label: "Smart Locks (STAMA)", to: "/smart-locks" },
+  { label: "Smart Locks", to: "/smart-locks" },
   { label: "Home Automation", to: "/home-automation" },
   { label: "CCTV & Security", to: "/cctv" },
   { label: "Retail Store", to: "/retail" },

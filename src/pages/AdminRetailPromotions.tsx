@@ -282,7 +282,7 @@ const PRESET_TEMPLATES = [
   },
   {
     key: "smart-lock-3d",
-    label: "STAMA 3D Face ID Lock",
+    label: "3D Face ID Lock",
     short: "3D Smart Lock",
     type: "smart_lock" as SourceType,
     findId: (_: any[], __: any[], locks: any[]) =>
@@ -325,7 +325,7 @@ const FLASH_DEAL_PRESETS = [
   },
   {
     label: "Smart Lock Free Installation",
-    headline: "STAMA Smart Security Flash Deal",
+    headline: "Smart Security Flash Deal",
     discount_label: "Free Setup",
     description: "Complimentary on-site professional installation and smartphone sync for all biometric locks.",
     perk_label: "Free Install",

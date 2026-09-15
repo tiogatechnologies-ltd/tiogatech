@@ -28,7 +28,7 @@ const secondaryLinks = [
 const productSubLinks = [
   { label: "Retail Hardware Store", to: "/retail" },
   { label: "Solar Packages", to: "/packages?category=solar" },
-  { label: "Smart Locks (STAMA)", to: "/packages?category=locks" },
+  { label: "Smart Locks", to: "/packages?category=locks" },
   { label: "Home Automation", to: "/packages?category=automation" },
   { label: "CCTV & Security", to: "/cctv" },
   { label: "Energy Calculator", to: "/energy-calculator" },

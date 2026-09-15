@@ -169,7 +169,7 @@ const AdminSmartLocks = () => {
           <div>
             <h2 className="text-2xl font-display font-bold text-foreground">Smart Locks & Hotel</h2>
             <p className="text-sm text-muted-foreground">
-              Manage STAMA smart locks, accessories and the hotel ecosystem displayed on the Packages page.
+              Manage smart locks, accessories and the hotel ecosystem displayed on the Packages page.
             </p>
           </div>
           <Button onClick={startNew} className="gap-2"><Plus size={16} /> New Item</Button>
@@ -254,7 +254,7 @@ const AdminSmartLocks = () => {
                 category="lock"
                 identifier={form.series || form.category}
                 label="Smart Lock / Hotel Picture"
-                helperText="Select a STAMA biometric lock picture from the library or upload a custom hardware photo."
+                helperText="Select a biometric lock picture from the library or upload a custom hardware photo."
               />
 
               <div className="grid sm:grid-cols-3 gap-4">
@@ -284,7 +284,7 @@ const AdminSmartLocks = () => {
 
               <div>
                 <Label>Name</Label>
-                <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="STAMA Elite K209" />
+                <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Elite K209" />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">

@@ -42,9 +42,9 @@ export const STOCK_IMAGE_LIBRARY: StockImageOption[] = [
   { label: "Powerwall & Lithium Rack Battery", category: "Batteries", url: "/products/clear/battery-powerwall-rack.webp", preview: "/products/clear/battery-powerwall-rack.webp" },
   { label: "Longi Hi-MO 5 Solar Module", category: "Solar Panels", url: "/products/clear/panel-longi-solar.webp", preview: "/products/clear/panel-longi-solar.webp" },
   { label: "Canadian Solar Monocrystalline Panel", category: "Solar Panels", url: "/products/clear/panel-canadian-solar.webp", preview: "/products/clear/panel-canadian-solar.webp" },
-  { label: "STAMA 3D Face ID Biometric Lock", category: "Smart Locks", url: "/products/clear/lock-face-recognition.webp", preview: "/products/clear/lock-face-recognition.webp" },
-  { label: "STAMA Apex Fingerprint Mortise Lock", category: "Smart Locks", url: "/products/clear/lock-fingerprint-handle.webp", preview: "/products/clear/lock-fingerprint-handle.webp" },
-  { label: "STAMA Slim Aluminum Door Lock", category: "Smart Locks", url: "/products/clear/lock-slim-aluminum.webp", preview: "/products/clear/lock-slim-aluminum.webp" },
+  { label: "3D Face ID Biometric Lock", category: "Smart Locks", url: "/products/clear/lock-face-recognition.webp", preview: "/products/clear/lock-face-recognition.webp" },
+  { label: "Apex Fingerprint Mortise Lock", category: "Smart Locks", url: "/products/clear/lock-fingerprint-handle.webp", preview: "/products/clear/lock-fingerprint-handle.webp" },
+  { label: "Slim Aluminum Door Lock", category: "Smart Locks", url: "/products/clear/lock-slim-aluminum.webp", preview: "/products/clear/lock-slim-aluminum.webp" },
   { label: "Outdoor Solar 4G Dual PTZ Camera", category: "CCTV", url: "/products/clear/camera-ptz-solar.webp", preview: "/products/clear/camera-ptz-solar.webp" },
   { label: "Outdoor PTZ Night Vision Dome Camera", category: "CCTV", url: "/products/clear/camera-ptz-outdoor.webp", preview: "/products/clear/camera-ptz-outdoor.webp" },
   { label: "Tuya Glass Smart Touch Switch", category: "Home Automation", url: "/products/clear/switch-2gang-white.webp", preview: "/products/clear/switch-2gang-white.webp" },
@@ -69,12 +69,12 @@ export const STOCK_IMAGE_LIBRARY: StockImageOption[] = [
 
   // Smart Locks
   { label: "Biometric Interior Smart Handle Lock", category: "Smart Locks", url: "/src/assets/stock-smart-lock.png", preview: stockSmartLock },
-  { label: "STAMA Elite 3D Face ID Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-elite.jpg", preview: bgSmartlockElite },
-  { label: "STAMA Apex Biometric Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-apex.jpg", preview: bgSmartlockApex },
-  { label: "STAMA Pro Slim Aluminum Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-pro.jpg", preview: bgSmartlockPro },
-  { label: "STAMA Base Gate & Heavy Duty Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-base.jpg", preview: bgSmartlockBase },
-  { label: "STAMA Biometric Smart Padlock", category: "Smart Locks", url: "/src/assets/bg-smartlock-accessory.jpg", preview: bgSmartlockAccessory },
-  { label: "STAMA Smart Hotel Access Ecosystem", category: "Smart Locks", url: "/src/assets/bg-smartlock-hotel.jpg", preview: bgSmartlockHotel },
+  { label: "Elite 3D Face ID Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-elite.jpg", preview: bgSmartlockElite },
+  { label: "Apex Biometric Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-apex.jpg", preview: bgSmartlockApex },
+  { label: "Pro Slim Aluminum Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-pro.jpg", preview: bgSmartlockPro },
+  { label: "Base Gate & Heavy Duty Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-base.jpg", preview: bgSmartlockBase },
+  { label: "Biometric Smart Padlock", category: "Smart Locks", url: "/src/assets/bg-smartlock-accessory.jpg", preview: bgSmartlockAccessory },
+  { label: "Smart Hotel Access Ecosystem", category: "Smart Locks", url: "/src/assets/bg-smartlock-hotel.jpg", preview: bgSmartlockHotel },
 
   // Home Automation
   { label: "Smart Touch Glass Wall Switch", category: "Home Automation", url: "/src/assets/feature-smart-automation-device.jpg", preview: featureSmartAutomationDevice },

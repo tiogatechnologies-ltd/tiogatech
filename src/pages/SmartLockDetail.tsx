@@ -29,7 +29,7 @@ const fmtN = (n: number) => `₦${Math.round(n).toLocaleString("en-NG")}`;
 
 const FAQS = [
   { q: "What access methods does this lock support?", a: "Depending on the model: fingerprint, PIN code, RFID card, mobile app (Bluetooth/Wi-Fi), and mechanical key backup." },
-  { q: "Is it weatherproof?", a: "Yes. All STAMA locks are IP65-rated for dust and moisture resistance, suitable for outdoor gates and main doors." },
+  { q: "Is it weatherproof?", a: "Yes. All our smart locks are IP65-rated for dust and moisture resistance, suitable for outdoor gates and main doors." },
   { q: "What happens when the battery dies?", a: "The lock gives a low-battery alert at ~20%. In an emergency, a 9V battery can be placed on the terminals to grant one-time access." },
   { q: "Can I add multiple fingerprints?", a: "Most models support 50–200 fingerprint registrations, perfect for families, offices and rental properties." },
   { q: "Is installation included?", a: "Professional installation is included in all Smart Lock packages. A certified technician will be scheduled within 48 hours." },
@@ -95,7 +95,7 @@ export const SmartLockDetail = () => {
   const handleShare = () => {
     const url = window.location.href;
     if (navigator.share && lock) {
-      navigator.share({ title: `${lock.name} | Tioga STAMA`, url }).catch(() => {
+      navigator.share({ title: `${lock.name} | Tioga Smart Locks`, url }).catch(() => {
         navigator.clipboard.writeText(url);
         toast.success("Link copied!");
       });
@@ -145,7 +145,7 @@ export const SmartLockDetail = () => {
       "@type": "Product",
       name: lock.name,
       description: lock.description,
-      brand: { "@type": "Brand", name: "STAMA Smart Locks" },
+      brand: { "@type": "Brand", name: "Tioga Smart Locks" },
       offers: {
         "@type": "Offer",
         priceCurrency: "NGN",
@@ -165,7 +165,7 @@ export const SmartLockDetail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title={`${lock.name} - STAMA Smart Lock | Tioga Technologies`}
+        title={`${lock.name} - Smart Lock | Tioga Technologies`}
         description={`${lock.description.slice(0, 160)} ${lock.features.slice(0, 3).join(", ")}.`}
         path={`/packages/lock/${lock.id}`}
         image={lock.image}
@@ -240,7 +240,7 @@ export const SmartLockDetail = () => {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">
-                    STAMA · {categoryLabel}
+                    Smart Security · {categoryLabel}
                   </p>
                   <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground leading-tight no-clip">{lock.name}</h2>
                   {lock.tagline && <p className="text-sm text-muted-foreground mt-1">{lock.tagline}</p>}
@@ -433,7 +433,7 @@ export const SmartLockDetail = () => {
           <div className="section-container">
             <div className="rounded-3xl bg-primary p-8 text-center text-primary-foreground">
               <h3 className="text-xl font-display font-bold mb-2 no-clip">Not sure which lock suits you?</h3>
-              <p className="text-sm text-primary-foreground/80 mb-5">Talk to our STAMA specialists for a free recommendation based on your door type and security needs.</p>
+              <p className="text-sm text-primary-foreground/80 mb-5">Talk to our security specialists for a free recommendation based on your door type and security needs.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button onClick={() => openLeadForm("lock_pdp_bottom")} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all">
                   Get Recommendation

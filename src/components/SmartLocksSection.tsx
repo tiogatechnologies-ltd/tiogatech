@@ -150,7 +150,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
         {/* Category, Series & Rating */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
           <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
-            {p.series || "STAMA Security"}{p.model ? ` · ${p.model}` : ""}{p.badge ? ` · ${p.badge}` : ""}
+            {p.series || "Smart Security"}{p.model ? ` · ${p.model}` : ""}{p.badge ? ` · ${p.badge}` : ""}
           </span>
           <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
             <Star size={13} fill="currentColor" />
@@ -281,7 +281,7 @@ const SmartLocksSection = () => {
       <div className="section-container">
         <div className="text-center mb-10">
           <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">
-            STAMA Smart Lock Series
+            Intelligent Smart Lock Series
           </p>
           <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
             Smart Locks & Hotel Access

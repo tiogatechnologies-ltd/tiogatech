@@ -263,7 +263,7 @@ const useLoadPackage = (type: string | undefined, id: string | undefined) => {
           type: "lock",
           id: d.id,
           title: d.name,
-          subtitle: d.series || d.model || "STAMA Smart Lock",
+          subtitle: d.series || d.model || "Smart Lock",
           basePrice: d.price,
           items: buildLockItems(d),
           extras: [],

@@ -1,6 +1,6 @@
 # Tioga Technologies
 
-> Tioga Technologies Ltd is a Nigerian IoT and renewable energy company providing solar power systems, STAMA biometric smart locks, and AI-driven home automation for residential and commercial customers across Nigeria (Lagos, Abuja, Port Harcourt, Jos and surrounding regions).
+> Tioga Technologies Ltd is a Nigerian IoT and renewable energy company providing solar power systems, biometric smart locks, and AI-driven home automation for residential and commercial customers across Nigeria (Lagos, Abuja, Port Harcourt, Jos and surrounding regions).
 
 ## About
 
@@ -20,7 +20,7 @@
 Tioga Technologies designs and installs three categories of products:
 
 1. **Solar power systems** - 1KVA to 30KVA pre-engineered solar inverter and battery packages for homes, offices, shops and small industry. Installation typically completes in 1 to 3 days. Modular systems can be expanded later.
-2. **STAMA smart locks** - biometric (fingerprint), passcode, card and app-controlled door locks for residential and commercial properties.
+2. **Smart locks** - biometric (fingerprint), passcode, card and app-controlled door locks for residential and commercial properties.
 3. **Home automation** - three product tiers (Apex, Aura, Riviera) covering smart lighting, switches, AC control, curtains, fans, water heaters, gate motors, CCTV and AI-driven scenes via the VoltAi platform.
 
 ## Pricing

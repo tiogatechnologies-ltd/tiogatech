@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 const productHubs = [
   {
     name: "Retail Store",
-    tag: "35+ Products",
+    tag: "Storefront",
     desc: "Shop inverters, LiFePO4 batteries, smart locks and IoT hardware with nationwide delivery.",
     to: "/retail",
     icon: Store,
@@ -50,7 +50,7 @@ const productHubs = [
 
 const standaloneCategories = [
   { label: "Solar Packages", to: "/packages?category=solar", icon: Sun },
-  { label: "Smart Locks (STAMA)", to: "/packages?category=locks", icon: Lock, badge: "Face ID" },
+  { label: "Smart Locks", to: "/packages?category=locks", icon: Lock, badge: "Face ID" },
   { label: "Home Automation", to: "/packages?category=automation", icon: Home, badge: "IoT" },
   { label: "CCTV Surveillance", to: "/cctv", icon: Camera, badge: "ColorVu" },
   { label: "Solar Inverters & Batteries", to: "/retail?category=Inverters", icon: BatteryCharging },

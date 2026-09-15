@@ -415,7 +415,7 @@ export const ProductCompareTray = () => {
                 <Input
                   value={pickerSearch}
                   onChange={(e) => setPickerSearch(e.target.value)}
-                  placeholder={`Search by model name, brand (Deye, Felicity, Longi, STAMA), or specs...`}
+                  placeholder={`Search by model name, brand (Deye, Felicity, Longi, SRNE), or specs...`}
                   className="pl-9 pr-8 h-9 text-xs rounded-xl bg-card border-border"
                 />
                 {pickerSearch && (

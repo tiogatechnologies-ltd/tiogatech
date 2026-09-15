@@ -89,7 +89,7 @@ describe("Product and Package Real Images", () => {
       { name: "G290 Glass", model: "G290", series: "Base Series", category: "lock" },
       { name: "V80 Gate", model: "V80", series: "Base Series", category: "lock" },
       { name: "KT14 Padlock", model: "KT14", series: "Base Series", category: "lock" },
-      { name: "STAMA Hotel System", model: "Hotel", series: "Hotel Ecosystem", category: "hotel" },
+      { name: "Smart Hotel System", model: "Hotel", series: "Hotel Ecosystem", category: "hotel" },
       { name: "Lock Replacement Battery", model: "BATTERY", series: "Accessories", category: "accessory" },
       { name: "Wireless Remote", model: "REMOTE", series: "Accessories", category: "accessory" },
       { name: "Wi-Fi Gateway", model: "GATEWAY", series: "Accessories", category: "accessory" },

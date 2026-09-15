@@ -76,7 +76,7 @@ export const RETAIL_CATEGORY_CARDS: RetailCategoryCard[] = [
     key: "Smart Door Locks",
     title: "Smart Door Locks",
     subtitle: "3D Face ID, Biometrics & NFC",
-    tag: "STAMA Flagship",
+    tag: "Flagship Biometric",
     image: "/products/categories/cat-smart-locks.png",
   },
   {
@@ -407,7 +407,7 @@ export const Retail = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
         title="Tioga Retail Store - Tier-1 Solar Inverters, Lithium Batteries & Smart Locks"
-        description="Shop certified Tier-1 Deye Hybrid Inverters, Felicity LiFePO4 batteries, Longi panels, and STAMA smart biometric locks. Direct nationwide dispatch from Lagos & Abuja."
+        description="Shop certified Tier-1 Deye Hybrid Inverters, Felicity LiFePO4 batteries, Longi panels, and smart biometric locks. Direct nationwide dispatch from Lagos & Abuja."
         path="/retail"
       />
       <SiteHeader />

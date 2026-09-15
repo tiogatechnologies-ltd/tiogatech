@@ -2361,10 +2361,10 @@ export const smartLocksList: Product[] = [
     id: "a0000000-0000-0000-0000-000000000016",
     serial_number: "TG-LCK-0001",
     sku: "TG-LCK-0001",
-    name: "STAMA Model K209 Elite 3D Face Recognition Smart Lock",
+    name: "Model K209 Elite 3D Face Recognition Smart Lock",
     category: "Smart Locks",
     series: "Elite Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Flagship luxury smart lock with 3D infrared biometric face scanning, palm-vein authentication, built-in wide-angle video intercom viewer, and military-grade encryption.",
     features: [
       "3D Structured Light Face ID unlocks in under 0.6 seconds",
@@ -2392,16 +2392,16 @@ export const smartLocksList: Product[] = [
     stock_status: "in_stock",
     is_featured: true,
     warranty_years: 2,
-    tags: ["smart lock", "face id", "stama", "k209", "biometric", "security"]
+    tags: ["smart lock", "face id", "k209", "biometric", "security"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000017",
     serial_number: "TG-LCK-0002",
     sku: "TG-LCK-0002",
-    name: "STAMA Model S7 Premier-Lux Custom Israeli Edition",
+    name: "Model S7 Premier-Lux Custom Israeli Edition",
     category: "Smart Locks",
     series: "Elite Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Custom Israeli engineering edition designed for executive apartments and premium shortlets needing ultra-fast access and IP66 weatherproofing.",
     features: [
       "High-precision 3D facial recognition",
@@ -2424,16 +2424,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 2,
-    tags: ["smart lock", "stama", "s7", "waterproof", "face id"]
+    tags: ["smart lock", "s7", "waterproof", "face id"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000018",
     serial_number: "TG-LCK-0003",
     sku: "TG-LCK-0003",
-    name: "STAMA Model D20 Apex-Lux Biometric Smart Lock",
+    name: "Model D20 Apex-Lux Biometric Smart Lock",
     category: "Smart Locks",
     series: "Apex Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Popular smart security lock for homes and apartments seeking advanced biometric access, mobile app control, and keyless convenience.",
     features: [
       "Rapid fingerprint recognition under 0.4 seconds",
@@ -2456,16 +2456,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 2,
-    tags: ["smart lock", "stama", "d20", "fingerprint", "security"]
+    tags: ["smart lock", "d20", "fingerprint", "security"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000019",
     serial_number: "TG-LCK-0004",
     sku: "TG-LCK-0004",
-    name: "STAMA Model H11 Apex Video Intercom Smart Lock",
+    name: "Model H11 Apex Video Intercom Smart Lock",
     category: "Smart Locks",
     series: "Apex Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Integrated smart lock featuring an internal video screen, automatic snapshot of visitors on doorbell press, and two-way remote smartphone intercom.",
     features: [
       "Integrated HD camera and indoor color screen",
@@ -2487,16 +2487,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 2,
-    tags: ["smart lock", "stama", "h11", "video doorbell", "camera"]
+    tags: ["smart lock", "h11", "video doorbell", "camera"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000020",
     serial_number: "TG-LCK-0005",
     sku: "TG-LCK-0005",
-    name: "STAMA SL02 Slim-Profile Smart Lock for Glass & Aluminum Doors",
+    name: "SL02 Slim-Profile Smart Lock for Glass & Aluminum Doors",
     category: "Smart Locks",
     series: "Pro Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Slim 38mm profile smart lock designed specifically for modern narrow-frame aluminum doors, sliding patio doors, and wooden entryways.",
     features: [
       "Narrow European mortise fits aluminum and sliding doors",
@@ -2518,16 +2518,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 1.5,
-    tags: ["smart lock", "stama", "sl02", "aluminum door", "sliding door"]
+    tags: ["smart lock", "sl02", "aluminum door", "sliding door"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000021",
     serial_number: "TG-LCK-0006",
     sku: "TG-LCK-0006",
-    name: "STAMA TF5 Connected Shortlet Access Smart Lock",
+    name: "TF5 Connected Shortlet Access Smart Lock",
     category: "Smart Locks",
     series: "Pro Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "The ideal smart lock for Airbnb hosts, shortlets, and hotel operators. Generate time-limited PIN codes remotely without needing active internet at the lock.",
     features: [
       "Offline time-bound OTP passcode generation (starts & expires on check-in/out)",
@@ -2549,16 +2549,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 1.5,
-    tags: ["smart lock", "stama", "tf5", "airbnb", "shortlet", "hotel"]
+    tags: ["smart lock", "tf5", "airbnb", "shortlet", "hotel"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000022",
     serial_number: "TG-LCK-0007",
     sku: "TG-LCK-0007",
-    name: "STAMA N22 Accessible Biometric Security Lock",
+    name: "N22 Accessible Biometric Security Lock",
     category: "Smart Locks",
     series: "Pro Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Clean, reliable smart lock with fast biometric fingerprint scanner, backlit passcode keypad, and long-lasting battery performance.",
     features: [
       "Semiconductor fingerprint sensor with 0.3s response",
@@ -2579,16 +2579,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 1,
-    tags: ["smart lock", "stama", "n22", "fingerprint"]
+    tags: ["smart lock", "n22", "fingerprint"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000023",
     serial_number: "TG-LCK-0008",
     sku: "TG-LCK-0008",
-    name: "STAMA V80 Heavy-Duty Smart Gate & Security Lock",
+    name: "V80 Heavy-Duty Smart Gate & Security Lock",
     category: "Smart Locks",
     series: "Base Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Rugged double-sided biometric lock for exterior iron gates, perimeter fences, and compound entry points with waterproof sealing.",
     features: [
       "Dual-sided fingerprint recognition (protects both entry & exit sides)",
@@ -2610,16 +2610,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 1.5,
-    tags: ["smart lock", "gate lock", "stama", "v80", "waterproof", "iron gate"]
+    tags: ["smart lock", "gate lock", "v80", "waterproof", "iron gate"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000024",
     serial_number: "TG-LCK-0009",
     sku: "TG-LCK-0009",
-    name: "STAMA G290 Frameless Glass Door Smart Lock",
+    name: "G290 Frameless Glass Door Smart Lock",
     category: "Smart Locks",
     series: "Base Series",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Clamp-on biometric lock for frameless glass office doors. Requires zero drilling or cutting into the glass panel.",
     features: [
       "Clamp-on installation with zero glass drilling required",
@@ -2640,16 +2640,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 1,
-    tags: ["smart lock", "glass door", "stama", "g290", "office"]
+    tags: ["smart lock", "glass door", "g290", "office"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000025",
     serial_number: "TG-LCK-0010",
     sku: "TG-LCK-0010",
-    name: "STAMA KT14 Rugged Biometric Smart Padlock",
+    name: "KT14 Rugged Biometric Smart Padlock",
     category: "Smart Locks",
     series: "Smart Padlocks",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Portable, heavy-duty smart padlock with IP67 submersible waterproof rating, 0.5s fingerprint sensor, and stainless steel shackle.",
     features: [
       "Instant 0.5s fingerprint recognition (up to 50 fingers)",
@@ -2671,16 +2671,16 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 1,
-    tags: ["padlock", "biometric", "stama", "kt14", "waterproof", "security"]
+    tags: ["padlock", "biometric", "kt14", "waterproof", "security"]
   },
   {
     id: "a0000000-0000-0000-0000-000000000026",
     serial_number: "TG-LCK-0011",
     sku: "TG-LCK-0011",
-    name: "STAMA Smart Hotel Access & Management Ecosystem",
+    name: "Smart Hotel Access & Management Ecosystem",
     category: "Smart Locks",
     series: "Hotel Management Suite",
-    brand: "STAMA",
+    brand: "Tioga Security",
     description: "Full turnkey hotel digital access system including smart RFID/BLE locks, USB card encoder, central web management portal, and energy-saving switches.",
     features: [
       "Centralized front-desk guest check-in and card encoding",
@@ -2701,7 +2701,7 @@ export const smartLocksList: Product[] = [
     },
     stock_status: "in_stock",
     warranty_years: 2,
-    tags: ["hotel", "smart lock", "stama", "hospitality", "access control"]
+    tags: ["hotel", "smart lock", "hospitality", "access control"]
   }
 ];
 

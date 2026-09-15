@@ -488,7 +488,7 @@ export const Catalog = () => {
                 <p className="text-xs sm:text-sm text-secondary-foreground/80 max-w-2xl leading-relaxed">
                   {hasState
                     ? "Based on your load assessment, we have filtered certified Tier-1 hybrid inverters, lithium batteries, and smart home IoT hardware sized specifically for your property."
-                    : "Direct warehouse supply of Tier-1 solar inverters, LiFePO4 batteries, STAMA biometric smart locks, and home IoT devices."}
+                    : "Direct warehouse supply of Tier-1 solar inverters, LiFePO4 batteries, biometric smart locks, and home IoT devices."}
                 </p>
                 <div className="flex flex-wrap items-center gap-2.5 pt-2">
                   <Link
