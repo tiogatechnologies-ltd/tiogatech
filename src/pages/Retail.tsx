@@ -45,7 +45,7 @@ import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
 import type { RetailProduct } from "@/types/retail";
 
-import { ArrowRight, Check, ShoppingBag } from "lucide-react";
+import { ArrowRight, Check, ShoppingBag, X } from "lucide-react";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating" | "newest";
 
