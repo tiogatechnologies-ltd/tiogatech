@@ -23,7 +23,7 @@ INSERT INTO public.products (
     warranty_months
 ) VALUES
 (
-    'b0000000-0000-0000-0000-000000000001',
+    'c0000000-0000-0000-0000-000000000001',
     'AlpSolarr Pulse S3 6kW Eco-Hybrid Inverter',
     'Inverters',
     'AlpSolarr Pulse Series',
@@ -40,7 +40,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000002',
+    'c0000000-0000-0000-0000-000000000002',
     'AlpSolarr Pulse S2 11kW High-Yield Hybrid Inverter',
     'Inverters',
     'AlpSolarr Pulse Series',
@@ -57,7 +57,7 @@ INSERT INTO public.products (
     24
 ),
 (
-    'b0000000-0000-0000-0000-000000000003',
+    'c0000000-0000-0000-0000-000000000003',
     'AlpSolarr Pulse S4 8kW Smart Hybrid Inverter',
     'Inverters',
     'AlpSolarr Pulse Series',
@@ -74,7 +74,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000004',
+    'c0000000-0000-0000-0000-000000000004',
     'AlpSolarr Pulse S4 Mini 5kW Eco-Hybrid Inverter',
     'Inverters',
     'AlpSolarr Pulse Series',
@@ -91,7 +91,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000005',
+    'c0000000-0000-0000-0000-000000000005',
     'AlpSolarr ROSA G2 12kW Commercial Hybrid Inverter',
     'Inverters',
     'AlpSolarr Rosa Series',
@@ -108,7 +108,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000006',
+    'c0000000-0000-0000-0000-000000000006',
     'AlpSolarr ROSA T2 15kW Three-Phase Commercial Hybrid Inverter',
     'Inverters',
     'AlpSolarr Rosa Series',
@@ -125,7 +125,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000007',
+    'c0000000-0000-0000-0000-000000000007',
     'AlpSolarr Livo-Y 5.12kWh 51.2V (100Ah) LiFePO4 Lithium Battery',
     'Batteries',
     'AlpSolarr Livo Series',
@@ -142,7 +142,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000008',
+    'c0000000-0000-0000-0000-000000000008',
     'AlpSolarr Livo-16E 16kWh 51.2V (312Ah) LiFePO4 Lithium Battery',
     'Batteries',
     'AlpSolarr Livo Series',
@@ -159,7 +159,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000009',
+    'c0000000-0000-0000-0000-000000000009',
     'AlpSolarr Livo 16 Pro 16kWh 51.2V Heavy-Duty LiFePO4 Battery System',
     'Batteries',
     'AlpSolarr Livo Series',
@@ -176,7 +176,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000010',
+    'c0000000-0000-0000-0000-000000000010',
     'AlpSolarr PowerGoo 2000 2kWh Portable Energy Storage Station',
     'Home Automation',
     'AlpSolarr PowerGoo Series',
@@ -193,7 +193,7 @@ INSERT INTO public.products (
     36
 ),
 (
-    'b0000000-0000-0000-0000-000000000011',
+    'c0000000-0000-0000-0000-000000000011',
     'AlpSolarr PowerGoo 1000 1kWh Portable Energy Storage Station',
     'Home Automation',
     'AlpSolarr PowerGoo Series',
@@ -210,7 +210,7 @@ INSERT INTO public.products (
     36
 ),
 (
-    'b0000000-0000-0000-0000-000000000012',
+    'c0000000-0000-0000-0000-000000000012',
     'AlpSolarr PO-01 Smart Wi-Fi & Cloud Telemetry Monitoring Module',
     'Home Automation',
     'AlpSolarr Accessories',
@@ -227,7 +227,7 @@ INSERT INTO public.products (
     24
 ),
 (
-    'b0000000-0000-0000-0000-000000000013',
+    'c0000000-0000-0000-0000-000000000013',
     'Taico 5kWh 51.2V (100Ah) Wall-Mounted LiFePO4 Lithium Battery',
     'Batteries',
     'Taico Energy Storage',
@@ -244,7 +244,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000014',
+    'c0000000-0000-0000-0000-000000000014',
     'Taico 10kWh 51.2V (200Ah) LiFePO4 Lithium Battery with LCD',
     'Batteries',
     'Taico Energy Storage',
@@ -261,7 +261,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000015',
+    'c0000000-0000-0000-0000-000000000015',
     'Taico 15kWh 51.2V (300Ah) Mobile LiFePO4 Battery with Caster Wheels',
     'Batteries',
     'Taico Energy Storage',
@@ -278,7 +278,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000016',
+    'c0000000-0000-0000-0000-000000000016',
     'Taico 20kWh 51.2V (400Ah) Mobile LiFePO4 Battery with Caster Wheels',
     'Batteries',
     'Taico Energy Storage',
@@ -295,7 +295,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000017',
+    'c0000000-0000-0000-0000-000000000017',
     'Taico 28kWh 51.2V (560Ah) Commercial Mobile LiFePO4 Battery Cabinet',
     'Batteries',
     'Taico Energy Storage',
@@ -312,7 +312,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000018',
+    'c0000000-0000-0000-0000-000000000018',
     'Dawnice 5kWh 51.2V (100Ah) Wall-Mounted LiFePO4 Battery (HZEB-LCT-5)',
     'Batteries',
     'Dawnice Energy Storage',
@@ -329,7 +329,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000019',
+    'c0000000-0000-0000-0000-000000000019',
     'Dawnice 10kWh 51.2V (200Ah) Wall-Mounted LiFePO4 Battery (HZEB-LCT-10)',
     'Batteries',
     'Dawnice Energy Storage',
@@ -346,7 +346,7 @@ INSERT INTO public.products (
     60
 ),
 (
-    'b0000000-0000-0000-0000-000000000020',
+    'c0000000-0000-0000-0000-000000000020',
     'Dawnice 16kWh 51.2V (312Ah) High-Capacity LiFePO4 Battery (HZEB-LCT-16)',
     'Batteries',
     'Dawnice Energy Storage',

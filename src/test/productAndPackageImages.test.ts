@@ -246,6 +246,23 @@ describe("Product and Package Real Images", () => {
     expect(uniqueHashes.size).toBe(20);
   });
 
+  it("mergeProducts retains all 20 AlpSolarr, Taico, and Dawnice products without ID collision or erasure", () => {
+    const staticList = PRODUCTS.map((p) => ({
+      ...p,
+      category: p.category,
+      brand: p.brand,
+    }));
+    const merged = mergeProducts(staticList, []);
+    const alp = merged.filter((p) => p.brand === "AlpSolarr");
+    const tai = merged.filter((p) => p.brand === "Taico");
+    const daw = merged.filter((p) => p.brand === "Dawnice");
+
+    expect(alp.length).toBe(12);
+    expect(tai.length).toBe(5);
+    expect(daw.length).toBe(3);
+    expect(merged.length).toBeGreaterThanOrEqual(760);
+  });
+
   it("ensures zero duplicate product images across all products in the catalog", () => {
     const imageUrlMap = new Map<string, string[]>();
     for (const p of PRODUCTS) {

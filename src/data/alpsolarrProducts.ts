@@ -5,7 +5,7 @@ export const alpsolarrProducts: Product[] = [
   // 1. ALPSOLARR INVERTERS
   // ==========================================
   {
-    id: "b0000000-0000-0000-0000-000000000001",
+    id: "c0000000-0000-0000-0000-000000000001",
     serial_number: "TG-ALP-0001",
     sku: "ALP-PULSE-S3-6KW",
     name: "AlpSolarr Pulse S3 6kW Eco-Hybrid Inverter",
@@ -51,7 +51,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 25
   },
   {
-    id: "b0000000-0000-0000-0000-000000000002",
+    id: "c0000000-0000-0000-0000-000000000002",
     serial_number: "TG-ALP-0002",
     sku: "ALP-PULSE-S2-11KW",
     name: "AlpSolarr Pulse S2 11kW High-Yield Hybrid Inverter",
@@ -97,7 +97,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 18
   },
   {
-    id: "b0000000-0000-0000-0000-000000000003",
+    id: "c0000000-0000-0000-0000-000000000003",
     serial_number: "TG-ALP-0003",
     sku: "ALP-PULSE-S4-8KW",
     name: "AlpSolarr Pulse S4 8kW Smart Hybrid Inverter",
@@ -140,7 +140,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 20
   },
   {
-    id: "b0000000-0000-0000-0000-000000000004",
+    id: "c0000000-0000-0000-0000-000000000004",
     serial_number: "TG-ALP-0004",
     sku: "ALP-PULSE-S4-MINI-5KW",
     name: "AlpSolarr Pulse S4 Mini 5kW Eco-Hybrid Inverter",
@@ -179,7 +179,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 15
   },
   {
-    id: "b0000000-0000-0000-0000-000000000005",
+    id: "c0000000-0000-0000-0000-000000000005",
     serial_number: "TG-ALP-0005",
     sku: "ALP-ROSA-G2-12KW",
     name: "AlpSolarr ROSA G2 12kW Commercial Hybrid Inverter",
@@ -222,7 +222,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 12
   },
   {
-    id: "b0000000-0000-0000-0000-000000000006",
+    id: "c0000000-0000-0000-0000-000000000006",
     serial_number: "TG-ALP-0006",
     sku: "ALP-ROSA-T2-15KW",
     name: "AlpSolarr ROSA T2 15kW Three-Phase Commercial Hybrid Inverter",
@@ -265,7 +265,7 @@ export const alpsolarrProducts: Product[] = [
   // 2. ALPSOLARR LITHIUM BATTERIES
   // ==========================================
   {
-    id: "b0000000-0000-0000-0000-000000000007",
+    id: "c0000000-0000-0000-0000-000000000007",
     serial_number: "TG-ALP-0007",
     sku: "ALP-LIVO-Y-5KWH",
     name: "AlpSolarr Livo-Y 5.12kWh 51.2V (100Ah) LiFePO4 Lithium Battery",
@@ -311,7 +311,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 30
   },
   {
-    id: "b0000000-0000-0000-0000-000000000008",
+    id: "c0000000-0000-0000-0000-000000000008",
     serial_number: "TG-ALP-0008",
     sku: "ALP-LIVO-16E-16KWH",
     name: "AlpSolarr Livo-16E 16kWh 51.2V (312Ah) LiFePO4 Lithium Battery",
@@ -354,7 +354,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 16
   },
   {
-    id: "b0000000-0000-0000-0000-000000000009",
+    id: "c0000000-0000-0000-0000-000000000009",
     serial_number: "TG-ALP-0009",
     sku: "ALP-LIVO-16-PRO-16KWH",
     name: "AlpSolarr Livo 16 Pro 16kWh 51.2V Heavy-Duty LiFePO4 Battery System",
@@ -397,7 +397,7 @@ export const alpsolarrProducts: Product[] = [
   // 3. ALPSOLARR PORTABLE ESS & ACCESSORIES
   // ==========================================
   {
-    id: "b0000000-0000-0000-0000-000000000010",
+    id: "c0000000-0000-0000-0000-000000000010",
     serial_number: "TG-ALP-0010",
     sku: "ALP-POWERGOO-2000",
     name: "AlpSolarr PowerGoo 2000 2kWh Portable Energy Storage Station",
@@ -438,7 +438,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 20
   },
   {
-    id: "b0000000-0000-0000-0000-000000000011",
+    id: "c0000000-0000-0000-0000-000000000011",
     serial_number: "TG-ALP-0011",
     sku: "ALP-POWERGOO-1000",
     name: "AlpSolarr PowerGoo 1000 1kWh Portable Energy Storage Station",
@@ -477,7 +477,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 15
   },
   {
-    id: "b0000000-0000-0000-0000-000000000012",
+    id: "c0000000-0000-0000-0000-000000000012",
     serial_number: "TG-ALP-0012",
     sku: "ALP-PO-01-WIFI",
     name: "AlpSolarr PO-01 Smart Wi-Fi & Cloud Telemetry Monitoring Module",
@@ -520,7 +520,7 @@ export const alpsolarrProducts: Product[] = [
   // 4. TAICO LITHIUM BATTERIES (DISTRIBUTED BY ALPSOLARR)
   // ==========================================
   {
-    id: "b0000000-0000-0000-0000-000000000013",
+    id: "c0000000-0000-0000-0000-000000000013",
     serial_number: "TG-ALP-0013",
     sku: "TAI-BAT-5KWH",
     name: "Taico 5kWh 51.2V (100Ah) Wall-Mounted LiFePO4 Lithium Battery",
@@ -562,7 +562,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 24
   },
   {
-    id: "b0000000-0000-0000-0000-000000000014",
+    id: "c0000000-0000-0000-0000-000000000014",
     serial_number: "TG-ALP-0014",
     sku: "TAI-BAT-10KWH",
     name: "Taico 10kWh 51.2V (200Ah) LiFePO4 Lithium Battery with LCD",
@@ -604,7 +604,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 20
   },
   {
-    id: "b0000000-0000-0000-0000-000000000015",
+    id: "c0000000-0000-0000-0000-000000000015",
     serial_number: "TG-ALP-0015",
     sku: "TAI-BAT-15KWH",
     name: "Taico 15kWh 51.2V (300Ah) Mobile LiFePO4 Battery with Caster Wheels",
@@ -645,7 +645,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 14
   },
   {
-    id: "b0000000-0000-0000-0000-000000000016",
+    id: "c0000000-0000-0000-0000-000000000016",
     serial_number: "TG-ALP-0016",
     sku: "TAI-BAT-20KWH",
     name: "Taico 20kWh 51.2V (400Ah) Mobile LiFePO4 Battery with Caster Wheels",
@@ -684,7 +684,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 10
   },
   {
-    id: "b0000000-0000-0000-0000-000000000017",
+    id: "c0000000-0000-0000-0000-000000000017",
     serial_number: "TG-ALP-0017",
     sku: "TAI-BAT-28KWH",
     name: "Taico 28kWh 51.2V (560Ah) Commercial Mobile LiFePO4 Battery Cabinet",
@@ -727,7 +727,7 @@ export const alpsolarrProducts: Product[] = [
   // 5. DAWNICE LITHIUM BATTERIES (DISTRIBUTED BY ALPSOLARR)
   // ==========================================
   {
-    id: "b0000000-0000-0000-0000-000000000018",
+    id: "c0000000-0000-0000-0000-000000000018",
     serial_number: "TG-ALP-0018",
     sku: "DAW-BAT-5KWH",
     name: "Dawnice 5kWh 51.2V (100Ah) Wall-Mounted LiFePO4 Battery (HZEB-LCT-5)",
@@ -768,7 +768,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 25
   },
   {
-    id: "b0000000-0000-0000-0000-000000000019",
+    id: "c0000000-0000-0000-0000-000000000019",
     serial_number: "TG-ALP-0019",
     sku: "DAW-BAT-10KWH",
     name: "Dawnice 10kWh 51.2V (200Ah) Wall-Mounted LiFePO4 Battery (HZEB-LCT-10)",
@@ -809,7 +809,7 @@ export const alpsolarrProducts: Product[] = [
     stock_qty: 18
   },
   {
-    id: "b0000000-0000-0000-0000-000000000020",
+    id: "c0000000-0000-0000-0000-000000000020",
     serial_number: "TG-ALP-0020",
     sku: "DAW-BAT-16KWH",
     name: "Dawnice 16kWh 51.2V (312Ah) High-Capacity LiFePO4 Battery (HZEB-LCT-16)",
