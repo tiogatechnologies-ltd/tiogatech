@@ -1981,40 +1981,6 @@ export const invertersList: Product[] = [
 
 export const batteriesList: Product[] = [
   {
-    id: "a0000000-0000-0000-0000-000000000011",
-    serial_number: "TG-BAT-0004",
-    sku: "TG-BAT-0004",
-    name: "AlpSolarr Pulse S2 Compact Energy Storage Unit",
-    category: "Batteries",
-    series: "AlpSolarr Systems",
-    brand: "AlpSolarr",
-    description: "Compact, silent residential lithium storage unit engineered for smart homes and apartment living with smartphone telemetry.",
-    features: [
-      "4.8kWh usable lithium iron phosphate capacity",
-      "Ultra-compact footprint with silent natural convection cooling",
-      "App-connected Bluetooth and Wi-Fi state of charge monitoring",
-      "Plug and play installation with bracket kit included"
-    ],
-    best_for: "Luxury apartments, smart homes, modern offices",
-    bestFor: "Luxury apartments, smart homes, modern offices",
-    price: "₦1,250,000",
-    numeric_price: 1250000,
-    tier: "mid",
-    image_url: "/products/core/alpsolar-pulse-s2.webp",
-    specifications: {
-      "Nominal Energy": "4.8 kWh",
-      "Nominal Voltage": "48Vdc",
-      "Cycle Life": "5,000+ Cycles",
-      "Warranty": "3-Year Warranty"
-    },
-    stock_status: "in_stock",
-    warranty_years: 3,
-    tags: ["battery", "alpsolar", "compact", "storage"]
-  },
-  {
-    id: "a0000000-0000-0000-0000-000000000012",
-    serial_number: "TG-BAT-0005",
-    sku: "TG-BAT-0005",
     name: "Itel 1000W Portable Emergency Power Station",
     category: "Batteries",
     series: "Itel Power Solutions",
@@ -3936,8 +3902,9 @@ export const cctvList: Product[] = [
 
 import { MINISIM_PRODUCTS } from "./minisimProducts";
 import { felicityProducts } from "./felicityProducts";
+import { alpsolarrProducts } from "./alpsolarrProducts";
 
-// Unified products array including solar hardware, smart locks, Felicity Solar catalog, and complete Minisim retail catalog
+// Unified products array including solar hardware, smart locks, Felicity Solar catalog, AlpSolarr catalog, and complete Minisim retail catalog
 export const PRODUCTS: Product[] = [
   ...invertersList,
   ...batteriesList,
@@ -3946,6 +3913,7 @@ export const PRODUCTS: Product[] = [
   ...smartHomeList,
   ...cctvList,
   ...felicityProducts,
+  ...alpsolarrProducts,
   ...MINISIM_PRODUCTS,
 ];
 
@@ -3954,7 +3922,7 @@ export const solarProducts = invertersList;
 export const smartLockProducts = smartLocksList;
 export const smartHomeProducts = smartHomeList;
 export const cctvProducts = cctvList;
-export { felicityProducts };
+export { felicityProducts, alpsolarrProducts };
 
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
 
@@ -3962,10 +3930,20 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
   const results: Product[] = [];
   const solarInterests: ProductInterest[] = ["solar", "panels", "batteries", "full_solar"];
   if (interests.some((i) => solarInterests.includes(i))) {
-    results.push(...invertersList, ...batteriesList, ...solarPanelsList, ...felicityProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category)));
+    results.push(
+      ...invertersList,
+      ...batteriesList,
+      ...solarPanelsList,
+      ...felicityProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category)),
+      ...alpsolarrProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category))
+    );
   }
   if (interests.includes("smartlocks")) results.push(...smartLocksList);
-  if (interests.includes("smarthome")) results.push(...smartHomeList, ...felicityProducts.filter((p) => ["Smart Lighting & Track", "Home Automation"].includes(p.category)));
+  if (interests.includes("smarthome")) results.push(
+    ...smartHomeList,
+    ...felicityProducts.filter((p) => ["Smart Lighting & Track", "Home Automation"].includes(p.category)),
+    ...alpsolarrProducts.filter((p) => ["Home Automation"].includes(p.category))
+  );
   if (interests.includes("cctv")) results.push(...cctvList);
 
   return results;

@@ -216,6 +216,35 @@ describe("Product and Package Real Images", () => {
     expect(uniqueHashes.size).toBe(81);
   });
 
+  it("all 20 AlpSolarr, Taico, and Dawnice products exist with authentic photos on disk and unique hashes", () => {
+    const alpSolarr = PRODUCTS.filter((p) => p.brand === "AlpSolarr");
+    const taico = PRODUCTS.filter((p) => p.brand === "Taico");
+    const dawnice = PRODUCTS.filter((p) => p.brand === "Dawnice");
+
+    expect(alpSolarr.length).toBe(12);
+    expect(taico.length).toBe(5);
+    expect(dawnice.length).toBe(3);
+
+    const allNewProducts = [...alpSolarr, ...taico, ...dawnice];
+    const uniqueHashes = new Set<string>();
+
+    for (const p of allNewProducts) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url).toMatch(/\.webp$/);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Image file should exist on disk: ${filePath}`).toBe(true);
+      expect(p.numeric_price).toBeGreaterThan(0);
+      expect(p.price).toMatch(/^₦[\d,]+$/);
+      expect(p.warranty_years).toBeGreaterThanOrEqual(2);
+
+      const buf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("md5").update(buf).digest("hex");
+      expect(uniqueHashes.has(hash), `Product ${p.sku} shares an identical image hash`).toBe(false);
+      uniqueHashes.add(hash);
+    }
+
+    expect(uniqueHashes.size).toBe(20);
+  });
 
   it("ensures zero duplicate product images across all products in the catalog", () => {
     const imageUrlMap = new Map<string, string[]>();

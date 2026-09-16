@@ -56,6 +56,9 @@ export function inferBrand(name: string, category: string | null | undefined): s
   if (n.includes("Luxpower") || n.includes("LXP") || n.includes("SNA") || n.includes("Geta") || n.includes("PGEM") || n.includes("PSHIELD") || n.includes("PSTACK") || n.includes("ECO Beast") || n.includes("TriP") || n.includes("TRIP")) return "Luxpower";
   if (n.includes("Deye")) return "Deye";
   if (n.includes("Felicity") || n.startsWith("FL-") || n.startsWith("IVGM") || n.startsWith("IVEM") || n.startsWith("IVPS") || n.startsWith("IVPM") || n.startsWith("IVAM") || n.startsWith("IVBM") || n.startsWith("LPBF") || n.startsWith("FLA") || n.startsWith("FLH") || n.startsWith("HOPE") || n.startsWith("AI100") || n.startsWith("SCCM") || n.startsWith("BTCB") || n.startsWith("FSPD") || n.startsWith("T-REX")) return "Felicity";
+  if (n.includes("AlpSolarr") || n.includes("Alpsolar") || n.startsWith("ALP-") || n.includes("Pulse S") || n.includes("ROSA G2") || n.includes("ROSA T2") || n.includes("Livo-") || n.includes("Livo 16") || n.includes("PowerGoo")) return "AlpSolarr";
+  if (n.includes("Taico") || n.startsWith("TAI-")) return "Taico";
+  if (n.includes("Dawnice") || n.startsWith("DAW-")) return "Dawnice";
   if (n.includes("Longi")) return "Longi";
   if (n.includes("JA Solar") || n.includes("JA ")) return "JA Solar";
   if (n.includes("Jinko")) return "Jinko";
