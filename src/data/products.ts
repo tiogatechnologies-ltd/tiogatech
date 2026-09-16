@@ -1981,117 +1981,6 @@ export const invertersList: Product[] = [
 
 export const batteriesList: Product[] = [
   {
-    id: "a0000000-0000-0000-0000-000000000008",
-    serial_number: "TG-BAT-0001",
-    sku: "TG-BAT-0001",
-    name: "Felicity Solar 5.12kWh 100Ah LiFePO4 Battery (FL-LPBF48100)",
-    category: "Batteries",
-    series: "Felicity LPBF Series",
-    brand: "Felicity",
-    description: "Tier-1 Grade-A Lithium Iron Phosphate (LiFePO4) battery module with 6,000+ lifecycle count, built-in intelligent battery management system (BMS), and wall/rack mount design.",
-    features: [
-      "5,120Wh (5.12kWh) usable storage capacity",
-      "6,000+ charge cycles at 80% Depth of Discharge (DoD)",
-      "Smart internal BMS with overcharge, overdischarge and thermal cutoff",
-      "Direct CAN / RS485 plug-and-play communication with Deye & SRNE",
-      "Safe non-combustible chemistry with zero maintenance required",
-      "Expandable in parallel up to 8 units (40.96kWh total)"
-    ],
-    best_for: "3kVA - 5kVA inverter setups, overnight lighting and refrigeration",
-    bestFor: "3kVA - 5kVA inverter setups, overnight lighting and refrigeration",
-    price: "₦1,450,000",
-    numeric_price: 1450000,
-    tier: "premium",
-    image_url: "/products/core/felicity-5kwh-lifepo4.webp",
-    specifications: {
-      "Nominal Energy": "5.12 kWh (5,120 Wh)",
-      "Nominal Voltage": "51.2 Vdc (16S Configuration)",
-      "Usable Capacity": "100 Ah",
-      "Max Charge/Discharge": "50A Recommended / 100A Max Continuous",
-      "Cycle Life": ">6,000 Cycles @ 25°C, 80% DoD",
-      "Communication": "CAN, RS485, RS232",
-      "Warranty": "5-Year Official Replacement Warranty",
-      "Dimensions": "480 x 440 x 175 mm (42 kg)"
-    },
-    stock_status: "in_stock",
-    is_featured: true,
-    warranty_years: 5,
-    tags: ["battery", "lifepo4", "lithium", "felicity", "5kwh"]
-  },
-  {
-    id: "a0000000-0000-0000-0000-000000000009",
-    serial_number: "TG-BAT-0002",
-    sku: "TG-BAT-0002",
-    name: "Felicity Solar 10.24kWh 200Ah LiFePO4 Battery Wall-Mount (FL-LPBF48200)",
-    category: "Batteries",
-    series: "Felicity LPBF Series",
-    brand: "Felicity",
-    description: "Sleek wall-mounted residential Powerwall battery with 10.24kWh capacity, integrated LCD status screen, high-amperage circuit breaker, and 6,000+ cycle lifespan.",
-    features: [
-      "10,240Wh (10.24kWh) high-density energy storage",
-      "Powers inverter 1.5HP AC units, freezers, and entertainment through the night",
-      "Built-in color LCD showing battery state of charge (SoC) and cell voltages",
-      "Heavy-duty DC circuit breaker for instant maintenance isolation",
-      "Automatic cell balancing ensuring decade-long battery longevity",
-      "Parallel connection support up to 6 units (61.44kWh)"
-    ],
-    best_for: "5kVA - 10kVA inverters, 24/7 air conditioning and complete blackout immunity",
-    bestFor: "5kVA - 10kVA inverters, 24/7 air conditioning and complete blackout immunity",
-    price: "₦2,850,000",
-    numeric_price: 2850000,
-    tier: "premium",
-    image_url: "/products/core/felicity-10kwh-powerwall.webp",
-    specifications: {
-      "Nominal Energy": "10.24 kWh",
-      "Nominal Voltage": "51.2 Vdc",
-      "Usable Capacity": "200 Ah",
-      "Max Continuous Current": "150A Discharge",
-      "Cycle Life": ">6,000 Cycles @ 80% DoD",
-      "Display": "Integrated Multifunction LCD",
-      "Warranty": "5-Year Official Replacement Warranty",
-      "Dimensions": "650 x 500 x 240 mm (83 kg)"
-    },
-    stock_status: "in_stock",
-    is_featured: true,
-    warranty_years: 5,
-    tags: ["battery", "lifepo4", "lithium", "felicity", "10kwh", "powerwall"]
-  },
-  {
-    id: "a0000000-0000-0000-0000-000000000010",
-    serial_number: "TG-BAT-0003",
-    sku: "TG-BAT-0003",
-    name: "Felicity Solar 15.36kWh 300Ah Commercial Storage Battery",
-    category: "Batteries",
-    series: "Felicity High-Cap",
-    brand: "Felicity",
-    description: "Commercial grade heavy-duty energy storage system with 15.36kWh capacity, dual breaker safety isolation, and high continuous discharge rating.",
-    features: [
-      "15,360Wh (15.36kWh) massive storage reservoir",
-      "Heavy-duty copper busbars for high surge motor startups",
-      "Dual circuit breaker and DC fuse protection",
-      "Grade-A automotive cells certified for 6,000+ cycles",
-      "Seamless communication with Deye 10kW & 12kW inverters"
-    ],
-    best_for: "Commercial buildings, luxury mansions, servers and medical clinics",
-    bestFor: "Commercial buildings, luxury mansions, servers and medical clinics",
-    price: "₦4,100,000",
-    numeric_price: 4100000,
-    tier: "premium",
-    image_url: "/products/core/felicity-15kwh-battery.webp",
-    specifications: {
-      "Nominal Energy": "15.36 kWh",
-      "Nominal Voltage": "51.2 Vdc",
-      "Usable Capacity": "300 Ah",
-      "Max Continuous Current": "200A Discharge",
-      "Cycle Life": "6,000+ Cycles",
-      "Warranty": "5-Year Enterprise Warranty",
-      "Weight": "125 kg"
-    },
-    stock_status: "in_stock",
-    warranty_years: 5,
-    tags: ["battery", "lifepo4", "15kwh", "commercial", "felicity"]
-  },
-  {
     id: "a0000000-0000-0000-0000-000000000011",
     serial_number: "TG-BAT-0004",
     sku: "TG-BAT-0004",
@@ -4046,8 +3935,9 @@ export const cctvList: Product[] = [
 ];
 
 import { MINISIM_PRODUCTS } from "./minisimProducts";
+import { felicityProducts } from "./felicityProducts";
 
-// Unified products array including solar hardware, smart locks, and complete Minisim retail catalog
+// Unified products array including solar hardware, smart locks, Felicity Solar catalog, and complete Minisim retail catalog
 export const PRODUCTS: Product[] = [
   ...invertersList,
   ...batteriesList,
@@ -4055,6 +3945,7 @@ export const PRODUCTS: Product[] = [
   ...smartLocksList,
   ...smartHomeList,
   ...cctvList,
+  ...felicityProducts,
   ...MINISIM_PRODUCTS,
 ];
 
@@ -4063,6 +3954,7 @@ export const solarProducts = invertersList;
 export const smartLockProducts = smartLocksList;
 export const smartHomeProducts = smartHomeList;
 export const cctvProducts = cctvList;
+export { felicityProducts };
 
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
 
@@ -4070,10 +3962,10 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
   const results: Product[] = [];
   const solarInterests: ProductInterest[] = ["solar", "panels", "batteries", "full_solar"];
   if (interests.some((i) => solarInterests.includes(i))) {
-    results.push(...invertersList, ...batteriesList, ...solarPanelsList);
+    results.push(...invertersList, ...batteriesList, ...solarPanelsList, ...felicityProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category)));
   }
   if (interests.includes("smartlocks")) results.push(...smartLocksList);
-  if (interests.includes("smarthome")) results.push(...smartHomeList);
+  if (interests.includes("smarthome")) results.push(...smartHomeList, ...felicityProducts.filter((p) => ["Smart Lighting & Track", "Home Automation"].includes(p.category)));
   if (interests.includes("cctv")) results.push(...cctvList);
 
   return results;

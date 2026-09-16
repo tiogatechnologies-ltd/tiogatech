@@ -186,6 +186,24 @@ describe("Product and Package Real Images", () => {
     expect(uniqueLuxImages.size).toBe(luxProducts.length);
   });
 
+  it("all 81 Felicity products exist with authentic photos on disk and correct Level C pricing", () => {
+    const felicityProducts = PRODUCTS.filter((p) => p.brand === "Felicity");
+    expect(felicityProducts.length).toBe(81);
+
+    for (const p of felicityProducts) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url).toMatch(/\.webp$/);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Felicity image should exist on disk: ${filePath}`).toBe(true);
+      expect(p.numeric_price).toBeGreaterThan(0);
+      expect(p.price).toMatch(/^₦[\d,]+$/);
+      expect(p.warranty_years).toBeGreaterThanOrEqual(2);
+    }
+
+    const uniqueFelicityImages = new Set(felicityProducts.map((p) => p.image_url));
+    expect(uniqueFelicityImages.size).toBe(felicityProducts.length);
+  });
+
 
   it("ensures zero duplicate product images across all products in the catalog", () => {
     const imageUrlMap = new Map<string, string[]>();
