@@ -1,8 +1,10 @@
+import { useState, useMemo } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { X, SlidersHorizontal, RotateCcw, Check } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { X, SlidersHorizontal, RotateCcw, Check, Search } from "lucide-react";
 
 interface FilterState {
   category: string | null;
@@ -18,6 +20,7 @@ interface FilterProps {
   onChange: (filters: FilterState) => void;
   categories: string[];
   brands: string[];
+  brandCounts?: Record<string, number>;
   capacities: string[];
   maxPrice: number;
   totalResults: number;
@@ -35,11 +38,20 @@ export const ProductFilterSidebar = ({
   onChange,
   categories,
   brands,
+  brandCounts,
   capacities,
   maxPrice,
   totalResults,
   onReset,
 }: FilterProps) => {
+  const [brandSearch, setBrandSearch] = useState("");
+
+  const displayBrands = useMemo(() => {
+    if (!brandSearch.trim()) return brands;
+    const q = brandSearch.toLowerCase().trim();
+    return brands.filter((b) => b.toLowerCase().includes(q));
+  }, [brands, brandSearch]);
+
   const toggleBrand = (brand: string) => {
     const next = filters.brands.includes(brand)
       ? filters.brands.filter((b) => b !== brand)
@@ -137,25 +149,80 @@ export const ProductFilterSidebar = ({
       {/* Brands */}
       {brands.length > 0 && (
         <div className="space-y-2.5 pt-3 border-t border-border">
-          <h4 className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Brand / Manufacturer</h4>
-          <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-            {brands.map((brand) => (
-              <label
-                key={brand}
-                className="flex items-center gap-2 text-xs text-foreground hover:text-primary cursor-pointer transition-colors"
+          <div className="flex items-center justify-between">
+            <h4 className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">
+              Brand / Manufacturer
+            </h4>
+            {filters.brands.length > 0 && (
+              <button
+                onClick={() => onChange({ ...filters, brands: [] })}
+                className="text-[11px] text-primary hover:underline"
               >
-                {/* Checkbox renders a button[role=checkbox], and a button does
-                    not take its name from a wrapping <label> the way a real
-                    input does - so without this a screen reader announced 36
-                    filters as an unnamed "checkbox". */}
-                <Checkbox
-                  aria-label={`Filter by brand: ${brand}`}
-                  checked={filters.brands.includes(brand)}
-                  onCheckedChange={() => toggleBrand(brand)}
-                />
-                <span>{brand}</span>
-              </label>
-            ))}
+                Clear ({filters.brands.length})
+              </button>
+            )}
+          </div>
+
+          {/* Quick Search for Brands when more than 5 brands exist */}
+          {brands.length > 5 && (
+            <div className="relative">
+              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+              <Input
+                placeholder="Search brands (e.g. AlpSolarr)..."
+                value={brandSearch}
+                onChange={(e) => setBrandSearch(e.target.value)}
+                className="h-7 text-xs pl-7 pr-7 rounded-lg bg-muted/40 border-border"
+              />
+              {brandSearch && (
+                <button
+                  onClick={() => setBrandSearch("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+          )}
+
+          <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+            {displayBrands.length === 0 ? (
+              <p className="text-xs text-muted-foreground py-2 text-center italic">
+                No matching brands
+              </p>
+            ) : (
+              displayBrands.map((brand) => {
+                const count = brandCounts?.[brand];
+                const isChecked = filters.brands.includes(brand);
+                return (
+                  <label
+                    key={brand}
+                    className={`flex items-center justify-between gap-2 px-1.5 py-1 rounded-md text-xs cursor-pointer transition-colors ${
+                      isChecked
+                        ? "bg-primary/10 text-primary font-semibold"
+                        : "text-foreground hover:bg-muted/60"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Checkbox
+                        aria-label={`Filter by brand: ${brand}`}
+                        checked={isChecked}
+                        onCheckedChange={() => toggleBrand(brand)}
+                      />
+                      <span className="truncate">{brand}</span>
+                    </div>
+                    {count != null && (
+                      <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
+                        isChecked
+                          ? "bg-primary text-primary-foreground font-bold"
+                          : "bg-muted text-muted-foreground"
+                      }`}>
+                        {count}
+                      </span>
+                    )}
+                  </label>
+                );
+              })
+            )}
           </div>
         </div>
       )}

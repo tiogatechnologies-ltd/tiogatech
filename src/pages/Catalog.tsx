@@ -180,7 +180,7 @@ export const Catalog = () => {
           brand: p.brand || inferBrand(p.name, p.category),
           rating: p.rating ?? undefined,
           review_count: p.review_count ?? undefined,
-          compare_at_price: null, // seed catalog has no recorded previous price
+          compare_at_price: p.compare_at_price || null,
           stock_status: (p.stock_status as any) || "in_stock",
           is_featured: p.is_featured ?? true,
           warranty_years: p.warranty_years || 5,
@@ -234,7 +234,7 @@ export const Catalog = () => {
               brand: p.brand || inferBrand(p.name, p.category),
               rating: p.rating ?? undefined,
               review_count: p.review_count ?? undefined,
-              compare_at_price: null,
+              compare_at_price: p.compare_at_price || null,
               stock_status: (p.stock_status as any) || "in_stock",
               is_featured: true,
               warranty_years: 5,
@@ -263,10 +263,7 @@ export const Catalog = () => {
           category: state.category,
           appliances: selectedAppliances,
           totalWatts,
-          budget,
-          systemType: state.systemType,
-          propertyType: state.propertyType,
-          usageDuration: state.usageDuration,
+          budget: state.budget,
           formContext,
         },
       })
@@ -308,7 +305,23 @@ export const Catalog = () => {
   const getAiPickRank = (product: RetailProduct): number => aiPickRankMap.get(product.id) ?? -1;
 
   const categories = useMemo(() => Array.from(new Set(products.map((p) => p.category))), [products]);
-  const brands = useMemo(() => Array.from(new Set(products.map((p) => p.brand).filter(Boolean) as string[])), [products]);
+  
+  const brandCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const p of products) {
+      if (p.brand) {
+        counts[p.brand] = (counts[p.brand] || 0) + 1;
+      }
+    }
+    return counts;
+  }, [products]);
+
+  const brands = useMemo(() => {
+    return Array.from(new Set(products.map((p) => p.brand).filter(Boolean) as string[])).sort((a, b) =>
+      a.localeCompare(b)
+    );
+  }, [products]);
+
   const capacities = useMemo(() => ["3kVA", "5kVA", "8kVA", "10kVA", "15kVA", "5.12kWh", "10.24kWh", "550W"], []);
 
   // Filter and Sort Pipeline
@@ -734,6 +747,7 @@ export const Catalog = () => {
                       }}
                       categories={categories}
                       brands={brands}
+                      brandCounts={brandCounts}
                       capacities={capacities}
                       maxPrice={15_000_000}
                       totalResults={filteredProducts.length}
@@ -861,6 +875,7 @@ export const Catalog = () => {
                     }}
                     categories={categories}
                     brands={brands}
+                    brandCounts={brandCounts}
                     capacities={capacities}
                     maxPrice={15_000_000}
                     totalResults={filteredProducts.length}

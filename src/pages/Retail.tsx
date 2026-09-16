@@ -224,7 +224,7 @@ export const Retail = () => {
           brand: p.brand || inferBrand(p.name, p.category),
           rating: p.rating ?? undefined,
           review_count: p.review_count ?? undefined,
-          compare_at_price: null, // seed catalog has no recorded previous price
+          compare_at_price: p.compare_at_price || null,
           stock_status: (p.stock_status as any) || "in_stock",
           is_featured: p.is_featured ?? true,
           warranty_years: p.warranty_years || 5,
@@ -279,7 +279,7 @@ export const Retail = () => {
             brand: p.brand || inferBrand(p.name, p.category),
             rating: p.rating ?? undefined,
             review_count: p.review_count ?? undefined,
-            compare_at_price: null,
+            compare_at_price: p.compare_at_price || null,
             stock_status: (p.stock_status as any) || "in_stock",
             is_featured: true,
             warranty_years: 5,
@@ -295,7 +295,23 @@ export const Retail = () => {
   }, []);
 
   const categories = useMemo(() => Array.from(new Set(products.map((p) => p.category))), [products]);
-  const brands = useMemo(() => Array.from(new Set(products.map((p) => p.brand).filter(Boolean) as string[])), [products]);
+  
+  const brandCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const p of products) {
+      if (p.brand) {
+        counts[p.brand] = (counts[p.brand] || 0) + 1;
+      }
+    }
+    return counts;
+  }, [products]);
+
+  const brands = useMemo(() => {
+    return Array.from(new Set(products.map((p) => p.brand).filter(Boolean) as string[])).sort((a, b) =>
+      a.localeCompare(b)
+    );
+  }, [products]);
+
   const capacities = useMemo(() => ["3kVA", "5kVA", "8kVA", "10kVA", "15kVA", "5.12kWh", "10.24kWh", "550W"], []);
 
   // Filter and Sort Pipeline
@@ -586,7 +602,7 @@ export const Retail = () => {
             <div className="relative flex-1 max-w-md">
               <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search Deye inverters, Felicity batteries, smart locks..."
+                placeholder="Search AlpSolarr, Deye, Felicity, Luxpower, smart locks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9 pr-4 rounded-2xl bg-card border-border text-xs h-10"
@@ -637,6 +653,7 @@ export const Retail = () => {
                       }}
                       categories={categories}
                       brands={brands}
+                      brandCounts={brandCounts}
                       capacities={capacities}
                       maxPrice={50_000_000}
                       totalResults={filteredProducts.length}
@@ -733,6 +750,56 @@ export const Retail = () => {
             </div>
           </div>
 
+          {/* Quick Popular Brand Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-6 scrollbar-none">
+            <span className="text-xs font-semibold text-muted-foreground mr-1 shrink-0">
+              Popular Brands:
+            </span>
+            {["AlpSolarr", "Deye", "Felicity", "Luxpower", "SRNE", "Taico", "Dawnice"].map((brand) => {
+              const isSelected = selectedBrands.includes(brand);
+              const count = brandCounts[brand] || 0;
+              return (
+                <button
+                  key={brand}
+                  type="button"
+                  onClick={() => {
+                    setSelectedBrands((prev) =>
+                      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
+                    );
+                  }}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all shrink-0 border ${
+                    isSelected
+                      ? "bg-primary text-primary-foreground border-primary shadow-xs font-bold"
+                      : "bg-card hover:bg-muted text-foreground border-border"
+                  }`}
+                >
+                  <span>{brand}</span>
+                  {count > 0 && (
+                    <span
+                      className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
+                        isSelected
+                          ? "bg-primary-foreground/20 text-primary-foreground font-bold"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  )}
+                  {isSelected && <X size={12} className="ml-0.5" />}
+                </button>
+              );
+            })}
+            {selectedBrands.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedBrands([])}
+                className="text-xs text-primary hover:underline ml-2 shrink-0 font-medium"
+              >
+                Clear Brands ({selectedBrands.length})
+              </button>
+            )}
+          </div>
+
           {/* Main Layout */}
           <div className={`grid grid-cols-1 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-1"} gap-8`}>
             {/* Desktop Filter Sidebar */}
@@ -757,6 +824,7 @@ export const Retail = () => {
                     }}
                     categories={categories}
                     brands={brands}
+                    brandCounts={brandCounts}
                     capacities={capacities}
                     maxPrice={50_000_000}
                     totalResults={filteredProducts.length}
