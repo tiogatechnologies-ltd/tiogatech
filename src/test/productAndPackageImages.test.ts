@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import { PRODUCTS } from "@/data/products";
 import { mergeProducts } from "@/lib/mergeProducts";
 import { resolveProductImage } from "@/lib/productImages";
@@ -202,6 +203,17 @@ describe("Product and Package Real Images", () => {
 
     const uniqueFelicityImages = new Set(felicityProducts.map((p) => p.image_url));
     expect(uniqueFelicityImages.size).toBe(felicityProducts.length);
+
+    // Verify all 81 Felicity image files on disk have unique content hashes (authentic, model-specific photos)
+    const uniqueHashes = new Set<string>();
+    for (const p of felicityProducts) {
+      const filePath = path.resolve("public" + p.image_url);
+      const buf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("md5").update(buf).digest("hex");
+      expect(uniqueHashes.has(hash), `Product ${p.sku} (${p.name}) shares an identical image file hash with another product`).toBe(false);
+      uniqueHashes.add(hash);
+    }
+    expect(uniqueHashes.size).toBe(81);
   });
 
 
