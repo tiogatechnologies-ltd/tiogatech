@@ -200,7 +200,7 @@ export const ProductCompareTray = () => {
         p.specifications ? Object.keys(p.specifications) : []
       )
     )
-  );
+  ).filter((key) => !/price|dealer|installer/i.test(key));
 
   const handleAddToCart = (item: RetailProduct) => {
     add({

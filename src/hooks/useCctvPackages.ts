@@ -38,7 +38,7 @@ export const CCTV_FALLBACK: Omit<CctvPackage, "image">[] = [
     brand: "Hikvision / Dahua Tier-1",
     tagline: "Ideal for 3-4 Bedroom Residences & Retail Stores",
     badge: "Most Popular",
-    price: 480_000,
+    price: 576_000,
     channels: 4,
     specs: [
       "4x 5MP ColorVu Full-Color Cameras",
@@ -57,7 +57,7 @@ export const CCTV_FALLBACK: Omit<CctvPackage, "image">[] = [
     brand: "Hikvision Pro Series",
     tagline: "Full Perimeter Coverage for Duplexes & Commercial Offices",
     badge: "Commercial Grade",
-    price: 920_000,
+    price: 1_104_000,
     channels: 8,
     specs: [
       "8x 5MP Audio-Enabled Weatherproof IP Cameras",
@@ -76,7 +76,7 @@ export const CCTV_FALLBACK: Omit<CctvPackage, "image">[] = [
     brand: "Tioga Standalone Pro",
     tagline: "Zero Electricity & Zero WiFi Required - Built-in Solar & SIM Slot",
     badge: "100% Off-Grid",
-    price: 165_000,
+    price: 198_000,
     channels: 0,
     specs: [
       "Integrated 20W Solar Panel + Lithium Battery",

@@ -833,15 +833,17 @@ export const ProductDetail = () => {
 
                   {/* Dynamic Product Specifications */}
                   {product.specifications && Object.keys(product.specifications).length > 0 ? (
-                    Object.entries(product.specifications).map(([key, val]) => (
-                      <div
-                        key={key}
-                        className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors"
-                      >
-                        <span className="text-muted-foreground font-medium">{key}</span>
-                        <span className="font-mono font-semibold text-foreground break-words sm:text-right">{String(val)}</span>
-                      </div>
-                    ))
+                    Object.entries(product.specifications)
+                      .filter(([key]) => !/price|dealer|installer/i.test(key))
+                      .map(([key, val]) => (
+                        <div
+                          key={key}
+                          className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between p-4 text-xs sm:text-sm hover:bg-muted/10 transition-colors"
+                        >
+                          <span className="text-muted-foreground font-medium">{key}</span>
+                          <span className="font-mono font-semibold text-foreground break-words sm:text-right">{String(val)}</span>
+                        </div>
+                      ))
                   ) : (
                     <div className="p-6 text-center text-xs text-muted-foreground">
                       Standard technical specifications loaded directly from manufacturer data sheet.
@@ -961,7 +963,10 @@ export const ProductDetail = () => {
                       {/* Key Specs Preview (Top 2-3 specifications) */}
                       {item.specifications && Object.keys(item.specifications).length > 0 && (
                         <div className="pt-2 border-t border-border/60 space-y-1.5 text-[11px]">
-                          {Object.entries(item.specifications).slice(0, 3).map(([k, v]) => (
+                          {Object.entries(item.specifications)
+                            .filter(([k]) => !/price|dealer|installer/i.test(k))
+                            .slice(0, 3)
+                            .map(([k, v]) => (
                             <div key={k} className="flex items-center justify-between text-muted-foreground">
                               <span className="truncate max-w-[100px]">{k}</span>
                               <span className="font-semibold text-foreground truncate max-w-[120px]">{v}</span>

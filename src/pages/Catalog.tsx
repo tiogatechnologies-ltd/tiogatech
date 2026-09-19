@@ -125,7 +125,7 @@ export const Catalog = () => {
   );
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedCapacities, setSelectedCapacities] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 15_000_000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50_000_000]);
   const [inStockOnly, setInStockOnly] = useState(false);
 
   // Dynamic Category Tabs with AI Recommended as First Tab
@@ -418,7 +418,7 @@ export const Catalog = () => {
     setSelectedCategory(hasState ? "ai-picks" : null);
     setSelectedBrands([]);
     setSelectedCapacities([]);
-    setPriceRange([0, 15_000_000]);
+    setPriceRange([0, 50_000_000]);
     setInStockOnly(false);
     setSearchQuery("");
     setSearchParams({});
@@ -749,7 +749,7 @@ export const Catalog = () => {
                       brands={brands}
                       brandCounts={brandCounts}
                       capacities={capacities}
-                      maxPrice={15_000_000}
+                      maxPrice={50_000_000}
                       totalResults={filteredProducts.length}
                       onReset={handleResetFilters}
                     />
@@ -877,7 +877,7 @@ export const Catalog = () => {
                     brands={brands}
                     brandCounts={brandCounts}
                     capacities={capacities}
-                    maxPrice={15_000_000}
+                    maxPrice={50_000_000}
                     totalResults={filteredProducts.length}
                     onReset={handleResetFilters}
                   />

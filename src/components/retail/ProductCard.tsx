@@ -42,7 +42,7 @@ const fmt = (n?: number | null, fallback?: string | null) => {
 const formatSpecs = (specs: Record<string, string>, maxCount: number) => {
   const result: { label: string; value: string }[] = [];
   for (const [key, rawVal] of Object.entries(specs)) {
-    if (!rawVal) continue;
+    if (!rawVal || /price|dealer|installer/i.test(key)) continue;
     // Clean raw value: take first segment before / or (
     const val = rawVal.split("/")[0].split("(")[0].trim();
     let label = key;

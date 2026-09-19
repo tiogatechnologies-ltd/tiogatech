@@ -133,7 +133,10 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
               {/* Specs Glance */}
               {product.specifications && (
                 <div className="grid grid-cols-2 gap-2 my-4 p-3 rounded-xl bg-muted/40 text-xs">
-                  {Object.entries(product.specifications).slice(0, 4).map(([k, v]) => (
+                  {Object.entries(product.specifications)
+                    .filter(([k]) => !/price|dealer|installer/i.test(k))
+                    .slice(0, 4)
+                    .map(([k, v]) => (
                     <div key={k}>
                       <span className="text-muted-foreground text-[10px] block uppercase tracking-wider">{k}</span>
                       <strong className="text-foreground font-medium">{v}</strong>

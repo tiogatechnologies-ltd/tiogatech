@@ -16,7 +16,7 @@ VALUES
     'Pure sine wave low-voltage single-phase hybrid solar inverter with dual MPPT tracker, color touch LCD screen, and generator auto-start compatibility.',
     ARRAY['Dual MPPT tracker (99.9% efficiency)', 'Color touch screen interface', 'IP65 waterproof rating', 'Generator auto-start port', 'Remote WiFi monitoring via Solarman App'],
     '3-4 bedroom duplexes, small offices, energy cost reduction',
-    '₦1,850,000',
+    '₦2,220,000',
     'premium',
     true,
     1
@@ -29,7 +29,7 @@ VALUES
     'Heavy-duty 8kW hybrid inverter with 190A max charging current, parallel operation capability up to 16 units, and smart load output.',
     ARRAY['8,000W continuous output power', 'Dual MPPT up to 500V DC', '16 units parallel support', 'Integrated AC bypass transfer switch'],
     '4-6 bedroom duplexes with multiple inverter air conditioners and deep freezers',
-    '₦2,650,000',
+    '₦3,180,000',
     'premium',
     true,
     2
@@ -42,7 +42,7 @@ VALUES
     'High-safety Grade-A Lithium Iron Phosphate (LiFePO4) 48V 100Ah battery with built-in intelligent BMS and 6,000+ cycle life.',
     ARRAY['5.12kWh usable capacity', '6000+ cycles at 80% DoD', 'Intelligent BMS with CAN/RS485 communication', 'Wall-mounted slim footprint', '10-year design lifespan'],
     'Reliable overnight power backup for homes and businesses',
-    '₦1,450,000',
+    '₦1,740,000',
     'premium',
     true,
     3
@@ -55,7 +55,7 @@ VALUES
     'High-capacity 48V 200Ah wall-mount lithium battery pack with LCD status display and multi-tier thermal protection.',
     ARRAY['10.24kWh energy storage', '200A maximum discharge current', 'Seamless CANbus link to Deye/Sunsynk inverters', 'LCD battery voltage & SOC screen'],
     'All-night AC powering and heavy commercial loads during grid outages',
-    '₦2,850,000',
+    '₦3,420,000',
     'premium',
     true,
     4
@@ -68,7 +68,7 @@ VALUES
     'High-efficiency monocrystalline PERC solar module with half-cut cell technology and 25-year linear power warranty.',
     ARRAY['550W peak power output', '21.3% module efficiency', 'Anti-PID and low-light performance', 'Anodized aluminum alloy frame withstands 5400Pa snow/wind load'],
     'Rooftop and ground-mount solar arrays across Nigeria',
-    '₦145,000',
+    '₦174,000',
     'premium',
     true,
     5
@@ -81,7 +81,7 @@ VALUES
     'Flagship biometric smart lock featuring 3D structured light facial recognition, wide-angle HD video intercom, fingerprint sensor, and mobile app unlock.',
     ARRAY['3D Structured Light Face ID (0.3s recognition)', '1080p HD camera with 2-way audio intercom', 'Semiconductor biometric fingerprint sensor', 'Anti-peep PIN code keypad', 'Rechargeable 4200mAh Lithium battery pack'],
     'Front doors of modern Nigerian homes, executive offices, and luxury apartments',
-    '₦285,000',
+    '₦342,000',
     'premium',
     true,
     6
@@ -94,7 +94,7 @@ VALUES
     'Luxury tempered glass touch switch with RGB backlight, remote smartphone app control, voice assistant integration, and schedule timers.',
     ARRAY['Tempered crystal glass touch panel', 'Works with or without Neutral wire', 'Zigbee 3.0 ultra-low latency mesh', 'Compatible with Alexa, Google Home & Apple Siri Shortcuts'],
     'Full smart lighting automation for living rooms, bedrooms, and offices',
-    '₦48,000',
+    '₦57,600',
     'entry',
     true,
     7
