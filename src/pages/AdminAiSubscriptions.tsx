@@ -66,7 +66,8 @@ const AdminAiSubscriptions = () => {
 
   const revoke = async (id: string) => {
     if (!confirm("Revoke this subscription?")) return;
-    await supabase.from("ai_subscriptions").update({ status: "revoked", expires_at: new Date().toISOString() }).eq("id", id);
+    const { error } = await supabase.from("ai_subscriptions").update({ status: "revoked", expires_at: new Date().toISOString() }).eq("id", id);
+    if (error) { toast.error("Could not revoke subscription", { description: error.message }); return; }
     toast.success("Revoked"); load();
   };
 

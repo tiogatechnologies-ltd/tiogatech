@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -8,6 +9,15 @@ import RelatedPosts from "@/components/RelatedPosts";
 import SharePost from "@/components/SharePost";
 import { useBlogPost } from "@/hooks/useBlog";
 import { Calendar, Clock, ArrowLeft, Loader2, User } from "lucide-react";
+
+// Defined at module level so its identity is stable across renders; an inline
+// component would remount on every render and lose the "failed" state.
+const MarkdownImage = ({ src, alt }: { src?: string; alt?: string }) => {
+  const [failed, setFailed] = useState(false);
+  if (failed || !src) return null;
+  return <img src={src} alt={alt ?? ""} loading="lazy" onError={() => setFailed(true)} />;
+};
+const MARKDOWN_COMPONENTS = { img: MarkdownImage };
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -99,12 +109,15 @@ const BlogPost = () => {
             <img
               src={post.cover_image_url}
               alt={post.title}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
               className="mt-8 w-full rounded-2xl border border-border"
             />
           )}
 
           <div className="prose prose-lg dark:prose-invert max-w-none mt-10 prose-headings:font-display prose-headings:tracking-tight prose-headings:mt-10 prose-headings:mb-4 prose-p:my-5 prose-p:leading-relaxed prose-li:my-1.5 prose-a:text-primary prose-img:rounded-xl prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={MARKDOWN_COMPONENTS}>
               {(() => {
                 let c = post.content ?? "";
                 if (post.cover_image_url) {

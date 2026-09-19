@@ -147,6 +147,10 @@ const Blog = () => {
                         src={p.cover_image_url}
                         alt={p.title}
                         loading="lazy"
+                        onError={(e) => {
+                          const box = e.currentTarget.parentElement;
+                          if (box) box.style.display = "none";
+                        }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>

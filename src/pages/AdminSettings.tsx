@@ -127,7 +127,8 @@ const AdminSettings = () => {
     try {
       const changed = Object.keys(data).filter((k) => JSON.stringify(data[k]) !== JSON.stringify(original[k]));
       for (const k of changed) {
-        await supabase.from("site_settings").upsert({ key: k, value: data[k] }, { onConflict: "key" });
+        const { error } = await supabase.from("site_settings").upsert({ key: k, value: data[k] }, { onConflict: "key" });
+        if (error) throw new Error(`Could not save "${k}" settings: ${error.message}`);
       }
       if (changed.includes("contact")) invalidateSiteContactCache();
       // Storefront reads shipping/payment/tax/features/affiliate/seo through the

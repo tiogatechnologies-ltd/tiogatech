@@ -123,13 +123,15 @@ const AdminFormQuestions = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this question?")) return;
-    await supabase.from("form_questions").delete().eq("id", id);
+    const { error } = await supabase.from("form_questions").delete().eq("id", id);
+    if (error) { toast.error("Could not delete question", { description: error.message }); return; }
     toast.success("Question deleted");
     fetchQuestions();
   };
 
   const toggleActive = async (q: FormQuestion) => {
-    await supabase.from("form_questions").update({ is_active: !q.is_active }).eq("id", q.id);
+    const { error } = await supabase.from("form_questions").update({ is_active: !q.is_active }).eq("id", q.id);
+    if (error) { toast.error("Could not update question", { description: error.message }); return; }
     fetchQuestions();
   };
 

@@ -141,20 +141,26 @@ const AdminAffiliates = () => {
       toast.error(error.message);
       return;
     }
-    await supabase
+    const { error: statusError } = await supabase
       .from("affiliate_applications" as any)
       .update({ status: "approved" })
       .eq("id", app.id);
+    if (statusError) {
+      toast.error("Affiliate was created, but the application could not be marked approved", { description: statusError.message });
+      void load();
+      return;
+    }
     toast.success(`${app.full_name} approved as affiliate with code ${code.toUpperCase()}`);
     setAppOpen(null);
     void load();
   };
 
   const reject = async (app: Application) => {
-    await supabase
+    const { error } = await supabase
       .from("affiliate_applications" as any)
       .update({ status: "rejected" })
       .eq("id", app.id);
+    if (error) { toast.error("Could not reject application", { description: error.message }); return; }
     toast.success("Application marked as rejected");
     setAppOpen(null);
     void load();
