@@ -1,8 +1,8 @@
-import SiteHeader from "@/components/SiteHeader";
+﻿import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
-import LumiVoltSizer from "@/components/LumiVoltSizer";
+import LumiSizer from "@/components/LumiSizer";
 import cover from "@/assets/energy-calculator-cover.jpg";
 import { Link } from "react-router-dom";
 import {
@@ -74,7 +74,7 @@ const EnergyCalculator = () => {
           to="/lumivolt"
           className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
         >
-          <ArrowLeft size={16} /> Back to LumiVolt
+          <ArrowLeft size={16} /> Back to Lumi
         </Link>
         <Link
           to="/packages"
@@ -116,7 +116,7 @@ const EnergyCalculator = () => {
             <p className="mt-3 text-muted-foreground">Free. No sign-up. Your data is private until you choose to share it.</p>
           </div>
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-[var(--shadow-card)]">
-            <LumiVoltSizer />
+            <LumiSizer />
           </div>
         </div>
       </section>

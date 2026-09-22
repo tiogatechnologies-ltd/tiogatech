@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Save, MessageSquarePlus, History } from "lucide-react";
@@ -13,7 +13,7 @@ type Props = {
 
 type Person = { id: string; label: string };
 
-const TABLE = { sizing: "lumivolt_sizings", assessment: "solar_assessments" } as const;
+const TABLE = { sizing: "lumi_sizings", assessment: "solar_assessments" } as const;
 
 const BriefWorkflow = ({ entityType, row, onSaved }: Props) => {
   const { user } = useAuth();

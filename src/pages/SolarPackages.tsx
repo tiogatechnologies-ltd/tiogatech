@@ -1,4 +1,4 @@
-import { useSiteSetting } from "@/hooks/useSiteSetting";
+﻿import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -289,7 +289,7 @@ export const SolarPackages = () => {
       <SiteHeader />
 
       <PageHero
-        eyebrow="Turnkey Energy Infrastructure · LumiVolt"
+        eyebrow="Turnkey Energy Infrastructure · Lumi"
         title="Guaranteed 24/7 Clean Solar Energy Systems"
         subtitle="Pre-engineered hybrid inverters, high-cycle lithium iron phosphate batteries, and Tier-1 solar panels designed to power your essential appliances with zero flicker."
         backgroundImage={bgResidential}

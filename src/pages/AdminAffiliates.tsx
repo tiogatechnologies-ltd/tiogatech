@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
@@ -71,7 +71,7 @@ const slug = (s: string) =>
 const PATHS = [
   { value: "/", label: "Home" },
   { value: "/packages", label: "Packages" },
-  { value: "/lumivolt", label: "LumiVolt (Solar)" },
+  { value: "/lumivolt", label: "Lumi (Solar)" },
   { value: "/voltai", label: "VoltAI (Automation)" },
   { value: "/catalog", label: "Catalog" },
   { value: "/contact", label: "Contact" },

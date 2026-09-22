@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { ArrowUpRight, Mail, MessageCircle, MapPin, Phone, Clock, Loader2 } from "lucide-react";
 import { useState } from "react";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
@@ -13,7 +13,7 @@ const company = [
   { label: "Career", to: "/career" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
-  { label: "LumiVolt - Residential", to: "/lumivolt" },
+  { label: "Lumi - Residential", to: "/lumivolt" },
   { label: "VoltAi - Smart Automation", to: "/voltai" },
 ];
 

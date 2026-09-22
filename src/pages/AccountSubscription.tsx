@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -71,7 +71,7 @@ interface UsageRow {
 
 const FEATURE_LABEL: Record<string, { label: string; icon: any }> = {
   solar_assess: { label: "Full engineering report", icon: Sun },
-  lumivolt: { label: "LumiVolt system sizing", icon: Calculator },
+  lumivolt: { label: "Lumi system sizing", icon: Calculator },
   ai_recommend: { label: "AI package recommendation", icon: Lightbulb },
 };
 

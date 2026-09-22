@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+﻿import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
@@ -1309,7 +1309,7 @@ const AdminAnalytics = () => {
                 <h3 className="font-display font-bold text-card-foreground mb-2">Event Volume</h3>
                 <p className="text-xs text-muted-foreground mb-4">Raw event counts in period (all sessions).</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                  {["cta_click", "product_view", "cart_add", "checkout_view", "checkout_step", "ai_chat_open", "ai_chat_message", "energy_calculator_open", "energy_calculator_submit", "lumivolt_sizer_submit", "whatsapp_click", "scroll_depth"].map(ev => (
+                  {["cta_click", "product_view", "cart_add", "checkout_view", "checkout_step", "ai_chat_open", "ai_chat_message", "energy_calculator_open", "energy_calculator_submit", "lumi_sizer_submit", "whatsapp_click", "scroll_depth"].map(ev => (
                     <div key={ev} className="rounded-lg bg-muted/40 px-3 py-2">
                       <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{ev.replace(/_/g, " ")}</p>
                       <p className="text-lg font-display font-bold text-card-foreground">{eventCount(ev).toLocaleString()}</p>

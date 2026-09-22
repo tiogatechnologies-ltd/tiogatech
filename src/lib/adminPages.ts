@@ -1,4 +1,4 @@
-// Central catalog of admin pages that can be toggled per role.
+﻿// Central catalog of admin pages that can be toggled per role.
 // page_key values are stable and used in the role_page_permissions table.
 
 import type { AppRole } from "@/contexts/AuthContext";
@@ -27,7 +27,7 @@ export const ADMIN_PAGES: AdminPage[] = [
   { key: "smart_locks", label: "Smart Locks & Security", group: "Catalog & Inventory", path: "/admin/smart-locks", defaultRoles: ["staff"] },
   { key: "home_automation", label: "Home Automation Systems", group: "Catalog & Inventory", path: "/admin/home-automation", defaultRoles: ["staff"] },
   { key: "cctv_packages", label: "CCTV & Surveillance", group: "Catalog & Inventory", path: "/admin/cctv-packages", defaultRoles: ["staff"] },
-  { key: "lumivolt_sizings", label: "LumiVolt Sizings", group: "Sales, Orders & CRM", path: "/admin/lumivolt-sizings", defaultRoles: ["staff", "engineer"] },
+  { key: "lumi_sizings", label: "Lumi Sizings", group: "Sales, Orders & CRM", path: "/admin/lumivolt-sizings", defaultRoles: ["staff", "engineer"] },
   { key: "assessments", label: "Solar Energy Assessments", group: "Sales, Orders & CRM", path: "/admin/assessments", defaultRoles: ["staff", "engineer"] },
   { key: "custom_requests", label: "Custom Project Requests", group: "Sales, Orders & CRM", path: "/admin/custom-requests", defaultRoles: ["staff", "engineer"] },
 

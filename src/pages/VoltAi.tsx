@@ -1,4 +1,4 @@
-import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
+﻿import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import bgAutomation from "@/assets/bg-voltai-ai.jpg";
@@ -21,7 +21,7 @@ const pillars = [
 const features = [
   { icon: Wifi, title: "One Connected Hub", desc: "All your devices speak the same language through a single VoltAi hub." },
   { icon: Smartphone, title: "Control From Anywhere", desc: "iOS and Android apps with biometric lock and household sharing." },
-  { icon: Zap, title: "Energy-Aware Scenes", desc: "Pairs with LumiVolt solar to dim, switch and prioritize devices automatically." },
+  { icon: Zap, title: "Energy-Aware Scenes", desc: "Pairs with Lumi solar to dim, switch and prioritize devices automatically." },
   { icon: Shield, title: "Privacy First", desc: "Local processing where possible, encrypted streams, no data resold." },
 ];
 
@@ -39,13 +39,13 @@ const VoltAi = () => {
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="VoltAi - Smart Home Automation by Tioga" description="Smart locks, lights, cameras and sensors orchestrated through one app. AI-powered home automation by Tioga Technologies, built for Nigeria." path="/voltai" jsonLd={[breadcrumbJsonLd([{ name: "VoltAi", path: "/voltai" }]), serviceJsonLd({ name: "VoltAi Smart Home Automation", description: "Smart locks, lighting, cameras and sensors installed and orchestrated through one app, designed to work alongside LumiVolt solar.", path: "/voltai", serviceType: "Home automation installation" })]} />
+      <SEO title="VoltAi - Smart Home Automation by Tioga" description="Smart locks, lights, cameras and sensors orchestrated through one app. AI-powered home automation by Tioga Technologies, built for Nigeria." path="/voltai" jsonLd={[breadcrumbJsonLd([{ name: "VoltAi", path: "/voltai" }]), serviceJsonLd({ name: "VoltAi Smart Home Automation", description: "Smart locks, lighting, cameras and sensors installed and orchestrated through one app, designed to work alongside Lumi solar.", path: "/voltai", serviceType: "Home automation installation" })]} />
       <SiteHeader />
 
       <PageHero
         eyebrow={c.eyebrow || "A Tioga Sub-brand · Smart Automation"}
         title={c.title || "VoltAi - your home, intelligently automated"}
-        subtitle={c.subtitle || "Locks, lights, cameras and sensors orchestrated through one app. Built to work seamlessly with LumiVolt solar."}
+        subtitle={c.subtitle || "Locks, lights, cameras and sensors orchestrated through one app. Built to work seamlessly with Lumi solar."}
         backgroundImage={bgAutomation}
         backgroundAlt="Hand interacting with futuristic smart home control interface"
       >
@@ -167,7 +167,7 @@ const VoltAi = () => {
                 to="/lumivolt"
                 className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted ios-press"
               >
-                Pair with LumiVolt Solar
+                Pair with Lumi Solar
               </Link>
             </div>
           </div>

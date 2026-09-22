@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { Sun, Home, Shield, Cpu, Zap, ArrowRight, CheckCircle2, ShoppingBag, Calculator, Layers, Award, HardHat } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -14,7 +14,7 @@ const SOLUTIONS = [
   {
     id: "solar-energy",
     title: "Clean Solar Energy & Storage",
-    brand: "LumiVolt",
+    brand: "Lumi",
     desc: "Tier-1 Deye hybrid inverters, Felicity LiFePO4 batteries, and Longi high-yield solar arrays engineered for uninterrupted 24/7 power.",
     link: "/solar-packages",
     image: bgResidential,

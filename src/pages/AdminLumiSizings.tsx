@@ -16,7 +16,7 @@ const REVISABLE: { key: string; label: string; unit: string }[] = [
   { key: "charge_controller_a", label: "Charge controller", unit: "A" },
 ];
 
-const AdminLumiVoltSizings = () => {
+const AdminLumiSizings = () => {
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<any | null>(null);
@@ -91,7 +91,7 @@ const AdminLumiVoltSizings = () => {
           <div className="flex items-center gap-3">
             <Sun className="text-primary" />
             <div>
-              <h1 className="text-2xl font-display font-bold text-foreground">LumiVolt Sizings</h1>
+              <h1 className="text-2xl font-display font-bold text-foreground">Lumi Sizings</h1>
               <p className="text-sm text-muted-foreground">Calculator submissions - sales and engineering briefs</p>
             </div>
           </div>
@@ -262,4 +262,4 @@ const Stat = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-export default AdminLumiVoltSizings;
+export default AdminLumiSizings;

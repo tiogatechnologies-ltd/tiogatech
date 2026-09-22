@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -376,7 +376,7 @@ const Packages = () => {
               Not sure which package fits?
             </h3>
             <p className="text-muted-foreground max-w-xl mx-auto mb-6">
-              Answer 3 quick questions and our LumiVolt AI will recommend the perfect solar, security or automation bundle for your space and budget.
+              Answer 3 quick questions and our Lumi AI will recommend the perfect solar, security or automation bundle for your space and budget.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <button

@@ -1,4 +1,4 @@
-import { useSiteSetting } from "@/hooks/useSiteSetting";
+﻿import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -151,7 +151,7 @@ export const SolarPackageDetail = () => {
       "@type": "Product",
       name: `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
       description: `Pre-engineered ${pkg.inverter} solar system with ${pkg.battery} battery bank and ${pkg.solar_panels}. Powers: ${pkg.appliances}.`,
-      brand: { "@type": "Brand", name: "Tioga Technologies (LumiVolt)" },
+      brand: { "@type": "Brand", name: "Tioga Technologies (Lumi)" },
       offers: {
         "@type": "Offer",
         priceCurrency: "NGN",
@@ -256,7 +256,7 @@ export const SolarPackageDetail = () => {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">
-                    LumiVolt Solar · {batteryLabel}
+                    Lumi Solar · {batteryLabel}
                   </p>
                   <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground leading-tight no-clip">
                     {pkg.inverter}

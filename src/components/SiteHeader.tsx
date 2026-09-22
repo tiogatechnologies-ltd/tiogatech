@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, MessageCircle, ChevronDown, Sun, Moon } from "lucide-react";
@@ -13,7 +13,7 @@ import { useTheme } from "next-themes";
 
 // Sub-brands now live inside the Products mega-menu (see MegaMenu.tsx).
 const brandLinks: { label: string; to: string }[] = [
-  { label: "LumiVolt", to: "/lumivolt" },
+  { label: "Lumi", to: "/lumivolt" },
 ];
 
 // Secondary links shown after the merged Products mega-menu.

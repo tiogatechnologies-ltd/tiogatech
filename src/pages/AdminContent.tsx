@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Save, Upload, Image as ImageIcon, Loader2, X } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
@@ -56,12 +56,12 @@ const PAGES: PageDef[] = [
     ],
   },
   {
-    label: "LumiVolt",
+    label: "Lumi",
     sections: [
-      { key: "page_lumivolt", label: "Hero", fields: ["eyebrow", "title", "subtitle", "image"] },
-      { key: "lumivolt_intro", label: "Intro", fields: ["eyebrow", "title", "body", "image"] },
-      { key: "lumivolt_benefits", label: "Benefits headline", fields: ["eyebrow", "title", "subtitle"] },
-      { key: "lumivolt_cta", label: "Bottom CTA", fields: ["title", "subtitle", "ctaLabel"] },
+      { key: "page_lumi", label: "Hero", fields: ["eyebrow", "title", "subtitle", "image"] },
+      { key: "lumi_intro", label: "Intro", fields: ["eyebrow", "title", "body", "image"] },
+      { key: "lumi_benefits", label: "Benefits headline", fields: ["eyebrow", "title", "subtitle"] },
+      { key: "lumi_cta", label: "Bottom CTA", fields: ["title", "subtitle", "ctaLabel"] },
     ],
   },
   {

@@ -43,7 +43,7 @@ function Tip({ title, body }: { title: string; body: string }) {
   );
 }
 
-const LumiVoltSizer = () => {
+const LumiSizer = () => {
   const { user } = useAuth();
   const [rows, setRows] = useState<Row[]>([newRow("Television")]);
   const [days, setDays] = useState(1);
@@ -155,7 +155,7 @@ const LumiVoltSizer = () => {
     try {
       await supabase.functions.invoke("notify-new-lead", {
         body: {
-          source: "lumivolt_sizer",
+          source: "lumi_sizer",
           full_name: contact.full_name || user?.user_metadata?.full_name || "Guest",
           email: contact.email || user?.email,
           phone: contact.phone,
@@ -410,4 +410,4 @@ const ResultCard = ({ color, icon, title, value, note }: { color: string; icon: 
   );
 };
 
-export default LumiVoltSizer;
+export default LumiSizer;

@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+﻿import { supabase } from "@/integrations/supabase/client";
 
 function getSessionId(): string {
   let sid = sessionStorage.getItem("tioga_session_id");
@@ -26,7 +26,7 @@ export type ConversionEvent =
   | "cart_checkout_lead"
   | "energy_calculator_open"
   | "energy_calculator_submit"
-  | "lumivolt_sizer_submit"
+  | "lumi_sizer_submit"
   | "assessment_started"
   | "assessment_completed"
   | "assessment_full_unlock"

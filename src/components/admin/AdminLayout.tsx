@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+﻿import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
 import usePagePermissions from "@/hooks/usePagePermissions";
@@ -101,7 +101,7 @@ const navGroups: NavGroup[] = [
         icon: Calculator,
         path: "/admin/lumivolt-sizings",
         children: [
-          { label: "LumiVolt Sizings", path: "/admin/lumivolt-sizings" },
+          { label: "Lumi Sizings", path: "/admin/lumivolt-sizings" },
           { label: "Solar Energy Assessments", path: "/admin/assessments" },
           { label: "Custom Project Requests", path: "/admin/custom-requests" },
         ],

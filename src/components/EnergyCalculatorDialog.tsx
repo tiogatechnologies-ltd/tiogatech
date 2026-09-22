@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { X, Calculator, ArrowRight } from "lucide-react";
-import LumiVoltSizer from "@/components/LumiVoltSizer";
+import LumiSizer from "@/components/LumiSizer";
 
 let externalSetter: ((v: boolean) => void) | null = null;
 export const openEnergyCalculator = () => externalSetter?.(true);
@@ -62,7 +62,7 @@ const EnergyCalculatorDialog = () => {
         </div>
 
         <div className="p-5 sm:p-6">
-          <LumiVoltSizer />
+          <LumiSizer />
           <div className="mt-5 pt-4 border-t border-border text-center">
             <Link
               to="/energy-calculator"

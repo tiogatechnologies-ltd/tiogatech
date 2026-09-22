@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+﻿import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
@@ -42,7 +42,7 @@ const Wishlist = lazy(() => import("./pages/Wishlist.tsx"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail.tsx"));
 const TrackOrder = lazy(() => import("./pages/TrackOrder.tsx"));
 const ShortLink = lazy(() => import("./pages/ShortLink.tsx"));
-const LumiVolt = lazy(() => import("./pages/LumiVolt.tsx"));
+const Lumi = lazy(() => import("./pages/Lumi.tsx"));
 const SizingReport = lazy(() => import("./pages/SizingReport.tsx"));
 const Solutions = lazy(() => import("./pages/Solutions.tsx"));
 const SmartLocks = lazy(() => import("./pages/SmartLocks.tsx"));
@@ -119,7 +119,7 @@ const AdminReports = lazy(() => import("./pages/AdminReports.tsx"));
 const AdminStorage = lazy(() => import("./pages/AdminStorage.tsx"));
 const AdminAssessments = lazy(() => import("./pages/AdminAssessments.tsx"));
 const AdminCustomRequests = lazy(() => import("./pages/AdminCustomRequests.tsx"));
-const AdminLumiVoltSizings = lazy(() => import("./pages/AdminLumiVoltSizings.tsx"));
+const AdminLumiSizings = lazy(() => import("./pages/AdminLumiSizings.tsx"));
 const SolarAssessment = lazy(() => import("./pages/SolarAssessment.tsx"));
 const SolarAssessmentReport = lazy(() => import("./pages/SolarAssessmentReport.tsx"));
 const AccountAssessments = lazy(() => import("./pages/AccountAssessments.tsx"));
@@ -200,7 +200,7 @@ const AnimatedRoutes = () => {
           <Route path="/security" element={<RouteFade><CCTV /></RouteFade>} />
           <Route path="/solar-packages" element={<RouteFade><SolarPackages /></RouteFade>} />
           <Route path="/solar-solutions" element={<RouteFade><SolarPackages /></RouteFade>} />
-          <Route path="/lumivolt" element={<RouteFade><LumiVolt /></RouteFade>} />
+          <Route path="/lumivolt" element={<RouteFade><Lumi /></RouteFade>} />
           <Route path="/voltai" element={<RouteFade><VoltAi /></RouteFade>} />
           <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
           <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
@@ -298,7 +298,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin/storage" element={<Admin><AdminStorage /></Admin>} />
           <Route path="/admin/assessments" element={<Admin><AdminAssessments /></Admin>} />
           <Route path="/admin/custom-requests" element={<Admin><AdminCustomRequests /></Admin>} />
-          <Route path="/admin/lumivolt-sizings" element={<Admin><AdminLumiVoltSizings /></Admin>} />
+          <Route path="/admin/lumivolt-sizings" element={<Admin><AdminLumiSizings /></Admin>} />
           <Route path="/admin/ai-subscriptions" element={<Admin><AdminAiSubscriptions /></Admin>} />
           <Route path="/admin/ai-usage" element={<Admin><AdminAiCreditUsage /></Admin>} />
           <Route path="/admin/tickets" element={<Admin><AdminSupportTickets /></Admin>} />

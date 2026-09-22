@@ -1,4 +1,4 @@
-// Normalises LumiVolt sizings and solar assessments into the shared report shape.
+﻿// Normalises Lumi sizings and solar assessments into the shared report shape.
 import type { ReportData, ReportSpec } from "./reportPdf";
 
 const n = (v: any) => (v === null || v === undefined || v === "" ? null : Number(v));

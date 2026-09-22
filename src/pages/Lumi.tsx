@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -14,7 +14,7 @@ import featureApp from "@/assets/feature-energy-app.jpg";
 import bgTechMesh from "@/assets/bg-grid-particles.jpg";
 import { Sun, BatteryCharging, Home, Calculator, CheckCircle2, Wallet, Globe, BarChart3, Lightbulb, ArrowRight, Plus, Download, Coins, TrendingUp, Building2, Users2, Briefcase, Wrench, Shield, Smartphone, Cpu, Zap, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-import LumiVoltSizer from "@/components/LumiVoltSizer";
+import LumiSizer from "@/components/LumiSizer";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
@@ -48,17 +48,17 @@ const youGet = [
   "Personalized tips for your setup",
 ];
 
-const LumiVolt = () => {
-  const { content: cms } = useLandingContent("page_lumivolt");
+const Lumi = () => {
+  const { content: cms } = useLandingContent("page_lumi");
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="LumiVolt - Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with LumiVolt by Tioga Technologies." path="/lumivolt" jsonLd={[breadcrumbJsonLd([{ name: "LumiVolt", path: "/lumivolt" }]), serviceJsonLd({ name: "LumiVolt Residential Solar Installation", description: "Off-grid, hybrid and grid-tie solar systems engineered, sized and installed for Nigerian homes, with lithium battery backup and 24/7 monitoring.", path: "/lumivolt", serviceType: "Solar power system installation" })]} />
+      <SEO title="Lumi - Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with Lumi by Tioga Technologies." path="/lumivolt" jsonLd={[breadcrumbJsonLd([{ name: "Lumi", path: "/lumivolt" }]), serviceJsonLd({ name: "Lumi Residential Solar Installation", description: "Off-grid, hybrid and grid-tie solar systems engineered, sized and installed for Nigerian homes, with lithium battery backup and 24/7 monitoring.", path: "/lumivolt", serviceType: "Solar power system installation" })]} />
       <SiteHeader />
 
       <PageHero
         eyebrow={c.eyebrow || "A Tioga Sub-brand · Residential"}
-        title={c.title || "LumiVolt - clean, reliable solar for your home"}
+        title={c.title || "Lumi - clean, reliable solar for your home"}
         subtitle={c.subtitle || "Off-grid, hybrid and grid-tie solar systems engineered for Nigerian homes. Sized accurately, installed cleanly, monitored 24/7."}
         backgroundImage={bgResidential}
         backgroundAlt="Modern Nigerian home with rooftop solar at golden hour"
@@ -82,7 +82,7 @@ const LumiVolt = () => {
       <section className="section-padding">
         <div className="section-container grid gap-8 lg:grid-cols-2 items-center">
           <div className="relative rounded-3xl overflow-hidden border border-border aspect-[4/3] order-2 lg:order-1">
-            <img src={bgRooftop} alt="LumiVolt rooftop solar install" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+            <img src={bgRooftop} alt="Lumi rooftop solar install" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
           </div>
           <div className="order-1 lg:order-2">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Project Overview</p>
@@ -159,7 +159,7 @@ const LumiVolt = () => {
           <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Built For</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
-              Who uses LumiVolt
+              Who uses Lumi
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
@@ -186,7 +186,7 @@ const LumiVolt = () => {
           <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Platform</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
-              What LumiVolt does
+              What Lumi does
             </h2>
           </div>
           <div className="grid gap-6 lg:grid-cols-2 max-w-5xl mx-auto">
@@ -247,7 +247,7 @@ const LumiVolt = () => {
               Powering Africa's Clean Energy Future
             </h2>
             <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              LumiVolt is Africa's next-generation renewable energy management platform - designed to make clean energy smarter, more accessible, and highly efficient. We combine smart metering, AI-driven analytics, and modular energy systems to transform how homes and businesses generate, store, and consume energy.
+              Lumi is Africa's next-generation renewable energy management platform - designed to make clean energy smarter, more accessible, and highly efficient. We combine smart metering, AI-driven analytics, and modular energy systems to transform how homes and businesses generate, store, and consume energy.
             </p>
             <p className="mt-3 text-sm font-semibold text-primary uppercase tracking-wider flex items-center justify-center gap-1.5">
               <MapPin size={14} /> Abuja, Nigeria
@@ -325,7 +325,7 @@ const LumiVolt = () => {
             <p className="text-xs sm:text-sm font-semibold text-gold uppercase tracking-[0.2em] mb-3">Trust / Impact</p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight no-clip">Building more than power systems</h2>
             <p className="mt-3 text-primary-foreground/80 max-w-2xl mx-auto">
-              At LumiVolt we are not just powering homes and businesses - we are powering the future of Africa.
+              At Lumi we are not just powering homes and businesses - we are powering the future of Africa.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto mb-10">
@@ -366,7 +366,7 @@ const LumiVolt = () => {
           </div>
           <div className="grid gap-5 md:grid-cols-3">
             {[
-              { name: "Adaeze O.", role: "Lekki, Lagos", quote: "Our generator bills dropped over 70% in three months. The LumiVolt app shows exactly what every appliance is doing." },
+              { name: "Adaeze O.", role: "Lekki, Lagos", quote: "Our generator bills dropped over 70% in three months. The Lumi app shows exactly what every appliance is doing." },
               { name: "Mr. Bashir", role: "SME owner, Abuja", quote: "Smart metering caught two faulty ACs that were eating power. Installation was clean and the team is responsive." },
               { name: "Estate Manager", role: "Port Harcourt", quote: "Modular storage let us start small and scale. Tenants finally have reliable, fair, prepaid power." },
             ].map((t) => (
@@ -420,7 +420,7 @@ const LumiVolt = () => {
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">Benefits</p>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight">Why homeowners pick LumiVolt</h2>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight">Why homeowners pick Lumi</h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
             {benefits.map((b) => (
@@ -451,7 +451,7 @@ const LumiVolt = () => {
             </p>
           </div>
           <div className="max-w-2xl mx-auto rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-[var(--shadow-card)]">
-            <LumiVoltSizer />
+            <LumiSizer />
           </div>
         </div>
       </section>
@@ -461,7 +461,7 @@ const LumiVolt = () => {
         <div className="section-container">
           <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 shadow-[var(--shadow-card)] text-center">
             <Lightbulb className="text-primary mx-auto mb-3" size={28} />
-            <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-6">What is in your LumiVolt design</h2>
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mb-6">What is in your Lumi design</h2>
             <ul className="grid gap-3 sm:grid-cols-2 text-left max-w-2xl mx-auto">
               {youGet.map((g) => (
                 <li key={g} className="flex items-start gap-2 text-sm text-foreground">
@@ -490,4 +490,4 @@ const LumiVolt = () => {
   );
 };
 
-export default LumiVolt;
+export default Lumi;
