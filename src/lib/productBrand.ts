@@ -23,9 +23,20 @@ const CATEGORY_MAP: Record<string, string> = {
   "smart_lighting": "Smart Lighting & Track",
   lighting: "Smart Lighting & Track",
   lights: "Smart Lighting & Track",
-  street_light: "Smart Lighting & Track",
-  street_lights: "Smart Lighting & Track",
+  street_light: "Solar Street Lights",
+  street_lights: "Solar Street Lights",
+  solar_street_light: "Solar Street Lights",
+  solar_street_lights: "Solar Street Lights",
+  "solar street lights": "Solar Street Lights",
+  "solar street light": "Solar Street Lights",
   "smart lighting & track": "Smart Lighting & Track",
+  commercial_ess: "Commercial ESS",
+  "commercial ess": "Commercial ESS",
+  ess: "Commercial ESS",
+  charge_controller: "Charge Controllers",
+  charge_controllers: "Charge Controllers",
+  "charge controllers": "Charge Controllers",
+  "charge controller": "Charge Controllers",
 };
 
 /** Normalizes a product's category to the current display label, folding in legacy values and disambiguating vague names. */
@@ -41,7 +52,7 @@ export function normalizeCategory(category: string | null | undefined, name?: st
     if (n.includes("panel") || n.includes("longi") || n.includes("jinko") || n.includes("ja solar") || n.includes("mono perc")) {
       return "Solar Panels";
     }
-    if (n.includes("inverter") || n.includes("deye") || n.includes("srne") || n.includes("hybrid")) {
+    if (n.includes("inverter") || n.includes("deye") || n.includes("srne") || n.includes("solis") || n.includes("hybrid")) {
       return "Inverters";
     }
   }
@@ -59,10 +70,14 @@ export function inferBrand(name: string, category: string | null | undefined): s
   if (n.includes("AlpSolarr") || n.includes("Alpsolar") || n.startsWith("ALP-") || n.includes("Pulse S") || n.includes("ROSA G2") || n.includes("ROSA T2") || n.includes("Livo-") || n.includes("Livo 16") || n.includes("PowerGoo")) return "AlpSolarr";
   if (n.includes("Taico") || n.startsWith("TAI-")) return "Taico";
   if (n.includes("Dawnice") || n.startsWith("DAW-")) return "Dawnice";
+  if (n.includes("Solis") || n.startsWith("SOLIS-") || n.startsWith("S6-")) return "Solis";
+  if (n.includes("SolarPro") || n.includes("Solarpro") || n.startsWith("SOLARPRO-")) return "SolarPro";
+  if (n.includes("Infinisolar") || n.includes("InfiniSolar") || n.startsWith("INFINI-")) return "Infinisolar";
   if (n.includes("Longi")) return "Longi";
   if (n.includes("JA Solar") || n.includes("JA ")) return "JA Solar";
   if (n.includes("Jinko")) return "Jinko";
   if (normalizeCategory(category).includes("Lock")) return "Tioga Smart";
   return "Tioga";
 }
+
 

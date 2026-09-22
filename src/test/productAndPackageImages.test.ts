@@ -216,16 +216,22 @@ describe("Product and Package Real Images", () => {
     expect(uniqueHashes.size).toBe(81);
   });
 
-  it("all 20 AlpSolarr, Taico, and Dawnice products exist with authentic photos on disk and unique hashes", () => {
+  it("all AlpSolarr, Taico, Dawnice, Solis, SolarPro, and Infinisolar products exist with authentic photos on disk and unique hashes", () => {
     const alpSolarr = PRODUCTS.filter((p) => p.brand === "AlpSolarr");
     const taico = PRODUCTS.filter((p) => p.brand === "Taico");
     const dawnice = PRODUCTS.filter((p) => p.brand === "Dawnice");
+    const solis = PRODUCTS.filter((p) => p.brand === "Solis");
+    const solarpro = PRODUCTS.filter((p) => p.brand === "SolarPro");
+    const infini = PRODUCTS.filter((p) => p.brand === "Infinisolar");
 
     expect(alpSolarr.length).toBe(12);
     expect(taico.length).toBe(5);
-    expect(dawnice.length).toBe(14);
+    expect(dawnice.length).toBe(6);
+    expect(solis.length).toBe(7);
+    expect(solarpro.length).toBe(10);
+    expect(infini.length).toBe(9);
 
-    const allNewProducts = [...alpSolarr, ...taico, ...dawnice];
+    const allNewProducts = [...alpSolarr, ...taico, ...dawnice, ...solis, ...solarpro, ...infini];
     const uniqueHashes = new Set<string>();
 
     for (const p of allNewProducts) {
@@ -246,7 +252,7 @@ describe("Product and Package Real Images", () => {
     expect(uniqueHashes.size).toBe(allNewProducts.length);
   });
 
-  it("mergeProducts retains all 20 AlpSolarr, Taico, and Dawnice products without ID collision or erasure", () => {
+  it("mergeProducts retains all catalog products without ID collision or erasure", () => {
     const staticList = PRODUCTS.map((p) => ({
       ...p,
       category: p.category,
@@ -256,10 +262,16 @@ describe("Product and Package Real Images", () => {
     const alp = merged.filter((p) => p.brand === "AlpSolarr");
     const tai = merged.filter((p) => p.brand === "Taico");
     const daw = merged.filter((p) => p.brand === "Dawnice");
+    const sol = merged.filter((p) => p.brand === "Solis");
+    const sp = merged.filter((p) => p.brand === "SolarPro");
+    const inf = merged.filter((p) => p.brand === "Infinisolar");
 
     expect(alp.length).toBe(12);
     expect(tai.length).toBe(5);
-    expect(daw.length).toBe(14);
+    expect(daw.length).toBe(6);
+    expect(sol.length).toBe(7);
+    expect(sp.length).toBe(10);
+    expect(inf.length).toBe(9);
     expect(merged.length).toBeGreaterThanOrEqual(760);
   });
 
@@ -283,4 +295,5 @@ describe("Product and Package Real Images", () => {
     expect(uniqueSrneImages.size).toBe(srneProducts.length);
   });
 });
+
 

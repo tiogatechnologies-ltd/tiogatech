@@ -3904,8 +3904,12 @@ import { MINISIM_PRODUCTS } from "./minisimProducts";
 import { felicityProducts } from "./felicityProducts";
 import { alpsolarrProducts } from "./alpsolarrProducts";
 import { deyeProducts } from "./deyeProducts";
+import { dawniceProducts } from "./dawniceProducts";
+import { solisProducts } from "./solisProducts";
+import { solarproProducts } from "./solarproProducts";
+import { infinisolarProducts } from "./infinisolarProducts";
 
-// Unified products array including solar hardware, smart locks, Felicity Solar catalog, AlpSolarr catalog, Deye catalog, and complete Minisim retail catalog
+// Unified products array including solar hardware, smart locks, Felicity, AlpSolarr, Deye, Dawnice, Solis, SolarPro, Infinisolar, and complete Minisim retail catalog
 export const PRODUCTS: Product[] = [
   ...invertersList,
   ...batteriesList,
@@ -3916,6 +3920,10 @@ export const PRODUCTS: Product[] = [
   ...felicityProducts,
   ...alpsolarrProducts,
   ...deyeProducts,
+  ...dawniceProducts,
+  ...solisProducts,
+  ...solarproProducts,
+  ...infinisolarProducts,
   ...MINISIM_PRODUCTS,
 ];
 
@@ -3924,7 +3932,15 @@ export const solarProducts = invertersList;
 export const smartLockProducts = smartLocksList;
 export const smartHomeProducts = smartHomeList;
 export const cctvProducts = cctvList;
-export { felicityProducts, alpsolarrProducts, deyeProducts };
+export {
+  felicityProducts,
+  alpsolarrProducts,
+  deyeProducts,
+  dawniceProducts,
+  solisProducts,
+  solarproProducts,
+  infinisolarProducts,
+};
 
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
 
@@ -3938,14 +3954,19 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
       ...solarPanelsList,
       ...felicityProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category)),
       ...alpsolarrProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category)),
-      ...deyeProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category))
+      ...deyeProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category)),
+      ...dawniceProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS"].includes(p.category)),
+      ...solisProducts.filter((p) => ["Inverters"].includes(p.category)),
+      ...solarproProducts.filter((p) => ["Batteries", "Commercial ESS", "Solar Street Lights"].includes(p.category)),
+      ...infinisolarProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS", "Charge Controllers"].includes(p.category))
     );
   }
   if (interests.includes("smartlocks")) results.push(...smartLocksList);
   if (interests.includes("smarthome")) results.push(
     ...smartHomeList,
     ...felicityProducts.filter((p) => ["Smart Lighting & Track", "Home Automation"].includes(p.category)),
-    ...alpsolarrProducts.filter((p) => ["Home Automation"].includes(p.category))
+    ...alpsolarrProducts.filter((p) => ["Home Automation"].includes(p.category)),
+    ...solarproProducts.filter((p) => ["Solar Street Lights"].includes(p.category))
   );
   if (interests.includes("cctv")) results.push(...cctvList);
 
