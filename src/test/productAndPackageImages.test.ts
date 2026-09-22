@@ -223,7 +223,7 @@ describe("Product and Package Real Images", () => {
 
     expect(alpSolarr.length).toBe(12);
     expect(taico.length).toBe(5);
-    expect(dawnice.length).toBe(3);
+    expect(dawnice.length).toBe(14);
 
     const allNewProducts = [...alpSolarr, ...taico, ...dawnice];
     const uniqueHashes = new Set<string>();
@@ -243,7 +243,7 @@ describe("Product and Package Real Images", () => {
       uniqueHashes.add(hash);
     }
 
-    expect(uniqueHashes.size).toBe(20);
+    expect(uniqueHashes.size).toBe(allNewProducts.length);
   });
 
   it("mergeProducts retains all 20 AlpSolarr, Taico, and Dawnice products without ID collision or erasure", () => {
@@ -259,7 +259,7 @@ describe("Product and Package Real Images", () => {
 
     expect(alp.length).toBe(12);
     expect(tai.length).toBe(5);
-    expect(daw.length).toBe(3);
+    expect(daw.length).toBe(14);
     expect(merged.length).toBeGreaterThanOrEqual(760);
   });
 

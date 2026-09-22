@@ -3903,8 +3903,9 @@ export const cctvList: Product[] = [
 import { MINISIM_PRODUCTS } from "./minisimProducts";
 import { felicityProducts } from "./felicityProducts";
 import { alpsolarrProducts } from "./alpsolarrProducts";
+import { deyeProducts } from "./deyeProducts";
 
-// Unified products array including solar hardware, smart locks, Felicity Solar catalog, AlpSolarr catalog, and complete Minisim retail catalog
+// Unified products array including solar hardware, smart locks, Felicity Solar catalog, AlpSolarr catalog, Deye catalog, and complete Minisim retail catalog
 export const PRODUCTS: Product[] = [
   ...invertersList,
   ...batteriesList,
@@ -3914,6 +3915,7 @@ export const PRODUCTS: Product[] = [
   ...cctvList,
   ...felicityProducts,
   ...alpsolarrProducts,
+  ...deyeProducts,
   ...MINISIM_PRODUCTS,
 ];
 
@@ -3922,7 +3924,7 @@ export const solarProducts = invertersList;
 export const smartLockProducts = smartLocksList;
 export const smartHomeProducts = smartHomeList;
 export const cctvProducts = cctvList;
-export { felicityProducts, alpsolarrProducts };
+export { felicityProducts, alpsolarrProducts, deyeProducts };
 
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
 
@@ -3935,7 +3937,8 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
       ...batteriesList,
       ...solarPanelsList,
       ...felicityProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category)),
-      ...alpsolarrProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category))
+      ...alpsolarrProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category)),
+      ...deyeProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels"].includes(p.category))
     );
   }
   if (interests.includes("smartlocks")) results.push(...smartLocksList);
