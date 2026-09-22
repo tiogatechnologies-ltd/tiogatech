@@ -216,13 +216,14 @@ describe("Product and Package Real Images", () => {
     expect(uniqueHashes.size).toBe(81);
   });
 
-  it("all AlpSolarr, Taico, Dawnice, Solis, SolarPro, and Infinisolar products exist with authentic photos on disk and unique hashes", () => {
+  it("all AlpSolarr, Taico, Dawnice, Solis, SolarPro, Infinisolar, and Deye products exist with authentic photos on disk and unique hashes", () => {
     const alpSolarr = PRODUCTS.filter((p) => p.brand === "AlpSolarr");
     const taico = PRODUCTS.filter((p) => p.brand === "Taico");
     const dawnice = PRODUCTS.filter((p) => p.brand === "Dawnice");
     const solis = PRODUCTS.filter((p) => p.brand === "Solis");
     const solarpro = PRODUCTS.filter((p) => p.brand === "SolarPro");
     const infini = PRODUCTS.filter((p) => p.brand === "Infinisolar");
+    const deye = PRODUCTS.filter((p) => p.brand === "Deye");
 
     expect(alpSolarr.length).toBe(12);
     expect(taico.length).toBe(5);
@@ -230,8 +231,9 @@ describe("Product and Package Real Images", () => {
     expect(solis.length).toBe(7);
     expect(solarpro.length).toBe(10);
     expect(infini.length).toBe(9);
+    expect(deye.length).toBeGreaterThanOrEqual(15);
 
-    const allNewProducts = [...alpSolarr, ...taico, ...dawnice, ...solis, ...solarpro, ...infini];
+    const allNewProducts = [...alpSolarr, ...taico, ...dawnice, ...solis, ...solarpro, ...infini, ...deye];
     const uniqueHashes = new Set<string>();
 
     for (const p of allNewProducts) {
@@ -245,7 +247,7 @@ describe("Product and Package Real Images", () => {
 
       const buf = fs.readFileSync(filePath);
       const hash = crypto.createHash("md5").update(buf).digest("hex");
-      expect(uniqueHashes.has(hash), `Product ${p.sku} shares an identical image hash`).toBe(false);
+      expect(uniqueHashes.has(hash), `Product ${p.sku} (${p.name}) shares an identical image hash with another product`).toBe(false);
       uniqueHashes.add(hash);
     }
 
