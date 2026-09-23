@@ -1,4 +1,4 @@
-﻿import { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
@@ -21,9 +21,6 @@ import { CartProvider } from "@/contexts/CartContext";
 import PreloadCritical from "@/components/PreloadCritical";
 import SiteAnalytics from "@/components/SiteAnalytics";
 import DeferredMount from "@/components/DeferredMount";
-import EnergyCalculatorDialog from "@/components/EnergyCalculatorDialog";
-import WaitlistDialog from "@/components/WaitlistDialog";
-import FeatureHighlightPopup from "@/components/FeatureHighlightPopup";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useEffect } from "react";
 import { consumeUpdatedNotice, initCacheBustCheck } from "@/lib/cache";
@@ -34,6 +31,9 @@ import Index from "./pages/Index.tsx";
 const CartDrawer = lazy(() => import("@/components/CartDrawer"));
 const ProductCompareTray = lazy(() => import("@/components/retail/ProductCompareTray"));
 const TelegramWidget = lazy(() => import("@/components/TelegramWidget"));
+const EnergyCalculatorDialog = lazy(() => import("@/components/EnergyCalculatorDialog"));
+const WaitlistDialog = lazy(() => import("@/components/WaitlistDialog"));
+const FeatureHighlightPopup = lazy(() => import("@/components/FeatureHighlightPopup"));
 
 const About = lazy(() => import("./pages/About.tsx"));
 const Catalog = lazy(() => import("./pages/Catalog.tsx"));
@@ -200,9 +200,10 @@ const AnimatedRoutes = () => {
           <Route path="/security" element={<RouteFade><CCTV /></RouteFade>} />
           <Route path="/solar-packages" element={<RouteFade><SolarPackages /></RouteFade>} />
           <Route path="/solar-solutions" element={<RouteFade><SolarPackages /></RouteFade>} />
-          <Route path="/lumivolt" element={<RouteFade><Lumi /></RouteFade>} />
+          <Route path="/lumi" element={<RouteFade><Lumi /></RouteFade>} />
+          <Route path="/lumivolt" element={<Navigate to="/lumi" replace />} />
           <Route path="/voltai" element={<RouteFade><VoltAi /></RouteFade>} />
-          <Route path="/lumivolt-ai" element={<Navigate to="/lumivolt" replace />} />
+          <Route path="/lumivolt-ai" element={<Navigate to="/lumi" replace />} />
           <Route path="/finance" element={<RouteFade><Finance /></RouteFade>} />
           <Route path="/contact" element={<RouteFade><Contact /></RouteFade>} />
           <Route path="/support" element={<RouteFade><Support /></RouteFade>} />
@@ -338,10 +339,10 @@ const App = () => (
               <SmoothScroll />
               <AutoReveal />
               <LeadFormHost />
-              <EnergyCalculatorDialog />
-              <WaitlistDialog />
-              <FeatureHighlightPopup />
               <Suspense fallback={null}>
+                <EnergyCalculatorDialog />
+                <WaitlistDialog />
+                <FeatureHighlightPopup />
                 <CartDrawer />
                 <ProductCompareTray />
                 <DeferredMount delay={2500}>

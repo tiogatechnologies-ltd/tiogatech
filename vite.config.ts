@@ -43,19 +43,15 @@ export default defineConfig(({ mode }) => ({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          "react-vendor": ["react", "react-dom", "react-router-dom"],
-          "ui-vendor": [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-popover",
-            "@radix-ui/react-tooltip",
-            "@radix-ui/react-tabs",
-            "@radix-ui/react-accordion",
-          ],
-          "motion-vendor": ["framer-motion"],
-          "supabase-vendor": ["@supabase/supabase-js"],
-          "query-vendor": ["@tanstack/react-query"],
+        manualChunks(id) {
+          if (id.includes("minisimProducts.json")) return "minisim-catalog";
+          if (id.includes("node_modules/lucide-react")) return "lucide-vendor";
+          if (id.includes("node_modules/jspdf") || id.includes("node_modules/jspdf-autotable")) return "pdf-vendor";
+          if (id.includes("node_modules/react/") || id.includes("node_modules/react-dom/") || id.includes("node_modules/react-router-dom/")) return "react-vendor";
+          if (id.includes("node_modules/@radix-ui/")) return "ui-vendor";
+          if (id.includes("node_modules/framer-motion/")) return "motion-vendor";
+          if (id.includes("node_modules/@supabase/")) return "supabase-vendor";
+          if (id.includes("node_modules/@tanstack/react-query/")) return "query-vendor";
         },
       },
     },

@@ -17,7 +17,7 @@ const STATIC_ENTRIES = [
   { path: "/packages", changefreq: "weekly", priority: "0.9" },
   { path: "/retail", changefreq: "daily", priority: "0.9" },
   { path: "/catalog", changefreq: "weekly", priority: "0.9" },
-  { path: "/lumivolt", changefreq: "monthly", priority: "0.8" },
+  { path: "/lumi", changefreq: "monthly", priority: "0.8" },
   { path: "/voltai", changefreq: "monthly", priority: "0.8" },
   { path: "/finance", changefreq: "monthly", priority: "0.7" },
   { path: "/energy-calculator", changefreq: "monthly", priority: "0.7" },
