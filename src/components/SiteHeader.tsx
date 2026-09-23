@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, MessageCircle, ChevronDown, Sun, Moon } from "lucide-react";
@@ -26,7 +26,7 @@ const secondaryLinks = [
 ];
 
 const productSubLinks = [
-  { label: "Retail Hardware Store", to: "/retail" },
+  { label: "Retail Store", to: "/retail" },
   { label: "Solar Packages", to: "/packages?category=solar" },
   { label: "Smart Locks", to: "/packages?category=locks" },
   { label: "Home Automation", to: "/packages?category=automation" },

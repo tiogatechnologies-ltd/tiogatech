@@ -57,7 +57,7 @@ const WaitlistDialog = () => {
             <Smartphone size={22} />
           </div>
           <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight mb-2 no-clip">
-            Join the Tioga App waitlist
+            Join the Lumi App waitlist
           </h2>
           <p className="text-sm text-primary-foreground/75 mb-5">
             Be first to control your solar, smart locks and home automation from one app.

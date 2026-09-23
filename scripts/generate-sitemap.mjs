@@ -57,19 +57,27 @@ function getClient() {
 
 async function fetchBlogPosts() {
   const client = getClient();
-  if (!client) return [];
-  try {
-    const { data, error } = await client
-      .from("blog_posts")
-      .select("slug,updated_at,published_at")
-      .eq("published", true)
-      .order("published_at", { ascending: false })
-      .limit(1000);
-    if (error) return [];
-    return data || [];
-  } catch {
-    return [];
+  let list = [];
+  if (client) {
+    try {
+      const { data, error } = await client
+        .from("blog_posts")
+        .select("slug,updated_at,published_at")
+        .eq("published", true)
+        .order("published_at", { ascending: false })
+        .limit(1000);
+      if (!error && data) list = data;
+    } catch {}
   }
+  const known = [
+    { slug: "how-strong-is-1-mw-in-real-life", published_at: "2026-09-23T12:00:00.000Z", updated_at: "2026-09-23T12:00:00.000Z" }
+  ];
+  for (const k of known) {
+    if (!list.some((r) => r.slug === k.slug)) {
+      list.push(k);
+    }
+  }
+  return list;
 }
 
 async function fetchProducts() {

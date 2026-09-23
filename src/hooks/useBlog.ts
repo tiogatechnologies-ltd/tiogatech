@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchFreshRows, fetchFreshSingle } from "@/lib/freshContent";
+import { FALLBACK_BLOG_POSTS } from "@/data/blogPosts";
 
 export interface BlogPost {
   id: string;
@@ -35,8 +36,15 @@ export const useBlogPosts = () => {
         await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
         return fetchPosts(attempt + 1);
       }
-      if (data) {
-        setPosts(data as BlogPost[]);
+      if (data && Array.isArray(data) && data.length > 0) {
+        const remoteSlugs = new Set((data as BlogPost[]).map((p) => p.slug));
+        const merged = [
+          ...(data as BlogPost[]),
+          ...FALLBACK_BLOG_POSTS.filter((p) => !remoteSlugs.has(p.slug)),
+        ].sort((a, b) => new Date(b.published_at || 0).getTime() - new Date(a.published_at || 0).getTime());
+        setPosts(merged);
+      } else {
+        setPosts(FALLBACK_BLOG_POSTS);
       }
       setLoading(false);
     };
@@ -64,9 +72,16 @@ export const useBlogPost = (slug: string | undefined) => {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
         return fetchOne(attempt + 1);
       }
-      if (!data && !error) setNotFound(true);
       if (data) {
         setPost(data as BlogPost);
+      } else {
+        const fallback = FALLBACK_BLOG_POSTS.find((p) => p.slug === slug);
+        if (fallback) {
+          setPost(fallback);
+          setNotFound(false);
+        } else if (!error) {
+          setNotFound(true);
+        }
       }
       setLoading(false);
     };
