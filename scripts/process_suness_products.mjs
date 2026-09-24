@@ -36,57 +36,57 @@ function createBadgeSvg(category, modelText, specText) {
 const PRODUCTS = [
   {
     filename: 'suness-ess-ec-48300f-16kwh.webp',
-    source: 'scripts/suness_tmp/battery_c56.jpg',
+    source: 'scripts/suness_unique_raw/bat_ec_48300_main.jpg',
     category: 'Lithium Battery System',
     model: 'EC-48300F • 16kWh (300Ah)',
     spec: '51.2V 300Ah • 6,000+ Cycles • Casters',
-    size: 610,
-    top: 105,
-    left: 95
-  },
-  {
-    filename: 'suness-ess-ec-mini-15kwh.webp',
-    source: 'scripts/suness_tmp/battery_c56.jpg',
-    category: 'Home Energy Storage',
-    model: 'EC-MINI15.36 • 15.36kWh',
-    spec: '51.2V 300Ah • Smart Touch Display',
-    size: 580,
-    top: 120,
-    left: 110
-  },
-  {
-    filename: 'suness-ess-hvs-40kwh.webp',
-    source: 'scripts/suness_tmp/stack_7ad.jpg',
-    category: 'High-Voltage Stackable ESS',
-    model: 'iRack-HVS • 40 kWh ESS',
-    spec: '409.6V 100Ah • Modular Rack Tower',
     size: 610,
     top: 110,
     left: 95
   },
   {
+    filename: 'suness-ess-ec-mini-15kwh.webp',
+    source: 'scripts/suness_unique_raw/bat_ec_mini_iso.jpg',
+    category: 'Home Energy Storage',
+    model: 'EC-MINI15.36 • 15.36kWh',
+    spec: '51.2V 300Ah • Smart Touch Display',
+    size: 600,
+    top: 110,
+    left: 100
+  },
+  {
+    filename: 'suness-ess-hvs-40kwh.webp',
+    source: 'scripts/suness_unique_raw/bat_hvs_40k.jpg',
+    category: 'High-Voltage Stackable ESS',
+    model: 'iRack-HVS • 40 kWh ESS',
+    spec: '409.6V 100Ah • Modular Rack Tower',
+    size: 630,
+    top: 100,
+    left: 85
+  },
+  {
     filename: 'suness-ess-hvs-60kwh.webp',
-    source: 'scripts/suness_tmp/stack_7ad.jpg',
+    source: 'scripts/suness_unique_raw/bat_hvs_60k.jpg',
     category: 'High-Voltage Stackable ESS',
     model: 'iRack-HVS • 60 kWh ESS',
     spec: '614.4V 100Ah • 12-Module Tower',
     size: 650,
-    top: 95,
+    top: 90,
     left: 75
   },
   {
     filename: 'suness-ess-ec-48314f-16kwh.webp',
-    source: 'scripts/suness_tmp/battery_691.jpg',
+    source: 'scripts/suness_unique_raw/bat_ec_48314.jpg',
     category: 'Ultra-Density Lithium',
     model: 'EC-48314F • 16kWh (314Ah)',
     spec: '51.2V 314Ah • 8,000+ Cycle Life',
     size: 610,
-    top: 105,
+    top: 110,
     left: 95
   },
   {
     filename: 'suness-ess-hvm-215kwh.webp',
-    source: 'scripts/suness_tmp/cabinet_4c0.jpg',
+    source: 'scripts/suness_unique_raw/bat_hvm_215k.jpg',
     category: 'Commercial & Industrial ESS',
     model: 'iCab-HVM • 215 kWh Cabinet',
     spec: 'Liquid Cooling • Side PCS Inverter',
@@ -96,100 +96,102 @@ const PRODUCTS = [
   },
   {
     filename: 'suness-inv-8kw-1p-lv.webp',
-    source: 'scripts/suness_tmp/inverter_3d9.jpg',
+    source: 'scripts/suness_unique_raw/inv_8k_1d4.jpg',
     category: 'Single-Phase Hybrid Inverter',
     model: 'EH-8KL1 • 8 kW Low Voltage',
     spec: '48V System • Dual MPPT • 190A',
-    size: 620,
-    top: 100,
-    left: 90
+    size: 630,
+    top: 95,
+    left: 85
   },
   {
     filename: 'suness-inv-16kw-1p-lv.webp',
-    source: 'scripts/suness_tmp/inverter_66d.jpg',
+    source: 'scripts/suness_unique_raw/inv_16k_66d.jpg',
     category: 'Single-Phase High-Power',
     model: 'EH-16KL1 • 16 kW Low Voltage',
     spec: '48V System • 26kW PV • 290A Charge',
     size: 620,
-    top: 100,
+    top: 105,
     left: 90
   },
   {
     filename: 'suness-inv-15kw-3p-lv.webp',
-    source: 'scripts/suness_tmp/inverter_e6a.jpg',
+    source: 'scripts/suness_unique_raw/inv_3p_e6a.jpg',
     category: 'Three-Phase Low-Voltage',
     model: 'EH-15KL3 • 15 kW Hybrid',
     spec: '380V/400V 3-Phase • 48V Bus • Dual MPPT',
     size: 620,
-    top: 100,
+    top: 105,
     left: 90
   },
   {
     filename: 'suness-inv-20kw-3p-lv.webp',
-    source: 'scripts/suness_tmp/inverter_98e.jpg',
+    source: 'scripts/suness_unique_raw/inv_3p_98e.jpg',
     category: 'Three-Phase Low-Voltage',
     model: 'EH-20KL3 • 20 kW Hybrid',
     spec: '380V/400V 3-Phase • 330A Charge',
     size: 620,
-    top: 100,
+    top: 105,
     left: 90
   },
   {
     filename: 'suness-inv-24kw-3p-lv.webp',
-    source: 'scripts/suness_tmp/inverter_98e.jpg',
+    source: 'scripts/suness_unique_raw/inv_3p_dc3.jpg',
     category: 'Three-Phase Ultra LV',
     model: 'EH-24KL3 • 24 kW Hybrid',
     spec: 'Largest 48V Inverter • 36kW PV • 400A',
-    size: 650,
-    top: 90,
-    left: 75
+    size: 620,
+    top: 105,
+    left: 90
   },
   {
     filename: 'suness-inv-60kw-3p-hv.webp',
-    source: 'scripts/suness_tmp/inverter_e6a.jpg',
+    source: 'scripts/suness_unique_raw/inv_60k_3d9.jpg',
     category: 'Three-Phase High-Voltage',
     model: 'EH-60KL3 • 60 kW HV Hybrid',
     spec: '160V-800V HV Bus • Quad MPPT • 90kW PV',
-    size: 650,
-    top: 90,
-    left: 75
+    size: 620,
+    top: 105,
+    left: 90
   }
 ];
 
 async function generateAll() {
-  console.log(`Generating ${PRODUCTS.length} Suness product images...`);
+  console.log(`Generating ${PRODUCTS.length} Suness product images with 100% unique source assets...`);
+  
+  // Verify source uniqueness
+  const sources = new Set(PRODUCTS.map(p => p.source));
+  if (sources.size !== PRODUCTS.length) {
+    throw new Error(`CRITICAL: Duplicate source detected! Unique: ${sources.size}, Total: ${PRODUCTS.length}`);
+  }
+
   for (const prod of PRODUCTS) {
-    let rawBuf;
-    if (prod.source.includes('cabinet_4c0')) {
-      const raw = await sharp(prod.source).raw().toBuffer({ resolveWithObject: true });
-      for (let i = 0; i < raw.data.length; i += raw.info.channels) {
-        if (raw.data[i] >= 245 && raw.data[i+1] >= 245 && raw.data[i+2] >= 243) {
-          raw.data[i] = 255;
-          raw.data[i+1] = 255;
-          raw.data[i+2] = 255;
-        }
-      }
-      rawBuf = await sharp(raw.data, {
-        raw: {
-          width: raw.info.width,
-          height: raw.info.height,
-          channels: raw.info.channels
-        }
-      })
-        .png()
-        .resize(prod.size, prod.size, {
-          fit: 'contain',
-          background: { r: 255, g: 255, b: 255, alpha: 1 }
-        })
-        .toBuffer();
-    } else {
-      rawBuf = await sharp(prod.source)
-        .resize(prod.size, prod.size, {
-          fit: 'contain',
-          background: { r: 255, g: 255, b: 255, alpha: 1 }
-        })
-        .toBuffer();
+    if (!fs.existsSync(prod.source)) {
+      throw new Error(`Source file missing: ${prod.source}`);
     }
+
+    // Clean any near-white background noise (e.g. JPEG compression artifacts >= 248) to pure 255
+    const raw = await sharp(prod.source).raw().toBuffer({ resolveWithObject: true });
+    for (let i = 0; i < raw.data.length; i += raw.info.channels) {
+      if (raw.data[i] >= 248 && raw.data[i+1] >= 248 && raw.data[i+2] >= 248) {
+        raw.data[i] = 255;
+        raw.data[i+1] = 255;
+        raw.data[i+2] = 255;
+      }
+    }
+    const cleanedBuf = await sharp(raw.data, {
+      raw: {
+        width: raw.info.width,
+        height: raw.info.height,
+        channels: raw.info.channels
+      }
+    })
+      .png()
+      .resize(prod.size, prod.size, {
+        fit: 'contain',
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
+      })
+      .toBuffer();
 
     const badgeSvg = createBadgeSvg(prod.category, prod.model, prod.spec);
 
@@ -203,7 +205,7 @@ async function generateAll() {
       }
     })
       .composite([
-        { input: rawBuf, top: prod.top, left: prod.left },
+        { input: cleanedBuf, top: prod.top, left: prod.left },
         { input: Buffer.from(badgeSvg), top: 0, left: 0 }
       ])
       .webp({ quality: 92 })
@@ -213,7 +215,10 @@ async function generateAll() {
     const stats = fs.statSync(outPath);
     console.log(`Saved ${prod.filename}: ${meta.width}x${meta.height}, ${(stats.size/1024).toFixed(1)} KB`);
   }
-  console.log('All 12 Suness images generated successfully!');
+  console.log('All 12 Suness images generated with complete uniqueness!');
 }
 
-generateAll();
+generateAll().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
