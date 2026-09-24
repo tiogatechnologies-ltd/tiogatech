@@ -1980,36 +1980,7 @@ export const invertersList: Product[] = [
 ];
 
 export const batteriesList: Product[] = [
-  {
-    name: "Itel 1000W Portable Emergency Power Station",
-    category: "Batteries",
-    series: "Itel Power Solutions",
-    brand: "Itel",
-    description: "All-in-one portable power bank with pure sine wave 1000W AC outlet, fast 100W USB-C PD charging, high-lumen LED light, and solar charging input.",
-    features: [
-      "1,000Wh battery capacity with pure sine wave 1000W inverter",
-      "2x AC 230V outlets, 4x USB ports, 1x 100W PD Type-C port",
-      "Charges from 0 to 80% in 1.5 hours via wall outlet",
-      "Compatible with portable solar panels for outdoor camping and field jobs",
-      "Digital LCD display showing exact remaining battery minutes"
-    ],
-    best_for: "Remote work, field engineers, outdoor events, emergency loadshedding",
-    bestFor: "Remote work, field engineers, outdoor events, emergency loadshedding",
-    price: "₦504,000",
-    numeric_price: 504000,
-    tier: "entry",
-    image_url: "/products/core/itel-1000w-powerstation.webp",
-    specifications: {
-      "Capacity": "1,000Wh (270,000mAh)",
-      "AC Output": "1000W Pure Sine Wave (Surge 2000W)",
-      "Solar Input": "12V-24V / 200W Max",
-      "Weight": "9.2 kg",
-      "Warranty": "1-Year Warranty"
-    },
-    stock_status: "in_stock",
-    warranty_years: 1,
-    tags: ["portable", "powerstation", "itel", "emergency", "battery"]
-  },
+  
   {
     id: "a0000000-0000-0000-0000-000000000102",
     serial_number: "TG-BAT-0102",
@@ -3908,6 +3879,7 @@ import { dawniceProducts } from "./dawniceProducts";
 import { solisProducts } from "./solisProducts";
 import { solarproProducts } from "./solarproProducts";
 import { infinisolarProducts } from "./infinisolarProducts";
+import { itelProducts } from "./itelProducts";
 
 // Unified products array including solar hardware, smart locks, Felicity, AlpSolarr, Deye, Dawnice, Solis, SolarPro, Infinisolar, and complete Minisim retail catalog
 export const PRODUCTS: Product[] = [
@@ -3924,6 +3896,7 @@ export const PRODUCTS: Product[] = [
   ...solisProducts,
   ...solarproProducts,
   ...infinisolarProducts,
+  ...itelProducts,
   ...MINISIM_PRODUCTS,
 ];
 
@@ -3940,6 +3913,7 @@ export {
   solisProducts,
   solarproProducts,
   infinisolarProducts,
+  itelProducts,
 };
 
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
@@ -3958,7 +3932,8 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
       ...dawniceProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS"].includes(p.category)),
       ...solisProducts.filter((p) => ["Inverters"].includes(p.category)),
       ...solarproProducts.filter((p) => ["Batteries", "Commercial ESS", "Solar Street Lights"].includes(p.category)),
-      ...infinisolarProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS", "Charge Controllers"].includes(p.category))
+      ...infinisolarProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS", "Charge Controllers"].includes(p.category)),
+      ...itelProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Commercial ESS"].includes(p.category))
     );
   }
   if (interests.includes("smartlocks")) results.push(...smartLocksList);

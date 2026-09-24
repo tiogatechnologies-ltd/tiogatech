@@ -148,6 +148,12 @@ export function resolveProductImage(url?: string | null, category?: string, name
     if (n.includes("growatt")) return "/products/core/growatt-5kw-spf.webp";
     if (n.includes("srne")) return "/products/core/srne-5kw-hybrid.webp";
     if (n.includes("luxpower")) return "/products/core/luxpower-5kw-sna.webp";
+    if (n.includes("itel")) {
+      if (cat.includes("batter") || n.includes("battery") || n.includes("lifepo4")) return "/products/itel/itel-bat-5kwh-48v-wall.webp";
+      if (cat.includes("panel") || n.includes("panel")) return "/products/itel/itel-panel-410w.webp";
+      if (n.includes("power-go") || n.includes("power tank") || n.includes("generator") || n.includes("station")) return "/products/itel/itel-aio-500w-1kwh.webp";
+      return "/products/itel/itel-inv-3kw-24v.webp";
+    }
     // 5. Smart Locks
     if (cat.includes("lock") || n.includes("lock") || n.includes("k209") || n.includes("s7") || n.includes("d20")) {
       if (n.includes("k209")) return "/products/core/stama-k209-face-lock.webp";

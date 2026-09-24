@@ -296,6 +296,49 @@ describe("Product and Package Real Images", () => {
     const uniqueSrneImages = new Set(srneProducts.map((p) => p.image_url));
     expect(uniqueSrneImages.size).toBe(srneProducts.length);
   });
+
+  it("all 25 Itel products exist in catalog with authentic HD photos on disk and exact retail pricing", () => {
+    const itel = PRODUCTS.filter((p) => p.brand === "Itel");
+    expect(itel.length).toBe(25);
+
+    const expectedRetailPrices: Record<string, number> = {
+      "TG-ITEL-0001": 239800,
+      "TG-ITEL-0002": 328900,
+      "TG-ITEL-0003": 416900,
+      "TG-ITEL-0004": 561000,
+      "TG-ITEL-0005": 742500,
+      "TG-ITEL-0006": 784300,
+      "TG-ITEL-0007": 2442000,
+      "TG-ITEL-0008": 2574000,
+      "TG-ITEL-0009": 1089000,
+      "TG-ITEL-0010": 231000,
+      "TG-ITEL-0011": 601700,
+      "TG-ITEL-0012": 1001000,
+      "TG-ITEL-0013": 995500,
+      "TG-ITEL-0014": 1037300,
+      "TG-ITEL-0015": 1903000,
+      "TG-ITEL-0016": 2244000,
+      "TG-ITEL-0017": 7502000,
+      "TG-ITEL-0018": 2596000,
+      "TG-ITEL-0019": 4653000,
+      "TG-ITEL-0020": 308000,
+      "TG-ITEL-0021": 1727000,
+      "TG-ITEL-0022": 83160,
+      "TG-ITEL-0023": 145200,
+      "TG-ITEL-0024": 105600,
+      "TG-ITEL-0025": 151800,
+    };
+
+    for (const p of itel) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.startsWith("/products/itel/")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Itel product image must exist: ${filePath}`).toBe(true);
+
+      const expectedPrice = expectedRetailPrices[p.sku || ""];
+      expect(p.numeric_price).toBe(expectedPrice);
+    }
+  });
 });
 
 
