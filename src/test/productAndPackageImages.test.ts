@@ -339,6 +339,44 @@ describe("Product and Package Real Images", () => {
       expect(p.numeric_price).toBe(expectedPrice);
     }
   });
+
+  it("all 12 Suness products exist in catalog with authentic HD photos on disk and exact retail pricing", () => {
+    const suness = PRODUCTS.filter((p) => p.brand === "Suness");
+    expect(suness.length).toBe(12);
+
+    const expectedRetailPrices: Record<string, number> = {
+      "TG-SUNESS-0001": 2035000,
+      "TG-SUNESS-0002": 1925000,
+      "TG-SUNESS-0003": 9900000,
+      "TG-SUNESS-0004": 13750000,
+      "TG-SUNESS-0005": 2310000,
+      "TG-SUNESS-0006": 49500000,
+      "TG-SUNESS-0007": 1210000,
+      "TG-SUNESS-0008": 2090000,
+      "TG-SUNESS-0009": 1980000,
+      "TG-SUNESS-0010": 2530000,
+      "TG-SUNESS-0011": 2750000,
+      "TG-SUNESS-0012": 5060000,
+    };
+
+    const imageHashes = new Set<string>();
+
+    for (const p of suness) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.startsWith("/products/suness/")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Suness product image must exist: ${filePath}`).toBe(true);
+
+      const expectedPrice = expectedRetailPrices[p.sku || ""];
+      expect(p.numeric_price).toBe(expectedPrice);
+
+      const fileBuf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
+      imageHashes.add(hash);
+    }
+
+    expect(imageHashes.size).toBe(12);
+  });
 });
 
 

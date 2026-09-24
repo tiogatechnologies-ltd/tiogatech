@@ -3880,6 +3880,7 @@ import { solisProducts } from "./solisProducts";
 import { solarproProducts } from "./solarproProducts";
 import { infinisolarProducts } from "./infinisolarProducts";
 import { itelProducts } from "./itelProducts";
+import { sunessProducts } from "./sunessProducts";
 
 // Unified products array including solar hardware, smart locks, Felicity, AlpSolarr, Deye, Dawnice, Solis, SolarPro, Infinisolar, and complete Minisim retail catalog
 export const PRODUCTS: Product[] = [
@@ -3897,6 +3898,7 @@ export const PRODUCTS: Product[] = [
   ...solarproProducts,
   ...infinisolarProducts,
   ...itelProducts,
+  ...sunessProducts,
   ...MINISIM_PRODUCTS,
 ];
 
@@ -3914,6 +3916,7 @@ export {
   solarproProducts,
   infinisolarProducts,
   itelProducts,
+  sunessProducts,
 };
 
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
@@ -3933,7 +3936,8 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
       ...solisProducts.filter((p) => ["Inverters"].includes(p.category)),
       ...solarproProducts.filter((p) => ["Batteries", "Commercial ESS", "Solar Street Lights"].includes(p.category)),
       ...infinisolarProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS", "Charge Controllers"].includes(p.category)),
-      ...itelProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Commercial ESS"].includes(p.category))
+      ...itelProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Commercial ESS"].includes(p.category)),
+      ...sunessProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS"].includes(p.category))
     );
   }
   if (interests.includes("smartlocks")) results.push(...smartLocksList);

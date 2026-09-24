@@ -74,6 +74,7 @@ export function inferBrand(name: string, category: string | null | undefined): s
   if (n.includes("SolarPro") || n.includes("Solarpro") || n.startsWith("SOLARPRO-")) return "SolarPro";
   if (n.includes("Infinisolar") || n.includes("InfiniSolar") || n.startsWith("INFINI-")) return "Infinisolar";
   if (n.includes("Itel") || n.includes("itel") || n.startsWith("ITEL-") || n.startsWith("TG-ITEL-")) return "Itel";
+  if (n.includes("Suness") || n.includes("SUNESS") || n.startsWith("TG-SUNESS-") || n.startsWith("EC-") || n.startsWith("EH-") || n.includes("HVS") || n.includes("HVM") || n.includes("iRack") || n.includes("iCab")) return "Suness";
   if (n.includes("Longi")) return "Longi";
   if (n.includes("JA Solar") || n.includes("JA ")) return "JA Solar";
   if (n.includes("Jinko")) return "Jinko";
