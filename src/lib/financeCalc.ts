@@ -57,6 +57,7 @@ export interface PlanBreakdown {
   total: number;
   deposit: number;
   financed: number;
+  base_interest_rate: number;
   interest_rate: number;
   interest_amount: number;
   insurance_fee: number;
@@ -75,7 +76,10 @@ export const calcPlan = (
   const deposit = Math.round(total * cfg.deposit_pct);
   const financed = total - deposit;
   const tier = lookupInterest(total, cfg);
-  const interest_amount = Math.round(financed * tier.rate);
+  // Scale annual interest tier rate by tenure (e.g. 3 mo = 0.25x, 6 mo = 0.5x, 12 mo = 1.0x, 24 mo = 2.0x)
+  const tenureFactor = Math.max(1, tenureMonths) / 12;
+  const effective_interest_rate = tier.rate * tenureFactor;
+  const interest_amount = Math.round(financed * effective_interest_rate);
   const insurance_fee = Math.round(financed * cfg.insurance_pct);
   const management_fee = Math.round(financed * cfg.management_pct);
   const total_repayment = financed + interest_amount + insurance_fee + management_fee;
@@ -84,7 +88,8 @@ export const calcPlan = (
     total,
     deposit,
     financed,
-    interest_rate: tier.rate,
+    base_interest_rate: tier.rate,
+    interest_rate: effective_interest_rate,
     interest_amount,
     insurance_fee,
     management_fee,

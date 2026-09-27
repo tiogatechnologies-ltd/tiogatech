@@ -21,14 +21,25 @@ describe("Finance Page & Easy Flex Connection Context", () => {
       expect(plan.monthly_payment).toBeGreaterThan(0);
       // Total repayment = monthly_payment * tenure_months
       expect(plan.total_repayment).toBeCloseTo(plan.monthly_payment * plan.tenure_months, -1);
-      // Interest tier is 9% for ₦2.4M (1M - 5M bracket)
-      expect(plan.interest_rate).toBe(0.09);
+      // Base interest tier is 9% for ₦2.4M (1M - 5M bracket)
+      expect(plan.base_interest_rate).toBe(0.09);
     }
 
-    // 3-month plan should have higher monthly payment than 24-month plan
     const plan3 = plans.find((p) => p.tenure_months === 3)!;
+    const plan6 = plans.find((p) => p.tenure_months === 6)!;
+    const plan12 = plans.find((p) => p.tenure_months === 12)!;
     const plan24 = plans.find((p) => p.tenure_months === 24)!;
-    expect(plan3.monthly_payment).toBeGreaterThan(plan24.monthly_payment);
+
+    // Interest rate scales with tenure (tenure / 12)
+    expect(plan3.interest_rate).toBeCloseTo(0.0225);
+    expect(plan6.interest_rate).toBeCloseTo(0.045);
+    expect(plan12.interest_rate).toBeCloseTo(0.09);
+    expect(plan24.interest_rate).toBeCloseTo(0.18);
+
+    // 3-month plan clears faster with lower total repayment
+    expect(plan3.total_repayment).toBeLessThan(plan6.total_repayment);
+    expect(plan6.total_repayment).toBeLessThan(plan12.total_repayment);
+    expect(plan12.total_repayment).toBeLessThan(plan24.total_repayment);
   });
 
   it("correctly identifies interest tiers for different product price brackets", () => {

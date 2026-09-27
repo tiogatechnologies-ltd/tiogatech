@@ -21,7 +21,6 @@ import {
   ArrowRight,
   Calculator,
   RotateCcw,
-  Sparkles,
   Sliders,
 } from "lucide-react";
 import SEO from "@/components/SEO";
@@ -237,13 +236,12 @@ const Finance = () => {
           <div className="section-container">
             {/* Context Header with Clear Button */}
             <div className="flex items-center justify-between gap-3 flex-wrap mb-8 pb-4 border-b border-border">
-              <div className="flex items-center gap-2.5">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider">
-                  <Sparkles size={13} />
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary">
                   Tailored Product Plan
                 </span>
                 <span className="text-xs text-muted-foreground hidden sm:inline">
-                  Viewing pre-calculated lease-to-own breakdown
+                  · Viewing pre-calculated lease-to-own breakdown
                 </span>
               </div>
               <button
@@ -429,7 +427,7 @@ const Finance = () => {
                     <Row label="Initial 30% Down Payment" value={formatNGN(activePlan.deposit)} bold />
                     <Row label="Financed Principal (70%)" value={formatNGN(activePlan.financed)} />
                     <Row
-                      label={`Bank Interest Rate Tier (${(activePlan.interest_rate * 100).toFixed(0)}%)`}
+                      label={`Bank Interest (${parseFloat((activePlan.interest_rate * 100).toFixed(2))}%)`}
                       value={formatNGN(activePlan.interest_amount)}
                       muted
                     />
@@ -460,83 +458,6 @@ const Finance = () => {
                     Chat with a Finance Specialist on WhatsApp
                   </a>
                 </div>
-              </div>
-            </div>
-
-            {/* Side-by-Side 4-Tenure Comparison Cards */}
-            <div>
-              <div className="text-center mb-6">
-                <h4 className="text-xl sm:text-2xl font-display font-bold text-foreground">
-                  Compare all 4 tenures for this system
-                </h4>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  Choose the plan length that best aligns with your household or business monthly cashflow.
-                </p>
-              </div>
-
-              <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
-                {plans.map((p) => {
-                  const isCurrent = selectedMonths === p.tenure_months;
-                  const isLowestMonthly = p.tenure_months === 24;
-                  return (
-                    <div
-                      key={p.tenure_months}
-                      className={`rounded-3xl border p-4 sm:p-5 bg-card flex flex-col justify-between relative transition-all ${
-                        isCurrent
-                          ? "border-primary shadow-[var(--shadow-elevated)] ring-2 ring-primary/20"
-                          : "border-border hover:border-primary/40"
-                      }`}
-                    >
-                      {isLowestMonthly && (
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex px-3 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider">
-                          Lowest monthly
-                        </span>
-                      )}
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <h5 className="font-display font-bold text-base sm:text-lg">{p.tenure_months}-Month Plan</h5>
-                          {isCurrent && (
-                            <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                              Active
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xl sm:text-2xl font-display font-bold text-primary tabular-nums">
-                          {formatNGN(p.monthly_payment)}
-                        </p>
-                        <p className="text-[11px] text-muted-foreground mb-4">per month × {p.tenure_months}</p>
-
-                        <ul className="space-y-1.5 text-xs text-muted-foreground border-t border-border pt-3">
-                          <li className="flex justify-between">
-                            <span>Upfront deposit:</span>
-                            <strong className="text-foreground">{formatNGN(p.deposit)}</strong>
-                          </li>
-                          <li className="flex justify-between">
-                            <span>Financed:</span>
-                            <span>{formatNGN(p.financed)}</span>
-                          </li>
-                          <li className="flex justify-between">
-                            <span>Total repayment:</span>
-                            <strong className="text-foreground">{formatNGN(p.total_repayment)}</strong>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div className="mt-4 pt-3 border-t border-border">
-                        <Link
-                          to={applyUrlForMonths(p.tenure_months)}
-                          className={`w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all ${
-                            isCurrent
-                              ? "bg-primary text-primary-foreground hover:brightness-110 shadow-sm"
-                              : "border border-border bg-card hover:bg-muted text-foreground"
-                          }`}
-                        >
-                          Apply {p.tenure_months} mo <ArrowRight size={12} />
-                        </Link>
-                      </div>
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </div>
