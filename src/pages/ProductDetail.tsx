@@ -616,7 +616,13 @@ export const ProductDetail = () => {
                   </div>
                 )}
 
-                <FlexiblePaymentButton itemName={product.name} itemType="product" itemId={product.id} />
+                <FlexiblePaymentButton
+                  itemName={product.name}
+                  itemType="product"
+                  itemId={product.id}
+                  itemImage={images[0]}
+                  price={numPrice || undefined}
+                />
               </div>
 
               {/* Quantity Selector & Action Buttons */}

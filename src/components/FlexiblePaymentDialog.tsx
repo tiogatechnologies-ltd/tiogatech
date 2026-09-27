@@ -11,6 +11,7 @@ interface Props {
   itemName?: string;
   itemType?: string;
   itemId?: string;
+  itemImage?: string;
   price?: number | null;
 }
 
@@ -23,7 +24,15 @@ const eligibility = [
   "Guarantor information (where applicable)",
 ];
 
-const FlexiblePaymentDialog = ({ open, onOpenChange, itemName, price }: Props) => {
+const FlexiblePaymentDialog = ({
+  open,
+  onOpenChange,
+  itemName,
+  itemType,
+  itemId,
+  itemImage,
+  price,
+}: Props) => {
   const [config, setConfig] = useState<FinanceConfig>(DEFAULT_FINANCE_CONFIG);
   const [amount, setAmount] = useState<number>(price && price >= 1_000_000 ? price : 1_500_000);
   const [months, setMonths] = useState<number>(12);
@@ -41,7 +50,33 @@ const FlexiblePaymentDialog = ({ open, onOpenChange, itemName, price }: Props) =
 
   const tenures = config.tenures_months?.length ? config.tenures_months : [3, 6, 12, 24];
   const plan = useMemo(() => calcPlan(amount, months, config), [amount, months, config]);
-  const applyHref = `/finance/apply?item=${encodeURIComponent(itemName || "Easy Flex")}&amount=${amount}&months=${months}`;
+
+  const applyParams = new URLSearchParams();
+  if (itemName) applyParams.set("item", itemName);
+  if (amount) applyParams.set("amount", String(amount));
+  if (months) applyParams.set("months", String(months));
+  if (itemImage) applyParams.set("image", itemImage);
+  if (itemId) applyParams.set("id", itemId);
+  if (itemType) applyParams.set("type", itemType);
+  const applyHref = `/finance/apply?${applyParams.toString()}`;
+
+  const financeParams = new URLSearchParams();
+  if (itemName) financeParams.set("item", itemName);
+  if (amount) financeParams.set("amount", String(amount));
+  if (months) financeParams.set("months", String(months));
+  if (itemImage) financeParams.set("image", itemImage);
+  if (itemId) financeParams.set("id", itemId);
+  if (itemType) financeParams.set("type", itemType);
+  const financeHref = `/finance?${financeParams.toString()}`;
+
+  const navigationState = {
+    itemName,
+    amount,
+    months,
+    itemImage,
+    itemId,
+    itemType,
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -55,7 +90,29 @@ const FlexiblePaymentDialog = ({ open, onOpenChange, itemName, price }: Props) =
         </DialogHeader>
 
         {itemName && (
-          <p className="text-xs text-muted-foreground -mt-2">For <strong className="text-foreground">{itemName}</strong></p>
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/40 border border-border -mt-1">
+            {itemImage ? (
+              <img
+                src={itemImage}
+                alt={itemName}
+                className="w-12 h-12 rounded-xl object-contain bg-background border border-border/70 shrink-0 p-1"
+                onError={(e) => {
+                  (e.currentTarget as HTMLElement).style.display = "none";
+                }}
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                <Wallet size={18} />
+              </div>
+            )}
+            <div className="min-w-0 flex-1">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-primary block">
+                {itemType ? `${itemType} financing` : "Selected item"}
+              </span>
+              <p className="text-xs font-semibold text-foreground truncate">{itemName}</p>
+              <p className="text-[11px] text-muted-foreground">System cost: {formatNGN(amount)}</p>
+            </div>
+          </div>
         )}
 
         <div className="space-y-3">
@@ -113,13 +170,15 @@ const FlexiblePaymentDialog = ({ open, onOpenChange, itemName, price }: Props) =
         <div className="flex flex-col sm:flex-row gap-2 pt-1">
           <Link
             to={applyHref}
+            state={navigationState}
             onClick={() => onOpenChange(false)}
             className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:brightness-110"
           >
             Apply now <ArrowRight size={14} />
           </Link>
           <Link
-            to="/finance"
+            to={financeHref}
+            state={navigationState}
             onClick={() => onOpenChange(false)}
             className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold hover:bg-muted"
           >

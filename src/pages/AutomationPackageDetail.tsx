@@ -313,7 +313,13 @@ export const AutomationPackageDetail = () => {
                   </button>
                 </div>
                 {pkg.price && pkg.price > 500_000 && (
-                  <FlexiblePaymentButton itemName={`${pkg.name} Home Automation`} itemType="package" itemId={pkg.id} price={pkg.price} />
+                  <FlexiblePaymentButton
+                    itemName={`${pkg.name} Home Automation`}
+                    itemType="package"
+                    itemId={pkg.id}
+                    itemImage={pkg.image}
+                    price={pkg.price}
+                  />
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <Link
@@ -410,7 +416,13 @@ export const AutomationPackageDetail = () => {
               <div className="max-w-xl mx-auto text-center">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-2 no-clip">Finance This Package</h2>
                 <p className="text-sm text-muted-foreground mb-6">Split into comfortable monthly payments with Tioga Finance.</p>
-                <FlexiblePaymentButton itemName={`${pkg.name} Home Automation`} itemType="package" itemId={pkg.id} price={pkg.price} />
+                <FlexiblePaymentButton
+                  itemName={`${pkg.name} Home Automation`}
+                  itemType="package"
+                  itemId={pkg.id}
+                  itemImage={pkg.image}
+                  price={pkg.price}
+                />
               </div>
             </div>
           </section>

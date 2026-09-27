@@ -241,7 +241,13 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
           </div>
 
           <div className="mt-2">
-            <FlexiblePaymentButton itemName={p.name} itemType="lock" itemId={p.id} price={p.price ?? null} />
+            <FlexiblePaymentButton
+              itemName={p.name}
+              itemType="lock"
+              itemId={p.id}
+              itemImage={p.image}
+              price={p.price ?? null}
+            />
           </div>
         </div>
       </div>

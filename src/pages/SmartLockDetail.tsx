@@ -316,7 +316,13 @@ export const SmartLockDetail = () => {
                   </button>
                 </div>
                 {lock.price && lock.price > 100_000 && (
-                  <FlexiblePaymentButton itemName={lock.name} itemType="lock" itemId={lock.id} price={lock.price} />
+                  <FlexiblePaymentButton
+                    itemName={lock.name}
+                    itemType="lock"
+                    itemId={lock.id}
+                    itemImage={lock.image}
+                    price={lock.price}
+                  />
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <Link

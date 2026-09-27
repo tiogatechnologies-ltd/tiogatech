@@ -9,6 +9,7 @@ import PageHero from "@/components/PageHero";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
+import { getSolarPackageImage } from "@/hooks/useSolarPackages";
 import { trackConversion } from "@/lib/tracking";
 import bgCustomize from "@/assets/feature-control-panel.jpg";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
@@ -690,7 +691,13 @@ const Customize = () => {
                     >
                       <ShoppingBag size={16} /> Add custom build to cart
                     </button>
-                    <FlexiblePaymentButton itemName={pkg.title} itemType="package" itemId={pkg.id} price={total} />
+                    <FlexiblePaymentButton
+                      itemName={pkg.title}
+                      itemType="package"
+                      itemId={pkg.id}
+                      itemImage={pkg.raw?.image || (pkg.type === "solar" ? getSolarPackageImage(pkg.raw || {}) : undefined)}
+                      price={total}
+                    />
                   </div>
 
                   <p className="mt-3 text-[10px] text-muted-foreground leading-relaxed">

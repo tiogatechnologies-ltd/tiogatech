@@ -6,6 +6,7 @@ interface Props {
   itemName?: string;
   itemType?: "product" | "package" | "lock" | "automation";
   itemId?: string;
+  itemImage?: string;
   price?: number | null;
   className?: string;
   compact?: boolean;
@@ -15,7 +16,7 @@ interface Props {
  * CTA that opens a mini Easy Flex calculator + eligibility popup with a
  * link to the full Finance page.
  */
-const FlexiblePaymentButton = ({ itemName, itemType, itemId, price, className = "", compact = false }: Props) => {
+const FlexiblePaymentButton = ({ itemName, itemType, itemId, itemImage, price, className = "", compact = false }: Props) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -35,6 +36,7 @@ const FlexiblePaymentButton = ({ itemName, itemType, itemId, price, className = 
         itemName={itemName}
         itemType={itemType}
         itemId={itemId}
+        itemImage={itemImage}
         price={price}
       />
     </>

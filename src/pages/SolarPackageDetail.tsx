@@ -1,4 +1,4 @@
-﻿import { useSiteSetting } from "@/hooks/useSiteSetting";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -339,7 +339,13 @@ export const SolarPackageDetail = () => {
                     Buy Now
                   </button>
                 </div>
-                <FlexiblePaymentButton itemName={`${pkg.inverter} Solar Package`} itemType="package" itemId={pkg.id} price={pkg.total_price} />
+                <FlexiblePaymentButton
+                  itemName={`${pkg.inverter} Solar Package`}
+                  itemType="package"
+                  itemId={pkg.id}
+                  itemImage={pkg.image || getSolarPackageImage(pkg)}
+                  price={pkg.total_price}
+                />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <Link
                     to={`/customize/solar/${pkg.id}`}
@@ -449,7 +455,13 @@ export const SolarPackageDetail = () => {
               <div className="max-w-xl mx-auto text-center">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-2 no-clip">Finance This Package</h2>
                 <p className="text-sm text-muted-foreground mb-6">Split the cost into manageable monthly payments with our Tioga Finance options.</p>
-                <FlexiblePaymentButton itemName={`${pkg.inverter} Solar Package`} itemType="package" itemId={pkg.id} price={pkg.total_price} />
+                <FlexiblePaymentButton
+                  itemName={`${pkg.inverter} Solar Package`}
+                  itemType="package"
+                  itemId={pkg.id}
+                  itemImage={pkg.image || getSolarPackageImage(pkg)}
+                  price={pkg.total_price}
+                />
               </div>
             </div>
           </section>

@@ -277,7 +277,13 @@ export const CctvPackageDetail = () => {
                   </button>
                 </div>
                 {pkg.price && pkg.price > 500_000 && (
-                  <FlexiblePaymentButton itemName={pkg.name} itemType="package" itemId={pkg.id} price={pkg.price} />
+                  <FlexiblePaymentButton
+                    itemName={pkg.name}
+                    itemType="package"
+                    itemId={pkg.id}
+                    itemImage={pkg.image}
+                    price={pkg.price}
+                  />
                 )}
                 <button
                   onClick={() => openLeadForm(`cctv_pdp_${pkg.id}`)}

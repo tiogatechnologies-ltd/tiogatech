@@ -240,7 +240,13 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
           </div>
 
           <div className="mt-2">
-            <FlexiblePaymentButton itemName={p.name} itemType="automation" itemId={p.id} price={p.price ?? null} />
+            <FlexiblePaymentButton
+              itemName={p.name}
+              itemType="automation"
+              itemId={p.id}
+              itemImage={p.image}
+              price={p.price ?? null}
+            />
           </div>
         </div>
       </div>

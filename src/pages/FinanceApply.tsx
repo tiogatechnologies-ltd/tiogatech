@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
@@ -14,11 +14,22 @@ const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Be
 const FinanceApply = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  const location = useLocation();
   const { user, profile, loading: authLoading } = useAuth();
 
-  const itemName = params.get("item") || "";
-  const amount = Number(params.get("amount") || 0);
-  const monthsParam = [3, 6, 12, 24].includes(Number(params.get("months"))) ? Number(params.get("months")) : 12;
+  const locState = (location.state || {}) as {
+    itemName?: string;
+    amount?: number;
+    months?: number;
+    itemImage?: string;
+  };
+
+  const itemName = params.get("item") || locState.itemName || "";
+  const amount = Number(params.get("amount") || locState.amount || 0);
+  const monthsParam = [3, 6, 12, 24].includes(Number(params.get("months") || locState.months))
+    ? Number(params.get("months") || locState.months)
+    : 12;
+  const imageParam = params.get("image") || locState.itemImage || "";
   const packageSlug = params.get("package") || "";
   const assessmentId = params.get("assessment") || null;
 
@@ -207,6 +218,25 @@ const FinanceApply = () => {
           {step === 1 && (
             <>
               <h2 className="font-display text-lg font-bold">Choose your plan</h2>
+              {imageParam && (
+                <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/40 border border-border">
+                  <img
+                    src={imageParam}
+                    alt={form.item_name}
+                    className="w-12 h-12 rounded-xl object-contain bg-background border border-border p-1 shrink-0"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLElement).style.display = "none";
+                    }}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-primary block">
+                      Financed Equipment
+                    </span>
+                    <p className="text-xs font-semibold text-foreground truncate">{form.item_name}</p>
+                    <p className="text-[11px] text-muted-foreground">{formatNGN(Number(form.total_amount_ngn || 0))}</p>
+                  </div>
+                </div>
+              )}
               <div className="grid gap-3 sm:grid-cols-2">
                 <div><label className="text-xs font-semibold">Item / Package</label><input className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.item_name} onChange={(e) => setForm({ ...form, item_name: e.target.value })} /></div>
                 <div><label className="text-xs font-semibold">Total amount (NGN)</label><input type="number" min={1000000} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm" value={form.total_amount_ngn} onChange={(e) => setForm({ ...form, total_amount_ngn: e.target.value })} /></div>

@@ -1,4 +1,4 @@
-﻿import { useSiteSetting } from "@/hooks/useSiteSetting";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -252,7 +252,13 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
           </div>
 
           <div className="mt-2">
-            <FlexiblePaymentButton itemName={`Solar Package #${pkg.package_number}`} itemType="package" itemId={pkg.id} price={pkg.total_price} />
+            <FlexiblePaymentButton
+              itemName={`Solar Package #${pkg.package_number}`}
+              itemType="package"
+              itemId={pkg.id}
+              itemImage={pkg.image || getSolarPackageImage(pkg)}
+              price={pkg.total_price}
+            />
           </div>
         </div>
       </div>

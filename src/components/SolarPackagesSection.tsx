@@ -245,7 +245,13 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
           </div>
 
           <div className="mt-2">
-            <FlexiblePaymentButton itemName={`Solar Package #${p.package_number}`} itemType="package" itemId={p.id} price={p.total_price} />
+            <FlexiblePaymentButton
+              itemName={`Solar Package #${p.package_number}`}
+              itemType="package"
+              itemId={p.id}
+              itemImage={p.image || getSolarPackageImage(p)}
+              price={p.total_price}
+            />
           </div>
         </div>
       </div>
