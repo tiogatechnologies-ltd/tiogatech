@@ -15,31 +15,19 @@ import {
   FileText,
   CreditCard,
   Wrench,
-  Home,
   ShieldCheck,
   Check,
   ArrowRight,
   Calculator,
   RotateCcw,
   Sliders,
-  BadgeCheck,
-  Building2,
-  UserCheck,
-  Calendar,
   Clock,
   HelpCircle,
-  Info,
-  Lock,
   Zap,
-  Percent,
-  FileCheck,
-  Briefcase,
-  Layers,
-  ChevronDown,
-  CheckCircle2,
   TrendingDown,
-  AlertCircle,
-  FileSpreadsheet,
+  FileCheck,
+  UserCheck,
+  Building2,
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
@@ -57,255 +45,118 @@ import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 import { getDefaultPackageImage } from "@/lib/packageImages";
 import { getSolarPackageImage } from "@/hooks/useSolarPackages";
 
-// 6-stage approval and installation roadmap
-const approvalRoadmap = [
+// 4 simple, welcoming steps
+const simpleSteps = [
   {
     n: 1,
-    icon: FileText,
-    title: "1. Apply Online & Select Tenure",
-    timeframe: "Takes ~5 minutes",
-    desc: "Pick your preferred product and tenure (3, 6, 12, or 24 months), fill in your basic personal or business details, and upload preliminary KYC documents.",
+    icon: Calculator,
+    title: "1. Choose Your Plan",
+    desc: "Pick the system you need and select a repayment period (3, 6, 12, or 24 months) that comfortably fits your monthly budget.",
   },
   {
     n: 2,
-    icon: UserCheck,
-    title: "2. Bank Credit Underwriting",
-    timeframe: "Decision within 24 hours",
-    desc: "Our accredited banking partners (including Sterling Bank Imperium) verify your BVN, income capacity, and bank statement. Fast digital assessment with no bureaucratic delays.",
+    icon: FileText,
+    title: "2. Quick 3-Minute Application",
+    desc: "Submit your basic contact details online along with a valid government ID and your recent bank statement.",
   },
   {
     n: 3,
     icon: CreditCard,
-    title: "3. Offer Letter & 30% Down Payment",
-    timeframe: "Same business day",
-    desc: "Review your transparent term sheet. Fund your 30% initial deposit into a dedicated partner escrow account—funds are held securely until installation sign-off.",
+    title: "3. Fast 24-Hour Review & 30% Deposit",
+    desc: "Receive pre-approval within 24 hours. Pay your 30% initial deposit to confirm your installation date.",
   },
   {
     n: 4,
-    icon: Wrench,
-    title: "4. Engineering Site Survey & Dispatch",
-    timeframe: "Within 24 to 48 hours",
-    desc: "A certified Tioga solar engineer visits your premises to inspect roof orientation, breaker boards, and load circuits, followed by equipment dispatch.",
-  },
-  {
-    n: 5,
     icon: Zap,
-    title: "5. COREN Installation & Commissioning",
-    timeframe: "2 to 5 business days",
-    desc: "Our COREN-certified technicians complete full system mounting, lithium battery configuration, inverter synchronization, and mobile monitoring app setup.",
-  },
-  {
-    n: 6,
-    icon: BadgeCheck,
-    title: "6. Handover & Full Title Transfer",
-    timeframe: "End of tenure",
-    desc: "Enjoy 24/7 uninterrupted clean power backed by 2-year warranty and insurance. Upon your final monthly payment, receive your 100% unencumbered Title Deed & Ownership Certificate.",
+    title: "4. Installation & Power On",
+    desc: "Certified engineers install and test your system within 2 to 5 working days. Enjoy clean 24/7 power right away.",
   },
 ];
 
-// 4 core eligibility pillars
-const eligibilityPillars = [
+// Simple, clear financing benefits
+const financeBenefits = [
   {
-    title: "1. Qualifying Applicant Profiles",
-    icon: UserCheck,
-    points: [
-      "Salary Earners: Employed for at least 6 months with verified monthly salary paid directly into a commercial bank account.",
-      "SMEs & Registered Businesses: Registered with CAC (RC or BN), operating actively for at least 12 months with consistent monthly cashflow.",
-      "Self-Employed Professionals: Consistent verifiable freelance or professional income stream with 6 months of active bank statements.",
-      "Property Owners & Long-Term Tenants: Homeowners with title documents, or tenants with a lease agreement covering the financing period.",
-    ],
-  },
-  {
-    title: "2. Income & Debt-to-Income (DTI) Threshold",
-    icon: Percent,
-    points: [
-      "Affordability Benchmark: Monthly installment should not exceed 33% to 40% of verifiable net monthly earnings or business profit.",
-      "Minimum Project Size: Eligible for systems and equipment packages starting from ₦1,000,000 upwards.",
-      "Combined Household Income: Working spouses or business partners may combine bank statements to meet qualification thresholds.",
-      "Steady Inflows: Demonstrable consistent inflows over the preceding 6 consecutive months.",
-    ],
-  },
-  {
-    title: "3. Age & Legal Identity",
-    icon: BadgeCheck,
-    points: [
-      "Age Requirement: 21 to 60 years old at time of application (or up to statutory retirement age for civil service applicants).",
-      "Valid Government Identification: NIN Slip / Card, International Passport, Driver's License, or Permanent Voter's Card (PVC).",
-      "BVN / NIN Verification: Active Bank Verification Number matching legal name and phone records for identity and anti-fraud checks.",
-      "Credit Standing: Clean credit bureau record (CRC, CreditRegistry, or FirstCentral) with no unresolved default balances.",
-    ],
-  },
-  {
-    title: "4. Premises & Location Eligibility",
-    icon: Building2,
-    points: [
-      "Service Coverage: Properties located within Tioga installation states (Lagos, Abuja FCT, Rivers, Oyo, Ogun, Edo, Delta, etc.).",
-      "Physical Address Verification: Verified via utility bill (electricity, water, or waste) dated within the last 3 months, or stamped tenancy agreement.",
-      "Installation Suitability: Structurally sound roof (corrugated, stone-coated, or slab) or dedicated ground mounting area with clear sun exposure.",
-      "Landlord Consent: Simple written installation consent required for leased residential or rented commercial spaces.",
-    ],
-  },
-];
-
-// Document requirements by applicant track
-const requirementTracks = [
-  {
-    id: "salaried",
-    tag: "Track 1",
-    title: "Salaried Employees & Civil Servants",
-    badge: "Most Popular for Homes",
-    desc: "For corporate employees, tech professionals, and public sector workers seeking lease-to-own home solar systems.",
-    items: [
-      "Completed Easy Flex Lease-to-Own online application form",
-      "Valid Government ID (NIN, International Passport, Driver's License, or Voter's Card)",
-      "6 months stamped personal bank statements showing regular salary credits",
-      "Official Letter of Employment, Confirmation Letter, or valid Staff ID",
-      "Recent Utility Bill (NEPA/IKEDC/EKEDC/Water bill not older than 3 months)",
-      "One credible guarantor with a valid ID, proof of income, and passport photograph",
-      "30% initial deposit (funded upon formal pre-approval offer)",
-    ],
-  },
-  {
-    id: "sme",
-    tag: "Track 2",
-    title: "SMEs & Registered Businesses",
-    badge: "Commercial Power",
-    desc: "For shops, clinics, offices, hotels, schools, and factories seeking to eliminate high diesel expenses.",
-    items: [
-      "Completed Easy Flex SME facility application form",
-      "CAC Certificate of Incorporation / Registration & Status Report / MEMART",
-      "6 to 12 months corporate bank statements showing steady operational turnover",
-      "Board Resolution or Partners' Consent approving the Easy Flex lease-to-own facility",
-      "Valid Government IDs and proof of residential address for 2 principal directors/signatories",
-      "Company Profile and recent 12-month management accounts (or audited financials)",
-      "Personal guarantee of a company director or corporate cross-guarantee",
-      "30% initial deposit (funded upon formal credit committee approval)",
-    ],
-  },
-  {
-    id: "property",
-    tag: "Track 3",
-    title: "Property Owners & Real Estate Developers",
-    badge: "Residential Estates & Landlords",
-    desc: "For landlords and estate developers outfitting rental units, duplexes, or residential clusters with solar amenities.",
-    items: [
-      "Proof of property ownership (Certificate of Occupancy, Deed of Assignment, or Governor's Consent)",
-      "Building electrical schematic or single-line diagram (for multi-unit or commercial installations)",
-      "6 months personal or corporate bank statements demonstrating property rental income",
-      "Valid Government ID and passport photograph of the title holder",
-      "Site access authorization for Tioga engineering survey and structural roof load assessment",
-      "30% initial deposit on the approved turnkey procurement and installation invoice",
-    ],
-  },
-];
-
-// 6 Core Financial Pillars & Fee Disclosures
-const financialDisclosures = [
-  {
-    title: "30% Initial Equity Deposit",
+    title: "30% Initial Deposit",
     icon: CreditCard,
-    highlight: "Required Upfront",
-    desc: "You contribute 30% of the total system cost once your application receives credit pre-approval.",
-    details: "Your deposit is held in a secure partner escrow account and is only released after our engineering team completes installation and you sign off on commissioning.",
+    desc: "Pay only after your application is reviewed and approved. No upfront commitments before pre-approval.",
   },
   {
-    title: "70% Financed Balance",
-    icon: Building2,
-    highlight: "Bank Partnered",
-    desc: "The remaining 70% balance is financed over 3, 6, 12, or 24 months through commercial banking partners.",
-    details: "Repayments are completely fixed throughout your chosen tenure. No floating currency risks or surprise indexations.",
+    title: "Fixed Monthly Repayments",
+    icon: Clock,
+    desc: "Predictable, transparent installments spread across 3, 6, 12, or 24 months. Zero hidden fees or surprise charges.",
   },
   {
-    title: "Tenure-Scaled Interest Rates",
+    title: "Cheaper on Shorter Tenures",
     icon: TrendingDown,
-    highlight: "Shorter = Cheaper",
-    desc: "Annual interest rates scale directly with your tenure duration (Months ÷ 12).",
-    details: "Choose a 3-month tenure and pay only 25% of the annual rate. A 6-month tenure pays only 50%. You are never penalized with flat annual charges on short tenures.",
+    desc: "Interest scales directly with your plan length. Settle in 3 or 6 months to pay significantly less in total interest.",
   },
   {
-    title: "2% Comprehensive All-Risk Insurance",
+    title: "2% Insurance Included",
     icon: ShieldCheck,
-    highlight: "Full Protection Included",
-    desc: "Every Easy Flex installation includes 2% all-risk insurance coverage across the entire repayment tenure.",
-    details: "Protects equipment against fire, lightning surges, accidental damage, burglary, and natural storm hazards. Full component replacement with zero out-of-pocket costs.",
+    desc: "Comprehensive equipment protection covering accidental damage, lightning surges, fire, and theft throughout your plan.",
   },
   {
-    title: "1% Facility Processing & Management",
+    title: "0% Early Payoff Penalty",
     icon: FileCheck,
-    highlight: "One-Time Facility Fee",
-    desc: "A nominal 1% administrative fee covering credit underwriting, legal stamping, and asset registry.",
-    details: "Amortized transparently into your monthly installment schedule. There are zero account maintenance fees or hidden ledger charges.",
+    desc: "Clear your balance whenever you want with zero extra fees. Any remaining future interest is immediately waived.",
   },
   {
-    title: "0% Early Prepayment Penalty",
-    icon: BadgeCheck,
-    highlight: "Total Flexibility",
-    desc: "Pay off your outstanding balance at any time during your repayment period with zero liquidation penalties.",
-    details: "When you liquidate early, all future unaccrued interest charges are immediately waived. You only pay for the financing duration you actually used.",
+    title: "100% Full Ownership",
+    icon: Zap,
+    desc: "Once your final monthly installment is made, the entire system and all manufacturer warranties belong fully to you.",
   },
 ];
 
-// Interest Tier Reference Matrix
-const interestTiersMatrix = [
+// Simple interest tier overview
+const simpleInterestTiers = [
   {
-    bracket: "₦1,000,000 – ₦5,000,000",
-    name: "Tier 1: Standard Residential",
-    baseRate: 0.09,
-    rates: { 3: 0.0225, 6: 0.045, 12: 0.09, 24: 0.18 },
-    suitability: "Apartments, small homes, 3.5kVA–5kVA hybrid systems, and smart automation packages.",
+    bracket: "₦1,000,000 - ₦5,000,000",
+    baseRate: "9% annual base",
+    shortRate: "2.25% on 3 months",
+    note: "Great for apartments, homes, and 3.5kVA - 5kVA solar systems.",
   },
   {
-    bracket: "₦5,000,000 – ₦7,500,000",
-    name: "Tier 2: Mid-Range & Large Homes",
-    baseRate: 0.15,
-    rates: { 3: 0.0375, 6: 0.075, 12: 0.15, 24: 0.30 },
-    suitability: "Duplexes, small commercial clinics, 7.5kVA–10kVA solar systems with high-capacity lithium banks.",
+    bracket: "₦5,000,000 - ₦7,500,000",
+    baseRate: "15% annual base",
+    shortRate: "3.75% on 3 months",
+    note: "Popular for larger homes, duplexes, and 7.5kVA - 10kVA setups.",
   },
   {
     bracket: "Above ₦7,500,000",
-    name: "Tier 3: Commercial & Enterprise",
-    baseRate: 0.25,
-    rates: { 3: 0.0625, 6: 0.125, 12: 0.25, 24: 0.50 },
-    suitability: "Offices, factories, hotels, schools, 15kVA–50kVA three-phase solar systems and mini-grids.",
+    baseRate: "25% annual base",
+    shortRate: "6.25% on 3 months",
+    note: "Ideal for commercial offices, clinics, schools, and mini-grids.",
   },
 ];
 
 const faqs = [
   {
-    q: "How does the Easy Flex lease-to-own model work?",
-    a: "Easy Flex allows you to acquire Tier-1 solar and automation equipment with just 30% down payment. Our banking partner finances the remaining 70%, which you pay back in fixed monthly installments over 3, 6, 12, or 24 months. Once the final payment is made, full unencumbered legal ownership transfers to you.",
-  },
-  {
-    q: "How is the bank interest calculated across different tenures?",
-    a: "Interest is based on the financed balance and is prorated according to the length of your repayment period: 3 months pays 25% of annual interest, 6 months pays 50%, 12 months pays 100%, and 24 months pays 200%. Shorter tenures have significantly lower total interest costs.",
-  },
-  {
-    q: "What does the 2% all-risk insurance fee cover?",
-    a: "The 2% insurance fee provides complete coverage throughout your repayment tenure against fire, power/lightning surges, theft, vandalism, and storm damage. In the unlikely event of damage or loss, repairs or component replacements are carried out at zero extra cost to you.",
-  },
-  {
-    q: "Can I pay off my remaining balance early without penalty?",
-    a: "Yes! There are 0% early liquidation penalties. You can settle your outstanding loan balance at any point (e.g. Month 4 of a 12-month plan), and all future unaccrued bank interest is waived.",
-  },
-  {
-    q: "What are the payment methods and when is my monthly installment due?",
-    a: "Repayments are automated via Direct Debit mandate (Remita, NIBSS, or Paystack) or monthly bank transfer. Your debit date is typically aligned with your salary or business cashflow cycle (e.g., 25th or 30th of each month). We send automated SMS and email reminders 3 days before each due date, plus a 5-day grace period.",
+    q: "How does the Easy Flex lease-to-own plan work?",
+    a: "Easy Flex allows you to get your solar system installed with a 30% initial deposit. The remaining 70% is spread over 3, 6, 12, or 24 fixed monthly payments. Once you make the final payment, the system is 100% yours.",
   },
   {
     q: "Who is eligible to apply for Easy Flex?",
-    a: "Nigerian salary earners (minimum 6 months at current job), registered business owners and SMEs (minimum 12 months in operation), self-employed professionals, and property owners. Applicants must be between 21 and 60 years old with a verifiable physical address, clean credit bureau record, and a monthly repayment that does not exceed 33% to 40% of net monthly income.",
+    a: "Anyone with a steady verifiable income can apply: salaried employees, business owners, merchants, self-employed professionals, and homeowners or tenants with landlord consent. The process is straightforward with fast 24-hour review.",
+  },
+  {
+    q: "What documents do I need to provide?",
+    a: "Just three simple items: a valid government ID (NIN, driver's license, voter's card, or passport), your last 3 to 6 months bank statement showing regular earnings, and a recent utility bill for the installation address. Registered businesses also include their CAC certificate.",
+  },
+  {
+    q: "Can I pay off my remaining balance early?",
+    a: "Yes. There are 0% early settlement fees. You can pay off your remaining balance at any time, and any future unaccrued bank interest is waived.",
+  },
+  {
+    q: "What does the 2% insurance fee cover?",
+    a: "The 2% insurance protects your solar equipment against fire, power and lightning surges, theft, and storm damage throughout your repayment period. Any damaged covered components are repaired or replaced at no extra cost.",
   },
   {
     q: "How long does approval and installation take?",
-    a: "Digital credit review and pre-approval are completed within 24 hours of receiving your application and documents. Once the 30% down payment is received, our certified engineering team carries out the on-site survey and completes turnkey installation within 2 to 5 business days.",
+    a: "Your application is reviewed within 24 hours. Once your 30% deposit is paid, our certified engineering team completes the site survey and installs your system within 2 to 5 working days.",
   },
   {
-    q: "What warranties are included with my system?",
-    a: "All Easy Flex systems come with Tier-1 manufacturer warranties: 25 years on solar panels, 5 to 10 years on lithium LiFePO4 batteries (6,000+ deep cycles), 2 to 5 years on pure sine wave inverters, and a 2-year Tioga COREN-certified workmanship and installation guarantee.",
-  },
-  {
-    q: "What happens if I relocate before my repayment period ends?",
-    a: "If you relocate within our service coverage areas, our certified engineering team can professionally decommission, safely transport, and reinstall your solar system at your new premises for a standardized relocation fee.",
+    q: "What warranties are included?",
+    a: "All equipment comes with full manufacturer warranties: 25 years on solar panels, 5 to 10 years on lithium batteries, 2 to 5 years on inverters, plus a 2-year Tioga certified workmanship guarantee.",
   },
 ];
 
@@ -448,70 +299,24 @@ const Finance = () => {
       >
         <a
           href={hasItem ? "#item-breakdown" : "#calculator"}
-          className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]"
+          className="inline-flex items-center gap-2 rounded-2xl bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]"
         >
           <Calculator size={16} />
           {hasItem ? "View Monthly Breakdown" : "Calculate Repayment"}
         </a>
         <a
-          href="#financial-terms"
-          className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
+          href="#how-it-works"
+          className="inline-flex items-center gap-2 rounded-2xl border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
         >
-          <Info size={16} />
-          Full Terms &amp; Eligibility
+          How Easy Flex Works
         </a>
       </PageHero>
-
-      {/* QUICK JUMP SUB-NAVIGATION BAR */}
-      <nav aria-label="Finance Page Sections" className="sticky top-16 z-30 bg-background/95 backdrop-blur-md border-b border-border shadow-xs">
-        <div className="section-container flex items-center gap-2 sm:gap-4 overflow-x-auto py-2.5 no-scrollbar text-xs sm:text-sm font-medium">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground shrink-0 hidden md:inline">
-            Quick Jump:
-          </span>
-          <a
-            href={hasItem ? "#item-breakdown" : "#calculator"}
-            className="px-3 py-1.5 rounded-full hover:bg-primary/10 hover:text-primary transition-colors shrink-0 text-foreground"
-          >
-            {hasItem ? "Item Breakdown" : "Calculator"}
-          </a>
-          <a
-            href="#financial-terms"
-            className="px-3 py-1.5 rounded-full hover:bg-primary/10 hover:text-primary transition-colors shrink-0 text-foreground"
-          >
-            Financial Terms &amp; Rates
-          </a>
-          <a
-            href="#eligibility"
-            className="px-3 py-1.5 rounded-full hover:bg-primary/10 hover:text-primary transition-colors shrink-0 text-foreground"
-          >
-            Eligibility Criteria
-          </a>
-          <a
-            href="#requirements"
-            className="px-3 py-1.5 rounded-full hover:bg-primary/10 hover:text-primary transition-colors shrink-0 text-foreground"
-          >
-            Required Documents
-          </a>
-          <a
-            href="#process"
-            className="px-3 py-1.5 rounded-full hover:bg-primary/10 hover:text-primary transition-colors shrink-0 text-foreground"
-          >
-            Approval Roadmap
-          </a>
-          <a
-            href="#faq"
-            className="px-3 py-1.5 rounded-full hover:bg-primary/10 hover:text-primary transition-colors shrink-0 text-foreground"
-          >
-            FAQ &amp; Warranties
-          </a>
-        </div>
-      </nav>
 
       {/* ───────────────────────────────────────────────────────────── */}
       {/* CASE A: NAVIGATED FROM EASY FLEX / ITEM SPECIFIED              */}
       {/* ───────────────────────────────────────────────────────────── */}
       {hasItem && (
-        <section id="item-breakdown" className="section-padding bg-muted/20 border-b border-border scroll-mt-28">
+        <section id="item-breakdown" className="section-padding bg-muted/20 border-b border-border scroll-mt-20">
           <div className="section-container">
             {/* Context Header with Clear Button */}
             <div className="flex items-center justify-between gap-3 flex-wrap mb-8 pb-4 border-b border-border">
@@ -520,13 +325,13 @@ const Finance = () => {
                   Tailored Product Plan
                 </span>
                 <span className="text-xs text-muted-foreground hidden sm:inline">
-                  · Viewing pre-calculated lease-to-own breakdown
+                  · Pre-calculated monthly breakdown for this system
                 </span>
               </div>
               <button
                 type="button"
                 onClick={handleClearItem}
-                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground font-medium px-3 py-1.5 rounded-lg border border-border bg-card hover:bg-muted transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground font-medium px-3.5 py-1.5 rounded-xl border border-border bg-card hover:bg-muted transition-colors cursor-pointer"
                 title="Return to general finance calculator"
               >
                 <RotateCcw size={12} />
@@ -537,7 +342,7 @@ const Finance = () => {
             {/* Split Showcase: Left = Product Card, Right = Monthly Price Breakdown */}
             <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start mb-8">
               {/* LEFT: Product Card */}
-              <div className="lg:col-span-5 rounded-3xl border border-border bg-card p-5 sm:p-6 shadow-[var(--shadow-card)] space-y-5 lg:sticky lg:top-28">
+              <div className="lg:col-span-5 rounded-3xl border border-border bg-card p-5 sm:p-6 shadow-[var(--shadow-card)] space-y-5 lg:sticky lg:top-24">
                 {/* Product Image */}
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted/30 border border-border/80 flex items-center justify-center p-3">
                   {itemImage ? (
@@ -559,12 +364,12 @@ const Finance = () => {
                   )}
 
                   {rawType && (
-                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-md border border-border/80 text-[10px] font-bold text-foreground uppercase tracking-wider shadow-sm">
+                    <span className="absolute top-3 left-3 px-2 py-0.5 rounded-lg bg-background/90 backdrop-blur-md border border-border/80 text-[10px] font-bold text-foreground uppercase tracking-wider shadow-xs">
                       {rawType}
                     </span>
                   )}
 
-                  <span className="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold shadow-md">
+                  <span className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[10px] font-bold shadow-sm">
                     30% Upfront
                   </span>
                 </div>
@@ -630,15 +435,15 @@ const Finance = () => {
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Check size={14} className="text-primary shrink-0" />
-                    <span>Bank-partner review within 24 hours</span>
+                    <span>Quick approval review within 24 hours</span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Check size={14} className="text-primary shrink-0" />
-                    <span>COREN-supervised professional installation included</span>
+                    <span>Professional certified installation included</span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Check size={14} className="text-primary shrink-0" />
-                    <span>2% insurance &amp; comprehensive warranty included</span>
+                    <span>2% insurance and 2-year warranty included</span>
                   </div>
                 </div>
               </div>
@@ -650,14 +455,14 @@ const Finance = () => {
                     Monthly Price Breakdown
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                    Select your preferred tenure to see exact monthly repayments and fee breakdown for this system.
+                    Choose the repayment period that best fits your monthly cashflow.
                   </p>
                 </div>
 
                 {/* Tenure Selector Tabs */}
                 <div>
                   <label className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold block mb-2">
-                    Choose Repayment Period
+                    Select Plan Duration
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                     {plans.map((p) => {
@@ -669,7 +474,7 @@ const Finance = () => {
                           onClick={() => setSelectedMonths(p.tenure_months)}
                           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
                             isActive
-                              ? "border-primary bg-primary/10 text-primary shadow-sm ring-2 ring-primary/20"
+                              ? "border-primary bg-primary/10 text-primary shadow-xs ring-2 ring-primary/20"
                               : "border-border bg-muted/20 hover:bg-muted text-foreground"
                           }`}
                         >
@@ -689,7 +494,7 @@ const Finance = () => {
                   <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 pb-3 border-b border-primary/20">
                     <div>
                       <span className="text-xs uppercase tracking-wider text-primary font-bold">
-                        {selectedMonths}-Month Installment Plan
+                        {selectedMonths}-Month Plan
                       </span>
                       <div className="text-2xl sm:text-3xl font-display font-extrabold text-primary tabular-nums mt-0.5">
                         {formatNGN(activePlan.monthly_payment)}
@@ -711,7 +516,7 @@ const Finance = () => {
                       muted
                     />
                     <Row label="Insurance Protection (2%)" value={formatNGN(activePlan.insurance_fee)} muted />
-                    <Row label="Facility Management Fee (1%)" value={formatNGN(activePlan.management_fee)} muted />
+                    <Row label="Facility Management (1%)" value={formatNGN(activePlan.management_fee)} muted />
                     <div className="pt-2 border-t border-border/80 space-y-2">
                       <Row label={`Total Repayments (${selectedMonths} × monthly)`} value={formatNGN(activePlan.total_repayment)} bold />
                       <Row label="Total Overall Cost (Deposit + Repayments)" value={formatNGN(activePlan.deposit + activePlan.total_repayment)} bold />
@@ -719,24 +524,20 @@ const Finance = () => {
                   </div>
                 </div>
 
-                {/* Contextual Affordability Indicator */}
-                <div className="rounded-2xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs">
-                  <Info size={18} className="text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-semibold text-foreground block">
-                      Recommended Net Monthly Income: ~{formatNGN(activePlan.monthly_payment * 3)}/mo
-                    </span>
-                    <p className="text-muted-foreground mt-0.5">
-                      To meet bank credit committee guidelines, your monthly installment of {formatNGN(activePlan.monthly_payment)} should not exceed 33% to 40% of your verifiable monthly take-home salary or net business cashflow.
-                    </p>
-                  </div>
+                {/* Reassuring Confidence Strip */}
+                <div className="rounded-2xl border border-border bg-muted/30 p-3.5 flex flex-wrap items-center justify-around gap-2 text-xs text-muted-foreground">
+                  <span>Fast 24-hour review</span>
+                  <span>•</span>
+                  <span>0% early payoff penalty</span>
+                  <span>•</span>
+                  <span>100% full ownership transfer</span>
                 </div>
 
                 {/* CTAs */}
                 <div className="space-y-2.5 pt-1">
                   <Link
                     to={applyUrlForMonths(selectedMonths)}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 px-6 text-sm sm:text-base font-bold text-primary-foreground hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/25"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 px-6 text-sm sm:text-base font-bold text-primary-foreground hover:brightness-110 active:scale-[0.98] transition-all shadow-md"
                   >
                     Apply for this {selectedMonths}-Month Plan <ArrowRight size={16} />
                   </Link>
@@ -761,15 +562,15 @@ const Finance = () => {
       {/* (Only rendered when hasItem is false)                         */}
       {/* ───────────────────────────────────────────────────────────── */}
       {!hasItem && (
-        <section id="calculator" className="section-padding bg-muted/30 border-b border-border scroll-mt-28">
+        <section id="calculator" className="section-padding bg-muted/30 border-b border-border scroll-mt-20">
           <div className="section-container">
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3">
                 <Calculator size={22} />
               </div>
               <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">Easy Flex Repayment Calculator</h2>
-              <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-                Enter any solar or automation project cost to view your 30% deposit, interest tier, and monthly installment across all 4 plan lengths.
+              <p className="mt-2 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
+                Enter any system cost to see your 30% deposit and fixed monthly payments across all 4 plans.
               </p>
             </div>
 
@@ -795,7 +596,7 @@ const Finance = () => {
                 />
                 <div className="mt-5 space-y-2 text-xs sm:text-sm border-t border-border pt-4">
                   <Row label="30% Upfront Deposit" value={formatNGN(primary.deposit)} bold />
-                  <Row label="Financed Principal (70%)" value={formatNGN(primary.financed)} />
+                  <Row label="Financed Balance (70%)" value={formatNGN(primary.financed)} />
                   <Row
                     label={`Annual Interest Tier (${(activeTier.rate * 100).toFixed(0)}% base)`}
                     value={formatNGN(primary.interest_amount)}
@@ -812,16 +613,16 @@ const Finance = () => {
 
               <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
                 {plans.map((p, i) => {
-                  const popular = i === plans.length - 1; // 24-month tenure = lowest monthly
+                  const isLowest = i === plans.length - 1; // 24-month tenure
                   return (
                     <div
                       key={p.tenure_months}
                       className={`rounded-3xl border p-4 sm:p-5 bg-card relative flex flex-col justify-between ${
-                        popular ? "border-primary shadow-[var(--shadow-elevated)] ring-2 ring-primary/20" : "border-border"
+                        isLowest ? "border-primary shadow-sm ring-2 ring-primary/20" : "border-border"
                       }`}
                     >
-                      {popular && (
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex px-3 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest shadow-sm">
+                      {isLowest && (
+                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex px-2.5 py-0.5 rounded-lg bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider shadow-xs">
                           Lowest monthly
                         </span>
                       )}
@@ -865,363 +666,244 @@ const Finance = () => {
       )}
 
       {/* ───────────────────────────────────────────────────────────── */}
-      {/* SECTION 1: COMPLETE FINANCIAL TERMS & TRANSPARENT FEE STRUCTURE*/}
+      {/* SECTION 1: HOW EASY FLEX WORKS (4 SIMPLE STEPS)               */}
       {/* ───────────────────────────────────────────────────────────── */}
-      <section id="financial-terms" className="section-padding bg-background border-b border-border scroll-mt-28">
+      <section id="how-it-works" className="section-padding bg-background border-b border-border scroll-mt-20">
         <div className="section-container">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-              <ShieldCheck size={14} /> Full Financial Transparency
-            </span>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
+              Simple 4-Step Process
+            </p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">
-              Complete Financial Terms &amp; Fee Structure
+              How Easy Flex Works
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-muted-foreground">
-              Everything you need to know about your Easy Flex lease-to-own plan: zero hidden fees, escrow deposit security, comprehensive insurance, and full ownership transfer.
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground">
+              Getting started is quick and stress-free. No unnecessary paperwork or complicated procedures.
             </p>
           </div>
 
-          {/* 6 Core Financial Pillars Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-14">
-            {financialDisclosures.map((item) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {simpleSteps.map((step) => (
               <div
-                key={item.title}
+                key={step.n}
                 className="rounded-3xl border border-border bg-card p-6 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-xs"
               >
                 <div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                      <item.icon size={20} />
-                    </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-muted text-muted-foreground border border-border">
-                      {item.highlight}
-                    </span>
+                  <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                    <step.icon size={22} />
                   </div>
-                  <h3 className="font-display font-bold text-lg text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm font-medium text-foreground mb-2">{item.desc}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.details}</p>
+                  <h3 className="font-display font-bold text-lg text-foreground mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    {step.desc}
+                  </p>
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Interest Rate Tier Matrix Table */}
-          <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-[var(--shadow-card)]">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-border">
-              <div>
-                <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground">
-                  Annualized Bank Interest Rate Matrix
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  Rates are set by our bank partner according to project capital cost and prorated by your exact repayment duration.
-                </p>
-              </div>
-              <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-primary/10 text-primary shrink-0 self-start md:self-center">
-                Formula: Annual Tier Rate × (Tenure Months ÷ 12)
-              </span>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm border-collapse min-w-[620px]">
-                <thead>
-                  <tr className="border-b border-border text-xs uppercase tracking-wider text-muted-foreground">
-                    <th className="py-3 px-4 font-semibold">Capital Bracket</th>
-                    <th className="py-3 px-4 font-semibold">Tier Category</th>
-                    <th className="py-3 px-4 font-semibold">Base Annual</th>
-                    <th className="py-3 px-4 font-semibold">3-Mo Rate</th>
-                    <th className="py-3 px-4 font-semibold">6-Mo Rate</th>
-                    <th className="py-3 px-4 font-semibold">12-Mo Rate</th>
-                    <th className="py-3 px-4 font-semibold">24-Mo Rate</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border text-xs sm:text-sm">
-                  {interestTiersMatrix.map((tier) => {
-                    const isActive =
-                      (tier.baseRate === 0.09 && amount < 5000000) ||
-                      (tier.baseRate === 0.15 && amount >= 5000000 && amount <= 7500000) ||
-                      (tier.baseRate === 0.25 && amount > 7500000);
-
-                    return (
-                      <tr
-                        key={tier.bracket}
-                        className={`transition-colors ${
-                          isActive ? "bg-primary/5 font-semibold text-primary" : "text-foreground hover:bg-muted/40"
-                        }`}
-                      >
-                        <td className="py-4 px-4 font-display font-bold">
-                          <div className="flex items-center gap-2">
-                            <span>{tier.bracket}</span>
-                            {isActive && (
-                              <span className="text-[10px] font-bold uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
-                                Active Bracket
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-[11px] font-normal text-muted-foreground block mt-0.5">
-                            {tier.suitability}
-                          </span>
-                        </td>
-                        <td className="py-4 px-4">{tier.name}</td>
-                        <td className="py-4 px-4">{(tier.baseRate * 100).toFixed(0)}% p.a.</td>
-                        <td className="py-4 px-4">{(tier.rates[3] * 100).toFixed(2)}%</td>
-                        <td className="py-4 px-4">{(tier.rates[6] * 100).toFixed(2)}%</td>
-                        <td className="py-4 px-4">{(tier.rates[12] * 100).toFixed(2)}%</td>
-                        <td className="py-4 px-4">{(tier.rates[24] * 100).toFixed(2)}%</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-border grid sm:grid-cols-3 gap-4 text-xs text-muted-foreground">
-              <div className="flex items-start gap-2">
-                <CheckCircle2 size={16} className="text-primary shrink-0 mt-0.5" />
-                <span>
-                  <strong>2% Insurance Protection:</strong> Adds comprehensive equipment damage, storm, lightning surge, and theft replacement.
-                </span>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle2 size={16} className="text-primary shrink-0 mt-0.5" />
-                <span>
-                  <strong>1% Facility Administration:</strong> One-off documentation and underwriting fee spread across tenure.
-                </span>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle2 size={16} className="text-primary shrink-0 mt-0.5" />
-                <span>
-                  <strong>0% Prepayment Penalty:</strong> Pay off the principal at any time with all future unaccrued interest eliminated.
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       {/* ───────────────────────────────────────────────────────────── */}
-      {/* SECTION 2: FULL ELIGIBILITY & QUALIFICATION CRITERIA          */}
+      {/* SECTION 2: SIMPLE ELIGIBILITY & DOCUMENT CHECKLIST             */}
       {/* ───────────────────────────────────────────────────────────── */}
-      <section id="eligibility" className="section-padding bg-muted/30 border-b border-border scroll-mt-28">
+      <section id="eligibility" className="section-padding bg-muted/30 border-b border-border scroll-mt-20">
         <div className="section-container">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-              <UserCheck size={14} /> Qualification Standards
-            </span>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
+              Straightforward Qualification
+            </p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">
-              Full Eligibility &amp; Underwriting Criteria
+              Eligibility &amp; What You Need
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-muted-foreground">
-              Easy Flex is structured to empower Nigerian households, professionals, and registered businesses with accessible clean energy financing. Review the 4 eligibility pillars below.
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground">
+              Designed to be accessible for individuals, professionals, and registered businesses across Nigeria.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-10">
-            {eligibilityPillars.map((pillar) => (
-              <div
-                key={pillar.title}
-                className="rounded-3xl border border-border bg-card p-6 sm:p-7 shadow-[var(--shadow-card)] space-y-4"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <pillar.icon size={22} />
-                  </div>
-                  <h3 className="font-display font-bold text-lg sm:text-xl text-foreground">
-                    {pillar.title}
-                  </h3>
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
+            {/* Card 1: Who Can Apply */}
+            <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-xs space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                  <UserCheck size={22} />
                 </div>
-                <ul className="space-y-3 pt-2 border-t border-border">
-                  {pillar.points.map((pt, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-muted-foreground">
-                      <Check className="text-primary mt-0.5 shrink-0" size={16} />
-                      <span className="leading-relaxed">{pt}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div>
+                  <h3 className="font-display font-bold text-xl text-foreground">Who Can Apply</h3>
+                  <p className="text-xs text-muted-foreground">Anyone with steady verifiable income</p>
+                </div>
               </div>
-            ))}
+              <ul className="space-y-3 pt-3 border-t border-border text-xs sm:text-sm text-muted-foreground">
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Salaried employees or civil servants with regular monthly pay</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Registered business owners, merchants, and SMEs</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Self-employed professionals with regular bank deposits</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Residential homeowners or tenants (with landlord permission)</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Ready with the 30% initial deposit once approved</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Card 2: Simple Document Checklist */}
+            <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-xs space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                  <FileCheck size={22} />
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-xl text-foreground">What You Need</h3>
+                  <p className="text-xs text-muted-foreground">Just the essentials for fast verification</p>
+                </div>
+              </div>
+              <ul className="space-y-3 pt-3 border-t border-border text-xs sm:text-sm text-muted-foreground">
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Valid ID (NIN slip, driver's license, voter's card, or passport)</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Last 3 to 6 months bank statement showing regular earnings</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Recent utility bill for the installation premises</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>(For registered businesses: CAC registration document)</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="text-primary mt-0.5 shrink-0" size={16} />
+                  <span>Active phone number linked to your BVN for identity safety</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          {/* Affordability Calculator Guide Box */}
-          <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="space-y-2">
-              <h4 className="text-lg sm:text-xl font-display font-bold text-foreground">
-                How does the bank assess your income affordability?
-              </h4>
-              <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
-                Under CBN regulatory lending best practices, monthly debt service should not exceed 33%–40% of your verifiable net monthly income. For example, a ₦150,000 monthly solar repayment comfortably matches an applicant with a net income of ₦450,000 or higher.
+          <div className="max-w-4xl mx-auto rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div>
+              <span className="font-display font-bold text-foreground text-sm sm:text-base block">
+                Fast review within 24 hours
+              </span>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                No long queues or endless paperwork. Submit online and get approved quickly.
               </p>
             </div>
             <Link
               to={hasItem ? applyUrlForMonths(selectedMonths) : "/finance/apply"}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground hover:brightness-110 shrink-0 shadow-md transition-all"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs sm:text-sm font-bold text-primary-foreground hover:brightness-110 shrink-0 transition-all shadow-xs"
             >
-              Check My Pre-Approval <ArrowRight size={16} />
+              Start Application <ArrowRight size={14} />
             </Link>
           </div>
         </div>
       </section>
 
       {/* ───────────────────────────────────────────────────────────── */}
-      {/* SECTION 3: APPLICATION REQUIREMENTS & DOCUMENT CHECKLIST     */}
+      {/* SECTION 3: TRANSPARENT TERMS & BENEFITS                        */}
       {/* ───────────────────────────────────────────────────────────── */}
-      <section id="requirements" className="section-padding bg-background border-b border-border scroll-mt-28">
+      <section id="terms" className="section-padding bg-background border-b border-border scroll-mt-20">
         <div className="section-container">
-          <div className="text-center max-w-3xl mx-auto mb-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-              <FileSpreadsheet size={14} /> Documentation Checklist
-            </span>
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
+              Transparent Terms
+            </p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">
-              Application Documents by Category
+              Key Terms You Can Trust
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-muted-foreground">
-              Select your track below to view the exact documents required for rapid 24-hour credit committee approval.
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground">
+              Every Easy Flex plan is built with honest pricing, flexible durations, and complete protection.
             </p>
           </div>
 
-          {/* Track Selector Buttons */}
-          <div className="flex justify-center gap-2 flex-wrap mb-8">
-            {requirementTracks.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setActiveTrack(t.id as any)}
-                className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                  activeTrack === t.id
-                    ? "bg-primary text-primary-foreground shadow-sm ring-2 ring-primary/20"
-                    : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground border border-border"
-                }`}
+          {/* 6 Key Benefits */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+            {financeBenefits.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-3xl border border-border bg-card p-6 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-xs"
               >
-                {t.title}
-              </button>
-            ))}
-          </div>
-
-          {/* Active Track Detailed Card */}
-          {(() => {
-            const currentTrack = requirementTracks.find((t) => t.id === activeTrack) || requirementTracks[0];
-            return (
-              <div className="max-w-4xl mx-auto rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-[var(--shadow-card)]">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-border">
-                  <div>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-primary block mb-1">
-                      {currentTrack.tag}
-                    </span>
-                    <h3 className="text-2xl font-display font-bold text-foreground">
-                      {currentTrack.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                      {currentTrack.desc}
-                    </p>
+                <div>
+                  <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                    <item.icon size={20} />
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider self-start sm:self-center shrink-0">
-                    {currentTrack.badge}
-                  </span>
-                </div>
-
-                <div className="mt-6">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
-                    Required Checklist for Submission
-                  </h4>
-                  <ul className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-                    {currentTrack.items.map((item, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-3 p-3.5 rounded-2xl border border-border bg-muted/20 text-xs sm:text-sm text-foreground"
-                      >
-                        <Check className="text-primary mt-0.5 shrink-0" size={16} />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-xs text-muted-foreground">
-                    <span>Questions on document formats or guarantor requirements?</span>
-                  </div>
-                  <a
-                    href={waUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline"
-                  >
-                    <MessageCircle size={14} className="text-emerald-500" />
-                    Speak with an Underwriting Officer on WhatsApp
-                  </a>
+                  <h3 className="font-display font-bold text-base sm:text-lg text-foreground mb-1.5">{item.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               </div>
-            );
-          })()}
-        </div>
-      </section>
-
-      {/* ───────────────────────────────────────────────────────────── */}
-      {/* SECTION 4: 6-STAGE APPROVAL & INSTALLATION ROADMAP            */}
-      {/* ───────────────────────────────────────────────────────────── */}
-      <section id="process" className="section-padding bg-muted/30 border-b border-border scroll-mt-28">
-        <div className="section-container max-w-4xl">
-          <div className="text-center mb-12">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-              <Clock size={14} /> Turnaround Timelines
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">
-              6-Stage Approval &amp; Installation Roadmap
-            </h2>
-            <p className="mt-3 text-sm sm:text-base text-muted-foreground">
-              From online application to flipping the switch: clear milestones, transparent underwriting, and guaranteed turnaround times.
-            </p>
+            ))}
           </div>
 
-          <ol className="relative border-l border-border ml-4 sm:ml-6 space-y-8">
-            {approvalRoadmap.map((s) => (
-              <li key={s.n} className="pl-8 sm:pl-10 relative">
-                <span className="absolute -left-[19px] sm:-left-[21px] top-0 w-10 h-10 rounded-2xl bg-card border border-border flex items-center justify-center shadow-xs">
-                  <s.icon className="text-primary" size={18} />
-                </span>
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
-                  <h3 className="text-lg sm:text-xl font-display font-bold text-foreground">
-                    {s.title}
-                  </h3>
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full w-fit">
-                    {s.timeframe}
+          {/* Simple Interest Overview Cards */}
+          <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-xs">
+            <div className="mb-6 pb-4 border-b border-border">
+              <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground">
+                Interest Tiers Overview
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Rates are determined by system size and prorated by your chosen tenure. Shorter plans clear faster with lower interest.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-3 gap-4">
+              {simpleInterestTiers.map((tier) => (
+                <div key={tier.bracket} className="p-4 rounded-2xl border border-border bg-muted/20 space-y-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-primary block">
+                    {tier.bracket}
                   </span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-lg font-display font-bold text-foreground">{tier.baseRate}</span>
+                    <span className="text-xs text-muted-foreground">({tier.shortRate})</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{tier.note}</p>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  {s.desc}
-                </p>
-              </li>
-            ))}
-          </ol>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ───────────────────────────────────────────────────────────── */}
-      {/* SECTION 5: TRUST, WARRANTIES & ASSET PROTECTION               */}
+      {/* SECTION 4: TRUST & WARRANTIES                                 */}
       {/* ───────────────────────────────────────────────────────────── */}
-      <section className="section-padding bg-background border-b border-border">
+      <section className="section-padding bg-muted/20 border-b border-border">
         <div className="section-container">
           <div className="relative rounded-3xl overflow-hidden border border-border shadow-[var(--shadow-card)]">
             <img src={imgInstaller} alt="Certified Tioga installer on rooftop" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-midnight/90" />
-            <div className="relative p-8 sm:p-14 max-w-3xl text-primary-foreground space-y-4">
-              <ShieldCheck className="text-gold" size={40} />
+            <div className="relative p-8 sm:p-12 max-w-2xl text-primary-foreground space-y-3">
+              <ShieldCheck className="text-gold" size={38} />
               <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight">
-                Your investment is 100% protected from Day One
+                Your investment is protected from Day One
               </h2>
-              <p className="opacity-90 leading-relaxed text-sm sm:text-base">
-                Every Easy Flex plan includes 2% all-risk equipment insurance, 25-year solar panel performance warranty, 5–10 year lithium battery replacement warranty, and COREN-supervised engineering installation. Your system is fully covered for the entire lease-to-own tenure and decades beyond.
+              <p className="opacity-90 leading-relaxed text-xs sm:text-sm">
+                Every Easy Flex plan includes 2% all-risk equipment insurance, professional installation, and ongoing maintenance. Your system is fully covered for the entire repayment period and beyond.
               </p>
-              <div className="pt-4 grid sm:grid-cols-3 gap-3 border-t border-white/10 text-xs">
+              <div className="pt-3 grid sm:grid-cols-3 gap-3 border-t border-white/10 text-xs">
                 <div>
                   <span className="font-bold block text-white">25-Year Panel Output</span>
                   <span className="opacity-80">Tier-1 monocrystalline panels</span>
                 </div>
                 <div>
-                  <span className="font-bold block text-white">5–10 Year Battery</span>
-                  <span className="opacity-80">6,000+ deep LiFePO4 cycles</span>
+                  <span className="font-bold block text-white">5-10 Year Battery</span>
+                  <span className="opacity-80">LiFePO4 deep cycle technology</span>
                 </div>
                 <div>
-                  <span className="font-bold block text-white">Full Title Deed</span>
+                  <span className="font-bold block text-white">100% Full Ownership</span>
                   <span className="opacity-80">Transferred upon final payment</span>
                 </div>
               </div>
@@ -1231,25 +913,25 @@ const Finance = () => {
       </section>
 
       {/* ───────────────────────────────────────────────────────────── */}
-      {/* SECTION 6: FREQUENTLY ASKED QUESTIONS                         */}
+      {/* SECTION 5: FREQUENTLY ASKED QUESTIONS                         */}
       {/* ───────────────────────────────────────────────────────────── */}
-      <section id="faq" className="section-padding bg-muted/30 scroll-mt-28">
+      <section id="faq" className="section-padding bg-background scroll-mt-20">
         <div className="section-container max-w-3xl">
           <div className="text-center mb-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-              <HelpCircle size={14} /> Clear Answers
-            </span>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
+              Got Questions?
+            </p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">
-              Easy Flex Financing FAQ
+              Easy Flex FAQ
             </h2>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Clear answers to the most common questions about payments, interest rates, early liquidation, and title transfer.
+            <p className="mt-2 text-sm text-muted-foreground">
+              Clear answers to the most common questions about payments, interest rates, and early payoff.
             </p>
           </div>
 
           <div className="space-y-3">
             {faqs.map((f) => (
-              <details key={f.q} className="group rounded-2xl border border-border bg-card p-5 open:shadow-[var(--shadow-card)] transition-all">
+              <details key={f.q} className="group rounded-2xl border border-border bg-card p-5 open:shadow-xs transition-all">
                 <summary className="flex justify-between items-center cursor-pointer list-none font-display font-semibold text-sm sm:text-base text-foreground">
                   {f.q}
                   <span className="ml-4 text-muted-foreground transition-transform group-open:rotate-180">▾</span>
@@ -1261,17 +943,17 @@ const Finance = () => {
             ))}
           </div>
 
-          <div className="mt-10 p-6 rounded-3xl border border-border bg-card text-center space-y-3">
-            <h3 className="font-display font-bold text-lg">Still have questions about financing?</h3>
+          <div className="mt-10 p-6 rounded-3xl border border-border bg-muted/30 text-center space-y-3">
+            <h3 className="font-display font-bold text-lg">Have more questions about financing?</h3>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Our finance specialists are available to walk you through documentation, pre-approval checks, and custom package quotes.
+              Our finance team is ready to assist you with quick pre-approval checks and custom package advice.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <a
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs sm:text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-sm"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs sm:text-sm font-semibold text-primary-foreground hover:brightness-110 shadow-xs"
               >
                 <MessageCircle size={15} /> Chat on WhatsApp
               </a>
