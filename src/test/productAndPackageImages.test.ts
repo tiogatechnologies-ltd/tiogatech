@@ -578,6 +578,90 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(22);
   });
 
+  it("all 47 Bread Energy products from official price sheet exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+    const breadEnergy = PRODUCTS.filter((p) => p.brand === "Bread Energy" && p.sku?.startsWith("BREAD-"));
+    expect(breadEnergy.length).toBe(47);
+
+    const expectedPrices: Record<string, number> = {
+      // 1. Solar Panels (15 Items)
+      "BREAD-PV-280W": 66000,
+      "BREAD-PV-200W": 42000,
+      "BREAD-PV-450W": 114000,
+      "BREAD-PV-465W": 114000,
+      "BREAD-PV-475W": 115200,
+      "BREAD-PV-485W": 117600,
+      "BREAD-PV-495W": 120000,
+      "BREAD-PV-505W": 120000,
+      "BREAD-PV-515W": 126000,
+      "BREAD-PV-585W": 127200,
+      "BREAD-PV-600W": 138000,
+      "BREAD-PV-615W": 144000,
+      "BREAD-PV-625W": 144000,
+      "BREAD-PV-660W": 144000,
+      "BREAD-PV-680W": 150000,
+
+      // 2. Inverters (5 Items)
+      "BREAD-INV-1.5K": 222000,
+      "BREAD-INV-3.5K": 318000,
+      "BREAD-INV-6.2K": 480000,
+      "BREAD-INV-11K": 900000,
+      "BREAD-INV-11K-PRO": 1020000,
+
+      // 3. Lithium Batteries (9 Items)
+      "BREAD-BAT-5K-25V-RK": 1020000,
+      "BREAD-BAT-7K-25V-WM": 1320000,
+      "BREAD-BAT-4.8K-48V-WM": 1200000,
+      "BREAD-BAT-5K-51V-WM": 1200000,
+      "BREAD-BAT-9.6K-RK": 1980000,
+      "BREAD-BAT-9.6K-WH": 2100000,
+      "BREAD-BAT-10.2K": 2220000,
+      "BREAD-BAT-13.4K": 2400000,
+      "BREAD-BAT-15.6K": 2580000,
+
+      // 4. All in One ESS (4 Items)
+      "BREAD-AIO-6K-5K": 2040000,
+      "BREAD-AIO-6K-15K": 3360000,
+      "BREAD-AIO-5K-20K": 5040000,
+      "BREAD-AIO-12K-20K": 6000000,
+
+      // 5. Solar Floodlights (6 Items)
+      "BREAD-FL-60W": 33600,
+      "BREAD-FL-100W": 43200,
+      "BREAD-FL-200W": 54000,
+      "BREAD-FL-300W": 66000,
+      "BREAD-FL-500W": 78000,
+      "BREAD-FL-1000W": 96000,
+
+      // 6. Solar Street Lights & Accessories (8 Items)
+      "BREAD-SL-2LENS": 90000,
+      "BREAD-SL-3LENS": 105600,
+      "BREAD-SL-4LENS": 120000,
+      "BREAD-SL-4LINES": 162000,
+      "BREAD-SL-5LINES": 120000,
+      "BREAD-SL-8EYES": 180000,
+      "BREAD-SL-12EYES": 234000,
+      "BREAD-ACC-POLE": 59400,
+    };
+
+    const imageHashes = new Set<string>();
+
+    for (const p of breadEnergy) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.startsWith("/products/bread-energy/")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Bread Energy product image must exist: ${filePath}`).toBe(true);
+
+      const expectedPrice = expectedPrices[p.sku || ""];
+      expect(p.numeric_price, `Price check for ${p.name} (SKU: ${p.sku})`).toBe(expectedPrice);
+
+      const fileBuf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
+      imageHashes.add(hash);
+    }
+
+    expect(imageHashes.size).toBe(47);
+  });
+
   it("all products across the entire catalog have 100% unique image files and hashes with zero duplicates", () => {
     const fileHashMap = new Map<string, string>();
     for (const p of PRODUCTS) {

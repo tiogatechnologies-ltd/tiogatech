@@ -602,7 +602,7 @@ export const Retail = () => {
             <div className="relative flex-1 max-w-md">
               <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search AlpSolarr, Deye, Felicity, Luxpower, smart locks..."
+                placeholder="Search Bread Energy, Deye, Felicity, AlpSolarr, SolarPro, smart locks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9 pr-4 rounded-2xl bg-card border-border text-xs h-10"
@@ -755,7 +755,7 @@ export const Retail = () => {
             <span className="text-xs font-semibold text-muted-foreground mr-1 shrink-0">
               Popular Brands:
             </span>
-            {["AlpSolarr", "Deye", "Felicity", "Luxpower", "SRNE", "Taico", "Dawnice"].map((brand) => {
+            {["Bread Energy", "Deye", "Felicity", "SolarPro", "AlpSolarr", "Luxpower", "SRNE", "Taico", "Dawnice", "Solis", "Infinisolar", "Itel", "Suness"].map((brand) => {
               const isSelected = selectedBrands.includes(brand);
               const count = brandCounts[brand] || 0;
               return (
