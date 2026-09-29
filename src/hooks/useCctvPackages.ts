@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchFreshRows } from "@/lib/freshContent";
+import { getCached, setCached, getOrCreateInflight, invalidateCached } from "@/lib/sessionDataCache";
 
 /**
  * Shared source for CCTV packages.
@@ -108,23 +109,40 @@ const decorate = (rows: any[]): CctvPackage[] =>
     image: resolveCctvImage(p, idx),
   })) as CctvPackage[];
 
+const CACHE_KEY = "cctv_packages";
+
+/** Called by Admin > CCTV Packages after a save so this tab's cache doesn't hide the edit. */
+export function invalidateCctvPackagesCache() {
+  invalidateCached(CACHE_KEY);
+}
+
 export const useCctvPackages = () => {
-  const [packages, setPackages] = useState<CctvPackage[]>(() => decorate(CCTV_FALLBACK as any[]));
-  const [loading, setLoading] = useState(true);
+  const [packages, setPackages] = useState<CctvPackage[]>(() => getCached<CctvPackage[]>(CACHE_KEY) ?? decorate(CCTV_FALLBACK as any[]));
+  const [loading, setLoading] = useState(() => !getCached<CctvPackage[]>(CACHE_KEY));
 
   useEffect(() => {
+    const hit = getCached<CctvPackage[]>(CACHE_KEY);
+    if (hit) {
+      setPackages(hit);
+      setLoading(false);
+      return;
+    }
+
     let active = true;
-    (async () => {
+    getOrCreateInflight(CACHE_KEY, async () => {
       const { data, error } = await fetchFreshRows<any>(
         "cctv_packages?select=*&is_active=eq.true&order=sort_order.asc",
       );
+      // On error or an empty table, don't cache - the static fallback stays in place.
+      if (error || !data || (data as any[]).length === 0) return null;
+      const decorated = decorate(data as any[]);
+      setCached(CACHE_KEY, decorated);
+      return decorated;
+    }).then((result) => {
       if (!active) return;
-      // On error or an empty table the static fallback stays in place.
-      if (!error && data && (data as any[]).length > 0) {
-        setPackages(decorate(data as any[]));
-      }
+      if (result) setPackages(result);
       setLoading(false);
-    })();
+    });
     return () => { active = false; };
   }, []);
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchFreshRows } from "@/lib/freshContent";
+import { getCached, setCached, getOrCreateInflight, invalidateCached } from "@/lib/sessionDataCache";
 import bgElite from "@/assets/bg-smartlock-elite.jpg";
 import bgApex from "@/assets/bg-smartlock-apex.jpg";
 import bgPro from "@/assets/bg-smartlock-pro.jpg";
@@ -74,28 +75,48 @@ const pickImage = (item: { id: string; category: string; series: string; model?:
   return getSmartLockImage(item);
 };
 
+const CACHE_KEY = "smart_locks";
+
+/** Called by Admin > Smart Locks after a save so this tab's cache doesn't hide the edit. */
+export function invalidateSmartLocksCache() {
+  invalidateCached(CACHE_KEY);
+}
+
 export const useSmartLocks = () => {
-  const [items, setItems] = useState<SmartLock[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState<SmartLock[]>(() => getCached<SmartLock[]>(CACHE_KEY) ?? []);
+  const [loading, setLoading] = useState(() => !getCached<SmartLock[]>(CACHE_KEY));
 
   useEffect(() => {
+    const hit = getCached<SmartLock[]>(CACHE_KEY);
+    if (hit) {
+      setItems(hit);
+      setLoading(false);
+      return;
+    }
+
     let active = true;
-    const run = async (attempt = 0): Promise<void> => {
+    const run = async (attempt = 0): Promise<SmartLock[] | null> => {
       const [{ data, error }, imgMap] = await Promise.all([
         fetchFreshRows<any>("smart_locks?select=*&is_active=eq.true&order=sort_order.asc"),
         fetchPackageImagesMap(),
       ]);
-      if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
         return run(attempt + 1);
       }
-      if (data) {
-        setItems((data as any[]).map((p) => ({ ...p, image: pickImage(p, imgMap) })) as SmartLock[]);
-      }
-      setLoading(false);
+      return data ? ((data as any[]).map((p) => ({ ...p, image: pickImage(p, imgMap) })) as SmartLock[]) : null;
     };
-    run();
+
+    getOrCreateInflight(CACHE_KEY, async () => {
+      const result = await run();
+      if (result) setCached(CACHE_KEY, result);
+      return result;
+    }).then((result) => {
+      if (!active) return;
+      if (result) setItems(result);
+      setLoading(false);
+    });
+
     return () => { active = false; };
   }, []);
 

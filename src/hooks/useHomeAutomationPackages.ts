@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchFreshRows } from "@/lib/freshContent";
+import { getCached, setCached, getOrCreateInflight, invalidateCached } from "@/lib/sessionDataCache";
 import bgAscentia from "@/assets/bg-lagos-apartment.jpg";
 import bgSprout from "@/assets/feature-smart-automation-device.jpg";
 import bgIbiza from "@/assets/hero-smart-home.jpg";
@@ -38,28 +39,48 @@ const decorate = (rows: any[], imgMap: Record<string, string> = {}): HomeAutomat
     image: p.image_url || imgMap[p.id] || (IMAGE_BY_TIER[p.tier] ?? bgAscentia),
   })) as HomeAutomationPackage[];
 
+const CACHE_KEY = "home_automation_packages";
+
+/** Called by Admin > Home Automation after a save so this tab's cache doesn't hide the edit. */
+export function invalidateHomeAutomationPackagesCache() {
+  invalidateCached(CACHE_KEY);
+}
+
 export const useHomeAutomationPackages = () => {
-  const [packages, setPackages] = useState<HomeAutomationPackage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [packages, setPackages] = useState<HomeAutomationPackage[]>(() => getCached<HomeAutomationPackage[]>(CACHE_KEY) ?? []);
+  const [loading, setLoading] = useState(() => !getCached<HomeAutomationPackage[]>(CACHE_KEY));
 
   useEffect(() => {
+    const hit = getCached<HomeAutomationPackage[]>(CACHE_KEY);
+    if (hit) {
+      setPackages(hit);
+      setLoading(false);
+      return;
+    }
+
     let active = true;
-    const run = async (attempt = 0): Promise<void> => {
+    const run = async (attempt = 0): Promise<HomeAutomationPackage[] | null> => {
       const [{ data, error }, imgMap] = await Promise.all([
         fetchFreshRows<any>("home_automation_packages?select=*&is_active=eq.true&order=sort_order.asc"),
         fetchPackageImagesMap(),
       ]);
-      if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
         return run(attempt + 1);
       }
-      if (data) {
-        setPackages(decorate(data as any[], imgMap));
-      }
-      setLoading(false);
+      return data ? decorate(data as any[], imgMap) : null;
     };
-    run();
+
+    getOrCreateInflight(CACHE_KEY, async () => {
+      const result = await run();
+      if (result) setCached(CACHE_KEY, result);
+      return result;
+    }).then((result) => {
+      if (!active) return;
+      if (result) setPackages(result);
+      setLoading(false);
+    });
+
     return () => { active = false; };
   }, []);
 

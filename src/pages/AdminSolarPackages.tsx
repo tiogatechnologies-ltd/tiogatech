@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Sun } from "lucide-react";
 import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
 import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
+import { invalidateSolarPackagesCache } from "@/hooks/useSolarPackages";
 
 type Pkg = {
   id: string;
@@ -71,6 +72,10 @@ const AdminSolarPackages = () => {
 
   const load = async () => {
     setLoading(true);
+    // Storefront reads solar packages through a per-tab cache (see
+    // useSolarPackages) so a save here must invalidate it, or a visitor tab
+    // - including this admin's own preview - can keep showing the old data.
+    invalidateSolarPackagesCache();
     const [pkgRes, imgMap] = await Promise.all([
       supabase.from("solar_packages" as any).select("*").order("sort_order", { ascending: true }),
       fetchPackageImagesMap(),

@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Lock } from "lucide-react";
 import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
 import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
+import { invalidateSmartLocksCache } from "@/hooks/useSmartLocks";
 
 type Lock = {
   id: string;
@@ -61,6 +62,10 @@ const AdminSmartLocks = () => {
 
   const load = async () => {
     setLoading(true);
+    // Storefront reads smart locks through a per-tab cache (see
+    // useSmartLocks) so a save here must invalidate it, or a visitor tab -
+    // including this admin's own preview - can keep showing the old data.
+    invalidateSmartLocksCache();
     const [lockRes, imgMap] = await Promise.all([
       supabase.from("smart_locks" as any).select("*").order("sort_order", { ascending: true }),
       fetchPackageImagesMap(),

@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Home } from "lucide-react";
 import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
 import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
+import { invalidateHomeAutomationPackagesCache } from "@/hooks/useHomeAutomationPackages";
 
 type Pkg = {
   id: string;
@@ -55,6 +56,11 @@ const AdminHomeAutomation = () => {
 
   const load = async () => {
     setLoading(true);
+    // Storefront reads automation packages through a per-tab cache (see
+    // useHomeAutomationPackages) so a save here must invalidate it, or a
+    // visitor tab - including this admin's own preview - can keep showing
+    // the old data.
+    invalidateHomeAutomationPackagesCache();
     const [pkgRes, imgMap] = await Promise.all([
       supabase.from("home_automation_packages" as any).select("*").order("sort_order", { ascending: true }),
       fetchPackageImagesMap(),

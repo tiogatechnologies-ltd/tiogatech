@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Camera, Loader2, AlertCircle } from "lucide-react";
 import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
 import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
+import { invalidateCctvPackagesCache } from "@/hooks/useCctvPackages";
 
 type CctvPackage = {
   id: string;
@@ -57,6 +58,10 @@ const AdminCCTV = () => {
 
   const load = async () => {
     setLoading(true);
+    // Storefront reads CCTV packages through a per-tab cache (see
+    // useCctvPackages) so a save here must invalidate it, or a visitor tab -
+    // including this admin's own preview - can keep showing the old data.
+    invalidateCctvPackagesCache();
     const [cctvRes, imgMap] = await Promise.all([
       supabase.from("cctv_packages" as any).select("*").order("sort_order", { ascending: true }),
       fetchPackageImagesMap(),

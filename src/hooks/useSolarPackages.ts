@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchFreshRows } from "@/lib/freshContent";
+import { getCached, setCached, getOrCreateInflight, invalidateCached } from "@/lib/sessionDataCache";
 import bgSolarRoof from "@/assets/feature-solar-roof.jpg";
 import bgPanelCloseup from "@/assets/bg-panel-closeup.jpg";
 import bgRooftopInstall from "@/assets/bg-rooftop-install.jpg";
@@ -73,33 +74,53 @@ export function getSolarPackageImage(p: { package_number?: number; inverter?: st
 const decorate = (data: any[], imgMap: Record<string, string> = {}): SolarPackage[] =>
   data.map((p) => ({
     ...p,
-    image: (p.image_url && !p.image_url.startsWith("/products/minisim/")) 
-      ? p.image_url 
+    image: (p.image_url && !p.image_url.startsWith("/products/minisim/"))
+      ? p.image_url
       : (imgMap[p.id] || getSolarPackageImage(p)),
   })) as SolarPackage[];
 
+const CACHE_KEY = "solar_packages";
+
+/** Called by Admin > Solar Packages after a save so this tab's cache doesn't hide the edit. */
+export function invalidateSolarPackagesCache() {
+  invalidateCached(CACHE_KEY);
+}
+
 export const useSolarPackages = () => {
-  const [packages, setPackages] = useState<SolarPackage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [packages, setPackages] = useState<SolarPackage[]>(() => getCached<SolarPackage[]>(CACHE_KEY) ?? []);
+  const [loading, setLoading] = useState(() => !getCached<SolarPackage[]>(CACHE_KEY));
 
   useEffect(() => {
+    const hit = getCached<SolarPackage[]>(CACHE_KEY);
+    if (hit) {
+      setPackages(hit);
+      setLoading(false);
+      return;
+    }
+
     let active = true;
-    const fetchOnce = async (attempt = 0): Promise<void> => {
+    const fetchOnce = async (attempt = 0): Promise<SolarPackage[] | null> => {
       const [{ data, error }, imgMap] = await Promise.all([
         fetchFreshRows<any>("solar_packages?select=*&is_active=eq.true&order=sort_order.asc"),
         fetchPackageImagesMap(),
       ]);
-      if (!active) return;
       if ((error || !data) && attempt < 2) {
         await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
         return fetchOnce(attempt + 1);
       }
-      if (data) {
-        setPackages(decorate(data as any[], imgMap));
-      }
-      setLoading(false);
+      return data ? decorate(data as any[], imgMap) : null;
     };
-    fetchOnce();
+
+    getOrCreateInflight(CACHE_KEY, async () => {
+      const result = await fetchOnce();
+      if (result) setCached(CACHE_KEY, result);
+      return result;
+    }).then((result) => {
+      if (!active) return;
+      if (result) setPackages(result);
+      setLoading(false);
+    });
+
     return () => { active = false; };
   }, []);
 
