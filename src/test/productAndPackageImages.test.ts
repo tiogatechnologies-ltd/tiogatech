@@ -521,6 +521,63 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(6);
   });
 
+  it("all 22 Deye products from official price sheet exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+    const deye = PRODUCTS.filter((p) => p.brand === "Deye" && p.sku?.startsWith("DEYE-"));
+    expect(deye.length).toBe(22);
+
+    const expectedPrices: Record<string, number> = {
+      // Sheet 1: Low Voltage Batteries
+      "DEYE-BAT-5K-SE-F5-C": 1116000,
+      "DEYE-BAT-10K-SE-G10-2": 1920000,
+      "DEYE-BAT-12K-SE-F12-C": 2520000,
+      "DEYE-BAT-16K-SE-F16-V": 2880000,
+
+      // Sheet 2: High Voltage Batteries & Racks
+      "DEYE-BAT-5K-BOS-G-PRO": 1320000,
+      "DEYE-ACC-BOS-G-PDU-2": 1320000,
+      "DEYE-BAT-7K-BOS-A": 1920000,
+      "DEYE-ACC-BOS-A-PDU-2": 1650000,
+      "DEYE-ACC-RACK-9L-BOS-G": 600000,
+      "DEYE-ACC-RACK-11L-BOS-A": 600000,
+
+      // Sheet 3: Single Phase Inverters
+      "DEYE-INV-6K-OG01": 573600,
+      "DEYE-INV-8K-SG05": 1524000,
+      "DEYE-INV-10K-SG02": 2160000,
+      "DEYE-INV-12K-SG02": 2280000,
+      "DEYE-INV-16K-SG01": 3360000,
+
+      // Sheet 4: Three Phase Inverters
+      "DEYE-INV-12K-SG04-3P": 2220000,
+      "DEYE-INV-16K-SG05-3P": 3360000,
+      "DEYE-INV-20K-SG05-3P": 3600000,
+
+      // Sheet 5: Three Phase High Voltage Inverters
+      "DEYE-INV-25K-SG01-HV": 3840000,
+      "DEYE-INV-30K-SG02-HV": 4800000,
+      "DEYE-INV-50K-SG01-HV": 6000000,
+      "DEYE-INV-80K-SG02-HV": 9000000,
+    };
+
+    const imageHashes = new Set<string>();
+
+    for (const p of deye) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.startsWith("/products/deye/")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Deye product image must exist: ${filePath}`).toBe(true);
+
+      const expectedPrice = expectedPrices[p.sku || ""];
+      expect(p.numeric_price, `Price check for ${p.name} (SKU: ${p.sku})`).toBe(expectedPrice);
+
+      const fileBuf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
+      imageHashes.add(hash);
+    }
+
+    expect(imageHashes.size).toBe(22);
+  });
+
   it("all products across the entire catalog have 100% unique image files and hashes with zero duplicates", () => {
     const fileHashMap = new Map<string, string>();
     for (const p of PRODUCTS) {
