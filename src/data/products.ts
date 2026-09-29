@@ -3228,6 +3228,194 @@ export const solarPanelsList: Product[] = [
     is_featured: true,
     warranty_years: 30,
     tags: ["solar panel", "jinko", "725w", "tiger neo", "commercial", "topcon"]
+  },
+  {
+    id: "sungene-panel-330w-mono",
+    serial_number: "SUNGENE-PV-0001",
+    sku: "SUNGENE-PV-330W-MONO",
+    name: "Sungene 330W High-Efficiency Monocrystalline Solar Panel",
+    category: "Solar Panels",
+    series: "Sungene Solar Series",
+    brand: "Sungene",
+    description: "330W compact high-efficiency monocrystalline solar panel from Sungene. Engineered for residential 24V/12V setups, borehole pumps, street lighting arrays, and compact roofs.",
+    features: [
+      "330W rated peak power with high cell conversion efficiency",
+      "High transmission tempered glass with anti-reflective coating",
+      "Robust anodized aluminium frame with certified wind and snow load resistance",
+      "25-Year linear power output warranty"
+    ],
+    best_for: "Residential rooftops, borehole pumps, 24V solar inverter setups, and street lights",
+    bestFor: "Residential rooftops, borehole pumps, 24V solar inverter setups, and street lights",
+    price: "₦67,200",
+    numeric_price: 67200,
+    tier: "affordable",
+    image_url: "/products/core/sungene-panel-330w-mono.webp",
+    specifications: {
+      "Peak Power (Pmax)": "330 Wp",
+      "Cell Type": "Monocrystalline Silicon",
+      "Module Efficiency": "20.8%",
+      "Protection": "IP68 Junction Box with MC4",
+      "Warranty": "25-Year Linear Power Warranty"
+    },
+    stock_status: "in_stock",
+    warranty_years: 25,
+    tags: ["solar panel", "sungene", "330w", "mono", "affordable"]
+  },
+  {
+    id: "sungene-panel-650w-mono",
+    serial_number: "SUNGENE-PV-0002",
+    sku: "SUNGENE-PV-650W-MONO",
+    name: "Sungene 650W High-Efficiency Monocrystalline Half-Cell Solar Panel",
+    category: "Solar Panels",
+    series: "Sungene Solar Series",
+    brand: "Sungene",
+    description: "650W ultra-high power monocrystalline half-cell solar module from Sungene. Features multi-busbar technology, superior low-light generation, and low temperature coefficient.",
+    features: [
+      "650W heavy-duty power output maximizing rooftop watt-density",
+      "Half-cut cell structure minimizing internal resistance and hot-spot risks",
+      "Excellent low-irradiance performance during hazy or overcast conditions",
+      "25-Year linear power warranty"
+    ],
+    best_for: "Large residential solar setups, commercial buildings, farms, and mini-grids",
+    bestFor: "Large residential solar setups, commercial buildings, farms, and mini-grids",
+    price: "₦172,800",
+    numeric_price: 172800,
+    tier: "premium",
+    image_url: "/products/core/sungene-panel-650w-mono.webp",
+    specifications: {
+      "Peak Power (Pmax)": "650 Wp",
+      "Cell Type": "Monocrystalline Half-Cut MBB",
+      "Module Efficiency": "21.6%",
+      "Mechanical Load": "5400Pa Front / 2400Pa Rear",
+      "Warranty": "25-Year Linear Power Warranty"
+    },
+    stock_status: "in_stock",
+    warranty_years: 25,
+    tags: ["solar panel", "sungene", "650w", "half-cell", "mono"]
+  },
+  {
+    id: "jms-panel-550w-mono",
+    serial_number: "JMS-PV-0001",
+    sku: "JMS-PV-550W-MONO",
+    name: "JMS 550W Tier-1 High-Efficiency Monocrystalline Half-Cell Solar Panel",
+    category: "Solar Panels",
+    series: "JMS Solar Series",
+    brand: "JMS",
+    description: "550W Tier-1 monocrystalline half-cell solar panel from JMS. Engineered for harsh tropical climates with anti-PID protection, multi-busbar cell layout, and 25-year performance warranty.",
+    features: [
+      "550W high-efficiency power output with 21.3% module efficiency",
+      "Multi-busbar half-cell technology reducing shading losses and micro-cracking",
+      "Anodized aluminium alloy frame with certified 5400Pa mechanical load",
+      "IP68 sealed waterproof junction box with bypass diodes"
+    ],
+    best_for: "Residential homes, commercial office roofs, and mini-grids",
+    bestFor: "Residential homes, commercial office roofs, and mini-grids",
+    price: "₦174,000",
+    numeric_price: 174000,
+    tier: "premium",
+    image_url: "/products/core/jms-panel-550w-mono.webp",
+    specifications: {
+      "Peak Power (Pmax)": "550 Wp",
+      "Module Efficiency": "21.3%",
+      "Cell Type": "Monocrystalline 182mm Half-Cut",
+      "Warranty": "25-Year Linear Power Warranty"
+    },
+    stock_status: "in_stock",
+    warranty_years: 25,
+    tags: ["solar panel", "jms", "550w", "tier-1", "mono"]
+  },
+  {
+    id: "jms-panel-630w-mono",
+    serial_number: "JMS-PV-0002",
+    sku: "JMS-PV-630W-MONO",
+    name: "JMS 630W Tier-1 High-Efficiency Monocrystalline Half-Cell Solar Panel",
+    category: "Solar Panels",
+    series: "JMS Solar Series",
+    brand: "JMS",
+    description: "630W Tier-1 high-density monocrystalline solar module from JMS. Delivers massive power output per square meter, lowering balance-of-system racking and cable costs.",
+    features: [
+      "630W peak power rating with up to 21.8% module efficiency",
+      "Superior anti-PID and low-light response in hazy weather",
+      "Heavy-duty mechanical load rating for high wind and rain resilience",
+      "25-Year manufacturer linear power warranty"
+    ],
+    best_for: "Commercial buildings, industrial factories, and large estate solar systems",
+    bestFor: "Commercial buildings, industrial factories, and large estate solar systems",
+    price: "₦177,600",
+    numeric_price: 177600,
+    tier: "premium",
+    image_url: "/products/core/jms-panel-630w-mono.webp",
+    specifications: {
+      "Peak Power (Pmax)": "630 Wp",
+      "Module Efficiency": "21.8%",
+      "Cell Type": "Monocrystalline Half-Cell",
+      "Warranty": "25-Year Linear Power Warranty"
+    },
+    stock_status: "in_stock",
+    warranty_years: 25,
+    tags: ["solar panel", "jms", "630w", "tier-1", "commercial"]
+  },
+  {
+    id: "yingli-panel-620w-mono",
+    serial_number: "YINGLI-PV-0001",
+    sku: "YINGLI-PV-620W-MONO",
+    name: "Yingli Solar 620W Panda N-Type TOPCon High-Efficiency Solar Panel",
+    category: "Solar Panels",
+    series: "Yingli Panda 3.0 Pro",
+    brand: "Yingli",
+    description: "620W Tier-1 solar panel from Yingli Solar's flagship PANDA 3.0 Pro series. Utilizes advanced N-type TOPCon cell technology with lower temperature coefficient (-0.29%/°C), high bifaciality, and 30-year warranty.",
+    features: [
+      "620W front peak power with advanced N-type TOPCon cell architecture",
+      "Ultra-low temperature coefficient (-0.29%/°C) ensuring exceptional tropical yield",
+      "Near-zero Light-Induced Degradation (LID) for long-term power stability",
+      "30-Year linear power performance warranty"
+    ],
+    best_for: "Premium residences, commercial solar canopies, shopping malls, and solar farms",
+    bestFor: "Premium residences, commercial solar canopies, shopping malls, and solar farms",
+    price: "₦177,600",
+    numeric_price: 177600,
+    tier: "premium",
+    image_url: "/products/core/yingli-panel-620w-mono.webp",
+    specifications: {
+      "Peak Power (Pmax)": "620 Wp",
+      "Cell Technology": "N-Type TOPCon Monocrystalline",
+      "Temperature Coefficient": "-0.29% / °C",
+      "Warranty": "30-Year Linear Power Warranty"
+    },
+    stock_status: "in_stock",
+    warranty_years: 30,
+    tags: ["solar panel", "yingli", "620w", "panda", "n-type", "topcon", "tier-1"]
+  },
+  {
+    id: "yingli-panel-625w-mono",
+    serial_number: "YINGLI-PV-0002",
+    sku: "YINGLI-PV-625W-MONO",
+    name: "Yingli Solar 625W Panda N-Type TOPCon High-Efficiency Solar Panel",
+    category: "Solar Panels",
+    series: "Yingli Panda 3.0 Pro",
+    brand: "Yingli",
+    description: "625W flagship N-type TOPCon solar panel from Yingli Solar. Delivers higher efficiency, earlier morning wake-up and later evening sleep times for maximum daily kilowatt-hour generation.",
+    features: [
+      "625W high-density N-type TOPCon rated power",
+      "22.5%+ module efficiency with multi-busbar layout",
+      "Resistant to PID, salt-mist, ammonia, and harsh dust environments",
+      "30-Year official linear power performance warranty"
+    ],
+    best_for: "Commercial developments, large duplexes, estates, and industrial solar projects",
+    bestFor: "Commercial developments, large duplexes, estates, and industrial solar projects",
+    price: "₦177,600",
+    numeric_price: 177600,
+    tier: "premium",
+    image_url: "/products/core/yingli-panel-625w-mono.webp",
+    specifications: {
+      "Peak Power (Pmax)": "625 Wp",
+      "Cell Technology": "N-Type TOPCon Monocrystalline",
+      "Temperature Coefficient": "-0.29% / °C",
+      "Warranty": "30-Year Linear Power Warranty"
+    },
+    stock_status: "in_stock",
+    warranty_years: 30,
+    tags: ["solar panel", "yingli", "625w", "panda", "n-type", "topcon", "tier-1"]
   }
 ];
 

@@ -222,7 +222,8 @@ describe("Product and Package Real Images", () => {
     const dawnice = PRODUCTS.filter((p) => p.brand === "Dawnice");
     const solis = PRODUCTS.filter((p) => p.brand === "Solis");
     const solarpro = PRODUCTS.filter((p) => p.brand === "SolarPro");
-    const infini = PRODUCTS.filter((p) => p.brand === "Infinisolar");
+    const infini = PRODUCTS.filter((p) => p.brand === "Infini" || p.brand === "Infinisolar");
+    const sungene = PRODUCTS.filter((p) => p.brand === "Sungene" && p.category === "Batteries");
     const deye = PRODUCTS.filter((p) => p.brand === "Deye");
 
     expect(alpSolarr.length).toBe(12);
@@ -230,10 +231,11 @@ describe("Product and Package Real Images", () => {
     expect(dawnice.length).toBe(6);
     expect(solis.length).toBe(7);
     expect(solarpro.length).toBe(10);
-    expect(infini.length).toBe(9);
+    expect(infini.length).toBe(8);
+    expect(sungene.length).toBe(2);
     expect(deye.length).toBeGreaterThanOrEqual(15);
 
-    const allNewProducts = [...alpSolarr, ...taico, ...dawnice, ...solis, ...solarpro, ...infini, ...deye];
+    const allNewProducts = [...alpSolarr, ...taico, ...dawnice, ...solis, ...solarpro, ...infini, ...sungene, ...deye];
     const uniqueHashes = new Set<string>();
 
     for (const p of allNewProducts) {
@@ -266,14 +268,16 @@ describe("Product and Package Real Images", () => {
     const daw = merged.filter((p) => p.brand === "Dawnice");
     const sol = merged.filter((p) => p.brand === "Solis");
     const sp = merged.filter((p) => p.brand === "SolarPro");
-    const inf = merged.filter((p) => p.brand === "Infinisolar");
+    const inf = merged.filter((p) => p.brand === "Infini" || p.brand === "Infinisolar");
+    const sung = merged.filter((p) => p.brand === "Sungene" && p.category === "Batteries");
 
     expect(alp.length).toBe(12);
     expect(tai.length).toBe(5);
     expect(daw.length).toBe(6);
     expect(sol.length).toBe(7);
     expect(sp.length).toBe(10);
-    expect(inf.length).toBe(9);
+    expect(inf.length).toBe(8);
+    expect(sung.length).toBe(2);
     expect(merged.length).toBeGreaterThanOrEqual(760);
   });
 
@@ -376,6 +380,145 @@ describe("Product and Package Real Images", () => {
     }
 
     expect(imageHashes.size).toBe(12);
+  });
+
+  it("all 10 SolarPro products exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+    const solarpro = PRODUCTS.filter((p) => p.brand === "SolarPro");
+    expect(solarpro.length).toBe(10);
+
+    const expectedPrices: Record<string, number> = {
+      "SOLARPRO-S6-100W": 240000,
+      "SOLARPRO-S7-120W": 240000,
+      "SOLARPRO-I6-100W": 234000,
+      "SOLARPRO-R1-60W": 150000,
+      "SOLARPRO-R3-100W": 234000,
+      "SOLARPRO-R4-120W": 258000,
+      "SOLARPRO-SP-FL-300W": 78000,
+      "SOLARPRO-BAT-15KWH": 3360000,
+      "SOLARPRO-ESS-60KWH-HV": 18000000,
+      "SOLARPRO-ESS-125KWH-HV": 43200000,
+    };
+
+    const imageHashes = new Set<string>();
+
+    for (const p of solarpro) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.startsWith("/products/solarpro/")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `SolarPro product image must exist: ${filePath}`).toBe(true);
+
+      const expectedPrice = expectedPrices[p.sku || ""];
+      expect(p.numeric_price, `Price check for ${p.name}`).toBe(expectedPrice);
+
+      const fileBuf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
+      imageHashes.add(hash);
+    }
+
+    expect(imageHashes.size).toBe(10);
+  });
+
+  it("all 10 Sungene and Infini products exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+    const sungeneAndInfini = PRODUCTS.filter((p) => (p.brand === "Sungene" || p.brand === "Infini") && !p.id.includes("panel"));
+    expect(sungeneAndInfini.length).toBe(10);
+
+    const expectedPrices: Record<string, number> = {
+      "SUNGENE-BAT-7.6KWH-24V": 900000,
+      "SUNGENE-BAT-15KWH-48V": 2340000,
+      "INFINI-BAT-10.2KWH-48V": 2040000,
+      "INFINI-BAT-15KWH-48V": 2220000,
+      "INFINI-HP800-3.5KVA-24V": 360000,
+      "INFINI-HP800-5KVA-24V": 432000,
+      "INFINI-MPPT-60A": 198000,
+      "INFINI-MPPT-100A": 210000,
+      "INFINI-FAN-18-REC": 84000,
+      "INFINI-FAN-18-SOLAR-KIT": 96000,
+    };
+
+    const imageHashes = new Set<string>();
+
+    for (const p of sungeneAndInfini) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.startsWith("/products/infinisolar/")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Infini/Sungene product image must exist: ${filePath}`).toBe(true);
+
+      const expectedPrice = expectedPrices[p.sku || ""];
+      expect(p.numeric_price, `Price check for ${p.name}`).toBe(expectedPrice);
+
+      const fileBuf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
+      imageHashes.add(hash);
+    }
+
+    expect(imageHashes.size).toBe(10);
+  });
+
+  it("all 7 Solis inverters exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+    const solis = PRODUCTS.filter((p) => p.brand === "Solis");
+    expect(solis.length).toBe(7);
+
+    const expectedPrices: Record<string, number> = {
+      "SOLIS-S6-EO1P5K-48": 780000,
+      "SOLIS-S6-EH1P12K": 3096000,
+      "SOLIS-S6-EH1P14K": 3168000,
+      "SOLIS-S6-EH1P16K": 3312000,
+      "SOLIS-S6-EH1P18K": 3384000,
+      "SOLIS-S6-EH3P30K-H": 5511168,
+      "SOLIS-S6-EH3P50K-H": 7787520,
+    };
+
+    const imageHashes = new Set<string>();
+
+    for (const p of solis) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.startsWith("/products/solis/")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Solis product image must exist: ${filePath}`).toBe(true);
+
+      const expectedPrice = expectedPrices[p.sku || ""];
+      expect(p.numeric_price, `Price check for ${p.name}`).toBe(expectedPrice);
+
+      const fileBuf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
+      imageHashes.add(hash);
+    }
+
+    expect(imageHashes.size).toBe(7);
+  });
+
+  it("all 6 new Tier-1 Solar Panels from supplier sheets exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+    const newPanels = PRODUCTS.filter((p) => 
+      p.category === "Solar Panels" && 
+      (p.brand === "Sungene" || p.brand === "JMS" || p.brand === "Yingli")
+    );
+    expect(newPanels.length).toBe(6);
+
+    const expectedPrices: Record<string, number> = {
+      "SUNGENE-PV-330W-MONO": 67200,
+      "SUNGENE-PV-650W-MONO": 172800,
+      "JMS-PV-550W-MONO": 174000,
+      "JMS-PV-630W-MONO": 177600,
+      "YINGLI-PV-620W-MONO": 177600,
+      "YINGLI-PV-625W-MONO": 177600,
+    };
+
+    const imageHashes = new Set<string>();
+
+    for (const p of newPanels) {
+      expect(p.image_url).toBeTruthy();
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Panel product image must exist: ${filePath}`).toBe(true);
+
+      const expectedPrice = expectedPrices[p.sku || ""];
+      expect(p.numeric_price, `Price check for ${p.name}`).toBe(expectedPrice);
+
+      const fileBuf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
+      imageHashes.add(hash);
+    }
+
+    expect(imageHashes.size).toBe(6);
   });
 });
 
