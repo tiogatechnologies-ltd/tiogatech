@@ -172,100 +172,605 @@ async function main() {
   results.push('bread-bat-15-6k.webp');
 
   // =========================================================================
-  // 4. SOLAR PANELS (15 Items) - AUTHENTIC UNBRANDED MONOCRYSTALLINE HARDWARE
-  // NO LONGI OR COMPETITOR BADGES, CLEAN STUDIO WHITE BACKGROUND
+  // 4. SOLAR PANELS (15 Items) - DIFFERENTIATED AUTHENTIC HARDWARE
+  // NO LONGI OR COMPETITOR BADGES, VISUALLY DISTINCT WATTAGE TIERS
   // =========================================================================
   console.log('Processing Solar Panels...');
-  const panelModels = [
-    { sku: 'bread-pv-280w', rows: 14, cols: 4, label: '280W Mono PV Module', frame: '#2B2F38', halfCut: false, bifacial: false, widthRatio: 0.65 },
-    { sku: 'bread-pv-200w', rows: 9, cols: 4, label: '200W Compact Mono Module', frame: '#B0B5BC', halfCut: false, bifacial: false, widthRatio: 0.58 },
-    { sku: 'bread-pv-450w', rows: 20, cols: 6, label: '440W-455W Half-Cut Module', frame: '#2B2F38', halfCut: true, bifacial: false, widthRatio: 0.68 },
-    { sku: 'bread-pv-465w', rows: 20, cols: 6, label: '460W-465W Half-Cut Module', frame: '#1E232A', halfCut: true, bifacial: false, widthRatio: 0.685 },
-    { sku: 'bread-pv-475w', rows: 22, cols: 6, label: '470W-475W Half-Cut Module', frame: '#2B2F38', halfCut: true, bifacial: false, widthRatio: 0.69 },
-    { sku: 'bread-pv-485w', rows: 22, cols: 6, label: '480W-485W Half-Cut Module', frame: '#1E232A', halfCut: true, bifacial: false, widthRatio: 0.695 },
-    { sku: 'bread-pv-495w', rows: 24, cols: 6, label: '490W-495W Multi-Busbar Module', frame: '#2B2F38', halfCut: true, bifacial: false, widthRatio: 0.70 },
-    { sku: 'bread-pv-505w', rows: 24, cols: 6, label: '500W-505W Multi-Busbar Module', frame: '#1E232A', halfCut: true, bifacial: false, widthRatio: 0.705 },
-    { sku: 'bread-pv-515w', rows: 24, cols: 6, label: '510W-515W High Efficiency Module', frame: '#2B2F38', halfCut: true, bifacial: false, widthRatio: 0.71 },
-    { sku: 'bread-pv-585w', rows: 24, cols: 6, label: '550W/585W 182mm Wafer Module', frame: '#1E232A', halfCut: true, bifacial: false, widthRatio: 0.72 },
-    { sku: 'bread-pv-600w', rows: 24, cols: 6, label: '590W-600W High Output Module', frame: '#2B2F38', halfCut: true, bifacial: true, widthRatio: 0.725 },
-    { sku: 'bread-pv-615w', rows: 26, cols: 6, label: '610W-615W Bifacial Dual-Glass', frame: '#B0B5BC', halfCut: true, bifacial: true, widthRatio: 0.73 },
-    { sku: 'bread-pv-625w', rows: 26, cols: 6, label: '620W-625W Bifacial Dual-Glass', frame: '#1E232A', halfCut: true, bifacial: true, widthRatio: 0.735 },
-    { sku: 'bread-pv-660w', rows: 22, cols: 6, label: '650W-660W 210mm Ultra-Power', frame: '#2B2F38', halfCut: true, bifacial: true, widthRatio: 0.76 },
-    { sku: 'bread-pv-680w', rows: 22, cols: 6, label: '675W/680W 210mm Flagship Bifacial', frame: '#1E232A', halfCut: true, bifacial: true, widthRatio: 0.77 }
-  ];
 
-  for (let idx = 0; idx < panelModels.length; idx++) {
-    const p = panelModels[idx];
-    const pw = Math.round(520 * p.widthRatio);
-    const ph = 680;
+  function buildSolarPanelSvg(config) {
+    const {
+      sku,
+      pw,
+      ph,
+      cols,
+      rows,
+      frameColors,
+      frameStroke,
+      frameInnerFill,
+      frameBorder = 10,
+      waferColors,
+      busbars,
+      busbarColor,
+      busbarWidth,
+      cellCornerCut = 0,
+      hasDiodeSplit = false,
+      splitGap = 12,
+      allBlack = false,
+      topconSheen = false,
+      blueSheen = false,
+      bifacial = false,
+      dualGlassSheen = false,
+      heavyCorners = false,
+      cornerRivets = false,
+      cornerBrackets = false,
+      sideClamps = false,
+      hasCables = false,
+      flagship = false,
+    } = config;
+
     const px = Math.round((800 - pw) / 2);
-    const py = 60;
-    const cellW = (pw - 24) / p.cols;
-    const cellH = (ph - 30) / p.rows;
+    const py = Math.round((800 - ph) / 2);
+    const innerW = pw - frameBorder * 2;
+    const innerH = ph - frameBorder * 2;
+    const innerX = px + frameBorder;
+    const innerY = py + frameBorder;
+
+    const halfRow = rows / 2;
+    const totalSplitGap = hasDiodeSplit ? splitGap : 0;
+    const usableH = innerH - totalSplitGap;
+    const cellW = innerW / cols;
+    const cellH = usableH / rows;
 
     let cellGrid = '';
-    for (let r = 0; r < p.rows; r++) {
-      for (let c = 0; c < p.cols; c++) {
-        const cx = px + 12 + c * cellW;
-        const cy = py + 15 + r * cellH;
-        // Subtle half-cut gap
-        const yOffset = p.halfCut && r >= p.rows / 2 ? 4 : 0;
-        cellGrid += `<rect x="${cx + 1}" y="${cy + 1 + yOffset}" width="${cellW - 2}" height="${cellH - 2}" rx="1" fill="url(#waferGrad)" stroke="#111B27" stroke-width="0.7"/>`;
-        // Vertical busbar silver lines
-        cellGrid += `<line x1="${cx + cellW * 0.25}" y1="${cy + yOffset}" x2="${cx + cellW * 0.25}" y2="${cy + cellH + yOffset}" stroke="#C5D3E0" stroke-width="0.8" opacity="0.85"/>`;
-        cellGrid += `<line x1="${cx + cellW * 0.5}" y1="${cy + yOffset}" x2="${cx + cellW * 0.5}" y2="${cy + cellH + yOffset}" stroke="#C5D3E0" stroke-width="0.8" opacity="0.85"/>`;
-        cellGrid += `<line x1="${cx + cellW * 0.75}" y1="${cy + yOffset}" x2="${cx + cellW * 0.75}" y2="${cy + cellH + yOffset}" stroke="#C5D3E0" stroke-width="0.8" opacity="0.85"/>`;
+
+    // For bifacial, generate faint rear busbar grid first
+    if (bifacial) {
+      for (let c = 0; c < cols; c++) {
+        for (let b = 1; b <= 4; b++) {
+          const lx = innerX + c * cellW + (cellW * b) / 5;
+          cellGrid += `<line x1="${lx}" y1="${innerY}" x2="${lx}" y2="${innerY + innerH}" stroke="#8898AA" stroke-width="0.5" opacity="0.35" stroke-dasharray="3,3"/>`;
+        }
       }
     }
 
-    const svg = `
+    // Generate cells
+    for (let r = 0; r < rows; r++) {
+      const isBottomHalf = hasDiodeSplit && r >= halfRow;
+      const yOffset = isBottomHalf ? splitGap : 0;
+      const cy = innerY + r * cellH + yOffset;
+
+      for (let c = 0; c < cols; c++) {
+        const cx = innerX + c * cellW;
+        const pad = allBlack ? 0.4 : (bifacial ? 1.0 : 0.8);
+        const cw = cellW - pad * 2;
+        const ch = cellH - pad * 2;
+        const cellX = cx + pad;
+        const cellY = cy + pad;
+
+        if (cellCornerCut > 0) {
+          const cut = cellCornerCut;
+          const pts = `
+            ${cellX + cut},${cellY}
+            ${cellX + cw - cut},${cellY}
+            ${cellX + cw},${cellY + cut}
+            ${cellX + cw},${cellY + ch - cut}
+            ${cellX + cw - cut},${cellY + ch}
+            ${cellX + cut},${cellY + ch}
+            ${cellX},${cellY + ch - cut}
+            ${cellX},${cellY + cut}
+          `.trim().replace(/\\s+/g, ' ');
+          cellGrid += `<polygon points="${pts}" fill="url(#waferGrad_${sku})" stroke="#09101B" stroke-width="0.6"/>`;
+        } else {
+          cellGrid += `<rect x="${cellX}" y="${cellY}" width="${cw}" height="${ch}" rx="${allBlack ? 0 : 0.6}" fill="url(#waferGrad_${sku})" stroke="${allBlack ? '#0A0D12' : '#0B131F'}" stroke-width="${allBlack ? 0.3 : 0.5}"/>`;
+        }
+
+        // Busbars on this cell
+        for (let b = 1; b <= busbars; b++) {
+          const bx = cellX + (cw * b) / (busbars + 1);
+          const lineTop = cellY;
+          const lineBot = cellY + ch;
+          cellGrid += `<line x1="${bx}" y1="${lineTop}" x2="${bx}" y2="${lineBot}" stroke="${busbarColor}" stroke-width="${busbarWidth}" opacity="0.9"/>`;
+        }
+      }
+    }
+
+    // Center diode split tabs if half-cut
+    let splitGraphics = '';
+    if (hasDiodeSplit && !allBlack) {
+      const splitY = innerY + halfRow * cellH;
+      splitGraphics += `<rect x="${innerX}" y="${splitY}" width="${innerW}" height="${splitGap}" fill="${bifacial ? '#FFFFFF' : '#FFFFFF'}"/>`;
+      const numDiodes = pw > 440 ? 4 : 3;
+      const diodeW = 28;
+      const diodeH = Math.max(4, splitGap - 4);
+      const dY = splitY + (splitGap - diodeH) / 2;
+      for (let d = 0; d < numDiodes; d++) {
+        const dX = innerX + innerW * ((d + 1) / (numDiodes + 1)) - diodeW / 2;
+        splitGraphics += `<rect x="${dX}" y="${dY}" width="${diodeW}" height="${diodeH}" rx="1.5" fill="#8E9BAA" stroke="#5E6B7A" stroke-width="0.8"/>`;
+        splitGraphics += `<line x1="${dX + 4}" y1="${dY + diodeH/2}" x2="${dX + diodeW - 4}" y2="${dY + diodeH/2}" stroke="#CBD5E1" stroke-width="0.8"/>`;
+      }
+    }
+
+    // Frame corner hardware
+    let cornerHardware = '';
+    if (cornerRivets) {
+      cornerHardware += `
+        <circle cx="${px + 5}" cy="${py + 5}" r="2.5" fill="#E2E8F0" stroke="#334155" stroke-width="0.8"/>
+        <circle cx="${px + pw - 5}" cy="${py + 5}" r="2.5" fill="#E2E8F0" stroke="#334155" stroke-width="0.8"/>
+        <circle cx="${px + 5}" cy="${py + ph - 5}" r="2.5" fill="#E2E8F0" stroke="#334155" stroke-width="0.8"/>
+        <circle cx="${px + pw - 5}" cy="${py + ph - 5}" r="2.5" fill="#E2E8F0" stroke="#334155" stroke-width="0.8"/>
+      `;
+    } else if (cornerBrackets) {
+      cornerHardware += `
+        <path d="M ${px+2} ${py+16} L ${px+2} ${py+2} L ${px+16} ${py+2}" fill="none" stroke="#7E8B9B" stroke-width="2.5"/>
+        <path d="M ${px+pw-2} ${py+16} L ${px+pw-2} ${py+2} L ${px+pw-16} ${py+2}" fill="none" stroke="#7E8B9B" stroke-width="2.5"/>
+        <path d="M ${px+2} ${py+ph-16} L ${px+2} ${py+ph-2} L ${px+16} ${py+ph-2}" fill="none" stroke="#7E8B9B" stroke-width="2.5"/>
+        <path d="M ${px+pw-2} ${py+ph-16} L ${px+pw-2} ${py+ph-2} L ${px+pw-16} ${py+ph-2}" fill="none" stroke="#7E8B9B" stroke-width="2.5"/>
+        <circle cx="${px + 7}" cy="${py + 7}" r="2" fill="#475569"/>
+        <circle cx="${px + pw - 7}" cy="${py + 7}" r="2" fill="#475569"/>
+        <circle cx="${px + 7}" cy="${py + ph - 7}" r="2" fill="#475569"/>
+        <circle cx="${px + pw - 7}" cy="${py + ph - 7}" r="2" fill="#475569"/>
+      `;
+    } else if (heavyCorners) {
+      cornerHardware += `
+        <polygon points="${px},${py} ${px + 18},${py} ${px},${py + 18}" fill="#1E232B"/>
+        <polygon points="${px + pw},${py} ${px + pw - 18},${py} ${px + pw},${py + 18}" fill="#1E232B"/>
+        <polygon points="${px},${py + ph} ${px + 18},${py + ph} ${px},${py + ph - 18}" fill="#1E232B"/>
+        <polygon points="${px + pw},${py + ph} ${px + pw - 18},${py + ph} ${px + pw},${py + ph - 18}" fill="#1E232B"/>
+      `;
+    } else if (flagship) {
+      cornerHardware += `
+        <polygon points="${px},${py} ${px + 22},${py} ${px},${py + 22}" fill="#0A0C10" stroke="#333D4B" stroke-width="1"/>
+        <polygon points="${px + pw},${py} ${px + pw - 22},${py} ${px + pw},${py + 22}" fill="#0A0C10" stroke="#333D4B" stroke-width="1"/>
+        <polygon points="${px},${py + ph} ${px + 22},${py + ph} ${px},${py + ph - 22}" fill="#0A0C10" stroke="#333D4B" stroke-width="1"/>
+        <polygon points="${px + pw},${py + ph} ${px + pw - 22},${py + ph} ${px + pw},${py + ph - 22}" fill="#0A0C10" stroke="#333D4B" stroke-width="1"/>
+      `;
+    } else {
+      cornerHardware += `
+        <circle cx="${px + 5}" cy="${py + 5}" r="1.8" fill="#8892A0" opacity="0.8"/>
+        <circle cx="${px + pw - 5}" cy="${py + 5}" r="1.8" fill="#8892A0" opacity="0.8"/>
+        <circle cx="${px + 5}" cy="${py + ph - 5}" r="1.8" fill="#8892A0" opacity="0.8"/>
+        <circle cx="${px + pw - 5}" cy="${py + ph - 5}" r="1.8" fill="#8892A0" opacity="0.8"/>
+      `;
+    }
+
+    // Side mounting clamp blocks for bifacial dual-glass modules
+    let clampsSvg = '';
+    if (sideClamps) {
+      const clampH = 34;
+      const clampW = 8;
+      const y1 = py + ph * 0.25 - clampH / 2;
+      const y2 = py + ph * 0.75 - clampH / 2;
+      const clampColor = frameColors[1];
+      clampsSvg = `
+        <rect x="${px - 4}" y="${y1}" width="${clampW}" height="${clampH}" rx="2" fill="${clampColor}" stroke="${frameStroke}" stroke-width="1"/>
+        <rect x="${px + pw - 4}" y="${y1}" width="${clampW}" height="${clampH}" rx="2" fill="${clampColor}" stroke="${frameStroke}" stroke-width="1"/>
+        <rect x="${px - 4}" y="${y2}" width="${clampW}" height="${clampH}" rx="2" fill="${clampColor}" stroke="${frameStroke}" stroke-width="1"/>
+        <rect x="${px + pw - 4}" y="${y2}" width="${clampW}" height="${clampH}" rx="2" fill="${clampColor}" stroke="${frameStroke}" stroke-width="1"/>
+        <circle cx="${px}" cy="${y1 + clampH/2}" r="2" fill="#E2E8F0"/>
+        <circle cx="${px + pw}" cy="${y1 + clampH/2}" r="2" fill="#E2E8F0"/>
+        <circle cx="${px}" cy="${y2 + clampH/2}" r="2" fill="#E2E8F0"/>
+        <circle cx="${px + pw}" cy="${y2 + clampH/2}" r="2" fill="#E2E8F0"/>
+      `;
+    }
+
+    // Cables lead for 600W
+    let cablesSvg = '';
+    if (hasCables) {
+      cablesSvg = `
+        <g opacity="0.9">
+          <rect x="${px + 30}" y="${py - 8}" width="60" height="12" rx="2" fill="#181B20" stroke="#333944" stroke-width="1"/>
+          <path d="M ${px + 45} ${py - 4} C ${px + 20} ${py - 25}, ${px - 15} ${py - 10}, ${px - 10} ${py + 25}" fill="none" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+          <path d="M ${px + 75} ${py - 4} C ${px + 90} ${py - 28}, ${px + 120} ${py - 15}, ${px + 105} ${py + 20}" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+          <rect x="${px - 14}" y="${py + 24}" width="8" height="14" rx="2" fill="#0F172A"/>
+          <rect x="${px + 101}" y="${py + 18}" width="8" height="14" rx="2" fill="#0F172A"/>
+        </g>
+      `;
+    }
+
+    // Glare sheens
+    let glareSvg = '';
+    if (topconSheen) {
+      glareSvg = `
+        <polygon points="${innerX},${innerY} ${innerX + innerW * 0.65},${innerY} ${innerX},${innerY + innerH * 0.65}" fill="url(#topconGlare_${sku})"/>
+        <polygon points="${innerX + innerW * 0.3},${innerY + innerH} ${innerX + innerW},${innerY + innerH * 0.4} ${innerX + innerW},${innerY + innerH}" fill="url(#cyanGlare_${sku})" opacity="0.5"/>
+      `;
+    } else if (dualGlassSheen) {
+      glareSvg = `
+        <polygon points="${innerX},${innerY} ${innerX + innerW * 0.75},${innerY} ${innerX},${innerY + innerH * 0.7}" fill="url(#glassSheen_${sku})"/>
+        <polygon points="${innerX + innerW * 0.35},${innerY} ${innerX + innerW},${innerY} ${innerX + innerW},${innerY + innerH * 0.5} ${innerX},${innerY + innerH * 0.9}" fill="url(#glassSheen_${sku})" opacity="0.45"/>
+      `;
+    } else if (allBlack) {
+      glareSvg = `
+        <polygon points="${innerX},${innerY} ${innerX + innerW * 0.55},${innerY} ${innerX},${innerY + innerH * 0.55}" fill="url(#allBlackSheen_${sku})"/>
+      `;
+    } else {
+      glareSvg = `
+        <polygon points="${innerX},${innerY} ${innerX + innerW * 0.7},${innerY} ${innerX},${innerY + innerH * 0.75}" fill="url(#glassSheen_${sku})"/>
+      `;
+    }
+
+    return `
       <svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="waferGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0E1B2E"/>
-            <stop offset="60%" stop-color="#08101C"/>
-            <stop offset="100%" stop-color="#050912"/>
+          <linearGradient id="waferGrad_${sku}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="${waferColors[0]}"/>
+            <stop offset="60%" stop-color="${waferColors[1]}"/>
+            <stop offset="100%" stop-color="${waferColors[2]}"/>
           </linearGradient>
-          <linearGradient id="frameGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="${p.frame}"/>
-            <stop offset="50%" stop-color="#5B6574"/>
-            <stop offset="100%" stop-color="${p.frame}"/>
+
+          <linearGradient id="frameGrad_${sku}" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="${frameColors[0]}"/>
+            <stop offset="50%" stop-color="${frameColors[1]}"/>
+            <stop offset="100%" stop-color="${frameColors[2]}"/>
           </linearGradient>
-          <linearGradient id="glassSheen" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.25"/>
-            <stop offset="35%" stop-color="#FFFFFF" stop-opacity="0.06"/>
-            <stop offset="65%" stop-color="#3A82EE" stop-opacity="0.08"/>
+
+          <linearGradient id="glassSheen_${sku}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.24"/>
+            <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.06"/>
+            <stop offset="70%" stop-color="#38BDF8" stop-opacity="0.08"/>
             <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
           </linearGradient>
-          <filter id="panelDrop" x="-10%" y="-10%" width="130%" height="130%">
-            <feDropShadow dx="0" dy="16" stdDeviation="22" flood-color="#0A101D" flood-opacity="0.22"/>
+
+          <linearGradient id="allBlackSheen_${sku}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.12"/>
+            <stop offset="45%" stop-color="#FFFFFF" stop-opacity="0.03"/>
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+          </linearGradient>
+
+          <linearGradient id="topconGlare_${sku}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#A855F7" stop-opacity="0.18"/>
+            <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.14"/>
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+          </linearGradient>
+
+          <linearGradient id="cyanGlare_${sku}" x1="100%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+          </linearGradient>
+
+          <filter id="panelDrop_${sku}" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="16" stdDeviation="22" flood-color="#0A101D" flood-opacity="0.20"/>
           </filter>
         </defs>
 
         <rect width="800" height="800" fill="#FFFFFF"/>
 
-        <!-- Main Panel Body -->
-        <g filter="url(#panelDrop)">
-          <!-- Outer Anodized Aluminium Frame -->
-          <rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="6" fill="url(#frameGrad)" stroke="#4A5260" stroke-width="1.5"/>
-          <!-- Inner Frame Recess -->
-          <rect x="${px + 8}" y="${py + 8}" width="${pw - 16}" height="${ph - 16}" rx="3" fill="#060C16" stroke="#1A2433" stroke-width="1"/>
+        ${cablesSvg}
 
-          <!-- Silicon Wafers Matrix -->
+        <!-- Main Panel Body -->
+        <g filter="url(#panelDrop_${sku})">
+          <!-- Outer Frame -->
+          <rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="5" fill="url(#frameGrad_${sku})" stroke="${frameStroke}" stroke-width="1.6"/>
+          
+          <!-- Inner Frame Recess & Backsheet Base -->
+          <rect x="${innerX}" y="${innerY}" width="${innerW}" height="${innerH}" rx="2" fill="${frameInnerFill}" stroke="${allBlack ? '#07090C' : '#141E2D'}" stroke-width="0.8"/>
+
+          <!-- Cell Matrix -->
           ${cellGrid}
 
-          <!-- Glass Reflection Sheen -->
-          <polygon points="${px + 8},${py + 8} ${px + pw * 0.7},${py + 8} ${px + 8},${py + ph * 0.75}" fill="url(#glassSheen)"/>
+          <!-- Center Diode Split if Applicable -->
+          ${splitGraphics}
 
-          <!-- Subtle Frame Corner Hardware Clips -->
-          <circle cx="${px + 6}" cy="${py + 6}" r="2" fill="#8892A0"/>
-          <circle cx="${px + pw - 6}" cy="${py + 6}" r="2" fill="#8892A0"/>
-          <circle cx="${px + 6}" cy="${py + ph - 6}" r="2" fill="#8892A0"/>
-          <circle cx="${px + pw - 6}" cy="${py + ph - 6}" r="2" fill="#8892A0"/>
+          <!-- Glass Reflections -->
+          ${glareSvg}
+
+          <!-- Corner Hardware -->
+          ${cornerHardware}
+
+          <!-- Side Mounting Clamps -->
+          ${clampsSvg}
         </g>
       </svg>
     `;
+  }
 
+  const panelModels = [
+    // 1. 200W Compact Mono (Squat 400x520, 36 pseudo-square cells with white diamonds)
+    {
+      sku: 'bread-pv-200w',
+      pw: 410,
+      ph: 520,
+      cols: 4,
+      rows: 9,
+      frameColors: ['#E2E7ED', '#9BA6B5', '#CCD5E0'],
+      frameStroke: '#64748B',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#0E1B2E', '#08111D', '#040810'],
+      busbars: 4,
+      busbarColor: '#C4D1DE',
+      busbarWidth: 1.1,
+      cellCornerCut: 6,
+      hasDiodeSplit: false,
+      cornerBrackets: true,
+    },
+    // 2. 280W Promotion Mono (60 pseudo-square cells with charcoal frame)
+    {
+      sku: 'bread-pv-280w',
+      pw: 410,
+      ph: 600,
+      cols: 4,
+      rows: 15,
+      frameColors: ['#282C35', '#4A5160', '#282C35'],
+      frameStroke: '#1E222A',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#0B1524', '#060D18', '#03070E'],
+      busbars: 5,
+      busbarColor: '#B0BDCC',
+      busbarWidth: 0.9,
+      cellCornerCut: 4.5,
+      hasDiodeSplit: false,
+    },
+    // 3. 450W Half-Cut Silver (120 half-cut cells, white backsheet, center split)
+    {
+      sku: 'bread-pv-450w',
+      pw: 370,
+      ph: 660,
+      cols: 6,
+      rows: 20,
+      frameColors: ['#D6DCE4', '#8E99A8', '#C8CFDA'],
+      frameStroke: '#5B6777',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#091424', '#050C18', '#02060E'],
+      busbars: 9,
+      busbarColor: '#CAD5E2',
+      busbarWidth: 0.6,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 14,
+    },
+    // 4. 465W All-Black Architectural (Matte black frame, black backsheet, dark busbars)
+    {
+      sku: 'bread-pv-465w',
+      pw: 370,
+      ph: 660,
+      cols: 6,
+      rows: 20,
+      frameColors: ['#12151A', '#222731', '#12151A'],
+      frameStroke: '#080A0D',
+      frameInnerFill: '#0A0C10',
+      frameBorder: 10,
+      waferColors: ['#0C0F14', '#06080B', '#020305'],
+      busbars: 9,
+      busbarColor: '#282F3B',
+      busbarWidth: 0.5,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 6,
+      allBlack: true,
+    },
+    // 5. 475W Half-Cut Titanium 132-cell
+    {
+      sku: 'bread-pv-475w',
+      pw: 380,
+      ph: 675,
+      cols: 6,
+      rows: 22,
+      frameColors: ['#464D56', '#687280', '#464D56'],
+      frameStroke: '#2D333B',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#091322', '#050C17', '#02060D'],
+      busbars: 10,
+      busbarColor: '#D0DAE5',
+      busbarWidth: 0.5,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 12,
+    },
+    // 6. 485W Midnight Blue (Deep royal sapphire monocrystalline wafer sheen)
+    {
+      sku: 'bread-pv-485w',
+      pw: 380,
+      ph: 675,
+      cols: 6,
+      rows: 22,
+      frameColors: ['#2A303A', '#454E5E', '#2A303A'],
+      frameStroke: '#1E232B',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#0E2244', '#081730', '#040D1C'],
+      busbars: 10,
+      busbarColor: '#C0D0E2',
+      busbarWidth: 0.5,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 12,
+      blueSheen: true,
+    },
+    // 7. 495W Commercial Silver 144-cell (Tall 2m commercial format)
+    {
+      sku: 'bread-pv-495w',
+      pw: 375,
+      ph: 700,
+      cols: 6,
+      rows: 24,
+      frameColors: ['#D2D8E0', '#929DAA', '#C6CDD7'],
+      frameStroke: '#5B6776',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#081220', '#040B15', '#02050B'],
+      busbars: 9,
+      busbarColor: '#CAD5E2',
+      busbarWidth: 0.6,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 14,
+    },
+    // 8. 505W Contrast Black Frame (Matte black frame with high-contrast white cell borders)
+    {
+      sku: 'bread-pv-505w',
+      pw: 375,
+      ph: 700,
+      cols: 6,
+      rows: 24,
+      frameColors: ['#15181E', '#2A303B', '#15181E'],
+      frameStroke: '#0A0C10',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#08111F', '#040913', '#010408'],
+      busbars: 10,
+      busbarColor: '#D8E2EC',
+      busbarWidth: 0.6,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 14,
+      cornerRivets: true,
+    },
+    // 9. 515W N-Type TOPCon Micro-Wire (16BB dense micro-mesh with cyan-violet iridescence)
+    {
+      sku: 'bread-pv-515w',
+      pw: 380,
+      ph: 705,
+      cols: 6,
+      rows: 24,
+      frameColors: ['#E0E5ED', '#9BA6B5', '#D5DDE7'],
+      frameStroke: '#64748B',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#0A1424', '#060E1B', '#02060E'],
+      busbars: 16,
+      busbarColor: '#B4C3D4',
+      busbarWidth: 0.32,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 12,
+      topconSheen: true,
+    },
+    // 10. 585W 182mm M10 Large Wafer (405px wide body with heavy black corner caps)
+    {
+      sku: 'bread-pv-585w',
+      pw: 405,
+      ph: 710,
+      cols: 6,
+      rows: 24,
+      frameColors: ['#D6DCE4', '#949FAE', '#CBD1DA'],
+      frameStroke: '#5E6B7A',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#07101C', '#040A12', '#010408'],
+      busbars: 11,
+      busbarColor: '#CAD4E0',
+      busbarWidth: 0.55,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 16,
+      heavyCorners: true,
+    },
+    // 11. 600W High Output with Structural Leads (Top junction cables & MC4 connectors)
+    {
+      sku: 'bread-pv-600w',
+      pw: 410,
+      ph: 705,
+      cols: 6,
+      rows: 24,
+      frameColors: ['#D2D9E2', '#8B96A6', '#C2CAD5'],
+      frameStroke: '#475569',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#081220', '#040A13', '#010407'],
+      busbars: 11,
+      busbarColor: '#D0DBE7',
+      busbarWidth: 0.55,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 14,
+      hasCables: true,
+    },
+    // 12. 615W Bifacial Dual-Glass Silver (Slim clamp frame, side clamps, rear grid reflection)
+    {
+      sku: 'bread-pv-615w',
+      pw: 415,
+      ph: 715,
+      cols: 6,
+      rows: 24,
+      frameColors: ['#CBD3DD', '#919CA9', '#C2CAD4'],
+      frameStroke: '#64748B',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 6,
+      waferColors: ['#070F1A', '#040912', '#02050A'],
+      busbars: 12,
+      busbarColor: '#D0DAE5',
+      busbarWidth: 0.5,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 12,
+      bifacial: true,
+      dualGlassSheen: true,
+      sideClamps: true,
+    },
+    // 13. 625W Bifacial Dual-Glass Black (Black slim clamp frame, side clamps, translucent gaps)
+    {
+      sku: 'bread-pv-625w',
+      pw: 415,
+      ph: 715,
+      cols: 6,
+      rows: 24,
+      frameColors: ['#14171D', '#272C36', '#14171D'],
+      frameStroke: '#0B0D11',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 6,
+      waferColors: ['#070E18', '#030810', '#010307'],
+      busbars: 12,
+      busbarColor: '#C0CBD8',
+      busbarWidth: 0.5,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 12,
+      bifacial: true,
+      dualGlassSheen: true,
+      sideClamps: true,
+    },
+    // 14. 660W 210mm G12 Ultra-Power Silver (Massive 455px wide body, 132 giant half-cells)
+    {
+      sku: 'bread-pv-660w',
+      pw: 455,
+      ph: 710,
+      cols: 6,
+      rows: 22,
+      frameColors: ['#D4DAE2', '#8F9AA9', '#C5CCD6'],
+      frameStroke: '#4B5565',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#07101B', '#040911', '#010408'],
+      busbars: 12,
+      busbarColor: '#CAD4E0',
+      busbarWidth: 0.6,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 16,
+      bifacial: true,
+      heavyCorners: true,
+    },
+    // 15. 680W 210mm G12 Flagship Utility Black (Flagship 460px wide body, reinforced black utility frame)
+    {
+      sku: 'bread-pv-680w',
+      pw: 460,
+      ph: 715,
+      cols: 6,
+      rows: 22,
+      frameColors: ['#12151B', '#242933', '#12151B'],
+      frameStroke: '#090B0E',
+      frameInnerFill: '#FFFFFF',
+      frameBorder: 10,
+      waferColors: ['#060D17', '#03070E', '#010306'],
+      busbars: 12,
+      busbarColor: '#C5D0DC',
+      busbarWidth: 0.6,
+      cellCornerCut: 0,
+      hasDiodeSplit: true,
+      splitGap: 16,
+      bifacial: true,
+      dualGlassSheen: true,
+      flagship: true,
+    },
+  ];
+
+  for (let idx = 0; idx < panelModels.length; idx++) {
+    const p = panelModels[idx];
+    const svg = buildSolarPanelSvg(p);
     const webp = await renderSvgToWebp(svg);
     fs.writeFileSync(path.join(outputDir, `${p.sku}.webp`), webp);
     results.push(`${p.sku}.webp`);
