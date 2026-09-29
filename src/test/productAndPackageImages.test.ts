@@ -520,6 +520,24 @@ describe("Product and Package Real Images", () => {
 
     expect(imageHashes.size).toBe(6);
   });
+
+  it("all products across the entire catalog have 100% unique image files and hashes with zero duplicates", () => {
+    const fileHashMap = new Map<string, string>();
+    for (const p of PRODUCTS) {
+      if (!p.image_url) continue;
+      const rel = p.image_url.startsWith("/") ? p.image_url.slice(1) : p.image_url;
+      const filePath = path.resolve("public", rel);
+      expect(fs.existsSync(filePath), `Image exists for ${p.name}: ${filePath}`).toBe(true);
+      const buf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(buf).digest("hex");
+      if (fileHashMap.has(hash)) {
+        const existing = fileHashMap.get(hash);
+        expect.fail(`Duplicate image hash found between "${existing}" and "${p.name}" (file: ${p.image_url})`);
+      }
+      fileHashMap.set(hash, p.name);
+    }
+    expect(fileHashMap.size).toBe(PRODUCTS.length);
+  });
 });
 
 
