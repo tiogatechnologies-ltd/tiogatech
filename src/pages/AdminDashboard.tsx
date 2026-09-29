@@ -392,7 +392,7 @@ const AdminDashboard = () => {
           {isAdmin && stats && (
             <div className="rounded-2xl border border-border bg-card p-5 flex flex-wrap items-center gap-4 justify-between">
               <div className="flex items-center gap-3">
-                <span className="h-10 w-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center"><CheckCircle2 size={18} /></span>
+                <CheckCircle2 size={24} className="text-primary shrink-0" />
                 <div>
                   <p className="text-sm font-semibold text-card-foreground">Catalog health</p>
                   <p className="text-xs text-muted-foreground">{stats.totalProducts} products • {stats.newsletterSubs} newsletter subscribers</p>

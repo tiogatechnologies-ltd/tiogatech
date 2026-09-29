@@ -77,9 +77,7 @@ const FeatureHighlightPopup = () => {
             onClick={dismiss}
             className="group flex items-center gap-3 rounded-2xl border border-border bg-background hover:bg-muted/60 p-3 transition-all"
           >
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
-              <Calculator size={18} />
-            </span>
+            <Calculator size={22} className="text-primary shrink-0" />
             <div className="min-w-0 flex-1">
               <p className="font-semibold text-sm text-foreground leading-tight">Energy Calculator</p>
               <p className="text-[11px] text-muted-foreground leading-snug">
@@ -94,9 +92,7 @@ const FeatureHighlightPopup = () => {
             onClick={dismiss}
             className="group flex items-center gap-3 rounded-2xl border border-border bg-background hover:bg-muted/60 p-3 transition-all"
           >
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/15 text-accent-foreground shrink-0">
-              <Wallet size={18} />
-            </span>
+            <Wallet size={22} className="text-accent shrink-0" />
             <div className="min-w-0 flex-1">
               <p className="font-semibold text-sm text-foreground leading-tight">Flexible Payment</p>
               <p className="text-[11px] text-muted-foreground leading-snug">

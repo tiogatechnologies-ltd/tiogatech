@@ -31,8 +31,14 @@ const NewsletterConfirm = () => {
       <SiteHeader />
       <section className="pt-28 sm:pt-32 pb-20">
         <div className="section-container max-w-md text-center">
-          <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary mb-5">
-            {state === "loading" ? <Loader2 className="animate-spin" /> : state === "ok" ? <CheckCircle2 size={28} /> : <XCircle size={28} className="text-destructive" />}
+          <div className="mb-5">
+            {state === "loading" ? (
+              <Loader2 className="animate-spin mx-auto text-primary" size={36} />
+            ) : state === "ok" ? (
+              <CheckCircle2 size={36} className="mx-auto text-primary" />
+            ) : (
+              <XCircle size={36} className="mx-auto text-destructive" />
+            )}
           </div>
           <h1 className="font-display text-3xl font-bold no-clip">
             {state === "loading" ? "Confirming…" : state === "ok" ? "You're in!" : "Confirmation failed"}

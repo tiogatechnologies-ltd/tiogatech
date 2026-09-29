@@ -391,10 +391,8 @@ export const SolarPackageDetail = () => {
                 { icon: Wrench, label: "Accessories & Cabling", value: "DC breakers, surge protector, cabling, mounting", price: pkg.accessories_price },
                 { icon: CheckCircle2, label: "Professional Installation", value: "Certified Tioga engineers - 48–72h scheduling", price: pkg.setup_fee },
               ].map(({ icon: Icon, label, value, price }) => (
-                <div key={label} className="flex gap-4 p-4 rounded-2xl bg-card border border-border shadow-sm">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
-                    <Icon size={18} />
-                  </span>
+                <div key={label} className="flex gap-3.5 p-4 rounded-2xl bg-card border border-border shadow-sm items-start">
+                  <Icon size={22} className="text-primary shrink-0 mt-0.5" />
                   <div className="min-w-0">
                     <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">{label}</p>
                     <p className="text-sm font-bold text-foreground leading-snug mt-0.5">{value}</p>
@@ -436,10 +434,8 @@ export const SolarPackageDetail = () => {
             <h3 className="text-lg font-display font-semibold text-foreground mb-4 no-clip">Ideal For</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {IDEAL_FOR.map(({ label, icon: Icon, desc }) => (
-                <div key={label} className="p-4 rounded-2xl bg-card border border-border text-center">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
-                    <Icon size={20} />
-                  </div>
+                <div key={label} className="p-4 rounded-2xl bg-card border border-border text-center flex flex-col items-center">
+                  <Icon size={26} className="text-primary mx-auto mb-2.5 shrink-0" />
                   <p className="text-sm font-bold text-foreground mb-1">{label}</p>
                   <p className="text-xs text-muted-foreground">{desc}</p>
                 </div>

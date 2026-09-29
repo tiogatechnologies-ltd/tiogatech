@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -191,9 +191,7 @@ const Packages = () => {
         <div className="section-container py-3 sm:py-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
           {TRUST_STATS.map(({ icon: Icon, value, label }) => (
             <div key={label} className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <span className="grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-xl bg-primary-foreground/15 shrink-0">
-                <Icon size={15} />
-              </span>
+              <Icon size={22} className="text-primary-foreground shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-base sm:text-lg font-display font-bold leading-none">{value}</p>
                 <p className="text-[10px] sm:text-[11px] text-primary-foreground/80 leading-tight mt-0.5">{label}</p>

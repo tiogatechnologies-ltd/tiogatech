@@ -147,9 +147,7 @@ const Pricing = () => {
 
           {/* Free starter banner */}
           <div className="max-w-2xl mx-auto mb-10 rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
-              <Star size={18} />
-            </span>
+            <Star size={24} className="text-primary shrink-0" />
             <div className="flex-1">
               <p className="font-semibold text-foreground">Try Tioga AI free - 3 assessments on us</p>
               <p className="text-sm text-muted-foreground">Get a full sizing report and engineering match. No card required.</p>
@@ -178,9 +176,7 @@ const Pricing = () => {
                     </span>
                   )}
                   <div className="relative p-7 flex flex-col flex-1">
-                    <div className="w-12 h-12 rounded-2xl bg-background border border-border inline-flex items-center justify-center mb-4 text-primary">
-                      <Icon size={22} />
-                    </div>
+                    <Icon size={28} className="text-primary mb-4 shrink-0" />
                     <h3 className="font-display text-2xl font-bold">{p.name}</h3>
                     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mt-1">{p.bestFor}</p>
 

@@ -79,9 +79,7 @@ const ProblemSection = () => {
                     className="absolute inset-0 rounded-2xl p-6 bg-card border border-border shadow-[var(--shadow-card)]"
                     style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
                   >
-                    <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-4">
-                      <Icon size={22} className="text-primary" />
-                    </div>
+                    <Icon size={28} className="text-primary mb-4 shrink-0" />
                     <h3 className="text-base font-display font-semibold text-foreground mb-2">{p.title}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
                   </div>

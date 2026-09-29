@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -112,9 +112,7 @@ const Lumi = () => {
               { icon: Coins, stat: "$14B", label: "Market opportunity" },
             ].map((s) => (
               <div key={s.label} className="rounded-2xl border border-border bg-card p-6 ios-card text-center">
-                <div className="w-12 h-12 mx-auto rounded-xl bg-gold/15 flex items-center justify-center mb-3">
-                  <s.icon className="text-gold" size={22} />
-                </div>
+                <s.icon className="text-gold mx-auto mb-3" size={28} />
                 <p className="text-3xl sm:text-4xl font-display font-bold text-primary mb-1">
                   <AnimatedCounter value={s.stat} />
                 </p>
@@ -142,9 +140,7 @@ const Lumi = () => {
               { icon: Wrench, title: "Installers", desc: "Limited inventory financing and verified channels." },
             ].map((p) => (
               <div key={p.title} className="rounded-2xl border border-border bg-card p-6 ios-card">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                  <p.icon className="text-primary" size={20} />
-                </div>
+                <p.icon className="text-primary mb-3 shrink-0" size={26} />
                 <h3 className="font-display font-semibold text-foreground mb-1.5">{p.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
               </div>
@@ -170,9 +166,7 @@ const Lumi = () => {
               { icon: Briefcase, label: "NGOs & financiers" },
             ].map((a) => (
               <div key={a.label} className="rounded-2xl border border-border bg-card p-5 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gold/15 flex items-center justify-center shrink-0">
-                  <a.icon className="text-gold" size={18} />
-                </div>
+                <a.icon className="text-gold shrink-0" size={22} />
                 <p className="text-sm font-medium text-foreground leading-snug">{a.label}</p>
               </div>
             ))}
@@ -191,10 +185,8 @@ const Lumi = () => {
           </div>
           <div className="grid gap-6 lg:grid-cols-2 max-w-5xl mx-auto">
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Smartphone className="text-primary" size={22} />
-                </div>
+              <div className="flex items-center gap-2.5 mb-4">
+                <Smartphone className="text-primary shrink-0" size={24} />
                 <h3 className="font-display font-bold text-lg text-foreground">Core features</h3>
               </div>
               <ul className="space-y-2.5">
@@ -212,10 +204,8 @@ const Lumi = () => {
               </ul>
             </div>
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-11 h-11 rounded-xl bg-gold/15 flex items-center justify-center">
-                  <Cpu className="text-gold" size={22} />
-                </div>
+              <div className="flex items-center gap-2.5 mb-4">
+                <Cpu className="text-gold shrink-0" size={24} />
                 <h3 className="font-display font-bold text-lg text-foreground">MVP validates</h3>
               </div>
               <ul className="space-y-2.5">
@@ -255,14 +245,14 @@ const Lumi = () => {
           </div>
           <div className="grid gap-6 lg:grid-cols-2 mt-10">
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 ios-card">
-              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4"><Shield className="text-primary" size={22} /></div>
+              <Shield className="text-primary mb-3 shrink-0" size={28} />
               <h3 className="font-display font-bold text-xl text-foreground mb-2">Our Mission</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 To make clean energy accessible, efficient, and intelligent - expanding reliable power to homes, businesses, and communities, optimizing usage through smart metering and AI-driven insights, and delivering cost-effective, scalable solutions that empower users with full control and visibility.
               </p>
             </div>
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 ios-card">
-              <div className="w-11 h-11 rounded-xl bg-gold/15 flex items-center justify-center mb-4"><Globe className="text-gold" size={22} /></div>
+              <Globe className="text-gold mb-3 shrink-0" size={28} />
               <h3 className="font-display font-bold text-xl text-foreground mb-2">Our Vision</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 To power Africa's transition into a connected, intelligent, and sustainable energy ecosystem - where clean energy is accessible to all, systems are self-optimizing, and communities thrive through reliable power. We envision Africa leading the world in renewable energy innovation.
@@ -294,13 +284,13 @@ const Lumi = () => {
               <div key={s.title} className="rounded-3xl overflow-hidden border border-border bg-card ios-card flex flex-col sm:flex-row">
                 <div className="relative sm:w-2/5 h-44 sm:h-auto shrink-0">
                   <img src={s.img} alt={s.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-midnight/70" />
-                  <div className="absolute top-3 left-3 w-10 h-10 rounded-xl bg-card/90 backdrop-blur flex items-center justify-center text-primary shadow-sm">
-                    <s.icon size={20} />
-                  </div>
+                  <div className="absolute inset-0 bg-midnight/30" />
                 </div>
                 <div className="flex-1 p-5 sm:p-6">
-                  <h3 className="font-display font-bold text-lg text-foreground mb-1.5">{s.title}</h3>
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <s.icon size={22} className="text-primary shrink-0" />
+                    <h3 className="font-display font-bold text-lg text-foreground">{s.title}</h3>
+                  </div>
                   <p className="text-sm text-muted-foreground mb-3">{s.desc}</p>
                   <ul className="space-y-1.5">
                     {s.items.map((it) => (
@@ -349,7 +339,7 @@ const Lumi = () => {
               { icon: Globe, label: "Sustainable Impact" },
             ].map((t) => (
               <div key={t.label} className="rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-4 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-gold/20 grid place-items-center shrink-0"><t.icon className="text-gold" size={16} /></div>
+                <t.icon className="text-gold shrink-0" size={20} />
                 <p className="text-sm font-medium leading-snug">{t.label}</p>
               </div>
             ))}
@@ -400,10 +390,10 @@ const Lumi = () => {
                 <img src={s.bg} alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                 <div className="absolute inset-0 bg-midnight/95" />
                 <div className="relative h-full p-6 flex flex-col justify-end text-primary-foreground">
-                  <div className="relative w-14 h-14 rounded-2xl bg-gold text-midnight flex items-center justify-center shadow-lg mb-4">
-                    <s.icon size={24} />
-                    <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-midnight text-gold text-xs font-bold flex items-center justify-center border border-gold/40">
-                      {s.n}
+                  <div className="flex items-center justify-between mb-4">
+                    <s.icon size={28} className="text-gold" />
+                    <span className="text-xs font-bold text-gold/80 px-2.5 py-1 rounded-full bg-primary-foreground/10 border border-primary-foreground/15">
+                      Step 0{s.n}
                     </span>
                   </div>
                   <h3 className="font-display font-bold text-lg mb-1.5 no-clip">{s.title}</h3>
@@ -425,9 +415,7 @@ const Lumi = () => {
           <div className="grid gap-5 sm:grid-cols-2">
             {benefits.map((b) => (
               <div key={b.title} className="flex items-start gap-4 rounded-2xl border border-border bg-card p-6 ios-card">
-                <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <b.icon className="text-primary" size={22} />
-                </div>
+                <b.icon className="text-primary shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-display font-semibold text-foreground mb-1">{b.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{b.desc}</p>

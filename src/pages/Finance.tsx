@@ -356,9 +356,7 @@ const Finance = () => {
                     />
                   ) : (
                     <div className="text-center p-6">
-                      <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary inline-flex items-center justify-center mb-2">
-                        <CreditCard size={26} />
-                      </div>
+                      <CreditCard size={36} className="text-primary mx-auto mb-2" />
                       <p className="text-xs text-muted-foreground">Equipment package photo</p>
                     </div>
                   )}
@@ -565,9 +563,7 @@ const Finance = () => {
         <section id="calculator" className="section-padding bg-muted/30 border-b border-border scroll-mt-20">
           <div className="section-container">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3">
-                <Calculator size={22} />
-              </div>
+              <Calculator size={32} className="text-primary mx-auto mb-3" />
               <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight">Easy Flex Repayment Calculator</h2>
               <p className="mt-2 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
                 Enter any system cost to see your 30% deposit and fixed monthly payments across all 4 plans.
@@ -689,9 +685,7 @@ const Finance = () => {
                 className="rounded-3xl border border-border bg-card p-6 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-xs"
               >
                 <div>
-                  <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-                    <step.icon size={22} />
-                  </div>
+                  <step.icon size={28} className="text-primary mb-4 shrink-0" />
                   <h3 className="font-display font-bold text-lg text-foreground mb-2">
                     {step.title}
                   </h3>
@@ -726,9 +720,7 @@ const Finance = () => {
             {/* Card 1: Who Can Apply */}
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-xs space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                  <UserCheck size={22} />
-                </div>
+                <UserCheck size={28} className="text-primary shrink-0" />
                 <div>
                   <h3 className="font-display font-bold text-xl text-foreground">Who Can Apply</h3>
                   <p className="text-xs text-muted-foreground">Anyone with steady verifiable income</p>
@@ -761,9 +753,7 @@ const Finance = () => {
             {/* Card 2: Simple Document Checklist */}
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-xs space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                  <FileCheck size={22} />
-                </div>
+                <FileCheck size={28} className="text-primary shrink-0" />
                 <div>
                   <h3 className="font-display font-bold text-xl text-foreground">What You Need</h3>
                   <p className="text-xs text-muted-foreground">Just the essentials for fast verification</p>
@@ -838,9 +828,7 @@ const Finance = () => {
                 className="rounded-3xl border border-border bg-card p-6 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-xs"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-                    <item.icon size={20} />
-                  </div>
+                  <item.icon size={28} className="text-primary mb-4 shrink-0" />
                   <h3 className="font-display font-bold text-base sm:text-lg text-foreground mb-1.5">{item.title}</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>

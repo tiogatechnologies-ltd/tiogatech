@@ -21,9 +21,7 @@ const AuthGatePrompt = ({
 }: Props) => {
   return (
     <div className={`rounded-2xl border border-border bg-card ${compact ? "p-4" : "p-6"} text-center space-y-3`}>
-      <div className="w-10 h-10 mx-auto rounded-full bg-primary/10 text-primary inline-flex items-center justify-center">
-        <ShieldCheck size={18} />
-      </div>
+      <ShieldCheck size={28} className="text-primary mx-auto" />
       <div>
         <h3 className="font-display font-bold text-base">{title}</h3>
         <p className="text-xs text-muted-foreground mt-1">{description}</p>

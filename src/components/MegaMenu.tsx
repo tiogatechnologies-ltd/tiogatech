@@ -100,9 +100,7 @@ export const MegaMenu = ({ onDark, open, onClose }: MegaMenuProps) => {
                   )}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="grid h-8 w-8 place-items-center rounded-xl bg-gold/15 text-gold shrink-0">
-                      <Icon size={16} />
-                    </span>
+                    <Icon size={18} className="text-gold shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-display font-bold leading-tight truncate">{b.name}</p>
                       <p className="text-[10px] opacity-70 truncate">{b.tag}</p>

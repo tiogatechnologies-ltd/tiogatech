@@ -161,9 +161,7 @@ const Hero = ({ onApply }: HeroProps) => {
               style={{ animationDelay: "0.5s" }}
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center border border-accent/30">
-                  <Sun className="text-accent" size={20} />
-                </div>
+                <Sun className="text-accent shrink-0" size={24} />
                 <div>
                   <p className="text-xs text-white/70 uppercase tracking-wider">Solar Output</p>
                   <p className="text-lg font-display font-bold text-white">5.2 kWp</p>

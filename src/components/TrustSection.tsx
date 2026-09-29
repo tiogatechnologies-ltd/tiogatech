@@ -69,9 +69,7 @@ const TrustSection = () => {
                     backgroundPosition: "center",
                   }}
                 />
-                <div className="relative w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 transition-colors duration-500 group-hover:bg-primary/20">
-                  <Icon size={22} className="text-primary" />
-                </div>
+                <Icon size={28} className="relative text-primary shrink-0 mt-0.5 transition-transform duration-500 group-hover:scale-110" />
                 <div className="relative">
                   <h3 className="font-display font-semibold text-foreground mb-1">{r.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{r.desc}</p>

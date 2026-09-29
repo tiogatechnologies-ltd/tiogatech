@@ -323,9 +323,7 @@ export const HomeAutomation = () => {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center mb-4">
-                <Lightbulb size={24} />
-              </div>
+              <Lightbulb size={32} className="text-amber-600 dark:text-amber-400 mb-4 shrink-0" />
               <h3 className="font-display font-bold text-lg text-foreground mb-2">Smart Lighting & Moods</h3>
               <p className="text-xs text-muted-foreground leading-relaxed flex-1">
                 Touch glass switches, RGB ambient strips, motion pathway sensors, and scheduled welcome scenes.
@@ -333,9 +331,7 @@ export const HomeAutomation = () => {
             </div>
 
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
-                <Sliders size={24} />
-              </div>
+              <Sliders size={32} className="text-blue-600 dark:text-blue-400 mb-4 shrink-0" />
               <h3 className="font-display font-bold text-lg text-foreground mb-2">Climate & AC Control</h3>
               <p className="text-xs text-muted-foreground leading-relaxed flex-1">
                 IR smart controllers turn on your ACs before you arrive home and auto-throttle when on solar battery backup.
@@ -343,9 +339,7 @@ export const HomeAutomation = () => {
             </div>
 
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-4">
-                <Home size={24} />
-              </div>
+              <Home size={32} className="text-emerald-600 dark:text-emerald-400 mb-4 shrink-0" />
               <h3 className="font-display font-bold text-lg text-foreground mb-2">Motorized Curtains</h3>
               <p className="text-xs text-muted-foreground leading-relaxed flex-1">
                 Ultra-quiet motorized tracks that glide open at sunrise and close for night privacy via schedule or voice command.
@@ -353,9 +347,7 @@ export const HomeAutomation = () => {
             </div>
 
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4">
-                <Music size={24} />
-              </div>
+              <Music size={32} className="text-purple-600 dark:text-purple-400 mb-4 shrink-0" />
               <h3 className="font-display font-bold text-lg text-foreground mb-2">Multi-Room Audio</h3>
               <p className="text-xs text-muted-foreground leading-relaxed flex-1">
                 Ceiling flush architectural speakers with Bluetooth/AirPlay streaming for dinner, cinema, or outdoor patio entertainment.

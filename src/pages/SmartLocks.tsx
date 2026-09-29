@@ -319,9 +319,7 @@ export const SmartLocks = () => {
       <section className="border-b border-border bg-card/60 py-6">
         <div className="section-container grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div className="flex items-center justify-center gap-3 p-3">
-            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-              <ShieldCheck size={20} />
-            </div>
+            <ShieldCheck size={26} className="text-primary shrink-0" />
             <div className="text-left">
               <p className="font-bold text-xs sm:text-sm text-foreground">Anti-Tamper Alarm</p>
               <p className="text-[11px] text-muted-foreground">Built-in siren & phone alert</p>
@@ -329,9 +327,7 @@ export const SmartLocks = () => {
           </div>
 
           <div className="flex items-center justify-center gap-3 p-3">
-            <div className="h-10 w-10 rounded-xl bg-gold/15 text-gold-dark dark:text-gold flex items-center justify-center shrink-0">
-              <Smartphone size={20} />
-            </div>
+            <Smartphone size={26} className="text-gold-dark dark:text-gold shrink-0" />
             <div className="text-left">
               <p className="font-bold text-xs sm:text-sm text-foreground">Tuya & TTLock</p>
               <p className="text-[11px] text-muted-foreground">Remote OTP & log history</p>
@@ -339,9 +335,7 @@ export const SmartLocks = () => {
           </div>
 
           <div className="flex items-center justify-center gap-3 p-3">
-            <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
-              <Wrench size={20} />
-            </div>
+            <Wrench size={26} className="text-emerald-700 dark:text-emerald-400 shrink-0" />
             <div className="text-left">
               <p className="font-bold text-xs sm:text-sm text-foreground">Free Expert Install</p>
               <p className="text-[11px] text-muted-foreground">Lagos & Abuja warranty</p>
@@ -349,9 +343,7 @@ export const SmartLocks = () => {
           </div>
 
           <div className="flex items-center justify-center gap-3 p-3">
-            <div className="h-10 w-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-              <KeyRound size={20} />
-            </div>
+            <KeyRound size={26} className="text-blue-600 dark:text-blue-400 shrink-0" />
             <div className="text-left">
               <p className="font-bold text-xs sm:text-sm text-foreground">6-in-1 Unlock</p>
               <p className="text-[11px] text-muted-foreground">Face, Finger, Card, Key, App, PIN</p>

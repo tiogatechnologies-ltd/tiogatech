@@ -88,7 +88,7 @@ const SolarAssessment = () => {
         <main className="flex-1 pt-24 sm:pt-28 pb-12 px-4 bg-muted/30">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 text-primary mb-3"><Sun size={26} /></div>
+              <Sun size={36} className="text-primary mx-auto mb-3" />
               <h1 className="text-3xl sm:text-4xl font-display font-bold">Your Recommended System</h1>
               <p className="text-muted-foreground mt-2">Based on {result.daily_kwh} kWh/day and {result.peak_load_w} W peak load.</p>
             </div>

@@ -22,9 +22,7 @@ const StatTile = ({ icon: Icon, label, value, hint, accent }: any) => (
   <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
     <div className="flex items-center justify-between">
       <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{label}</span>
-      <span className={`w-8 h-8 rounded-xl inline-flex items-center justify-center ${accent || "bg-primary/10 text-primary"}`}>
-        <Icon size={15} />
-      </span>
+      <Icon size={18} className={accent ? "text-amber-500 shrink-0" : "text-primary shrink-0"} />
     </div>
     <div className="mt-2 font-display text-xl sm:text-2xl font-bold text-foreground">{value}</div>
     {hint && <div className="text-xs text-muted-foreground mt-0.5">{hint}</div>}
@@ -317,9 +315,13 @@ const Account = () => {
           <div className={`rounded-3xl border p-5 sm:p-6 ${adminUnlimited || activeSub ? "border-primary/40 bg-primary/5" : "border-border bg-card"}`}>
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3 min-w-0">
-                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${adminUnlimited || activeSub ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  {adminUnlimited ? <Crown size={20} /> : activeSub ? (aiSub.plan === "business" ? <Crown size={20} /> : <Zap size={20} />) : <Zap size={20} />}
-                </div>
+                {adminUnlimited ? (
+                  <Crown size={28} className="text-primary shrink-0" />
+                ) : activeSub ? (
+                  aiSub.plan === "business" ? <Crown size={28} className="text-primary shrink-0" /> : <Zap size={28} className="text-primary shrink-0" />
+                ) : (
+                  <Zap size={28} className="text-primary shrink-0" />
+                )}
                 <div className="min-w-0">
                   <div className="text-[10px] uppercase tracking-wider text-muted-foreground">AI Energy Intelligence</div>
                   <div className="font-display text-lg font-bold capitalize">

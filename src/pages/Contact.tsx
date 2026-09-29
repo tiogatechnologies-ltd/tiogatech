@@ -90,9 +90,7 @@ const Contact = () => {
           <div className="lg:col-span-2 space-y-4">
             <div className="rounded-2xl border border-border bg-card p-6">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <Mail className="text-primary" size={18} />
-                </div>
+                <Mail className="text-primary shrink-0 mt-0.5" size={20} />
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Email</p>
                   <a href={`mailto:${contact.email}`} className="text-foreground font-medium hover:text-primary">
@@ -101,9 +99,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <MessageCircle className="text-primary" size={18} />
-                </div>
+                <MessageCircle className="text-primary shrink-0 mt-0.5" size={20} />
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">WhatsApp</p>
                   <a
@@ -118,9 +114,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <Phone className="text-primary" size={18} />
-                </div>
+                <Phone className="text-primary shrink-0 mt-0.5" size={20} />
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Phone</p>
                   <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="text-foreground font-medium hover:text-primary">
@@ -129,9 +123,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <MapPin className="text-primary" size={18} />
-                </div>
+                <MapPin className="text-primary shrink-0 mt-0.5" size={20} />
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Office</p>
                   <p className="text-foreground font-medium leading-relaxed">
@@ -140,9 +132,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <Clock className="text-primary" size={18} />
-                </div>
+                <Clock className="text-primary shrink-0 mt-0.5" size={20} />
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Hours</p>
                   <p className="text-foreground font-medium">{contact.business_hours}</p>
@@ -185,9 +175,7 @@ const Contact = () => {
             <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-[var(--shadow-card)]">
               {done ? (
                 <div className="text-center py-10">
-                  <div className="mx-auto w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <CheckCircle2 className="text-primary" size={28} />
-                  </div>
+                  <CheckCircle2 className="text-primary mx-auto mb-4" size={36} />
                   <h3 className="text-xl font-display font-bold text-foreground mb-2">Message received</h3>
                   <p className="text-muted-foreground">Thanks for reaching out. Our team will contact you within one business day.</p>
                 </div>

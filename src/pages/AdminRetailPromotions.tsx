@@ -960,10 +960,8 @@ const AdminRetailPromotions = () => {
         {/* FLASH DEAL BAR */}
         <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 space-y-5 shadow-xs">
           <div className="flex items-center justify-between flex-wrap gap-3">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-amber-500/10 text-amber-500">
-                <Flame size={20} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Flame size={24} className="text-amber-500 shrink-0" />
               <div>
                 <h2 className="font-display text-lg font-bold text-foreground leading-tight">Flash Deals Bar</h2>
                 <p className="text-xs text-muted-foreground">Top countdown announcement across store pages</p>
@@ -1142,10 +1140,8 @@ const AdminRetailPromotions = () => {
         {/* STOREWIDE PROMOTIONAL PRICING & "SAVE %" BADGES */}
         <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 space-y-5 shadow-xs">
           <div className="flex items-center justify-between flex-wrap gap-3">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                <Tag size={20} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Tag size={24} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
               <div>
                 <h2 className="font-display text-lg font-bold text-foreground leading-tight">
                   Storewide Promotional Pricing &amp; "Save %" Badges
@@ -1625,10 +1621,8 @@ const AdminRetailPromotions = () => {
         {/* HERO CAROUSEL */}
         <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 space-y-5 shadow-xs">
           <div className="flex items-center justify-between flex-wrap gap-3">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-primary/10 text-primary">
-                <GalleryHorizontal size={20} />
-              </div>
+            <div className="flex items-center gap-3">
+              <GalleryHorizontal size={24} className="text-primary shrink-0" />
               <div>
                 <h2 className="font-display text-lg font-bold text-foreground leading-tight">Hero Carousel Slides</h2>
                 <p className="text-xs text-muted-foreground">Slides displayed at the top of /retail</p>

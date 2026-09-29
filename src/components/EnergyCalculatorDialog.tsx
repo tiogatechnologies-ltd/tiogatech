@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { X, Calculator, ArrowRight } from "lucide-react";
@@ -43,10 +43,8 @@ const EnergyCalculatorDialog = () => {
         className="relative w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto bg-background rounded-t-3xl sm:rounded-3xl border border-border shadow-2xl"
       >
         <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 bg-background/95 backdrop-blur-md border-b border-border">
-          <div className="flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary/10 text-primary">
-              <Calculator size={16} />
-            </span>
+          <div className="flex items-center gap-2.5">
+            <Calculator size={22} className="text-primary shrink-0" />
             <div>
               <p className="font-display font-bold text-foreground text-sm sm:text-base leading-tight">Energy Calculator</p>
               <p className="text-[11px] text-muted-foreground">Size your solar system in 60 seconds</p>

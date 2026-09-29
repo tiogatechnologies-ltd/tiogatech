@@ -320,10 +320,8 @@ const AdminLeads = () => {
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/40 backdrop-blur-sm px-4">
           <div className="bg-card rounded-3xl border border-border shadow-2xl w-full max-w-lg overflow-hidden">
             <div className="flex items-center justify-between px-6 pt-6 pb-2">
-              <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-primary/10 text-primary">
-                  <UserPlus size={20} />
-                </div>
+              <div className="flex items-center gap-3">
+                <UserPlus size={24} className="text-primary shrink-0" />
                 <div>
                   <h3 className="font-display font-bold text-card-foreground text-lg">Record New Enquiry</h3>
                   <p className="text-xs text-muted-foreground">Add customer details from phone, walk-in, or direct message</p>

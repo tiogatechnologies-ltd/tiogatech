@@ -76,8 +76,14 @@ const CheckoutSuccess = () => {
     <div className="min-h-screen grid place-items-center bg-muted/30 px-4 py-10">
       <SEO title="Order Confirmed" description="Your Tioga order has been received." path="/checkout/success" />
       <div className="w-full max-w-lg bg-card rounded-3xl border border-border p-6 sm:p-10 text-center shadow-[var(--shadow-card)]">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 text-primary mb-4">
-          {verify.status === "checking" ? <Loader2 size={32} className="animate-spin" /> : verify.status === "failed" ? <AlertCircle size={32} className="text-destructive" /> : <CheckCircle2 size={32} />}
+        <div className="mb-4">
+          {verify.status === "checking" ? (
+            <Loader2 size={44} className="text-primary animate-spin mx-auto" />
+          ) : verify.status === "failed" ? (
+            <AlertCircle size={44} className="text-destructive mx-auto" />
+          ) : (
+            <CheckCircle2 size={44} className="text-primary mx-auto" />
+          )}
         </div>
         <h1 className="text-2xl font-display font-bold text-foreground mb-1">
           {verify.status === "checking" ? "Verifying payment..." : verify.status === "failed" ? "Payment not confirmed" : "Order received!"}

@@ -242,9 +242,7 @@ const ProductCompareTrayBody = () => {
       {count > 0 && (
         <div className="fixed bottom-5 inset-x-4 md:inset-x-auto md:right-8 z-40 max-w-xl mx-auto bg-card/95 text-foreground backdrop-blur-xl border border-primary/40 rounded-3xl p-3 sm:p-4 shadow-2xl flex items-center justify-between gap-4 animate-in slide-in-from-bottom-5">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="p-2.5 rounded-2xl bg-primary/10 text-primary shrink-0">
-              <SlidersHorizontal size={18} />
-            </div>
+            <SlidersHorizontal size={22} className="text-primary shrink-0" />
             <div className="min-w-0">
               <p className="text-xs font-bold text-foreground truncate">
                 {count === 1

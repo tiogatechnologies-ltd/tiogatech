@@ -41,13 +41,12 @@ const SolutionSection = () => {
               style={{ animationDelay: `${i * 150}ms` }}
             >
               <img src={f.img} alt={f.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-              <div className="absolute inset-0 bg-midnight/50" />
-              <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-card/85 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 border-t-white/50 flex items-center justify-center shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_4px_16px_rgba(0,0,0,0.2)]">
-                <f.icon size={20} className="text-primary" />
-              </div>
               {/* Floating liquid glass panel */}
               <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-white/85 dark:bg-card/80 backdrop-blur-2xl backdrop-saturate-150 border border-white/40 border-t-white/70 dark:border-white/15 dark:border-t-white/35 p-5 text-foreground shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.5),0_12px_32px_rgba(0,0,0,0.18)]">
-                <h3 className="text-xl font-display font-semibold tracking-tight mb-1">{f.title}</h3>
+                <div className="flex items-center gap-2.5 mb-1">
+                  <f.icon size={22} className="text-primary shrink-0" />
+                  <h3 className="text-xl font-display font-semibold tracking-tight">{f.title}</h3>
+                </div>
                 <p className="text-sm text-foreground/80 leading-relaxed">{f.desc}</p>
                 <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary">
                   Explore <ArrowUpRight size={14} />

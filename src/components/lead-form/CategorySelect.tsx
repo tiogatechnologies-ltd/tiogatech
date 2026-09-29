@@ -21,9 +21,7 @@ const CategorySelect = ({ onSelect }: Props) => (
           onClick={() => onSelect(c.value)}
           className="w-full flex items-center gap-4 rounded-xl border-2 border-border px-5 py-4 text-left transition-all hover:border-primary/40 hover:bg-primary/5 group"
         >
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
-            <c.icon size={22} />
-          </div>
+          <c.icon size={28} className="text-primary shrink-0 transition-transform duration-300 group-hover:scale-110" />
           <div>
             <span className="font-display font-bold text-card-foreground text-base">{c.label}</span>
             <p className="text-xs text-muted-foreground mt-0.5">{c.desc}</p>

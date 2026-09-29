@@ -45,13 +45,13 @@ const OfferSection = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-700" />
-                  <div className="absolute -bottom-7 left-6 w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30 transition-transform duration-700 ease-smooth-out group-hover:-translate-y-1">
-                    <Icon size={24} className="text-primary-foreground" />
-                  </div>
                 </div>
-                <div className="relative p-6 pt-10 flex flex-col flex-1">
+                <div className="relative p-6 flex flex-col flex-1">
                   <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
-                  <h3 className="relative text-xl font-display font-semibold text-card-foreground mb-2 tracking-tight">{o.title}</h3>
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <Icon size={24} className="text-primary shrink-0" />
+                    <h3 className="relative text-xl font-display font-semibold text-card-foreground tracking-tight">{o.title}</h3>
+                  </div>
                   <p className="relative text-muted-foreground text-sm leading-relaxed mb-5">{o.desc}</p>
                   <ul className="relative mt-auto space-y-2.5">
                     {(o.highlights || []).map((h: string, hi: number) => (
@@ -60,12 +60,7 @@ const OfferSection = () => {
                         className="stagger-item flex items-start gap-2.5 text-sm text-foreground"
                         style={{ transitionDelay: `${hi * 90}ms` }}
                       >
-                        <span
-                          className="stagger-icon mt-0.5 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0"
-                          style={{ transitionDelay: `${hi * 90}ms` }}
-                        >
-                          <Check size={12} className="text-primary" />
-                        </span>
+                        <Check size={16} className="text-primary shrink-0 mt-0.5" />
                         <span className="leading-relaxed">{h}</span>
                       </li>
                     ))}

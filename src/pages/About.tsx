@@ -115,18 +115,14 @@ const About = () => {
     <section className="section-padding bg-muted pt-0">
       <div className="section-container grid gap-6 md:grid-cols-2">
         <div className="rounded-2xl border border-border bg-card p-7 shadow-[var(--shadow-card)] hover-lift">
-          <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-            <Target className="text-primary" size={22} />
-          </div>
+          <Target className="text-primary mb-3 shrink-0" size={28} />
           <h2 className="text-xl font-display font-bold text-foreground mb-2">Our Mission</h2>
           <p className="text-muted-foreground leading-relaxed">
             To accelerate Africa's transition to clean, renewable energy through innovative IoT infrastructure and intelligent energy management solutions. We develop scalable, reliable systems that enable efficient distribution and management of renewable energy resources across the continent.
           </p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-7 shadow-[var(--shadow-card)] hover-lift">
-          <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-            <Eye className="text-primary" size={22} />
-          </div>
+          <Eye className="text-primary mb-3 shrink-0" size={28} />
           <h2 className="text-xl font-display font-bold text-foreground mb-2">Our Vision</h2>
           <p className="text-muted-foreground leading-relaxed">
             Every community across Africa with access to reliable, clean, and intelligent energy systems, managed through world-class infrastructure built on the continent, for the continent.
@@ -151,9 +147,7 @@ const About = () => {
               <img src={p.bg} alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
               <div className="absolute inset-0 bg-midnight/95" />
               <div className="relative p-6 sm:p-7 h-full flex flex-col justify-end text-primary-foreground">
-                <div className="w-12 h-12 rounded-xl bg-gold text-midnight flex items-center justify-center shadow-lg mb-4">
-                  <p.icon size={22} />
-                </div>
+                <p.icon size={28} className="text-gold mb-3 shrink-0" />
                 <h3 className="text-lg font-display font-bold mb-1.5 no-clip">{p.title}</h3>
                 <p className="text-primary-foreground/80 leading-relaxed text-sm">{p.desc}</p>
               </div>
@@ -186,9 +180,7 @@ const About = () => {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((v) => (
             <div key={v.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                <v.icon className="text-primary" size={20} />
-              </div>
+              <v.icon className="text-primary mb-3 shrink-0" size={26} />
               <h3 className="text-base font-display font-bold text-foreground mb-2">{v.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
             </div>
@@ -270,9 +262,7 @@ const About = () => {
             <ul className="space-y-3">
               {partners.map((p) => (
                 <li key={p.label} className="flex items-center gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-gold/15 text-gold">
-                    <p.icon size={18} />
-                  </span>
+                  <p.icon size={20} className="text-gold shrink-0" />
                   <span className="text-sm font-semibold text-foreground">{p.label}</span>
                 </li>
               ))}

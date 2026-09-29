@@ -37,9 +37,7 @@ const ComingSoon = () => {
               to="/energy-calculator"
               className="group rounded-2xl bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 p-5 hover:bg-primary-foreground/15 transition-all"
             >
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gold/20 text-gold mb-3">
-                <Calculator size={20} />
-              </span>
+              <Calculator size={26} className="text-gold mb-3 shrink-0" />
               <p className="font-display font-bold text-lg leading-tight mb-1">Energy Calculator</p>
               <p className="text-sm text-primary-foreground/75 leading-snug mb-3">
                 Size the right solar system for your home or business in under 60 seconds.
@@ -53,9 +51,7 @@ const ComingSoon = () => {
               to="/finance"
               className="group rounded-2xl bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 p-5 hover:bg-primary-foreground/15 transition-all"
             >
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gold/20 text-gold mb-3">
-                <Wallet size={20} />
-              </span>
+              <Wallet size={26} className="text-gold mb-3 shrink-0" />
               <p className="font-display font-bold text-lg leading-tight mb-1">Flexible Payment</p>
               <p className="text-sm text-primary-foreground/75 leading-snug mb-3">
                 Pay 30% now, spread the rest over 3, 6, 12 or 24 months - Easy Flex.

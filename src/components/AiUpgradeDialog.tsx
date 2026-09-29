@@ -11,7 +11,7 @@ const AiUpgradeDialog = ({ open, onOpenChange }: Props) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent className="max-w-md">
       <DialogHeader>
-        <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary inline-flex items-center justify-center mb-2"><Zap size={20} /></div>
+        <Zap size={28} className="text-primary mb-2" />
         <DialogTitle className="font-display text-xl">You've used your 3 free analyses</DialogTitle>
         <DialogDescription>
           Upgrade to <strong className="text-foreground">AI Starter</strong> for 20 monthly credits and full engineering reports.

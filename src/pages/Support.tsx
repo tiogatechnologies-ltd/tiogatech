@@ -166,9 +166,7 @@ const Support = () => {
             <div className="lg:col-span-2 space-y-6">
               <Card className="p-6 sm:p-8 border border-border shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                    <Search size={20} />
-                  </div>
+                  <Search size={24} className="text-primary shrink-0" />
                   <div>
                     <h2 className="text-lg font-bold text-foreground">Check Support Ticket Status</h2>
                     <p className="text-xs text-muted-foreground">Enter your ticket reference (e.g. TKT-1006)</p>
@@ -253,9 +251,7 @@ const Support = () => {
               {/* Submit Ticket Card */}
               <Card className="p-6 sm:p-8 border border-border shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                    <TicketIcon size={20} />
-                  </div>
+                  <TicketIcon size={24} className="text-primary shrink-0" />
                   <div>
                     <h2 className="text-lg font-bold text-foreground">Submit a Support Ticket</h2>
                     <p className="text-xs text-muted-foreground">Our technicians and customer service engineers respond within 1 business day.</p>
@@ -264,9 +260,7 @@ const Support = () => {
 
                 {createdTicket ? (
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-6 text-center space-y-3">
-                    <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
-                      <CheckCircle2 size={24} />
-                    </div>
+                    <CheckCircle2 size={36} className="text-emerald-600 mx-auto" />
                     <h3 className="font-bold text-emerald-900 text-lg">Support Request Logged</h3>
                     <p className="text-sm text-emerald-800 max-w-md mx-auto">
                       Your ticket has been opened under reference{" "}

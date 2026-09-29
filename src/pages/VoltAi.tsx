@@ -1,4 +1,4 @@
-﻿import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
+import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import bgAutomation from "@/assets/bg-voltai-ai.jpg";
@@ -74,9 +74,7 @@ const VoltAi = () => {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {pillars.map((p) => (
               <div key={p.title} className="rounded-2xl border border-border bg-card p-6 ios-card">
-                <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-4">
-                  <p.icon className="text-accent-foreground" size={22} />
-                </div>
+                <p.icon className="text-primary mb-3 shrink-0" size={26} />
                 <h3 className="font-display font-semibold text-lg text-foreground mb-1.5">{p.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
               </div>

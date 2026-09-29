@@ -438,40 +438,32 @@ export const Retail = () => {
 
           {/* Quick Value Props Bar */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border/80 shadow-xs mb-6 sm:mb-8">
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10 text-primary shrink-0">
-                <Truck size={18} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Truck size={24} className="text-primary shrink-0" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">Fast Dispatch</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Lagos & Abuja 24h</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-gold/10 text-gold-dark dark:text-gold shrink-0">
-                <Shield size={18} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Shield size={24} className="text-gold-dark dark:text-gold shrink-0" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">5-Yr Warranty</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Replacement guarantee</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 shrink-0">
-                <Award size={18} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Award size={24} className="text-emerald-700 dark:text-emerald-400 shrink-0" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">Tier-1 Stack</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Authorized distributor</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0">
-                <Zap size={18} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Zap size={24} className="text-blue-600 dark:text-blue-400 shrink-0" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">0-Flicker UPS</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Seamless switchover</p>

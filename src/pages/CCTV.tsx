@@ -173,9 +173,7 @@ export const CCTV = () => {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center mb-4">
-                <Eye size={24} />
-              </div>
+              <Eye size={32} className="text-amber-600 dark:text-amber-400 mb-4 shrink-0" />
               <h3 className="font-display font-bold text-lg text-foreground mb-2">24/7 ColorVu Night Vision</h3>
               <p className="text-xs text-muted-foreground leading-relaxed flex-1">
                 F1.0 super-apertures capture vivid full-color video even in pitch-black grid blackouts.
@@ -183,9 +181,7 @@ export const CCTV = () => {
             </div>
 
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
-                <Cpu size={24} />
-              </div>
+              <Cpu size={32} className="text-blue-600 dark:text-blue-400 mb-4 shrink-0" />
               <h3 className="font-display font-bold text-lg text-foreground mb-2">AI Human & Car Filter</h3>
               <p className="text-xs text-muted-foreground leading-relaxed flex-1">
                 No more spam alerts from rain or swaying trees. Only get notified when an actual person or car approaches.
@@ -193,9 +189,7 @@ export const CCTV = () => {
             </div>
 
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-4">
-                <Sun size={24} />
-              </div>
+              <Sun size={32} className="text-emerald-600 dark:text-emerald-400 mb-4 shrink-0" />
               <h3 className="font-display font-bold text-lg text-foreground mb-2">Solar 4G Off-Grid Ready</h3>
               <p className="text-xs text-muted-foreground leading-relaxed flex-1">
                 Standalone solar cameras for farmhouses, construction sites, and remote gates with zero wiring needed.
@@ -203,9 +197,7 @@ export const CCTV = () => {
             </div>
 
             <div className="p-6 rounded-3xl bg-card border border-border shadow-[var(--shadow-card)] flex flex-col">
-              <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4">
-                <HardDrive size={24} />
-              </div>
+              <HardDrive size={32} className="text-purple-600 dark:text-purple-400 mb-4 shrink-0" />
               <h3 className="font-display font-bold text-lg text-foreground mb-2">Encrypted Cloud & NVR</h3>
               <p className="text-xs text-muted-foreground leading-relaxed flex-1">
                 Bank-level AES encryption ensures your video feeds are only accessible to you and authorized family members.

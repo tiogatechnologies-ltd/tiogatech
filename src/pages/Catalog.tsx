@@ -540,8 +540,6 @@ export const Catalog = () => {
             <div className="mb-6 sm:mb-8 rounded-3xl border border-primary/25 bg-card p-5 sm:p-7 shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/80 pb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-                    </div>
                   <div>
                     <h3 className="font-display font-bold text-base sm:text-lg text-foreground">
                       Engineering Recommendation
@@ -619,40 +617,32 @@ export const Catalog = () => {
 
           {/* Quick Value Props Bar */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-card border border-border/80 shadow-xs mb-6 sm:mb-8">
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10 text-primary shrink-0">
-                <Truck size={16} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Truck size={22} className="text-primary shrink-0" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">Fast Dispatch</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Lagos & Abuja 24h</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-muted text-foreground shrink-0">
-                <Shield size={16} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Shield size={22} className="text-foreground shrink-0" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">5-Yr Warranty</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Replacement guarantee</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 shrink-0">
-                <Award size={16} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Award size={22} className="text-emerald-700 dark:text-emerald-400 shrink-0" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">Tier-1 Stack</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Authorized distributor</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0">
-                <Zap size={16} />
-              </div>
+            <div className="flex items-center gap-3">
+              <Zap size={22} className="text-blue-600 dark:text-blue-400 shrink-0" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">0-Flicker UPS</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Seamless switchover</p>

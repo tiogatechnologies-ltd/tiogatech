@@ -31,7 +31,7 @@ const ResetPassword = () => {
       <SEO title="Reset your password" description="Set a new password for your Tioga account." path="/reset-password" />
       <div className="w-full max-w-sm bg-card rounded-3xl border border-border p-8 shadow-[var(--shadow-card)]">
         <div className="text-center mb-5">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3"><Lock size={22} /></div>
+          <Lock size={32} className="text-primary mx-auto mb-3" />
           <h1 className="text-xl font-display font-bold text-foreground">Set a new password</h1>
         </div>
         {error && <div className="mb-4 rounded-xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">{error}</div>}

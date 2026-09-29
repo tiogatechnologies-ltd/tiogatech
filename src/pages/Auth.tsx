@@ -162,9 +162,7 @@ const Auth = () => {
 
           <div className="bg-card rounded-3xl border border-border shadow-[var(--shadow-card)] p-6 sm:p-8">
             <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mx-auto mb-3">
-                <ShieldCheck size={22} />
-              </div>
+              <ShieldCheck size={32} className="text-primary mx-auto mb-3" />
               <h1 className="text-2xl font-display font-bold text-foreground">
                 {tab === "signin" && "Welcome back"}
                 {tab === "signup" && "Create your account"}

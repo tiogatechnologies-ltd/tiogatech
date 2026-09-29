@@ -100,9 +100,7 @@ const Career = () => {
               {/* Translucent so the photo still reads while keeping white text legible */}
               <div className="absolute inset-0 bg-midnight/70" />
               <div className="relative z-10 p-6 flex flex-col justify-end text-primary-foreground">
-                <div className="w-11 h-11 rounded-xl bg-gold/95 flex items-center justify-center mb-3 shadow-lg">
-                  <r.icon className="text-midnight" size={20} />
-                </div>
+                <r.icon className="text-gold mb-3 shrink-0" size={28} />
                 <h3 className="font-display font-bold text-primary-foreground mb-1.5 text-lg no-clip">{r.title}</h3>
                 <p className="text-sm text-primary-foreground/85 leading-relaxed">{r.desc}</p>
               </div>
@@ -130,9 +128,7 @@ const Career = () => {
             { icon: Heart, title: "People over titles", desc: "Best idea wins. Junior engineers ship to production from week one." },
           ].map((v) => (
             <div key={v.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                <v.icon className="text-primary" size={18} />
-              </div>
+              <v.icon className="text-primary mb-3 shrink-0" size={24} />
               <h3 className="font-display font-bold text-foreground mb-1.5 text-lg no-clip">{v.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
             </div>
@@ -158,9 +154,7 @@ const Career = () => {
             { icon: Users, title: "Sales & Operations", desc: "Customer success, logistics and project coordination across Nigeria." },
           ].map((t) => (
             <div key={t.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
-              <div className="w-10 h-10 rounded-xl bg-gold/15 flex items-center justify-center mb-3">
-                <t.icon className="text-gold" size={18} />
-              </div>
+              <t.icon className="text-gold mb-3 shrink-0" size={24} />
               <h3 className="font-display font-bold text-foreground mb-1.5 text-lg no-clip">{t.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
             </div>

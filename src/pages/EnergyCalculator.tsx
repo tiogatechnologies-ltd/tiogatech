@@ -1,4 +1,4 @@
-﻿import SiteHeader from "@/components/SiteHeader";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
@@ -95,9 +95,7 @@ const EnergyCalculator = () => {
             {STEPS.map((s, i) => (
               <div key={s.title} className="rounded-3xl border border-border bg-card p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-primary/10 text-primary">
-                    <s.icon size={20} />
-                  </span>
+                  <s.icon size={24} className="text-primary shrink-0" />
                   <span className="text-xs font-bold text-muted-foreground">0{i + 1}</span>
                 </div>
                 <h3 className="font-display font-bold text-lg mb-1.5">{s.title}</h3>
@@ -131,9 +129,7 @@ const EnergyCalculator = () => {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {WHY.map((w) => (
               <div key={w.title} className="rounded-2xl border border-border bg-card p-5">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary mb-3">
-                  <w.icon size={18} />
-                </span>
+                <w.icon size={24} className="text-primary mb-3 shrink-0" />
                 <h3 className="font-semibold text-foreground mb-1.5">{w.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{w.body}</p>
               </div>

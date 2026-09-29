@@ -224,9 +224,7 @@ export const AutomationPackageDetail = () => {
               <div className="grid grid-cols-2 gap-3">
                 {tierIcons.map(({ icon: Icon, label }) => (
                   <div key={label} className="flex items-center gap-2.5 p-3 rounded-2xl bg-card border border-border">
-                    <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
-                      <Icon size={15} />
-                    </span>
+                    <Icon size={18} className="text-primary shrink-0" />
                     <span className="text-xs font-semibold text-foreground">{label}</span>
                   </div>
                 ))}
