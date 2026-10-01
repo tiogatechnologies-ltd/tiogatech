@@ -4071,8 +4071,9 @@ import { itelProducts } from "./itelProducts";
 import { sunessProducts } from "./sunessProducts";
 import { breadEnergyProducts } from "./breadEnergyProducts";
 import { exultedProducts } from "./exultedProducts";
+import { expansionCatalogProducts } from "./expansionCatalogProducts";
 
-// Unified products array including solar hardware, smart locks, Felicity, AlpSolarr, Deye, Dawnice, Solis, SolarPro, Infinisolar, Itel, Suness, Bread Energy, Exulted Eagles, and complete Minisim retail catalog
+// Unified products array including solar hardware, smart locks, Felicity, AlpSolarr, Deye, Dawnice, Solis, SolarPro, Infinisolar, Itel, Suness, Bread Energy, Exulted Eagles, Minisim retail catalog, and 61 expansion catalog products
 export const PRODUCTS: Product[] = [
   ...invertersList,
   ...batteriesList,
@@ -4092,6 +4093,7 @@ export const PRODUCTS: Product[] = [
   ...breadEnergyProducts,
   ...exultedProducts,
   ...MINISIM_PRODUCTS,
+  ...expansionCatalogProducts,
 ];
 
 // Legacy backward-compatibility aliases
@@ -4111,6 +4113,7 @@ export {
   sunessProducts,
   breadEnergyProducts,
   exultedProducts,
+  expansionCatalogProducts,
 };
 
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
@@ -4133,7 +4136,8 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
       ...itelProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Commercial ESS"].includes(p.category)),
       ...sunessProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS"].includes(p.category)),
       ...breadEnergyProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Commercial ESS"].includes(p.category)),
-      ...exultedProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Charge Controllers", "Solar Pumps"].includes(p.category))
+      ...exultedProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Charge Controllers", "Solar Pumps"].includes(p.category)),
+      ...expansionCatalogProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Portable Power Stations", "All-in-One Systems"].includes(p.category))
     );
   }
   if (interests.includes("smartlocks")) results.push(...smartLocksList);

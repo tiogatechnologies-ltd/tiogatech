@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
-import { PRODUCTS } from "@/data/products";
+import { PRODUCTS, expansionCatalogProducts } from "@/data/products";
 import { mergeProducts } from "@/lib/mergeProducts";
 import { resolveProductImage } from "@/lib/productImages";
 import { getSolarPackageImage } from "@/hooks/useSolarPackages";
@@ -217,14 +217,14 @@ describe("Product and Package Real Images", () => {
   });
 
   it("all AlpSolarr, Taico, Dawnice, Solis, SolarPro, Infinisolar, and Deye products exist with authentic photos on disk and unique hashes", () => {
-    const alpSolarr = PRODUCTS.filter((p) => p.brand === "AlpSolarr");
-    const taico = PRODUCTS.filter((p) => p.brand === "Taico");
-    const dawnice = PRODUCTS.filter((p) => p.brand === "Dawnice");
-    const solis = PRODUCTS.filter((p) => p.brand === "Solis");
-    const solarpro = PRODUCTS.filter((p) => p.brand === "SolarPro");
-    const infini = PRODUCTS.filter((p) => p.brand === "Infini" || p.brand === "Infinisolar");
-    const sungene = PRODUCTS.filter((p) => p.brand === "Sungene" && p.category === "Batteries");
-    const deye = PRODUCTS.filter((p) => p.brand === "Deye");
+    const alpSolarr = PRODUCTS.filter((p) => p.brand === "AlpSolarr" && !p.id.startsWith("expansion-"));
+    const taico = PRODUCTS.filter((p) => p.brand === "Taico" && !p.id.startsWith("expansion-"));
+    const dawnice = PRODUCTS.filter((p) => p.brand === "Dawnice" && !p.id.startsWith("expansion-"));
+    const solis = PRODUCTS.filter((p) => p.brand === "Solis" && !p.id.startsWith("expansion-"));
+    const solarpro = PRODUCTS.filter((p) => p.brand === "SolarPro" && !p.id.startsWith("expansion-"));
+    const infini = PRODUCTS.filter((p) => (p.brand === "Infini" || p.brand === "Infinisolar") && !p.id.startsWith("expansion-"));
+    const sungene = PRODUCTS.filter((p) => p.brand === "Sungene" && p.category === "Batteries" && !p.id.startsWith("expansion-"));
+    const deye = PRODUCTS.filter((p) => p.brand === "Deye" && !p.id.startsWith("expansion-"));
 
     expect(alpSolarr.length).toBe(12);
     expect(taico.length).toBe(5);
@@ -263,13 +263,13 @@ describe("Product and Package Real Images", () => {
       brand: p.brand,
     }));
     const merged = mergeProducts(staticList, []);
-    const alp = merged.filter((p) => p.brand === "AlpSolarr");
-    const tai = merged.filter((p) => p.brand === "Taico");
-    const daw = merged.filter((p) => p.brand === "Dawnice");
-    const sol = merged.filter((p) => p.brand === "Solis");
-    const sp = merged.filter((p) => p.brand === "SolarPro");
-    const inf = merged.filter((p) => p.brand === "Infini" || p.brand === "Infinisolar");
-    const sung = merged.filter((p) => p.brand === "Sungene" && p.category === "Batteries");
+    const alp = merged.filter((p) => p.brand === "AlpSolarr" && !p.id.startsWith("expansion-"));
+    const tai = merged.filter((p) => p.brand === "Taico" && !p.id.startsWith("expansion-"));
+    const daw = merged.filter((p) => p.brand === "Dawnice" && !p.id.startsWith("expansion-"));
+    const sol = merged.filter((p) => p.brand === "Solis" && !p.id.startsWith("expansion-"));
+    const sp = merged.filter((p) => p.brand === "SolarPro" && !p.id.startsWith("expansion-"));
+    const inf = merged.filter((p) => (p.brand === "Infini" || p.brand === "Infinisolar") && !p.id.startsWith("expansion-"));
+    const sung = merged.filter((p) => p.brand === "Sungene" && p.category === "Batteries" && !p.id.startsWith("expansion-"));
 
     expect(alp.length).toBe(12);
     expect(tai.length).toBe(5);
@@ -455,7 +455,7 @@ describe("Product and Package Real Images", () => {
   });
 
   it("all 7 Solis inverters exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
-    const solis = PRODUCTS.filter((p) => p.brand === "Solis");
+    const solis = PRODUCTS.filter((p) => p.brand === "Solis" && !p.id.startsWith("expansion-"));
     expect(solis.length).toBe(7);
 
     const expectedPrices: Record<string, number> = {
@@ -742,6 +742,55 @@ describe("Product and Package Real Images", () => {
     }
 
     expect(hashes.size).toBe(41);
+  });
+
+  it("all 61 expansion products across 13 brands exist in catalog with authentic HD photos on disk, correct specifications, and 100% unique hashes", () => {
+    expect(expansionCatalogProducts.length).toBe(61);
+
+    const brandsExpected: Record<string, number> = {
+      "EcoFlow": 13,
+      "Bread Energy": 9,
+      "Dawnice": 9,
+      "Taico": 5,
+      "MECO": 5,
+      "SRNE": 5,
+      "Deye": 4,
+      "HiNEN": 3,
+      "Solis": 2,
+      "LuxPower": 2,
+      "INFINI": 2,
+      "AlpSolarr": 1,
+      "Sorotech": 1,
+    };
+
+    const brandCounts: Record<string, number> = {};
+    const expansionHashes = new Set<string>();
+
+    for (const p of expansionCatalogProducts) {
+      expect(p.id.startsWith("expansion-")).toBe(true);
+      expect(p.sku).toBeTruthy();
+      expect(p.name).toBeTruthy();
+      expect(p.category).toBeTruthy();
+      expect(p.numeric_price).toBeGreaterThan(0);
+      expect(p.price).toMatch(/^₦[\d,]+$/);
+      expect(p.specifications).toBeTruthy();
+      expect(p.warranty_years).toBeGreaterThanOrEqual(1);
+
+      brandCounts[p.brand || ""] = (brandCounts[p.brand || ""] || 0) + 1;
+
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.endsWith(".webp")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Expansion image must exist on disk: ${filePath}`).toBe(true);
+
+      const buf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(buf).digest("hex");
+      expect(expansionHashes.has(hash), `Expansion product ${p.sku} has duplicate hash: ${p.image_url}`).toBe(false);
+      expansionHashes.add(hash);
+    }
+
+    expect(brandCounts).toEqual(brandsExpected);
+    expect(expansionHashes.size).toBe(61);
   });
 
   it("all products across the entire catalog have 100% unique image files and hashes with zero duplicates", () => {
