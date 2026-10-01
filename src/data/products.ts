@@ -4070,8 +4070,9 @@ import { infinisolarProducts } from "./infinisolarProducts";
 import { itelProducts } from "./itelProducts";
 import { sunessProducts } from "./sunessProducts";
 import { breadEnergyProducts } from "./breadEnergyProducts";
+import { exultedProducts } from "./exultedProducts";
 
-// Unified products array including solar hardware, smart locks, Felicity, AlpSolarr, Deye, Dawnice, Solis, SolarPro, Infinisolar, Itel, Suness, Bread Energy, and complete Minisim retail catalog
+// Unified products array including solar hardware, smart locks, Felicity, AlpSolarr, Deye, Dawnice, Solis, SolarPro, Infinisolar, Itel, Suness, Bread Energy, Exulted Eagles, and complete Minisim retail catalog
 export const PRODUCTS: Product[] = [
   ...invertersList,
   ...batteriesList,
@@ -4089,6 +4090,7 @@ export const PRODUCTS: Product[] = [
   ...itelProducts,
   ...sunessProducts,
   ...breadEnergyProducts,
+  ...exultedProducts,
   ...MINISIM_PRODUCTS,
 ];
 
@@ -4108,6 +4110,7 @@ export {
   itelProducts,
   sunessProducts,
   breadEnergyProducts,
+  exultedProducts,
 };
 
 export type ProductInterest = "solar" | "panels" | "batteries" | "smarthome" | "smartlocks" | "cctv" | "full_solar" | "other";
@@ -4129,7 +4132,8 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
       ...infinisolarProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS", "Charge Controllers"].includes(p.category)),
       ...itelProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Commercial ESS"].includes(p.category)),
       ...sunessProducts.filter((p) => ["Inverters", "Batteries", "Commercial ESS"].includes(p.category)),
-      ...breadEnergyProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Commercial ESS"].includes(p.category))
+      ...breadEnergyProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Commercial ESS"].includes(p.category)),
+      ...exultedProducts.filter((p) => ["Inverters", "Batteries", "Solar Panels", "Charge Controllers", "Solar Pumps"].includes(p.category))
     );
   }
   if (interests.includes("smartlocks")) results.push(...smartLocksList);
@@ -4138,9 +4142,13 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
     ...felicityProducts.filter((p) => ["Smart Lighting & Track", "Home Automation"].includes(p.category)),
     ...alpsolarrProducts.filter((p) => ["Home Automation"].includes(p.category)),
     ...solarproProducts.filter((p) => ["Solar Street Lights"].includes(p.category)),
-    ...breadEnergyProducts.filter((p) => ["Solar Street Lights", "Solar Lighting & Track"].includes(p.category))
+    ...breadEnergyProducts.filter((p) => ["Solar Street Lights", "Solar Lighting & Track"].includes(p.category)),
+    ...exultedProducts.filter((p) => ["Solar Street Lights", "Home Automation"].includes(p.category))
   );
-  if (interests.includes("cctv")) results.push(...cctvList);
+  if (interests.includes("cctv")) results.push(
+    ...cctvList,
+    ...exultedProducts.filter((p) => ["Security & CCTV"].includes(p.category))
+  );
 
   return results;
 }
@@ -4156,3 +4164,4 @@ export function groupBySeries(products: Product[]): Record<string, Product[]> {
 }
 
 export default PRODUCTS;
+

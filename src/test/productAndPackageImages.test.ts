@@ -662,6 +662,88 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(47);
   });
 
+  it("every Exulted Eagles product has an authentic image, correct price, and unique hash", () => {
+    const exulted = PRODUCTS.filter((p) => p.sku?.startsWith("EXU-") || p.sku?.startsWith("ECO-"));
+    expect(exulted.length).toBe(41);
+
+    const expectedPrices: Record<string, number> = {
+      // 1. Batteries
+      "EXU-BAT-220AH-TUB": 264000,
+      "EXU-BAT-230AH-DEBULL": 264000,
+      "EXU-BAT-200AH-QUANTA-WC": 396000,
+      "EXU-BAT-200AH-QUANTA-REG": 372000,
+      "EXU-BAT-BC-5K-FLAT": 1020000,
+      "EXU-BAT-BC-5K-SLIM": 1020000,
+      "EXU-BAT-BC-10K-BLOCK": 1740000,
+      "EXU-BAT-BC-15K-BLOCK": 1980000,
+      "EXU-BAT-BC-10K-SMART": 1800000,
+      "EXU-BAT-BC-15K-SMART": 2040000,
+      "EXU-BAT-FT-5K-48V": 1140000,
+      "EXU-BAT-FT-15K-48V": 2280000,
+
+      // 2. Inverters
+      "EXU-INV-2.5K-TT": 216000,
+      "EXU-INV-5K-TT": 360000,
+      "EXU-INV-2K-12V-WM": 180000,
+      "EXU-INV-3K-24V-WM": 228000,
+      "EXU-INV-4K-24V-WM": 360000,
+      "EXU-INV-6K-48V-WM": 480000,
+      "EXU-INV-10K-48V-WM": 1020000,
+      "EXU-INV-12.5K-48V-PAR": 1140000,
+      "EXU-INV-4K-24V-HF": 384000,
+      "EXU-INV-6.2K-48V-HF": 456000,
+      "EXU-INV-6.2K-48V-HV": 468000,
+      "EXU-INV-11K-48V-NP": 900000,
+      "EXU-INV-11K-48V-PAR": 960000,
+
+      // 3. Solar Panels
+      "EXU-PV-460W": 102000,
+      "EXU-PV-550W": 138000,
+      "EXU-PV-620W": 144000,
+      "EXU-PV-650W": 150000,
+
+      // 4. Charge Controllers
+      "EXU-CC-60A-MPPT": 156000,
+      "EXU-CC-100A-MPPT": 228000,
+
+      // 5. Solar Pumps
+      "EXU-PUMP-SP600": 432000,
+      "EXU-PUMP-SP5000": 2040000,
+
+      // 6. Lights
+      "EXU-SL-80W": 180000,
+      "EXU-SL-100W": 240000,
+      "EXU-SL-SIMPLICITY": 72000,
+      "EXU-SL-GARDEN": 72000,
+
+      // 7. Camera & Gate
+      "EXU-CAM-4G-DUAL": 78000,
+      "EXU-GATE-SLIDING-650": 780000,
+
+      // 8. EcoFlow
+      "ECO-RIVER2-256": 307770,
+      "ECO-RIVER-288": 234000,
+    };
+
+    const hashes = new Set<string>();
+
+    for (const p of exulted) {
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.startsWith("/products/exulted/")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Image exists for ${p.name}: ${filePath}`).toBe(true);
+
+      const expected = expectedPrices[p.sku || ""];
+      expect(p.numeric_price, `Price for ${p.name} (SKU: ${p.sku})`).toBe(expected);
+
+      const fileBuf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
+      hashes.add(hash);
+    }
+
+    expect(hashes.size).toBe(41);
+  });
+
   it("all products across the entire catalog have 100% unique image files and hashes with zero duplicates", () => {
     const fileHashMap = new Map<string, string>();
     for (const p of PRODUCTS) {
