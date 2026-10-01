@@ -345,8 +345,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦661,050",
-    "numeric_price": 661050,
+    "price": "₦610,200",
+    "numeric_price": 610200,
     "tier": "mid",
     "image_url": "/products/ecoflow/ecoflow-river-3-max-plus.webp",
     "specifications": {
@@ -356,7 +356,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "858 Wh",
       "Warranty": "Not stated",
-      "Pricing": "₦661,050"
+      "Pricing": "₦610,200"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -391,8 +391,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦586,300",
-    "numeric_price": 586300,
+    "price": "₦541,200",
+    "numeric_price": 541200,
     "tier": "mid",
     "image_url": "/products/ecoflow/ecoflow-e980-power-station.webp",
     "specifications": {
@@ -402,7 +402,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "980 Wh",
       "Warranty": "Not stated",
-      "Pricing": "₦586,300"
+      "Pricing": "₦541,200"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -437,8 +437,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦884,000",
-    "numeric_price": 884000,
+    "price": "₦816,000",
+    "numeric_price": 816000,
     "tier": "mid",
     "image_url": "/products/ecoflow/ecoflow-delta-2-delta-3.webp",
     "specifications": {
@@ -448,7 +448,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "1024 Wh",
       "Warranty": "Not stated",
-      "Pricing": "₦884,000"
+      "Pricing": "₦816,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -483,8 +483,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦1,040,000",
-    "numeric_price": 1040000,
+    "price": "₦960,000",
+    "numeric_price": 960000,
     "tier": "mid",
     "image_url": "/products/ecoflow/ecoflow-delta-2-max-solar-gen-220w.webp",
     "specifications": {
@@ -494,7 +494,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "2048 Wh",
       "Warranty": "Not stated",
-      "Pricing": "₦1,040,000"
+      "Pricing": "₦960,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -529,8 +529,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦1,560,000",
-    "numeric_price": 1560000,
+    "price": "₦1,440,000",
+    "numeric_price": 1440000,
     "tier": "mid",
     "image_url": "/products/ecoflow/ecoflow-delta-2-max.webp",
     "specifications": {
@@ -540,7 +540,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "2048 Wh",
       "Warranty": "Not stated",
-      "Pricing": "₦1,560,000"
+      "Pricing": "₦1,440,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -575,8 +575,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦2,600,000",
-    "numeric_price": 2600000,
+    "price": "₦2,400,000",
+    "numeric_price": 2400000,
     "tier": "premium",
     "image_url": "/products/ecoflow/ecoflow-delta-pro.webp",
     "specifications": {
@@ -586,7 +586,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "3600 Wh",
       "Warranty": "Not stated",
-      "Pricing": "₦2,600,000"
+      "Pricing": "₦2,400,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -621,8 +621,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential solar arrays, RVs, commercial rooftops, and hybrid charging systems",
     "bestFor": "Residential solar arrays, RVs, commercial rooftops, and hybrid charging systems",
-    "price": "₦115,700",
-    "numeric_price": 115700,
+    "price": "₦106,800",
+    "numeric_price": 106800,
     "tier": "entry",
     "image_url": "/products/bread-energy/bread-pv-440w-mono-v2.webp",
     "specifications": {
@@ -632,7 +632,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Solar Panels",
       "Rated Capacity": "440 W",
       "Warranty": "25 years",
-      "Pricing": "₦115,700"
+      "Pricing": "₦106,800"
     },
     "stock_status": "in_stock",
     "warranty_years": 25,
@@ -667,8 +667,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦2,340,000",
-    "numeric_price": 2340000,
+    "price": "₦2,160,000",
+    "numeric_price": 2160000,
     "tier": "premium",
     "image_url": "/products/bread-energy/bread-bat-9-6k-wheels.webp",
     "specifications": {
@@ -678,7 +678,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "9.6 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦2,340,000"
+      "Pricing": "₦2,160,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -713,8 +713,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦2,535,000",
-    "numeric_price": 2535000,
+    "price": "₦2,340,000",
+    "numeric_price": 2340000,
     "tier": "premium",
     "image_url": "/products/bread-energy/bread-bat-10-24k-wheels.webp",
     "specifications": {
@@ -724,7 +724,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "10.24 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦2,535,000"
+      "Pricing": "₦2,340,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -759,8 +759,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦2,600,000",
-    "numeric_price": 2600000,
+    "price": "₦2,400,000",
+    "numeric_price": 2400000,
     "tier": "premium",
     "image_url": "/products/bread-energy/bread-bat-13-44k-wheels.webp",
     "specifications": {
@@ -770,7 +770,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "13.44 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦2,600,000"
+      "Pricing": "₦2,400,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -805,8 +805,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦2,860,000",
-    "numeric_price": 2860000,
+    "price": "₦2,640,000",
+    "numeric_price": 2640000,
     "tier": "premium",
     "image_url": "/products/bread-energy/bread-bat-15-67k-wheels.webp",
     "specifications": {
@@ -816,7 +816,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "15.67 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦2,860,000"
+      "Pricing": "₦2,640,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -851,8 +851,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Turnkey residential & commercial solar setups, luxury duplexes, and enterprise power backup",
     "bestFor": "Turnkey residential & commercial solar setups, luxury duplexes, and enterprise power backup",
-    "price": "₦5,460,000",
-    "numeric_price": 5460000,
+    "price": "₦5,040,000",
+    "numeric_price": 5040000,
     "tier": "premium",
     "image_url": "/products/bread-energy/bread-aio-5k-20k-exp.webp",
     "specifications": {
@@ -862,7 +862,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "All-in-One Systems",
       "Rated Capacity": "5 kW",
       "Warranty": "Not stated",
-      "Pricing": "₦5,460,000"
+      "Pricing": "₦5,040,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -897,8 +897,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Turnkey residential & commercial solar setups, luxury duplexes, and enterprise power backup",
     "bestFor": "Turnkey residential & commercial solar setups, luxury duplexes, and enterprise power backup",
-    "price": "₦2,210,000",
-    "numeric_price": 2210000,
+    "price": "₦2,040,000",
+    "numeric_price": 2040000,
     "tier": "premium",
     "image_url": "/products/bread-energy/bread-aio-6k-5k-exp.webp",
     "specifications": {
@@ -908,7 +908,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "All-in-One Systems",
       "Rated Capacity": "6 kW",
       "Warranty": "Not stated",
-      "Pricing": "₦2,210,000"
+      "Pricing": "₦2,040,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -943,8 +943,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Turnkey residential & commercial solar setups, luxury duplexes, and enterprise power backup",
     "bestFor": "Turnkey residential & commercial solar setups, luxury duplexes, and enterprise power backup",
-    "price": "₦3,705,000",
-    "numeric_price": 3705000,
+    "price": "₦3,420,000",
+    "numeric_price": 3420000,
     "tier": "premium",
     "image_url": "/products/bread-energy/bread-aio-6k-15k-exp.webp",
     "specifications": {
@@ -954,7 +954,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "All-in-One Systems",
       "Rated Capacity": "6 kW",
       "Warranty": "Not stated",
-      "Pricing": "₦3,705,000"
+      "Pricing": "₦3,420,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -989,8 +989,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Turnkey residential & commercial solar setups, luxury duplexes, and enterprise power backup",
     "bestFor": "Turnkey residential & commercial solar setups, luxury duplexes, and enterprise power backup",
-    "price": "₦6,500,000",
-    "numeric_price": 6500000,
+    "price": "₦6,000,000",
+    "numeric_price": 6000000,
     "tier": "premium",
     "image_url": "/products/bread-energy/bread-aio-12k-20k-exp.webp",
     "specifications": {
@@ -1000,7 +1000,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "All-in-One Systems",
       "Rated Capacity": "12 kW",
       "Warranty": "Not stated",
-      "Pricing": "₦6,500,000"
+      "Pricing": "₦6,000,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1035,8 +1035,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦2,450,000",
-    "numeric_price": 2450000,
+    "price": "₦2,400,000",
+    "numeric_price": 2400000,
     "tier": "premium",
     "image_url": "/products/dawnice/dawnice-10kwh-residential.webp",
     "specifications": {
@@ -1046,7 +1046,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "10 kWh",
       "Warranty": "10 years (free replacement first 5 years)",
-      "Pricing": "₦2,450,000"
+      "Pricing": "₦2,400,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -1081,8 +1081,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦3,200,000",
-    "numeric_price": 3200000,
+    "price": "₦3,120,000",
+    "numeric_price": 3120000,
     "tier": "premium",
     "image_url": "/products/dawnice/dawnice-16kwh-residential.webp",
     "specifications": {
@@ -1092,7 +1092,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "16 kWh",
       "Warranty": "10 years (free replacement first 5 years)",
-      "Pricing": "₦3,200,000"
+      "Pricing": "₦3,120,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -1127,8 +1127,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦4,500,000",
-    "numeric_price": 4500000,
+    "price": "₦4,680,000",
+    "numeric_price": 4680000,
     "tier": "premium",
     "image_url": "/products/dawnice/dawnice-20kwh-residential.webp",
     "specifications": {
@@ -1138,7 +1138,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "20 kWh",
       "Warranty": "10 years (free replacement first 5 years)",
-      "Pricing": "₦4,500,000"
+      "Pricing": "₦4,680,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -1173,8 +1173,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦2,366,000",
-    "numeric_price": 2366000,
+    "price": "₦2,184,000",
+    "numeric_price": 2184000,
     "tier": "premium",
     "image_url": "/products/dawnice/dawnice-hzeb-lct-10kwh.webp",
     "specifications": {
@@ -1184,7 +1184,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "10.24 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦2,366,000"
+      "Pricing": "₦2,184,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -1219,8 +1219,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦3,614,000",
-    "numeric_price": 3614000,
+    "price": "₦3,336,000",
+    "numeric_price": 3336000,
     "tier": "premium",
     "image_url": "/products/dawnice/dawnice-hzeb-lct-15kwh.webp",
     "specifications": {
@@ -1230,7 +1230,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "15.36 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦3,614,000"
+      "Pricing": "₦3,336,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -1265,8 +1265,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦25,200,000",
-    "numeric_price": 25200000,
+    "price": "₦28,800,000",
+    "numeric_price": 28800000,
     "tier": "premium",
     "image_url": "/products/dawnice/dawnice-c-and-i-112kwh-indoor.webp",
     "specifications": {
@@ -1276,7 +1276,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "112 kWh",
       "Warranty": "10 years (free replacement first 5 years)",
-      "Pricing": "₦25,200,000"
+      "Pricing": "₦28,800,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -1311,8 +1311,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦27,300,000",
-    "numeric_price": 27300000,
+    "price": "₦31,200,000",
+    "numeric_price": 31200000,
     "tier": "premium",
     "image_url": "/products/dawnice/dawnice-c-and-i-112kwh-outdoor.webp",
     "specifications": {
@@ -1322,7 +1322,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "112 kWh",
       "Warranty": "10 years (free replacement first 5 years)",
-      "Pricing": "₦27,300,000"
+      "Pricing": "₦31,200,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -1403,8 +1403,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦1,750,000",
-    "numeric_price": 1750000,
+    "price": "₦1,740,000",
+    "numeric_price": 1740000,
     "tier": "mid",
     "image_url": "/products/dawnice/dawnice-10kw-inverter.webp",
     "specifications": {
@@ -1414,7 +1414,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Inverters",
       "Rated Capacity": "10 kW",
       "Warranty": "Not stated",
-      "Pricing": "₦1,750,000"
+      "Pricing": "₦1,740,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1449,8 +1449,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦1,365,000",
-    "numeric_price": 1365000,
+    "price": "₦1,260,000",
+    "numeric_price": 1260000,
     "tier": "mid",
     "image_url": "/products/taico/taico-tkpw-5500-5kwh.webp",
     "specifications": {
@@ -1460,7 +1460,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "5.12 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦1,365,000"
+      "Pricing": "₦1,260,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -1495,9 +1495,9 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦2,145,000",
-    "numeric_price": 2145000,
-    "tier": "premium",
+    "price": "₦1,980,000",
+    "numeric_price": 1980000,
+    "tier": "mid",
     "image_url": "/products/taico/taico-tkpw-10000-10kwh.webp",
     "specifications": {
       "Model": "TKPW-10000",
@@ -1506,7 +1506,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "10.24 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦2,145,000"
+      "Pricing": "₦1,980,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -1541,8 +1541,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦3,406,000",
-    "numeric_price": 3406000,
+    "price": "₦3,144,000",
+    "numeric_price": 3144000,
     "tier": "premium",
     "image_url": "/products/taico/taico-tkrb-1500-15kwh.webp",
     "specifications": {
@@ -1552,7 +1552,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "15.36 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦3,406,000"
+      "Pricing": "₦3,144,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -1587,8 +1587,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦3,900,000",
-    "numeric_price": 3900000,
+    "price": "₦3,600,000",
+    "numeric_price": 3600000,
     "tier": "premium",
     "image_url": "/products/taico/taico-tkrb-2000-20kwh.webp",
     "specifications": {
@@ -1598,7 +1598,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "20.48 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦3,900,000"
+      "Pricing": "₦3,600,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -1633,8 +1633,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦4,745,000",
-    "numeric_price": 4745000,
+    "price": "₦4,380,000",
+    "numeric_price": 4380000,
     "tier": "premium",
     "image_url": "/products/taico/taico-tkrb-2028-28kwh.webp",
     "specifications": {
@@ -1644,7 +1644,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "28.48 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦4,745,000"
+      "Pricing": "₦4,380,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -1679,8 +1679,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦465,400",
-    "numeric_price": 465400,
+    "price": "₦429,600",
+    "numeric_price": 429600,
     "tier": "entry",
     "image_url": "/products/meco/meco-1kwh-300w-solar-generator.webp",
     "specifications": {
@@ -1690,7 +1690,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "1 kWh",
       "Warranty": "Not stated",
-      "Pricing": "₦465,400"
+      "Pricing": "₦429,600"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1725,9 +1725,9 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦533,000",
-    "numeric_price": 533000,
-    "tier": "mid",
+    "price": "₦492,000",
+    "numeric_price": 492000,
+    "tier": "entry",
     "image_url": "/products/meco/meco-1kwh-pro-500w-solar-generator.webp",
     "specifications": {
       "Model": "MECO 1kWh Pro / 500W Solar Generator",
@@ -1736,7 +1736,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "1 kWh",
       "Warranty": "Not stated",
-      "Pricing": "₦533,000"
+      "Pricing": "₦492,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1771,8 +1771,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦715,000",
-    "numeric_price": 715000,
+    "price": "₦660,000",
+    "numeric_price": 660000,
     "tier": "mid",
     "image_url": "/products/meco/meco-1kwh-pro-with-300w-panel.webp",
     "specifications": {
@@ -1782,7 +1782,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "1 kWh",
       "Warranty": "Not stated",
-      "Pricing": "₦715,000"
+      "Pricing": "₦660,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1817,8 +1817,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦780,000",
-    "numeric_price": 780000,
+    "price": "₦720,000",
+    "numeric_price": 720000,
     "tier": "mid",
     "image_url": "/products/meco/meco-1-2kwh-with-200w-panel.webp",
     "specifications": {
@@ -1828,7 +1828,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "1.2 kWh",
       "Warranty": "Not stated",
-      "Pricing": "₦780,000"
+      "Pricing": "₦720,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1863,8 +1863,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦910,000",
-    "numeric_price": 910000,
+    "price": "₦840,000",
+    "numeric_price": 840000,
     "tier": "mid",
     "image_url": "/products/meco/meco-2kwh-solar-generator.webp",
     "specifications": {
@@ -1874,7 +1874,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "2 kWh",
       "Warranty": "Not stated",
-      "Pricing": "₦910,000"
+      "Pricing": "₦840,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1909,8 +1909,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦1,324,700",
-    "numeric_price": 1324700,
+    "price": "₦1,222,800",
+    "numeric_price": 1222800,
     "tier": "mid",
     "image_url": "/products/srne/srne-eoc05b-5kwh-battery.webp",
     "specifications": {
@@ -1920,7 +1920,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "5.12 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦1,324,700"
+      "Pricing": "₦1,222,800"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -1955,8 +1955,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦486,200",
-    "numeric_price": 486200,
+    "price": "₦448,800",
+    "numeric_price": 448800,
     "tier": "entry",
     "image_url": "/products/srne/srne-hf2430s80-h-inverter.webp",
     "specifications": {
@@ -1966,7 +1966,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Inverters",
       "Rated Capacity": "3.3 kW",
       "Warranty": "2 years",
-      "Pricing": "₦486,200"
+      "Pricing": "₦448,800"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2001,8 +2001,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦595,400",
-    "numeric_price": 595400,
+    "price": "₦549,600",
+    "numeric_price": 549600,
     "tier": "mid",
     "image_url": "/products/srne/srne-hfp4850s80-h-inverter.webp",
     "specifications": {
@@ -2012,7 +2012,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Inverters",
       "Rated Capacity": "5 kW",
       "Warranty": "2 years",
-      "Pricing": "₦595,400"
+      "Pricing": "₦549,600"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2047,8 +2047,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦631,800",
-    "numeric_price": 631800,
+    "price": "₦583,200",
+    "numeric_price": 583200,
     "tier": "mid",
     "image_url": "/products/srne/srne-hyp4850s100-h-inverter.webp",
     "specifications": {
@@ -2058,7 +2058,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Inverters",
       "Rated Capacity": "5 kW",
       "Warranty": "2 years",
-      "Pricing": "₦631,800"
+      "Pricing": "₦583,200"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2093,8 +2093,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦799,500",
-    "numeric_price": 799500,
+    "price": "₦738,000",
+    "numeric_price": 738000,
     "tier": "mid",
     "image_url": "/products/srne/srne-hyp4860s100-h-inverter.webp",
     "specifications": {
@@ -2104,7 +2104,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Inverters",
       "Rated Capacity": "6 kW",
       "Warranty": "10 years",
-      "Pricing": "₦799,500"
+      "Pricing": "₦738,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -2139,8 +2139,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦1,560,000",
-    "numeric_price": 1560000,
+    "price": "₦1,440,000",
+    "numeric_price": 1440000,
     "tier": "mid",
     "image_url": "/products/deye/deye-se-g5-1-battery.webp",
     "specifications": {
@@ -2150,7 +2150,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "5.12 kWh",
       "Warranty": "5 years",
-      "Pricing": "₦1,560,000"
+      "Pricing": "₦1,440,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -2185,8 +2185,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦1,690,000",
-    "numeric_price": 1690000,
+    "price": "₦1,560,000",
+    "numeric_price": 1560000,
     "tier": "mid",
     "image_url": "/products/deye/deye-bos-g-pro-5kwh-module.webp",
     "specifications": {
@@ -2196,7 +2196,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "5 kWh",
       "Warranty": "10 years",
-      "Pricing": "₦1,690,000"
+      "Pricing": "₦1,560,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -2231,8 +2231,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦16,016,000",
-    "numeric_price": 16016000,
+    "price": "₦14,784,000",
+    "numeric_price": 14784000,
     "tier": "premium",
     "image_url": "/products/deye/deye-bos-g-40kwh-system.webp",
     "specifications": {
@@ -2242,7 +2242,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "40 kWh",
       "Warranty": "10 years",
-      "Pricing": "₦16,016,000"
+      "Pricing": "₦14,784,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -2277,8 +2277,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦22,828,000",
-    "numeric_price": 22828000,
+    "price": "₦21,072,000",
+    "numeric_price": 21072000,
     "tier": "premium",
     "image_url": "/products/deye/deye-bos-g-60kwh-system.webp",
     "specifications": {
@@ -2288,7 +2288,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "60 kWh",
       "Warranty": "10 years",
-      "Pricing": "₦22,828,000"
+      "Pricing": "₦21,072,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -2323,8 +2323,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦344,500",
-    "numeric_price": 344500,
+    "price": "₦318,000",
+    "numeric_price": 318000,
     "tier": "entry",
     "image_url": "/products/hinen/hinen-300w-power-station.webp",
     "specifications": {
@@ -2334,7 +2334,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "300 W",
       "Warranty": "10 years",
-      "Pricing": "₦344,500"
+      "Pricing": "₦318,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -2369,9 +2369,9 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦536,900",
-    "numeric_price": 536900,
-    "tier": "mid",
+    "price": "₦495,600",
+    "numeric_price": 495600,
+    "tier": "entry",
     "image_url": "/products/hinen/hinen-600w-power-station.webp",
     "specifications": {
       "Model": "HiNEN 600W Portable Power Station",
@@ -2380,7 +2380,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "600 W",
       "Warranty": "10 years",
-      "Pricing": "₦536,900"
+      "Pricing": "₦495,600"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -2415,8 +2415,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦1,105,053",
-    "numeric_price": 1105053,
+    "price": "₦1,020,049",
+    "numeric_price": 1020049,
     "tier": "mid",
     "image_url": "/products/hinen/hinen-3000w-power-station.webp",
     "specifications": {
@@ -2426,7 +2426,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "3000 W",
       "Warranty": "Not clear",
-      "Pricing": "₦1,105,053"
+      "Pricing": "₦1,020,049"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2553,8 +2553,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦1,050,000",
-    "numeric_price": 1050000,
+    "price": "₦1,200,000",
+    "numeric_price": 1200000,
     "tier": "mid",
     "image_url": "/products/luxpower/luxpower-pgem-5kwh-battery.webp",
     "specifications": {
@@ -2564,7 +2564,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "5.12 kWh",
       "Warranty": "10 years",
-      "Pricing": "₦1,050,000"
+      "Pricing": "₦1,200,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 10,
@@ -2599,8 +2599,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
     "bestFor": "Camping, mobile workstations, home backup, TVs, laptops & refrigeration during outages",
-    "price": "₦494,000",
-    "numeric_price": 494000,
+    "price": "₦456,000",
+    "numeric_price": 456000,
     "tier": "entry",
     "image_url": "/products/luxpower/luxpower-vitabank-500-power-station.webp",
     "specifications": {
@@ -2610,7 +2610,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Portable Power Stations",
       "Rated Capacity": "500 W",
       "Warranty": "2 years",
-      "Pricing": "₦494,000"
+      "Pricing": "₦456,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2737,8 +2737,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦2,600,000",
-    "numeric_price": 2600000,
+    "price": "₦2,400,000",
+    "numeric_price": 2400000,
     "tier": "premium",
     "image_url": "/products/alpsolar/alpsolarr-livo-16e-16kwh.webp",
     "specifications": {
@@ -2748,7 +2748,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Batteries",
       "Rated Capacity": "16 kWh",
       "Warranty": "5 years replacement",
-      "Pricing": "₦2,600,000"
+      "Pricing": "₦2,400,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 5,
@@ -2783,8 +2783,8 @@ export const expansionCatalogProducts: Product[] = [
     ],
     "best_for": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
     "bestFor": "Residential & commercial hybrid solar installations with zero-flicker UPS switchover",
-    "price": "₦1,550,000",
-    "numeric_price": 1550000,
+    "price": "₦1,620,000",
+    "numeric_price": 1620000,
     "tier": "mid",
     "image_url": "/products/sorotech/sorotech-11kw-hybrid-inverter.webp",
     "specifications": {
@@ -2794,7 +2794,7 @@ export const expansionCatalogProducts: Product[] = [
       "Category": "Inverters",
       "Rated Capacity": "11 kW",
       "Warranty": "Not stated",
-      "Pricing": "₦1,550,000"
+      "Pricing": "₦1,620,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,

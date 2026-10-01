@@ -791,6 +791,19 @@ describe("Product and Package Real Images", () => {
 
     expect(brandCounts).toEqual(brandsExpected);
     expect(expansionHashes.size).toBe(61);
+
+    // Exact +20% price checks across representative expansion items
+    const expPriceMap = new Map(expansionCatalogProducts.map((p) => [p.sku, p.numeric_price]));
+    expect(expPriceMap.get("PPS-021")).toBe(816000);  // EcoFlow DELTA 2: 680k + 20%
+    expect(expPriceMap.get("PPS-023")).toBe(1440000); // EcoFlow DELTA 2 Max: 1.2m + 20%
+    expect(expPriceMap.get("PPS-025")).toBe(2400000); // EcoFlow DELTA Pro: 2m + 20%
+    expect(expPriceMap.get("BAT-046")).toBe(2160000); // Bread 9.6kWh: 1.8m + 20%
+    expect(expPriceMap.get("BAT-043")).toBe(1260000); // Taico 5kWh: 1.05m + 20%
+    expect(expPriceMap.get("BAT-036")).toBe(1440000); // Deye 5.1kWh: 1.2m + 20%
+    expect(expPriceMap.get("INV-042")).toBe(900000);  // Dawnice 6kW: 750k + 20%
+    expect(expPriceMap.get("PPS-001")).toBe(429600);  // MECO 1kWh: 358k + 20%
+    expect(expPriceMap.get("BAT-041")).toBe(1222800); // SRNE 5kWh: 1.019m + 20%
+    expect(expPriceMap.get("BAT-086")).toBe(2400000); // AlpSolarr 16kWh: 2m + 20%
   });
 
   it("all 44 Blue Carbon and 14 Dealer products exist in catalog with authentic HD photos on disk, exact specifications, and 100% unique hashes", () => {
@@ -822,6 +835,18 @@ describe("Product and Package Real Images", () => {
     }
 
     expect(hashes.size).toBe(58);
+
+    // Exact +20% price checks across representative Blue Carbon & Dealer items
+    const priceMap = new Map(testBatch.map((p) => [p.sku, p.numeric_price]));
+    expect(priceMap.get("INV-007")).toBe(180000); // 150k + 20%
+    expect(priceMap.get("INV-011")).toBe(216000); // 180k + 20%
+    expect(priceMap.get("INV-023")).toBe(360000); // 300k + 20%
+    expect(priceMap.get("BAT-121")).toBe(264000); // 220k + 20%
+    expect(priceMap.get("PNL-021")).toBe(36000);  // 30k + 20%
+    expect(priceMap.get("PNL-022")).toBe(42000);  // 35k + 20%
+    expect(priceMap.get("INV-001")).toBe(240000); // 200k + 20%
+    expect(priceMap.get("BAT-010")).toBe(1140000); // 950k + 20%
+    expect(priceMap.get("AIO-010")).toBe(2700000); // 2.25m + 20%
   });
 
   it("all products across the entire catalog have 100% unique image files and hashes with zero duplicates", () => {

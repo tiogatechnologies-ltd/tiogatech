@@ -20,8 +20,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦39,000",
-    "numeric_price": 39000,
+    "price": "₦36,000",
+    "numeric_price": 36000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-021-bc-50w-poly.webp",
     "specifications": {
@@ -31,7 +31,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "50W solar panel, polycrystalline",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦39,000"
+      "Pricing": "₦36,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -65,8 +65,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦45,500",
-    "numeric_price": 45500,
+    "price": "₦42,000",
+    "numeric_price": 42000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-022-bc-80w-mono.webp",
     "specifications": {
@@ -76,7 +76,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "80W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦45,500"
+      "Pricing": "₦42,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -110,8 +110,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦52,000",
-    "numeric_price": 52000,
+    "price": "₦48,000",
+    "numeric_price": 48000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-023-bc-100w-mono.webp",
     "specifications": {
@@ -121,7 +121,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "100W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦52,000"
+      "Pricing": "₦48,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -155,8 +155,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦52,000",
-    "numeric_price": 52000,
+    "price": "₦48,000",
+    "numeric_price": 48000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-024-bc-150w-mono.webp",
     "specifications": {
@@ -166,7 +166,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "150W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦52,000"
+      "Pricing": "₦48,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -200,8 +200,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦62,400",
-    "numeric_price": 62400,
+    "price": "₦57,600",
+    "numeric_price": 57600,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-025-bc-190w-mono.webp",
     "specifications": {
@@ -211,7 +211,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "190W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦62,400"
+      "Pricing": "₦57,600"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -245,8 +245,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦84,500",
-    "numeric_price": 84500,
+    "price": "₦78,000",
+    "numeric_price": 78000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-026-bc-220w-mono.webp",
     "specifications": {
@@ -256,7 +256,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "220W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦84,500"
+      "Pricing": "₦78,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -290,8 +290,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦91,000",
-    "numeric_price": 91000,
+    "price": "₦84,000",
+    "numeric_price": 84000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-027-bc-250w-mono.webp",
     "specifications": {
@@ -301,7 +301,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "250W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦91,000"
+      "Pricing": "₦84,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -335,8 +335,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦104,000",
-    "numeric_price": 104000,
+    "price": "₦96,000",
+    "numeric_price": 96000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-028-bc-280w-mono.webp",
     "specifications": {
@@ -346,7 +346,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "280W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦104,000"
+      "Pricing": "₦96,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -380,8 +380,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦97,500",
-    "numeric_price": 97500,
+    "price": "₦90,000",
+    "numeric_price": 90000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-029-bc-300w-mono.webp",
     "specifications": {
@@ -391,7 +391,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "300W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦97,500"
+      "Pricing": "₦90,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -425,8 +425,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦110,500",
-    "numeric_price": 110500,
+    "price": "₦102,000",
+    "numeric_price": 102000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-030-bc-325w-mono.webp",
     "specifications": {
@@ -436,7 +436,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "325W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦110,500"
+      "Pricing": "₦102,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -470,8 +470,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦110,500",
-    "numeric_price": 110500,
+    "price": "₦102,000",
+    "numeric_price": 102000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-031-bc-330w-mono.webp",
     "specifications": {
@@ -481,7 +481,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "330W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦110,500"
+      "Pricing": "₦102,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -515,8 +515,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦110,500",
-    "numeric_price": 110500,
+    "price": "₦102,000",
+    "numeric_price": 102000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-032-bc-350w-mono.webp",
     "specifications": {
@@ -526,7 +526,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "350W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦110,500"
+      "Pricing": "₦102,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -560,8 +560,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦117,000",
-    "numeric_price": 117000,
+    "price": "₦108,000",
+    "numeric_price": 108000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-033-bc-380w-mono.webp",
     "specifications": {
@@ -571,7 +571,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "380W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦117,000"
+      "Pricing": "₦108,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -605,8 +605,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦123,500",
-    "numeric_price": 123500,
+    "price": "₦114,000",
+    "numeric_price": 114000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-034-bc-400w-mono.webp",
     "specifications": {
@@ -616,7 +616,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "400W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦123,500"
+      "Pricing": "₦114,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -650,8 +650,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦143,000",
-    "numeric_price": 143000,
+    "price": "₦132,000",
+    "numeric_price": 132000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-036-bc-450w-mono.webp",
     "specifications": {
@@ -661,7 +661,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "450W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦143,000"
+      "Pricing": "₦132,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -695,8 +695,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦169,000",
-    "numeric_price": 169000,
+    "price": "₦156,000",
+    "numeric_price": 156000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-037-bc-450w-mono-classic.webp",
     "specifications": {
@@ -706,7 +706,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "450W solar panel, listed as \"Old\"",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦169,000"
+      "Pricing": "₦156,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -740,8 +740,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦136,500",
-    "numeric_price": 136500,
+    "price": "₦126,000",
+    "numeric_price": 126000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-039-bc-500w-mono.webp",
     "specifications": {
@@ -751,7 +751,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "500W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦136,500"
+      "Pricing": "₦126,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -785,8 +785,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦156,000",
-    "numeric_price": 156000,
+    "price": "₦144,000",
+    "numeric_price": 144000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-040-bc-550w-mono.webp",
     "specifications": {
@@ -796,7 +796,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "550W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦156,000"
+      "Pricing": "₦144,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -830,8 +830,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦182,000",
-    "numeric_price": 182000,
+    "price": "₦168,000",
+    "numeric_price": 168000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-042-bc-600w-mono.webp",
     "specifications": {
@@ -841,7 +841,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "600W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦182,000"
+      "Pricing": "₦168,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -875,8 +875,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential solar rooftops, estate installations, DC pumping & battery charging",
     "bestFor": "Residential solar rooftops, estate installations, DC pumping & battery charging",
-    "price": "₦195,000",
-    "numeric_price": 195000,
+    "price": "₦180,000",
+    "numeric_price": 180000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/pnl-045-bc-650w-mono.webp",
     "specifications": {
@@ -886,7 +886,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Solar Panels",
       "Key Specs": "650W solar panel",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦195,000"
+      "Pricing": "₦180,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -920,8 +920,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦260,000",
-    "numeric_price": 260000,
+    "price": "₦240,000",
+    "numeric_price": 240000,
     "tier": "entry",
     "image_url": "/products/blue-carbon/inv-001-bc-1.5kva-12v-hybrid.webp",
     "specifications": {
@@ -931,7 +931,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "1.5kVA 12V hybrid inverter (T/L)",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦260,000"
+      "Pricing": "₦240,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -965,9 +965,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦520,000",
-    "numeric_price": 520000,
-    "tier": "mid",
+    "price": "₦480,000",
+    "numeric_price": 480000,
+    "tier": "entry",
     "image_url": "/products/blue-carbon/inv-021-bc-4kva-hybrid.webp",
     "specifications": {
       "Model": "4kVA Hybrid Inverter",
@@ -976,7 +976,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "4kVA hybrid inverter",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦520,000"
+      "Pricing": "₦480,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1010,8 +1010,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦585,000",
-    "numeric_price": 585000,
+    "price": "₦540,000",
+    "numeric_price": 540000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/inv-040-bc-6kva-48v-nonparallel.webp",
     "specifications": {
@@ -1021,7 +1021,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "6kVA 48V hybrid inverter, no parallel function",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦585,000"
+      "Pricing": "₦540,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1055,8 +1055,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦650,000",
-    "numeric_price": 650000,
+    "price": "₦600,000",
+    "numeric_price": 600000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/inv-041-bc-6kva-48v-parallel.webp",
     "specifications": {
@@ -1066,7 +1066,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "6kVA 48V hybrid inverter with parallel function",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦650,000"
+      "Pricing": "₦600,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1100,8 +1100,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦1,495,000",
-    "numeric_price": 1495000,
+    "price": "₦1,380,000",
+    "numeric_price": 1380000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/inv-078-bc-11kva-48v-parallel.webp",
     "specifications": {
@@ -1111,7 +1111,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "11kVA 48V hybrid inverter with parallel function",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦1,495,000"
+      "Pricing": "₦1,380,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1145,8 +1145,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦1,105,000",
-    "numeric_price": 1105000,
+    "price": "₦1,020,000",
+    "numeric_price": 1020000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/inv-085-bc-12kva-48v-hybrid.webp",
     "specifications": {
@@ -1156,7 +1156,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "12kVA 48V hybrid inverter",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦1,105,000"
+      "Pricing": "₦1,020,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1190,8 +1190,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦1,235,000",
-    "numeric_price": 1235000,
+    "price": "₦1,140,000",
+    "numeric_price": 1140000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/bat-010-bc-5kwh-24v-smart.webp",
     "specifications": {
@@ -1201,7 +1201,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "5kWh 24V/200Ah Smart BMS lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦1,235,000"
+      "Pricing": "₦1,140,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1235,8 +1235,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦1,300,000",
-    "numeric_price": 1300000,
+    "price": "₦1,200,000",
+    "numeric_price": 1200000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/bat-011-bc-5kwh-24v-stackable.webp",
     "specifications": {
@@ -1246,7 +1246,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "5kWh 24V/200Ah Stackable lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦1,300,000"
+      "Pricing": "₦1,200,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1280,8 +1280,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦1,300,000",
-    "numeric_price": 1300000,
+    "price": "₦1,200,000",
+    "numeric_price": 1200000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/bat-012-bc-5kwh-24v-tabletop.webp",
     "specifications": {
@@ -1291,7 +1291,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "5kWh 24V/200Ah Smart BMS Table Top lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦1,300,000"
+      "Pricing": "₦1,200,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1325,8 +1325,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦1,495,000",
-    "numeric_price": 1495000,
+    "price": "₦1,380,000",
+    "numeric_price": 1380000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/bat-020-bc-7.5kwh-24v-stackable.webp",
     "specifications": {
@@ -1336,7 +1336,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "7.5kWh 24V/300Ah Stackable lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦1,495,000"
+      "Pricing": "₦1,380,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1370,8 +1370,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦1,495,000",
-    "numeric_price": 1495000,
+    "price": "₦1,380,000",
+    "numeric_price": 1380000,
     "tier": "mid",
     "image_url": "/products/blue-carbon/bat-021-bc-7.5kwh-24v-tabletop.webp",
     "specifications": {
@@ -1381,7 +1381,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "7.5kWh 24V/300Ah Table Top lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦1,495,000"
+      "Pricing": "₦1,380,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1415,9 +1415,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,015,000",
-    "numeric_price": 2015000,
-    "tier": "premium",
+    "price": "₦1,860,000",
+    "numeric_price": 1860000,
+    "tier": "mid",
     "image_url": "/products/blue-carbon/bat-049-bc-10kwh-48v-nonsmart.webp",
     "specifications": {
       "Model": "10kWh 48V/200Ah Non-Smart BMS",
@@ -1426,7 +1426,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "10kWh 48V/200Ah Non-Smart BMS lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,015,000"
+      "Pricing": "₦1,860,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1460,9 +1460,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,015,000",
-    "numeric_price": 2015000,
-    "tier": "premium",
+    "price": "₦1,860,000",
+    "numeric_price": 1860000,
+    "tier": "mid",
     "image_url": "/products/blue-carbon/bat-050-bc-10kwh-48v-tabletop.webp",
     "specifications": {
       "Model": "10kWh 48V/200Ah Table Top",
@@ -1471,7 +1471,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "10kWh 48V/200Ah Table Top lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,015,000"
+      "Pricing": "₦1,860,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1505,9 +1505,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,080,000",
-    "numeric_price": 2080000,
-    "tier": "premium",
+    "price": "₦1,920,000",
+    "numeric_price": 1920000,
+    "tier": "mid",
     "image_url": "/products/blue-carbon/bat-051-bc-10kwh-48v-smart.webp",
     "specifications": {
       "Model": "10kWh 48V/200Ah Smart BMS",
@@ -1516,7 +1516,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "10kWh 48V/200Ah Smart BMS lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,080,000"
+      "Pricing": "₦1,920,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1550,9 +1550,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,015,000",
-    "numeric_price": 2015000,
-    "tier": "premium",
+    "price": "₦1,860,000",
+    "numeric_price": 1860000,
+    "tier": "mid",
     "image_url": "/products/blue-carbon/bat-063-bc-12.5kwh-48v-tabletop.webp",
     "specifications": {
       "Model": "12.5kWh 48V/250Ah Table Top",
@@ -1561,7 +1561,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "12.5kWh 48V/250Ah Table Top lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,015,000"
+      "Pricing": "₦1,860,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1595,9 +1595,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,080,000",
-    "numeric_price": 2080000,
-    "tier": "premium",
+    "price": "₦1,920,000",
+    "numeric_price": 1920000,
+    "tier": "mid",
     "image_url": "/products/blue-carbon/bat-064-bc-12.5kwh-48v-nonsmart.webp",
     "specifications": {
       "Model": "12.5kWh 48V/250Ah Non-Smart BMS",
@@ -1606,7 +1606,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "12.5kWh 48V/250Ah Non-Smart BMS lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,080,000"
+      "Pricing": "₦1,920,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1640,9 +1640,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,145,000",
-    "numeric_price": 2145000,
-    "tier": "premium",
+    "price": "₦1,980,000",
+    "numeric_price": 1980000,
+    "tier": "mid",
     "image_url": "/products/blue-carbon/bat-065-bc-12.5kwh-48v-smart.webp",
     "specifications": {
       "Model": "12.5kWh 48V/250Ah Smart BMS",
@@ -1651,7 +1651,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "12.5kWh 48V/250Ah Smart BMS lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,145,000"
+      "Pricing": "₦1,980,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1685,9 +1685,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,145,000",
-    "numeric_price": 2145000,
-    "tier": "premium",
+    "price": "₦1,980,000",
+    "numeric_price": 1980000,
+    "tier": "mid",
     "image_url": "/products/blue-carbon/bat-071-bc-15kwh-48v-nonsmart.webp",
     "specifications": {
       "Model": "15kWh 48V/300Ah Non-Smart BMS",
@@ -1696,7 +1696,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "15kWh 48V/300Ah Non-Smart BMS lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,145,000"
+      "Pricing": "₦1,980,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1730,9 +1730,9 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,145,000",
-    "numeric_price": 2145000,
-    "tier": "premium",
+    "price": "₦1,980,000",
+    "numeric_price": 1980000,
+    "tier": "mid",
     "image_url": "/products/blue-carbon/bat-072-bc-15kwh-48v-tabletop.webp",
     "specifications": {
       "Model": "15kWh 48V/300Ah Table Top",
@@ -1741,7 +1741,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "15kWh 48V/300Ah Table Top lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,145,000"
+      "Pricing": "₦1,980,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1775,8 +1775,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,275,000",
-    "numeric_price": 2275000,
+    "price": "₦2,100,000",
+    "numeric_price": 2100000,
     "tier": "premium",
     "image_url": "/products/blue-carbon/bat-075-bc-15kwh-48v-smart-slim.webp",
     "specifications": {
@@ -1786,7 +1786,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "15kWh 48V/300Ah Smart BMS Slim (parallel) lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,275,000"
+      "Pricing": "₦2,100,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1820,8 +1820,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦2,340,000",
-    "numeric_price": 2340000,
+    "price": "₦2,160,000",
+    "numeric_price": 2160000,
     "tier": "premium",
     "image_url": "/products/blue-carbon/bat-076-bc-15kwh-48v-smart-stackable.webp",
     "specifications": {
@@ -1831,7 +1831,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "15kWh 48V/300Ah Smart BMS Stackable lithium-ion battery",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,340,000"
+      "Pricing": "₦2,160,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1865,8 +1865,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Turnkey 3-phase commercial facilities, luxury duplexes, hospitals & microgrids",
     "bestFor": "Turnkey 3-phase commercial facilities, luxury duplexes, hospitals & microgrids",
-    "price": "₦2,925,000",
-    "numeric_price": 2925000,
+    "price": "₦2,700,000",
+    "numeric_price": 2700000,
     "tier": "premium",
     "image_url": "/products/blue-carbon/aio-010-bc-6kva-15kwh-3phase.webp",
     "specifications": {
@@ -1876,7 +1876,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "All-in-One Systems",
       "Key Specs": "6kVA 48V inverter with 15kWh battery, three-phase",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦2,925,000"
+      "Pricing": "₦2,700,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1910,8 +1910,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Turnkey 3-phase commercial facilities, luxury duplexes, hospitals & microgrids",
     "bestFor": "Turnkey 3-phase commercial facilities, luxury duplexes, hospitals & microgrids",
-    "price": "₦5,850,000",
-    "numeric_price": 5850000,
+    "price": "₦5,400,000",
+    "numeric_price": 5400000,
     "tier": "premium",
     "image_url": "/products/blue-carbon/aio-011-bc-12kva-30kwh-3phase.webp",
     "specifications": {
@@ -1921,7 +1921,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "All-in-One Systems",
       "Key Specs": "12kVA 48V inverter with 30kWh battery, three-phase",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦5,850,000"
+      "Pricing": "₦5,400,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -1955,8 +1955,8 @@ export const blueCarbonProducts: Product[] = [
     ],
     "best_for": "Turnkey 3-phase commercial facilities, luxury duplexes, hospitals & microgrids",
     "bestFor": "Turnkey 3-phase commercial facilities, luxury duplexes, hospitals & microgrids",
-    "price": "₦10,660,000",
-    "numeric_price": 10660000,
+    "price": "₦9,840,000",
+    "numeric_price": 9840000,
     "tier": "premium",
     "image_url": "/products/blue-carbon/aio-012-bc-18kva-48kwh-3phase.webp",
     "specifications": {
@@ -1966,7 +1966,7 @@ export const blueCarbonProducts: Product[] = [
       "Category": "All-in-One Systems",
       "Key Specs": "18kVA 48V inverter with 48kWh battery, three-phase",
       "Warranty": "2 Years Manufacturer Warranty",
-      "Pricing": "₦10,660,000"
+      "Pricing": "₦9,840,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2004,8 +2004,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦195,000",
-    "numeric_price": 195000,
+    "price": "₦180,000",
+    "numeric_price": 180000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-2kva-12v-wall.webp",
     "specifications": {
@@ -2015,7 +2015,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "2kVA 12V transformer-based wall-mount inverter, PWM charging",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦195,000"
+      "Pricing": "₦180,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2050,8 +2050,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦234,000",
-    "numeric_price": 234000,
+    "price": "₦216,000",
+    "numeric_price": 216000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-2.5kva-24v-tabletop.webp",
     "specifications": {
@@ -2061,7 +2061,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "2.5kVA 24V table-top inverter, PWM charging",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦234,000"
+      "Pricing": "₦216,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2096,8 +2096,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦247,000",
-    "numeric_price": 247000,
+    "price": "₦228,000",
+    "numeric_price": 228000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-3kva-24v-wall.webp",
     "specifications": {
@@ -2107,7 +2107,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "3kVA (2.5kW) 24V transformer-based wall-mount inverter, MPPT charging",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦247,000"
+      "Pricing": "₦228,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2142,8 +2142,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦390,000",
-    "numeric_price": 390000,
+    "price": "₦360,000",
+    "numeric_price": 360000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-4kva-24v-wall.webp",
     "specifications": {
@@ -2153,7 +2153,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "4kVA (3.5kW) 24V transformer-based wall-mount inverter, MPPT charging",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦390,000"
+      "Pricing": "₦360,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2188,8 +2188,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦416,000",
-    "numeric_price": 416000,
+    "price": "₦384,000",
+    "numeric_price": 384000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-4kva-24v-hf.webp",
     "specifications": {
@@ -2199,7 +2199,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "4kVA 24V high-frequency (transformerless) inverter",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦416,000"
+      "Pricing": "₦384,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2234,8 +2234,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦390,000",
-    "numeric_price": 390000,
+    "price": "₦360,000",
+    "numeric_price": 360000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-5kva-48v-tabletop.webp",
     "specifications": {
@@ -2245,7 +2245,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "5kVA 48V table-top inverter",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦390,000"
+      "Pricing": "₦360,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2280,8 +2280,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦520,000",
-    "numeric_price": 520000,
+    "price": "₦480,000",
+    "numeric_price": 480000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-6kva-48v-wall.webp",
     "specifications": {
@@ -2291,7 +2291,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "6kVA (5.5kW) 48V transformer-based wall-mount inverter, MPPT charging",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦520,000"
+      "Pricing": "₦480,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2326,8 +2326,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦494,000",
-    "numeric_price": 494000,
+    "price": "₦456,000",
+    "numeric_price": 456000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-6.2kva-48v-hf-parallel.webp",
     "specifications": {
@@ -2337,7 +2337,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "6.2kVA 48V high-frequency inverter with parallel function",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦494,000"
+      "Pricing": "₦456,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2372,8 +2372,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦507,000",
-    "numeric_price": 507000,
+    "price": "₦468,000",
+    "numeric_price": 468000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-inv-6.2kva-48v-hf-transformerless.webp",
     "specifications": {
@@ -2383,7 +2383,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "6.2kVA 48V high-frequency transformerless inverter",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦507,000"
+      "Pricing": "₦468,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2418,8 +2418,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦1,105,000",
-    "numeric_price": 1105000,
+    "price": "₦1,020,000",
+    "numeric_price": 1020000,
     "tier": "mid",
     "image_url": "/products/dealer/dealer-inv-10kva-48v-wall.webp",
     "specifications": {
@@ -2429,7 +2429,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "10-11kVA 48V wall-mount inverter, MPPT, listed as transformer-based / HF",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦1,105,000"
+      "Pricing": "₦1,020,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2464,8 +2464,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦975,000",
-    "numeric_price": 975000,
+    "price": "₦900,000",
+    "numeric_price": 900000,
     "tier": "mid",
     "image_url": "/products/dealer/dealer-inv-11kva-48v-hf-nonparallel.webp",
     "specifications": {
@@ -2475,7 +2475,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "11kVA 48V high-frequency (transformerless) inverter, no parallel function",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦975,000"
+      "Pricing": "₦900,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2510,8 +2510,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦1,040,000",
-    "numeric_price": 1040000,
+    "price": "₦960,000",
+    "numeric_price": 960000,
     "tier": "mid",
     "image_url": "/products/dealer/dealer-inv-11kva-48v-hf-parallel.webp",
     "specifications": {
@@ -2521,7 +2521,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "11kVA 48V high-frequency (transformerless) inverter with parallel function",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦1,040,000"
+      "Pricing": "₦960,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2556,8 +2556,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Residential and commercial hybrid solar setups with seamless UPS switchover",
     "bestFor": "Residential and commercial hybrid solar setups with seamless UPS switchover",
-    "price": "₦1,235,000",
-    "numeric_price": 1235000,
+    "price": "₦1,140,000",
+    "numeric_price": 1140000,
     "tier": "mid",
     "image_url": "/products/dealer/dealer-inv-12.5kva-48v-parallel.webp",
     "specifications": {
@@ -2567,7 +2567,7 @@ export const dealerProducts: Product[] = [
       "Category": "Inverters",
       "Key Specs": "12.5kVA 48V transformer-based wall-mount inverter, MPPT, parallel function",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦1,235,000"
+      "Pricing": "₦1,140,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,
@@ -2602,8 +2602,8 @@ export const dealerProducts: Product[] = [
     ],
     "best_for": "Solar backup power systems and energy independence installations",
     "bestFor": "Solar backup power systems and energy independence installations",
-    "price": "₦286,000",
-    "numeric_price": 286000,
+    "price": "₦264,000",
+    "numeric_price": 264000,
     "tier": "affordable",
     "image_url": "/products/dealer/dealer-bat-220ah-tubular.webp",
     "specifications": {
@@ -2613,7 +2613,7 @@ export const dealerProducts: Product[] = [
       "Category": "Batteries",
       "Key Specs": "220Ah tubular deep-cycle battery",
       "Warranty": "2 Years Warranty",
-      "Pricing": "₦286,000"
+      "Pricing": "₦264,000"
     },
     "stock_status": "in_stock",
     "warranty_years": 2,

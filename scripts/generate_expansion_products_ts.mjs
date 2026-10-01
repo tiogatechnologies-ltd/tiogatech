@@ -98,6 +98,11 @@ function parsePrice(item) {
   if (priceFallbacks[item.id]) {
     return priceFallbacks[item.id];
   }
+  const cost = parseInt((item.costPrice || '').replace(/[^0-9]/g, ''), 10) || 0;
+  if (cost > 0) {
+    const num = Math.round(cost * 1.20);
+    return { num, str: `₦${num.toLocaleString('en-US')}` };
+  }
   const raw = item.sellingPrice || '';
   const num = parseInt(raw.replace(/[^0-9]/g, ''), 10) || 0;
   const formatted = num > 0 ? `₦${num.toLocaleString('en-US')}` : 'Price on Request';

@@ -69,8 +69,14 @@ const dealerImgMap = {
   'BAT-121': '/products/dealer/dealer-bat-220ah-tubular.webp',
 };
 
-function parsePrice(rawStr) {
-  const num = parseInt((rawStr || '').replace(/[^0-9]/g, ''), 10) || 0;
+function parsePrice(item) {
+  const cost = parseInt((item['Cost price (₦)'] || '').replace(/[^0-9]/g, ''), 10) || 0;
+  if (cost > 0) {
+    const num = Math.round(cost * 1.20);
+    return { num, str: `₦${num.toLocaleString('en-US')}` };
+  }
+  const rawSell = parseInt((item['Selling price (₦)'] || '').replace(/[^0-9]/g, ''), 10) || 0;
+  const num = rawSell > 0 ? Math.round(rawSell * 1.20) : 0;
   const str = num > 0 ? `₦${num.toLocaleString('en-US')}` : 'Price on Request';
   return { num, str };
 }
@@ -111,7 +117,7 @@ function getFeatures(brand, model, cat, specs) {
 
 // Map Blue Carbon Products
 const blueCarbonProducts = bcItems.map(item => {
-  const pInfo = parsePrice(item['Selling price (₦)']);
+  const pInfo = parsePrice(item);
   const wYears = parseWarranty(item.Warranty);
   const cat = cleanCategory(item.Category);
   const model = item['Model / Product'];
@@ -160,7 +166,7 @@ const blueCarbonProducts = bcItems.map(item => {
 
 // Map Dealer Products
 const dealerProducts = dealerItems.map(item => {
-  const pInfo = parsePrice(item['Selling price (₦)']);
+  const pInfo = parsePrice(item);
   const wYears = parseWarranty(item.Warranty);
   const cat = cleanCategory(item.Category);
   const model = item['Model / Product'];
