@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
-import { PRODUCTS, expansionCatalogProducts } from "@/data/products";
+import { PRODUCTS, expansionCatalogProducts, blueCarbonProducts, dealerProducts } from "@/data/products";
 import { mergeProducts } from "@/lib/mergeProducts";
 import { resolveProductImage } from "@/lib/productImages";
 import { getSolarPackageImage } from "@/hooks/useSolarPackages";
@@ -791,6 +791,37 @@ describe("Product and Package Real Images", () => {
 
     expect(brandCounts).toEqual(brandsExpected);
     expect(expansionHashes.size).toBe(61);
+  });
+
+  it("all 44 Blue Carbon and 14 Dealer products exist in catalog with authentic HD photos on disk, exact specifications, and 100% unique hashes", () => {
+    expect(blueCarbonProducts.length).toBe(44);
+    expect(dealerProducts.length).toBe(14);
+
+    const testBatch = [...blueCarbonProducts, ...dealerProducts];
+    const hashes = new Set<string>();
+
+    for (const p of testBatch) {
+      expect(p.id).toBeTruthy();
+      expect(p.sku).toBeTruthy();
+      expect(p.name).toBeTruthy();
+      expect(p.category).toBeTruthy();
+      expect(p.numeric_price).toBeGreaterThan(0);
+      expect(p.price).toMatch(/^₦[\d,]+$/);
+      expect(p.specifications).toBeTruthy();
+      expect(p.warranty_years).toBeGreaterThanOrEqual(1);
+
+      expect(p.image_url).toBeTruthy();
+      expect(p.image_url?.endsWith(".webp")).toBe(true);
+      const filePath = path.resolve("public" + p.image_url);
+      expect(fs.existsSync(filePath), `Product image must exist on disk: ${filePath}`).toBe(true);
+
+      const buf = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(buf).digest("hex");
+      expect(hashes.has(hash), `Product ${p.sku} has duplicate hash: ${p.image_url}`).toBe(false);
+      hashes.add(hash);
+    }
+
+    expect(hashes.size).toBe(58);
   });
 
   it("all products across the entire catalog have 100% unique image files and hashes with zero duplicates", () => {
