@@ -18,6 +18,8 @@ export interface HeroSlideContent {
   cta_link: string;
   secondary_cta_text?: string;
   secondary_cta_link?: string;
+  price_ngn?: number;
+  promo_price_ngn?: number;
 }
 
 export const FEATURED_SRNE_20KW_SLIDE: HeroSlideContent = {
@@ -37,7 +39,101 @@ export const FEATURED_SRNE_20KW_SLIDE: HeroSlideContent = {
   secondary_cta_link: "/product/srne-20kw-48v-three-phase-mppt-inverter-charger-asp48200sh3-00000110",
 };
 
+export const FEATURED_ECOFLOW_SLIDES: HeroSlideContent[] = [
+  {
+    id: "ecoflow-delta-3-air-2000",
+    is_active: true,
+    badge: "Special Promo · EcoFlow Authorized",
+    headline: "EcoFlow DELTA 3 AIR 2000",
+    subheadline:
+      "AC output: 2000W (Surge 2400W) · Capacity: 1920Wh · 13 Output ports (AC × 4) · Weight: 23Kg · Recharge Time: 81 Mins (2300W Wall Charge).",
+    highlight_text: "Promo Price: ₦959,400 (Retail: ₦1,066,000) · 10% OFF · Official Warranty",
+    discount_pct: 10,
+    price_ngn: 1066000,
+    promo_price_ngn: 959400,
+    image_url: "/products/ecoflow/ecoflow-delta-3-air-2000.png",
+    cta_text: "Claim Promo Price",
+    cta_link:
+      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20DELTA%203%20AIR%202000%20at%20the%20Promo%20Price%20of%20%E2%82%A6959%2C400.",
+    secondary_cta_text: "View EcoFlow Catalog",
+    secondary_cta_link: "/retail?brand=EcoFlow",
+  },
+  {
+    id: "ecoflow-delta-3-max",
+    is_active: true,
+    badge: "Special Promo · Heavy-Duty Backup",
+    headline: "EcoFlow DELTA 3 Max",
+    subheadline:
+      "AC output: 2400W (Surge 4800W) · Capacity: 2048Wh · 13 Output ports (AC × 4) · Weight: 23Kg · Recharge Time: 81 Mins (2300W Wall Charge).",
+    highlight_text: "Promo Price: ₦1,404,000 (Retail: ₦1,560,000) · 10% OFF · Official Warranty",
+    discount_pct: 10,
+    price_ngn: 1560000,
+    promo_price_ngn: 1404000,
+    image_url: "/products/ecoflow/ecoflow-delta-3-max.png",
+    cta_text: "Claim Promo Price",
+    cta_link:
+      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20DELTA%203%20Max%20at%20the%20Promo%20Price%20of%20%E2%82%A61%2C404%2C000.",
+    secondary_cta_text: "View EcoFlow Catalog",
+    secondary_cta_link: "/retail?brand=EcoFlow",
+  },
+  {
+    id: "ecoflow-river-3-max-plus",
+    is_active: true,
+    badge: "Special Promo · Expandable Capacity",
+    headline: "EcoFlow RIVER 3 Max Plus",
+    subheadline:
+      "AC output: 500W (Surge 650W) · Capacity: 858Wh · 9 Output ports + wireless port · Weight: 10Kg · Recharge Time: 0-100% in 1.8 Hr.",
+    highlight_text: "Promo Price: ₦594,945 (Retail: ₦661,050) · 10% OFF · Official Warranty",
+    discount_pct: 10,
+    price_ngn: 661050,
+    promo_price_ngn: 594945,
+    image_url: "/products/ecoflow/ecoflow-river-3-max-plus.png",
+    cta_text: "Claim Promo Price",
+    cta_link:
+      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20RIVER%203%20Max%20Plus%20at%20the%20Promo%20Price%20of%20%E2%82%A6594%2C945.",
+    secondary_cta_text: "View EcoFlow Catalog",
+    secondary_cta_link: "/retail?brand=EcoFlow",
+  },
+  {
+    id: "ecoflow-river-3-max",
+    is_active: true,
+    badge: "Special Promo · Compact & Portable",
+    headline: "EcoFlow RIVER 3 Max",
+    subheadline:
+      "AC output: 500W (Surge 650W) · Capacity: 572Wh · 8 Output ports · Weight: 8.4Kg · Recharge Time: 0-100% in 1-3 Hr.",
+    highlight_text: "Promo Price: ₦491,400 (Retail: ₦546,000) · 10% OFF · Official Warranty",
+    discount_pct: 10,
+    price_ngn: 546000,
+    promo_price_ngn: 491400,
+    image_url: "/products/ecoflow/ecoflow-river-3-max.png",
+    cta_text: "Claim Promo Price",
+    cta_link:
+      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20RIVER%203%20Max%20at%20the%20Promo%20Price%20of%20%E2%82%A6491%2C400.",
+    secondary_cta_text: "View EcoFlow Catalog",
+    secondary_cta_link: "/retail?brand=EcoFlow",
+  },
+  {
+    id: "ecoflow-e980",
+    is_active: true,
+    badge: "Special Promo · Fast Recharge Powerhouse",
+    headline: "EcoFlow E980",
+    subheadline:
+      "AC output: 500W (Surge 650W) X-Boost to 650W · Capacity: 980Wh · 13 Output ports · Weight: 13Kg · Recharge Time: 0-100% in 2 Hr.",
+    highlight_text: "Promo Price: ₦527,670 (Retail: ₦586,300) · 10% OFF · Official Warranty",
+    discount_pct: 10,
+    price_ngn: 586300,
+    promo_price_ngn: 527670,
+    image_url: "/products/ecoflow/ecoflow-e980.png",
+    cta_text: "Claim Promo Price",
+    cta_link:
+      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20E980%20at%20the%20Promo%20Price%20of%20%E2%82%A6527%2C670.",
+    secondary_cta_text: "View EcoFlow Catalog",
+    secondary_cta_link: "/retail?brand=EcoFlow",
+  },
+];
+
 export const DEFAULT_HERO_SLIDES: HeroSlideContent[] = [
+  ...FEATURED_ECOFLOW_SLIDES,
   FEATURED_SRNE_20KW_SLIDE,
   {
     id: "felicity-5kwh-lifepo4-featured",
@@ -89,8 +185,15 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
   );
 
   const slides = useMemo(() => {
-    // If no configured slides in database, start with the full default trio
+    // If no configured slides in database, start with the full default list
     const base = configuredSlides.length > 0 ? [...configuredSlides] : [...DEFAULT_HERO_SLIDES];
+
+    // Ensure all 5 EcoFlow promo slides are included in the carousel
+    const ecoflowIds = new Set(FEATURED_ECOFLOW_SLIDES.map((s) => s.id));
+    const hasEcoflow = base.some((s) => ecoflowIds.has(s.id));
+    if (!hasEcoflow) {
+      base.unshift(...FEATURED_ECOFLOW_SLIDES);
+    }
 
     // Ensure the SRNE 20kW flagship slide is always present
     const hasSrne20kw = base.some(
@@ -100,7 +203,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
         s.headline?.toLowerCase().includes("srne 20 kw")
     );
     if (!hasSrne20kw) {
-      base.unshift(FEATURED_SRNE_20KW_SLIDE);
+      base.push(FEATURED_SRNE_20KW_SLIDE);
     }
 
     return base.filter((s) => s.is_active && s.headline);
@@ -221,6 +324,31 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.18] tracking-tight text-white drop-shadow-md">
                   {slide.headline}
                 </h1>
+
+                {/* Promotional & Retail Pricing Block */}
+                {(slide.promo_price_ngn != null || slide.price_ngn != null) && (
+                  <div className="flex items-baseline flex-wrap gap-2.5 sm:gap-3.5 pt-0.5">
+                    {slide.promo_price_ngn != null ? (
+                      <>
+                        <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-amber-400 tracking-tight">
+                          ₦{slide.promo_price_ngn.toLocaleString()}
+                        </span>
+                        {slide.price_ngn != null && (
+                          <span className="text-xs sm:text-sm md:text-base text-gray-400 line-through">
+                            ₦{slide.price_ngn.toLocaleString()}
+                          </span>
+                        )}
+                        <span className="px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                          PROMO PRICE 🔥
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-amber-400 tracking-tight">
+                        ₦{slide.price_ngn!.toLocaleString()}
+                      </span>
+                    )}
+                  </div>
+                )}
 
                 {/* Subheadline */}
                 {slide.subheadline && (
