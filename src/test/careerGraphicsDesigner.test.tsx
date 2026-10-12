@@ -31,4 +31,38 @@ describe("Career Page - Full-Time Remote Graphics Designer Role", () => {
     fireEvent.click(applyBtn);
     expect(onApply).toHaveBeenCalledWith(FEATURED_GRAPHICS_DESIGNER_JOB);
   });
+
+  it("never matches light-surface icons with the dark-surface white icon selector when PageHero/SiteFooter are siblings", () => {
+    const container = document.createElement("div");
+    container.className = "min-h-screen flex flex-col";
+    container.innerHTML = `
+      <header class="bg-background/80"><button class="bg-background/80 text-foreground"><svg id="nav-cart" class="lucide"></svg></button></header>
+      <section class="bg-secondary"><a class="text-white"><svg id="hero-icon" class="lucide"></svg></a></section>
+      <section class="section-padding">
+        <div class="relative"><div class="bg-midnight/70"></div><div class="text-primary-foreground"><svg id="why-tioga-icon" class="lucide text-white"></svg></div></div>
+      </section>
+      <section class="section-padding bg-muted">
+        <div class="bg-card"><svg id="how-we-work-icon" class="lucide text-muted-foreground"></svg></div>
+      </section>
+      <section class="section-padding">
+        <div class="bg-card"><svg id="teams-we-hire-icon" class="lucide text-muted-foreground"></svg></div>
+      </section>
+      <footer class="bg-midnight text-primary-foreground"><svg id="footer-icon" class="lucide"></svg></footer>
+    `;
+    document.body.appendChild(container);
+
+    const darkSurfaceSelector =
+      `:is(.dark, footer, .bg-midnight, .bg-secondary, .bg-slate-900, .bg-slate-950, .bg-black, .text-white, .text-primary-foreground, .text-secondary-foreground) svg.lucide, svg.lucide:is(.text-white, .text-primary-foreground, .text-secondary-foreground)`;
+
+    expect(container.querySelector("#nav-cart")!.matches(darkSurfaceSelector)).toBe(false);
+    expect(container.querySelector("#how-we-work-icon")!.matches(darkSurfaceSelector)).toBe(false);
+    expect(container.querySelector("#teams-we-hire-icon")!.matches(darkSurfaceSelector)).toBe(false);
+
+    expect(container.querySelector("#hero-icon")!.matches(darkSurfaceSelector)).toBe(true);
+    expect(container.querySelector("#why-tioga-icon")!.matches(darkSurfaceSelector)).toBe(true);
+    expect(container.querySelector("#footer-icon")!.matches(darkSurfaceSelector)).toBe(true);
+
+    document.body.removeChild(container);
+  });
 });
+

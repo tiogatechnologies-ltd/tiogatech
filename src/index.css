@@ -591,6 +591,7 @@ svg.lucide[class*="fill-primary"] {
   .dark,
   footer,
   .bg-midnight,
+  .bg-midnight\/55,
   .bg-midnight\/70,
   .bg-midnight\/75,
   .bg-midnight\/80,
@@ -615,8 +616,6 @@ svg.lucide[class*="fill-primary"] {
   .bg-\[\#060913\],
   .from-\[\#060a17\],
   .from-\[\#091210\],
-  :has(> :is(.bg-midnight, .bg-midnight\/70, .bg-midnight\/75, .bg-midnight\/80, .bg-midnight\/90, .bg-midnight\/95, .bg-secondary, .bg-secondary\/45, .bg-secondary\/70)),
-  :has(> div > :is(.bg-midnight\/70, .bg-midnight\/95, .bg-secondary\/45, .bg-secondary\/70)),
   .text-white,
   .text-white\/70,
   .text-white\/75,
@@ -630,6 +629,7 @@ svg.lucide[class*="fill-primary"] {
   .text-primary-foreground\/85,
   .text-primary-foreground\/90,
   .text-secondary-foreground,
+  .text-secondary-foreground\/70,
   .text-secondary-foreground\/75,
   .text-secondary-foreground\/80
 ) svg.lucide,
@@ -641,6 +641,7 @@ svg.lucide:is(.text-white, .text-primary-foreground, .text-secondary-foreground)
   .dark,
   footer,
   .bg-midnight,
+  .bg-midnight\/55,
   .bg-midnight\/70,
   .bg-midnight\/75,
   .bg-midnight\/95,
@@ -649,7 +650,6 @@ svg.lucide:is(.text-white, .text-primary-foreground, .text-secondary-foreground)
   .bg-slate-950,
   .bg-black,
   .bg-\[\#060913\],
-  :has(> :is(.bg-midnight, .bg-midnight\/70, .bg-midnight\/75, .bg-midnight\/95, .bg-secondary, .bg-secondary\/45, .bg-secondary\/70)),
   .text-white,
   .text-primary-foreground,
   .text-secondary-foreground
@@ -658,7 +658,17 @@ svg.lucide:is(.text-white, .text-primary-foreground, .text-secondary-foreground)
   color: #ffffff !important;
 }
 
-/* 3. Inside bright/light CTA buttons (e.g. gold/amber/white buttons with dark text), keep icons dark for contrast */
+/* 3. Light-mode white cards (.bg-card, .bg-popover, .bg-background) must always keep grey icons (#6b7280) */
+html:not(.dark) :is(.bg-card, .bg-card\/80, .bg-card\/60, .bg-popover, .bg-background\/80, .bg-background\/90, .bg-background\/95) svg.lucide {
+  color: #6b7280 !important;
+}
+
+html:not(.dark) :is(.bg-card, .bg-card\/80, .bg-card\/60, .bg-popover, .bg-background\/80, .bg-background\/90, .bg-background\/95) :is(.bg-primary, .bg-midnight, .bg-secondary, .text-white, .text-primary-foreground) svg.lucide,
+html:not(.dark) :is(.bg-card, .bg-card\/80, .bg-card\/60, .bg-popover, .bg-background\/80, .bg-background\/90, .bg-background\/95) svg.lucide:is(.text-white, .text-primary-foreground) {
+  color: #ffffff !important;
+}
+
+/* 4. Inside bright/light CTA buttons (e.g. gold/amber/white buttons with dark text), keep icons dark for contrast */
 :is(.text-accent-foreground, .text-slate-950, .text-slate-900, .text-midnight, .bg-white) svg.lucide {
   color: #0f172a !important;
 }
