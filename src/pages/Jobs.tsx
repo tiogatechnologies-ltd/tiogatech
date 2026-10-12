@@ -29,6 +29,7 @@ const Jobs = () => {
     const cats = new Set<string>(["all"]);
     jobs.forEach((j) => {
       const t = j.title.toLowerCase();
+      if (t.includes("design") || t.includes("graphic") || t.includes("creative")) cats.add("Design");
       if (t.includes("install") || t.includes("engineer")) cats.add("Engineering");
       if (t.includes("sales") || t.includes("business")) cats.add("Sales");
       if (t.includes("admin")) cats.add("Operations");
@@ -40,6 +41,7 @@ const Jobs = () => {
   const matchesCategory = (job: Job, cat: string) => {
     if (cat === "all") return true;
     const t = job.title.toLowerCase();
+    if (cat === "Design") return t.includes("design") || t.includes("graphic") || t.includes("creative");
     if (cat === "Engineering") return t.includes("install") || t.includes("engineer");
     if (cat === "Sales") return t.includes("sales") || t.includes("business");
     if (cat === "Operations") return t.includes("admin");
