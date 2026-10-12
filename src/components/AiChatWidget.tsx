@@ -115,7 +115,7 @@ const AiChatWidget = () => {
             )}
             {!needsAuth && messages.length === 0 && (
               <div className="text-sm space-y-3">
-                <p className="font-semibold text-foreground text-base">Hi 👋 I'm Volt. I can help with:</p>
+                <p className="font-semibold text-foreground text-base">Hi <span className="grayscale opacity-80">👋</span> I'm Volt. I can help with:</p>
                 <ul className="space-y-1.5 text-foreground/90 font-medium">
                   <li>• Finding the right solar package</li>
                   <li>• Flexible Payment monthly estimates</li>

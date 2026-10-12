@@ -552,3 +552,88 @@ html.lenis, html.lenis body { height: auto; }
 .dark .border-border\/60 {
   border-color: hsl(217 25% 24%) !important;
 }
+
+/* ---------- Global Monochrome / Grey Icons & Emojis ---------- */
+/* Force all Lucide and inline SVG icons to neutral grey instead of green or yellow/gold */
+svg.lucide,
+svg[class*="text-primary"],
+svg[class*="text-gold"],
+svg[class*="text-accent"],
+svg[class*="text-emerald"],
+svg[class*="text-green"],
+svg[class*="text-amber"],
+svg[class*="text-yellow"],
+svg[class*="text-lime"],
+svg[class*="text-teal"],
+[class*="text-primary"] > svg.lucide,
+[class*="text-gold"] > svg.lucide,
+[class*="text-accent"] > svg.lucide,
+[class*="text-emerald"] > svg.lucide,
+[class*="text-green"] > svg.lucide,
+[class*="text-amber"] > svg.lucide,
+[class*="text-yellow"] > svg.lucide {
+  color: #6b7280 !important; /* neutral gray-500 */
+}
+
+/* Lighter neutral grey for icons on dark backgrounds / dark mode */
+.dark svg.lucide,
+.bg-midnight svg.lucide,
+.bg-secondary svg.lucide,
+footer svg.lucide,
+[class*="bg-slate-9"] svg.lucide,
+[class*="bg-zinc-9"] svg.lucide,
+[class*="bg-neutral-9"] svg.lucide,
+[class*="bg-black"] svg.lucide {
+  color: #9ca3af !important; /* neutral gray-400 */
+}
+
+/* Filled icons (e.g. star ratings, badges) in neutral grey instead of yellow/gold/green */
+svg.lucide[class*="fill-amber"],
+svg.lucide[class*="fill-yellow"],
+svg.lucide[class*="fill-gold"],
+svg.lucide[class*="fill-accent"],
+svg.lucide[class*="fill-emerald"],
+svg.lucide[class*="fill-green"],
+svg.lucide[class*="fill-primary"] {
+  fill: #9ca3af !important;
+  color: #9ca3af !important;
+}
+
+/* Icon-only badge wrappers: neutralise green/yellow tinted backgrounds & borders to subtle grey */
+:is(div, span):has(> svg.lucide:only-child):is(
+  [class*="bg-primary/"],
+  [class*="bg-gold/"],
+  [class*="bg-accent/"],
+  [class*="bg-emerald-"],
+  [class*="bg-green-"],
+  [class*="bg-amber-"],
+  [class*="bg-yellow-"]
+) {
+  background-color: rgba(107, 114, 128, 0.12) !important;
+  border-color: rgba(107, 114, 128, 0.22) !important;
+  color: #6b7280 !important;
+}
+
+.dark :is(div, span):has(> svg.lucide:only-child):is(
+  [class*="bg-primary/"],
+  [class*="bg-gold/"],
+  [class*="bg-accent/"],
+  [class*="bg-emerald-"],
+  [class*="bg-green-"],
+  [class*="bg-amber-"],
+  [class*="bg-yellow-"]
+),
+.bg-midnight :is(div, span):has(> svg.lucide:only-child):is(
+  [class*="bg-primary/"],
+  [class*="bg-gold/"],
+  [class*="bg-accent/"],
+  [class*="bg-emerald-"],
+  [class*="bg-green-"],
+  [class*="bg-amber-"],
+  [class*="bg-yellow-"]
+) {
+  background-color: rgba(156, 163, 175, 0.14) !important;
+  border-color: rgba(156, 163, 175, 0.25) !important;
+  color: #9ca3af !important;
+}
+

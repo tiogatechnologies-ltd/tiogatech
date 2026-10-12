@@ -265,10 +265,10 @@ At **Tioga Technologies**, we provide end-to-end commercial and industrial energ
 
 Whether you need a **5 kW residential solar setup** or a **multi-hundred kilowatt commercial microgrid**, Tioga Technologies provides engineered energy systems built for African operating environments:
 
-* 📐 **[Use our free Energy Calculator](/energy-calculator)** to calculate your exact load and get instant component sizing.
-* 📦 **[Explore turnkey Solar Packages](/packages)** designed with Tier-1 lithium batteries and hybrid inverters.
-* 🛒 **[Shop standalone inverters and batteries in our Retail Store](/retail)**.
-* 💬 **[Contact our Engineering Team](/contact)** for commercial & industrial project consultations.
+* **[Use our free Energy Calculator](/energy-calculator)** to calculate your exact load and get instant component sizing.
+* **[Explore turnkey Solar Packages](/packages)** designed with Tier-1 lithium batteries and hybrid inverters.
+* **[Shop standalone inverters and batteries in our Retail Store](/retail)**.
+* **[Contact our Engineering Team](/contact)** for commercial & industrial project consultations.
 `
   },
   {

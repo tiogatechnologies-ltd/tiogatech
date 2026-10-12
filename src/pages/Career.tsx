@@ -99,7 +99,7 @@ const Career = () => {
               {/* Translucent so the photo still reads while keeping white text legible */}
               <div className="absolute inset-0 bg-midnight/70" />
               <div className="relative z-10 p-6 flex flex-col justify-end text-primary-foreground">
-                <r.icon className="text-gold mb-3 shrink-0" size={28} />
+                <r.icon className="text-gray-400 mb-3 shrink-0" size={28} />
                 <h3 className="font-display font-bold text-primary-foreground mb-1.5 text-lg no-clip">{r.title}</h3>
                 <p className="text-sm text-primary-foreground/85 leading-relaxed">{r.desc}</p>
               </div>
@@ -127,7 +127,7 @@ const Career = () => {
             { icon: Heart, title: "People over titles", desc: "Best idea wins. Junior engineers ship to production from week one." },
           ].map((v) => (
             <div key={v.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
-              <v.icon className="text-primary mb-3 shrink-0" size={24} />
+              <v.icon className="text-muted-foreground mb-3 shrink-0" size={24} />
               <h3 className="font-display font-bold text-foreground mb-1.5 text-lg no-clip">{v.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
             </div>
@@ -153,7 +153,7 @@ const Career = () => {
             { icon: Users, title: "Sales & Operations", desc: "Customer success, logistics and project coordination across Nigeria." },
           ].map((t) => (
             <div key={t.title} className="rounded-2xl border border-border bg-card p-6 hover-lift">
-              <t.icon className="text-gold mb-3 shrink-0" size={24} />
+              <t.icon className="text-muted-foreground mb-3 shrink-0" size={24} />
               <h3 className="font-display font-bold text-foreground mb-1.5 text-lg no-clip">{t.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
             </div>
@@ -195,7 +195,7 @@ const Career = () => {
     <section className="section-padding bg-muted">
       <div className="section-container max-w-3xl">
         <div className="rounded-3xl border border-border bg-card p-8 sm:p-12 shadow-[var(--shadow-card)] text-center">
-          <Quote className="text-primary mx-auto mb-4" size={32} />
+          <Quote className="text-muted-foreground mx-auto mb-4" size={32} />
           <p className="text-lg sm:text-xl text-foreground font-display leading-relaxed mb-6">
             "I joined as a junior installer. Within a year I was leading commissioning visits and learning embedded systems on the side. The team actually invests in you."
           </p>
@@ -233,7 +233,7 @@ const Career = () => {
           <div className="relative grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 mb-4">
-                <Share2 size={14} className="text-primary" />
+                <Share2 size={14} className="text-muted-foreground" />
                 <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary">New - Affiliate Program</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip mb-4">
@@ -244,17 +244,17 @@ const Career = () => {
               </p>
               <div className="grid sm:grid-cols-3 gap-3 mb-6">
                 <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
-                  <DollarSign className="text-emerald-500 mb-2" size={18} />
+                  <DollarSign className="text-muted-foreground mb-2" size={18} />
                   <p className="text-xs font-bold text-foreground">Up to 10% commission</p>
                   <p className="text-[11px] text-muted-foreground">on confirmed installs</p>
                 </div>
                 <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
-                  <LinkIcon className="text-primary mb-2" size={18} />
+                  <LinkIcon className="text-muted-foreground mb-2" size={18} />
                   <p className="text-xs font-bold text-foreground">Tracked links</p>
                   <p className="text-[11px] text-muted-foreground">unique code + UTM</p>
                 </div>
                 <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
-                  <TrendingUp className="text-primary mb-2" size={18} />
+                  <TrendingUp className="text-muted-foreground mb-2" size={18} />
                   <p className="text-xs font-bold text-foreground">60-day window</p>
                   <p className="text-[11px] text-muted-foreground">long attribution</p>
                 </div>
@@ -306,17 +306,17 @@ const Career = () => {
           <div className="grid gap-4 sm:grid-cols-3">
             <a
               href="mailto:careers@tiogatechnologies.com"
-              className="group rounded-2xl border border-border bg-background p-5 hover:border-emerald-500/60 hover:shadow-[0_0_24px_rgba(16,185,129,0.15)] transition-all"
+              className="group rounded-2xl border border-border bg-background p-5 hover:border-muted-foreground/40 transition-all"
             >
-              <Mail className="text-emerald-500 mb-2" size={20} />
+              <Mail className="text-muted-foreground mb-2" size={20} />
               <p className="text-xs uppercase tracking-wider text-muted-foreground">Email</p>
               <p className="text-sm font-semibold text-foreground break-all">careers@tiogatechnologies.com</p>
             </a>
             <a
               href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`}
-              className="group rounded-2xl border border-border bg-background p-5 hover:border-emerald-500/60 hover:shadow-[0_0_24px_rgba(16,185,129,0.15)] transition-all"
+              className="group rounded-2xl border border-border bg-background p-5 hover:border-muted-foreground/40 transition-all"
             >
-              <Phone className="text-emerald-500 mb-2" size={20} />
+              <Phone className="text-muted-foreground mb-2" size={20} />
               <p className="text-xs uppercase tracking-wider text-muted-foreground">Call</p>
               <p className="text-sm font-semibold text-foreground">{contact.phone}</p>
               <p className="text-sm font-semibold text-foreground">{contact.whatsapp}</p>
@@ -325,9 +325,9 @@ const Career = () => {
               href="https://www.linkedin.com/company/tiogatechnologies"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-2xl border border-border bg-background p-5 hover:border-emerald-500/60 hover:shadow-[0_0_24px_rgba(16,185,129,0.15)] transition-all"
+              className="group rounded-2xl border border-border bg-background p-5 hover:border-muted-foreground/40 transition-all"
             >
-              <Linkedin className="text-emerald-500 mb-2 transition-transform duration-300 group-hover:scale-125" size={20} />
+              <Linkedin className="text-muted-foreground mb-2 transition-transform duration-300 group-hover:scale-125" size={20} />
               <p className="text-xs uppercase tracking-wider text-muted-foreground">LinkedIn</p>
               <p className="text-sm font-semibold text-foreground">@tiogatechnologies</p>
             </a>

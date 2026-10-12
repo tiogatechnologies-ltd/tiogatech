@@ -339,7 +339,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                           </span>
                         )}
                         <span className="px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                          PROMO PRICE 🔥
+                          PROMO PRICE <span className="grayscale opacity-80">🔥</span>
                         </span>
                       </>
                     ) : (
@@ -360,7 +360,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 {/* Highlight line */}
                 {slide.highlight_text && (
                   <div className="flex items-center gap-2 text-emerald-400 text-xs sm:text-sm font-medium">
-                    <ShieldCheck size={16} className="shrink-0 text-emerald-400" />
+                    <ShieldCheck size={16} className="shrink-0 text-gray-400" />
                     <span>{slide.highlight_text}</span>
                   </div>
                 )}

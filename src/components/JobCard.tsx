@@ -50,14 +50,14 @@ const JobCard = ({ job, index, onApply }: { job: Job; index: number; onApply: (j
             Now Hiring
           </span>
           <span className="inline-flex items-center gap-1 rounded-full bg-white/5 border border-white/10 text-white/70 text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1">
-            <Calendar size={10} className="text-accent" /> Closes {job.deadline || DEFAULT_DEADLINE}
+            <Calendar size={10} className="text-gray-400" /> Closes {job.deadline || DEFAULT_DEADLINE}
           </span>
         </div>
         <h3 className="text-xl sm:text-[22px] font-display font-bold text-white leading-snug">
           {job.title}
         </h3>
         <div className="mt-2 inline-flex items-center gap-1.5 text-xs text-white/70">
-          <MapPin size={12} className="text-accent" /> {job.location}
+          <MapPin size={12} className="text-gray-400" /> {job.location}
         </div>
       </div>
 
