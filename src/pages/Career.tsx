@@ -99,7 +99,7 @@ const Career = () => {
               {/* Translucent so the photo still reads while keeping white text legible */}
               <div className="absolute inset-0 bg-midnight/70" />
               <div className="relative z-10 p-6 flex flex-col justify-end text-primary-foreground">
-                <r.icon className="text-gray-400 mb-3 shrink-0" size={28} />
+                <r.icon className="text-white mb-3 shrink-0" size={28} />
                 <h3 className="font-display font-bold text-primary-foreground mb-1.5 text-lg no-clip">{r.title}</h3>
                 <p className="text-sm text-primary-foreground/85 leading-relaxed">{r.desc}</p>
               </div>
