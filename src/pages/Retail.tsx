@@ -42,6 +42,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useWishlist } from "@/hooks/useWishlist";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
+import { resolveStockStatus } from "@/lib/productAvailability";
 import { mergeProducts } from "@/lib/mergeProducts";
 import { buildRetailFacets, emptyRetailFilters, extractProductFacets, FACET_LABELS, matchesRetailFilters, readRetailFilters, writeRetailFilters, type RetailFilterState } from "@/lib/retailFilters";
 import { fetchAllRows } from "../../supabase/functions/_shared/pagination";
@@ -220,7 +221,7 @@ export const Retail = () => {
           rating: p.rating ?? undefined,
           review_count: p.review_count ?? undefined,
           compare_at_price: p.compare_at_price || null,
-          stock_status: (p.stock_status as string) === "preorder" ? "pre_order" : p.stock_status as RetailProduct["stock_status"] || (p.stock_qty != null ? p.stock_qty > 0 ? "in_stock" : "out_of_stock" : undefined),
+          stock_status: resolveStockStatus(p.stock_status, p.stock_qty),
           is_featured: p.is_featured ?? true,
           warranty_years: p.warranty_years || 5,
         }));
@@ -246,7 +247,7 @@ export const Retail = () => {
             rating: p.rating ?? undefined,
             review_count: p.review_count ?? undefined,
             compare_at_price: p.compare_at_price ?? null,
-            stock_status: (p.stock_qty != null ? p.stock_qty > 0 ? "in_stock" : "out_of_stock" : undefined),
+            stock_status: resolveStockStatus(p.stock_status, p.stock_qty),
             is_featured: true,
             warranty_years: 5,
           }));
@@ -275,7 +276,7 @@ export const Retail = () => {
             rating: p.rating ?? undefined,
             review_count: p.review_count ?? undefined,
             compare_at_price: p.compare_at_price || null,
-            stock_status: (p.stock_status as string) === "preorder" ? "pre_order" : p.stock_status as RetailProduct["stock_status"] || (p.stock_qty != null ? p.stock_qty > 0 ? "in_stock" : "out_of_stock" : undefined),
+            stock_status: resolveStockStatus(p.stock_status, p.stock_qty),
             is_featured: true,
             warranty_years: 5,
           })));

@@ -22,6 +22,7 @@ import { resolveProductImage } from "@/lib/productImages";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, resolvePromoBadge } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
+import { stockStatusLabel } from "@/lib/productAvailability";
 
 import type { GridColumnOption } from "@/components/retail/ColumnGridSwitcher";
 
@@ -257,9 +258,9 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
               </span>
             )}
           </div>
-          <span className="inline-flex items-center gap-1 text-[9.5px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            In Stock
+          <span className={`inline-flex items-center gap-1 text-[9.5px] font-semibold shrink-0 ${product.stock_status === "in_stock" || product.stock_status === "low_stock" ? "text-emerald-600 dark:text-emerald-400" : product.stock_status === "out_of_stock" ? "text-destructive" : "text-muted-foreground"}`}>
+            <span className="w-1.5 h-1.5 rounded-full bg-current" />
+            {stockStatusLabel(product.stock_status)}
           </span>
         </div>
 

@@ -34,6 +34,7 @@ try {
   await expect(page.getByTestId('retail-product-grid')).toContainText('filter-test-a');
   await sidebar.getByRole('checkbox', { name: 'Filter by battery capacity: 15kWh', exact: true }).check();
   await expect(results).toHaveText('2 products');
+  await expect(page.getByTestId('retail-product-grid').getByText('Out of stock', { exact: true })).toBeVisible();
   await sidebar.getByRole('spinbutton', { name: 'Maximum price (₦)' }).fill('1500000');
   await expect(results).toHaveText('1 product');
   await page.getByRole('button', { name: 'Remove maximum price filter' }).click();

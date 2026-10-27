@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PRODUCTS } from "@/data/products";
+import { resolveStockStatus, stockStatusLabel } from "@/lib/productAvailability";
 import type { RetailProduct } from "@/types/retail";
 import { buildRetailFacets, emptyRetailFilters, extractProductFacets, matchesRetailFilters, measurements, readRetailFilters, writeRetailFilters } from "@/lib/retailFilters";
 
@@ -10,6 +11,15 @@ const product = (overrides: Partial<RetailProduct> = {}): RetailProduct => ({
   tags: [], stock_status: "in_stock", ...overrides,
 });
 const index = (products: RetailProduct[]) => products.map(product => ({ product, facets: extractProductFacets(product) }));
+
+it("keeps availability labels aligned with inventory and never labels unknown stock as available", () => {
+  expect(resolveStockStatus("preorder", 0)).toBe("pre_order");
+  expect(resolveStockStatus(undefined, 0)).toBe("out_of_stock");
+  expect(resolveStockStatus(undefined, 5)).toBe("in_stock");
+  expect(resolveStockStatus(undefined, null)).toBeUndefined();
+  expect(stockStatusLabel("out_of_stock")).toBe("Out of stock");
+  expect(stockStatusLabel(undefined)).toBe("Check availability");
+});
 
 describe("unit-aware retail specifications", () => {
   it("keeps 5kWh, 5.12kWh and 15kWh separate", () => {
