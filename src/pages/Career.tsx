@@ -14,6 +14,7 @@ import bgLagosNight from "@/assets/bg-lagos-apartment.jpg";
 import SEO from "@/components/SEO";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useSiteContact } from "@/hooks/useSiteContact";
 
 const reasons = [
@@ -39,8 +40,9 @@ const reasons = [
 
 const Career = () => {
   const { contact } = useSiteContact();
-  const { jobs: openRoles, loading: rolesLoading } = useCareers();
+  const { jobs: openRoles, loading: rolesLoading, error: rolesError } = useCareers();
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const { settings: affiliateSettings } = useSiteSetting("affiliate");
   const [affiliateOpen, setAffiliateOpen] = useState(false);
   const { content: cms } = useLandingContent("page_career");
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
@@ -217,7 +219,7 @@ const Career = () => {
           <p className="mt-3 text-muted-foreground">A snapshot of our most-needed roles right now.</p>
         </div>
 
-        <FeaturedRoles openRoles={openRoles} loading={rolesLoading} onApply={setSelectedJob} />
+        {rolesError ? <p role="alert" className="text-center text-muted-foreground">{rolesError} <a className="underline" href="mailto:careers@tiogatechnologies.com">Contact careers</a></p> : <FeaturedRoles openRoles={openRoles} loading={rolesLoading} onApply={setSelectedJob} />}
       </div>
     </section>
 
@@ -240,13 +242,13 @@ const Career = () => {
                 Refer customers. Earn naira.
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                Join the Tioga Affiliate Program and earn commission every time someone you refer installs a solar system, smart lock, or home automation package. Built for content creators, energy consultants, installers, estate managers and anyone with an audience.
+                Join the Tioga Affiliate Program and earn commission on eligible paid orders when someone you refer buys a solar system, smart lock, or home automation package. Built for content creators, energy consultants, installers, estate managers and anyone with an audience.
               </p>
               <div className="grid sm:grid-cols-3 gap-3 mb-6">
                 <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
                   <DollarSign className="text-muted-foreground mb-2" size={18} />
-                  <p className="text-xs font-bold text-foreground">Up to 10% commission</p>
-                  <p className="text-[11px] text-muted-foreground">on confirmed installs</p>
+                  <p className="text-xs font-bold text-foreground">{affiliateSettings.default_commission_percent}% default commission</p>
+                  <p className="text-[11px] text-muted-foreground">on eligible paid orders</p>
                 </div>
                 <div className="rounded-2xl bg-card/60 backdrop-blur p-4 border border-border">
                   <LinkIcon className="text-muted-foreground mb-2" size={18} />
@@ -283,7 +285,7 @@ const Career = () => {
                 </li>
                 <li className="flex gap-3">
                   <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">4</span>
-                  <span className="text-foreground/90">Get paid in naira once the install is confirmed.</span>
+                  <span className="text-foreground/90">Earn commission on eligible paid orders and request payment in naira. Refunded orders do not qualify.</span>
                 </li>
               </ol>
             </div>

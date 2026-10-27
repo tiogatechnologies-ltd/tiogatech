@@ -24,6 +24,8 @@ describe("Career Page - Full-Time Remote Graphics Designer Role", () => {
     expect(screen.getByText("Graphics Designer (Full-Time, Remote)")).toBeInTheDocument();
     expect(screen.getByText("Remote")).toBeInTheDocument();
     expect(screen.getByText("Now Hiring")).toBeInTheDocument();
+    expect(screen.getByText("Open until filled")).toBeInTheDocument();
+    expect(screen.queryByText(/30th May/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Easy Apply/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/LinkedIn/i)).not.toBeInTheDocument();
 

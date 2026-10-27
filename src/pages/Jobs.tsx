@@ -12,7 +12,7 @@ import { Search, MapPin, Briefcase, X, ArrowLeft } from "lucide-react";
 import { breadcrumbJsonLd } from "@/lib/seoSchema";
 
 const Jobs = () => {
-  const { jobs, loading } = useCareers();
+  const { jobs, loading, error } = useCareers();
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [query, setQuery] = useState("");
   const [location, setLocation] = useState<string>("all");
@@ -160,6 +160,8 @@ const Jobs = () => {
 
           {loading ? (
             <p className="text-center text-muted-foreground py-12">Loading roles...</p>
+          ) : error ? (
+            <p role="alert" className="text-center py-12 text-muted-foreground">{error} <a className="underline" href="mailto:careers@tiogatechnologies.com">Contact careers</a></p>
           ) : filtered.length === 0 ? (
             <div className="text-center py-16 rounded-2xl border border-dashed border-border">
               <p className="text-foreground font-display font-bold mb-2">No matching roles</p>

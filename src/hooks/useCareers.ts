@@ -80,48 +80,53 @@ export const FALLBACK_JOBS: Job[] = [
   },
 ];
 
-// The database is the single source of truth for open roles, so Admin > Careers
-// really controls the page: closing a role removes it, closing every role shows
-// an empty state. The built-in list above is only a safety net for when the
-// database cannot be reached - it used to be injected whenever the table was
-// empty or lacked a "graphic" role, which made those roles impossible to take
-// down from the admin.
+// Only advertise roles returned by the database. Never resurrect closed roles on error.
 export const useCareers = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
     (async () => {
-      const { data, error } = await supabase
-        .from("careers")
-        .select("id, title, location, summary, highlights, requirements, email_subject, deadline")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
-      if (!active) return;
-      if (error || !data) {
-        setJobs(FALLBACK_JOBS);
-      } else {
-        setJobs(
-          normalizeDeep(data).map((d: any, index: number) => ({
-            id: d.id,
-            title: d.title,
-            location: d.location,
-            summary: d.summary,
-            highlights: d.highlights || [],
-            requirements: d.requirements,
-            emailSubject: d.email_subject,
-            deadline: d.deadline,
-            backgroundImage: JOB_BACKGROUNDS[(index + 1) % JOB_BACKGROUNDS.length],
-          })),
-        );
+      try {
+        const { data, error } = await supabase
+          .from("careers")
+          .select("id, title, location, summary, highlights, requirements, email_subject, deadline")
+          .eq("is_active", true)
+          .order("sort_order", { ascending: true });
+        if (!active) return;
+        if (error || !data) {
+          setJobs([]);
+          setErrorMessage("We could not load open roles. Please try again shortly or email our careers team.");
+        } else {
+          setJobs(
+            normalizeDeep(data).map((d: any, index: number) => ({
+              id: d.id,
+              title: d.title,
+              location: d.location,
+              summary: d.summary,
+              highlights: d.highlights || [],
+              requirements: d.requirements,
+              emailSubject: d.email_subject,
+              deadline: d.deadline,
+              backgroundImage: JOB_BACKGROUNDS[(index + 1) % JOB_BACKGROUNDS.length],
+            })),
+          );
+        }
+      } catch {
+        if (active) {
+          setJobs([]);
+          setErrorMessage("We could not load open roles. Please try again shortly or email our careers team.");
+        }
+      } finally {
+        if (active) setLoading(false);
       }
-      setLoading(false);
     })();
     return () => {
       active = false;
     };
   }, []);
 
-  return { jobs, loading };
+  return { jobs, loading, error: errorMessage };
 };

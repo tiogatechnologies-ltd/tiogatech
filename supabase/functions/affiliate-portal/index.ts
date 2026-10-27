@@ -2,6 +2,7 @@
 // The affiliates / leads / orders tables are not readable by affiliate users,
 // so all aggregation happens here with the service role after validating the
 // caller's session and resolving their affiliate record by verified email.
+import { fetchAllRows } from "../_shared/pagination.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { computeBalance, escapeLike, findAffiliateForUser, getAffiliateSettings } from "../_shared/affiliate.ts";
 
@@ -35,19 +36,6 @@ const maskPhone = (p?: string | null) => {
   return digits.length >= 7 ? `${digits.slice(0, 3)}****${digits.slice(-2)}` : null;
 };
 
-// PostgREST caps a single response (1,000 rows by default), so money-related
-// totals must page through every row rather than trust one capped query.
-async function fetchAll<T>(page: (from: number, to: number) => PromiseLike<{ data: T[] | null }>): Promise<T[]> {
-  const out: T[] = [];
-  for (let from = 0; ; from += 1000) {
-    const { data } = await page(from, from + 999);
-    if (!data?.length) break;
-    out.push(...data);
-    if (data.length < 1000) break;
-  }
-  return out;
-}
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -79,21 +67,21 @@ Deno.serve(async (req) => {
       admin.from("affiliate_link_clicks").select("id, link_id, slug, session_id, referrer, device_type, country, created_at")
         .eq("affiliate_id", affiliate.id).order("created_at", { ascending: false }).limit(1000),
       admin.from("affiliate_link_clicks").select("id", { count: "exact", head: true }).eq("affiliate_id", affiliate.id),
-      fetchAll((from, to) =>
+      fetchAllRows<any>((from, to) =>
         admin.from("leads").select("id, full_name, email, phone, location, products, status, created_at, utm_source, utm_medium, utm_campaign, affiliate_link_slug")
           .ilike("affiliate_code", codePattern).order("created_at", { ascending: false }).range(from, to)),
-      fetchAll((from, to) =>
-        admin.from("orders").select("id, order_number, full_name, email, total, status, payment_status, created_at, affiliate_link_slug, items_summary")
+      fetchAllRows<any>((from, to) =>
+        admin.from("orders").select("id, order_number, full_name, email, total, affiliate_commission_amount, status, payment_status, created_at, affiliate_link_slug, items_summary")
           .ilike("affiliate_code", codePattern).order("created_at", { ascending: false }).range(from, to)),
-      admin.from("affiliate_payouts").select("*").eq("affiliate_id", affiliate.id).order("created_at", { ascending: false }),
-      admin.from("affiliate_payout_requests").select("*").eq("affiliate_id", affiliate.id).order("created_at", { ascending: false }),
+      fetchAllRows<any>((from, to) => admin.from("affiliate_payouts").select("*").eq("affiliate_id", affiliate.id).order("id").range(from, to)),
+      fetchAllRows<any>((from, to) => admin.from("affiliate_payout_requests").select("*").eq("affiliate_id", affiliate.id).order("id").range(from, to)),
     ]);
 
     const links = linksRes.data ?? [];
     const clicks = clicksRes.data ?? [];
     const totalClicks = clickCountRes.count ?? clicks.length;
-    const payouts = payoutsRes.data ?? [];
-    const requests = requestsRes.data ?? [];
+    const payouts = payoutsRes;
+    const requests = requestsRes;
 
     const rate = Number(affiliate.commission_rate || 0);
     const { paidOrders, revenue, earned: commissionEarned, paidOut, inProgress, available } =

@@ -2,6 +2,7 @@
 // Access is gated by the statement_token issued when the payout is created.
 // No auth required — token is the secret.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { fetchAllRows } from "../_shared/pagination.ts";
 import { escapeLike } from "../_shared/affiliate.ts";
 
 const corsHeaders = {
@@ -63,22 +64,23 @@ Deno.serve(async (req) => {
     }
 
     const aff = (payout as any).affiliates || {};
-    const { data: leads } = await supabase
+    const nextDay = new Date(Date.parse(`${payout.period_end}T00:00:00Z`) + 86400000).toISOString().slice(0, 10);
+    const leads = await fetchAllRows<any>((from, to) => supabase
       .from("leads")
       .select("id, created_at, full_name, status, budget")
       .ilike("affiliate_code", escapeLike(String(aff.code ?? "")))
-      .gte("created_at", `${payout.period_start}T00:00:00Z`)
-      .lte("created_at", `${payout.period_end}T23:59:59Z`)
-      .order("created_at", { ascending: true });
+      .gte("created_at", `${payout.period_start}T00:00:00+01:00`)
+      .lt("created_at", `${nextDay}T00:00:00+01:00`)
+      .order("created_at", { ascending: true }).order("id").range(from, to));
 
-    const { data: paidOrders } = await supabase
+    const paidOrders = await fetchAllRows<any>((from, to) => supabase
       .from("orders")
-      .select("order_number, created_at, full_name, total")
+      .select("order_number, created_at, full_name, total, affiliate_commission_amount")
       .ilike("affiliate_code", escapeLike(String(aff.code ?? "")))
       .eq("payment_status", "paid")
-      .gte("created_at", `${payout.period_start}T00:00:00Z`)
-      .lte("created_at", `${payout.period_end}T23:59:59Z`)
-      .order("created_at", { ascending: true });
+      .gte("created_at", `${payout.period_start}T00:00:00+01:00`)
+      .lt("created_at", `${nextDay}T00:00:00+01:00`)
+      .order("created_at", { ascending: true }).order("id").range(from, to));
 
     if (format === "csv") {
       const lines: string[] = [];
@@ -86,7 +88,7 @@ Deno.serve(async (req) => {
       lines.push(`Affiliate,${csvEscape(aff.full_name)}`);
       lines.push(`Email,${csvEscape(aff.email)}`);
       lines.push(`Code,${csvEscape(aff.code)}`);
-      lines.push(`Commission rate,${aff.commission_rate}%`);
+      lines.push("Commission basis,Recorded rate for each order");
       lines.push(`Period,${payout.period_start} to ${payout.period_end}`);
       lines.push(`Status,${payout.status}`);
       lines.push(`Paid at,${payout.paid_at ?? ""}`);
@@ -100,12 +102,12 @@ Deno.serve(async (req) => {
         );
       });
       lines.push("");
-      lines.push("Paid order,Date,Customer,Amount");
+      lines.push("Paid order,Date,Customer,Amount,Commission");
       (paidOrders || []).forEach((o: any) => {
-        lines.push([o.order_number, o.created_at, maskName(o.full_name), o.total].map(csvEscape).join(","));
+        lines.push([o.order_number, o.created_at, maskName(o.full_name), o.total, o.affiliate_commission_amount].map(csvEscape).join(","));
       });
       lines.push("");
-      lines.push(`Leads in period,${payout.lead_count}`);
+      lines.push(`Paid orders in period,${payout.lead_count}`);
       lines.push(`Gross revenue (NGN),${payout.revenue_total}`);
       lines.push(`Commission (NGN),${payout.commission_total}`);
       lines.push(`Payout amount (NGN),${payout.amount}`);

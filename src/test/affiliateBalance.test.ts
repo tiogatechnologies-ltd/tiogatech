@@ -9,6 +9,12 @@ const orders = [
 ];
 
 describe("affiliate balance", () => {
+  it("uses recorded commissions even after the affiliate's current rate changes", () => {
+    const historical = [{ total: 100000, payment_status: "paid", affiliate_commission_amount: 10000 }];
+    expect(computeBalance(5, historical, [], []).earned).toBe(10000);
+    expect(computeBalance(20, historical, [], []).earned).toBe(10000);
+    expect(computeBalance(20, [{ ...historical[0], affiliate_commission_amount: 0 }], [], []).earned).toBe(0);
+  });
   it("earns commission only on paid orders", () => {
     const b = computeBalance(10, orders, [], []);
     expect(b.revenue).toBe(1_000_000);

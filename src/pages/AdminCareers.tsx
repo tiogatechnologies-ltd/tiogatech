@@ -30,7 +30,7 @@ const empty: Omit<Career, "id"> = {
   highlights: [],
   requirements: "",
   email_subject: "",
-  deadline: "30th May, 2026",
+  deadline: "",
   is_active: true,
   sort_order: 0,
 };
@@ -212,7 +212,7 @@ const AdminCareers = () => {
                 </div>
                 <div>
                   <Label>Deadline</Label>
-                  <Input value={form.deadline} onChange={(e) => setForm({ ...form, deadline: e.target.value })} placeholder="30th May, 2026" />
+                  <Input value={form.deadline} onChange={(e) => setForm({ ...form, deadline: e.target.value })} placeholder="Leave blank for open until filled" />
                 </div>
               </div>
               <div>

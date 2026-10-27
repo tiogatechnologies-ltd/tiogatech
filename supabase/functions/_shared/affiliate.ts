@@ -48,7 +48,7 @@ export async function findAffiliateForUser(
   return data as Record<string, any> | null;
 }
 
-type Money = { total?: number | string | null; payment_status?: string | null };
+type Money = { total?: number | string | null; payment_status?: string | null; affiliate_commission_amount?: number | string | null };
 type Payout = { amount?: number | string | null; status?: string | null };
 type Req = { amount?: number | string | null; status?: string | null };
 
@@ -61,7 +61,7 @@ type Req = { amount?: number | string | null; status?: string | null };
 export function computeBalance(rate: number, orders: Money[], payouts: Payout[], requests: Req[]) {
   const paidOrders = orders.filter((o) => o.payment_status === "paid");
   const revenue = paidOrders.reduce((s, o) => s + Number(o.total || 0), 0);
-  const earned = revenue * (rate / 100);
+  const earned = paidOrders.reduce((sum, order) => sum + Number(order.affiliate_commission_amount ?? (Number(order.total || 0) * rate / 100)), 0);
   const sum = (rows: { amount?: number | string | null }[]) => rows.reduce((s, r) => s + Number(r.amount || 0), 0);
   const paidOut = sum(payouts.filter((p) => p.status === "paid"));
   const payoutsInProgress = sum(payouts.filter((p) => p.status === "pending" || p.status === "approved"));

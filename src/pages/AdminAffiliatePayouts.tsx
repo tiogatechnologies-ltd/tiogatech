@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { fetchAllRows } from "../../supabase/functions/_shared/pagination";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
@@ -102,24 +103,16 @@ const AdminAffiliatePayouts = () => {
 
   const load = async () => {
     setLoading(true);
-    const [p, a, r] = await Promise.all([
-      supabase
-        .from("affiliate_payouts" as any)
-        .select("*")
-        .order("created_at", { ascending: false }),
-      supabase
-        .from("affiliates" as any)
-        .select("id, full_name, email, code, commission_rate, status, payout_method, payout_details, created_at")
-        .order("full_name"),
-      supabase
-        .from("affiliate_payout_requests" as any)
-        .select("*")
-        .order("created_at", { ascending: false }),
-    ]);
-    if (p.data) setPayouts(p.data as unknown as Payout[]);
-    if (a.data) setAffiliates(a.data as unknown as Affiliate[]);
-    if (r.error) toast.error(`Could not load payout requests: ${r.error.message}`);
-    else setRequests((r.data || []) as unknown as PayoutRequest[]);
+    try {
+      const [p, a, r] = await Promise.all([
+        fetchAllRows<any>((from,to) => supabase.from("affiliate_payouts" as any).select("*").order("created_at", { ascending: false }).order("id").range(from,to)),
+        fetchAllRows<any>((from,to) => supabase.from("affiliates" as any).select("id, full_name, email, code, commission_rate, status, payout_method, payout_details, created_at").order("full_name").order("id").range(from,to)),
+        fetchAllRows<any>((from,to) => supabase.from("affiliate_payout_requests" as any).select("*").order("created_at", { ascending: false }).order("id").range(from,to)),
+      ]);
+      setPayouts(p); setAffiliates(a); setRequests(r);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not load affiliate payouts");
+    }
     setLoading(false);
   };
 
@@ -199,95 +192,31 @@ const AdminAffiliatePayouts = () => {
 
   const pendingRequests = useMemo(() => requests.filter((r) => r.status === "pending"), [requests]);
 
-  // Turns an affiliate's payout request into a payout for the admin to pay. The
-  // payout covers the time since their last payout so its statement lists the
-  // orders behind it.
+  // One transaction replaces the request reservation with exactly one payout.
   const approveRequest = async (req: PayoutRequest) => {
-    const aff = affiliateOf(req.affiliate_id);
-    if (!aff) return toast.error("Affiliate not found");
-    if (!aff.payout_details?.trim()) {
-      return toast.error("This affiliate has no bank details saved. Ask them to add them in their dashboard first.");
-    }
+    if (approvingId) return;
     setApprovingId(req.id);
     try {
-      const lastEnd = payouts
-        .filter((p) => p.affiliate_id === aff.id && p.status !== "rejected")
-        .map((p) => p.period_end)
-        .sort()
-        .at(-1);
-      const today = new Date().toISOString().slice(0, 10);
-      const start = lastEnd
-        ? new Date(new Date(`${lastEnd}T00:00:00Z`).getTime() + 86_400_000).toISOString().slice(0, 10)
-        : aff.created_at.slice(0, 10);
-      const rate = Number(aff.commission_rate) || 0;
-      const { data: ordersInPeriod, error: ordersErr } = await supabase
-        .from("orders")
-        .select("total")
-        .ilike("affiliate_code", aff.code)
-        .eq("payment_status", "paid")
-        .gte("created_at", `${start}T00:00:00Z`)
-        .lte("created_at", `${today}T23:59:59Z`);
-      if (ordersErr) throw ordersErr;
-      const revenue = (ordersInPeriod || []).reduce((sum, o: any) => sum + Number(o.total || 0), 0);
-
-      const { data: payout, error: payoutErr } = await supabase
-        .from("affiliate_payouts" as any)
-        .insert({
-          affiliate_id: aff.id,
-          period_start: start > today ? today : start,
-          period_end: today,
-          lead_count: ordersInPeriod?.length ?? 0,
-          revenue_total: revenue,
-          commission_total: Math.round(revenue * (rate / 100)),
-          amount: req.amount,
-          status: "approved",
-          notes: `Created from affiliate payout request ${req.id.slice(0, 8)}`,
-        })
-        .select("id")
-        .single();
-      if (payoutErr || !payout) throw payoutErr || new Error("Could not create payout");
-
-      const { data: userRes } = await supabase.auth.getUser();
-      const { error: reqErr } = await supabase
-        .from("affiliate_payout_requests" as any)
-        .update({
-          status: "approved",
-          payout_id: (payout as any).id,
-          decided_by: userRes.user?.id ?? null,
-          decided_at: new Date().toISOString(),
-        })
-        .eq("id", req.id);
-      if (reqErr) {
-        // Don't leave a payout with no request pointing at it.
-        await supabase.from("affiliate_payouts" as any).delete().eq("id", (payout as any).id);
-        throw reqErr;
-      }
-
-      toast.success(`Approved - ${ngn(req.amount)} is ready to pay to ${aff.full_name}`);
+      const { error } = await (supabase.rpc as any)("approve_affiliate_payout_request", { p_request_id: req.id });
+      if (error) throw error;
+      toast.success("Request approved and ready to pay");
       void notifyAffiliate(
-        { affiliate_id: aff.id, amount: req.amount, period_start: start, period_end: today } as Payout,
+        { affiliate_id: req.affiliate_id } as Payout,
         "Your payout request has been approved",
-        `Your payout request of ₦${Number(req.amount).toLocaleString()} has been approved and is queued for payment to the bank account on your affiliate dashboard.`,
+        `Your payout request of ${ngn(req.amount)} has been approved and is queued for payment to the bank account on your affiliate dashboard.`,
       );
-      void load();
-    } catch (e: any) {
-      toast.error(e?.message || "Could not approve request");
+      await load();
+    } catch (error: any) {
+      toast.error(error.message || "Could not approve request");
     } finally {
       setApprovingId(null);
     }
   };
 
   const rejectRequest = async (req: PayoutRequest, adminNote: string) => {
-    const { data: userRes } = await supabase.auth.getUser();
-    const { error } = await supabase
-      .from("affiliate_payout_requests" as any)
-      .update({
-        status: "rejected",
-        admin_note: adminNote.trim() || null,
-        decided_by: userRes.user?.id ?? null,
-        decided_at: new Date().toISOString(),
-      })
-      .eq("id", req.id);
+    const { error } = await (supabase.rpc as any)("reject_affiliate_payout_request", {
+      p_request_id: req.id, p_note: adminNote.trim() || null,
+    });
     if (error) return toast.error(error.message);
     toast.success("Request rejected - the amount is back in the affiliate's balance");
     const aff = affiliateOf(req.affiliate_id);
@@ -370,7 +299,7 @@ const AdminAffiliatePayouts = () => {
                       </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <Button size="sm" onClick={() => approveRequest(r)} disabled={approvingId === r.id}>
+                      <Button size="sm" onClick={() => approveRequest(r)} disabled={!!approvingId}>
                         {approvingId === r.id ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />} Approve
                       </Button>
                       <Button size="sm" variant="ghost" onClick={() => setRejecting(r)}>Reject</Button>
@@ -432,7 +361,7 @@ const AdminAffiliatePayouts = () => {
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      {p.period_start} → {p.period_end} • {p.lead_count} leads
+                      {p.period_start} → {p.period_end} • {p.lead_count} paid orders
                       {p.paid_at ? ` • paid ${new Date(p.paid_at).toLocaleDateString()}` : ""}
                     </p>
                     <p className="text-sm mt-1">
@@ -610,62 +539,42 @@ const CreatePayoutDialog = ({
     }
   }, [open]);
 
+  const calculationVersion = useRef(0);
+  useEffect(() => {
+    calculationVersion.current += 1;
+    setCalc(null);
+    setAmount(0);
+    setCalculating(false);
+  }, [affiliateId, periodStart, periodEnd, open]);
+
   const active = affiliates.filter((a) => a.status === "active");
   const selected = active.find((a) => a.id === affiliateId);
 
   const recalc = async () => {
     if (!selected) return toast.error("Pick an affiliate first");
-    if (!periodStart || !periodEnd) return toast.error("Pick a period");
+    if (!periodStart || !periodEnd || periodEnd < periodStart) return toast.error("Choose a valid period");
+    const version = ++calculationVersion.current;
     setCalculating(true);
-    // Commission is worked out from PAID ORDERS, exactly like the affiliate's own
-    // dashboard. (It used to estimate from lead budget text, so payouts did not
-    // match what the affiliate saw earned.)
-    const [{ data: allPaid, error: ordersErr }, { data: allPayouts }, { data: openRequests }] = await Promise.all([
-      supabase
-        .from("orders")
-        .select("total, created_at")
-        .ilike("affiliate_code", selected.code)
-        .eq("payment_status", "paid"),
-      supabase.from("affiliate_payouts" as any).select("amount, status").eq("affiliate_id", selected.id),
-      supabase.from("affiliate_payout_requests" as any).select("amount").eq("affiliate_id", selected.id).eq("status", "pending"),
-    ]);
-    setCalculating(false);
-    if (ordersErr) return toast.error(ordersErr.message);
-    const rate = Number(selected.commission_rate) / 100;
-    const inPeriod = (allPaid || []).filter((o: any) => {
-      const d = String(o.created_at).slice(0, 10);
-      return d >= periodStart && d <= periodEnd;
+    const { data, error } = await (supabase.rpc as any)("calculate_affiliate_payout", {
+      p_affiliate_id: selected.id, p_start: periodStart, p_end: periodEnd,
     });
-    const revenue = inPeriod.reduce((sum: number, o: any) => sum + Number(o.total || 0), 0);
-    const commission = revenue * rate;
-    const lifetimeEarned = (allPaid || []).reduce((sum: number, o: any) => sum + Number(o.total || 0), 0) * rate;
-    const committed =
-      ((allPayouts as any[]) || [])
-        .filter((p) => p.status !== "rejected")
-        .reduce((sum, p) => sum + Number(p.amount || 0), 0) +
-      ((openRequests as any[]) || []).reduce((sum, r) => sum + Number(r.amount || 0), 0);
-    const available = Math.max(0, lifetimeEarned - committed);
-    setCalc({ leads: inPeriod.length, revenue, commission, available });
-    setAmount(Math.floor(Math.min(commission, available)));
+    if (version !== calculationVersion.current) return;
+    setCalculating(false);
+    if (error) return toast.error(error.message);
+    setCalc(data);
+    setAmount(Math.floor(Math.min(data.commission, data.available)));
   };
 
   const save = async () => {
     if (!selected || !calc) return toast.error("Calculate the payout first");
     if (!(amount > 0)) return toast.error("Enter a payout amount");
-    if (amount > calc.available + 0.5) {
+    if (amount > calc.available) {
       return toast.error(`This is more than the affiliate's available balance (${ngn(calc.available)}). Paying it would pay them twice.`);
     }
     setSaving(true);
-    const { error } = await supabase.from("affiliate_payouts" as any).insert({
-      affiliate_id: selected.id,
-      period_start: periodStart,
-      period_end: periodEnd,
-      lead_count: calc.leads,
-      revenue_total: calc.revenue,
-      commission_total: calc.commission,
-      amount,
-      status: "pending",
-      notes: notes.trim() || null,
+    const { error } = await (supabase.rpc as any)("create_affiliate_payout", {
+      p_affiliate_id: selected.id, p_start: periodStart, p_end: periodEnd,
+      p_amount: amount, p_notes: notes.trim() || null,
     });
     setSaving(false);
     if (error) return toast.error(error.message);
@@ -723,7 +632,7 @@ const CreatePayoutDialog = ({
                 <strong>{ngn(calc.revenue)}</strong>
               </p>
               <p>
-                <span className="text-muted-foreground">Commission @ {selected?.commission_rate}%:</span>{" "}
+                <span className="text-muted-foreground">Commission at recorded order rates:</span>{" "}
                 <strong className="text-primary">{ngn(calc.commission)}</strong>
               </p>
               <p className="text-[11px] text-muted-foreground pt-1">
@@ -776,7 +685,8 @@ const MarkPaidDialog = ({
   }, [payout]);
 
   const save = async () => {
-    if (!payout) return;
+    if (!payout || saving) return;
+    if (!reference.trim()) return toast.error("Enter the payment reference");
     setSaving(true);
     const { error } = await supabase
       .from("affiliate_payouts" as any)

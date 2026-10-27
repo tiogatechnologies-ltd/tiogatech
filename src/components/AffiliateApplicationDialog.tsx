@@ -244,7 +244,7 @@ const AffiliateApplicationDialog = ({
             />
 
             <div className="rounded-2xl border border-border bg-muted/40 p-4 text-xs text-muted-foreground">
-              Once approved, you'll receive a unique referral code, a tracked link, marketing assets, and a payout setup. Commission is paid on confirmed installations.
+              Once approved, you'll receive a unique referral code, a tracked link, marketing assets, and a payout setup. Commission is earned on eligible paid orders. Refunded orders do not qualify. Payouts are subject to your available balance and the minimum shown in your dashboard.
             </div>
 
             <Button

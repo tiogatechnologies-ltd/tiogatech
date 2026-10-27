@@ -83,7 +83,7 @@ export function captureAttributionFromUrl() {
       utm_term: ut ? ut.slice(0, 120) : null,
       utm_content: ucn ? ucn.slice(0, 120) : null,
       referrer: document.referrer ? document.referrer.slice(0, 500) : null,
-      captured_at: new Date().toISOString(),
+      captured_at: aff ? new Date().toISOString() : kept?.captured_at ?? new Date().toISOString(),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   } catch {

@@ -23,6 +23,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import AffiliateLinkManager, { AffiliateLinkStat } from "@/components/affiliate/AffiliateLinkManager";
+import AffiliateMarketingAssets from "@/components/affiliate/AffiliateMarketingAssets";
 
 const NGN = (n: number) => `₦${Math.round(n || 0).toLocaleString("en-NG")}`;
 const fmtDate = (s: string) => new Date(s).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" });
@@ -161,7 +162,7 @@ const AffiliateDashboard = () => {
             Apply to the programme, or contact us if you already applied with a different email.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <Button asChild><Link to="/affiliate">Apply to the programme</Link></Button>
+            <Button asChild><Link to="/career#affiliate">Apply to the programme</Link></Button>
             <Button variant="outline" asChild><Link to="/contact">Contact support</Link></Button>
           </div>
         </main>
@@ -223,6 +224,7 @@ const AffiliateDashboard = () => {
           <TabsList className="flex w-full flex-wrap justify-start">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="links">Links & QR</TabsTrigger>
+            <TabsTrigger value="assets">Marketing assets</TabsTrigger>
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
             <TabsTrigger value="payouts">Payouts</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -292,6 +294,9 @@ const AffiliateDashboard = () => {
           </TabsContent>
 
           {/* Referrals */}
+          <TabsContent value="assets" className="mt-6">
+            <AffiliateMarketingAssets code={affiliate.code} />
+          </TabsContent>
           <TabsContent value="referrals" className="mt-6 space-y-6">
             <Card>
               <CardHeader><CardTitle className="text-lg">Referred leads ({data?.leads?.length ?? 0})</CardTitle></CardHeader>
@@ -358,7 +363,7 @@ const AffiliateDashboard = () => {
                           <TableCell className="text-xs">{o.full_name}</TableCell>
                           <TableCell className="text-right">{NGN(Number(o.total || 0))}</TableCell>
                           <TableCell className="text-right">
-                            {o.payment_status === "paid" ? NGN(Number(o.total || 0) * (affiliate.commission_rate / 100)) : "-"}
+                            {o.payment_status === "paid" ? NGN(Number(o.affiliate_commission_amount ?? 0)) : "-"}
                           </TableCell>
                           <TableCell><Badge className={statusTone[o.payment_status] || "bg-muted"}>{o.payment_status || "pending"}</Badge></TableCell>
                           <TableCell className="whitespace-nowrap text-xs">{fmtDate(o.created_at)}</TableCell>

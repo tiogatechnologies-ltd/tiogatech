@@ -109,9 +109,7 @@ const CareerApplicationDialog = ({ job, open, onOpenChange }: { job: Job | null;
       return;
     }
 
-    // Alerts the hiring inbox and emails the applicant a receipt. A failure here
-    // must never make a saved application look failed.
-    supabase.functions.invoke("notify-career-application", { body: { application_id: applicationId } }).catch(() => undefined);
+    // Both emails are queued by the application INSERT transaction.
 
     toast.success("Application submitted. Our team will review it shortly.");
     onOpenChange(false);

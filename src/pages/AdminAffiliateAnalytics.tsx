@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { fetchAllRows } from "../../supabase/functions/_shared/pagination";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import {
@@ -33,6 +35,7 @@ type Lead = {
   created_at: string;
   affiliate_code: string | null;
 };
+type PaidOrder = { id: string; affiliate_code: string; total: number; affiliate_commission_amount: number; created_at: string };
 type Application = { id: string; status: string; created_at: string };
 type Affiliate = {
   id: string;
@@ -78,6 +81,7 @@ const AdminAffiliateAnalytics = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [apps, setApps] = useState<Application[]>([]);
   const [affiliates, setAffiliates] = useState<Affiliate[]>([]);
+  const [orders, setOrders] = useState<PaidOrder[]>([]);
   const [payouts, setPayouts] = useState<Payout[]>([]);
 
   const load = async () => {
@@ -86,28 +90,18 @@ const AdminAffiliateAnalytics = () => {
     since.setDate(since.getDate() - Number(days));
     const sinceIso = since.toISOString();
 
-    const [l, a, af, p] = await Promise.all([
-      supabase
-        .from("leads")
-        .select("id, status, budget, created_at, affiliate_code")
-        .gte("created_at", sinceIso),
-      supabase
-        .from("affiliate_applications" as any)
-        .select("id, status, created_at")
-        .gte("created_at", sinceIso),
-      supabase
-        .from("affiliates" as any)
-        .select("id, full_name, code, commission_rate, status"),
-      supabase
-        .from("affiliate_payouts" as any)
-        .select("id, affiliate_id, amount, commission_total, revenue_total, status, created_at, paid_at")
-        .gte("created_at", sinceIso),
-    ]);
-
-    if (l.data) setLeads(l.data as Lead[]);
-    if (a.data) setApps(a.data as unknown as Application[]);
-    if (af.data) setAffiliates(af.data as unknown as Affiliate[]);
-    if (p.data) setPayouts(p.data as unknown as Payout[]);
+    try {
+      const [l, a, af, p, o] = await Promise.all([
+        fetchAllRows<Lead>((from,to) => supabase.from("leads").select("id, status, budget, created_at, affiliate_code").gte("created_at",sinceIso).order("id").range(from,to)),
+        fetchAllRows<any>((from,to) => supabase.from("affiliate_applications" as any).select("id, status, created_at").gte("created_at",sinceIso).order("id").range(from,to)),
+        fetchAllRows<any>((from,to) => supabase.from("affiliates" as any).select("id, full_name, code, commission_rate, status").order("id").range(from,to)),
+        fetchAllRows<any>((from,to) => supabase.from("affiliate_payouts" as any).select("id, affiliate_id, amount, commission_total, revenue_total, status, created_at, paid_at").gte("created_at",sinceIso).order("id").range(from,to)),
+        fetchAllRows<any>((from,to) => supabase.from("orders" as any).select("id, affiliate_code, total, affiliate_commission_amount, created_at").eq("payment_status","paid").not("affiliate_code","is",null).gte("created_at",sinceIso).order("id").range(from,to)),
+      ]);
+      setLeads(l); setApps(a); setAffiliates(af); setPayouts(p); setOrders(o);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not load affiliate analytics");
+    }
     setLoading(false);
   };
 
@@ -145,24 +139,21 @@ const AdminAffiliateAnalytics = () => {
 
   const revenueByMonth = useMemo(() => {
     const map = new Map<string, { month: string; revenue: number; commission: number; payout: number }>();
-    affLeads.forEach((l) => {
-      if (l.status !== "won" && l.status !== "converted") return;
-      const k = monthKey(l.created_at);
+    orders.forEach((order) => {
+      const k = monthKey(order.created_at);
       const cur = map.get(k) || { month: k, revenue: 0, commission: 0, payout: 0 };
-      const rev = parseBudgetToNGN(l.budget);
-      cur.revenue += rev;
-      const aff = affiliates.find((a) => a.code === l.affiliate_code);
-      cur.commission += rev * (Number(aff?.commission_rate || 10) / 100);
+      cur.revenue += Number(order.total);
+      cur.commission += Number(order.affiliate_commission_amount);
       map.set(k, cur);
     });
-    payouts.forEach((p) => {
+    payouts.filter((p) => p.status === "paid").forEach((p) => {
       const k = monthKey(p.created_at);
       const cur = map.get(k) || { month: k, revenue: 0, commission: 0, payout: 0 };
       cur.payout += Number(p.amount);
       map.set(k, cur);
     });
     return Array.from(map.values()).sort((a, b) => a.month.localeCompare(b.month));
-  }, [affLeads, affiliates, payouts]);
+  }, [orders, payouts]);
 
   const leaderboard = useMemo(() => {
     const map = new Map<
@@ -187,16 +178,20 @@ const AdminAffiliateAnalytics = () => {
       row.leads += 1;
       if (l.status === "won" || l.status === "converted") {
         row.won += 1;
-        const rev = parseBudgetToNGN(l.budget);
-        row.revenue += rev;
-        row.commission += rev * (row.rate / 100);
+      }
+    });
+    orders.forEach((order) => {
+      const row = map.get(order.affiliate_code);
+      if (row) {
+        row.revenue += Number(order.total);
+        row.commission += Number(order.affiliate_commission_amount);
       }
     });
     return Array.from(map.values())
-      .filter((r) => r.leads > 0)
+      .filter((r) => r.leads > 0 || r.revenue > 0)
       .sort((a, b) => b.commission - a.commission)
       .slice(0, 10);
-  }, [affLeads, affiliates]);
+  }, [affLeads, affiliates, orders]);
 
   const totalRevenue = revenueByMonth.reduce((s, r) => s + r.revenue, 0);
   const totalCommission = revenueByMonth.reduce((s, r) => s + r.commission, 0);
@@ -211,7 +206,7 @@ const AdminAffiliateAnalytics = () => {
               Affiliate analytics
             </h1>
             <p className="text-sm text-muted-foreground">
-              Lead → application → approval conversion and revenue/commission over time.
+              Referral activity, affiliate applications and commission from paid orders.
             </p>
           </div>
           <div className="flex gap-2">
