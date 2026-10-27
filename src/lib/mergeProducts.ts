@@ -1,3 +1,5 @@
+import { applyMasterPrice } from "./retailPricing";
+
 /**
  * Merge a static fallback product list with live DB rows into one deduped list.
  *
@@ -13,6 +15,8 @@ export function mergeProducts<T extends { id: string; name: string; image_url?: 
   staticList: T[],
   dbList: T[]
 ): T[] {
+  staticList = staticList.map(applyMasterPrice);
+  dbList = dbList.map(applyMasterPrice);
   const dbIds = new Set(dbList.map((item) => item.id));
 
   // Build lookup maps for static products by id and normalized name

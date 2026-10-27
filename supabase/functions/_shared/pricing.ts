@@ -86,8 +86,8 @@ export function buildDbPriceMap(rows: {
   }
   for (const r of rows.cctv ?? []) put(r.name, r.price);
   for (const r of rows.products ?? []) {
-    const digits = String(r.price ?? "").replace(/[^0-9]/g, "");
-    if (digits) put(r.name, parseInt(digits, 10));
+    const digits = String(r.price ?? "").replace(/[^0-9.]/g, "");
+    if (digits) put(r.name, Number(digits));
   }
   return out;
 }

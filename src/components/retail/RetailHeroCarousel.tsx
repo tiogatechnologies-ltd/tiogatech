@@ -4,6 +4,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Zap } from "lucide-
 import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
+import { formatRetailPrice, masterPriceFor } from "@/lib/retailPricing";
 
 export interface HeroSlideContent {
   id: string;
@@ -172,6 +173,22 @@ interface RetailHeroCarouselProps {
   productCount?: number;
 }
 
+// Banner prices must use the same quote column as the catalogue. These used
+// to apply an extra 10% discount which is absent from the master sheet.
+export function priceHeroSlide(slide: HeroSlideContent): HeroSlideContent {
+  const sourceIds: Record<string, string> = {
+    "ecoflow-river-3-max-plus": "PPS-019", "ecoflow-river-3-max": "PPS-016", "ecoflow-e980": "PPS-020",
+    "srne-20kw-commercial": "INV-120",
+  };
+  const sku = sourceIds[slide.id];
+  const price = masterPriceFor({ name: slide.headline, sku });
+  if (price === undefined) return slide;
+  const ecoflow = slide.id.startsWith("ecoflow-");
+  return { ...slide, badge: ecoflow ? "EcoFlow Authorized" : slide.badge, discount_pct: null, price_ngn: undefined, promo_price_ngn: price ?? undefined,
+    highlight_text: price === null ? "Contact us for a current quote" : `Price: ${formatRetailPrice(price)}${ecoflow ? " · Official Warranty" : ""}`, cta_text: price === null ? "Request a Quote" : "Order Now",
+    cta_link: slide.cta_link.includes("wa.me/") ? `https://wa.me/2347065942426?text=${encodeURIComponent(`Hello Tioga Technologies, I want to order the ${slide.headline}${price === null ? ". Please send a quote" : ` at ${formatRetailPrice(price)}`}.`)}` : slide.cta_link };
+}
+
 export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps) => {
   const { content, loading } = useLandingContent("retail_hero");
   const [current, setCurrent] = useState(0);
@@ -206,7 +223,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
       base.push(FEATURED_SRNE_20KW_SLIDE);
     }
 
-    return base.filter((s) => s.is_active && s.headline);
+    return base.filter((s) => s.is_active && s.headline).map(priceHeroSlide);
   }, [configuredSlides]);
 
   const totalSlides = slides.length;

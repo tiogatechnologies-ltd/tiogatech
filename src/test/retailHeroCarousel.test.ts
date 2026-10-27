@@ -6,9 +6,25 @@ import {
   DEFAULT_HERO_SLIDES,
   FEATURED_ECOFLOW_SLIDES,
   FEATURED_SRNE_20KW_SLIDE,
+  priceHeroSlide,
 } from "@/components/retail/RetailHeroCarousel";
 
 describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
+  it("uses master quoted prices for the three matched EcoFlow banners and order links", () => {
+    const expected: Record<string, number> = { "ecoflow-river-3-max-plus": 661050, "ecoflow-river-3-max": 546000, "ecoflow-e980": 586300 };
+    for (const [id, price] of Object.entries(expected)) {
+      const slide = priceHeroSlide(FEATURED_ECOFLOW_SLIDES.find(s => s.id === id)!);
+      expect(slide.promo_price_ngn).toBe(price);
+      expect(slide.discount_pct).toBeNull();
+      expect(slide.price_ngn).toBeUndefined();
+      expect(decodeURIComponent(slide.cta_link)).toContain(price.toLocaleString("en-NG"));
+    }
+  });
+  it("reprices configured banners by exact product name and the SRNE flagship by master SKU", () => {
+    expect(priceHeroSlide({ ...FEATURED_SRNE_20KW_SLIDE, price_ngn: 2706000 }).promo_price_ngn).toBe(3517800);
+    const configured = { ...FEATURED_SRNE_20KW_SLIDE, id: "admin-slide", headline: "Luxpower SNA2 EU LT 12K 12kW Off-Grid Inverter", price_ngn: 905600 };
+    expect(priceHeroSlide(configured).promo_price_ngn).toBe(1136100);
+  });
   const expectedProducts = [
     {
       id: "ecoflow-delta-3-air-2000",

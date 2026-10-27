@@ -1,4 +1,5 @@
 import { attributionForOrder } from "@/lib/attribution";
+import { formatRetailPrice } from "@/lib/retailPricing";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
@@ -17,7 +18,7 @@ import { useSiteSetting, parseServiceAreas } from "@/hooks/useSiteSetting";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
 
-const formNGN = (n: number) => `₦${Math.round(n).toLocaleString("en-NG")}`;
+const formNGN = formatRetailPrice;
 
 const schema = z.object({
   email: z.string().trim().email("Valid email required").max(255),

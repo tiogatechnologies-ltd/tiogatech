@@ -64,7 +64,7 @@ export const AnimatedCounter = ({
     const reducedMotion =
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion || typeof IntersectionObserver === "undefined") {
+    if (started.current || reducedMotion || typeof IntersectionObserver === "undefined") {
       settle();
       return;
     }
@@ -106,7 +106,7 @@ export const AnimatedCounter = ({
   // Format decimal if original had decimals
   const isDecimal = Number.isInteger(finalTarget) ? false : true;
   const formattedVal = isDecimal
-    ? current.toFixed(1)
+    ? finalPrefix.includes("₦") ? current.toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : current.toFixed(1)
     : Math.round(current).toLocaleString();
 
   return (

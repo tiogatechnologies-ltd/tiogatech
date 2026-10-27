@@ -1,4 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { refreshRetailCartItem } from "@/lib/retailPricing";
+import { toast } from "sonner";
 
 export type CartItemType = "product" | "package";
 
@@ -35,7 +37,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setItems(JSON.parse(raw));
+      if (raw) {
+        const saved: CartItem[] = JSON.parse(raw);
+        const current = saved.map(refreshRetailCartItem).filter((item): item is CartItem => item !== null);
+        setItems(current);
+        if (current.length < saved.length) toast.info("Some saved items now require a quote. Please contact us for their current price.");
+        else if (JSON.stringify(current) !== JSON.stringify(saved)) toast.info("Your cart has been updated to the latest prices.");
+      }
     } catch {}
   }, []);
 
@@ -44,6 +52,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [items]);
 
   const add: CartContextValue["add"] = useCallback((item) => {
+    const current = refreshRetailCartItem({ ...item, id: item.id ?? `${item.type}:${item.refId}` });
+    if (!current) { toast.info("Please request a quote for this product before checkout."); return; }
+    item = current;
     setItems((prev) => {
       const key = item.id ?? `${item.type}:${item.refId}`;
       const existing = prev.find((x) => x.id === key);

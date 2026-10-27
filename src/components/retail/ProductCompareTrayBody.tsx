@@ -29,6 +29,7 @@ import { resolveProductImage } from "@/lib/productImages";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { supabase } from "@/integrations/supabase/client";
 import { mergeProducts } from "@/lib/mergeProducts";
+import { parseRetailPrice } from "@/lib/retailPricing";
 import { normalizeCategory, inferBrand } from "@/lib/productBrand";
 import type { RetailProduct } from "@/types/retail";
 import { Link } from "react-router-dom";
@@ -36,8 +37,7 @@ import { toast } from "sonner";
 
 const parsePriceNaira = (price?: string | null): number | null => {
   if (!price) return null;
-  const digits = price.replace(/[^0-9]/g, "");
-  return digits ? parseInt(digits, 10) : null;
+  return parseRetailPrice(price) || null;
 };
 
 // The full comparison tray UI, plus its catalog picker. Pulls in the entire
@@ -586,6 +586,7 @@ const ProductCompareTrayBody = () => {
                           <Button
                             size="sm"
                             onClick={() => handleAddToCart(item)}
+                            disabled={!item.numeric_price}
                             className="w-full py-1.5 text-[11px] rounded-xl font-bold gap-1"
                           >
                             <ShoppingBag size={13} />

@@ -23,6 +23,7 @@ import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, r
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
 import { stockStatusLabel } from "@/lib/productAvailability";
+import { formatRetailPrice } from "@/lib/retailPricing";
 
 import type { GridColumnOption } from "@/components/retail/ColumnGridSwitcher";
 
@@ -35,7 +36,7 @@ interface CardProps {
 }
 
 const fmt = (n?: number | null, fallback?: string | null) => {
-  if (n != null && !Number.isNaN(n) && n > 0) return `₦${Math.round(n).toLocaleString("en-NG")}`;
+  if (n != null && !Number.isNaN(n) && n > 0) return formatRetailPrice(n);
   if (fallback) return fallback;
   return "Price on Request";
 };
@@ -223,6 +224,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
         >
           <button
             onClick={handleAddToCart}
+            disabled={!product.numeric_price}
             className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-2 transition-all ${
               addedAnimation
                 ? "bg-emerald-600 text-white"
@@ -237,7 +239,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
             ) : (
               <>
                 <ShoppingCart size={14} />
-                <span>Quick Add to Cart</span>
+                <span>{product.numeric_price ? "Quick Add to Cart" : "Price on Request"}</span>
               </>
             )}
           </button>
@@ -325,6 +327,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
           {/* Quick Add Button (always visible on mobile, or in list layout on desktop) */}
           <button
             onClick={handleAddToCart}
+            disabled={!product.numeric_price}
             className={`mt-2 w-full py-2 px-4 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-2 transition-all ${
               layout === "list" ? "flex sm:w-auto sm:self-start" : "lg:hidden"
             } ${
@@ -336,7 +339,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
             {addedAnimation ? (
               <><Check size={13} /> Added!</>
             ) : (
-              <><ShoppingCart size={13} /> Add to Cart</>
+              <><ShoppingCart size={13} /> {product.numeric_price ? "Add to Cart" : "Price on Request"}</>
             )}
           </button>
         </div>

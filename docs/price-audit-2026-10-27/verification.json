@@ -1,0 +1,15 @@
+{
+  "sourceRows": 440,
+  "sourcePriced": 425,
+  "sourceWithoutPrice": 15,
+  "sourceRowsWithCatalogMatch": 399,
+  "websiteListings": 1083,
+  "matchedWebsiteListings": 430,
+  "correctedSellingPrices": 394,
+  "matchedAlreadyCorrect": 25,
+  "quoteOnlyListings": 13,
+  "unverifiedWebsiteListings": 651,
+  "dbRows": 7,
+  "dbMatched": 2,
+  "errors": []
+}

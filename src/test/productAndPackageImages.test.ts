@@ -1,3 +1,4 @@
+import { masterPriceFor } from "@/lib/retailPricing";
 import { describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
@@ -163,7 +164,7 @@ describe("Product and Package Real Images", () => {
     }
   });
 
-  it("all Luxpower inverters and batteries exist with authentic photos on disk and 20% off discount applied", () => {
+  it("all Luxpower inverters and batteries exist with authentic photos on disk and current master-sheet prices", () => {
     const luxProducts = PRODUCTS.filter((p) => p.brand === "Luxpower");
     expect(luxProducts.length).toBe(30);
 
@@ -172,13 +173,13 @@ describe("Product and Package Real Images", () => {
       expect(p.image_url).toMatch(/\.png$/);
       const filePath = path.resolve("public" + p.image_url);
       expect(fs.existsSync(filePath), `Luxpower image should exist on disk: ${filePath}`).toBe(true);
-      expect(p.numeric_price).toBeGreaterThan(0);
-      expect(p.price).toMatch(/^₦[\d,]+$/);
+      if (masterPriceFor(p) === null) { expect(p.numeric_price).toBeUndefined(); expect(p.price).toBeNull(); }
+      else { expect(p.numeric_price).toBeGreaterThan(0); expect(p.price).toMatch(/^₦[\d,]+(?:\.\d{2})?$/); }
       expect(p.compare_at_price).toMatch(/^₦[\d,]+$/);
 
-      // Verify exact 20% off discount: selling price = basePrice * 0.80
+      // The master sheet sets selling prices; compare-at remains independent.
       const basePrice = parseInt(String(p.compare_at_price).replace(/[^\d]/g, ""), 10);
-      const expectedDiscounted = Math.round(basePrice * 0.80);
+      const expectedDiscounted = masterPriceFor(p) ?? Math.round(basePrice * 0.80);
       expect(p.numeric_price).toBe(expectedDiscounted);
       expect(p.price).toBe(`₦${expectedDiscounted.toLocaleString()}`);
     }
@@ -187,7 +188,7 @@ describe("Product and Package Real Images", () => {
     expect(uniqueLuxImages.size).toBe(luxProducts.length);
   });
 
-  it("all 81 Felicity products exist with authentic photos on disk and correct Level C pricing", () => {
+  it("all 81 Felicity products exist with authentic photos on disk and current master-sheet pricing", () => {
     const felicityProducts = PRODUCTS.filter((p) => p.brand === "Felicity");
     expect(felicityProducts.length).toBe(81);
 
@@ -243,8 +244,13 @@ describe("Product and Package Real Images", () => {
       expect(p.image_url).toMatch(/\.webp$/);
       const filePath = path.resolve("public" + p.image_url);
       expect(fs.existsSync(filePath), `Image file should exist on disk: ${filePath}`).toBe(true);
-      expect(p.numeric_price).toBeGreaterThan(0);
-      expect(p.price).toMatch(/^₦[\d,]+$/);
+      if (masterPriceFor(p) === null) {
+        expect(p.numeric_price).toBeUndefined();
+        expect(p.price).toBeNull();
+      } else {
+        expect(p.numeric_price).toBeGreaterThan(0);
+        expect(p.price).toMatch(/^₦[\d,]+(?:\.\d{2})?$/);
+      }
       expect(p.warranty_years).toBeGreaterThanOrEqual(2);
 
       const buf = fs.readFileSync(filePath);
@@ -382,21 +388,21 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(12);
   });
 
-  it("all 10 SolarPro products exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+  it("all 10 SolarPro products exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
     const solarpro = PRODUCTS.filter((p) => p.brand === "SolarPro");
     expect(solarpro.length).toBe(10);
 
     const expectedPrices: Record<string, number> = {
-      "SOLARPRO-S6-100W": 240000,
-      "SOLARPRO-S7-120W": 240000,
-      "SOLARPRO-I6-100W": 234000,
-      "SOLARPRO-R1-60W": 150000,
-      "SOLARPRO-R3-100W": 234000,
-      "SOLARPRO-R4-120W": 258000,
-      "SOLARPRO-SP-FL-300W": 78000,
-      "SOLARPRO-BAT-15KWH": 3360000,
-      "SOLARPRO-ESS-60KWH-HV": 18000000,
-      "SOLARPRO-ESS-125KWH-HV": 43200000,
+      "SOLARPRO-S6-100W": 260000,
+      "SOLARPRO-S7-120W": 260000,
+      "SOLARPRO-I6-100W": 253500,
+      "SOLARPRO-R1-60W": 162500,
+      "SOLARPRO-R3-100W": 253500,
+      "SOLARPRO-R4-120W": 279500,
+      "SOLARPRO-SP-FL-300W": 65000,
+      "SOLARPRO-BAT-15KWH": 2800000,
+      "SOLARPRO-ESS-60KWH-HV": 15000000,
+      "SOLARPRO-ESS-125KWH-HV": 36000000,
     };
 
     const imageHashes = new Set<string>();
@@ -418,21 +424,21 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(10);
   });
 
-  it("all 10 Sungene and Infini products exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+  it("all 10 Sungene and Infini products exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
     const sungeneAndInfini = PRODUCTS.filter((p) => (p.brand === "Sungene" || p.brand === "Infini") && !p.id.includes("panel"));
     expect(sungeneAndInfini.length).toBe(10);
 
     const expectedPrices: Record<string, number> = {
-      "SUNGENE-BAT-7.6KWH-24V": 900000,
-      "SUNGENE-BAT-15KWH-48V": 2340000,
-      "INFINI-BAT-10.2KWH-48V": 2040000,
-      "INFINI-BAT-15KWH-48V": 2220000,
-      "INFINI-HP800-3.5KVA-24V": 360000,
-      "INFINI-HP800-5KVA-24V": 432000,
-      "INFINI-MPPT-60A": 198000,
-      "INFINI-MPPT-100A": 210000,
-      "INFINI-FAN-18-REC": 84000,
-      "INFINI-FAN-18-SOLAR-KIT": 96000,
+      "SUNGENE-BAT-7.6KWH-24V": 766500,
+      "SUNGENE-BAT-15KWH-48V": 1950000,
+      "INFINI-BAT-10.2KWH-48V": 1700000,
+      "INFINI-BAT-15KWH-48V": 1850000,
+      "INFINI-HP800-3.5KVA-24V": 300000,
+      "INFINI-HP800-5KVA-24V": 360000,
+      "INFINI-MPPT-60A": 165000,
+      "INFINI-MPPT-100A": 175000,
+      "INFINI-FAN-18-REC": 70000,
+      "INFINI-FAN-18-SOLAR-KIT": 80000,
     };
 
     const imageHashes = new Set<string>();
@@ -454,18 +460,18 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(10);
   });
 
-  it("all 7 Solis inverters exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+  it("all 7 Solis inverters exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
     const solis = PRODUCTS.filter((p) => p.brand === "Solis" && !p.id.startsWith("expansion-"));
     expect(solis.length).toBe(7);
 
     const expectedPrices: Record<string, number> = {
-      "SOLIS-S6-EO1P5K-48": 780000,
-      "SOLIS-S6-EH1P12K": 3096000,
-      "SOLIS-S6-EH1P14K": 3168000,
-      "SOLIS-S6-EH1P16K": 3312000,
-      "SOLIS-S6-EH1P18K": 3384000,
-      "SOLIS-S6-EH3P30K-H": 5511168,
-      "SOLIS-S6-EH3P50K-H": 7787520,
+      "SOLIS-S6-EO1P5K-48": 650000,
+      "SOLIS-S6-EH1P12K": 2580000,
+      "SOLIS-S6-EH1P14K": 2640000,
+      "SOLIS-S6-EH1P16K": 2760000,
+      "SOLIS-S6-EH1P18K": 2820000,
+      "SOLIS-S6-EH3P30K-H": 4592640,
+      "SOLIS-S6-EH3P50K-H": 6489600,
     };
 
     const imageHashes = new Set<string>();
@@ -487,7 +493,7 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(7);
   });
 
-  it("all 6 new Tier-1 Solar Panels from supplier sheets exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+  it("all 6 new Tier-1 Solar Panels from supplier sheets exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
     const newPanels = PRODUCTS.filter((p) => 
       p.category === "Solar Panels" && 
       (p.brand === "Sungene" || p.brand === "JMS" || p.brand === "Yingli")
@@ -495,12 +501,12 @@ describe("Product and Package Real Images", () => {
     expect(newPanels.length).toBe(6);
 
     const expectedPrices: Record<string, number> = {
-      "SUNGENE-PV-330W-MONO": 67200,
-      "SUNGENE-PV-650W-MONO": 172800,
-      "JMS-PV-550W-MONO": 174000,
-      "JMS-PV-630W-MONO": 177600,
-      "YINGLI-PV-620W-MONO": 177600,
-      "YINGLI-PV-625W-MONO": 177600,
+      "SUNGENE-PV-330W-MONO": 56700,
+      "SUNGENE-PV-650W-MONO": 144000,
+      "JMS-PV-550W-MONO": 150150,
+      "JMS-PV-630W-MONO": 153300,
+      "YINGLI-PV-620W-MONO": 157500,
+      "YINGLI-PV-625W-MONO": 158550,
     };
 
     const imageHashes = new Set<string>();
@@ -521,42 +527,42 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(6);
   });
 
-  it("all 22 Deye products from official price sheet exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+  it("all 22 Deye products from official price sheet exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
     const deye = PRODUCTS.filter((p) => p.brand === "Deye" && p.sku?.startsWith("DEYE-"));
     expect(deye.length).toBe(22);
 
     const expectedPrices: Record<string, number> = {
       // Sheet 1: Low Voltage Batteries
       "DEYE-BAT-5K-SE-F5-C": 1116000,
-      "DEYE-BAT-10K-SE-G10-2": 1920000,
+      "DEYE-BAT-10K-SE-G10-2": 2600000,
       "DEYE-BAT-12K-SE-F12-C": 2520000,
-      "DEYE-BAT-16K-SE-F16-V": 2880000,
+      "DEYE-BAT-16K-SE-F16-V": 3510000,
 
       // Sheet 2: High Voltage Batteries & Racks
-      "DEYE-BAT-5K-BOS-G-PRO": 1320000,
-      "DEYE-ACC-BOS-G-PDU-2": 1320000,
+      "DEYE-BAT-5K-BOS-G-PRO": 1690000,
+      "DEYE-ACC-BOS-G-PDU-2": 1690000,
       "DEYE-BAT-7K-BOS-A": 1920000,
       "DEYE-ACC-BOS-A-PDU-2": 1650000,
-      "DEYE-ACC-RACK-9L-BOS-G": 600000,
+      "DEYE-ACC-RACK-9L-BOS-G": 806000,
       "DEYE-ACC-RACK-11L-BOS-A": 600000,
 
       // Sheet 3: Single Phase Inverters
-      "DEYE-INV-6K-OG01": 573600,
-      "DEYE-INV-8K-SG05": 1524000,
-      "DEYE-INV-10K-SG02": 2160000,
-      "DEYE-INV-12K-SG02": 2280000,
-      "DEYE-INV-16K-SG01": 3360000,
+      "DEYE-INV-6K-OG01": 1170000,
+      "DEYE-INV-8K-SG05": 2600000,
+      "DEYE-INV-10K-SG02": 3380000,
+      "DEYE-INV-12K-SG02": 3640000,
+      "DEYE-INV-16K-SG01": 4940000,
 
       // Sheet 4: Three Phase Inverters
-      "DEYE-INV-12K-SG04-3P": 2220000,
-      "DEYE-INV-16K-SG05-3P": 3360000,
-      "DEYE-INV-20K-SG05-3P": 3600000,
+      "DEYE-INV-12K-SG04-3P": 3770000,
+      "DEYE-INV-16K-SG05-3P": 4940000,
+      "DEYE-INV-20K-SG05-3P": 5980000,
 
       // Sheet 5: Three Phase High Voltage Inverters
       "DEYE-INV-25K-SG01-HV": 3840000,
-      "DEYE-INV-30K-SG02-HV": 4800000,
-      "DEYE-INV-50K-SG01-HV": 6000000,
-      "DEYE-INV-80K-SG02-HV": 9000000,
+      "DEYE-INV-30K-SG02-HV": 7280000,
+      "DEYE-INV-50K-SG01-HV": undefined,
+      "DEYE-INV-80K-SG02-HV": undefined,
     };
 
     const imageHashes = new Set<string>();
@@ -578,69 +584,69 @@ describe("Product and Package Real Images", () => {
     expect(imageHashes.size).toBe(22);
   });
 
-  it("all 47 Bread Energy products from official price sheet exist in catalog with authentic HD photos on disk and exact +20% retail pricing", () => {
+  it("all 47 Bread Energy products from official price sheet exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
     const breadEnergy = PRODUCTS.filter((p) => p.brand === "Bread Energy" && p.sku?.startsWith("BREAD-"));
     expect(breadEnergy.length).toBe(47);
 
     const expectedPrices: Record<string, number> = {
       // 1. Solar Panels (15 Items)
-      "BREAD-PV-280W": 66000,
-      "BREAD-PV-200W": 42000,
-      "BREAD-PV-450W": 114000,
-      "BREAD-PV-465W": 114000,
-      "BREAD-PV-475W": 115200,
-      "BREAD-PV-485W": 117600,
-      "BREAD-PV-495W": 120000,
+      "BREAD-PV-280W": 71500,
+      "BREAD-PV-200W": 44200,
+      "BREAD-PV-450W": 123500,
+      "BREAD-PV-465W": 117000,
+      "BREAD-PV-475W": 117000,
+      "BREAD-PV-485W": 117000,
+      "BREAD-PV-495W": 117000,
       "BREAD-PV-505W": 120000,
       "BREAD-PV-515W": 126000,
       "BREAD-PV-585W": 127200,
       "BREAD-PV-600W": 138000,
-      "BREAD-PV-615W": 144000,
-      "BREAD-PV-625W": 144000,
-      "BREAD-PV-660W": 144000,
-      "BREAD-PV-680W": 150000,
+      "BREAD-PV-615W": 149500,
+      "BREAD-PV-625W": 149500,
+      "BREAD-PV-660W": 152100,
+      "BREAD-PV-680W": 153400,
 
       // 2. Inverters (5 Items)
-      "BREAD-INV-1.5K": 222000,
-      "BREAD-INV-3.5K": 318000,
-      "BREAD-INV-6.2K": 480000,
-      "BREAD-INV-11K": 900000,
-      "BREAD-INV-11K-PRO": 1020000,
+      "BREAD-INV-1.5K": 260000,
+      "BREAD-INV-3.5K": 344500,
+      "BREAD-INV-6.2K": 559000,
+      "BREAD-INV-11K": 975000,
+      "BREAD-INV-11K-PRO": 1079000,
 
       // 3. Lithium Batteries (9 Items)
-      "BREAD-BAT-5K-25V-RK": 1020000,
-      "BREAD-BAT-7K-25V-WM": 1320000,
-      "BREAD-BAT-4.8K-48V-WM": 1200000,
-      "BREAD-BAT-5K-51V-WM": 1200000,
-      "BREAD-BAT-9.6K-RK": 1980000,
-      "BREAD-BAT-9.6K-WH": 2100000,
-      "BREAD-BAT-10.2K": 2220000,
-      "BREAD-BAT-13.4K": 2400000,
-      "BREAD-BAT-15.6K": 2580000,
+      "BREAD-BAT-5K-25V-RK": 1365000,
+      "BREAD-BAT-7K-25V-WM": 1430000,
+      "BREAD-BAT-4.8K-48V-WM": 1365000,
+      "BREAD-BAT-5K-51V-WM": 1560000,
+      "BREAD-BAT-9.6K-RK": 2210000,
+      "BREAD-BAT-9.6K-WH": 2340000,
+      "BREAD-BAT-10.2K": 2535000,
+      "BREAD-BAT-13.4K": 2600000,
+      "BREAD-BAT-15.6K": 2860000,
 
       // 4. All in One ESS (4 Items)
-      "BREAD-AIO-6K-5K": 2040000,
-      "BREAD-AIO-6K-15K": 3360000,
-      "BREAD-AIO-5K-20K": 5040000,
-      "BREAD-AIO-12K-20K": 6000000,
+      "BREAD-AIO-6K-5K": 2210000,
+      "BREAD-AIO-6K-15K": 3705000,
+      "BREAD-AIO-5K-20K": 5460000,
+      "BREAD-AIO-12K-20K": 6500000,
 
       // 5. Solar Floodlights (6 Items)
-      "BREAD-FL-60W": 33600,
-      "BREAD-FL-100W": 43200,
-      "BREAD-FL-200W": 54000,
-      "BREAD-FL-300W": 66000,
-      "BREAD-FL-500W": 78000,
-      "BREAD-FL-1000W": 96000,
+      "BREAD-FL-60W": 36400,
+      "BREAD-FL-100W": 46800,
+      "BREAD-FL-200W": 58500,
+      "BREAD-FL-300W": 71500,
+      "BREAD-FL-500W": 84500,
+      "BREAD-FL-1000W": 104000,
 
       // 6. Solar Street Lights & Accessories (8 Items)
-      "BREAD-SL-2LENS": 90000,
-      "BREAD-SL-3LENS": 105600,
-      "BREAD-SL-4LENS": 120000,
-      "BREAD-SL-4LINES": 162000,
+      "BREAD-SL-2LENS": 97500,
+      "BREAD-SL-3LENS": 114400,
+      "BREAD-SL-4LENS": 130000,
+      "BREAD-SL-4LINES": 175500,
       "BREAD-SL-5LINES": 120000,
-      "BREAD-SL-8EYES": 180000,
-      "BREAD-SL-12EYES": 234000,
-      "BREAD-ACC-POLE": 59400,
+      "BREAD-SL-8EYES": 195000,
+      "BREAD-SL-12EYES": 253500,
+      "BREAD-ACC-POLE": 64350,
     };
 
     const imageHashes = new Set<string>();
@@ -668,60 +674,60 @@ describe("Product and Package Real Images", () => {
 
     const expectedPrices: Record<string, number> = {
       // 1. Batteries
-      "EXU-BAT-220AH-TUB": 264000,
+      "EXU-BAT-220AH-TUB": 286000,
       "EXU-BAT-230AH-DEBULL": 264000,
-      "EXU-BAT-200AH-QUANTA-WC": 396000,
-      "EXU-BAT-200AH-QUANTA-REG": 372000,
-      "EXU-BAT-BC-5K-FLAT": 1020000,
-      "EXU-BAT-BC-5K-SLIM": 1020000,
-      "EXU-BAT-BC-10K-BLOCK": 1740000,
-      "EXU-BAT-BC-15K-BLOCK": 1980000,
-      "EXU-BAT-BC-10K-SMART": 1800000,
-      "EXU-BAT-BC-15K-SMART": 2040000,
-      "EXU-BAT-FT-5K-48V": 1140000,
-      "EXU-BAT-FT-15K-48V": 2280000,
+      "EXU-BAT-200AH-QUANTA-WC": 429000,
+      "EXU-BAT-200AH-QUANTA-REG": 429000,
+      "EXU-BAT-BC-5K-FLAT": 1105000,
+      "EXU-BAT-BC-5K-SLIM": 1105000,
+      "EXU-BAT-BC-10K-BLOCK": 1885000,
+      "EXU-BAT-BC-15K-BLOCK": 2145000,
+      "EXU-BAT-BC-10K-SMART": 1950000,
+      "EXU-BAT-BC-15K-SMART": 2210000,
+      "EXU-BAT-FT-5K-48V": 1235000,
+      "EXU-BAT-FT-15K-48V": 2470000,
 
       // 2. Inverters
-      "EXU-INV-2.5K-TT": 216000,
-      "EXU-INV-5K-TT": 360000,
-      "EXU-INV-2K-12V-WM": 180000,
-      "EXU-INV-3K-24V-WM": 228000,
-      "EXU-INV-4K-24V-WM": 360000,
-      "EXU-INV-6K-48V-WM": 480000,
-      "EXU-INV-10K-48V-WM": 1020000,
-      "EXU-INV-12.5K-48V-PAR": 1140000,
-      "EXU-INV-4K-24V-HF": 384000,
+      "EXU-INV-2.5K-TT": 234000,
+      "EXU-INV-5K-TT": 390000,
+      "EXU-INV-2K-12V-WM": 195000,
+      "EXU-INV-3K-24V-WM": 247000,
+      "EXU-INV-4K-24V-WM": 390000,
+      "EXU-INV-6K-48V-WM": 520000,
+      "EXU-INV-10K-48V-WM": 1105000,
+      "EXU-INV-12.5K-48V-PAR": 1235000,
+      "EXU-INV-4K-24V-HF": 416000,
       "EXU-INV-6.2K-48V-HF": 456000,
       "EXU-INV-6.2K-48V-HV": 468000,
-      "EXU-INV-11K-48V-NP": 900000,
-      "EXU-INV-11K-48V-PAR": 960000,
+      "EXU-INV-11K-48V-NP": 975000,
+      "EXU-INV-11K-48V-PAR": 1040000,
 
       // 3. Solar Panels
-      "EXU-PV-460W": 102000,
-      "EXU-PV-550W": 138000,
-      "EXU-PV-620W": 144000,
-      "EXU-PV-650W": 150000,
+      "EXU-PV-460W": 110500,
+      "EXU-PV-550W": 149500,
+      "EXU-PV-620W": 156000,
+      "EXU-PV-650W": 162500,
 
       // 4. Charge Controllers
-      "EXU-CC-60A-MPPT": 156000,
-      "EXU-CC-100A-MPPT": 228000,
+      "EXU-CC-60A-MPPT": 169000,
+      "EXU-CC-100A-MPPT": 247000,
 
       // 5. Solar Pumps
-      "EXU-PUMP-SP600": 432000,
-      "EXU-PUMP-SP5000": 2040000,
+      "EXU-PUMP-SP600": 468000,
+      "EXU-PUMP-SP5000": 2210000,
 
       // 6. Lights
-      "EXU-SL-80W": 180000,
-      "EXU-SL-100W": 240000,
-      "EXU-SL-SIMPLICITY": 72000,
-      "EXU-SL-GARDEN": 72000,
+      "EXU-SL-80W": 195000,
+      "EXU-SL-100W": 260000,
+      "EXU-SL-SIMPLICITY": 78000,
+      "EXU-SL-GARDEN": 78000,
 
       // 7. Camera & Gate
-      "EXU-CAM-4G-DUAL": 78000,
-      "EXU-GATE-SLIDING-650": 780000,
+      "EXU-CAM-4G-DUAL": 84500,
+      "EXU-GATE-SLIDING-650": 845000,
 
       // 8. EcoFlow
-      "ECO-RIVER2-256": 307770,
+      "ECO-RIVER2-256": 341900,
       "ECO-RIVER-288": 234000,
     };
 

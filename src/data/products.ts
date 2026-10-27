@@ -1,3 +1,5 @@
+import { applyMasterPrice } from "../lib/retailPricing";
+
 export interface Product {
   id: string;
   name: string;
@@ -4102,10 +4104,10 @@ export const PRODUCTS: Product[] = [
   ...MINISIM_PRODUCTS,
   ...expansionCatalogProducts,
   ...blueCarbonAndDealerProducts,
-];
+].map(applyMasterPrice);
 
 // Legacy backward-compatibility aliases
-export const solarProducts = invertersList;
+export const solarProducts = invertersList.map(applyMasterPrice);
 export const smartLockProducts = smartLocksList;
 export const smartHomeProducts = smartHomeList;
 export const cctvProducts = cctvList;
@@ -4166,7 +4168,7 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
     ...exultedProducts.filter((p) => ["Security & CCTV"].includes(p.category))
   );
 
-  return results;
+  return results.map(applyMasterPrice);
 }
 
 export function groupBySeries(products: Product[]): Record<string, Product[]> {

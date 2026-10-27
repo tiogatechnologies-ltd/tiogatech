@@ -1,3 +1,4 @@
+import { applyMasterPrice } from "@/lib/retailPricing";
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 import type { RetailProduct } from "@/types/retail";
@@ -12,13 +13,13 @@ export const useProductCompare = () => {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(COMPARE_KEY);
-      if (stored) setCompareItems(JSON.parse(stored));
+      if (stored) setCompareItems(JSON.parse(stored).map(applyMasterPrice));
     } catch {}
 
     const onStorage = () => {
       try {
         const updated = localStorage.getItem(COMPARE_KEY);
-        if (updated) setCompareItems(JSON.parse(updated));
+        if (updated) setCompareItems(JSON.parse(updated).map(applyMasterPrice));
       } catch {}
     };
 
@@ -62,7 +63,7 @@ export const useProductCompare = () => {
     let current: RetailProduct[] = [];
     try {
       const stored = localStorage.getItem(COMPARE_KEY);
-      if (stored) current = JSON.parse(stored);
+      if (stored) current = JSON.parse(stored).map(applyMasterPrice);
     } catch {
       current = compareItems;
     }
@@ -92,7 +93,7 @@ export const useProductCompare = () => {
     let current: RetailProduct[] = [];
     try {
       const stored = localStorage.getItem(COMPARE_KEY);
-      if (stored) current = JSON.parse(stored);
+      if (stored) current = JSON.parse(stored).map(applyMasterPrice);
     } catch {
       current = compareItems;
     }
@@ -125,7 +126,7 @@ export const useProductCompare = () => {
     let current: RetailProduct[] = [];
     try {
       const stored = localStorage.getItem(COMPARE_KEY);
-      if (stored) current = JSON.parse(stored);
+      if (stored) current = JSON.parse(stored).map(applyMasterPrice);
     } catch {
       current = compareItems;
     }

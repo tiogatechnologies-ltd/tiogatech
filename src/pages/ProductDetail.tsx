@@ -42,6 +42,7 @@ import { trackConversion } from "@/lib/tracking";
 import { matchesSlug, productPath } from "@/lib/productSlug";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
+import { parseRetailPrice } from "@/lib/retailPricing";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
@@ -100,8 +101,7 @@ const categoryLabels: Record<string, string> = {
 
 const parsePriceNaira = (price?: string | null): number => {
   if (!price) return 0;
-  const digits = price.replace(/[^0-9]/g, "");
-  return digits ? parseInt(digits, 10) : 0;
+  return parseRetailPrice(price);
 };
 
 const formatPrice = (price?: string | null): string => {
@@ -662,15 +662,17 @@ export const ProductDetail = () => {
                   <button
                     type="button"
                     onClick={handleAddToCart}
+                    disabled={!numPrice}
                     className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-primary bg-primary/10 text-primary px-5 py-3.5 text-sm font-bold hover:bg-primary hover:text-primary-foreground active:scale-[0.98] transition-all shadow-sm"
                   >
                     <ShoppingBag size={18} />
-                    <span>Add to Cart</span>
+                    <span>{numPrice ? "Add to Cart" : "Price on Request"}</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={handleBuyNow}
+                    disabled={!numPrice}
                     className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary text-primary-foreground px-5 py-3.5 text-sm font-bold hover:brightness-110 active:scale-[0.98] transition-all shadow-md"
                   >
                     <span>Instant Checkout</span>

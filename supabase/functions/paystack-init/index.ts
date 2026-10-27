@@ -1,8 +1,8 @@
 // Initialize a Paystack transaction and return the authorization URL.
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
 import { z } from "npm:zod@3.23.8";
-import { CATALOG_PRICES } from "../_shared/catalog-prices.ts";
-import { AI_PLAN_PRICES_NGN, buildDbPriceMap, checkOrderPrice } from "../_shared/pricing.ts";
+import { CATALOG_PRICES, CATALOG_QUOTE_ONLY_NAMES } from "../_shared/catalog-prices.ts";
+import { AI_PLAN_PRICES_NGN, buildDbPriceMap, checkOrderPrice, normName, parseItemsSummary } from "../_shared/pricing.ts";
 import { escapeHtml } from "../_shared/auth.ts";
 import { sendMail } from "../_shared/mailer.ts";
 
@@ -18,6 +18,9 @@ async function checkPriceOrBlock(
   admin: ReturnType<typeof createClient>,
   order: { order_number: string; total: number | string; items_summary: string | null; discount_code: string | null },
 ): Promise<string | null> {
+  if (parseItemsSummary(order.items_summary ?? "").some(item => CATALOG_QUOTE_ONLY_NAMES.includes(normName(item.name)) || CATALOG_QUOTE_ONLY_NAMES.includes(normName(item.raw)))) {
+    return "An item in this order requires a confirmed quote. Please contact sales before payment.";
+  }
   const mode = (Deno.env.get("PRICE_CHECK_MODE") ?? "enforce").toLowerCase();
   if (mode === "off") return null;
   try {

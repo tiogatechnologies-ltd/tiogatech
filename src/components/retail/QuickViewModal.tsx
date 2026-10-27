@@ -11,6 +11,7 @@ import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
+import { formatRetailPrice } from "@/lib/retailPricing";
 
 interface QuickViewProps {
   product: RetailProduct | null;
@@ -19,7 +20,7 @@ interface QuickViewProps {
 }
 
 const fmt = (n?: number | null, fallback?: string | null) => {
-  if (n != null && !Number.isNaN(n) && n > 0) return `₦${Math.round(n).toLocaleString("en-NG")}`;
+  if (n != null && !Number.isNaN(n) && n > 0) return formatRetailPrice(n);
   if (fallback) return fallback;
   return "Price on Request";
 };
@@ -167,7 +168,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
 
                 <Button
                   onClick={handleAddToCart}
-                  disabled={added}
+                  disabled={added || !hasPrice}
                   className="flex-1 py-5 rounded-xl font-bold gap-2 text-sm shadow-md"
                 >
                   {added ? (
@@ -178,7 +179,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
                   ) : (
                     <>
                       <ShoppingCart size={16} />
-                      <span>Add to Cart ({quantity})</span>
+                      <span>{hasPrice ? `Add to Cart (${quantity})` : "Price on Request"}</span>
                     </>
                   )}
                 </Button>

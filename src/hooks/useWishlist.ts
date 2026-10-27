@@ -1,23 +1,31 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
+import { upgradeLegacyWishlistIds } from "@/lib/retailPricing";
 
 const WISHLIST_KEY = "tioga_retail_wishlist";
+const WISHLIST_VERSION = "tioga_retail_wishlist_ids_v2";
+function readWishlist(): string[] {
+  const ids: string[] = JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
+  if (localStorage.getItem(WISHLIST_VERSION)) return ids;
+  const upgraded = upgradeLegacyWishlistIds(ids);
+  localStorage.setItem(WISHLIST_KEY, JSON.stringify(upgraded));
+  localStorage.setItem(WISHLIST_VERSION, "1");
+  return upgraded;
+}
 
 export const useWishlist = () => {
   const [wishlistIds, setWishlistIds] = useState<string[]>([]);
 
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(WISHLIST_KEY);
-      if (stored) setWishlistIds(JSON.parse(stored));
+      setWishlistIds(readWishlist());
     } catch {
       // fallback
     }
 
     const onStorage = () => {
       try {
-        const updated = localStorage.getItem(WISHLIST_KEY);
-        if (updated) setWishlistIds(JSON.parse(updated));
+        setWishlistIds(readWishlist());
       } catch {}
     };
     window.addEventListener("tioga:wishlist-updated", onStorage);
