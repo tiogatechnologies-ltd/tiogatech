@@ -42,6 +42,7 @@ export function mergeProducts<T extends { id: string; name: string; image_url?: 
       serial_number: dbItem.serial_number ?? staticMatch.serial_number,
       sku: dbItem.sku ?? staticMatch.sku,
       numeric_price: dbItem.numeric_price ?? staticMatch.numeric_price,
+      stock_status: dbItem.stock_status ?? staticMatch.stock_status,
       specifications: dbItem.specifications && Object.keys(dbItem.specifications).length > 0
         ? dbItem.specifications
         : staticMatch.specifications,

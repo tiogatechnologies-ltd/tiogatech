@@ -48,7 +48,7 @@ const FeatureHighlightPopup = () => {
 
   return createPortal(
     <div
-      className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-6 sm:right-6 z-[70] pointer-events-none"
+      className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-6 sm:right-6 z-40 pointer-events-none"
       aria-live="polite"
     >
       <div className="pointer-events-auto mx-auto sm:mx-0 w-full sm:w-[380px] max-w-md rounded-t-3xl sm:rounded-3xl border border-border bg-card shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300">

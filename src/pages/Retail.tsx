@@ -30,11 +30,11 @@ import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { RetailHeroCarousel } from "@/components/retail/RetailHeroCarousel";
 import { FlashDealsBar } from "@/components/retail/FlashDealsBar";
-import { ProductFilterSidebar } from "@/components/retail/ProductFilterSidebar";
+import { RetailFilterSidebar } from "@/components/retail/RetailFilterSidebar";
 import { ProductCard } from "@/components/retail/ProductCard";
 import { QuickViewModal } from "@/components/retail/QuickViewModal";
 import { ColumnGridSwitcher, type GridColumnOption } from "@/components/retail/ColumnGridSwitcher";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,8 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
+import { buildRetailFacets, emptyRetailFilters, extractProductFacets, FACET_LABELS, matchesRetailFilters, readRetailFilters, writeRetailFilters, type RetailFilterState } from "@/lib/retailFilters";
+import { fetchAllRows } from "../../supabase/functions/_shared/pagination";
 import type { RetailProduct } from "@/types/retail";
 
 import { ArrowRight, Check, ShoppingBag, X } from "lucide-react";
@@ -148,7 +150,10 @@ export const Retail = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<RetailProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
+  const filters = useMemo(() => readRetailFilters(searchParams), [searchParams]);
+  const updateFilters = (next: RetailFilterState, replace = false) => setSearchParams(writeRetailFilters(next, searchParams), { replace });
+  const searchQuery = filters.search;
+  const setSearchQuery = (search: string) => updateFilters({ ...filters, search }, true);
   const [gridColumns, setGridColumns] = useState<GridColumnOption>(3);
   const [showDesktopFilters, setShowDesktopFilters] = useState(true);
 
@@ -183,20 +188,10 @@ export const Retail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(24);
 
-  // Filter State
-  const categoryParam = searchParams.get("category");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam || null);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedCapacities, setSelectedCapacities] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50_000_000]);
-  const [inStockOnly, setInStockOnly] = useState(false);
-
-  useEffect(() => {
-    if (categoryParam) {
-      setSelectedCategory(categoryParam);
-      setCurrentPage(1);
-    }
-  }, [categoryParam]);
+  const selectedCategory = filters.category;
+  const selectedBrands = filters.brands;
+  const setSelectedBrands = (next: string[] | ((previous: string[]) => string[])) => updateFilters({ ...filters, brands: typeof next === "function" ? next(filters.brands) : next });
+  const activeFilterCount = filters.brands.length + Object.values(filters.specs).reduce((count, values) => count + (values?.length ?? 0), 0) + Number(filters.minPrice !== null) + Number(filters.maxPrice !== null) + Number(filters.inStockOnly) + Number(!!filters.search);
 
   // Load products
   useEffect(() => {
@@ -204,13 +199,13 @@ export const Retail = () => {
     const loadProducts = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase.from("products").select("*").eq("is_active", true).order("sort_order", { ascending: true });
+        const data = await fetchAllRows<any>((from, to) => supabase.from("products").select("*").eq("is_active", true).order("sort_order", { ascending: true }).order("id").range(from, to));
 
         // 1. Map static catalog
         const staticList: RetailProduct[] = STATIC_PRODUCTS.map((p) => ({
           id: p.id,
           name: p.name,
-          category: normalizeCategory(p.category),
+          category: normalizeCategory(p.category, p.name),
           series: p.series || null,
           description: p.description,
           features: p.features || [],
@@ -225,18 +220,18 @@ export const Retail = () => {
           rating: p.rating ?? undefined,
           review_count: p.review_count ?? undefined,
           compare_at_price: p.compare_at_price || null,
-          stock_status: (p.stock_status as any) || "in_stock",
+          stock_status: (p.stock_status as string) === "preorder" ? "pre_order" : p.stock_status as RetailProduct["stock_status"] || (p.stock_qty != null ? p.stock_qty > 0 ? "in_stock" : "out_of_stock" : undefined),
           is_featured: p.is_featured ?? true,
           warranty_years: p.warranty_years || 5,
         }));
 
         // 2. Map database rows if available
         let dbList: RetailProduct[] = [];
-        if (!error && data && data.length > 0) {
+        if (data && data.length > 0) {
           dbList = data.map((p: any) => ({
             id: p.id,
             name: p.name,
-            category: normalizeCategory(p.category),
+            category: normalizeCategory(p.category, p.name),
             series: p.series,
             description: p.description,
             features: Array.isArray(p.features) ? p.features : [],
@@ -251,7 +246,7 @@ export const Retail = () => {
             rating: p.rating ?? undefined,
             review_count: p.review_count ?? undefined,
             compare_at_price: p.compare_at_price ?? null,
-            stock_status: "in_stock",
+            stock_status: (p.stock_qty != null ? p.stock_qty > 0 ? "in_stock" : "out_of_stock" : undefined),
             is_featured: true,
             warranty_years: 5,
           }));
@@ -265,7 +260,7 @@ export const Retail = () => {
           setProducts(STATIC_PRODUCTS.map((p) => ({
             id: p.id,
             name: p.name,
-            category: normalizeCategory(p.category),
+            category: normalizeCategory(p.category, p.name),
             series: p.series || null,
             description: p.description,
             features: p.features || [],
@@ -280,7 +275,7 @@ export const Retail = () => {
             rating: p.rating ?? undefined,
             review_count: p.review_count ?? undefined,
             compare_at_price: p.compare_at_price || null,
-            stock_status: (p.stock_status as any) || "in_stock",
+            stock_status: (p.stock_status as string) === "preorder" ? "pre_order" : p.stock_status as RetailProduct["stock_status"] || (p.stock_qty != null ? p.stock_qty > 0 ? "in_stock" : "out_of_stock" : undefined),
             is_featured: true,
             warranty_years: 5,
           })));
@@ -294,87 +289,17 @@ export const Retail = () => {
     return () => { isMounted = false; };
   }, []);
 
-  const categories = useMemo(() => Array.from(new Set(products.map((p) => p.category))), [products]);
-  
-  const brandCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const p of products) {
-      if (p.brand) {
-        counts[p.brand] = (counts[p.brand] || 0) + 1;
-      }
-    }
-    return counts;
-  }, [products]);
-
-  const brands = useMemo(() => {
-    return Array.from(new Set(products.map((p) => p.brand).filter(Boolean) as string[])).sort((a, b) =>
-      a.localeCompare(b)
-    );
-  }, [products]);
-
-  const capacities = useMemo(() => ["3kVA", "5kVA", "8kVA", "10kVA", "15kVA", "5.12kWh", "10.24kWh", "550W"], []);
-
-  // Filter and Sort Pipeline
-  const filteredProducts = useMemo(() => {
-    return products.filter((p) => {
-      if (selectedCategory && selectedCategory !== "all") {
-        const sel = selectedCategory.toLowerCase();
-        const pCat = p.category.toLowerCase();
-        const matches =
-          pCat === sel ||
-          pCat.includes(sel) ||
-          sel.includes(pCat) ||
-          (sel.includes("switch") && pCat.includes("switch")) ||
-          (sel.includes("lock") && pCat.includes("lock")) ||
-          ((sel.includes("camera") || sel.includes("cctv")) && (pCat.includes("camera") || pCat.includes("cctv"))) ||
-          ((sel.includes("audio") || sel.includes("sound") || sel.includes("intercom")) && (pCat.includes("audio") || pCat.includes("sound") || pCat.includes("intercom"))) ||
-          ((sel.includes("curtain") || sel.includes("motor") || sel.includes("shading")) && (pCat.includes("curtain") || pCat.includes("motor") || pCat.includes("shading") || pCat.includes("blind"))) ||
-          (sel.includes("light") && pCat.includes("light")) ||
-          (sel.includes("panel") && pCat.includes("panel") && !pCat.includes("solar") && !sel.includes("solar")) ||
-          (sel.includes("solar") && pCat.includes("solar")) ||
-          (sel.includes("battery") && pCat.includes("batter")) ||
-          (sel.includes("inverter") && pCat.includes("inverter")) ||
-          ((sel.includes("gateway") || sel.includes("network")) && (pCat.includes("gateway") || pCat.includes("network") || pCat.includes("mesh"))) ||
-          (sel.includes("sensor") && pCat.includes("sensor"));
-        if (!matches) return false;
-      }
-      if (selectedBrands.length > 0 && (!p.brand || !selectedBrands.includes(p.brand))) {
-        return false;
-      }
-      if (selectedCapacities.length > 0) {
-        const matchesCap = selectedCapacities.some((c) =>
-          p.name.toLowerCase().includes(c.toLowerCase()) ||
-          JSON.stringify(p.specifications || {}).toLowerCase().includes(c.toLowerCase())
-        );
-        if (!matchesCap) return false;
-      }
-      if (p.numeric_price && (p.numeric_price < priceRange[0] || p.numeric_price > priceRange[1])) {
-        return false;
-      }
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchesSearch =
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          (p.brand && p.brand.toLowerCase().includes(q)) ||
-          (p.series && p.series.toLowerCase().includes(q)) ||
-          (p.tags && p.tags.some((t) => t.toLowerCase().includes(q)));
-        if (!matchesSearch) return false;
-      }
-      return true;
-    }).sort((a, b) => {
-      if (sortBy === "price-asc") return (a.numeric_price || 0) - (b.numeric_price || 0);
-      if (sortBy === "price-desc") return (b.numeric_price || 0) - (a.numeric_price || 0);
-      if (sortBy === "rating") return (b.rating ?? 0) - (a.rating ?? 0);
-      return 0;
-    });
-  }, [products, selectedCategory, selectedBrands, selectedCapacities, priceRange, searchQuery, sortBy]);
-
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategory, selectedBrands, selectedCapacities, priceRange, searchQuery, sortBy]);
+  const categories = useMemo(() => Array.from(new Set(products.map((product) => product.category))).sort(), [products]);
+  const productIndex = useMemo(() => products.map(product => ({ product, facets: extractProductFacets(product) })), [products]);
+  const facetOptions = useMemo(() => buildRetailFacets(productIndex, filters), [productIndex, filters]);
+  const brandCounts = Object.fromEntries(facetOptions.brands.map(option => [option.value, option.count]));
+  const filteredProducts = useMemo(() => productIndex.filter(item => matchesRetailFilters(item, filters)).map(item => item.product).sort((a, b) => {
+    if (sortBy === "price-asc") return (a.numeric_price || Number.MAX_SAFE_INTEGER) - (b.numeric_price || Number.MAX_SAFE_INTEGER);
+    if (sortBy === "price-desc") return (b.numeric_price || 0) - (a.numeric_price || 0);
+    if (sortBy === "rating") return (b.rating ?? 0) - (a.rating ?? 0);
+    return 0;
+  }), [productIndex, filters, sortBy]);
+  useEffect(() => { setCurrentPage(1); }, [filters, sortBy]);
 
   // Paginated View Slice
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage) || 1;
@@ -393,24 +318,12 @@ export const Retail = () => {
   };
 
   const handleResetFilters = () => {
-    setSelectedCategory(null);
-    setSelectedBrands([]);
-    setSelectedCapacities([]);
-    setPriceRange([0, 50_000_000]);
-    setInStockOnly(false);
-    setSearchQuery("");
-    setSearchParams({});
+    updateFilters(emptyRetailFilters(selectedCategory));
     setCurrentPage(1);
   };
 
   const handleCategorySelect = (catKey: string, scrollToCatalog = false) => {
-    if (catKey === "all") {
-      setSelectedCategory(null);
-      setSearchParams({});
-    } else {
-      setSelectedCategory(catKey);
-      setSearchParams({ category: catKey });
-    }
+    updateFilters(emptyRetailFilters(catKey === "all" ? null : catKey));
     setCurrentPage(1);
     if (scrollToCatalog) {
       setTimeout(() => {
@@ -589,7 +502,7 @@ export const Retail = () => {
           </div>
 
           {/* Controls Bar: Search, Mobile Filters, Sort, Grid/List */}
-          <div id="catalog-grid-top" className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 mb-6">
+          <div id="catalog-grid-top" className="scroll-mt-24 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 mb-6">
             {/* Search input */}
             <div className="relative flex-1 max-w-md">
               <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -618,39 +531,28 @@ export const Retail = () => {
                     <Button variant="outline" size="sm" className="h-10 rounded-xl gap-2 text-xs font-semibold w-full justify-center">
                       <SlidersHorizontal size={14} />
                       <span>Filters</span>
-                      {(selectedBrands.length > 0 || selectedCapacities.length > 0 || selectedCategory) && (
+                      {(activeFilterCount > 0) && (
                         <span className="h-2 w-2 rounded-full bg-primary" />
                       )}
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="left" className="w-[300px] sm:w-[360px] p-6 overflow-y-auto">
+                  <SheetContent side="left" className="w-[min(92vw,380px)] p-5 overflow-y-auto">
                     <SheetHeader className="pb-4 border-b border-border mb-4">
                       <SheetTitle className="text-base font-display font-bold">Filter Hardware</SheetTitle>
+                      <SheetDescription>Combine filters to find the right products.</SheetDescription>
                     </SheetHeader>
-                    <ProductFilterSidebar
-                      filters={{
-                        category: selectedCategory,
-                        brands: selectedBrands,
-                        capacities: selectedCapacities,
-                        priceRange,
-                        inStockOnly,
-                        tier: null,
-                      }}
-                      onChange={(f) => {
-                        setSelectedCategory(f.category);
-                        setSelectedBrands(f.brands);
-                        setSelectedCapacities(f.capacities);
-                        setPriceRange(f.priceRange);
-                        setInStockOnly(f.inStockOnly);
-                      }}
+                    <RetailFilterSidebar
+                      filters={filters}
+                      onChange={(next) => updateFilters(next, next.minPrice !== filters.minPrice || next.maxPrice !== filters.maxPrice)}
+                      onCategoryChange={(category) => handleCategorySelect(category ?? "all")}
                       categories={categories}
-                      brands={brands}
-                      brandCounts={brandCounts}
-                      capacities={capacities}
-                      maxPrice={50_000_000}
+                      brands={facetOptions.brands}
+                      groups={facetOptions.groups}
+                      maxPrice={facetOptions.maxPrice}
                       totalResults={filteredProducts.length}
                       onReset={handleResetFilters}
                     />
+                    <div className="sticky bottom-0 mt-5 border-t bg-background pt-3"><Button className="w-full" onClick={() => setMobileFilterOpen(false)}>Show {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}</Button></div>
                   </SheetContent>
                 </Sheet>
               </div>
@@ -747,13 +649,14 @@ export const Retail = () => {
             <span className="text-xs font-semibold text-muted-foreground mr-1 shrink-0">
               Popular Brands:
             </span>
-            {["Bread Energy", "Deye", "Felicity", "SolarPro", "AlpSolarr", "Luxpower", "SRNE", "Taico", "Dawnice", "Solis", "Infinisolar", "Itel", "Suness"].map((brand) => {
+            {[...facetOptions.brands].sort((a, b) => b.count - a.count).slice(0, 12).map(({ value: brand }) => {
               const isSelected = selectedBrands.includes(brand);
               const count = brandCounts[brand] || 0;
               return (
                 <button
                   key={brand}
                   type="button"
+                  disabled={!count && !isSelected}
                   onClick={() => {
                     setSelectedBrands((prev) =>
                       prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
@@ -792,42 +695,43 @@ export const Retail = () => {
             )}
           </div>
 
+          <section className="mb-5 space-y-3" aria-label="Selected product filters">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div><h2 className="font-display text-xl font-bold">{selectedCategory || "All hardware"}</h2><p role="status" aria-live="polite" data-testid="retail-results-count" className="text-sm text-muted-foreground">{loading ? "Loading products…" : filteredProducts.length + (filteredProducts.length === 1 ? " product" : " products")}</p></div>
+              {activeFilterCount > 0 && <Button variant="ghost" size="sm" onClick={handleResetFilters}>Clear filters ({activeFilterCount})</Button>}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {filters.brands.map(brand => <Button key={brand} variant="secondary" size="sm" className="h-auto max-w-full whitespace-normal text-left text-xs" aria-label={"Remove brand filter: " + brand} onClick={() => setSelectedBrands(previous => previous.filter(value => value !== brand))}>{brand}<X size={12} className="ml-1 shrink-0" /></Button>)}
+              {Object.entries(filters.specs).flatMap(([key, values]) => (values ?? []).map(value => <Button key={key + value} variant="secondary" size="sm" className="h-auto max-w-full whitespace-normal text-left text-xs" aria-label={"Remove " + FACET_LABELS[key as keyof typeof FACET_LABELS] + " filter: " + value} onClick={() => updateFilters({ ...filters, specs: { ...filters.specs, [key]: values?.filter(item => item !== value) } })}>{FACET_LABELS[key as keyof typeof FACET_LABELS]}: {value}<X size={12} className="ml-1 shrink-0" /></Button>))}
+              {filters.minPrice !== null && <Button variant="secondary" size="sm" aria-label="Remove minimum price filter" onClick={() => updateFilters({ ...filters, minPrice: null })}>From ₦{filters.minPrice.toLocaleString()}<X size={12} className="ml-1" /></Button>}
+              {filters.maxPrice !== null && <Button variant="secondary" size="sm" aria-label="Remove maximum price filter" onClick={() => updateFilters({ ...filters, maxPrice: null })}>Up to ₦{filters.maxPrice.toLocaleString()}<X size={12} className="ml-1" /></Button>}
+              {filters.inStockOnly && <Button variant="secondary" size="sm" onClick={() => updateFilters({ ...filters, inStockOnly: false })}>In stock only<X size={12} className="ml-1" /></Button>}
+              {filters.search && <Button variant="secondary" size="sm" onClick={() => setSearchQuery("")}>Search: {filters.search}<X size={12} className="ml-1" /></Button>}
+            </div>
+          </section>
           {/* Main Layout */}
           <div className={`grid grid-cols-1 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-1"} gap-8`}>
             {/* Desktop Filter Sidebar */}
             {showDesktopFilters && (
               <div className="hidden lg:block lg:col-span-1">
-                <div className="sticky top-24 p-6 rounded-3xl bg-card border border-border/80 shadow-[var(--shadow-card)]">
-                  <ProductFilterSidebar
-                    filters={{
-                      category: selectedCategory,
-                      brands: selectedBrands,
-                      capacities: selectedCapacities,
-                      priceRange,
-                      inStockOnly,
-                      tier: null,
-                    }}
-                    onChange={(f) => {
-                      setSelectedCategory(f.category);
-                      setSelectedBrands(f.brands);
-                      setSelectedCapacities(f.capacities);
-                      setPriceRange(f.priceRange);
-                      setInStockOnly(f.inStockOnly);
-                    }}
-                    categories={categories}
-                    brands={brands}
-                    brandCounts={brandCounts}
-                    capacities={capacities}
-                    maxPrice={50_000_000}
-                    totalResults={filteredProducts.length}
-                    onReset={handleResetFilters}
-                  />
+                <div role="region" aria-label="Product filters" className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto p-5 rounded-3xl bg-card border border-border/80 shadow-[var(--shadow-card)]">
+                  <RetailFilterSidebar
+                      filters={filters}
+                      onChange={(next) => updateFilters(next, next.minPrice !== filters.minPrice || next.maxPrice !== filters.maxPrice)}
+                      onCategoryChange={(category) => handleCategorySelect(category ?? "all")}
+                      categories={categories}
+                      brands={facetOptions.brands}
+                      groups={facetOptions.groups}
+                      maxPrice={facetOptions.maxPrice}
+                      totalResults={filteredProducts.length}
+                      onReset={handleResetFilters}
+                    />
                 </div>
               </div>
             )}
 
             {/* Product Cards Grid with Pagination */}
-            <div className={showDesktopFilters ? "lg:col-span-3" : "lg:col-span-1"}>
+            <div className={showDesktopFilters ? "min-w-0 lg:col-span-3" : "min-w-0 lg:col-span-1"}>
               {loading ? (
                 <div className="py-20 flex items-center justify-center">
                   <Loader2 className="animate-spin text-primary" size={28} />
@@ -849,6 +753,7 @@ export const Retail = () => {
               ) : (
                 <>
                   <div
+                    data-testid="retail-product-grid"
                     className={`grid ${getGridGapClass(gridColumns)} ${getGridColsClass(gridColumns)}`}
                   >
                     {displayedProducts.map((product) => (
