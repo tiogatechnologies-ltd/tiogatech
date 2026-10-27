@@ -1,6 +1,7 @@
 // Paystack webhook — verifies HMAC-SHA512 signature; handles charges, refunds, liquidation.
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
 import { createHmac } from "node:crypto";
+import { AI_PLAN_PRICES_NGN } from "../_shared/pricing.ts";
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("method not allowed", { status: 405 });
@@ -67,7 +68,13 @@ Deno.serve(async (req) => {
     // 0) AI subscription activation (purpose: ai_subscription)
     if (metadata?.purpose === "ai_subscription" && metadata?.user_id) {
       const plan = (metadata?.plan === "business" ? "business" : "starter") as "starter" | "business";
-      const monthly = amountNgn ?? (plan === "business" ? 12000 : 2500);
+      // Never activate a plan for less than it costs (this used to trust whatever
+      // amount had been charged, so a cheap transaction unlocked either plan).
+      if (amountNgn === null || amountNgn < AI_PLAN_PRICES_NGN[plan]) {
+        console.error("ai_subscription payment below plan price", { reference, plan, amountNgn });
+        return new Response("ok", { status: 200 });
+      }
+      const monthly = amountNgn;
       const expires_at = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
       const { data: existing } = await admin.from("ai_subscriptions").select("id").eq("user_id", metadata.user_id).maybeSingle();
       const payload = {
