@@ -794,8 +794,8 @@ export const deyeProducts: Product[] = [
       "IP65 outdoor enclosure with industrial surge protection"
     ],
     best_for: "Factories, shopping malls, agricultural complexes, and mini-grids",
-    price: "₦6,000,000",
-    numeric_price: 6000000,
+    price: "₦9,880,000",
+    numeric_price: 9880000,
     tier: "premium",
     image_url: "/products/deye/deye-sun-50k-sg01hp3.webp",
     specifications: {
@@ -832,8 +832,8 @@ export const deyeProducts: Product[] = [
       "Heavy industrial IP65 steel enclosure with surge protection"
     ],
     best_for: "Utility microgrids, large manufacturing plants, and commercial solar installations",
-    price: "₦9,000,000",
-    numeric_price: 9000000,
+    price: "₦14,300,000",
+    numeric_price: 14300000,
     tier: "premium",
     image_url: "/products/deye/deye-sun-80k-sg02hp3.webp",
     specifications: {

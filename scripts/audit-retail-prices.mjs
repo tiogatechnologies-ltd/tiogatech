@@ -33,7 +33,8 @@ const classified = catalog.map(p => {
   const before = beforeByName.get(normalizePriceName(p.name));
   const beforePrice = before ? parseRetailPrice(before.price) || before.numeric_price || null : null;
   const actual = p.numeric_price || null;
-  const sourceId = master.aliases[normalizePriceName(p.name)] || p.specifications?.SKU || "";
+  const explicitId = p.specifications?.SKU?.toUpperCase();
+  const sourceId = explicitId && Object.prototype.hasOwnProperty.call(master.prices,explicitId) ? explicitId : master.aliases[normalizePriceName(p.name)] || "";
   if (expected !== undefined) {
     if (expected === null) {
       if (p.price || actual) errors.push(`${p.name}: must require a quote`);
@@ -49,9 +50,9 @@ const csv = rows => "\ufeff"+rows.map(row => row.map(value => '"'+String(value ?
 fs.mkdirSync("docs/price-audit-2026-10-27", { recursive: true });
 const masterRows = specs.map((row,i) => {
   const listings = classified.filter(item => item.sourceId === row.id);
-  const conflict = ["INV-135","INV-136","INV-141","INV-142"].includes(row.id);
+  const supplierSelection = master.supplierSelections[row.id];
   const banner = row.id === "PPS-016";
-  return [i+5,row.id,row.brand,row.model,master.prices[row.id],listings.length,listings.map(item=>item.p.name).join("; "),listings.map(item=>item.beforePrice).join("; "),listings.map(item=>item.actual).join("; "),listings.length ? master.prices[row.id] === null ? "Quote required; website price removed" : "Verified" : conflict ? "Conflicting source prices; website quote required" : banner ? "Banner price verified; no catalogue listing" : "No exact listing match; variant or inventory review required"];
+  return [i+5,row.id,row.brand,row.model,master.prices[row.id],listings.length,listings.map(item=>item.p.name).join("; "),listings.map(item=>item.beforePrice).join("; "),listings.map(item=>item.actual).join("; "),listings.length ? master.prices[row.id] === null ? "Quote required; website price removed" : "Verified" : supplierSelection ? `Alternate supplier quote; website uses ${supplierSelection.selectedId}. ${supplierSelection.reason}` : banner ? "Banner price verified; no catalogue listing" : "No exact listing match; variant or inventory review required"];
 });
 fs.writeFileSync("docs/price-audit-2026-10-27/master-sheet-audit.csv",csv([["Sheet row","Master ID","Brand","Model","Price to quote NGN","Matched website listings","Website names","Previous actual prices NGN","Current actual prices NGN","Result"],...masterRows]));
 fs.writeFileSync("docs/price-audit-2026-10-27/website-price-audit.csv",csv([["Website ID","Product","Category","Master ID","Previous selling price NGN","Current selling price NGN","Master selling price NGN","Result"],...classified.map(item=>[item.p.id,item.p.name,item.p.category,item.sourceId,item.beforePrice,item.actual,item.expected,item.expected === undefined ? "Outside exact sheet matches; unchanged and unverified" : item.expected === null ? "Quote required" : item.changed ? "Corrected" : "Verified; already matched"])]));

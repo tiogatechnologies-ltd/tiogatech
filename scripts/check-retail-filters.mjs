@@ -13,7 +13,7 @@ const fixtures = [
 ];
 const browser = await chromium.launch({ headless: true, ...(process.env.TEST_BROWSER_CHANNEL ? { channel: process.env.TEST_BROWSER_CHANNEL } : {}) });
 try {
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const page = await browser.newPage({ reducedMotion: 'reduce', viewport: { width: 1440, height: 1000 } });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   // No remote writes: catalog/settings/auth/analytics are all isolated fixtures.
@@ -27,24 +27,36 @@ try {
   await page.goto(`${base}/retail?category=Batteries&brand=Facet+Test`);
   await expect(results).toHaveText('3 products');
   const sidebar = page.getByRole('region', { name: 'Product filters' });
+  await expect(sidebar.getByRole('button', { name: 'Battery / system voltage filters', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await expect(sidebar.getByRole('checkbox', { name: 'Filter by battery / system voltage: 48V / 51.2V', exact: true })).toHaveCount(0);
+  await sidebar.getByRole('button', { name: 'Battery / system voltage filters', exact: true }).press('Enter');
   await sidebar.getByRole('checkbox', { name: 'Filter by battery / system voltage: 48V / 51.2V', exact: true }).check();
   await expect(results).toHaveText('2 products');
+  await sidebar.getByRole('button', { name: 'Battery capacity filters', exact: true }).press('Enter');
   await sidebar.getByRole('checkbox', { name: 'Filter by battery capacity: 5.12kWh', exact: true }).check();
   await expect(results).toHaveText('1 product');
   await expect(page.getByTestId('retail-product-grid')).toContainText('filter-test-a');
+  await expect(sidebar.getByRole('button', { name: 'Battery / system voltage filters', exact: true })).toHaveAttribute('aria-expanded', 'true');
+  await sidebar.getByRole('button', { name: 'Battery / system voltage filters', exact: true }).press('Enter');
+  await expect(sidebar.getByRole('button', { name: 'Battery / system voltage filters', exact: true })).toContainText('48V / 51.2V');
+  await expect(results).toHaveText('1 product');
   await sidebar.getByRole('checkbox', { name: 'Filter by battery capacity: 15kWh', exact: true }).check();
   await expect(results).toHaveText('2 products');
   await expect(page.getByTestId('retail-product-grid').getByText('Out of stock', { exact: true })).toBeVisible();
+  await sidebar.getByRole('button', { name: 'Price range filters', exact: true }).press('Enter');
   await sidebar.getByRole('spinbutton', { name: 'Maximum price (₦)' }).fill('1500000');
   await expect(results).toHaveText('1 product');
   await page.getByRole('button', { name: 'Remove maximum price filter' }).click();
   await expect(results).toHaveText('2 products');
+  await sidebar.getByRole('button', { name: 'Availability filters', exact: true }).press('Enter');
   await sidebar.getByRole('checkbox', { name: 'In stock only', exact: true }).check();
   await expect(results).toHaveText('1 product');
   await page.reload();
   await expect(results).toHaveText('1 product');
+  await sidebar.getByRole('button', { name: 'Availability filters', exact: true }).press('Enter');
   await expect(sidebar.getByRole('checkbox', { name: 'In stock only', exact: true })).toBeChecked();
   await page.getByRole('button', { name: 'Remove Battery capacity filter: 15kWh', exact: true }).click();
+  await sidebar.getByRole('button', { name: 'Brand filters', exact: true }).press('Enter');
   await sidebar.getByRole('checkbox', { name: 'Filter by brand: Facet Other', exact: true }).check();
   await expect(results).toHaveText('2 products');
   await page.goBack();
@@ -57,7 +69,10 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const drawer = page.getByRole('dialog', { name: 'Filter Hardware' });
+  await expect(drawer.getByRole('button', { name: 'Battery / system voltage filters', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await drawer.getByRole('button', { name: 'Battery / system voltage filters', exact: true }).press('Enter');
   await drawer.getByRole('checkbox', { name: 'Filter by battery / system voltage: 24V / 25.6V', exact: true }).check();
+  await drawer.getByRole('button', { name: 'Battery capacity filters', exact: true }).press('Enter');
   await drawer.getByRole('checkbox', { name: 'Filter by battery capacity: 5kWh', exact: true }).check();
   await drawer.getByRole('button', { name: 'Show 1 product', exact: true }).click();
   await expect(results).toHaveText('1 product');
@@ -67,7 +82,7 @@ try {
   expect(new URL(page.url()).searchParams.get('category')).toBe('Batteries');
   expect(new URL(page.url()).searchParams.has('energy')).toBe(false);
   expect(errors).toEqual([]);
-  console.log('Retail combined filters, exact capacities, price, availability, URL refresh/back, category switching, clear filters and mobile drawer passed.');
+  console.log('Retail collapsible filter groups, preserved selections, combined filters, exact capacities, price, availability, URL refresh/back, category switching, clear filters and mobile drawer passed.');
 } finally {
   await browser.close();
 }

@@ -52,13 +52,26 @@ describe("master sheet selling price reconciliation", () => {
     expect(buildDbPriceMap({ products: [{ name: product.name, price: product.price }] })[normName(product.name)]).toBe(548601.3);
   });
 
-  it("requires quotes for missing or conflicting sheet prices and excludes them from cached checkout", () => {
+  it("requires quotes only where the sheet has no price and excludes them from cached checkout", () => {
     for (const product of PRODUCTS.filter(p => masterPriceFor(p) === null)) {
       expect(refreshRetailCartItem({ id: "saved", refId: product.id, name: product.name, type: "product", price: "₦1", numericPrice: 1 })).toBeNull();
     }
-    expect(masterPriceFor({ name: master.quoteOnlyNames[0] })).toBeNull();
     const packageItem = { id: "package:1", refId: "1", name: "Solar Package", type: "package", price: "₦1", numericPrice: 1 };
     expect(refreshRetailCartItem(packageItem)).toBe(packageItem);
+  });
+
+  it("uses the matching Deye Nigeria supplier rows for the 50kW and 80kW models", () => {
+    for (const [id, sourceId, price] of [["deye-inv-sun-50k-sg01hp3", "INV-136", 9880000], ["deye-inv-sun-80k-sg02hp3", "INV-142", 14300000]] as const) {
+      const product = PRODUCTS.find(p => p.id === id)!;
+      expect(product.numeric_price).toBe(price);
+      expect(parseRetailPrice(product.price)).toBe(price);
+      expect(master.prices[sourceId]).toBe(price);
+      expect(CATALOG_PRICES[normName(product.name)]).toBe(price);
+      expect(CATALOG_QUOTE_ONLY_NAMES).not.toContain(normName(product.name));
+      expect(refreshRetailCartItem({ id: `product:${id}`, refId: id, name: product.name, type: "product", price: null, numericPrice: null })?.numericPrice).toBe(price);
+    }
+    const fifty = PRODUCTS.find(p => p.id === "deye-inv-sun-50k-sg01hp3")!;
+    expect(masterPriceFor({ ...fifty, specifications: { SKU: "INV-135" } })).toBe(7500000);
   });
 
   it("keeps all catalogue identifiers distinct, including legacy Luxpower cart lines", () => {

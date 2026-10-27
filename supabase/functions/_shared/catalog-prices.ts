@@ -431,7 +431,9 @@ export const CATALOG_PRICES: Record<string, number> = {
   "deye sun-20k-sg05lp3-eu-sm2 20kw three phase hybrid inverter": 5980000,
   "deye sun-25k-sg01hp3-eu-am2 25kw three phase high voltage hybrid inverter": 3840000,
   "deye sun-30k-sg02hp3-eu-am3 30kw three phase high voltage hybrid inverter": 7280000,
+  "deye sun-50k-sg01hp3-eu-bm4 50kw three phase high voltage hybrid inverter": 9880000,
   "deye sun-6k-og01lp1-eu-am2 6kw single phase off-grid inverter": 1170000,
+  "deye sun-80k-sg02hp3-eu-em6 80kw three phase high voltage hybrid inverter": 14300000,
   "deye sun-8k-sg05lp1-eu-sm2 8kw single phase hybrid inverter": 2600000,
   "dimmer wifi smart switch": 38400,
   "dimmer wifi smart switch - type 3": 39600,
@@ -1072,8 +1074,6 @@ export const CATALOG_PRICES: Record<string, number> = {
   "ϗ google nest mini (2nd generation": 114000,
 };
 export const CATALOG_QUOTE_ONLY_NAMES: string[] = [
-  "deye sun-50k-sg01hp3-eu-bm4 50kw three phase high voltage hybrid inverter",
-  "deye sun-80k-sg02hp3-eu-em6 80kw three phase high voltage hybrid inverter",
   "ecoflow ecoflow 100w rigid solar panel",
   "ecoflow ecoflow 100w flexible solar panel",
   "ecoflow ecoflow 110w portable solar panel",

@@ -24,8 +24,16 @@ try {
   await details.press("Enter");
   await expect(page.getByRole("button", { name:"Price on Request", exact:true })).toBeDisabled();
   await expect(page.getByRole("button", { name:"Instant Checkout", exact:true })).toBeDisabled();
-  await page.goto(`${base}/retail?q=SUN-80K-SG02HP3`, { waitUntil:"domcontentloaded" });
-  await expect(grid.getByText("Price on Request", { exact:true }).first()).toBeVisible({ timeout:30000 });
+  for (const [model, price, amount] of [["SUN-50K-SG01HP3", "₦9,880,000", 9880000], ["SUN-80K-SG02HP3", "₦14,300,000", 14300000]]) {
+    await page.goto(`${base}/retail?q=${model}`, { waitUntil:"domcontentloaded" });
+    await expect(grid.getByText(price, { exact:true }).first()).toBeVisible({ timeout:30000 });
+    await expect(grid.getByText("Price on Request", { exact:true })).toHaveCount(0);
+    await grid.getByRole("link", { name: new RegExp(`Deye ${model}.*Hybrid Inverter`) }).last().press("Enter");
+    await expect(page.getByRole("heading", { level:1 })).toContainText(model);
+    await expect(page.getByText(price, { exact:true }).first()).toBeVisible();
+    await page.getByRole("button", { name:"Add to Cart", exact:true }).press("Enter");
+    await expect.poll(() => page.evaluate(model => JSON.parse(localStorage.getItem("tioga_cart_v1")).find(p=>p.name.includes(model))?.numericPrice, model)).toBe(amount);
+  }
   await page.screenshot({ path:"supabase/.temp/price-audit-browser.png", fullPage:false });
-  console.log("PASS: selling price on listing and detail; decimal price; restored cart; added cart; missing-price and conflicting-price quote flow.");
+  console.log("PASS: selling price on listing and detail; decimal price; restored and added carts; missing-price quote flow; both Deye supplier prices and purchasable cart items.");
 } finally { await browser.close(); }

@@ -875,10 +875,18 @@
     "srne 10.49kwh 48v 205ah smart lifepo4 powerwall battery (se10b)": "BAT-062",
     "srne 14.33kwh 48v 280ah smart lifepo4 storage battery (se15b)": "BAT-070",
     "felicity solar 5kwh lifepo4 lithium battery (fl-lpbf48100)": "BAT-028",
-    "felicity solar 10kwh lifepo4 lithium battery wall-mount (fl-lpbf48200)": "BAT-053"
+    "felicity solar 10kwh lifepo4 lithium battery wall-mount (fl-lpbf48200)": "BAT-053",
+    "deye sun-50k-sg01hp3-eu-bm4 50kw three phase high voltage hybrid inverter": "INV-136",
+    "deye sun-80k-sg02hp3-eu-em6 80kw three phase high voltage hybrid inverter": "INV-142"
   },
-  "quoteOnlyNames": [
-    "deye sun-50k-sg01hp3-eu-bm4 50kw three phase high voltage hybrid inverter",
-    "deye sun-80k-sg02hp3-eu-em6 80kw three phase high voltage hybrid inverter"
-  ]
+  "supplierSelections": {
+    "INV-135": {
+      "selectedId": "INV-136",
+      "reason": "Deye Nigeria listing matches the website model, 100A charge/discharge, ten-unit parallel capability and five-year warranty."
+    },
+    "INV-141": {
+      "selectedId": "INV-142",
+      "reason": "Deye Nigeria listing matches the website model, 160A charge/discharge, ten-unit parallel capability and five-year warranty."
+    }
+  }
 }

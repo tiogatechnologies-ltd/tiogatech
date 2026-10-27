@@ -561,8 +561,8 @@ describe("Product and Package Real Images", () => {
       // Sheet 5: Three Phase High Voltage Inverters
       "DEYE-INV-25K-SG01-HV": 3840000,
       "DEYE-INV-30K-SG02-HV": 7280000,
-      "DEYE-INV-50K-SG01-HV": undefined,
-      "DEYE-INV-80K-SG02-HV": undefined,
+      "DEYE-INV-50K-SG01-HV": 9880000,
+      "DEYE-INV-80K-SG02-HV": 14300000,
     };
 
     const imageHashes = new Set<string>();

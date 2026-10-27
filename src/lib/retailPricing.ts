@@ -3,7 +3,6 @@ import master from "../data/retailMasterPrices.json";
 export const normalizePriceName = (value: string) => value.toLowerCase().replace(/[–—]/g, " - ").replace(/\s+/g, " ").trim();
 const aliases: Record<string, string> = master.aliases;
 const prices: Record<string, number | null> = master.prices;
-const quoteOnly = new Set(master.quoteOnlyNames);
 
 export const formatRetailPrice = (value: number) => `₦${value.toLocaleString("en-NG", { maximumFractionDigits: 2, minimumFractionDigits: Number.isInteger(value) ? 0 : 2 })}`;
 export const parseRetailPrice = (value?: string | null) => Number(String(value ?? "").replace(/[^\d.]/g, "")) || 0;
@@ -11,9 +10,9 @@ export const parseRetailPrice = (value?: string | null) => Number(String(value ?
 /** undefined = outside the sheet; null = a quote is required. Never guess by capacity. */
 export function masterPriceFor(product: { name: string; id?: string; sku?: string; specifications?: Record<string, string> | null }): number | null | undefined {
   const name = normalizePriceName(product.name);
-  if (quoteOnly.has(name)) return null;
   const explicitSku = product.specifications?.SKU || product.sku || product.id?.match(/((?:INV|BAT|PNL|AIO|PPS|CTL|PMP|LGT|ACC|SEC|APP)-\d+)$/i)?.[1];
-  const sourceId = aliases[name] || explicitSku?.toUpperCase();
+  const explicitId = explicitSku?.toUpperCase();
+  const sourceId = explicitId && Object.prototype.hasOwnProperty.call(prices, explicitId) ? explicitId : aliases[name];
   return sourceId && Object.prototype.hasOwnProperty.call(prices, sourceId) ? prices[sourceId] : undefined;
 }
 
