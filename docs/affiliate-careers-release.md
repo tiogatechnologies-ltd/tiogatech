@@ -78,5 +78,7 @@ real email delivery check after deployment.
 - All synthetic test records and test email queue entries were rolled back.
 - The email worker is scheduled every minute; its first scheduled call succeeded.
 - Four expired listings were closed; the rolling Graphics Designer role stays open.
+- At the owner's subsequent request, migration `20261027150000` reopens those
+  four vacancies with blank deadlines, displayed as "Open until filled".
 - Local verification passed 91 tests, type checking, production build and browser
   checks of careers, affiliate assets, mobile width and stale payout calculations.
