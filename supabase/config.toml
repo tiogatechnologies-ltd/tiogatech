@@ -3,6 +3,11 @@ project_id = "xwxskzwceghftlcsbyyh"
 [functions]
   [functions.affiliate-redirect]
     verify_jwt = false
+  # Payout statement downloads are opened straight from a link (no Authorization
+  # header). The function checks the unguessable statement_token itself; with
+  # JWT verification on, every statement link failed with a 401.
+  [functions.affiliate-statement]
+    verify_jwt = false
   [functions.auth-email-hook]
     verify_jwt = false
   # The four scheduled jobs below authenticate with CRON_SHARED_SECRET (sent as
