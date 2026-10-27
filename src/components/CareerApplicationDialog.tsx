@@ -86,7 +86,11 @@ const CareerApplicationDialog = ({ job, open, onOpenChange }: { job: Job | null;
 
     const validCareerId = job.id && UUID_REGEX.test(job.id) ? job.id : null;
 
+    // Generated here so the notification can reference the row (anonymous
+    // visitors are not allowed to read it back after inserting).
+    const applicationId = crypto.randomUUID();
     const { error } = await supabase.from("career_applications").insert({
+      id: applicationId,
       career_id: validCareerId,
       role_title: job.title,
       full_name: values.fullName,
@@ -104,6 +108,10 @@ const CareerApplicationDialog = ({ job, open, onOpenChange }: { job: Job | null;
       toast.error(error.message || "Application could not be submitted");
       return;
     }
+
+    // Alerts the hiring inbox and emails the applicant a receipt. A failure here
+    // must never make a saved application look failed.
+    supabase.functions.invoke("notify-career-application", { body: { application_id: applicationId } }).catch(() => undefined);
 
     toast.success("Application submitted. Our team will review it shortly.");
     onOpenChange(false);

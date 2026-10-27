@@ -1,14 +1,13 @@
 // Affiliate-initiated payout request. Validates the requested amount against the
 // affiliate's real available balance before creating the request row.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { computeBalance, escapeLike, findAffiliateForUser, getAffiliateSettings } from "../_shared/affiliate.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
-
-const MIN_PAYOUT_NGN = 10000;
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -34,26 +33,24 @@ Deno.serve(async (req) => {
     if (!Number.isFinite(requested) || requested <= 0) return json({ error: "Enter a valid amount" }, 400);
 
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
-    const { data: affiliate } = await admin
-      .from("affiliates")
-      .select("id, code, commission_rate, status")
-      .ilike("email", ures.user.email)
-      .maybeSingle();
+    const affiliate = await findAffiliateForUser(admin, ures.user, "id, code, commission_rate, status, payout_method, payout_details");
 
     if (!affiliate) return json({ error: "No affiliate account found" }, 404);
     if (affiliate.status !== "active") return json({ error: "Your affiliate account is not active" }, 403);
+    if (!affiliate.payout_details || !String(affiliate.payout_details).trim()) {
+      return json({ error: "Add your bank details in Settings before requesting a payout." }, 400);
+    }
+
+    const settings = await getAffiliateSettings(admin);
+    const MIN_PAYOUT_NGN = settings.min_payout_ngn;
 
     const [{ data: orders }, { data: payouts }, { data: pendingReqs }] = await Promise.all([
-      admin.from("orders").select("total").eq("affiliate_code", affiliate.code).eq("payment_status", "paid"),
+      admin.from("orders").select("total, payment_status").ilike("affiliate_code", escapeLike(affiliate.code)).eq("payment_status", "paid"),
       admin.from("affiliate_payouts").select("amount, status").eq("affiliate_id", affiliate.id),
-      admin.from("affiliate_payout_requests").select("amount").eq("affiliate_id", affiliate.id).eq("status", "pending"),
+      admin.from("affiliate_payout_requests").select("amount, status").eq("affiliate_id", affiliate.id).eq("status", "pending"),
     ]);
 
-    const revenue = (orders ?? []).reduce((s, o) => s + Number(o.total || 0), 0);
-    const earned = revenue * (Number(affiliate.commission_rate || 0) / 100);
-    const paidOut = (payouts ?? []).filter((p) => p.status === "paid").reduce((s, p) => s + Number(p.amount || 0), 0);
-    const alreadyRequested = (pendingReqs ?? []).reduce((s, r) => s + Number(r.amount || 0), 0);
-    const available = Math.max(0, earned - paidOut - alreadyRequested);
+    const { available } = computeBalance(Number(affiliate.commission_rate || 0), orders ?? [], payouts ?? [], pendingReqs ?? []);
 
     if (available < MIN_PAYOUT_NGN) {
       return json({ error: `You need at least ₦${MIN_PAYOUT_NGN.toLocaleString()} available to request a payout.` }, 400);
@@ -72,7 +69,7 @@ Deno.serve(async (req) => {
       .single();
 
     if (insErr) return json({ error: insErr.message }, 500);
-    return json({ success: true, request: created, available: available - requested });
+    return json({ success: true, request: created, available: available - requested, min_payout: MIN_PAYOUT_NGN });
   } catch (err) {
     console.error("affiliate-payout-request error", err);
     return json({ error: (err as Error).message }, 500);

@@ -153,9 +153,9 @@ export const SETTING_DEFAULTS = {
     show_code_field: true,
   } as DiscountSettings,
   affiliate: {
-    default_commission_percent: 5,
-    min_payout_ngn: 50000,
-    cookie_window_days: 30,
+    default_commission_percent: 10,
+    min_payout_ngn: 10000,
+    cookie_window_days: 60,
     auto_approve_applications: false,
     payout_schedule: "monthly",
   } as AffiliateSettings,

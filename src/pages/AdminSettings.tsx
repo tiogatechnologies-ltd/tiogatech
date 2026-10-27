@@ -42,7 +42,7 @@ const defaults: Record<string, any> = {
   tax: { vat_percent: 7.5, vat_inclusive: true, invoice_prefix: "TIO", invoice_footer: "Thank you for your business." },
   promotions: { show_compare_at_price: true, default_markup_pct: 12, badge_format: "save_pct", product_overrides: {}, brand_overrides: { Luxpower: { discount_pct: 20 }, SRNE: { discount_pct: 20 } }, randomize_fallback_pct: true },
   discounts: { show_code_field: true },
-  affiliate: { default_commission_percent: 5, min_payout_ngn: 50000, cookie_window_days: 30, auto_approve_applications: false, payout_schedule: "monthly" },
+  affiliate: { default_commission_percent: 10, min_payout_ngn: 10000, cookie_window_days: 60, auto_approve_applications: false, payout_schedule: "monthly" },
   notif: { notify_email: "sales@tiogatechnologies.com", notify_on_new_lead: true, notify_on_order: true, notify_on_affiliate_application: true, notify_on_finance_application: true },
   email: { from_name: "Tioga Technologies", from_email: "sales@tiogatechnologies.com", footer_text: "Tioga Technologies, Jos, Nigeria" },
   features: { ai_chat_enabled: true, ai_recommender_enabled: true, ai_solar_sizing_enabled: true, flexible_payment_enabled: true, store_enabled: true },
@@ -462,12 +462,12 @@ const AdminSettings = () => {
                 <header><h2 className="font-display text-xl font-bold">Affiliates</h2></header>
                 <Card title="Program rules">
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <Field label="Default commission %"><input type="number" className={inputClass} value={data.affiliate.default_commission_percent} onChange={(e) => set("affiliate", { default_commission_percent: +e.target.value })} /></Field>
-                    <Field label="Minimum payout (NGN)"><input type="number" className={inputClass} value={data.affiliate.min_payout_ngn} onChange={(e) => set("affiliate", { min_payout_ngn: +e.target.value })} /></Field>
-                    <Field label="Cookie window (days)"><input type="number" className={inputClass} value={data.affiliate.cookie_window_days} onChange={(e) => set("affiliate", { cookie_window_days: +e.target.value })} /></Field>
-                    <Field label="Payout schedule"><input className={inputClass} value={data.affiliate.payout_schedule} onChange={(e) => set("affiliate", { payout_schedule: e.target.value })} /></Field>
+                    <Field label="Default commission % (new affiliates)"><input type="number" className={inputClass} value={data.affiliate.default_commission_percent} onChange={(e) => set("affiliate", { default_commission_percent: +e.target.value })} /></Field>
+                    <Field label="Minimum payout request (NGN)"><input type="number" className={inputClass} value={data.affiliate.min_payout_ngn} onChange={(e) => set("affiliate", { min_payout_ngn: +e.target.value })} /></Field>
+                    <Field label="Referral tracking window (days)"><input type="number" className={inputClass} value={data.affiliate.cookie_window_days} onChange={(e) => set("affiliate", { cookie_window_days: +e.target.value })} /></Field>
+                    <Field label="Payout schedule (internal note only)"><input className={inputClass} value={data.affiliate.payout_schedule} onChange={(e) => set("affiliate", { payout_schedule: e.target.value })} /></Field>
                   </div>
-                  <div className="mt-4"><Toggle label="Auto-approve affiliate applications" value={!!data.affiliate.auto_approve_applications} onChange={(v) => set("affiliate", { auto_approve_applications: v })} /></div>
+                  <p className="mt-4 text-xs text-muted-foreground rounded-lg border border-dashed border-border px-3 py-2.5">Affiliate applications are always reviewed by hand in Affiliates &gt; Applications, so there is no auto-approve switch. Approving sends the applicant their code by email.</p>
                 </Card>
               </section>
 

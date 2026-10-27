@@ -1,8 +1,9 @@
 // Secure affiliate portal data endpoint.
 // The affiliates / leads / orders tables are not readable by affiliate users,
 // so all aggregation happens here with the service role after validating the
-// caller's session and resolving their affiliate record by email.
+// caller's session and resolving their affiliate record by verified email.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { computeBalance, escapeLike, findAffiliateForUser, getAffiliateSettings } from "../_shared/affiliate.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,6 +16,37 @@ const json = (body: unknown, status = 200) =>
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
+
+// Affiliates should be able to see how their referrals are doing, not to
+// harvest customer contact details (NDPR data-minimisation), so referred
+// customers are shown in masked form.
+const maskName = (n?: string | null) => {
+  const parts = (n ?? "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "Customer";
+  return parts.length > 1 ? `${parts[0]} ${parts[1][0].toUpperCase()}.` : parts[0];
+};
+const maskEmail = (e?: string | null) => {
+  if (!e) return null;
+  const [user, domain] = e.split("@");
+  return domain ? `${user.slice(0, 1)}***@${domain}` : "***";
+};
+const maskPhone = (p?: string | null) => {
+  const digits = (p ?? "").replace(/\D/g, "");
+  return digits.length >= 7 ? `${digits.slice(0, 3)}****${digits.slice(-2)}` : null;
+};
+
+// PostgREST caps a single response (1,000 rows by default), so money-related
+// totals must page through every row rather than trust one capped query.
+async function fetchAll<T>(page: (from: number, to: number) => PromiseLike<{ data: T[] | null }>): Promise<T[]> {
+  const out: T[] = [];
+  for (let from = 0; ; from += 1000) {
+    const { data } = await page(from, from + 999);
+    if (!data?.length) break;
+    out.push(...data);
+    if (data.length < 1000) break;
+  }
+  return out;
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -35,46 +67,37 @@ Deno.serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
 
-    const { data: affiliate } = await admin
-      .from("affiliates")
-      .select("*")
-      .ilike("email", ures.user.email)
-      .maybeSingle();
-
+    const affiliate = await findAffiliateForUser(admin, ures.user);
     if (!affiliate) return json({ affiliate: null });
 
     const code = affiliate.code as string;
+    const codePattern = escapeLike(code);
+    const settings = await getAffiliateSettings(admin);
 
-    const [linksRes, clicksRes, leadsRes, ordersRes, payoutsRes, requestsRes] = await Promise.all([
+    const [linksRes, clicksRes, clickCountRes, leads, orders, payoutsRes, requestsRes] = await Promise.all([
       admin.from("affiliate_links").select("*").eq("affiliate_id", affiliate.id).order("created_at", { ascending: false }),
       admin.from("affiliate_link_clicks").select("id, link_id, slug, session_id, referrer, device_type, country, created_at")
-        .eq("affiliate_id", affiliate.id).order("created_at", { ascending: false }).limit(5000),
-      admin.from("leads").select("id, full_name, email, phone, location, products, status, created_at, utm_source, utm_medium, utm_campaign, affiliate_link_slug")
-        .eq("affiliate_code", code).order("created_at", { ascending: false }).limit(2000),
-      admin.from("orders").select("id, order_number, full_name, email, total, status, payment_status, created_at, affiliate_link_slug, items_summary")
-        .eq("affiliate_code", code).order("created_at", { ascending: false }).limit(2000),
+        .eq("affiliate_id", affiliate.id).order("created_at", { ascending: false }).limit(1000),
+      admin.from("affiliate_link_clicks").select("id", { count: "exact", head: true }).eq("affiliate_id", affiliate.id),
+      fetchAll((from, to) =>
+        admin.from("leads").select("id, full_name, email, phone, location, products, status, created_at, utm_source, utm_medium, utm_campaign, affiliate_link_slug")
+          .ilike("affiliate_code", codePattern).order("created_at", { ascending: false }).range(from, to)),
+      fetchAll((from, to) =>
+        admin.from("orders").select("id, order_number, full_name, email, total, status, payment_status, created_at, affiliate_link_slug, items_summary")
+          .ilike("affiliate_code", codePattern).order("created_at", { ascending: false }).range(from, to)),
       admin.from("affiliate_payouts").select("*").eq("affiliate_id", affiliate.id).order("created_at", { ascending: false }),
       admin.from("affiliate_payout_requests").select("*").eq("affiliate_id", affiliate.id).order("created_at", { ascending: false }),
     ]);
 
     const links = linksRes.data ?? [];
     const clicks = clicksRes.data ?? [];
-    const leads = leadsRes.data ?? [];
-    const orders = ordersRes.data ?? [];
+    const totalClicks = clickCountRes.count ?? clicks.length;
     const payouts = payoutsRes.data ?? [];
     const requests = requestsRes.data ?? [];
 
     const rate = Number(affiliate.commission_rate || 0);
-    const paidOrders = orders.filter((o) => o.payment_status === "paid");
-    const revenue = paidOrders.reduce((s, o) => s + Number(o.total || 0), 0);
-    const commissionEarned = revenue * (rate / 100);
-    const paidOut = payouts
-      .filter((p) => p.status === "paid")
-      .reduce((s, p) => s + Number(p.amount || 0), 0);
-    const requestedPending = requests
-      .filter((r) => r.status === "pending")
-      .reduce((s, r) => s + Number(r.amount || 0), 0);
-    const available = Math.max(0, commissionEarned - paidOut - requestedPending);
+    const { paidOrders, revenue, earned: commissionEarned, paidOut, inProgress, available } =
+      computeBalance(rate, orders, payouts, requests);
 
     // Per-link performance
     const bySlug = (rows: { affiliate_link_slug?: string | null }[]) => {
@@ -146,8 +169,9 @@ Deno.serve(async (req) => {
         payout_details: affiliate.payout_details,
         created_at: affiliate.created_at,
       },
+      settings: { min_payout_ngn: settings.min_payout_ngn },
       stats: {
-        clicks: clicks.length,
+        clicks: totalClicks,
         unique_visitors: new Set(clicks.map((c) => c.session_id || c.id)).size,
         leads: leads.length,
         orders: orders.length,
@@ -155,15 +179,24 @@ Deno.serve(async (req) => {
         revenue,
         commission_earned: commissionEarned,
         paid_out: paidOut,
-        requested_pending: requestedPending,
+        requested_pending: inProgress,
         available,
-        conversion_rate: clicks.length ? (leads.length / clicks.length) * 100 : 0,
+        conversion_rate: totalClicks ? (leads.length / totalClicks) * 100 : 0,
         close_rate: leads.length ? (paidOrders.length / leads.length) * 100 : 0,
       },
       links: linkStats,
       series: Object.values(series),
-      leads,
-      orders,
+      leads: leads.slice(0, 500).map((l) => ({
+        ...l,
+        full_name: maskName(l.full_name),
+        email: maskEmail(l.email),
+        phone: maskPhone(l.phone),
+      })),
+      orders: orders.slice(0, 500).map((o) => ({
+        ...o,
+        full_name: maskName(o.full_name),
+        email: maskEmail(o.email),
+      })),
       payouts,
       payout_requests: requests,
     });

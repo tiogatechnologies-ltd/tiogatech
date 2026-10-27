@@ -126,19 +126,47 @@ const AdminAffiliates = () => {
     );
   }, [affiliates, search]);
 
+  const emailApplicant = async (app: Application, subject: string, message: string) => {
+    try {
+      const { error } = await supabase.functions.invoke("notify-new-lead", {
+        body: { custom_email: true, to: app.email, recipient_name: app.full_name, subject, message },
+      });
+      if (error) throw error;
+    } catch (err) {
+      toast.warning("Could not email the applicant - let them know yourself", {
+        description: err instanceof Error ? err.message : undefined,
+      });
+    }
+  };
+
   const approve = async (app: Application) => {
-    const code = slug(app.full_name);
-    const { error } = await supabase.from("affiliates" as any).insert({
-      full_name: app.full_name,
-      email: app.email,
-      phone: app.phone,
-      code,
-      commission_rate: 10,
-      status: "active",
-      application_id: app.id,
-    });
+    // Commission comes from Admin > Settings > Affiliate (it was a hardcoded 10%).
+    const { data: settingRow } = await supabase.from("site_settings").select("value").eq("key", "affiliate").maybeSingle();
+    const configuredRate = Number((settingRow?.value as any)?.default_commission_percent);
+    const commissionRate = Number.isFinite(configuredRate) && configuredRate > 0 ? configuredRate : 10;
+
+    // Two applicants with the same name would get the same code; retry with a suffix.
+    const base = slug(app.full_name);
+    let code = base;
+    let error: { message: string; code?: string } | null = null;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      const res = await supabase.from("affiliates" as any).insert({
+        full_name: app.full_name,
+        email: app.email.trim().toLowerCase(),
+        phone: app.phone,
+        code,
+        commission_rate: commissionRate,
+        status: "active",
+        application_id: app.id,
+      });
+      error = res.error;
+      if (!error) break;
+      const isDuplicateCode = error.code === "23505" && /code/i.test(error.message);
+      if (!isDuplicateCode) break;
+      code = `${base.slice(0, 9)}${Math.random().toString(36).slice(2, 5)}`;
+    }
     if (error) {
-      toast.error(error.message);
+      toast.error(error.code === "23505" ? "This person is already an affiliate (email or code already in use)" : error.message);
       return;
     }
     const { error: statusError } = await supabase
@@ -150,7 +178,20 @@ const AdminAffiliates = () => {
       void load();
       return;
     }
-    toast.success(`${app.full_name} approved as affiliate with code ${code.toUpperCase()}`);
+    toast.success(`${app.full_name} approved as affiliate with code ${code}`);
+    void emailApplicant(
+      app,
+      "You're approved as a Tioga affiliate",
+      `Congratulations - your affiliate application has been approved.
+
+Your referral code: ${code}
+Your commission: ${commissionRate}% on every paid order you refer
+
+To get started, go to https://tiogatechnologies.com/affiliate and sign in (or create an account) using this same email address: ${app.email}. From your dashboard you can create tracked links, follow clicks, leads and orders, add your bank details and request payouts.
+
+Welcome aboard,
+Tioga Technologies Affiliate Team`,
+    );
     setAppOpen(null);
     void load();
   };
@@ -162,6 +203,11 @@ const AdminAffiliates = () => {
       .eq("id", app.id);
     if (error) { toast.error("Could not reject application", { description: error.message }); return; }
     toast.success("Application marked as rejected");
+    void emailApplicant(
+      app,
+      "Your Tioga affiliate application",
+      "Thank you for applying to the Tioga affiliate program. After reviewing your application we are unable to approve it at this time. You are welcome to apply again in future.\n\nTioga Technologies Affiliate Team",
+    );
     setAppOpen(null);
     void load();
   };

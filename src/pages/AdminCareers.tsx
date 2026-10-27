@@ -54,35 +54,6 @@ const AdminCareers = () => {
       toast.error("Could not load roles");
     } else {
       const list = (data as Career[]) || [];
-      const hasGraphics = list.some((c) => c.title?.toLowerCase().includes("graphic"));
-      if (!hasGraphics) {
-        const { data: inserted } = await supabase
-          .from("careers")
-          .insert({
-            title: "Graphics Designer",
-            location: "Nigeria (Remote)",
-            summary:
-              "Full-time remote Graphics Designer at Tioga Technologies. Lead visual storytelling across social media campaigns, solar & smart-home product launches, retail promos, and brand collateral.",
-            highlights: [
-              "Full-time · 100% Remote role at Tioga Technologies",
-              "Own social media creatives, product promo flyers, e-commerce visuals & brand identity",
-              "Competitive Naira salary + direct creative ownership",
-            ],
-            requirements:
-              "2+ years Graphic Design experience with a strong portfolio (Behance / Dribbble / Drive). Mastery of Photoshop, Illustrator, Figma or CorelDRAW.",
-            email_subject: "Application - Graphics Designer (Full-Time Remote)",
-            deadline: "Rolling Recruitment",
-            is_active: true,
-            sort_order: 0,
-          })
-          .select()
-          .maybeSingle();
-        if (inserted) {
-          setItems([inserted as Career, ...list]);
-          setLoading(false);
-          return;
-        }
-      }
       setItems(list);
     }
     setLoading(false);

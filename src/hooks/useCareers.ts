@@ -80,8 +80,14 @@ export const FALLBACK_JOBS: Job[] = [
   },
 ];
 
+// The database is the single source of truth for open roles, so Admin > Careers
+// really controls the page: closing a role removes it, closing every role shows
+// an empty state. The built-in list above is only a safety net for when the
+// database cannot be reached - it used to be injected whenever the table was
+// empty or lacked a "graphic" role, which made those roles impossible to take
+// down from the admin.
 export const useCareers = () => {
-  const [jobs, setJobs] = useState<Job[]>(FALLBACK_JOBS);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -93,27 +99,21 @@ export const useCareers = () => {
         .eq("is_active", true)
         .order("sort_order", { ascending: true });
       if (!active) return;
-      if (!error && data && data.length > 0) {
-        const dbJobs: Job[] = normalizeDeep(data).map((d: any, index: number) => ({
-          id: d.id,
-          title: d.title,
-          location: d.location,
-          summary: d.summary,
-          highlights: d.highlights || [],
-          requirements: d.requirements,
-          emailSubject: d.email_subject,
-          deadline: d.deadline,
-          backgroundImage: JOB_BACKGROUNDS[(index + 1) % JOB_BACKGROUNDS.length],
-        }));
-
-        const hasGraphicsDesigner = dbJobs.some((j) =>
-          j.title.toLowerCase().includes("graphic")
-        );
-
+      if (error || !data) {
+        setJobs(FALLBACK_JOBS);
+      } else {
         setJobs(
-          hasGraphicsDesigner
-            ? dbJobs
-            : [FEATURED_GRAPHICS_DESIGNER_JOB, ...dbJobs]
+          normalizeDeep(data).map((d: any, index: number) => ({
+            id: d.id,
+            title: d.title,
+            location: d.location,
+            summary: d.summary,
+            highlights: d.highlights || [],
+            requirements: d.requirements,
+            emailSubject: d.email_subject,
+            deadline: d.deadline,
+            backgroundImage: JOB_BACKGROUNDS[(index + 1) % JOB_BACKGROUNDS.length],
+          })),
         );
       }
       setLoading(false);

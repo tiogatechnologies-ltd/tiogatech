@@ -312,7 +312,7 @@ export const CCTV = () => {
                         itemName={pkg.name}
                         itemType="package"
                         itemId={pkg.id}
-                        itemImage={pkg.image}
+                        itemImage={resolveImage(pkg, idx)}
                         price={pkg.price ?? undefined}
                         className="w-full text-[11px] py-2.5 rounded-xl"
                       />

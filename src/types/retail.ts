@@ -8,7 +8,7 @@ export interface RetailProduct {
   best_for: string;
   price: string | null;
   numeric_price?: number;
-  compare_at_price?: number | null;
+  compare_at_price?: number | string | null;
   tier: "premium" | "mid" | "affordable" | "entry";
   image_url: string | null;
   secondary_image_url?: string | null;

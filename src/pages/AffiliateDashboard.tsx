@@ -37,6 +37,7 @@ type Portal = {
     revenue: number; commission_earned: number; paid_out: number; requested_pending: number;
     available: number; conversion_rate: number; close_rate: number;
   };
+  settings?: { min_payout_ngn: number };
   links?: AffiliateLinkStat[];
   series?: { date: string; clicks: number; leads: number; revenue: number }[];
   leads?: any[];
@@ -102,6 +103,7 @@ const AffiliateDashboard = () => {
 
   const affiliate = data?.affiliate;
   const stats = data?.stats;
+  const minPayout = data?.settings?.min_payout_ngn ?? 10000;
   const refLink = affiliate?.code ? `${window.location.origin}/?aff=${affiliate.code}` : "";
 
   const series = useMemo(() => (data?.series || []).slice(-30), [data?.series]);
@@ -213,7 +215,7 @@ const AffiliateDashboard = () => {
           <StatCard icon={TrendingUp} label="Revenue driven" value={NGN(stats?.revenue ?? 0)} />
           <StatCard icon={BadgePercent} label="Commission earned" value={NGN(stats?.commission_earned ?? 0)} />
           <StatCard icon={Banknote} label="Paid out" value={NGN(stats?.paid_out ?? 0)} />
-          <StatCard icon={Wallet} label="Pending requests" value={NGN(stats?.requested_pending ?? 0)} />
+          <StatCard icon={Wallet} label="Pending payouts" value={NGN(stats?.requested_pending ?? 0)} />
           <StatCard icon={Target} label="Available to withdraw" value={NGN(stats?.available ?? 0)} />
         </div>
 
@@ -376,9 +378,9 @@ const AffiliateDashboard = () => {
                 <div>
                   <p className="text-sm text-muted-foreground">Available to withdraw</p>
                   <p className="text-3xl font-bold">{NGN(stats?.available ?? 0)}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Minimum request ₦10,000 · paid within 5 working days</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Minimum request {NGN(minPayout)} · paid within 5 working days</p>
                 </div>
-                <Button onClick={() => { setPayoutAmount(String(Math.floor(stats?.available ?? 0))); setPayoutOpen(true); }} disabled={(stats?.available ?? 0) < 10000}>
+                <Button onClick={() => { setPayoutAmount(String(Math.floor(stats?.available ?? 0))); setPayoutOpen(true); }} disabled={(stats?.available ?? 0) < minPayout}>
                   <Wallet className="mr-2 h-4 w-4" /> Request payout
                 </Button>
               </CardContent>

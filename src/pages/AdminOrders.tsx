@@ -23,6 +23,10 @@ interface Order {
   status: string;
   source: string;
   created_at: string;
+  payment_status?: string | null;
+  payment_method?: string | null;
+  affiliate_code?: string | null;
+  total?: number | null;
 }
 
 interface OrderItem {
@@ -76,6 +80,7 @@ const parseSummaryItems = (summary: string): OrderItem[] => {
 };
 
 const STATUSES = ["new", "contacted", "confirmed", "fulfilled", "cancelled"];
+const PAYMENT_STATUSES = ["pending", "paid", "refunded"];
 const STATUS_COLORS: Record<string, string> = {
   new: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   contacted: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
@@ -155,6 +160,25 @@ const AdminOrders = () => {
       setItemsById((p) => ({ ...p, [id]: (items || []) as OrderItem[] }));
       setHistoryById((p) => ({ ...p, [id]: (hist || []) as any }));
     }
+  };
+
+  // Online card payments are marked paid automatically by Paystack. Bank
+  // transfer / WhatsApp / pay-on-delivery orders had no way to be marked paid,
+  // so they never counted toward affiliate commission - this closes that gap.
+  const updatePaymentStatus = async (id: string, payment_status: string) => {
+    const order = orders.find((o) => o.id === id);
+    if (!order || (order.payment_status || "pending") === payment_status) return;
+    const note =
+      payment_status === "paid"
+        ? "Mark this order as PAID? If it came through an affiliate link, their commission starts counting."
+        : payment_status === "refunded"
+        ? "Mark this order as REFUNDED? Any affiliate commission on it stops counting."
+        : "Set this order back to pending payment?";
+    if (!confirm(note)) return;
+    const { error } = await supabase.from("orders").update({ payment_status }).eq("id", id);
+    if (error) { toast.error("Could not update payment status", { description: error.message }); return; }
+    toast.success(`Payment marked ${payment_status}`);
+    setOrders((p) => p.map((o) => (o.id === id ? { ...o, payment_status } : o)));
   };
 
   const updateStatus = async (id: string, status: string) => {
@@ -266,6 +290,8 @@ const AdminOrders = () => {
                         <span className="font-mono text-xs text-muted-foreground">{o.order_number}</span>
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${STATUS_COLORS[o.status] || "bg-muted text-muted-foreground"}`}>{o.status}</span>
                         <span className="text-[11px] text-muted-foreground">{format(new Date(o.created_at), "MMM d, HH:mm")}</span>
+                        <span className={`text-[10px] font-bold uppercase ${o.payment_status === "paid" ? "text-emerald-600" : o.payment_status === "refunded" ? "text-rose-600" : "text-amber-600"}`}>{o.payment_status || "pending"} payment</span>
+                        {o.affiliate_code && <span className="text-[10px] font-semibold uppercase text-muted-foreground">via {o.affiliate_code}</span>}
                       </div>
                       <p className="font-semibold text-foreground text-sm">{o.full_name}</p>
                       <div className="flex flex-wrap gap-3 mt-1 text-xs text-muted-foreground">
@@ -303,6 +329,9 @@ const AdminOrders = () => {
                       })()}
                     </div>
                     <div className="flex items-center gap-2">
+                      <select value={o.payment_status || "pending"} onChange={(e) => updatePaymentStatus(o.id, e.target.value)} title="Payment status" className="rounded-lg border border-input bg-background px-2 py-1.5 text-xs">
+                        {PAYMENT_STATUSES.map((s) => <option key={s} value={s} className="capitalize">{s === "pending" ? "unpaid" : s}</option>)}
+                      </select>
                       <select value={o.status} onChange={(e) => updateStatus(o.id, e.target.value)} className="rounded-lg border border-input bg-background px-2 py-1.5 text-xs">
                         {STATUSES.map((s) => <option key={s} value={s} className="capitalize">{s}</option>)}
                       </select>

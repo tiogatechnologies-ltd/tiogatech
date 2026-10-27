@@ -9,6 +9,8 @@ export interface Product {
   bestFor?: string;
   price?: string;
   numeric_price?: number;
+  /** Previous (struck-through) price, e.g. "₦230,000". Parsed by resolveCompareAt. */
+  compare_at_price?: string | number | null;
   tier: "premium" | "mid" | "affordable" | "entry";
   image_url?: string;
   specifications?: Record<string, string>;

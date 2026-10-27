@@ -2,6 +2,7 @@
 // Access is gated by the statement_token issued when the payout is created.
 // No auth required — token is the secret.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { escapeLike } from "../_shared/affiliate.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -13,6 +14,13 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
 const money = (n: number) =>
   new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 2 }).format(n || 0);
+
+// Statements are shared by link, so customers appear as first name + initial only.
+const maskName = (n?: string | null) => {
+  const parts = (n ?? "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "Customer";
+  return parts.length > 1 ? `${parts[0]} ${parts[1][0].toUpperCase()}.` : parts[0];
+};
 
 const csvEscape = (s: unknown) => {
   const v = String(s ?? "");
@@ -58,7 +66,16 @@ Deno.serve(async (req) => {
     const { data: leads } = await supabase
       .from("leads")
       .select("id, created_at, full_name, status, budget")
-      .eq("affiliate_code", aff.code)
+      .ilike("affiliate_code", escapeLike(String(aff.code ?? "")))
+      .gte("created_at", `${payout.period_start}T00:00:00Z`)
+      .lte("created_at", `${payout.period_end}T23:59:59Z`)
+      .order("created_at", { ascending: true });
+
+    const { data: paidOrders } = await supabase
+      .from("orders")
+      .select("order_number, created_at, full_name, total")
+      .ilike("affiliate_code", escapeLike(String(aff.code ?? "")))
+      .eq("payment_status", "paid")
       .gte("created_at", `${payout.period_start}T00:00:00Z`)
       .lte("created_at", `${payout.period_end}T23:59:59Z`)
       .order("created_at", { ascending: true });
@@ -79,8 +96,13 @@ Deno.serve(async (req) => {
       lines.push("Lead ID,Date,Name,Status,Budget");
       (leads || []).forEach((l: any) => {
         lines.push(
-          [l.id, l.created_at, l.full_name, l.status, l.budget].map(csvEscape).join(","),
+          [l.id, l.created_at, maskName(l.full_name), l.status, l.budget].map(csvEscape).join(","),
         );
+      });
+      lines.push("");
+      lines.push("Paid order,Date,Customer,Amount");
+      (paidOrders || []).forEach((o: any) => {
+        lines.push([o.order_number, o.created_at, maskName(o.full_name), o.total].map(csvEscape).join(","));
       });
       lines.push("");
       lines.push(`Leads in period,${payout.lead_count}`);
@@ -101,7 +123,8 @@ Deno.serve(async (req) => {
       JSON.stringify({
         affiliate: aff,
         payout,
-        leads: leads || [],
+        leads: (leads || []).map((l: any) => ({ ...l, full_name: maskName(l.full_name) })),
+        paid_orders: (paidOrders || []).map((o: any) => ({ ...o, full_name: maskName(o.full_name) })),
         totals: {
           revenue_formatted: money(Number(payout.revenue_total)),
           commission_formatted: money(Number(payout.commission_total)),

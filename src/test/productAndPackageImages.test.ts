@@ -177,7 +177,7 @@ describe("Product and Package Real Images", () => {
       expect(p.compare_at_price).toMatch(/^₦[\d,]+$/);
 
       // Verify exact 20% off discount: selling price = basePrice * 0.80
-      const basePrice = parseInt(p.compare_at_price!.replace(/[^\d]/g, ""), 10);
+      const basePrice = parseInt(String(p.compare_at_price).replace(/[^\d]/g, ""), 10);
       const expectedDiscounted = Math.round(basePrice * 0.80);
       expect(p.numeric_price).toBe(expectedDiscounted);
       expect(p.price).toBe(`₦${expectedDiscounted.toLocaleString()}`);

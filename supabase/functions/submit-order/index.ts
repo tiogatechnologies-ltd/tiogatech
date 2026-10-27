@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
 import { sendMail } from "../_shared/mailer.ts";
+import { escapeLike } from "../_shared/affiliate.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -77,9 +78,59 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Cart is empty" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
+    if (body.items.length > 100) {
+      return new Response(JSON.stringify({ error: "Too many items in one order" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    body.items = body.items.map((i) => ({
+      ...i,
+      product_name: String(i.product_name ?? "").slice(0, 300),
+      price_label: i.price_label ? String(i.price_label).slice(0, 80) : null,
+      quantity: Math.min(Math.max(Number(i.quantity) || 1, 1), 999),
+    }));
+
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
+
+    // The order owner comes from the verified session, never from the request
+    // body - otherwise anyone could attach an order to another customer's account.
+    let verifiedUserId: string | null = null;
+    const authHeader = req.headers.get("Authorization");
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    if (authHeader && anonKey) {
+      const { data: ures } = await createClient(SUPABASE_URL, anonKey, {
+        global: { headers: { Authorization: authHeader } },
+      }).auth.getUser();
+      verifiedUserId = ures?.user?.id ?? null;
+    }
+
+    // Credit an affiliate only when the code belongs to a real, active affiliate
+    // and the buyer is not that affiliate. The code arrives from the browser, so
+    // before this any string was stored and "self-referral" orders earned
+    // commission. Codes are matched case-insensitively and stored lower-case.
+    let affiliateCode: string | null = null;
+    let affiliateLinkSlug: string | null = null;
+    const claimedCode = String(body.affiliate_code ?? "").trim().toLowerCase().slice(0, 40);
+    if (claimedCode) {
+      const { data: aff } = await supabase
+        .from("affiliates")
+        .select("id, code, email, status")
+        .ilike("code", escapeLike(claimedCode))
+        .maybeSingle();
+      const buyerEmail = (body.email ?? "").trim().toLowerCase();
+      if (aff && aff.status === "active" && !(buyerEmail && String(aff.email).toLowerCase() === buyerEmail)) {
+        affiliateCode = String(aff.code).toLowerCase();
+        if (body.affiliate_link_slug) {
+          const { data: link } = await supabase
+            .from("affiliate_links")
+            .select("slug")
+            .eq("slug", String(body.affiliate_link_slug).slice(0, 64))
+            .eq("affiliate_id", aff.id)
+            .maybeSingle();
+          affiliateLinkSlug = link?.slug ?? null;
+        }
+      }
+    }
 
     const items_summary = body.items.map((i) => `${i.product_name}${i.quantity > 1 ? ` x${i.quantity}` : ""}${i.price_label ? ` (${i.price_label})` : ""}`).join("\n");
     const item_count = body.items.reduce((s, i) => s + (i.quantity || 1), 0);
@@ -103,10 +154,10 @@ serve(async (req) => {
         total: body.total ?? 0,
         shipping_address: body.shipping_address ?? null,
         billing_address: body.billing_address ?? null,
-        user_id: body.user_id ?? null,
+        user_id: verifiedUserId,
         discount_code: body.discount_code ?? null,
-        affiliate_code: body.affiliate_code ?? null,
-        affiliate_link_slug: body.affiliate_link_slug ?? null,
+        affiliate_code: affiliateCode,
+        affiliate_link_slug: affiliateLinkSlug,
       })
       .select()
       .single();

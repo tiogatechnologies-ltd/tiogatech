@@ -41,6 +41,20 @@ type Affiliate = {
   code: string;
   commission_rate: number;
   status: string;
+  payout_method: string | null;
+  payout_details: string | null;
+  created_at: string;
+};
+
+type PayoutRequest = {
+  id: string;
+  affiliate_id: string;
+  amount: number;
+  status: "pending" | "approved" | "rejected";
+  note: string | null;
+  admin_note: string | null;
+  payout_id: string | null;
+  created_at: string;
 };
 
 type Payout = {
@@ -68,17 +82,6 @@ const ngn = (n: number) =>
     maximumFractionDigits: 0,
   }).format(Number(n) || 0);
 
-const parseBudgetToNGN = (b: string | null): number => {
-  if (!b) return 0;
-  const cleaned = b.toLowerCase().replace(/[, ₦]/g, "");
-  const nums = cleaned.match(/[\d.]+/g)?.map(Number).filter((n) => !Number.isNaN(n)) || [];
-  if (!nums.length) return 0;
-  const avg = nums.reduce((a, b) => a + b, 0) / nums.length;
-  if (cleaned.includes("m") || avg < 1000) return avg * 1_000_000;
-  if (cleaned.includes("k")) return avg * 1_000;
-  return avg;
-};
-
 const statusStyles: Record<string, string> = {
   pending: "bg-amber-500/15 text-amber-700",
   approved: "bg-blue-500/15 text-blue-600",
@@ -89,6 +92,9 @@ const statusStyles: Record<string, string> = {
 const AdminAffiliatePayouts = () => {
   const [payouts, setPayouts] = useState<Payout[]>([]);
   const [affiliates, setAffiliates] = useState<Affiliate[]>([]);
+  const [requests, setRequests] = useState<PayoutRequest[]>([]);
+  const [rejecting, setRejecting] = useState<PayoutRequest | null>(null);
+  const [approvingId, setApprovingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
   const [paying, setPaying] = useState<Payout | null>(null);
@@ -96,18 +102,24 @@ const AdminAffiliatePayouts = () => {
 
   const load = async () => {
     setLoading(true);
-    const [p, a] = await Promise.all([
+    const [p, a, r] = await Promise.all([
       supabase
         .from("affiliate_payouts" as any)
         .select("*")
         .order("created_at", { ascending: false }),
       supabase
         .from("affiliates" as any)
-        .select("id, full_name, email, code, commission_rate, status")
+        .select("id, full_name, email, code, commission_rate, status, payout_method, payout_details, created_at")
         .order("full_name"),
+      supabase
+        .from("affiliate_payout_requests" as any)
+        .select("*")
+        .order("created_at", { ascending: false }),
     ]);
     if (p.data) setPayouts(p.data as unknown as Payout[]);
     if (a.data) setAffiliates(a.data as unknown as Affiliate[]);
+    if (r.error) toast.error(`Could not load payout requests: ${r.error.message}`);
+    else setRequests((r.data || []) as unknown as PayoutRequest[]);
     setLoading(false);
   };
 
@@ -185,6 +197,111 @@ const AdminAffiliatePayouts = () => {
 
   const affiliateOf = (id: string) => affiliates.find((a) => a.id === id);
 
+  const pendingRequests = useMemo(() => requests.filter((r) => r.status === "pending"), [requests]);
+
+  // Turns an affiliate's payout request into a payout for the admin to pay. The
+  // payout covers the time since their last payout so its statement lists the
+  // orders behind it.
+  const approveRequest = async (req: PayoutRequest) => {
+    const aff = affiliateOf(req.affiliate_id);
+    if (!aff) return toast.error("Affiliate not found");
+    if (!aff.payout_details?.trim()) {
+      return toast.error("This affiliate has no bank details saved. Ask them to add them in their dashboard first.");
+    }
+    setApprovingId(req.id);
+    try {
+      const lastEnd = payouts
+        .filter((p) => p.affiliate_id === aff.id && p.status !== "rejected")
+        .map((p) => p.period_end)
+        .sort()
+        .at(-1);
+      const today = new Date().toISOString().slice(0, 10);
+      const start = lastEnd
+        ? new Date(new Date(`${lastEnd}T00:00:00Z`).getTime() + 86_400_000).toISOString().slice(0, 10)
+        : aff.created_at.slice(0, 10);
+      const rate = Number(aff.commission_rate) || 0;
+      const { data: ordersInPeriod, error: ordersErr } = await supabase
+        .from("orders")
+        .select("total")
+        .ilike("affiliate_code", aff.code)
+        .eq("payment_status", "paid")
+        .gte("created_at", `${start}T00:00:00Z`)
+        .lte("created_at", `${today}T23:59:59Z`);
+      if (ordersErr) throw ordersErr;
+      const revenue = (ordersInPeriod || []).reduce((sum, o: any) => sum + Number(o.total || 0), 0);
+
+      const { data: payout, error: payoutErr } = await supabase
+        .from("affiliate_payouts" as any)
+        .insert({
+          affiliate_id: aff.id,
+          period_start: start > today ? today : start,
+          period_end: today,
+          lead_count: ordersInPeriod?.length ?? 0,
+          revenue_total: revenue,
+          commission_total: Math.round(revenue * (rate / 100)),
+          amount: req.amount,
+          status: "approved",
+          notes: `Created from affiliate payout request ${req.id.slice(0, 8)}`,
+        })
+        .select("id")
+        .single();
+      if (payoutErr || !payout) throw payoutErr || new Error("Could not create payout");
+
+      const { data: userRes } = await supabase.auth.getUser();
+      const { error: reqErr } = await supabase
+        .from("affiliate_payout_requests" as any)
+        .update({
+          status: "approved",
+          payout_id: (payout as any).id,
+          decided_by: userRes.user?.id ?? null,
+          decided_at: new Date().toISOString(),
+        })
+        .eq("id", req.id);
+      if (reqErr) {
+        // Don't leave a payout with no request pointing at it.
+        await supabase.from("affiliate_payouts" as any).delete().eq("id", (payout as any).id);
+        throw reqErr;
+      }
+
+      toast.success(`Approved - ${ngn(req.amount)} is ready to pay to ${aff.full_name}`);
+      void notifyAffiliate(
+        { affiliate_id: aff.id, amount: req.amount, period_start: start, period_end: today } as Payout,
+        "Your payout request has been approved",
+        `Your payout request of ₦${Number(req.amount).toLocaleString()} has been approved and is queued for payment to the bank account on your affiliate dashboard.`,
+      );
+      void load();
+    } catch (e: any) {
+      toast.error(e?.message || "Could not approve request");
+    } finally {
+      setApprovingId(null);
+    }
+  };
+
+  const rejectRequest = async (req: PayoutRequest, adminNote: string) => {
+    const { data: userRes } = await supabase.auth.getUser();
+    const { error } = await supabase
+      .from("affiliate_payout_requests" as any)
+      .update({
+        status: "rejected",
+        admin_note: adminNote.trim() || null,
+        decided_by: userRes.user?.id ?? null,
+        decided_at: new Date().toISOString(),
+      })
+      .eq("id", req.id);
+    if (error) return toast.error(error.message);
+    toast.success("Request rejected - the amount is back in the affiliate's balance");
+    const aff = affiliateOf(req.affiliate_id);
+    if (aff) {
+      void notifyAffiliate(
+        { affiliate_id: aff.id, amount: req.amount } as Payout,
+        "Your payout request was not approved",
+        `Your payout request of ₦${Number(req.amount).toLocaleString()} was not approved.${adminNote.trim() ? ` Reason: ${adminNote.trim()}` : ""} The amount is back in your available balance.`,
+      );
+    }
+    setRejecting(null);
+    void load();
+  };
+
   const copyStatement = async (token: string) => {
     const link = `${STATEMENT_BASE}?token=${token}&format=csv`;
     await navigator.clipboard.writeText(link);
@@ -215,6 +332,54 @@ const AdminAffiliatePayouts = () => {
           <StatCard label="Pending / approved" value={ngn(totals.pending)} tone="amber" />
           <StatCard label="Paid out (lifetime)" value={ngn(totals.paid)} tone="emerald" />
           <StatCard label="All payouts" value={ngn(totals.all)} tone="primary" />
+        </div>
+
+        {/* Requests submitted by affiliates from their dashboard */}
+        <div className="mb-8">
+          <h2 className="text-sm font-semibold text-foreground mb-2">
+            Payout requests from affiliates{" "}
+            <span className="text-muted-foreground font-normal">({pendingRequests.length} waiting)</span>
+          </h2>
+          {pendingRequests.length === 0 ? (
+            <p className="text-xs text-muted-foreground border border-dashed rounded-xl p-4">
+              No requests waiting. When an affiliate requests a payout it appears here to approve or reject.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {pendingRequests.map((r) => {
+                const aff = affiliateOf(r.affiliate_id);
+                return (
+                  <div key={r.id} className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4 flex flex-col lg:flex-row lg:items-center gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground">
+                        {aff?.full_name || "Unknown affiliate"}{" "}
+                        <span className="font-mono text-xs text-muted-foreground">{aff?.code?.toUpperCase()}</span>
+                      </p>
+                      <p className="text-sm mt-0.5">
+                        Requested <span className="font-bold text-emerald-700">{ngn(r.amount)}</span>
+                        <span className="text-muted-foreground"> · {new Date(r.created_at).toLocaleDateString()}</span>
+                      </p>
+                      {r.note && <p className="text-xs text-muted-foreground mt-1">Note: {r.note}</p>}
+                      <p className="text-xs mt-1">
+                        <span className="text-muted-foreground">Pay to: </span>
+                        {aff?.payout_details?.trim() ? (
+                          <span className="font-medium">{aff.payout_method ? `${aff.payout_method} - ` : ""}{aff.payout_details}</span>
+                        ) : (
+                          <span className="text-destructive font-medium">No bank details saved</span>
+                        )}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Button size="sm" onClick={() => approveRequest(r)} disabled={approvingId === r.id}>
+                        {approvingId === r.id ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />} Approve
+                      </Button>
+                      <Button size="sm" variant="ghost" onClick={() => setRejecting(r)}>Reject</Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-3 mb-4">
@@ -326,6 +491,12 @@ const AdminAffiliatePayouts = () => {
         onSaved={load}
       />
 
+      <RejectRequestDialog
+        request={rejecting}
+        onClose={() => setRejecting(null)}
+        onConfirm={(note) => rejecting && rejectRequest(rejecting, note)}
+      />
+
       <MarkPaidDialog
         payout={paying}
         onClose={() => setPaying(null)}
@@ -366,6 +537,44 @@ const StatCard = ({
   );
 };
 
+const RejectRequestDialog = ({
+  request,
+  onClose,
+  onConfirm,
+}: {
+  request: PayoutRequest | null;
+  onClose: () => void;
+  onConfirm: (note: string) => void;
+}) => {
+  const [note, setNote] = useState("");
+  useEffect(() => {
+    if (request) setNote("");
+  }, [request]);
+  return (
+    <Dialog open={!!request} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Reject payout request</DialogTitle>
+        </DialogHeader>
+        {request && (
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Rejecting {ngn(request.amount)}. The amount returns to the affiliate's available balance.
+            </p>
+            <div>
+              <Label>Reason (shown to the affiliate)</Label>
+              <Textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Bank details need correcting" />
+            </div>
+            <Button variant="destructive" className="w-full" onClick={() => onConfirm(note)}>
+              Reject request
+            </Button>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const CreatePayoutDialog = ({
   open,
   onClose,
@@ -384,7 +593,7 @@ const CreatePayoutDialog = ({
   const [affiliateId, setAffiliateId] = useState("");
   const [periodStart, setPeriodStart] = useState(firstOfMonth);
   const [periodEnd, setPeriodEnd] = useState(last);
-  const [calc, setCalc] = useState<{ leads: number; revenue: number; commission: number } | null>(
+  const [calc, setCalc] = useState<{ leads: number; revenue: number; commission: number; available: number } | null>(
     null,
   );
   const [amount, setAmount] = useState(0);
@@ -408,26 +617,44 @@ const CreatePayoutDialog = ({
     if (!selected) return toast.error("Pick an affiliate first");
     if (!periodStart || !periodEnd) return toast.error("Pick a period");
     setCalculating(true);
-    const { data, error } = await supabase
-      .from("leads")
-      .select("budget, status")
-      .eq("affiliate_code", selected.code)
-      .gte("created_at", `${periodStart}T00:00:00Z`)
-      .lte("created_at", `${periodEnd}T23:59:59Z`);
+    // Commission is worked out from PAID ORDERS, exactly like the affiliate's own
+    // dashboard. (It used to estimate from lead budget text, so payouts did not
+    // match what the affiliate saw earned.)
+    const [{ data: allPaid, error: ordersErr }, { data: allPayouts }, { data: openRequests }] = await Promise.all([
+      supabase
+        .from("orders")
+        .select("total, created_at")
+        .ilike("affiliate_code", selected.code)
+        .eq("payment_status", "paid"),
+      supabase.from("affiliate_payouts" as any).select("amount, status").eq("affiliate_id", selected.id),
+      supabase.from("affiliate_payout_requests" as any).select("amount").eq("affiliate_id", selected.id).eq("status", "pending"),
+    ]);
     setCalculating(false);
-    if (error) return toast.error(error.message);
-    const won = (data || []).filter((l: any) => l.status === "won" || l.status === "converted");
-    const revenue = won.reduce(
-      (s: number, l: any) => s + parseBudgetToNGN(l.budget),
-      0,
-    );
-    const commission = revenue * (Number(selected.commission_rate) / 100);
-    setCalc({ leads: won.length, revenue, commission });
-    setAmount(Math.round(commission));
+    if (ordersErr) return toast.error(ordersErr.message);
+    const rate = Number(selected.commission_rate) / 100;
+    const inPeriod = (allPaid || []).filter((o: any) => {
+      const d = String(o.created_at).slice(0, 10);
+      return d >= periodStart && d <= periodEnd;
+    });
+    const revenue = inPeriod.reduce((sum: number, o: any) => sum + Number(o.total || 0), 0);
+    const commission = revenue * rate;
+    const lifetimeEarned = (allPaid || []).reduce((sum: number, o: any) => sum + Number(o.total || 0), 0) * rate;
+    const committed =
+      ((allPayouts as any[]) || [])
+        .filter((p) => p.status !== "rejected")
+        .reduce((sum, p) => sum + Number(p.amount || 0), 0) +
+      ((openRequests as any[]) || []).reduce((sum, r) => sum + Number(r.amount || 0), 0);
+    const available = Math.max(0, lifetimeEarned - committed);
+    setCalc({ leads: inPeriod.length, revenue, commission, available });
+    setAmount(Math.floor(Math.min(commission, available)));
   };
 
   const save = async () => {
     if (!selected || !calc) return toast.error("Calculate the payout first");
+    if (!(amount > 0)) return toast.error("Enter a payout amount");
+    if (amount > calc.available + 0.5) {
+      return toast.error(`This is more than the affiliate's available balance (${ngn(calc.available)}). Paying it would pay them twice.`);
+    }
     setSaving(true);
     const { error } = await supabase.from("affiliate_payouts" as any).insert({
       affiliate_id: selected.id,
@@ -482,17 +709,17 @@ const CreatePayoutDialog = ({
 
           <Button variant="outline" onClick={recalc} disabled={calculating || !selected} className="w-full">
             {calculating ? <Loader2 className="animate-spin" size={14} /> : <Calculator size={14} />}
-            Calculate from won leads
+            Calculate from paid orders
           </Button>
 
           {calc && (
             <div className="rounded-xl border border-border bg-muted/30 p-3 text-sm space-y-1">
               <p>
-                <span className="text-muted-foreground">Won leads:</span>{" "}
+                <span className="text-muted-foreground">Paid orders in period:</span>{" "}
                 <strong>{calc.leads}</strong>
               </p>
               <p>
-                <span className="text-muted-foreground">Gross revenue (est):</span>{" "}
+                <span className="text-muted-foreground">Order revenue:</span>{" "}
                 <strong>{ngn(calc.revenue)}</strong>
               </p>
               <p>
@@ -500,7 +727,7 @@ const CreatePayoutDialog = ({
                 <strong className="text-primary">{ngn(calc.commission)}</strong>
               </p>
               <p className="text-[11px] text-muted-foreground pt-1">
-                Revenue is estimated from lead budgets; adjust the payout below if needed.
+                Available to pay out now (earned on all paid orders, minus payouts and open requests): <strong className="text-foreground">{ngn(calc.available)}</strong>. The amount below cannot exceed this.
               </p>
             </div>
           )}

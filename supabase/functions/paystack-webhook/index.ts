@@ -42,10 +42,16 @@ Deno.serve(async (req) => {
     amount_ngn: amountNgn,
     raw: event,
   });
-  if (insErr && !String(insErr.message).toLowerCase().includes("duplicate")) {
+  if (insErr) {
+    const isDuplicate =
+      (insErr as { code?: string }).code === "23505" || String(insErr.message).toLowerCase().includes("duplicate");
+    // A duplicate means we already processed this event - acknowledge it. Any
+    // other failure must NOT be acknowledged: answering 200 made Paystack stop
+    // retrying, so a payment could be silently lost.
+    if (isDuplicate) return new Response("ok", { status: 200 });
     console.error("payment_events insert failed", insErr);
+    return new Response("temporary failure", { status: 500 });
   }
-  if (insErr) return new Response("ok", { status: 200 });
 
   // charge.success handling
   if (type === "charge.success" && status === "success") {
@@ -157,6 +163,15 @@ Deno.serve(async (req) => {
   if (type === "refund.processed") {
     const refRef = data?.transaction_reference || data?.transaction?.reference || reference;
     if (refRef) {
+      // Store orders: a refunded order stops counting as paid, so affiliate
+      // commission is not paid on money that was handed back.
+      const { error: orderRefundErr } = await admin
+        .from("orders")
+        .update({ payment_status: "refunded" })
+        .eq("payment_reference", refRef)
+        .eq("payment_status", "paid");
+      if (orderRefundErr) console.error("order refund update failed", orderRefundErr);
+
       const { data: sch } = await admin.from("finance_schedules")
         .select("id, application_id")
         .eq("paid_reference", refRef).maybeSingle();

@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { useSiteSetting } from "@/hooks/useSiteSetting";
+import { useSiteContact } from "@/hooks/useSiteContact";
 
 const ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-support-ticket`;
 
@@ -51,9 +51,12 @@ const Support = () => {
   const [submitting, setSubmitting] = useState(false);
   const [createdTicket, setCreatedTicket] = useState<any>(null);
 
-  const { settings: general } = useSiteSetting("general");
-  const whatsappNumber = general?.whatsapp || "+234 817 800 0023";
-  const phone = general?.phone || "+234 817 800 0023";
+  // Contact numbers live in the "contact" settings (Admin > Settings > Brand &
+  // Contact). This read a "general" group that has no phone/whatsapp, so the
+  // page always showed the hardcoded numbers and ignored what the admin saved.
+  const { contact: siteContact } = useSiteContact();
+  const whatsappNumber = siteContact.whatsapp;
+  const phone = siteContact.phone;
 
   const handleLookup = async (e: React.FormEvent) => {
     e.preventDefault();

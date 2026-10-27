@@ -1,7 +1,31 @@
 // Captures affiliate code + UTM params from URL once and persists them in
 // localStorage so any lead form submitted later can be attributed correctly.
 
+import { loadSetting } from "@/hooks/useSiteSetting";
+
 const STORAGE_KEY = "tioga_attribution_v1";
+
+// Admin > Settings > Affiliates > "Referral tracking window". Starts at the
+// long-standing 60 days and is replaced once the saved setting has loaded.
+let attributionWindowDays = 60;
+let windowRequested = false;
+const refreshAttributionWindow = () => {
+  if (windowRequested) return;
+  windowRequested = true;
+  loadSetting("affiliate")
+    .then((cfg) => {
+      const days = Number(cfg?.cookie_window_days);
+      if (Number.isFinite(days) && days > 0) attributionWindowDays = days;
+    })
+    .catch(() => undefined);
+};
+
+// Codes are stored lower-case and matched exactly downstream, so a link typed
+// as ?ref=JOHN must resolve to "john" or the sale is never credited.
+const normalizeCode = (raw: string | null) => {
+  const code = (raw ?? "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
+  return code || null;
+};
 
 export type Attribution = {
   affiliate_code?: string | null;
@@ -19,15 +43,15 @@ const isExpired = (iso: string | undefined) => {
   if (!iso) return true;
   const ts = new Date(iso).getTime();
   if (Number.isNaN(ts)) return true;
-  // 60 day attribution window
-  return Date.now() - ts > 60 * 24 * 60 * 60 * 1000;
+  return Date.now() - ts > attributionWindowDays * 24 * 60 * 60 * 1000;
 };
 
 export function captureAttributionFromUrl() {
   if (typeof window === "undefined") return;
+  refreshAttributionWindow();
   try {
     const params = new URLSearchParams(window.location.search);
-    const aff = params.get("aff") || params.get("ref");
+    const aff = normalizeCode(params.get("aff") || params.get("ref"));
     const alk = params.get("alk");
     const us = params.get("utm_source");
     const um = params.get("utm_medium");
@@ -46,9 +70,13 @@ export function captureAttributionFromUrl() {
       }
       return;
     }
+    // A later visit that only carries UTM tags (a newsletter, an ad) must not
+    // wipe an affiliate who already referred this visitor. A new affiliate link
+    // still wins (last affiliate click).
+    const kept = !aff ? getAttribution() : null;
     const next: Attribution = {
-      affiliate_code: aff ? aff.slice(0, 80) : null,
-      affiliate_link_slug: alk ? alk.slice(0, 64) : null,
+      affiliate_code: aff ?? kept?.affiliate_code ?? null,
+      affiliate_link_slug: alk ? alk.slice(0, 64) : aff ? null : kept?.affiliate_link_slug ?? null,
       utm_source: us ? us.slice(0, 120) : null,
       utm_medium: um ? um.slice(0, 120) : null,
       utm_campaign: uc ? uc.slice(0, 120) : null,
@@ -65,6 +93,7 @@ export function captureAttributionFromUrl() {
 
 export function getAttribution(): Attribution | null {
   if (typeof window === "undefined") return null;
+  refreshAttributionWindow();
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;

@@ -39,7 +39,7 @@ const reasons = [
 
 const Career = () => {
   const { contact } = useSiteContact();
-  const { jobs: openRoles } = useCareers();
+  const { jobs: openRoles, loading: rolesLoading } = useCareers();
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [affiliateOpen, setAffiliateOpen] = useState(false);
   const { content: cms } = useLandingContent("page_career");
@@ -217,7 +217,7 @@ const Career = () => {
           <p className="mt-3 text-muted-foreground">A snapshot of our most-needed roles right now.</p>
         </div>
 
-        <FeaturedRoles openRoles={openRoles} onApply={setSelectedJob} />
+        <FeaturedRoles openRoles={openRoles} loading={rolesLoading} onApply={setSelectedJob} />
       </div>
     </section>
 
@@ -341,9 +341,22 @@ const Career = () => {
   );
 };
 
-const FeaturedRoles = ({ openRoles, onApply }: { openRoles: Job[]; onApply: (job: Job) => void }) => {
+const FeaturedRoles = ({ openRoles, loading, onApply }: { openRoles: Job[]; loading: boolean; onApply: (job: Job) => void }) => {
   const [showAll, setShowAll] = useState(false);
   const visible = showAll ? openRoles : openRoles.slice(0, 3);
+  if (!loading && openRoles.length === 0) {
+    return (
+      <div className="section-container">
+        <div className="rounded-3xl border border-dashed border-border bg-card p-10 text-center">
+          <p className="text-lg font-display font-semibold text-foreground">No open roles right now</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            We are not hiring for a specific role at the moment, but we are always glad to hear from strong people. Send your CV to{" "}
+            <a className="font-medium text-foreground underline" href="mailto:careers@tiogatechnologies.com">careers@tiogatechnologies.com</a>.
+          </p>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 section-container">
