@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { useProductCompare, MAX_COMPARE } from "@/hooks/useProductCompare";
 import { useCart } from "@/contexts/CartContext";
 import { productPath } from "@/lib/productSlug";
-import { resolveProductImage } from "@/lib/productImages";
+import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { supabase } from "@/integrations/supabase/client";
 import { mergeProducts } from "@/lib/mergeProducts";
@@ -257,7 +257,7 @@ const ProductCompareTrayBody = () => {
                     className="relative group w-9 h-9 rounded-xl overflow-hidden border border-border bg-muted/30 p-0.5 shrink-0"
                     title={item.name}
                   >
-                    <img
+                    <img onError={handleProductImageError}
                       src={resolveProductImage(item.image_url, item.category)}
                       alt={item.name}
                       className="w-full h-full object-contain rounded-lg"
@@ -441,7 +441,7 @@ const ProductCompareTrayBody = () => {
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
                       <div className="w-10 h-10 rounded-lg bg-muted/20 border border-border/60 p-1 shrink-0 flex items-center justify-center overflow-hidden">
-                        <img
+                        <img onError={handleProductImageError}
                           src={resolveProductImage(prod.image_url, prod.category, prod.name)}
                           alt={prod.name}
                           className="max-h-full max-w-full object-contain"
@@ -520,7 +520,7 @@ const ProductCompareTrayBody = () => {
                       onClick={() => handleQuickAdd(alt)}
                       className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-card border border-border/80 hover:border-primary text-foreground text-xs font-semibold shrink-0 transition-all hover:shadow-xs group"
                     >
-                      <img
+                      <img onError={handleProductImageError}
                         src={resolveProductImage(alt.image_url, alt.category, alt.name)}
                         alt=""
                         className="w-5 h-5 object-contain"
@@ -552,7 +552,7 @@ const ProductCompareTrayBody = () => {
                     <th key={item.id} className="p-4 text-center min-w-[200px] max-w-[260px] align-top border-r border-border/40 last:border-r-0">
                       <div className="flex flex-col items-center space-y-2.5">
                         <div className="relative aspect-square w-24 h-24 rounded-2xl overflow-hidden bg-card border border-border p-2 flex items-center justify-center">
-                          <img
+                          <img onError={handleProductImageError}
                             src={resolveProductImage(item.image_url, item.category)}
                             alt={item.name}
                             className="max-h-full max-w-full object-contain"

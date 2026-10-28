@@ -1,3 +1,4 @@
+import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 import { useState } from "react";
 import { Plus, Check, ShoppingCart, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -41,7 +42,7 @@ export const FrequentlyBoughtTogether = ({ currentProduct, recommendedProducts }
         name: product.name,
         price: product.price,
         numericPrice: product.numeric_price,
-        image: product.image_url,
+        image: resolveProductImage(product.image_url, product.category, product.name),
         category: product.category,
         quantity: 1,
       });
@@ -86,8 +87,8 @@ export const FrequentlyBoughtTogether = ({ currentProduct, recommendedProducts }
                     {isSelected && <Check size={13} strokeWidth={3} />}
                   </div>
 
-                  <img
-                    src={prod.image_url || "/placeholder.svg"}
+                  <img onError={handleProductImageError}
+                    src={resolveProductImage(prod.image_url, prod.category, prod.name)}
                     alt={prod.name}
                     className="w-14 h-14 object-contain rounded-lg bg-muted/30 p-1"
                   />

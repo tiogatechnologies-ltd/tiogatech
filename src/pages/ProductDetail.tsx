@@ -46,7 +46,7 @@ import { parseRetailPrice } from "@/lib/retailPricing";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
-import { resolveProductImage, getMultiAngleProductImages } from "@/lib/productImages";
+import { resolveProductImage, getMultiAngleProductImages, handleProductImageError } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
@@ -396,7 +396,7 @@ export const ProductDetail = () => {
                 className="group relative aspect-[4/3] sm:aspect-square md:aspect-[4/3] max-h-[580px] 2xl:max-h-[640px] w-full rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] flex items-center justify-center p-4 sm:p-10 transition-all hover:border-primary/40"
               >
                 {images[activeIdx] ? (
-                  <img
+                  <img onError={handleProductImageError}
                     src={images[activeIdx]}
                     alt={`${product.name} - ${categoryLabels[product.category] ?? product.category}`}
                     className="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-105"
@@ -453,7 +453,7 @@ export const ProductDetail = () => {
                           : "border-border hover:border-primary/50 opacity-80 hover:opacity-100"
                       }`}
                     >
-                      <img src={src} alt="" loading="lazy" className="w-full h-full object-contain rounded-xl" />
+                      <img onError={handleProductImageError} src={src} alt="" loading="lazy" className="w-full h-full object-contain rounded-xl" />
                     </button>
                   ))}
                 </div>
@@ -940,7 +940,7 @@ export const ProductDetail = () => {
 
                     <div className="space-y-3.5">
                       <div className="aspect-[4/3] rounded-2xl bg-muted/20 overflow-hidden p-3 flex items-center justify-center">
-                        <img
+                        <img onError={handleProductImageError}
                           src={resolveProductImage(item.image_url, item.category)}
                           alt={item.name}
                           loading="lazy"
@@ -1071,7 +1071,7 @@ export const ProductDetail = () => {
                 >
                   <Link to={productPath(rel)} className="space-y-3 block">
                     <div className="aspect-[4/3] rounded-2xl bg-muted/20 overflow-hidden p-3 flex items-center justify-center">
-                      <img
+                      <img onError={handleProductImageError}
                         src={resolveProductImage(rel.image_url, rel.category)}
                         alt={rel.name}
                         loading="lazy"

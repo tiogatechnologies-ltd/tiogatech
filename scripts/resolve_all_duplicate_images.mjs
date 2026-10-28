@@ -3,6 +3,8 @@ import path from 'path';
 import sharp from 'sharp';
 import crypto from 'crypto';
 
+throw new Error("Retired by the 2026-10-28 photo audit: this generator reused other models, drew products, or altered images to fake uniqueness. Use source-matched original photographs and the reviewed retail image manifest.");
+
 // The 23 groups to differentiate
 const groupActions = [
   // 1. Single vs Double Socket

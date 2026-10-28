@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { productPath } from "@/lib/productSlug";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
-import { resolveProductImage } from "@/lib/productImages";
+import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
 
@@ -199,7 +199,7 @@ export const Wishlist = () => {
                   <div>
                     <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-muted/20 mb-3 flex items-center justify-center p-3">
                       <Link to={productPath(product)} className="w-full h-full flex items-center justify-center">
-                        <img
+                        <img onError={handleProductImageError}
                           src={resolveProductImage(product.image_url, product.category)}
                           alt={product.name}
                           className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-28",
+  "staticProducts": 1097,
+  "databaseRows": 7,
+  "effectiveProducts": 1083,
+  "staticStatus": {
+    "retained-source-not-established": 732,
+    "source-matched": 181,
+    "withheld": 184
+  },
+  "liveStatus": {
+    "retained-source-not-established": 723,
+    "source-matched": 181,
+    "withheld": 176,
+    "withheld-no-assigned-photo": 3
+  },
+  "promotionalImages": 8,
+  "promotionalImageStatus": {
+    "source-matched": 6,
+    "retained-source-not-established": 2
+  },
+  "beforeNearDuplicateCandidates": 198,
+  "supplierSharedPhotoGroups": 10,
+  "sourceMatchedNative1000Plus": 110
+}

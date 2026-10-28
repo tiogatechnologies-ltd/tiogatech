@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { trackConversion } from "@/lib/tracking";
 import DirectDebitConsent from "@/components/DirectDebitConsent";
-import { resolveProductImage } from "@/lib/productImages";
+import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 import { useSiteSetting, parseServiceAreas } from "@/hooks/useSiteSetting";
@@ -625,7 +625,7 @@ const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDi
         <li key={i.id} className="flex gap-3">
           <div className="relative shrink-0">
             {i.image ? (
-              <img
+              <img onError={handleProductImageError}
                 src={resolveProductImage(i.image, i.category)}
                 alt=""
                 className="h-14 w-14 rounded-lg object-contain bg-card border border-border p-1"

@@ -2,7 +2,6 @@ import { masterPriceFor } from "@/lib/retailPricing";
 import { describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
-import crypto from "crypto";
 import { PRODUCTS, expansionCatalogProducts, blueCarbonProducts, dealerProducts } from "@/data/products";
 import { mergeProducts } from "@/lib/mergeProducts";
 import { resolveProductImage } from "@/lib/productImages";
@@ -10,8 +9,8 @@ import { getSolarPackageImage } from "@/hooks/useSolarPackages";
 import { getSmartLockImage } from "@/hooks/useSmartLocks";
 import { getDefaultPackageImage } from "@/lib/packageImages";
 
-describe("Product and Package Real Images", () => {
-  it("every Deye product in catalog has an authentic, existing image", () => {
+describe("Product and package asset availability and pricing", () => {
+  it("every Deye product in catalog has an existing assigned asset", () => {
     const deyeProducts = PRODUCTS.filter((p) => p.name.toLowerCase().includes("deye"));
     expect(deyeProducts.length).toBeGreaterThanOrEqual(3);
 
@@ -23,7 +22,7 @@ describe("Product and Package Real Images", () => {
     }
   });
 
-  it("mergeProducts preserves authentic image when DB row has null image_url", () => {
+  it("mergeProducts preserves assigned asset when DB row has null image_url", () => {
     const dbRowsWithNullImages = [
       {
         id: "11111111-1111-1111-1111-111111111001",
@@ -47,18 +46,10 @@ describe("Product and Package Real Images", () => {
     expect(deye8k?.image_url).toBe("/products/core/deye-8kw-hybrid.webp");
   });
 
-  it("resolveProductImage provides authentic fallbacks for Deye inverters", () => {
-    const resolved5k = resolveProductImage(null, "solar", "Deye 5kW Hybrid Inverter");
-    const resolved8k = resolveProductImage(null, "solar", "Deye 8kW Hybrid Inverter");
-    const resolved12k = resolveProductImage(null, "solar", "Deye 12kW Three-Phase Hybrid Inverter");
-
-    expect(resolved5k).toBe("/products/core/deye-5kw-hybrid.webp");
-    expect(resolved8k).toBe("/products/core/deye-8kw-hybrid.webp");
-    expect(resolved12k).toBe("/products/core/deye-12kw-three-phase.webp");
-
-    expect(fs.existsSync(path.resolve("public" + resolved5k))).toBe(true);
-    expect(fs.existsSync(path.resolve("public" + resolved8k))).toBe(true);
-    expect(fs.existsSync(path.resolve("public" + resolved12k))).toBe(true);
+  it("missing photos do not guess a different model from the product name", () => {
+    expect(resolveProductImage(null, "Inverters", "Deye 8kW Hybrid Inverter")).toBe("/products/photo-pending.svg");
+    expect(resolveProductImage(null, "Batteries", "Itel 5kWh")).toBe("/products/photo-pending.svg");
+    expect(resolveProductImage("/products/minisim/old.webp", "Smart Locks", "K209")).toBe("/products/photo-pending.svg");
   });
 
   it("all 19 solar package capacities resolve to real hardware images and are 100% unique", () => {
@@ -74,7 +65,7 @@ describe("Product and Package Real Images", () => {
     expect(images.size).toBe(19);
   });
 
-  it("smart lock models and accessories resolve to authentic hardware images with zero duplicates", () => {
+  it("smart lock models and accessories resolve to assigned local assets", () => {
     const models = [
       { name: "Premier-Lux K209", model: "K209", series: "Elite Series", category: "lock" },
       { name: "Premier-Lux S7", model: "S7", series: "Elite Series", category: "lock" },
@@ -108,7 +99,7 @@ describe("Product and Package Real Images", () => {
     expect(images.size).toBe(models.length);
   });
 
-  it("home automation packages resolve to authentic pkg-automation images and are unique", () => {
+  it("home automation packages resolve to assigned pkg-automation images and are unique", () => {
     const apexImg = getDefaultPackageImage("automation", "Apex");
     const auraImg = getDefaultPackageImage("automation", "Aura");
     const rivieraImg = getDefaultPackageImage("automation", "Riviera");
@@ -125,7 +116,7 @@ describe("Product and Package Real Images", () => {
     expect(set.size).toBe(3);
   });
 
-  it("CCTV packages resolve to authentic pkg-cctv images and are unique", () => {
+  it("CCTV packages resolve to assigned pkg-cctv images and are unique", () => {
     const cctv4 = getDefaultPackageImage("cctv", "4ch");
     const cctv8 = getDefaultPackageImage("cctv", "8ch");
     const cctvPtz = getDefaultPackageImage("cctv", "ptz");
@@ -142,7 +133,7 @@ describe("Product and Package Real Images", () => {
     expect(set.size).toBe(3);
   });
 
-  it("all new SRNE inverters, SRNE batteries and solar panels exist with authentic photos on disk", () => {
+  it("all new SRNE inverters, SRNE batteries and solar panels exist with local asset references", () => {
     const srneProducts = PRODUCTS.filter((p) => p.brand === "SRNE");
     expect(srneProducts.length).toBeGreaterThanOrEqual(17);
 
@@ -164,7 +155,7 @@ describe("Product and Package Real Images", () => {
     }
   });
 
-  it("all Luxpower inverters and batteries exist with authentic photos on disk and current master-sheet prices", () => {
+  it("all Luxpower inverters and batteries exist with local asset references and current master-sheet prices", () => {
     const luxProducts = PRODUCTS.filter((p) => p.brand === "Luxpower");
     expect(luxProducts.length).toBe(30);
 
@@ -188,7 +179,7 @@ describe("Product and Package Real Images", () => {
     expect(uniqueLuxImages.size).toBe(luxProducts.length);
   });
 
-  it("all 81 Felicity products exist with authentic photos on disk and current master-sheet pricing", () => {
+  it("all 81 Felicity products exist with local asset references and current master-sheet pricing", () => {
     const felicityProducts = PRODUCTS.filter((p) => p.brand === "Felicity");
     expect(felicityProducts.length).toBe(81);
 
@@ -205,19 +196,9 @@ describe("Product and Package Real Images", () => {
     const uniqueFelicityImages = new Set(felicityProducts.map((p) => p.image_url));
     expect(uniqueFelicityImages.size).toBe(felicityProducts.length);
 
-    // Verify all 81 Felicity image files on disk have unique content hashes (authentic, model-specific photos)
-    const uniqueHashes = new Set<string>();
-    for (const p of felicityProducts) {
-      const filePath = path.resolve("public" + p.image_url);
-      const buf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("md5").update(buf).digest("hex");
-      expect(uniqueHashes.has(hash), `Product ${p.sku} (${p.name}) shares an identical image file hash with another product`).toBe(false);
-      uniqueHashes.add(hash);
-    }
-    expect(uniqueHashes.size).toBe(81);
   });
 
-  it("all AlpSolarr, Taico, Dawnice, Solis, SolarPro, Infinisolar, and Deye products exist with authentic photos on disk and unique hashes", () => {
+  it("all AlpSolarr, Taico, Dawnice, Solis, SolarPro, Infinisolar, and Deye products exist with local asset references", () => {
     const alpSolarr = PRODUCTS.filter((p) => p.brand === "AlpSolarr" && !p.id.startsWith("expansion-"));
     const taico = PRODUCTS.filter((p) => p.brand === "Taico" && !p.id.startsWith("expansion-"));
     const dawnice = PRODUCTS.filter((p) => p.brand === "Dawnice" && !p.id.startsWith("expansion-"));
@@ -237,7 +218,6 @@ describe("Product and Package Real Images", () => {
     expect(deye.length).toBeGreaterThanOrEqual(15);
 
     const allNewProducts = [...alpSolarr, ...taico, ...dawnice, ...solis, ...solarpro, ...infini, ...sungene, ...deye];
-    const uniqueHashes = new Set<string>();
 
     for (const p of allNewProducts) {
       expect(p.image_url).toBeTruthy();
@@ -253,13 +233,8 @@ describe("Product and Package Real Images", () => {
       }
       expect(p.warranty_years).toBeGreaterThanOrEqual(2);
 
-      const buf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("md5").update(buf).digest("hex");
-      expect(uniqueHashes.has(hash), `Product ${p.sku} (${p.name}) shares an identical image hash with another product`).toBe(false);
-      uniqueHashes.add(hash);
     }
 
-    expect(uniqueHashes.size).toBe(allNewProducts.length);
   });
 
   it("mergeProducts retains all catalog products without ID collision or erasure", () => {
@@ -287,27 +262,7 @@ describe("Product and Package Real Images", () => {
     expect(merged.length).toBeGreaterThanOrEqual(760);
   });
 
-  it("ensures zero duplicate product images across all products in the catalog", () => {
-    const imageUrlMap = new Map<string, string[]>();
-    for (const p of PRODUCTS) {
-      if (!p.image_url) continue;
-      const list = imageUrlMap.get(p.image_url) || [];
-      list.push(p.name);
-      imageUrlMap.set(p.image_url, list);
-    }
-
-    const duplicates = [...imageUrlMap.entries()].filter(([_, names]) => names.length > 1);
-    expect(
-      duplicates,
-      `No two products should share the same image. Duplicates found: ${JSON.stringify(duplicates)}`
-    ).toEqual([]);
-
-    const srneProducts = PRODUCTS.filter((p) => p.brand === "SRNE");
-    const uniqueSrneImages = new Set(srneProducts.map((p) => p.image_url));
-    expect(uniqueSrneImages.size).toBe(srneProducts.length);
-  });
-
-  it("all 25 Itel products exist in catalog with authentic HD photos on disk and exact retail pricing", () => {
+  it("all 25 Itel products exist in catalog with local asset references and exact retail pricing", () => {
     const itel = PRODUCTS.filter((p) => p.brand === "Itel");
     expect(itel.length).toBe(25);
 
@@ -350,7 +305,7 @@ describe("Product and Package Real Images", () => {
     }
   });
 
-  it("all 12 Suness products exist in catalog with authentic HD photos on disk and exact retail pricing", () => {
+  it("all 12 Suness products exist in catalog with local asset references and exact retail pricing", () => {
     const suness = PRODUCTS.filter((p) => p.brand === "Suness");
     expect(suness.length).toBe(12);
 
@@ -369,7 +324,6 @@ describe("Product and Package Real Images", () => {
       "TG-SUNESS-0012": 5060000,
     };
 
-    const imageHashes = new Set<string>();
 
     for (const p of suness) {
       expect(p.image_url).toBeTruthy();
@@ -380,15 +334,11 @@ describe("Product and Package Real Images", () => {
       const expectedPrice = expectedRetailPrices[p.sku || ""];
       expect(p.numeric_price).toBe(expectedPrice);
 
-      const fileBuf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
-      imageHashes.add(hash);
     }
 
-    expect(imageHashes.size).toBe(12);
   });
 
-  it("all 10 SolarPro products exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
+  it("all 10 SolarPro products exist in catalog with local asset references and current master-sheet pricing where listed", () => {
     const solarpro = PRODUCTS.filter((p) => p.brand === "SolarPro");
     expect(solarpro.length).toBe(10);
 
@@ -405,7 +355,6 @@ describe("Product and Package Real Images", () => {
       "SOLARPRO-ESS-125KWH-HV": 36000000,
     };
 
-    const imageHashes = new Set<string>();
 
     for (const p of solarpro) {
       expect(p.image_url).toBeTruthy();
@@ -416,15 +365,11 @@ describe("Product and Package Real Images", () => {
       const expectedPrice = expectedPrices[p.sku || ""];
       expect(p.numeric_price, `Price check for ${p.name}`).toBe(expectedPrice);
 
-      const fileBuf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
-      imageHashes.add(hash);
     }
 
-    expect(imageHashes.size).toBe(10);
   });
 
-  it("all 10 Sungene and Infini products exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
+  it("all 10 Sungene and Infini products exist in catalog with local asset references and current master-sheet pricing where listed", () => {
     const sungeneAndInfini = PRODUCTS.filter((p) => (p.brand === "Sungene" || p.brand === "Infini") && !p.id.includes("panel"));
     expect(sungeneAndInfini.length).toBe(10);
 
@@ -441,7 +386,6 @@ describe("Product and Package Real Images", () => {
       "INFINI-FAN-18-SOLAR-KIT": 80000,
     };
 
-    const imageHashes = new Set<string>();
 
     for (const p of sungeneAndInfini) {
       expect(p.image_url).toBeTruthy();
@@ -452,15 +396,11 @@ describe("Product and Package Real Images", () => {
       const expectedPrice = expectedPrices[p.sku || ""];
       expect(p.numeric_price, `Price check for ${p.name}`).toBe(expectedPrice);
 
-      const fileBuf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
-      imageHashes.add(hash);
     }
 
-    expect(imageHashes.size).toBe(10);
   });
 
-  it("all 7 Solis inverters exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
+  it("all 7 Solis inverters exist in catalog with local asset references and current master-sheet pricing where listed", () => {
     const solis = PRODUCTS.filter((p) => p.brand === "Solis" && !p.id.startsWith("expansion-"));
     expect(solis.length).toBe(7);
 
@@ -474,7 +414,6 @@ describe("Product and Package Real Images", () => {
       "SOLIS-S6-EH3P50K-H": 6489600,
     };
 
-    const imageHashes = new Set<string>();
 
     for (const p of solis) {
       expect(p.image_url).toBeTruthy();
@@ -485,15 +424,11 @@ describe("Product and Package Real Images", () => {
       const expectedPrice = expectedPrices[p.sku || ""];
       expect(p.numeric_price, `Price check for ${p.name}`).toBe(expectedPrice);
 
-      const fileBuf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
-      imageHashes.add(hash);
     }
 
-    expect(imageHashes.size).toBe(7);
   });
 
-  it("all 6 new Tier-1 Solar Panels from supplier sheets exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
+  it("all 6 new Tier-1 Solar Panels from supplier sheets exist in catalog with local asset references and current master-sheet pricing where listed", () => {
     const newPanels = PRODUCTS.filter((p) => 
       p.category === "Solar Panels" && 
       (p.brand === "Sungene" || p.brand === "JMS" || p.brand === "Yingli")
@@ -509,7 +444,6 @@ describe("Product and Package Real Images", () => {
       "YINGLI-PV-625W-MONO": 158550,
     };
 
-    const imageHashes = new Set<string>();
 
     for (const p of newPanels) {
       expect(p.image_url).toBeTruthy();
@@ -519,15 +453,11 @@ describe("Product and Package Real Images", () => {
       const expectedPrice = expectedPrices[p.sku || ""];
       expect(p.numeric_price, `Price check for ${p.name}`).toBe(expectedPrice);
 
-      const fileBuf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
-      imageHashes.add(hash);
     }
 
-    expect(imageHashes.size).toBe(6);
   });
 
-  it("all 22 Deye products from official price sheet exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
+  it("all 22 Deye products from official price sheet exist in catalog with local asset references and current master-sheet pricing where listed", () => {
     const deye = PRODUCTS.filter((p) => p.brand === "Deye" && p.sku?.startsWith("DEYE-"));
     expect(deye.length).toBe(22);
 
@@ -565,7 +495,6 @@ describe("Product and Package Real Images", () => {
       "DEYE-INV-80K-SG02-HV": 14300000,
     };
 
-    const imageHashes = new Set<string>();
 
     for (const p of deye) {
       expect(p.image_url).toBeTruthy();
@@ -576,15 +505,11 @@ describe("Product and Package Real Images", () => {
       const expectedPrice = expectedPrices[p.sku || ""];
       expect(p.numeric_price, `Price check for ${p.name} (SKU: ${p.sku})`).toBe(expectedPrice);
 
-      const fileBuf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
-      imageHashes.add(hash);
     }
 
-    expect(imageHashes.size).toBe(22);
   });
 
-  it("all 47 Bread Energy products from official price sheet exist in catalog with authentic HD photos on disk and current master-sheet pricing where listed", () => {
+  it("all 47 Bread Energy products from official price sheet exist in catalog with local asset references and current master-sheet pricing where listed", () => {
     const breadEnergy = PRODUCTS.filter((p) => p.brand === "Bread Energy" && p.sku?.startsWith("BREAD-"));
     expect(breadEnergy.length).toBe(47);
 
@@ -649,7 +574,6 @@ describe("Product and Package Real Images", () => {
       "BREAD-ACC-POLE": 64350,
     };
 
-    const imageHashes = new Set<string>();
 
     for (const p of breadEnergy) {
       expect(p.image_url).toBeTruthy();
@@ -660,15 +584,11 @@ describe("Product and Package Real Images", () => {
       const expectedPrice = expectedPrices[p.sku || ""];
       expect(p.numeric_price, `Price check for ${p.name} (SKU: ${p.sku})`).toBe(expectedPrice);
 
-      const fileBuf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
-      imageHashes.add(hash);
     }
 
-    expect(imageHashes.size).toBe(47);
   });
 
-  it("every Exulted Eagles product has an authentic image, correct price, and unique hash", () => {
+  it("every Exulted Eagles product has an assigned asset, correct price", () => {
     const exulted = PRODUCTS.filter((p) => p.sku?.startsWith("EXU-") || p.sku?.startsWith("ECO-"));
     expect(exulted.length).toBe(41);
 
@@ -731,7 +651,6 @@ describe("Product and Package Real Images", () => {
       "ECO-RIVER-288": 234000,
     };
 
-    const hashes = new Set<string>();
 
     for (const p of exulted) {
       expect(p.image_url).toBeTruthy();
@@ -742,15 +661,11 @@ describe("Product and Package Real Images", () => {
       const expected = expectedPrices[p.sku || ""];
       expect(p.numeric_price, `Price for ${p.name} (SKU: ${p.sku})`).toBe(expected);
 
-      const fileBuf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(fileBuf).digest("hex");
-      hashes.add(hash);
     }
 
-    expect(hashes.size).toBe(41);
   });
 
-  it("all 61 expansion products across 13 brands exist in catalog with authentic HD photos on disk, correct specifications, and 100% unique hashes", () => {
+  it("all 61 expansion products across 13 brands exist in catalog with local asset references, correct specifications,", () => {
     expect(expansionCatalogProducts.length).toBe(61);
 
     const brandsExpected: Record<string, number> = {
@@ -770,7 +685,6 @@ describe("Product and Package Real Images", () => {
     };
 
     const brandCounts: Record<string, number> = {};
-    const expansionHashes = new Set<string>();
 
     for (const p of expansionCatalogProducts) {
       expect(p.id.startsWith("expansion-")).toBe(true);
@@ -789,14 +703,9 @@ describe("Product and Package Real Images", () => {
       const filePath = path.resolve("public" + p.image_url);
       expect(fs.existsSync(filePath), `Expansion image must exist on disk: ${filePath}`).toBe(true);
 
-      const buf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(buf).digest("hex");
-      expect(expansionHashes.has(hash), `Expansion product ${p.sku} has duplicate hash: ${p.image_url}`).toBe(false);
-      expansionHashes.add(hash);
     }
 
     expect(brandCounts).toEqual(brandsExpected);
-    expect(expansionHashes.size).toBe(61);
 
     // Exact +20% price checks across representative expansion items
     const expPriceMap = new Map(expansionCatalogProducts.map((p) => [p.sku, p.numeric_price]));
@@ -812,12 +721,11 @@ describe("Product and Package Real Images", () => {
     expect(expPriceMap.get("BAT-086")).toBe(2400000); // AlpSolarr 16kWh: 2m + 20%
   });
 
-  it("all 44 Blue Carbon and 14 Dealer products exist in catalog with authentic HD photos on disk, exact specifications, and 100% unique hashes", () => {
+  it("all 44 Blue Carbon and 14 Dealer products exist in catalog with local asset references, exact specifications,", () => {
     expect(blueCarbonProducts.length).toBe(44);
     expect(dealerProducts.length).toBe(14);
 
     const testBatch = [...blueCarbonProducts, ...dealerProducts];
-    const hashes = new Set<string>();
 
     for (const p of testBatch) {
       expect(p.id).toBeTruthy();
@@ -834,13 +742,8 @@ describe("Product and Package Real Images", () => {
       const filePath = path.resolve("public" + p.image_url);
       expect(fs.existsSync(filePath), `Product image must exist on disk: ${filePath}`).toBe(true);
 
-      const buf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(buf).digest("hex");
-      expect(hashes.has(hash), `Product ${p.sku} has duplicate hash: ${p.image_url}`).toBe(false);
-      hashes.add(hash);
     }
 
-    expect(hashes.size).toBe(58);
 
     // Exact +20% price checks across representative Blue Carbon & Dealer items
     const priceMap = new Map(testBatch.map((p) => [p.sku, p.numeric_price]));
@@ -855,23 +758,4 @@ describe("Product and Package Real Images", () => {
     expect(priceMap.get("AIO-010")).toBe(2700000); // 2.25m + 20%
   });
 
-  it("all products across the entire catalog have 100% unique image files and hashes with zero duplicates", () => {
-    const fileHashMap = new Map<string, string>();
-    for (const p of PRODUCTS) {
-      if (!p.image_url) continue;
-      const rel = p.image_url.startsWith("/") ? p.image_url.slice(1) : p.image_url;
-      const filePath = path.resolve("public", rel);
-      expect(fs.existsSync(filePath), `Image exists for ${p.name}: ${filePath}`).toBe(true);
-      const buf = fs.readFileSync(filePath);
-      const hash = crypto.createHash("sha256").update(buf).digest("hex");
-      if (fileHashMap.has(hash)) {
-        const existing = fileHashMap.get(hash);
-        expect.fail(`Duplicate image hash found between "${existing}" and "${p.name}" (file: ${p.image_url})`);
-      }
-      fileHashMap.set(hash, p.name);
-    }
-    expect(fileHashMap.size).toBe(PRODUCTS.length);
-  });
 });
-
-

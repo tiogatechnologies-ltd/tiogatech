@@ -9,7 +9,7 @@ import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, r
 import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
-import { resolveProductImage } from "@/lib/productImages";
+import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
 import { formatRetailPrice } from "@/lib/retailPricing";
 
@@ -72,7 +72,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Left: Image */}
           <div className="relative bg-muted/30 p-8 flex items-center justify-center min-h-[300px] md:min-h-[400px]">
-            <img
+            <img onError={handleProductImageError}
               src={resolveProductImage(product.image_url, product.category, product.name)}
               alt={product.name}
               className="max-h-72 w-full object-contain drop-shadow-lg"

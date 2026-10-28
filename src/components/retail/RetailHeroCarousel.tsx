@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 import { formatRetailPrice, masterPriceFor } from "@/lib/retailPricing";
+import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 
 export interface HeroSlideContent {
   id: string;
@@ -456,7 +457,8 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                   className="relative z-10 w-full h-[190px] sm:h-[250px] md:h-[280px] lg:h-[320px] flex items-center justify-center p-2"
                 >
                   <img
-                    src={slide.image_url}
+                    src={resolveProductImage(slide.image_url)}
+                    onError={handleProductImageError}
                     alt={slide.headline}
                     loading="eager"
                     decoding="async"

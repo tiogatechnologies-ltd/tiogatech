@@ -1,3 +1,5 @@
+import type { SyntheticEvent } from "react";
+import retailImageOverrides from "@/data/retailImageOverrides.json";
 import bgPanelCloseup from "@/assets/bg-panel-closeup.jpg";
 import featureSolarPanel from "@/assets/feature-solar-panel.jpg";
 import bgCommercialSolar from "@/assets/bg-commercial-solar.jpg";
@@ -120,111 +122,21 @@ const ASSET_MAP: Record<string, string> = {
   "/src/assets/offer-security.jpg": offerSecurity,
 };
 
-export function resolveProductImage(url?: string | null, category?: string, name?: string): string {
-  const cat = (category || "").toLowerCase();
-  const n = (name || "").toLowerCase();
+export const PRODUCT_PHOTO_PENDING = "/products/photo-pending.svg";
 
-  // If no URL or older low-res PDF thumbnail, fallback to crystal-clear high-res hardware photo
-  if (!url || url.startsWith("/products/minisim/")) {
-    // 1. Deye & Solar Inverters
-    if (n.includes("deye") || cat.includes("inverter") || n.includes("inverter")) {
-      if (n.includes("12kw") || n.includes("three-phase") || n.includes("3-phase")) return "/products/core/deye-12kw-three-phase.webp";
-      if (n.includes("8kw")) return "/products/core/deye-8kw-hybrid.webp";
-      return "/products/core/deye-5kw-hybrid.webp";
-    }
-    // 2. Felicity & Storage Batteries
-    if (n.includes("felicity") || n.includes("battery") || cat.includes("batter")) {
-      if (n.includes("10kwh") || n.includes("powerwall")) return "/products/core/felicity-10kwh-powerwall.webp";
-      if (n.includes("15kwh")) return "/products/core/felicity-15kwh-battery.webp";
-      return "/products/core/felicity-5kwh-lifepo4.webp";
-    }
-    // 3. Solar Panels (Longi, Canadian Solar)
-    if (n.includes("longi") || n.includes("canadian") || n.includes("panel") || cat.includes("panel") || (cat.includes("solar") && n.includes("panel"))) {
-      if (n.includes("canadian")) return "/products/core/canadian-solar-550w.webp";
-      if (n.includes("600w")) return "/products/core/longi-600w-himo6.webp";
-      return "/products/core/longi-550w-himo5.webp";
-    }
-    // 4. Other inverter brands
-    if (n.includes("growatt")) return "/products/core/growatt-5kw-spf.webp";
-    if (n.includes("srne")) return "/products/core/srne-5kw-hybrid.webp";
-    if (n.includes("luxpower")) return "/products/core/luxpower-5kw-sna.webp";
-    if (n.includes("itel")) {
-      if (cat.includes("batter") || n.includes("battery") || n.includes("lifepo4")) return "/products/itel/itel-bat-5kwh-48v-wall.webp";
-      if (cat.includes("panel") || n.includes("panel")) return "/products/itel/itel-panel-410w.webp";
-      if (n.includes("power-go") || n.includes("power tank") || n.includes("generator") || n.includes("station")) return "/products/itel/itel-aio-500w-1kwh.webp";
-      return "/products/itel/itel-inv-3kw-24v.webp";
-    }
-    if (n.includes("suness")) {
-      if (cat.includes("batter") || n.includes("battery") || n.includes("hvs") || n.includes("hvm") || n.includes("ec-")) {
-        if (n.includes("hvm") || n.includes("215")) return "/products/suness/suness-ess-hvm-215kwh.webp";
-        if (n.includes("hvs") || n.includes("stack") || n.includes("60kwh")) return "/products/suness/suness-ess-hvs-60kwh.webp";
-        if (n.includes("40kwh")) return "/products/suness/suness-ess-hvs-40kwh.webp";
-        if (n.includes("48314")) return "/products/suness/suness-ess-ec-48314f-16kwh.webp";
-        if (n.includes("48300")) return "/products/suness/suness-ess-ec-48300f-16kwh.webp";
-        return "/products/suness/suness-ess-ec-mini-15kwh.webp";
-      }
-      if (n.includes("60kw") || n.includes("high-voltage") || n.includes("hv")) return "/products/suness/suness-inv-60kw-3p-hv.webp";
-      if (n.includes("24kw")) return "/products/suness/suness-inv-24kw-3p-lv.webp";
-      if (n.includes("20kw")) return "/products/suness/suness-inv-20kw-3p-lv.webp";
-      if (n.includes("15kw")) return "/products/suness/suness-inv-15kw-3p-lv.webp";
-      if (n.includes("16kw")) return "/products/suness/suness-inv-16kw-1p-lv.webp";
-      return "/products/suness/suness-inv-8kw-1p-lv.webp";
-    }
-    // 5. Smart Locks
-    if (cat.includes("lock") || n.includes("lock") || n.includes("k209") || n.includes("s7") || n.includes("d20")) {
-      if (n.includes("k209")) return "/products/core/stama-k209-face-lock.webp";
-      if (n.includes("s7") || n.includes("premier")) return "/products/core/stama-s7-premier.webp";
-      if (n.includes("d20") && !n.includes("kt14")) return "/products/core/stama-d20-apex.webp";
-      if (n.includes("h11")) return "/products/core/stama-h11-intercom.webp";
-      if (n.includes("f27")) return "/products/core/stama-s7-premier.webp";
-      if (n.includes("t8")) return "/products/core/stama-d20-apex.webp";
-      if (n.includes("sl02")) return "/products/core/stama-sl02-aluminum.webp";
-      if (n.includes("tf5") || n.includes("tfs") || n.includes("n14") || n.includes("b16")) return "/products/core/stama-tf5-shortlet.webp";
-      if (n.includes("n22")) return "/products/core/stama-n22-security.webp";
-      if (n.includes("x04")) return "/products/core/stama-d20-apex.webp";
-      if (n.includes("g290") || n.includes("glass")) return "/products/core/stama-g290-glass.webp";
-      if (n.includes("v80") || n.includes("gate")) return "/products/core/stama-v80-gate.webp";
-      if (n.includes("kt14") || n.includes("padlock")) return "/products/core/stama-kt14-padlock.webp";
-      if (n.includes("hotel")) return "/products/core/stama-hotel-system.webp";
-      return "/products/clear/lock-fingerprint-handle.webp";
-    }
-    // 6. CCTV & Surveillance
-    if (cat.includes("cctv") || cat.includes("camera") || n.includes("camera") || n.includes("cctv")) {
-      if (n.includes("4-ch") || n.includes("4 channel") || n.includes("4ch")) return "/products/core/pkg-cctv-4ch-kit.webp";
-      if (n.includes("8-ch") || n.includes("8 channel") || n.includes("8ch")) return "/products/core/pkg-cctv-8ch-kit.webp";
-      if (n.includes("solar") || n.includes("4g")) return "/products/core/pkg-cctv-solar-ptz.webp";
-      if (n.includes("dome")) return "/products/core/tioga-4mp-dome-camera.webp";
-      if (n.includes("bullet")) return "/products/core/tioga-2k-outdoor-bullet.webp";
-      return "/products/clear/camera-ptz-outdoor.webp";
-    }
-    // 7. Home Automation Switches, Hubs & Controls
-    if (cat.includes("switch") || n.includes("switch")) {
-      if (n.includes("4-gang") || n.includes("4 gang") || n.includes("4gang")) return "/products/core/tioga-4gang-zigbee.webp";
-      if (n.includes("8-gang") || n.includes("8 gang") || n.includes("8gang")) return "/products/core/tioga-8gang-switch.webp";
-      return "/products/clear/switch-2gang-white.webp";
-    }
-    if (n.includes("granite") || n.includes("display") || n.includes("tablet") || n.includes("touch panel")) {
-      return "/products/core/tioga-granite-display.webp";
-    }
-    if (n.includes("relay")) return "/products/core/tioga-1gang-relay.webp";
-    if (n.includes("water heater") || n.includes("40a")) return "/products/core/tioga-water-heater-40a.webp";
-    if (n.includes("hub") || n.includes("gateway") || n.includes("ir")) return "/products/core/tioga-universal-ir-hub.webp";
-    if (cat.includes("socket") || n.includes("socket")) return "/products/clear/socket-single-universal.webp";
-    if (cat.includes("sensor") || cat.includes("alarm") || n.includes("sensor") || n.includes("alarm")) return "/products/clear/sensor-pir-motion.webp";
-    if (cat.includes("audio") || cat.includes("speaker") || cat.includes("sound") || n.includes("speaker")) return "/products/clear/speaker-ceiling-coaxial.webp";
-    if (cat.includes("curtain") || n.includes("curtain")) return "/products/clear/curtain-motor-track.webp";
-    if (cat.includes("light") || cat.includes("track") || n.includes("lighting") || n.includes("track")) return "/products/clear/track-magnetic-rail.webp";
-    
-    // Category fallbacks
-    if (cat.includes("solar")) return "/products/core/deye-5kw-hybrid.webp";
-    return "/products/clear/switch-2gang-white.webp";
-  }
+/** Only use an explicitly assigned photograph; category/name guesses can misrepresent the hardware. */
+export function resolveProductImage(url?: string | null, _category?: string, _name?: string): string {
+  const original = url?.trim();
+  if (!original || original.startsWith("/products/minisim/")) return PRODUCT_PHOTO_PENDING;
+  const overrides: Record<string, string> = retailImageOverrides;
+  return overrides[original] || ASSET_MAP[original] || original;
+}
 
-  if (ASSET_MAP[url]) {
-    return ASSET_MAP[url];
-  }
-
-  return url;
+export function handleProductImageError(event: SyntheticEvent<HTMLImageElement>) {
+  const image = event.currentTarget;
+  if (image.getAttribute("src") === PRODUCT_PHOTO_PENDING) return;
+  image.src = PRODUCT_PHOTO_PENDING;
+  image.alt = `${image.alt || "Product"} — photo pending verification`;
 }
 
 /**

@@ -1,6 +1,8 @@
 import fs from 'fs';
 import sharp from 'sharp';
 
+throw new Error("Retired by the 2026-10-28 photo audit: this generator reused other models, drew products, or altered images to fake uniqueness. Use source-matched original photographs and the reviewed retail image manifest.");
+
 const ess = [
   {
     name: 'solarpro-bat-15kwh-48v.webp',

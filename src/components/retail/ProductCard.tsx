@@ -18,7 +18,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
-import { resolveProductImage } from "@/lib/productImages";
+import { resolveProductImage, handleProductImageError, PRODUCT_PHOTO_PENDING } from "@/lib/productImages";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, resolvePromoBadge } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
@@ -80,6 +80,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
   const [addedAnimation, setAddedAnimation] = useState(false);
 
   const isCompact = columns === 4 || columns === 5;
+  const productImage = resolveProductImage(product.image_url, product.category, product.name);
 
   const isSaved = isInWishlist(product.id);
   const isCompared = isInCompare(product.id, product.name);
@@ -107,7 +108,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
       name: product.name,
       price: product.price,
       numericPrice: product.numeric_price,
-      image: product.image_url,
+      image: productImage,
       category: product.category,
       quantity: 1,
     });
@@ -155,9 +156,9 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
         } overflow-hidden bg-muted/15 flex items-center justify-center p-3 sm:p-4`}
       >
         <Link to={productPath(product)} className="w-full h-full flex items-center justify-center">
-          <img
-            src={resolveProductImage(product.image_url, product.category, product.name)}
-            alt={product.name}
+          <img onError={handleProductImageError}
+            src={productImage}
+            alt={productImage === PRODUCT_PHOTO_PENDING ? `${product.name} — photo pending verification` : product.name}
             loading="lazy"
             className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
           />
