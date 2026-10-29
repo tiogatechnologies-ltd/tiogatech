@@ -58,7 +58,7 @@ export const RetailFilterSidebar = ({ filters, onChange, onCategoryChange, categ
   );
   return (
     <div className="space-y-3 text-sm">
-      <div className="flex items-center justify-between border-b border-border pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
         <div className="flex items-center gap-2"><SlidersHorizontal size={16} className="text-primary" /><span className="font-semibold">Filters</span><Badge variant="secondary">{totalResults} items</Badge></div>
         {isFiltered && <button type="button" onClick={onReset} className="inline-flex items-center gap-1 text-xs text-primary"><RotateCcw size={12} />Clear</button>}
       </div>
@@ -71,7 +71,7 @@ export const RetailFilterSidebar = ({ filters, onChange, onCategoryChange, categ
       <Accordion type="multiple" value={openGroups} onValueChange={setOpenGroups} className="border-t border-border">
         {brands.length > 0 && section("brand", "Brand", filters.brands.join(", "), filters.brands.length, <>
           {brands.length > 5 && <div className="relative"><Search size={13} className="absolute left-2.5 top-3 text-muted-foreground" /><Input aria-label="Search brands" placeholder="Search brands" value={brandSearch} onChange={event => setBrandSearch(event.target.value)} className="h-9 pl-8 text-xs" /></div>}
-          <div className="max-h-44 overflow-y-auto">{shownBrands.map(option => renderOption(option, filters.brands.includes(option.value), () => onChange({ ...filters, brands: toggle(filters.brands, option.value) }), "brand"))}</div>
+          <div>{shownBrands.map(option => renderOption(option, filters.brands.includes(option.value), () => onChange({ ...filters, brands: toggle(filters.brands, option.value) }), "brand"))}</div>
           {!shownBrands.length && <p className="text-xs text-muted-foreground">No matching brands.</p>}
         </>)}
         {section("price", "Price range", filters.minPrice === null && filters.maxPrice === null ? "" : priceSummary, Number(filters.minPrice !== null || filters.maxPrice !== null), <>
@@ -86,7 +86,7 @@ export const RetailFilterSidebar = ({ filters, onChange, onCategoryChange, categ
         {groups.map(group => {
           const selected = filters.specs[group.key] ?? [];
           return section(`spec-${group.key}`, group.label, selected.join(", "), selected.length,
-            <div className="max-h-48 overflow-y-auto">{group.options.map(option => renderOption(option, selected.includes(option.value), () => onChange({ ...filters, specs: { ...filters.specs, [group.key]: toggle(selected, option.value) } }), group.label.toLowerCase()))}</div>);
+            <div>{group.options.map(option => renderOption(option, selected.includes(option.value), () => onChange({ ...filters, specs: { ...filters.specs, [group.key]: toggle(selected, option.value) } }), group.label.toLowerCase()))}</div>);
         })}
         {section("availability", "Availability", filters.inStockOnly ? "In stock only" : "", Number(filters.inStockOnly),
           <label className="flex cursor-pointer items-center gap-2 text-xs"><Checkbox aria-label="In stock only" checked={filters.inStockOnly} onCheckedChange={checked => onChange({ ...filters, inStockOnly: checked === true })} />In stock only</label>)}

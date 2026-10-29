@@ -386,14 +386,14 @@ export const ProductDetail = () => {
         </div>
 
         {/* Primary Product Showcase (Image Gallery + Buy Area) */}
-        <section className="section-container py-8 lg:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <section className="section-container py-6 lg:py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
             
             {/* Left Column: Image Gallery (Curved edges, filled frame & multi-angle thumbnails) */}
-            <div className="lg:col-span-7 xl:col-span-7 lg:sticky lg:top-28 space-y-4">
+            <div data-product-gallery className="min-w-0 lg:sticky lg:top-24 space-y-3">
               {/* Main Image Stage */}
               <div data-product-photo-container
-                className="group relative aspect-[4/3] sm:aspect-square md:aspect-[4/3] max-h-[580px] 2xl:max-h-[640px] w-full rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] flex items-center justify-center p-4 sm:p-10 transition-all hover:border-primary/40"
+                className="group relative aspect-[4/3] lg:aspect-auto lg:h-[min(30rem,calc(100svh-15rem))] lg:min-h-60 w-full rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] flex items-center justify-center p-4 sm:p-6 transition-all hover:border-primary/40"
               >
                 {images[activeIdx] ? (
                   <img onError={handleProductImageError}
@@ -412,7 +412,7 @@ export const ProductDetail = () => {
 
                 <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-3 left-4 text-xs text-muted-foreground bg-background/90 rounded px-2 py-1">{getProductPhotoCaption(product.image_url, product.name)}</span>
                 {/* Overlaid Badges */}
-                <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
+                <div className="absolute top-4 left-4 flex flex-col items-start gap-2 pointer-events-none max-w-[80%]">
                   {pct && (
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500 text-white text-[11px] font-extrabold uppercase tracking-wider shadow">
                       <TrendingDown size={12} /> Save {pct}%
@@ -464,18 +464,18 @@ export const ProductDetail = () => {
               )}
 
               {/* Value Guarantees Below Gallery */}
-              <div className="grid grid-cols-3 gap-3 pt-2 text-center">
-                <div className="p-3 rounded-2xl bg-card border border-border flex flex-col items-center justify-center gap-1">
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="p-2.5 rounded-2xl bg-card border border-border flex flex-col items-center justify-center gap-1">
                   <ShieldCheck size={18} className="text-primary" />
                   <span className="text-[11px] font-bold text-foreground">Official Warranty</span>
                   <span className="text-[10px] text-muted-foreground">5-Year Coverage</span>
                 </div>
-                <div className="p-3 rounded-2xl bg-card border border-border flex flex-col items-center justify-center gap-1">
+                <div className="p-2.5 rounded-2xl bg-card border border-border flex flex-col items-center justify-center gap-1">
                   <Truck size={18} className="text-primary" />
                   <span className="text-[11px] font-bold text-foreground">Fast Dispatch</span>
                   <span className="text-[10px] text-muted-foreground">24-48h Nationwide</span>
                 </div>
-                <div className="p-3 rounded-2xl bg-card border border-border flex flex-col items-center justify-center gap-1">
+                <div className="p-2.5 rounded-2xl bg-card border border-border flex flex-col items-center justify-center gap-1">
                   <Wrench size={18} className="text-primary" />
                   <span className="text-[11px] font-bold text-foreground">Certified Support</span>
                   <span className="text-[10px] text-muted-foreground">Expert Installers</span>
@@ -484,7 +484,7 @@ export const ProductDetail = () => {
             </div>
 
             {/* Right Column: Title, Pricing, Actions & Ordering */}
-            <div className="lg:col-span-5 xl:col-span-5 space-y-6">
+            <div data-product-purchase className="min-w-0 space-y-4">
               
               {/* Category, Brand, Actions Header */}
               <div className="flex items-center justify-between gap-2">
@@ -576,7 +576,7 @@ export const ProductDetail = () => {
               </div>
 
               {/* Price & Slashed Deal Box */}
-              <div className="p-5 rounded-3xl bg-muted/30 border border-border/80 space-y-3">
+              <div className="p-4 sm:p-5 rounded-3xl bg-muted/30 border border-border/80 space-y-3">
                 <div className="flex items-baseline justify-between gap-4 flex-wrap">
                   <div>
                     <span className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold block mb-0.5">Special Promo Price</span>
@@ -630,11 +630,11 @@ export const ProductDetail = () => {
               </div>
 
               {/* Quantity Selector & Action Buttons */}
-              <div className="space-y-3 pt-2">
+              <div className="space-y-2.5">
                 {/* Quantity Control */}
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                   <span className="text-xs font-bold text-foreground">Quantity:</span>
-                  <div className="inline-flex items-center rounded-xl border border-border bg-card p-1">
+                  <div className="inline-flex shrink-0 items-center rounded-xl border border-border bg-card p-1">
                     <button
                       type="button"
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -732,30 +732,31 @@ export const ProductDetail = () => {
                 </a>
               </div>
 
-              {/* Delivery & Assurance Micro-list */}
-              <div className="rounded-2xl border border-border bg-card p-4 space-y-2.5 text-xs text-muted-foreground">
-                <div className="flex items-start gap-2.5">
-                  <Truck size={16} className="text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-semibold text-foreground">Nationwide Delivery: </span>
-                    <span>Free delivery within Abuja & Jos. Flat ₦15,000 tracked transit across Lagos, Port Harcourt, and all 36 states.</span>
-                  </div>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <Clock size={16} className="text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-semibold text-foreground">Estimated Dispatch: </span>
-                    <span>Orders placed before 2:00 PM are dispatched same-day with direct tracking.</span>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
+
+          {/* Shared delivery details sit below both columns instead of extending only the buy area. */}
+          <div data-product-delivery className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 rounded-2xl border border-border bg-card p-4 text-xs text-muted-foreground">
+            <div className="flex items-start gap-2.5">
+              <Truck size={16} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold text-foreground">Nationwide Delivery: </span>
+                <span>Free delivery within Abuja & Jos. Flat ₦15,000 tracked transit across Lagos, Port Harcourt, and all 36 states.</span>
+              </div>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <Clock size={16} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold text-foreground">Estimated Dispatch: </span>
+                <span>Orders placed before 2:00 PM are dispatched same-day with direct tracking.</span>
+              </div>
+            </div>
+          </div>
+
         </section>
 
-        {/* Balanced Full-Width Section: Key Features & Technical Specifications (Zero blank spaces) */}
-        <section className="section-container py-12 border-t border-border space-y-8">
+        {/* Key features and technical specifications */}
+        <section className="section-container py-8 border-t border-border space-y-6">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-primary">Engineering & Performance</span>
             <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-foreground mt-1">

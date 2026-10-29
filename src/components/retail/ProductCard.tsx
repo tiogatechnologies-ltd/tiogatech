@@ -152,7 +152,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
         className={`relative ${
           layout === "list"
             ? "w-full sm:w-60 shrink-0 aspect-square sm:aspect-auto sm:min-h-[220px]"
-            : "aspect-square w-full"
+            : `${isCompact ? "aspect-square" : "aspect-[4/3]"} w-full`
         } overflow-hidden bg-muted/15 flex items-center justify-center p-3 sm:p-4`}
       >
         <Link data-product-photo-container to={productPath(product)} className="w-full h-full flex items-center justify-center">
@@ -251,7 +251,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
       </div>
 
       {/* Content Container */}
-      <div className={`${isCompact ? "p-3 sm:p-3.5" : "p-4 sm:p-5"} flex flex-col flex-1`}>
+      <div className={`${isCompact ? "p-3 sm:p-3.5" : "p-3.5 sm:p-4"} flex flex-col flex-1 min-w-0`}>
         {/* Category & Stock Status Header */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-1.5">
           <div className="flex items-center gap-1.5 min-w-0">

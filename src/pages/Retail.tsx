@@ -178,7 +178,7 @@ export const Retail = () => {
   const getGridGapClass = (cols: GridColumnOption) => {
     if (cols === 5) return "gap-3 sm:gap-3.5";
     if (cols === 4) return "gap-3.5 sm:gap-4";
-    return "gap-4 sm:gap-6";
+    return "gap-4 sm:gap-5";
   };
   const [sortBy, setSortBy] = useState<SortOption>("featured");
   const [quickViewProduct, setQuickViewProduct] = useState<RetailProduct | null>(null);
@@ -537,7 +537,7 @@ export const Retail = () => {
                       )}
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="left" className="w-[min(92vw,380px)] p-5 overflow-y-auto">
+                  <SheetContent side="left" data-lenis-prevent className="w-[min(92vw,380px)] p-5 overflow-y-auto">
                     <SheetHeader className="pb-4 border-b border-border mb-4">
                       <SheetTitle className="text-base font-display font-bold">Filter Hardware</SheetTitle>
                       <SheetDescription>Combine filters to find the right products.</SheetDescription>
@@ -711,11 +711,11 @@ export const Retail = () => {
             </div>
           </section>
           {/* Main Layout */}
-          <div className={`grid grid-cols-1 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-1"} gap-8`}>
+          <div className={`grid grid-cols-1 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-1"} gap-5 lg:gap-6`}>
             {/* Desktop Filter Sidebar */}
             {showDesktopFilters && (
               <div className="hidden lg:block lg:col-span-1">
-                <div role="region" aria-label="Product filters" className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto p-5 rounded-3xl bg-card border border-border/80 shadow-[var(--shadow-card)]">
+                <div role="region" aria-label="Product filters" data-lenis-prevent className="sticky top-24 max-h-[calc(100svh-7rem)] overflow-y-auto overscroll-contain p-4 rounded-3xl bg-card border border-border/80 shadow-[var(--shadow-card)]">
                   <RetailFilterSidebar
                       filters={filters}
                       onChange={(next) => updateFilters(next, next.minPrice !== filters.minPrice || next.maxPrice !== filters.maxPrice)}
