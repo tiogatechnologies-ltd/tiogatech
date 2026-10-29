@@ -9,7 +9,7 @@ import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, r
 import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
-import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
+import { resolveProductImage, handleProductImageError, isRepresentativeProductImage } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
 import { formatRetailPrice } from "@/lib/retailPricing";
 
@@ -55,7 +55,7 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
       name: product.name,
       price: product.price,
       numericPrice: product.numeric_price,
-      image: product.image_url,
+      image: resolveProductImage(product.image_url, product.category, product.name),
       category: product.category,
       quantity,
     });
@@ -71,12 +71,14 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
       <DialogContent className="max-w-3xl p-0 overflow-hidden bg-card border-border rounded-3xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Left: Image */}
-          <div className="relative bg-muted/30 p-8 flex items-center justify-center min-h-[300px] md:min-h-[400px]">
+          <div data-product-photo-container className="relative bg-muted/30 p-8 flex items-center justify-center min-h-[300px] md:min-h-[400px]">
             <img onError={handleProductImageError}
               src={resolveProductImage(product.image_url, product.category, product.name)}
               alt={product.name}
+              data-product-category={product.category}
               className="max-h-72 w-full object-contain drop-shadow-lg"
             />
+            <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-2 left-0 right-0 text-center text-xs text-muted-foreground">Representative image</span>
             <div className="absolute top-4 left-4 flex flex-col gap-1.5">
               {product.brand && (
                 <span className="px-3 py-1 rounded-full bg-black/60 text-white text-xs font-semibold backdrop-blur-md">

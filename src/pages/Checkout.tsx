@@ -624,15 +624,11 @@ const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDi
       {items.map((i: any) => (
         <li key={i.id} className="flex gap-3">
           <div className="relative shrink-0">
-            {i.image ? (
-              <img onError={handleProductImageError}
-                src={resolveProductImage(i.image, i.category)}
-                alt=""
-                className="h-14 w-14 rounded-lg object-contain bg-card border border-border p-1"
-              />
-            ) : (
-              <div className="h-14 w-14 rounded-lg bg-muted" />
-            )}
+            <img onError={handleProductImageError}
+              src={resolveProductImage(i.image, i.category, i.name)}
+              alt={i.name} data-product-category={i.category}
+              className="h-14 w-14 rounded-lg object-contain bg-card border border-border p-1"
+            />
             <span className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] grid place-items-center font-bold">{i.quantity}</span>
           </div>
           <div className="flex-1 min-w-0">

@@ -200,7 +200,7 @@ export const Wishlist = () => {
                     <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-muted/20 mb-3 flex items-center justify-center p-3">
                       <Link to={productPath(product)} className="w-full h-full flex items-center justify-center">
                         <img onError={handleProductImageError}
-                          src={resolveProductImage(product.image_url, product.category)}
+                          src={resolveProductImage(product.image_url, product.category, product.name)}
                           alt={product.name}
                           className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
                         />

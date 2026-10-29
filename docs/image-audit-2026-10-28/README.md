@@ -1,5 +1,17 @@
 # Retail photo audit — 28 October 2026
 
+## Follow-up — 29 October 2026
+
+The owner requested removal of every “Photo pending” display and explicitly authorized suitable representative photographs where an exact original could not be found. This supersedes the strict withholding policy described in the historical audit below.
+
+All **1,083 effective retail listings** now resolve to existing product photographs, with **zero pending images**. The 184 withheld static assignments were replaced with 60 manufacturer/supplier originals and 124 representative assignments. After website deduplication and database merging, **117 live listings** use representative photos. These have a discreet “Representative image” caption on cards, quick view and the main product gallery.
+
+The two database Felicity battery listings now resolve by LPBF48100 / LPBF48200 model to their matching catalogue photos. The database Tioga 3D Face ID lock uses a suitable face-recognition/video lock photograph, identified as representative. Missing and broken image handling now selects an actual product photograph by hardware type; it never returns the pending graphic. Names are passed through the gallery, wishlist, comparison, cart and checkout, including cached cart entries with no image.
+
+New online originals include all three HiNEN portable power stations and three MECO generators. Older smart-home entries use recovered supplier originals where available, including native price-list images for accessories. Low-resolution originals are retained without enlarging their source files; they are not claimed to be HD. Representative photos may be shared by appropriate product families and must not be described as unique or verified exact model images.
+
+Validation: 124 tests passed, TypeScript check and production build passed; every effective catalogue image was decoded and checked locally. The pricing and availability data were not changed. See `photo-followup-decisions.json`, `photo-followup-summary.json` and `retail-photos-after-followup.csv` for the current assignments. Earlier CSVs and counts below preserve the original audit findings; the 723 retained images still do not have independently established source/model provenance.
+
 Google sign-in branding is fixed and verified on the live customer account chooser. Google approved the existing **Tioga Technologies** app branding; it was published after switching the OAuth app from Testing to Production. The OAuth client ID and callback URL were retained. No additional scopes or credentials were introduced.
 
 ![Live Google account chooser](google-account-chooser.png)

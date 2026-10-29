@@ -46,10 +46,10 @@ describe("Product and package asset availability and pricing", () => {
     expect(deye8k?.image_url).toBe("/products/core/deye-8kw-hybrid.webp");
   });
 
-  it("missing photos do not guess a different model from the product name", () => {
-    expect(resolveProductImage(null, "Inverters", "Deye 8kW Hybrid Inverter")).toBe("/products/photo-pending.svg");
-    expect(resolveProductImage(null, "Batteries", "Itel 5kWh")).toBe("/products/photo-pending.svg");
-    expect(resolveProductImage("/products/minisim/old.webp", "Smart Locks", "K209")).toBe("/products/photo-pending.svg");
+  it("missing photos use model aliases or fitting owner-authorized representative photos", () => {
+    expect(resolveProductImage(null, "Inverters", "Deye 8kW Hybrid Inverter")).toBe("/products/core/deye-8kw-hybrid.webp");
+    expect(resolveProductImage(null, "Batteries", "Itel 5kWh")).toMatch(/battery|fel-bat/);
+    expect(resolveProductImage("/products/minisim/old.webp", "Smart Locks", "K209")).toBe("/products/core/stama-k209-face-lock.webp");
   });
 
   it("all 19 solar package capacities resolve to real hardware images and are 100% unique", () => {

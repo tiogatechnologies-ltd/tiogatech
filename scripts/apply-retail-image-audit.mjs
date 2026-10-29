@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+throw new Error('Retired strict-withholding policy. Use complete-retail-product-photos.mjs; the owner now permits suitable representative images.');
 const base = 'supabase/.temp';
 const products = JSON.parse(await fs.readFile(`${base}/image-audit-products-before.json`, 'utf8'));
 const originals = JSON.parse(await fs.readFile(`${base}/retail-image-originals.json`, 'utf8'));

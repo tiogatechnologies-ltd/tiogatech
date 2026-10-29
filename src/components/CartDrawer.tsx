@@ -121,7 +121,7 @@ const CartDrawer = () => {
               {items.map((i) => (
                 <div key={i.id} className="flex gap-3 rounded-2xl border border-border bg-card p-3">
                   {i.image ? (
-                    <img onError={handleProductImageError} src={resolveProductImage(i.image, i.category)} alt="" className="h-16 w-16 rounded-xl object-contain bg-muted p-1 shrink-0" loading="lazy" decoding="async" />
+                    <img onError={handleProductImageError} src={resolveProductImage(i.image, i.category, i.name)} alt={i.name} data-product-category={i.category} className="h-16 w-16 rounded-xl object-contain bg-muted p-1 shrink-0" loading="lazy" decoding="async" />
                   ) : (
                     <div className="h-16 w-16 rounded-xl bg-muted shrink-0 grid place-items-center text-muted-foreground text-xs">
                       {i.type === "package" ? "Pkg" : "Item"}

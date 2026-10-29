@@ -258,7 +258,7 @@ const ProductCompareTrayBody = () => {
                     title={item.name}
                   >
                     <img onError={handleProductImageError}
-                      src={resolveProductImage(item.image_url, item.category)}
+                      src={resolveProductImage(item.image_url, item.category, item.name)}
                       alt={item.name}
                       className="w-full h-full object-contain rounded-lg"
                     />
@@ -553,7 +553,7 @@ const ProductCompareTrayBody = () => {
                       <div className="flex flex-col items-center space-y-2.5">
                         <div className="relative aspect-square w-24 h-24 rounded-2xl overflow-hidden bg-card border border-border p-2 flex items-center justify-center">
                           <img onError={handleProductImageError}
-                            src={resolveProductImage(item.image_url, item.category)}
+                            src={resolveProductImage(item.image_url, item.category, item.name)}
                             alt={item.name}
                             className="max-h-full max-w-full object-contain"
                           />

@@ -46,7 +46,7 @@ import { parseRetailPrice } from "@/lib/retailPricing";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
-import { resolveProductImage, getMultiAngleProductImages, handleProductImageError } from "@/lib/productImages";
+import { resolveProductImage, getMultiAngleProductImages, handleProductImageError, isRepresentativeProductImage } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
@@ -211,7 +211,7 @@ export const ProductDetail = () => {
 
       if (found) {
         setRelated(all.filter((p) => p.category === found.category && p.id !== found.id).slice(0, 4));
-        const gallery = getMultiAngleProductImages(found.image_url, found.category);
+        const gallery = getMultiAngleProductImages(found.image_url, found.category, found.name);
         setImages(gallery.length > 0 ? gallery : [resolveProductImage(found.image_url, found.category, found.name)]);
         setActiveIdx(0);
         trackConversion("product_view", { product_id: found.id, slug });
@@ -392,12 +392,14 @@ export const ProductDetail = () => {
             {/* Left Column: Image Gallery (Curved edges, filled frame & multi-angle thumbnails) */}
             <div className="lg:col-span-7 xl:col-span-7 lg:sticky lg:top-28 space-y-4">
               {/* Main Image Stage */}
-              <div
+              <div data-product-photo-container
                 className="group relative aspect-[4/3] sm:aspect-square md:aspect-[4/3] max-h-[580px] 2xl:max-h-[640px] w-full rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] flex items-center justify-center p-4 sm:p-10 transition-all hover:border-primary/40"
               >
                 {images[activeIdx] ? (
                   <img onError={handleProductImageError}
                     src={images[activeIdx]}
+                    data-product-category={product.category}
+                    data-product-name={product.name}
                     alt={`${product.name} - ${categoryLabels[product.category] ?? product.category}`}
                     className="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-105"
                   />
@@ -407,6 +409,7 @@ export const ProductDetail = () => {
                   </div>
                 )}
 
+                <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-3 left-4 text-xs text-muted-foreground bg-background/90 rounded px-2 py-1">Representative image</span>
                 {/* Overlaid Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
                   {pct && (
@@ -941,7 +944,7 @@ export const ProductDetail = () => {
                     <div className="space-y-3.5">
                       <div className="aspect-[4/3] rounded-2xl bg-muted/20 overflow-hidden p-3 flex items-center justify-center">
                         <img onError={handleProductImageError}
-                          src={resolveProductImage(item.image_url, item.category)}
+                          src={resolveProductImage(item.image_url, item.category, item.name)}
                           alt={item.name}
                           loading="lazy"
                           className="max-h-full max-w-full object-contain"
@@ -1072,7 +1075,7 @@ export const ProductDetail = () => {
                   <Link to={productPath(rel)} className="space-y-3 block">
                     <div className="aspect-[4/3] rounded-2xl bg-muted/20 overflow-hidden p-3 flex items-center justify-center">
                       <img onError={handleProductImageError}
-                        src={resolveProductImage(rel.image_url, rel.category)}
+                        src={resolveProductImage(rel.image_url, rel.category, rel.name)}
                         alt={rel.name}
                         loading="lazy"
                         className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"

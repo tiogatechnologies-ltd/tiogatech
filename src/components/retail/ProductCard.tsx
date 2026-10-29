@@ -18,7 +18,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
-import { resolveProductImage, handleProductImageError, PRODUCT_PHOTO_PENDING } from "@/lib/productImages";
+import { resolveProductImage, handleProductImageError, isRepresentativeProductImage } from "@/lib/productImages";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, resolvePromoBadge } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
@@ -155,13 +155,15 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
             : "aspect-square w-full"
         } overflow-hidden bg-muted/15 flex items-center justify-center p-3 sm:p-4`}
       >
-        <Link to={productPath(product)} className="w-full h-full flex items-center justify-center">
+        <Link data-product-photo-container to={productPath(product)} className="w-full h-full flex items-center justify-center">
           <img onError={handleProductImageError}
             src={productImage}
-            alt={productImage === PRODUCT_PHOTO_PENDING ? `${product.name} — photo pending verification` : product.name}
+            alt={product.name}
+            data-product-category={product.category}
             loading="lazy"
             className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
           />
+          <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-1 left-0 right-0 text-center text-[10px] text-muted-foreground bg-background/80 py-0.5">Representative image</span>
         </Link>
 
         {/* Gradient overlay for bottom legibility */}
