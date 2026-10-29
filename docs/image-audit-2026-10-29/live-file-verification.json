@@ -1,0 +1,625 @@
+{
+  "codeCommit": "e11ee7e883e398e0c01589fd2a63f15ba7161ddd",
+  "deployment": "https://vercel.com/lumi-volt/tiogatech/A3sQVr6SQKX9tNdgq5feV9anvC1k",
+  "result": "success",
+  "files": [
+    {
+      "image": "/products/brand-reviewed/3b8dd62cd9022747.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/29f7eccb2726c0bc.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/095c9bbef0f30831.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/6b66bbdade13eb78.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/ae431547b291fb81.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/ec817fba278da461.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/6f906f683ec1823c.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/0e286ee58a689176.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/e6a37d1c8e8c67f5.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/b72d1c1fd49f7fac.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/7e1f90b91e28cc82.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/24505c2e780a9545.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/bbde98e7ec3da260.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/bad203bb60130496.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/624b645754de0ee0.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/98cc16453afa0503.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/0063e4afdb2f94cc.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/1eab8aba8a9c4bc2.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/0913d325f19f78a9.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/616001c7e1dc9358.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/f77d31a9f620ac08.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/7c6d478b7e4f0978.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/bef06f13b5c535ba.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/ddc4eb785dffe116.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/7f8cf8aa1076c768.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/e3e64e4b8542cab7.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/f4c7b5910acdf0a9.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/43bf7e77857e921c.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/273f3ca136e22960.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/bc9a7736107a2685.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/5506cc881b195f8f.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/e1c5ec8c5cfaf387.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/867d3b113436e13f.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/ca1ba875f3a985b3.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/37beebdf5be19ab0.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/872535b3dd3b6fa2.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/18b260869177206d.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/654e7ea6a1162580.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/19d5a73c07a7cef5.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/a08c3b0a176042c1.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/f400f2959720b517.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/1524114b7df689e7.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/eb005c4fd64e5dcc.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/1db537e76569a15c.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/2eb525853bf8d127.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/5628328932c9eef2.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/a6d6f84ad3eb4def.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/a98a81e37d878656.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/ef450542dff84372.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/606e47261e1888a0.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/e8746b05eb1e75d5.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/0e43d41984339638.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/1f03e7e85efbde03.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/93e93173fd540475.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/18df6ee2b6d63737.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/bfde9cbe2c19fad0.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/7968e2a6566e8846.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/1d8bd31a04a46ef2.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/4b67403b63cbd605.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/6af2facad4db2ce5.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/84784990434bcc24.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/7900ad12c4f5bec9.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/61f86f9890a7cc39.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/93148679c8f2215e.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/f486b49538b1b9a6.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/f972435d9c6d1be2.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/ae67f51a8113c9a5.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/d3a71daf003b89ec.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/afb90abe3fd329a7.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/6cca8c1353a88ce1.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/7af861ee840bd365.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/1eb83d6a49c1cc0a.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/90baa4a1f71c7842.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/78b677dcc61acee7.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/2433aec4d0df7261.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/cb91528198a582c9.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/380bd1f82c4e3df6.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/0fdcd95fd3dd0ea6.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/9c0a6380937a76f1.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/dd86fec21112454c.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/8e7721d36d41d0ef.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/9d2da11d2e81b053.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/aa831da3d821902d.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/71604e93d375315c.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/05b798d165aea821.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/6cdb956df75de4e6.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/verified/9fe0927b8e74ead2.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/1236f5d4083af485.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/cb67066486bee130.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/dfcfe655558643c8.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/37eebb0ffcbe2e64.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/bread-energy/bread-inv-11k.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/af04cacdf9b20d03.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/38acbedd9efcebd3.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/3b67da8462a72abc.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/9c410c40ef0a8e04.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/bbd54c29b46b88b4.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/b981daa1efe58905.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/1ae5fc19db82090f.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/99383f1494cdf3f4.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/236e2a3a572bcd0d.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/084db55ebcc5168b.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    },
+    {
+      "image": "/products/brand-reviewed/ba4aba8721674b2d.webp",
+      "status": 200,
+      "type": "image/webp",
+      "matchesLocal": true
+    }
+  ]
+}

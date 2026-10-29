@@ -36,4 +36,4 @@ Module, complete system, empty rack, control unit, charge controller, inverter, 
 - `catalogue-images.csv`: effective image paths, dimensions and reference captions for all 1,083 merged live listings.
 - `summary.json`: scope and counts.
 
-Validation: all 127 tests passed, TypeScript checks passed, and the production build passed. Local browser checks verified VitaBank's actual image in quick view and separate Deye module, PDU, empty-rack and populated-system images. Deployment and live-file verification are recorded after release.
+Validation: all 127 tests passed, TypeScript checks passed, and the production build passed. Local browser checks verified VitaBank's actual image in quick view and separate Deye module, PDU, empty-rack and populated-system images. Production deployment of code commit `e11ee7e883e398e0c01589fd2a63f15ba7161ddd` succeeded. All 103 distinct corrected image paths returned HTTP 200 with image content types and matched the local files byte for byte. Live browser checks confirmed the original VitaBank photo in its product gallery and separate Deye module/rack/PDU/system assignments.
