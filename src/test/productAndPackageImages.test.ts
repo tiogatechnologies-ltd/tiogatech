@@ -5,6 +5,7 @@ import path from "path";
 import { PRODUCTS, expansionCatalogProducts, blueCarbonProducts, dealerProducts } from "@/data/products";
 import { mergeProducts } from "@/lib/mergeProducts";
 import { resolveProductImage } from "@/lib/productImages";
+import brandPhotoFallbacks from "@/data/retailBrandPhotoFallbacks.json";
 import { getSolarPackageImage } from "@/hooks/useSolarPackages";
 import { getSmartLockImage } from "@/hooks/useSmartLocks";
 import { getDefaultPackageImage } from "@/lib/packageImages";
@@ -48,7 +49,7 @@ describe("Product and package asset availability and pricing", () => {
 
   it("missing photos use model aliases or fitting owner-authorized representative photos", () => {
     expect(resolveProductImage(null, "Inverters", "Deye 8kW Hybrid Inverter")).toBe("/products/core/deye-8kw-hybrid.webp");
-    expect(resolveProductImage(null, "Batteries", "Itel 5kWh")).toMatch(/battery|fel-bat/);
+    expect(resolveProductImage(null, "Batteries", "Itel 5kWh")).toBe(brandPhotoFallbacks.brands.itel.battery);
     expect(resolveProductImage("/products/minisim/old.webp", "Smart Locks", "K209")).toBe("/products/core/stama-k209-face-lock.webp");
   });
 

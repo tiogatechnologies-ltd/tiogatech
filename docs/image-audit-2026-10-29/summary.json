@@ -1,0 +1,32 @@
+{
+  "staticProducts": 1097,
+  "liveMergedProducts": 1083,
+  "correctedImageAssignments": 206,
+  "correctedLiveListings": 206,
+  "distinctCorrectedPhotos": 103,
+  "newLocalPhotos": 101,
+  "representativeLiveListings": 246,
+  "missingPhotos": 0,
+  "brandsCorrected": [
+    "Luxpower",
+    "SRNE",
+    "Sungene",
+    "JMS",
+    "Yingli",
+    "Felicity",
+    "Deye",
+    "SolarPro",
+    "Infini",
+    "Itel",
+    "Suness",
+    "Bread Energy",
+    "Exulted Eagles",
+    "Sorotec",
+    "Blue Carbon"
+  ],
+  "correctionKinds": {
+    "same-brand-family": 178,
+    "exact-model": 27,
+    "manufacturer-illustration": 1
+  }
+}

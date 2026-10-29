@@ -76,3 +76,7 @@ Other entries need the exact stocked variant clarified. For example, “EcoFlow 
 The working acquisition data is kept in the ignored `supabase/.temp` folder. Source preparation/refinement scripts consume those saved public supplier/manufacturer catalogues; they do not update prices. The downloader records actual source dimensions and only resizes downwards. To recover the reviewed download plan on a clean checkout, copy `source-plan.json` to `supabase/.temp/retail-image-source-plan.json` before running `scripts/fetch-retail-image-originals.mjs`. Reapplying decisions requires the original catalogue snapshot and visual review notes; do not infer authenticity from automated name similarity.
 
 Validation: all 122 automated tests, the production build, and TypeScript checks passed after the final source refinement. Browser checks confirmed a corrected EcoFlow product gallery, the pending state in catalogue and quick view, and the live Google account chooser name. Production deployment of code commit `6b3ace5` succeeded. All 175 distinct updated image-file paths (including the pending illustration) returned HTTP 200 from the live website and matched the local reviewed files byte for byte.
+
+## Same-brand correction, 29 October 2026
+
+The category-wide representative follow-up above is superseded by ../image-audit-2026-10-29/README.md. It contained cross-brand substitutions and incorrect Deye component/system matches; those are corrected in the newer manifest. Historical decisions are retained as history, not current recommendations.

@@ -1,3 +1,5 @@
+// Retained for audit history only; superseded by the owner's 29 October same-brand rule.
+throw new Error('Retired: cross-brand category fallbacks are prohibited. Use apply-brand-reviewed-photos.mjs and reviewed same-brand sources.');
 // Follow-up to the strict audit: the owner now permits fitting representative photos.
 // Keeps exact originals first, records every substitution and never fabricates uniqueness.
 import fs from 'node:fs/promises';

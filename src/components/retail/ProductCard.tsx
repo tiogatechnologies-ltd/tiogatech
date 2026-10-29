@@ -18,7 +18,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
-import { resolveProductImage, handleProductImageError, isRepresentativeProductImage } from "@/lib/productImages";
+import { resolveProductImage, handleProductImageError, isRepresentativeProductImage, getProductPhotoCaption } from "@/lib/productImages";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, resolvePromoBadge } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
@@ -160,10 +160,11 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
             src={productImage}
             alt={product.name}
             data-product-category={product.category}
+                    data-product-brand={product.brand}
             loading="lazy"
             className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
           />
-          <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-1 left-0 right-0 text-center text-[10px] text-muted-foreground bg-background/80 py-0.5">Representative image</span>
+          <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-1 left-0 right-0 text-center text-[10px] text-muted-foreground bg-background/80 py-0.5">{getProductPhotoCaption(product.image_url, product.name)}</span>
         </Link>
 
         {/* Gradient overlay for bottom legibility */}

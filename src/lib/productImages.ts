@@ -2,6 +2,9 @@ import type { SyntheticEvent } from "react";
 import retailImageOverrides from "@/data/retailImageOverrides.json";
 import representativeImages from "@/data/retailRepresentativeImages.json";
 import photos from "@/data/retailPhotoFallbacks.json";
+import brandPhotos from "@/data/retailBrandPhotoFallbacks.json";
+import photoCaptions from "@/data/retailPhotoCaptions.json";
+import { photoBrandKey, photoNameKey, productPhotoForm } from "./productPhotoIdentity";
 import bgPanelCloseup from "@/assets/bg-panel-closeup.jpg";
 import featureSolarPanel from "@/assets/feature-solar-panel.jpg";
 import bgCommercialSolar from "@/assets/bg-commercial-solar.jpg";
@@ -38,60 +41,13 @@ export interface StockImageOption {
   preview: string;
 }
 
+// Brand-specific choices only. A category alone is never enough to select a photo.
 export const STOCK_IMAGE_LIBRARY: StockImageOption[] = [
-  // High-Resolution Clear Hardware
-  { label: "Deye Hybrid Inverter (Tier-1 Crisp)", category: "Inverters", url: "/products/clear/inverter-deye-hybrid.webp", preview: "/products/clear/inverter-deye-hybrid.webp" },
-  { label: "Growatt / Must Solar Inverter", category: "Inverters", url: "/products/clear/inverter-growatt-must.webp", preview: "/products/clear/inverter-growatt-must.webp" },
-  { label: "Felicity LiFePO4 Battery (Tier-1 Crisp)", category: "Batteries", url: "/products/clear/battery-felicity-lifepo4.webp", preview: "/products/clear/battery-felicity-lifepo4.webp" },
-  { label: "Powerwall & Lithium Rack Battery", category: "Batteries", url: "/products/clear/battery-powerwall-rack.webp", preview: "/products/clear/battery-powerwall-rack.webp" },
-  { label: "Longi Hi-MO 5 Solar Module", category: "Solar Panels", url: "/products/clear/panel-longi-solar.webp", preview: "/products/clear/panel-longi-solar.webp" },
-  { label: "Canadian Solar Monocrystalline Panel", category: "Solar Panels", url: "/products/clear/panel-canadian-solar.webp", preview: "/products/clear/panel-canadian-solar.webp" },
-  { label: "3D Face ID Biometric Lock", category: "Smart Locks", url: "/products/clear/lock-face-recognition.webp", preview: "/products/clear/lock-face-recognition.webp" },
-  { label: "Apex Fingerprint Mortise Lock", category: "Smart Locks", url: "/products/clear/lock-fingerprint-handle.webp", preview: "/products/clear/lock-fingerprint-handle.webp" },
-  { label: "Slim Aluminum Door Lock", category: "Smart Locks", url: "/products/clear/lock-slim-aluminum.webp", preview: "/products/clear/lock-slim-aluminum.webp" },
-  { label: "Outdoor Solar 4G Dual PTZ Camera", category: "CCTV", url: "/products/clear/camera-ptz-solar.webp", preview: "/products/clear/camera-ptz-solar.webp" },
-  { label: "Outdoor PTZ Night Vision Dome Camera", category: "CCTV", url: "/products/clear/camera-ptz-outdoor.webp", preview: "/products/clear/camera-ptz-outdoor.webp" },
-  { label: "Tuya Glass Smart Touch Switch", category: "Home Automation", url: "/products/clear/switch-2gang-white.webp", preview: "/products/clear/switch-2gang-white.webp" },
-  { label: "Tuya Smart Touch Central Panel", category: "Home Automation", url: "/products/clear/panel-touch-4inch.webp", preview: "/products/clear/panel-touch-4inch.webp" },
-  { label: "Frameless Coaxial Ceiling Speaker", category: "Home Automation", url: "/products/clear/speaker-ceiling-coaxial.webp", preview: "/products/clear/speaker-ceiling-coaxial.webp" },
-
-  // Solar & Inverters
-  { label: "Solar Inverter Closeup (Tier-1)", category: "Inverters", url: "/src/assets/bg-panel-closeup.jpg", preview: bgPanelCloseup },
-  { label: "Solar Inverter Dual MPPT", category: "Inverters", url: "/src/assets/offer-solar.jpg", preview: offerSolar },
-  { label: "Solar Hybrid Inverter High-Voltage", category: "Inverters", url: "/src/assets/cat-solar.jpg", preview: catSolar },
-  { label: "Solar Array Field Perspective", category: "Inverters", url: "/src/assets/bg-solar-field.jpg", preview: bgSolarField },
-  { label: "Commercial Rooftop Solar", category: "Inverters", url: "/src/assets/bg-commercial-solar.jpg", preview: bgCommercialSolar },
-
-  // Batteries
-  { label: "LiFePO4 Lithium Storage Pack", category: "Batteries", url: "/src/assets/feature-battery.jpg", preview: featureBattery },
-  { label: "Powerwall Battery Wall Mount", category: "Batteries", url: "/src/assets/bg-bundle.jpg", preview: bgBundle },
-  { label: "Compact Battery & Circuit System", category: "Batteries", url: "/src/assets/bg-circuit.jpg", preview: bgCircuit },
-
-  // Solar Panels
-  { label: "Mono PERC High-Efficiency Panel", category: "Solar Panels", url: "/src/assets/feature-solar-panel.jpg", preview: featureSolarPanel },
-  { label: "Bifacial Commercial Solar Panel", category: "Solar Panels", url: "/src/assets/bg-commercial-solar.jpg", preview: bgCommercialSolar },
-
-  // Smart Locks
-  { label: "Biometric Interior Smart Handle Lock", category: "Smart Locks", url: "/src/assets/stock-smart-lock.png", preview: stockSmartLock },
-  { label: "Elite 3D Face ID Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-elite.jpg", preview: bgSmartlockElite },
-  { label: "Apex Biometric Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-apex.jpg", preview: bgSmartlockApex },
-  { label: "Pro Slim Aluminum Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-pro.jpg", preview: bgSmartlockPro },
-  { label: "Base Gate & Heavy Duty Lock", category: "Smart Locks", url: "/src/assets/bg-smartlock-base.jpg", preview: bgSmartlockBase },
-  { label: "Biometric Smart Padlock", category: "Smart Locks", url: "/src/assets/bg-smartlock-accessory.jpg", preview: bgSmartlockAccessory },
-  { label: "Smart Hotel Access Ecosystem", category: "Smart Locks", url: "/src/assets/bg-smartlock-hotel.jpg", preview: bgSmartlockHotel },
-
-  // Home Automation
-  { label: "Smart Touch Glass Wall Switch", category: "Home Automation", url: "/src/assets/feature-smart-automation-device.jpg", preview: featureSmartAutomationDevice },
-  { label: "Multi-Gang Smart Switch Panel", category: "Home Automation", url: "/src/assets/feature-control-panel.jpg", preview: featureControlPanel },
-  { label: "Smart IoT Mobile App Sync", category: "Home Automation", url: "/src/assets/feature-smart-app.jpg", preview: featureSmartApp },
-  { label: "Granite Smart Touch Display Hub", category: "Home Automation", url: "/src/assets/feature-tablet-monitor.jpg", preview: featureTabletMonitor },
-  { label: "Universal Smart Home Hub", category: "Home Automation", url: "/src/assets/hero-smart-home.jpg", preview: heroSmartHome },
-
-  // CCTV & Security
-  { label: "PTZ Indoor Smart Security Camera", category: "CCTV", url: "/src/assets/feature-cctv.jpg", preview: featureCctv },
-  { label: "2K Outdoor Weatherproof Bullet Camera", category: "CCTV", url: "/src/assets/feature-security.jpg", preview: featureSecurity },
-  { label: "4MP Vandal-Proof Dome Camera", category: "CCTV", url: "/src/assets/offer-security.jpg", preview: offerSecurity },
-];
+  { label: "Luxpower VitaBank 500", category: "Portable Power Stations", original: "/products/luxpower/luxpower-vitabank-500-power-station.webp" },
+  { label: "Deye BOS-G battery module", category: "Batteries", original: "/products/deye/deye-bos-g-pro-5kwh-module.webp" },
+  { label: "Felicity SCCM charge-controller family", category: "Charge Controllers", original: "/products/felicity/fel-mppt-fl-sccm6048-li.webp" },
+  { label: "Infini HP800 inverter family", category: "Inverters", original: "/products/infinisolar/infini-hp800-5-5kva-48v.webp" },
+].map(({ label, category, original }) => ({ label, category, url: retailImageOverrides[original], preview: retailImageOverrides[original] }));
 
 const ASSET_MAP: Record<string, string> = {
   "/src/assets/bg-panel-closeup.jpg": bgPanelCloseup,
@@ -129,21 +85,34 @@ export const PRODUCT_PHOTO_PENDING = "/products/photo-pending.svg";
 // Model aliases cover database listings whose names differ from the static catalogue.
 function modelPhoto(name = ""): string | undefined {
   if (/felicity/i.test(name)) {
-    if (/lpbf\s*48100/i.test(name)) return "/products/felicity/fel-bat-fl-lpbf48100.webp";
-    if (/lpbf\s*48200/i.test(name)) return "/products/felicity/fel-bat-fl-lpbf48200.webp";
+    if (/lpbf\s*48100/i.test(name)) return retailImageOverrides["/products/felicity/fel-bat-fl-lpbf48100.webp"];
+    if (/lpbf\s*48200/i.test(name)) return retailImageOverrides["/products/felicity/fel-bat-fl-lpbf48200.webp"];
   }
   if (/deye.*8\s*kw/i.test(name)) return "/products/core/deye-8kw-hybrid.webp";
   if (/deye.*5\s*kw/i.test(name)) return "/products/core/deye-5kw-hybrid.webp";
   return undefined;
 }
 
-/** Owner-authorized representative photos. Match the hardware type before broad categories. */
-export function getProductPhotoFallback(category = "", name = ""): string {
+/** Preserve product identity before considering any representative photograph. */
+export function getProductPhotoFallback(category = "", name = "", brand = ""): string {
+  const names: Record<string, string> = brandPhotos.names;
+  const assigned = names[photoNameKey(name)];
+  if (assigned) return assigned;
   const exact = modelPhoto(name);
   if (exact) return exact;
+  const families: Record<string, Record<string, string>> = brandPhotos.brands;
+  const key = photoNameKey(name);
+  const brandKey = brand ? photoBrandKey(brand)
+    : /exulted|^dealer/i.test(name) ? "exultedeagles"
+      : /sorotech|sorotec/i.test(name) ? "sorotec"
+        : Object.keys(families).find(b => key.includes(b));
+  const form = productPhotoForm(name, category);
+  if (brandKey && !/^(?:tuya|tioga)/.test(brandKey)) return families[brandKey]?.[form] || "";
+  // Solar equipment must have a known brand and matching form. Never use a Deye,
+  // Itel, Felicity, etc. image as a universal category fallback.
+  if (form && !["fan", "pole"].includes(form)) return "";
   const n = name.toLowerCase();
   const c = category.toLowerCase();
-  if (/charge controller|mppt.*controller/.test(n)) return photos.chargeController;
   if (/\bfan\b/.test(n)) return photos.fan;
   if (/hard disk|hard drive/.test(n)) return photos.hardDisk;
   if (/\bups\b.*router|power supply.*camera/.test(n)) return photos.ups;
@@ -160,14 +129,7 @@ export function getProductPhotoFallback(category = "", name = ""): string {
   if (/ceiling.*speaker|passive.*speaker|speaker.*passive/.test(n)) return photos.ceilingSpeaker;
   if (/amplifier/.test(n)) return photos.amplifier;
   if (/speaker/.test(n)) return photos.speaker;
-  if (/power station|solar generator|vitabank/.test(n)) return photos.powerStation;
-  if (/solar.*(?:panel|mono|poly)|photovoltaic/.test(n)) return photos.panel;
   if (/expansion pole/.test(n)) return photos.pole;
-  if (/street light/.test(n)) return photos.streetLight;
-  if (/solar flood/.test(n)) return photos.solarFlood;
-  if (/all.in.one/.test(n)) return photos.allInOne;
-  if (/battery|lifepo4|lithium/.test(n)) return photos.battery;
-  if (/inverter/.test(n)) return photos.inverter;
   if (/camera|ptz|cctv/.test(n)) return /solar|outdoor/.test(n) ? photos.solarCamera : photos.camera;
   if (/gas/.test(n)) return photos.gasSensor;
   if (/door sensor|window sensor/.test(n)) return photos.doorSensor;
@@ -186,13 +148,6 @@ export function getProductPhotoFallback(category = "", name = ""): string {
   }
   if (/gateway|network/.test(n)) return photos.gateway;
   if (/lighting|light|track/.test(n)) return photos.trackLight;
-  if (/charge controller/.test(c)) return photos.chargeController;
-  if (/solar panels/.test(c)) return photos.panel;
-  if (/batter/.test(c)) return photos.battery;
-  if (/inverter/.test(c)) return photos.inverter;
-  if (/portable power/.test(c)) return photos.powerStation;
-  if (/all.in.one/.test(c)) return photos.allInOne;
-  if (/ess/.test(c)) return photos.commercialEss;
   if (/lock/.test(c)) return photos.lockFace;
   if (/camera|cctv/.test(c)) return photos.camera;
   if (/switch/.test(c)) return photos.switch1;
@@ -200,12 +155,16 @@ export function getProductPhotoFallback(category = "", name = ""): string {
   if (/curtain/.test(c)) return photos.curtainTrack;
   if (/gateway|network/.test(c)) return photos.gateway;
   if (/audio|intercom/.test(c)) return photos.speaker;
-  if (/street light/.test(c)) return photos.streetLight;
   if (/light|track/.test(c)) return photos.trackLight;
   return photos.controlPanel;
 }
 
 export function resolveProductImage(url?: string | null, category?: string, name?: string): string {
+  // Saved carts may hold a previously resolved (wrong-brand) URL. The reviewed
+  // product name takes precedence without changing that URL for its real brand.
+  const reviewed: Record<string, { image: string }> = brandPhotos.reviewedNames;
+  const productPhoto = reviewed[photoNameKey(name)];
+  if (productPhoto) return productPhoto.image;
   const original = url?.trim();
   if (!original || original === PRODUCT_PHOTO_PENDING || original.startsWith("/products/minisim/")) return getProductPhotoFallback(category, name);
   const overrides: Record<string, string> = retailImageOverrides;
@@ -213,16 +172,25 @@ export function resolveProductImage(url?: string | null, category?: string, name
 }
 
 export function isRepresentativeProductImage(url?: string | null, _category?: string, name?: string): boolean {
+  const reviewed: Record<string, { representative: boolean }> = brandPhotos.reviewedNames;
+  const productPhoto = reviewed[photoNameKey(name)];
+  if (productPhoto) return productPhoto.representative;
   const original = url?.trim();
-  if (!original || original === PRODUCT_PHOTO_PENDING || original.startsWith("/products/minisim/")) return !modelPhoto(name);
+  if (!original || original === PRODUCT_PHOTO_PENDING || original.startsWith("/products/minisim/")) return !modelPhoto(name) && !brandPhotos.exactNames.includes(photoNameKey(name));
   return Object.prototype.hasOwnProperty.call(representativeImages, original);
+}
+
+export function getProductPhotoCaption(url?: string | null, name?: string): string {
+  const reviewed: Record<string, { caption: string }> = brandPhotos.reviewedNames;
+  const captions: Record<string, string> = photoCaptions;
+  return reviewed[photoNameKey(name)]?.caption || captions[url?.trim() || ""] || "Representative image";
 }
 
 export function handleProductImageError(event: SyntheticEvent<HTMLImageElement>) {
   const image = event.currentTarget;
-  const fallback = getProductPhotoFallback(image.dataset.productCategory, image.dataset.productName || image.alt);
+  const fallback = getProductPhotoFallback(image.dataset.productCategory, image.dataset.productName || image.alt, image.dataset.productBrand);
   // Stop after one replacement, including when a locally hosted fallback fails.
-  if (image.dataset.photoFallbackSrc === image.getAttribute("src") || image.getAttribute("src") === fallback) return;
+  if (!fallback || image.dataset.photoFallbackSrc === image.getAttribute("src") || image.getAttribute("src") === fallback) return;
   image.dataset.photoFallbackSrc = fallback;
   image.src = fallback;
   image.title = "Representative image";

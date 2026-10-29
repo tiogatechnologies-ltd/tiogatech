@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
 
+throw new Error('Retired: fabricated model badges and cross-brand stock photos are prohibited. Use reviewed original brand photographs.');
+
 fs.mkdirSync('public/products/solarpro', { recursive: true });
 fs.mkdirSync('public/products/infinisolar', { recursive: true });
 fs.mkdirSync('public/products/solis', { recursive: true });

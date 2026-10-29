@@ -46,7 +46,7 @@ import { parseRetailPrice } from "@/lib/retailPricing";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
-import { resolveProductImage, getMultiAngleProductImages, handleProductImageError, isRepresentativeProductImage } from "@/lib/productImages";
+import { resolveProductImage, getMultiAngleProductImages, handleProductImageError, isRepresentativeProductImage, getProductPhotoCaption } from "@/lib/productImages";
 import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
@@ -399,6 +399,7 @@ export const ProductDetail = () => {
                   <img onError={handleProductImageError}
                     src={images[activeIdx]}
                     data-product-category={product.category}
+                    data-product-brand={product.brand}
                     data-product-name={product.name}
                     alt={`${product.name} - ${categoryLabels[product.category] ?? product.category}`}
                     className="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-105"
@@ -409,7 +410,7 @@ export const ProductDetail = () => {
                   </div>
                 )}
 
-                <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-3 left-4 text-xs text-muted-foreground bg-background/90 rounded px-2 py-1">Representative image</span>
+                <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-3 left-4 text-xs text-muted-foreground bg-background/90 rounded px-2 py-1">{getProductPhotoCaption(product.image_url, product.name)}</span>
                 {/* Overlaid Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
                   {pct && (
