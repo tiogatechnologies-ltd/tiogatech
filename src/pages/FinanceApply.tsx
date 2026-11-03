@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { calcPlan, formatNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 import DirectDebitConsent from "@/components/DirectDebitConsent";
 import SiteHeader from "@/components/SiteHeader";
+import { isValidNigerianPhone, toNigerianE164 } from "@/lib/customerWhatsapp";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
 
@@ -119,6 +120,7 @@ const FinanceApply = () => {
     setSubmitError(null);
     if (!form.consent) return toast.error("Please consent to the terms");
     if (!form.full_name?.trim() || !form.email?.trim() || !form.phone?.trim()) return toast.error("Fill your name, email and phone");
+    if (!isValidNigerianPhone(form.phone)) return toast.error("Enter a valid Nigerian phone number, e.g. 0803 123 4567");
     if (!form.total_amount_ngn || Number(form.total_amount_ngn) < 1_000_000) return toast.error("Minimum financed amount is ₦1,000,000");
     if (paymentMode === "auto_debit" && !ddConsent) return toast.error("Please confirm the direct-debit authorization");
 
@@ -128,7 +130,7 @@ const FinanceApply = () => {
         user_id: user?.id ?? null,
         full_name: form.full_name.trim(),
         email: form.email.trim(),
-        phone: form.phone.trim(),
+        phone: toNigerianE164(form.phone),
         address: form.address || null,
         state: form.state,
         city: form.city || null,

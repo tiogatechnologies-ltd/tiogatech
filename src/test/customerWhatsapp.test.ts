@@ -19,3 +19,14 @@ describe("customer phone normalisation", () => {
     expect(isValidNigerianPhone("08031234567")).toBe(true);
   });
 });
+
+describe("phonesMatch", () => {
+  it("matches a stored +234 number against local or partial input", async () => {
+    const { phonesMatch } = await import("@/lib/customerWhatsapp");
+    expect(phonesMatch("+2348031234567", "0803 123 4567")).toBe(true);
+    expect(phonesMatch("+2348031234567", "8031234567")).toBe(true);
+    expect(phonesMatch("+2348031234567", "+234 803 123 4567")).toBe(true);
+    expect(phonesMatch("+2348031234567", "0803 999 0000")).toBe(false);
+    expect(phonesMatch("+2348031234567", "123")).toBe(false);
+  });
+});

@@ -53,7 +53,7 @@ const Lumi = () => {
   const c = (cms || {}) as { eyebrow?: string; title?: string; subtitle?: string };
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Lumi - Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with Lumi by Tioga Technologies." path="/lumivolt" jsonLd={[breadcrumbJsonLd([{ name: "Lumi", path: "/lumivolt" }]), serviceJsonLd({ name: "Lumi Residential Solar Installation", description: "Off-grid, hybrid and grid-tie solar systems engineered, sized and installed for Nigerian homes, with lithium battery backup and 24/7 monitoring.", path: "/lumivolt", serviceType: "Solar power system installation" })]} />
+      <SEO title="Lumi - Residential Solar by Tioga" description="Rooftop solar, lithium battery backup and hybrid inverters engineered for Nigerian homes. Beat the blackout with Lumi by Tioga Technologies." path="/lumi" jsonLd={[breadcrumbJsonLd([{ name: "Lumi", path: "/lumi" }]), serviceJsonLd({ name: "Lumi Residential Solar Installation", description: "Off-grid, hybrid and grid-tie solar systems engineered, sized and installed for Nigerian homes, with lithium battery backup and 24/7 monitoring.", path: "/lumi", serviceType: "Solar power system installation" })]} />
       <SiteHeader />
 
       <PageHero

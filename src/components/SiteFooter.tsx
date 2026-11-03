@@ -13,7 +13,7 @@ const company = [
   { label: "Career", to: "/career" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
-  { label: "Lumi - Residential", to: "/lumivolt" },
+  { label: "Lumi - Residential", to: "/lumi" },
   { label: "VoltAi - Smart Automation", to: "/voltai" },
 ];
 

@@ -13,7 +13,7 @@ import { useTheme } from "next-themes";
 
 // Sub-brands now live inside the Products mega-menu (see MegaMenu.tsx).
 const brandLinks: { label: string; to: string }[] = [
-  { label: "Lumi", to: "/lumivolt" },
+  { label: "Lumi", to: "/lumi" },
 ];
 
 // Secondary links shown after the merged Products mega-menu.

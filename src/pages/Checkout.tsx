@@ -14,6 +14,7 @@ import DirectDebitConsent from "@/components/DirectDebitConsent";
 import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
+import { isValidNigerianPhone, toNigerianE164 } from "@/lib/customerWhatsapp";
 import { useSiteSetting, parseServiceAreas } from "@/hooks/useSiteSetting";
 
 const NG_STATES = ["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT - Abuja","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"];
@@ -27,7 +28,7 @@ const schema = z.object({
   address: z.string().trim().min(3, "Address required").max(200),
   city: z.string().trim().min(2, "City required").max(80),
   state: z.string().trim().min(2, "State required"),
-  phone: z.string().trim().min(7, "Phone required").max(40),
+  phone: z.string().trim().min(7, "Phone required").max(40).refine(isValidNigerianPhone, "Enter a valid Nigerian phone number, e.g. 0803 123 4567"),
 });
 
 const Checkout = () => {
@@ -239,7 +240,7 @@ const Checkout = () => {
         user_id: user?.id ?? null,
         full_name: `${form.first_name} ${form.last_name}`.trim(),
         email: form.email,
-        phone: form.phone,
+        phone: toNigerianE164(form.phone),
         address: effectiveAddress,
         state: form.state,
         city: effectiveCity,
@@ -283,7 +284,7 @@ const Checkout = () => {
       city: effectiveCity,
       state: form.state,
       postal: form.postal.trim(),
-      phone: form.phone.trim(),
+      phone: toNigerianE164(form.phone),
       country: "Nigeria",
     };
 
@@ -300,7 +301,7 @@ const Checkout = () => {
       // reject the whole INSERT, so every checkout failed before Paystack ran.
       tracking_number: trackingId,
       full_name: `${form.first_name} ${form.last_name}`.trim(),
-      phone: form.phone.trim(),
+      phone: toNigerianE164(form.phone),
       email: form.email?.trim() || null,
       location: `${effectiveAddress}, ${effectiveCity}, ${form.state}`.trim(),
       notes: form.apartment ? `Apt/Suite: ${form.apartment}` : null,
@@ -369,7 +370,7 @@ const Checkout = () => {
               order_number: orderNumber,
               tracking_id: trackingId,
               full_name: `${form.first_name} ${form.last_name}`.trim(),
-              phone: form.phone,
+              phone: toNigerianE164(form.phone),
             },
           },
         });

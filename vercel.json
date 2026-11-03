@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/(about|account|admin|affiliate|ai-pricing|auth|blog|career|careers|catalog|cctv|checkout|coming-soon|contact|customize|dashboard|energy-calculator|finance|home-automation|login|lumi|lumivolt|lumivolt-ai|newsletter|packages|pricing|privacy|product|r|reset-password|retail|security|signup|sizing|smart-locks|solar-assessment|solar-packages|solar-solutions|solutions|staff|store|subscription|support|terms|track|unsubscribe|voltai)(/.*)?",
       "destination": "/index.html"
     }
   ]

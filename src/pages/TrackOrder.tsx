@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { phonesMatch } from "@/lib/customerWhatsapp";
 import { Link, useSearchParams } from "react-router-dom";
 import { Package, Search, Loader2, CheckCircle2, Truck, ClipboardList, AlertCircle } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
@@ -161,7 +162,7 @@ const TrackOrder = () => {
       if (local) {
         const localPhone = (local.phone || "").replace(/\D/g, "");
         const localEmail = (local.email || "").toLowerCase();
-        if (localEmail.includes(who.toLowerCase()) || (normWho.length >= 7 && localPhone.endsWith(normWho)) || localPhone === normWho) {
+        if (localEmail.includes(who.toLowerCase()) || phonesMatch(local.phone || "", who) || localPhone === normWho) {
           setOrder(local);
           setLoading(false);
           return;
@@ -176,7 +177,7 @@ const TrackOrder = () => {
       if (found) {
         const fPhone = (found.phone || "").replace(/\D/g, "");
         const fEmail = (found.email || "").toLowerCase();
-        if (fEmail.includes(who.toLowerCase()) || (normWho.length >= 7 && fPhone.endsWith(normWho)) || fPhone === normWho) {
+        if (fEmail.includes(who.toLowerCase()) || phonesMatch(found.phone || "", who) || fPhone === normWho) {
           setOrder(found);
           setLoading(false);
           return;
@@ -226,7 +227,7 @@ const TrackOrder = () => {
         const contactDigits = who.replace(/\D/g, "");
         const matchesContact =
           (dbMatches.email && dbMatches.email.toLowerCase() === who.toLowerCase()) ||
-          (contactDigits.length >= 7 && phoneDigits.endsWith(contactDigits));
+          phonesMatch(dbMatches.phone || "", who) || (contactDigits.length >= 7 && phoneDigits.endsWith(contactDigits));
 
         if (matchesContact) {
           setOrder(dbMatches as TrackedOrder);

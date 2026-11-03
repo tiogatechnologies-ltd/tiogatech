@@ -28,3 +28,13 @@ export function customerWhatsappLink(phone: string, text?: string): string {
   const base = `https://wa.me/${internationalDigits(phone)}`;
   return text ? `${base}?text=${encodeURIComponent(text)}` : base;
 }
+
+/**
+ * Does the phone a customer typed (any local/international format, or the
+ * tail of it) belong to the stored number? Stored numbers are "+234..." while
+ * customers type "0803...", so a plain endsWith on raw digits no longer works.
+ */
+export function phonesMatch(stored: string, typed: string): boolean {
+  const tail = (typed || "").replace(/\D/g, "").replace(/^0+/, "").replace(/^234/, "");
+  return tail.length >= 7 && internationalDigits(stored).endsWith(tail);
+}
