@@ -11,6 +11,24 @@ const corsHeaders = {
 const EMAIL_RE = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/;
 const clip = (v: unknown, max: number) => String(v ?? "").slice(0, max);
 
+const PRODUCT_LABELS: Record<string, string> = {
+  solar: "Solar",
+  panels: "Solar",
+  batteries: "Solar",
+  full_solar: "Solar",
+  smarthome: "Smart Home",
+  smartlocks: "Smart Locks",
+  cctv: "CCTV",
+  other: "Other",
+};
+
+const SOURCE_LABELS: Record<string, string> = {
+  custom_solution_request: "Custom Solution Request",
+  lumi_sizer: "Solar Sizing Saved",
+  checkout_flexible: "Flexible Payment Application",
+  finance_application: "Finance Application",
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -61,18 +79,21 @@ serve(async (req) => {
       const email = clip(lead.email, 255);
       const location = clip(lead.location, 200);
       const budget = clip(lead.budget, 120);
-      const notes = clip(lead.notes, 2000);
-      const products = (Array.isArray(lead.products) ? lead.products : []).slice(0, 30).map((p: unknown) => clip(p, 120));
+      const summary = clip(lead.summary, 500);
+      const notes = [clip(lead.notes, 2000), summary].filter(Boolean).join("\n");
+      const rawProducts = (Array.isArray(lead.products) ? lead.products : []).slice(0, 30).map((p: unknown) => clip(p, 120));
+      const products = [...new Set(rawProducts.map((p: string) => PRODUCT_LABELS[p] || p))];
+      const sourceLabel = SOURCE_LABELS[clip(lead.source, 60)] || "Storefront Lead & Quote Request";
       const waDigits = toInternationalDigits(phone);
 
       to = "sales@tiogatechnologies.com";
       subject = `🔔 New Customer Enquiry: ${fullName.replace(/[\r\n]+/g, " ") || "New Lead"} — ${budget.replace(/[\r\n]+/g, " ") || "Budget TBD"}`;
-      textBody = `New Customer Enquiry: ${fullName}\nPhone: ${phone}\nEmail: ${email || "N/A"}\nLocation: ${location}\nBudget: ${budget || "N/A"}\nProducts: ${products.join(", ")}\nNotes: ${notes || "None"}`;
+      textBody = `New Customer Enquiry (${sourceLabel}): ${fullName}\nPhone: ${phone}\nEmail: ${email || "N/A"}\nLocation: ${location}\nBudget: ${budget || "N/A"}\nProducts: ${products.join(", ")}\nNotes: ${notes || "None"}`;
       htmlBody = `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="background: #0d6b3f; color: #fff; padding: 20px 24px; border-radius: 12px 12px 0 0;">
     <h1 style="margin: 0; font-size: 20px;">🔔 New Customer Enquiry Submitted</h1>
-    <p style="margin: 4px 0 0; font-size: 13px; opacity: 0.9;">Storefront Lead & Quote Request</p>
+    <p style="margin: 4px 0 0; font-size: 13px; opacity: 0.9;">${escapeHtml(sourceLabel)}</p>
   </div>
   <div style="background: #ffffff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 12px 12px;">
     <table style="width: 100%; border-collapse: collapse;">
@@ -82,7 +103,7 @@ serve(async (req) => {
       <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Location</td><td style="padding: 8px 0; font-size: 14px;">${escapeHtml(location)}</td></tr>
       <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Budget Range</td><td style="padding: 8px 0; font-size: 14px; font-weight: 600; color: #059669;">${escapeHtml(budget || "Not specified")}</td></tr>
       <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Products / Interest</td><td style="padding: 8px 0; font-size: 14px;">${escapeHtml(products.join(", ") || "General Enquiry")}</td></tr>
-      <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Notes / Load Details</td><td style="padding: 8px 0; font-size: 14px;">${escapeHtml(notes || "N/A")}</td></tr>
+      <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Notes / Load Details</td><td style="padding: 8px 0; font-size: 14px; white-space: pre-wrap;">${escapeHtml(notes || "N/A")}</td></tr>
     </table>
     <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e5e7eb; display: flex; gap: 12px;">
       ${waDigits ? `<a href="https://wa.me/${escapeHtml(waDigits)}" style="display: inline-block; background: #25D366; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">💬 Chat on WhatsApp</a>` : ""}
