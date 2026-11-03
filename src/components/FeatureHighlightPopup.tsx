@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 import { X, Calculator, Wallet, ArrowRight } from "lucide-react";
@@ -6,6 +6,8 @@ import { X, Calculator, Wallet, ArrowRight } from "lucide-react";
 const STORAGE_KEY = "tioga.featureHighlight.dismissedAt";
 const SUPPRESS_MS = 1000 * 60 * 60 * 24 * 3; // 3 days
 const SHOW_DELAY_MS = 6000;
+const AUTO_HIDE_MS = 10000;
+const SCROLL_DISMISS_PX = 40;
 
 // Don't nag on these routes.
 const HIDDEN_ROUTES = [
@@ -37,12 +39,29 @@ const FeatureHighlightPopup = () => {
     return () => window.clearTimeout(t);
   }, [pathname]);
 
-  const dismiss = () => {
+  const dismiss = useCallback(() => {
     try {
       localStorage.setItem(STORAGE_KEY, String(Date.now()));
     } catch {}
     setOpen(false);
-  };
+  }, []);
+
+  // Don't leave the popup covering the page: close it after 10s or as soon as
+  // the visitor scrolls. Both count as a dismissal so it doesn't pop up again
+  // on the next route change.
+  useEffect(() => {
+    if (!open) return;
+    const startY = window.scrollY;
+    const onScroll = () => {
+      if (Math.abs(window.scrollY - startY) > SCROLL_DISMISS_PX) dismiss();
+    };
+    const timer = window.setTimeout(dismiss, AUTO_HIDE_MS);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [open, dismiss]);
 
   if (!open) return null;
 
