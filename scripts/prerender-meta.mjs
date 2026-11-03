@@ -82,7 +82,7 @@ for (const p of products) {
   n++;
 }
 
-// 3. Blog posts (database).
+// 3. Blog posts and database-only products.
 let posts = 0;
 try {
   const env = { ...process.env };
@@ -95,7 +95,15 @@ try {
   const url = env.VITE_SUPABASE_URL || env.SUPABASE_URL;
   const key = env.VITE_SUPABASE_PUBLISHABLE_KEY || env.SUPABASE_PUBLISHABLE_KEY;
   if (url && key) {
-    const { data } = await createClient(url, key).from("blog_posts").select("slug,title,excerpt").eq("published", true).limit(1000);
+    const client = createClient(url, key);
+    const { data: dbProducts } = await client.from("products").select("id,name,description").eq("is_active", true).limit(2000);
+    for (const p of dbProducts || []) {
+      if (!p.name || existsSync(join(dist, "product", productSlug(p), "index.html"))) continue;
+      const description = clean(p.description, 155) || `${p.name} available from Tioga Technologies in Nigeria. Request a quote or order online.`;
+      write(`/product/${productSlug(p)}`, { title: clean(p.name, 70), description });
+      n++;
+    }
+    const { data } = await client.from("blog_posts").select("slug,title,excerpt").eq("published", true).limit(1000);
     for (const p of data || []) {
       if (!p.slug || !p.title) continue;
       write(`/blog/${p.slug}`, { title: clean(p.title, 70), description: clean(p.excerpt, 155) || clean(p.title, 155) });
