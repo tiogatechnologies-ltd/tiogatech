@@ -11,6 +11,7 @@ import { inputClass, selectBtnClass } from "./lead-form/StepUI";
 import AddressInput from "./lead-form/AddressInput";
 import CategorySelect from "./lead-form/CategorySelect";
 import { solarStepKeys, renderSolarStep, canProceedSolar } from "./lead-form/SolarFlow";
+import { isValidNigerianPhone, toNigerianE164 } from "@/lib/customerWhatsapp";
 import { automationStepKeys, renderAutomationStep, canProceedAutomation } from "./lead-form/AutomationFlow";
 import { renderSecurityStep, canProceedSecurity, getSecuritySteps } from "./lead-form/SecurityFlow";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
@@ -21,6 +22,8 @@ interface LeadFormProps {
 }
 
 const commonSteps = ["budget", "contact", "final"];
+
+const EMAIL_RE = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/;
 
 function getCategorySteps(category: FlowCategory, data: LeadFormData): string[] {
   switch (category) {
@@ -89,8 +92,8 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
       const products = mapCategoryToProducts(data.category, data);
       const leadPayload = {
         full_name: data.fullName.trim(),
-        phone: data.phone.trim(),
-        email: data.email.trim() || null,
+        phone: toNigerianE164(data.phone),
+        email: data.email.trim(),
         location: data.location.trim(),
         products,
         has_electricity: data.category === "solar" ? data.systemType : null,
@@ -151,7 +154,7 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
     if (!data.category) return false;
 
     if (currentStepKey === "budget") return !!data.budget;
-    if (currentStepKey === "contact") return !!(data.fullName.trim() && data.phone.trim());
+    if (currentStepKey === "contact") return !!(data.fullName.trim() && isValidNigerianPhone(data.phone) && EMAIL_RE.test(data.email.trim()));
     if (currentStepKey === "final") return data.consent;
 
     switch (data.category) {
@@ -255,11 +258,17 @@ const LeadForm = ({ open, onClose }: LeadFormProps) => {
               <input className={inputClass} placeholder="Your full name" value={data.fullName} onChange={(e) => update({ fullName: e.target.value })} />
             </div>
             <div>
-              <label className="text-xs font-medium text-muted-foreground mb-1 block">Phone Number *</label>
-              <input className={inputClass} placeholder="Phone number" type="tel" value={data.phone} onChange={(e) => update({ phone: e.target.value })} />
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">WhatsApp Number *</label>
+              <div className="flex items-center gap-2">
+                <span className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm font-medium text-card-foreground">+234</span>
+                <input className={inputClass} placeholder="803 123 4567" type="tel" inputMode="tel" autoComplete="tel-national" value={data.phone} onChange={(e) => update({ phone: e.target.value })} />
+              </div>
+              {data.phone.trim() && !isValidNigerianPhone(data.phone) && (
+                <p className="mt-1 text-xs text-destructive">Enter a valid Nigerian number, e.g. 0803 123 4567</p>
+              )}
             </div>
             <div>
-              <label className="text-xs font-medium text-muted-foreground mb-1 block">Email (Optional)</label>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Email *</label>
               <input className={inputClass} placeholder="email@example.com" type="email" value={data.email} onChange={(e) => update({ email: e.target.value })} />
             </div>
             {data.category !== "solar" && (

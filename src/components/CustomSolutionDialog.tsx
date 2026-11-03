@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { isValidNigerianPhone, toNigerianE164 } from "@/lib/customerWhatsapp";
 
 interface Props {
   open: boolean;
@@ -33,12 +34,15 @@ export const CustomSolutionDialog = ({ open, onOpenChange, assessmentId, default
     if (!form.full_name || !form.email || !form.phone || !form.requirements) {
       return toast.error("Please complete all required fields");
     }
+    if (!isValidNigerianPhone(form.phone)) {
+      return toast.error("Enter a valid Nigerian WhatsApp number, e.g. 0803 123 4567");
+    }
     setLoading(true);
     const { error } = await (supabase.from("custom_solution_requests" as any).insert({
       assessment_id: assessmentId || null,
       full_name: form.full_name.slice(0, 120),
       email: form.email.slice(0, 160),
-      phone: form.phone.slice(0, 32),
+      phone: toNigerianE164(form.phone),
       location: form.location.slice(0, 200),
       requirements: form.requirements.slice(0, 4000),
       status: "new",
@@ -51,7 +55,7 @@ export const CustomSolutionDialog = ({ open, onOpenChange, assessmentId, default
             assessment_id: assessmentId || null,
             full_name: form.full_name,
             email: form.email,
-            phone: form.phone,
+            phone: toNigerianE164(form.phone),
             location: form.location,
             summary: form.requirements.slice(0, 200),
           },
@@ -83,7 +87,7 @@ export const CustomSolutionDialog = ({ open, onOpenChange, assessmentId, default
               <Input value={form.full_name} onChange={update("full_name")} required maxLength={120} />
             </div>
             <div>
-              <Label>Phone *</Label>
+              <Label>WhatsApp Number *</Label>
               <Input value={form.phone} onChange={update("phone")} required maxLength={32} />
             </div>
           </div>

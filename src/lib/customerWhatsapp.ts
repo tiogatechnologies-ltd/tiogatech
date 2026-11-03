@@ -5,11 +5,26 @@
  * digits, which silently produced a dead link for any locally-formatted
  * number - this is the one place that conversion happens.
  */
-export function customerWhatsappLink(phone: string, text?: string): string {
+export function internationalDigits(phone: string): string {
   let digits = (phone || "").replace(/\D/g, "");
   if (digits.startsWith("00")) digits = digits.slice(2);
   else if (digits.startsWith("0")) digits = "234" + digits.slice(1);
   else if (digits.length === 10) digits = "234" + digits;
-  const base = `https://wa.me/${digits}`;
+  return digits;
+}
+
+/** Storage format for customer numbers: "+2348031234567", or "" when empty. */
+export function toNigerianE164(phone: string): string {
+  const digits = internationalDigits(phone);
+  return digits ? `+${digits}` : "";
+}
+
+/** True for a Nigerian mobile/landline number: +234 followed by 10 digits. */
+export function isValidNigerianPhone(phone: string): boolean {
+  return /^234\d{10}$/.test(internationalDigits(phone));
+}
+
+export function customerWhatsappLink(phone: string, text?: string): string {
+  const base = `https://wa.me/${internationalDigits(phone)}`;
   return text ? `${base}?text=${encodeURIComponent(text)}` : base;
 }
