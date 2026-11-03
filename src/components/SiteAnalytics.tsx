@@ -27,7 +27,10 @@ const SiteAnalytics = () => {
     if (!loaded || typeof document === "undefined") return;
 
     const ga = (settings.google_analytics_id || "").trim();
-    if (GA_RE.test(ga)) {
+    // index.html already loads the primary GA4 tag; skip it here so the same id
+    // pasted into Admin settings is not counted twice.
+    const gaInHtml = !!document.querySelector(`script[src*="gtag/js?id=${encodeURIComponent(ga)}"]`);
+    if (GA_RE.test(ga) && !gaInHtml) {
       addOnce("tioga-ga-src", () => {
         const s = document.createElement("script");
         s.async = true;
