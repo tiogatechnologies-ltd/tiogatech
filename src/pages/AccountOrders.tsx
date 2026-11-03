@@ -134,7 +134,7 @@ const AccountOrders = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO
+      <SEO noindex
         title="My Orders - Tioga Technologies"
         description="View your full Tioga Technologies order history, track delivery progress and reorder past purchases."
         path="/account/orders"

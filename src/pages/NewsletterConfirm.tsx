@@ -27,7 +27,7 @@ const NewsletterConfirm = () => {
 
   return (
     <div className="min-h-screen">
-      <SEO title="Confirm Newsletter Subscription" description="Confirm your Tioga Technologies newsletter subscription." path="/newsletter/confirm" />
+      <SEO noindex title="Confirm Newsletter Subscription" description="Confirm your Tioga Technologies newsletter subscription." path="/newsletter/confirm" />
       <SiteHeader />
       <section className="pt-28 sm:pt-32 pb-20">
         <div className="section-container max-w-md text-center">

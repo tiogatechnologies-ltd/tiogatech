@@ -69,15 +69,18 @@ const SiteAnalytics = () => {
       });
     }
 
-    // Turning indexing off has to override the static tag in index.html.
-    const robots = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
-    const value = settings.robots_index ? "index, follow" : "noindex, nofollow";
-    if (robots) robots.content = value;
-    else {
-      const m = document.createElement("meta");
-      m.setAttribute("name", "robots");
-      m.content = value;
-      document.head.appendChild(m);
+    // Only the site-wide "indexing off" switch is applied here. Writing
+    // "index, follow" back used to overwrite the per-page noindex that SEO and
+    // AdminSEO set, making private and admin pages indexable.
+    if (!settings.robots_index) {
+      const robots = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+      if (robots) robots.content = "noindex, nofollow";
+      else {
+        const m = document.createElement("meta");
+        m.setAttribute("name", "robots");
+        m.content = "noindex, nofollow";
+        document.head.appendChild(m);
+      }
     }
   }, [loaded, settings]);
 

@@ -1,6 +1,6 @@
 /* TEAM */
 Company: Tioga Technologies
-Site: https://tiogatechnologies.com
+Site: https://www.tiogatechnologies.com
 Contact: sales@tiogatechnologies.com
 Location: Jos, Plateau State, Nigeria
 

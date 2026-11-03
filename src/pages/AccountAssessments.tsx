@@ -33,7 +33,7 @@ const AccountAssessments = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="My Solar Assessments - Tioga" description="Your saved solar assessments and reports." path="/account/assessments" />
+      <SEO noindex title="My Solar Assessments - Tioga" description="Your saved solar assessments and reports." path="/account/assessments" />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-4xl mx-auto">

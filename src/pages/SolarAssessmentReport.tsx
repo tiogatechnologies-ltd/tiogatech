@@ -116,7 +116,7 @@ const SolarAssessmentReport = () => {
   if (paywall) {
     return (
       <div className="min-h-screen flex flex-col">
-        <SEO title="Upgrade to continue - Tioga Technologies" description="Unlock additional solar assessments." path={`/solar-assessment/${id}/full`} />
+        <SEO noindex title="Upgrade to continue - Tioga Technologies" description="Unlock additional solar assessments." path={`/solar-assessment/${id}/full`} />
         <SiteHeader />
         <main className="flex-1 grid place-items-center p-6 bg-muted/30">
           <div />
@@ -132,7 +132,7 @@ const SolarAssessmentReport = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title={`Full Solar Report - ${assessment.full_name}`} description="Complete solar engineering specification with bill of materials." path={`/solar-assessment/${id}/full`} />
+      <SEO noindex title={`Full Solar Report - ${assessment.full_name}`} description="Complete solar engineering specification with bill of materials." path={`/solar-assessment/${id}/full`} />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-4xl mx-auto space-y-6">

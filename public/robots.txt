@@ -4,6 +4,20 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /newsletter/confirm
 Disallow: /newsletter/unsubscribe
+Disallow: /unsubscribe
+Disallow: /account
+Disallow: /affiliate
+Disallow: /staff
+Disallow: /dashboard
+Disallow: /auth
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /checkout
+Disallow: /sizing/
+Disallow: /solar-assessment/
+Disallow: /retail/wishlist
+Disallow: /r/
 
 # AI / LLM crawlers - explicitly allowed for AI search visibility
 User-agent: GPTBot
@@ -42,4 +56,4 @@ Allow: /
 User-agent: meta-externalagent
 Allow: /
 
-Sitemap: https://tiogatechnologies.com/sitemap.xml
+Sitemap: https://www.tiogatechnologies.com/sitemap.xml

@@ -412,7 +412,7 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Checkout" description="Complete your Tioga order securely." path="/checkout" />
+      <SEO noindex title="Checkout" description="Complete your Tioga order securely." path="/checkout" />
 
       {/* Top bar */}
       <header className="border-b border-border bg-background sticky top-0 z-30">

@@ -157,7 +157,7 @@ const Packages = () => {
             "@type": "CollectionPage",
             name: "Tioga Technologies - All Packages",
             description: "Curated solar, smart lock and home automation bundles for Nigerian homes and businesses.",
-            url: "https://tiogatechnologies.com/packages",
+            url: "https://www.tiogatechnologies.com/packages",
             about: ["Solar inverter systems", "Smart locks", "Home automation bundles"],
           },
         ]}

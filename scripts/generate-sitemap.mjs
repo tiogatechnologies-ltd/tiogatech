@@ -3,7 +3,7 @@ import { writeFileSync, readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 import { createClient } from "@supabase/supabase-js";
 
-const BASE_URL = "https://tiogatechnologies.com";
+const BASE_URL = "https://www.tiogatechnologies.com";
 
 /** @type {{path: string, changefreq: string, priority: string}[]} */
 const STATIC_ENTRIES = [
@@ -24,6 +24,7 @@ const STATIC_ENTRIES = [
   { path: "/solar-assessment", changefreq: "monthly", priority: "0.8" },
   { path: "/ai-pricing", changefreq: "monthly", priority: "0.6" },
   { path: "/contact", changefreq: "monthly", priority: "0.8" },
+  { path: "/support", changefreq: "monthly", priority: "0.6" },
   { path: "/career", changefreq: "weekly", priority: "0.6" },
   { path: "/careers/jobs", changefreq: "weekly", priority: "0.6" },
   { path: "/blog", changefreq: "daily", priority: "0.8" },
@@ -78,6 +79,19 @@ async function fetchBlogPosts() {
     }
   }
   return list;
+}
+
+// The retail catalogue lives mostly in src/data (only a handful of rows are in
+// the database), so those products must be listed too or Google never finds
+// them. Needs vite-node (see the prebuild/predev scripts) to load the .ts data.
+async function fetchStaticProducts() {
+  try {
+    const { PRODUCTS } = await import("../src/data/products.ts");
+    return (PRODUCTS || []).map((p) => ({ id: p.id, name: p.name }));
+  } catch (err) {
+    console.warn("sitemap: could not load static products - " + (err && err.message));
+    return [];
+  }
 }
 
 async function fetchProducts() {
@@ -147,14 +161,19 @@ async function fetchCatalogue(table, routePrefix) {
   }
 }
 
-const [posts, products, solarPkgs, lockItems, autoPkgs, cctvPkgs] = await Promise.all([
+const [posts, dbProducts, staticProducts, solarPkgs, lockItems, autoPkgs, cctvPkgs] = await Promise.all([
   fetchBlogPosts(),
   fetchProducts(),
+  fetchStaticProducts(),
   fetchCatalogue("solar_packages", "/packages/solar"),
   fetchCatalogue("smart_locks", "/packages/lock"),
   fetchCatalogue("home_automation_packages", "/packages/automation"),
   fetchCatalogue("cctv_packages", "/packages/cctv"),
 ]);
+// Database rows win over static ones for the same URL (they carry updated_at).
+const productsBySlug = new Map();
+for (const p of [...staticProducts, ...dbProducts]) productsBySlug.set(productSlug(p), p);
+const products = [...productsBySlug.values()];
 const cataloguePages = [...solarPkgs, ...lockItems, ...autoPkgs, ...cctvPkgs];
 
 const blocks = [

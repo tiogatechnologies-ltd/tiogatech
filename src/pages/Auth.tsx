@@ -152,7 +152,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Sign in or create your Tioga account" description="Sign in to manage orders, financing applications, and your affiliate dashboard." path="/auth" />
+      <SEO noindex title="Sign in or create your Tioga account" description="Sign in to manage orders, financing applications, and your affiliate dashboard." path="/auth" />
       <SiteHeader />
       <main className="flex-1 grid place-items-center px-4 py-12 bg-muted/30">
         <div className="w-full max-w-md">

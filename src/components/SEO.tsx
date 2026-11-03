@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const SITE_URL = "https://tiogatechnologies.com";
+const SITE_URL = "https://www.tiogatechnologies.com";
 
 interface SEOProps {
   title: string;
@@ -9,9 +9,11 @@ interface SEOProps {
   image?: string;
   type?: "website" | "article";
   jsonLd?: Record<string, any> | Array<Record<string, any>>;
+  /** Keep private/utility pages (account, checkout, tokenised reports) out of search results. */
+  noindex?: boolean;
 }
 
-const SEO = ({ title, description, path = "/", image, type = "website", jsonLd }: SEOProps) => {
+const SEO = ({ title, description, path = "/", image, type = "website", jsonLd, noindex = false }: SEOProps) => {
   const url = `${SITE_URL}${path}`;
   const fullTitle = title.includes("Tioga") ? title : `${title} | Tioga Technologies`;
   const ldArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
@@ -21,6 +23,8 @@ const SEO = ({ title, description, path = "/", image, type = "website", jsonLd }
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={url} />
+      <meta name="robots" content={noindex ? "noindex,follow" : "index,follow"} />
+      <meta name="googlebot" content={noindex ? "noindex,follow" : "index,follow"} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />

@@ -139,7 +139,7 @@ const AccountSubscription = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="My AI Plan & Credits - Tioga" description="Manage your AI subscription, view free credits and usage history." path="/account/subscription" />
+      <SEO noindex title="My AI Plan & Credits - Tioga" description="Manage your AI subscription, view free credits and usage history." path="/account/subscription" />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-5xl mx-auto space-y-6">

@@ -173,7 +173,7 @@ const Account = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="My Account - Tioga" description="Manage your Tioga profile, orders, financing, AI credits and role-specific dashboards." path="/account" />
+      <SEO noindex title="My Account - Tioga" description="Manage your Tioga profile, orders, financing, AI credits and role-specific dashboards." path="/account" />
       <SiteHeader />
       <main className="flex-1 pt-24 sm:pt-28 pb-10 px-4 bg-muted/30">
         <div className="max-w-6xl 2xl:max-w-7xl 3xl:max-w-[1680px] mx-auto space-y-6">

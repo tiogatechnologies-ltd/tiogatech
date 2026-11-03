@@ -3,7 +3,7 @@
  * for search engines and AI answer engines.
  */
 
-export const SITE_URL = "https://tiogatechnologies.com";
+export const SITE_URL = "https://www.tiogatechnologies.com";
 
 const ORG_REF = { "@id": `${SITE_URL}/#organization` };
 

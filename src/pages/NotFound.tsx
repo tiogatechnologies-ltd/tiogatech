@@ -22,7 +22,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Page not found (404)" description="The page you're looking for doesn't exist." path={location.pathname} />
+      <SEO noindex title="Page not found (404)" description="The page you're looking for doesn't exist." path={location.pathname} />
       <SiteHeader />
       <main className="flex-1 pt-28 sm:pt-32 pb-20">
         <div className="section-container max-w-2xl text-center">

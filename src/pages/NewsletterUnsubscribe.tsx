@@ -26,7 +26,7 @@ const NewsletterUnsubscribe = () => {
 
   return (
     <div className="min-h-screen">
-      <SEO title="Unsubscribe from Newsletter" description="Unsubscribe from the Tioga Technologies newsletter." path="/newsletter/unsubscribe" />
+      <SEO noindex title="Unsubscribe from Newsletter" description="Unsubscribe from the Tioga Technologies newsletter." path="/newsletter/unsubscribe" />
       <SiteHeader />
       <section className="pt-28 sm:pt-32 pb-20">
         <div className="section-container max-w-md text-center">

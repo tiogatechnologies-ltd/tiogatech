@@ -45,18 +45,18 @@ const BlogPost = () => {
     publisher: {
       "@type": "Organization",
       name: "Tioga Technologies",
-      logo: { "@type": "ImageObject", url: "https://tiogatechnologies.com/favicon.png" },
+      logo: { "@type": "ImageObject", url: "https://www.tiogatechnologies.com/favicon.png" },
     },
-    mainEntityOfPage: `https://tiogatechnologies.com/blog/${post.slug}`,
+    mainEntityOfPage: `https://www.tiogatechnologies.com/blog/${post.slug}`,
   };
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://tiogatechnologies.com/" },
-      { "@type": "ListItem", position: 2, name: "Blog", item: "https://tiogatechnologies.com/blog" },
-      { "@type": "ListItem", position: 3, name: post.title, item: `https://tiogatechnologies.com/blog/${post.slug}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.tiogatechnologies.com/" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.tiogatechnologies.com/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: `https://www.tiogatechnologies.com/blog/${post.slug}` },
     ],
   };
 
@@ -100,7 +100,7 @@ const BlogPost = () => {
           </div>
 
           <SharePost
-            url={`https://tiogatechnologies.com/blog/${post.slug}`}
+            url={`https://www.tiogatechnologies.com/blog/${post.slug}`}
             title={post.title}
             className="mt-5"
           />
@@ -139,7 +139,7 @@ const BlogPost = () => {
 
           <div className="mt-10 pt-6 border-t border-border">
             <SharePost
-              url={`https://tiogatechnologies.com/blog/${post.slug}`}
+              url={`https://www.tiogatechnologies.com/blog/${post.slug}`}
               title={post.title}
             />
           </div>

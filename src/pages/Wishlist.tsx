@@ -113,7 +113,7 @@ export const Wishlist = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <SEO
+      <SEO noindex
         title="My Saved Wishlist - Tioga Technologies"
         description="View and manage your saved solar inverters, lithium batteries, and smart home hardware."
         path="/retail/wishlist"

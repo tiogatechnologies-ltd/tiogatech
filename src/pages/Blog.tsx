@@ -43,11 +43,11 @@ const Blog = () => {
     "@context": "https://schema.org",
     "@type": "Blog",
     name: "Tioga Technologies Blog",
-    url: "https://tiogatechnologies.com/blog",
+    url: "https://www.tiogatechnologies.com/blog",
     blogPost: posts.slice(0, 20).map((p) => ({
       "@type": "BlogPosting",
       headline: p.title,
-      url: `https://tiogatechnologies.com/blog/${p.slug}`,
+      url: `https://www.tiogatechnologies.com/blog/${p.slug}`,
       datePublished: p.published_at,
       author: { "@type": "Organization", name: p.author },
     })),

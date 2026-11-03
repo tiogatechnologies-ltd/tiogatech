@@ -468,7 +468,7 @@ export const Catalog = () => {
             "@type": "CollectionPage",
             name: "Tioga Hardware Catalog & AI Store",
             description: "Full Tioga product catalog: solar inverters, batteries, smart locks, home automation.",
-            url: "https://tiogatechnologies.com/catalog",
+            url: "https://www.tiogatechnologies.com/catalog",
           },
         ]}
       />

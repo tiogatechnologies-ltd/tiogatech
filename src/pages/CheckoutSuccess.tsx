@@ -74,7 +74,7 @@ const CheckoutSuccess = () => {
 
   return (
     <div className="min-h-screen grid place-items-center bg-muted/30 px-4 py-10">
-      <SEO title="Order Confirmed" description="Your Tioga order has been received." path="/checkout/success" />
+      <SEO noindex title="Order Confirmed" description="Your Tioga order has been received." path="/checkout/success" />
       <div className="w-full max-w-lg bg-card rounded-3xl border border-border p-6 sm:p-10 text-center shadow-[var(--shadow-card)]">
         <div className="mb-4">
           {verify.status === "checking" ? (
