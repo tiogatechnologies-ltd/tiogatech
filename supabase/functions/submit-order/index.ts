@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
 import { sendMail } from "../_shared/mailer.ts";
 import { escapeLike } from "../_shared/affiliate.ts";
+import { toInternationalDigits } from "../_shared/phone.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -264,7 +265,7 @@ serve(async (req) => {
     </table>
     ${body.notes ? `<div style="margin-top:14px;padding:12px;background:#fef3c7;border-radius:8px;font-size:13px;color:#92400e;"><strong>Notes:</strong> ${escapeHtml(body.notes)}</div>` : ""}
     <div style="margin-top:20px;">
-      <a href="https://wa.me/${body.phone.replace(/\D/g, "")}" style="display:inline-block;background:#25D366;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">Reply on WhatsApp</a>
+      <a href="https://wa.me/${toInternationalDigits(body.phone)}" style="display:inline-block;background:#25D366;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">Reply on WhatsApp</a>
     </div>
   </div>
 </div>`.trim();

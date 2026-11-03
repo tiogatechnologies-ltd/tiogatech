@@ -6,7 +6,10 @@
  * number - this is the one place that conversion happens.
  */
 export function customerWhatsappLink(phone: string, text?: string): string {
-  const digits = (phone || "").replace(/\D/g, "").replace(/^0/, "234");
+  let digits = (phone || "").replace(/\D/g, "");
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  else if (digits.startsWith("0")) digits = "234" + digits.slice(1);
+  else if (digits.length === 10) digits = "234" + digits;
   const base = `https://wa.me/${digits}`;
   return text ? `${base}?text=${encodeURIComponent(text)}` : base;
 }

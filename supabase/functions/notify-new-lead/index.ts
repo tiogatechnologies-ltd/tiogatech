@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { sendMail } from "../_shared/mailer.ts";
 import { requireServiceOrStaff, escapeHtml } from "../_shared/auth.ts";
+import { toInternationalDigits } from "../_shared/phone.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -62,7 +63,7 @@ serve(async (req) => {
       const budget = clip(lead.budget, 120);
       const notes = clip(lead.notes, 2000);
       const products = (Array.isArray(lead.products) ? lead.products : []).slice(0, 30).map((p: unknown) => clip(p, 120));
-      const waDigits = phone.replace(/\D/g, "");
+      const waDigits = toInternationalDigits(phone);
 
       to = "sales@tiogatechnologies.com";
       subject = `🔔 New Customer Enquiry: ${fullName.replace(/[\r\n]+/g, " ") || "New Lead"} — ${budget.replace(/[\r\n]+/g, " ") || "Budget TBD"}`;
@@ -76,7 +77,7 @@ serve(async (req) => {
   <div style="background: #ffffff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 12px 12px;">
     <table style="width: 100%; border-collapse: collapse;">
       <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px; width: 120px;">Customer Name</td><td style="padding: 8px 0; font-weight: 600; font-size: 14px;">${escapeHtml(fullName)}</td></tr>
-      <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Phone</td><td style="padding: 8px 0; font-size: 14px;"><a href="tel:${escapeHtml(waDigits)}" style="color: #2563eb; font-weight: 600;">${escapeHtml(phone)}</a></td></tr>
+      <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Phone</td><td style="padding: 8px 0; font-size: 14px;"><a href="tel:${waDigits ? `+${escapeHtml(waDigits)}` : ""}" style="color: #2563eb; font-weight: 600;">${escapeHtml(phone)}</a></td></tr>
       <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Email</td><td style="padding: 8px 0; font-size: 14px;">${email ? `<a href="mailto:${escapeHtml(email)}" style="color: #2563eb;">${escapeHtml(email)}</a>` : "Not provided"}</td></tr>
       <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Location</td><td style="padding: 8px 0; font-size: 14px;">${escapeHtml(location)}</td></tr>
       <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Budget Range</td><td style="padding: 8px 0; font-size: 14px; font-weight: 600; color: #059669;">${escapeHtml(budget || "Not specified")}</td></tr>
@@ -84,7 +85,7 @@ serve(async (req) => {
       <tr><td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Notes / Load Details</td><td style="padding: 8px 0; font-size: 14px;">${escapeHtml(notes || "N/A")}</td></tr>
     </table>
     <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e5e7eb; display: flex; gap: 12px;">
-      <a href="https://wa.me/${escapeHtml(waDigits)}" style="display: inline-block; background: #25D366; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">💬 Chat on WhatsApp</a>
+      ${waDigits ? `<a href="https://wa.me/${escapeHtml(waDigits)}" style="display: inline-block; background: #25D366; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">💬 Chat on WhatsApp</a>` : ""}
       ${email ? `<a href="mailto:${escapeHtml(email)}" style="display: inline-block; background: #0d6b3f; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">✉️ Reply via Email</a>` : ""}
     </div>
   </div>

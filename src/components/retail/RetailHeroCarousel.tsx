@@ -36,7 +36,7 @@ export const FEATURED_SRNE_20KW_SLIDE: HeroSlideContent = {
   image_url: "/products/srne/srne-inv-asp-20kw.png",
   cta_text: "DM for Price & Specs",
   cta_link:
-    "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
+    "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
   secondary_cta_text: "View Full Specifications",
   secondary_cta_link: "/product/srne-20kw-48v-three-phase-mppt-inverter-charger-asp48200sh3-00000110",
 };
@@ -56,7 +56,7 @@ export const FEATURED_ECOFLOW_SLIDES: HeroSlideContent[] = [
     image_url: "/products/ecoflow/ecoflow-delta-3-air-2000.png",
     cta_text: "Claim Promo Price",
     cta_link:
-      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20DELTA%203%20AIR%202000%20at%20the%20Promo%20Price%20of%20%E2%82%A6959%2C400.",
+      "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20DELTA%203%20AIR%202000%20at%20the%20Promo%20Price%20of%20%E2%82%A6959%2C400.",
     secondary_cta_text: "View EcoFlow Catalog",
     secondary_cta_link: "/retail?brand=EcoFlow",
   },
@@ -74,7 +74,7 @@ export const FEATURED_ECOFLOW_SLIDES: HeroSlideContent[] = [
     image_url: "/products/ecoflow/ecoflow-delta-3-max.png",
     cta_text: "Claim Promo Price",
     cta_link:
-      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20DELTA%203%20Max%20at%20the%20Promo%20Price%20of%20%E2%82%A61%2C404%2C000.",
+      "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20DELTA%203%20Max%20at%20the%20Promo%20Price%20of%20%E2%82%A61%2C404%2C000.",
     secondary_cta_text: "View EcoFlow Catalog",
     secondary_cta_link: "/retail?brand=EcoFlow",
   },
@@ -92,7 +92,7 @@ export const FEATURED_ECOFLOW_SLIDES: HeroSlideContent[] = [
     image_url: "/products/ecoflow/ecoflow-river-3-max-plus.png",
     cta_text: "Claim Promo Price",
     cta_link:
-      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20RIVER%203%20Max%20Plus%20at%20the%20Promo%20Price%20of%20%E2%82%A6594%2C945.",
+      "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20RIVER%203%20Max%20Plus%20at%20the%20Promo%20Price%20of%20%E2%82%A6594%2C945.",
     secondary_cta_text: "View EcoFlow Catalog",
     secondary_cta_link: "/retail?brand=EcoFlow",
   },
@@ -110,7 +110,7 @@ export const FEATURED_ECOFLOW_SLIDES: HeroSlideContent[] = [
     image_url: "/products/ecoflow/ecoflow-river-3-max.png",
     cta_text: "Claim Promo Price",
     cta_link:
-      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20RIVER%203%20Max%20at%20the%20Promo%20Price%20of%20%E2%82%A6491%2C400.",
+      "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20RIVER%203%20Max%20at%20the%20Promo%20Price%20of%20%E2%82%A6491%2C400.",
     secondary_cta_text: "View EcoFlow Catalog",
     secondary_cta_link: "/retail?brand=EcoFlow",
   },
@@ -128,7 +128,7 @@ export const FEATURED_ECOFLOW_SLIDES: HeroSlideContent[] = [
     image_url: "/products/ecoflow/ecoflow-e980.png",
     cta_text: "Claim Promo Price",
     cta_link:
-      "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20E980%20at%20the%20Promo%20Price%20of%20%E2%82%A6527%2C670.",
+      "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20order%20the%20EcoFlow%20E980%20at%20the%20Promo%20Price%20of%20%E2%82%A6527%2C670.",
     secondary_cta_text: "View EcoFlow Catalog",
     secondary_cta_link: "/retail?brand=EcoFlow",
   },
@@ -187,7 +187,7 @@ export function priceHeroSlide(slide: HeroSlideContent): HeroSlideContent {
   const ecoflow = slide.id.startsWith("ecoflow-");
   return { ...slide, badge: ecoflow ? "EcoFlow Authorized" : slide.badge, discount_pct: null, price_ngn: undefined, promo_price_ngn: price ?? undefined,
     highlight_text: price === null ? "Contact us for a current quote" : `Price: ${formatRetailPrice(price)}${ecoflow ? " · Official Warranty" : ""}`, cta_text: price === null ? "Request a Quote" : "Order Now",
-    cta_link: slide.cta_link.includes("wa.me/") ? `https://wa.me/2347065942426?text=${encodeURIComponent(`Hello Tioga Technologies, I want to order the ${slide.headline}${price === null ? ". Please send a quote" : ` at ${formatRetailPrice(price)}`}.`)}` : slide.cta_link };
+    cta_link: slide.cta_link.includes("wa.me/") ? `https://wa.me/2348178000023?text=${encodeURIComponent(`Hello Tioga Technologies, I want to order the ${slide.headline}${price === null ? ". Please send a quote" : ` at ${formatRetailPrice(price)}`}.`)}` : slide.cta_link };
 }
 
 export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps) => {

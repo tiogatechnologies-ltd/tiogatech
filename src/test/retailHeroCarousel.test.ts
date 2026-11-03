@@ -81,7 +81,7 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
       expect(slide?.promo_price_ngn).toBe(exp.promo_price);
       expect(slide?.image_url).toBe(`/products/ecoflow/${exp.image_file}`);
       expect(slide?.cta_text).toBeTruthy();
-      expect(slide?.cta_link).toContain("https://wa.me/2347065942426");
+      expect(slide?.cta_link).toContain("https://wa.me/2348178000023");
 
       // Verify specification coverage in subheadline
       for (const spec of exp.specs) {

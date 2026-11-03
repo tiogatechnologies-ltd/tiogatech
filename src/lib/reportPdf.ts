@@ -2,6 +2,7 @@
 // internal engineering briefs, quotations, invoices and receipts.
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { customerWhatsappLink } from "@/lib/customerWhatsapp";
 
 export type ReportAppliance = { name?: string; qty?: number; watts?: number; hours?: number; wh?: number };
 
@@ -442,10 +443,7 @@ export function downloadReportPdf(data: ReportData, filename: string) {
 }
 
 export function whatsappShareUrl(message: string, phone?: string) {
-  // Nigerian numbers are entered locally ("0801...") - wa.me needs the
-  // country code with no leading 0, or the link silently fails to resolve.
-  const digits = phone ? phone.replace(/\D/g, "").replace(/^0/, "234") : "";
-  const base = digits ? `https://wa.me/${digits}` : "https://wa.me/";
+  const base = phone ? customerWhatsappLink(phone) : "https://wa.me/";
   return `${base}?text=${encodeURIComponent(message)}`;
 }
 

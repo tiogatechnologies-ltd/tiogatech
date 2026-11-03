@@ -151,7 +151,7 @@ const resolveDetailsFromItem = (
         price_ngn: price,
         cta_text: "DM for Price & Specs",
         cta_link:
-          "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
+          "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
         secondary_cta_text: "View Full Specifications",
         secondary_cta_link: productPath(p as any),
       };
@@ -677,7 +677,7 @@ const AdminRetailPromotions = () => {
           image_url: "/products/srne/srne-inv-asp-20kw.png",
           cta_text: "DM for Price & Specs",
           cta_link:
-            "https://wa.me/2347065942426?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
+            "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20am%20interested%20in%20the%20SRNE%2020KW%20Three-Phase%20Inverter%20for%20my%20project.%20Kindly%20provide%20pricing%20and%20full%20specifications.",
           secondary_cta_text: "View Full Specifications",
           secondary_cta_link: srneProduct
             ? productPath(srneProduct as any)
