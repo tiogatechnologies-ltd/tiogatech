@@ -63,6 +63,8 @@ export function normalizeCategory(category: string | null | undefined, name?: st
 /** Best-effort brand inference for products that don't have an explicit `brand` field. */
 export function inferBrand(name: string, category: string | null | undefined): string {
   const n = name || "";
+  if (n.includes("LifeSmart") || n.startsWith("LS-") || n.startsWith("LS") || n.includes("Nature Mini") || n.includes("Smart Station")) return "LifeSmart";
+  if (n.includes("HDL") || n.startsWith("HDL-") || n.startsWith("HD-") || n.includes("Tile Series") || n.includes("Granite Display")) return "HDL";
   if (n.includes("Bread Energy") || n.startsWith("BREAD-") || n.startsWith("BE-")) return "Bread Energy";
   if (n.includes("SRNE")) return "SRNE";
   if (n.includes("Luxpower") || n.includes("LXP") || n.includes("SNA") || n.includes("Geta") || n.includes("PGEM") || n.includes("PSHIELD") || n.includes("PSTACK") || n.includes("ECO Beast") || n.includes("TriP") || n.includes("TRIP")) return "Luxpower";

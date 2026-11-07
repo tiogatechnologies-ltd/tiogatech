@@ -21,7 +21,7 @@ export const emptyRetailFilters = (category: string | null = null): RetailFilter
 const text = (value: unknown) => String(value ?? "").replace(/,/g, "").replace(/[–—]/g, "-");
 const norm = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, "");
 const brandKey = (brand: string) => norm(brand).replace(/^bread$/, "breadenergy");
-const brandAliases = new Map(Object.entries({ bread: "Bread Energy", breadenergy: "Bread Energy", luxpower: "Luxpower", alpsolar: "AlpSolarr", alpsolarr: "AlpSolarr", solarpro: "SolarPro", suness: "Suness", srne: "SRNE", ecoflow: "EcoFlow" }));
+const brandAliases = new Map(Object.entries({ bread: "Bread Energy", breadenergy: "Bread Energy", luxpower: "Luxpower", alpsolar: "AlpSolarr", alpsolarr: "AlpSolarr", solarpro: "SolarPro", suness: "Suness", srne: "SRNE", ecoflow: "EcoFlow", lifesmart: "LifeSmart", hdl: "HDL", hdlautomation: "HDL" }));
 export const normalizeRetailBrand = (brand: string) => brandAliases.get(norm(brand)) ?? brand.trim();
 const sourceById = new Map(masterSpecifications.map(row => [row.id, row]));
 
@@ -130,7 +130,7 @@ export function extractProductFacets(product: RetailProduct): ProductFacets {
   }
   if (!storageCategory(category) && !inverterCategory(category)) {
     const protocol = named(/protocol|connectivity|communication/i) || product.name;
-    add("protocol", [/wi.?fi/i.test(protocol) ? "Wi-Fi" : "", /zigbee/i.test(protocol) ? "Zigbee" : "", /bluetooth|\bble\b/i.test(protocol) ? "Bluetooth" : "", /\b4g\b/i.test(protocol) ? "4G" : "", /ethernet|\bpoe\b/i.test(protocol) ? "Ethernet / PoE" : ""].filter(Boolean));
+    add("protocol", [/wi.?fi/i.test(protocol) ? "Wi-Fi" : "", /zigbee/i.test(protocol) ? "Zigbee" : "", /bluetooth|\bble\b/i.test(protocol) ? "Bluetooth" : "", /\b4g\b/i.test(protocol) ? "4G" : "", /ethernet|\bpoe\b/i.test(protocol) ? "Ethernet / PoE" : "", /coss/i.test(protocol) ? "CoSS" : "", /z-?wave/i.test(protocol) ? "Z-Wave" : "", /knx/i.test(protocol) ? "KNX" : "", /buspro/i.test(protocol) ? "Buspro" : "", /dali/i.test(protocol) ? "DALI" : ""].filter(Boolean));
     primary("current", measurements(named(/rated (?:charge )?current|nominal current/i) || product.name, "A"), "A");
     if (/camera|cctv|security/i.test(category)) {
       const resolution = named(/resolution/i) || product.name;

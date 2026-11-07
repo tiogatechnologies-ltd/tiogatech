@@ -4075,6 +4075,8 @@ import { itelProducts } from "./itelProducts";
 import { sunessProducts } from "./sunessProducts";
 import { breadEnergyProducts } from "./breadEnergyProducts";
 import { exultedProducts } from "./exultedProducts";
+import { lifesmartProducts } from "./lifesmartProducts";
+import { hdlProducts } from "./hdlProducts";
 import { expansionCatalogProducts } from "./expansionCatalogProducts";
 import {
   blueCarbonProducts,
@@ -4102,6 +4104,8 @@ export const PRODUCTS: Product[] = [
   ...breadEnergyProducts,
   ...exultedProducts,
   ...MINISIM_PRODUCTS,
+  ...lifesmartProducts,
+  ...hdlProducts,
   ...expansionCatalogProducts,
   ...blueCarbonAndDealerProducts,
 ].map(applyMasterPrice);
@@ -4123,6 +4127,8 @@ export {
   sunessProducts,
   breadEnergyProducts,
   exultedProducts,
+  lifesmartProducts,
+  hdlProducts,
   expansionCatalogProducts,
   blueCarbonProducts,
   dealerProducts,
@@ -4157,6 +4163,9 @@ export function getProductsForInterests(interests: ProductInterest[], budget?: s
   if (interests.includes("smartlocks")) results.push(...smartLocksList);
   if (interests.includes("smarthome")) results.push(
     ...smartHomeList,
+    ...lifesmartProducts,
+    ...hdlProducts,
+    ...MINISIM_PRODUCTS,
     ...felicityProducts.filter((p) => ["Smart Lighting & Track", "Home Automation"].includes(p.category)),
     ...alpsolarrProducts.filter((p) => ["Home Automation"].includes(p.category)),
     ...solarproProducts.filter((p) => ["Solar Street Lights"].includes(p.category)),

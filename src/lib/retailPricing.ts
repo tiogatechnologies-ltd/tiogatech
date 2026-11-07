@@ -10,7 +10,7 @@ export const parseRetailPrice = (value?: string | null) => Number(String(value ?
 /** undefined = outside the sheet; null = a quote is required. Never guess by capacity. */
 export function masterPriceFor(product: { name: string; id?: string; sku?: string; specifications?: Record<string, string> | null }): number | null | undefined {
   const name = normalizePriceName(product.name);
-  const explicitSku = product.specifications?.SKU || product.sku || product.id?.match(/((?:INV|BAT|PNL|AIO|PPS|CTL|PMP|LGT|ACC|SEC|APP)-\d+)$/i)?.[1];
+  const explicitSku = product.specifications?.SKU || product.sku || product.id?.match(/((?:INV|BAT|PNL|AIO|PPS|CTL|PMP|LGT|ACC|SEC|APP|LS|HD|MS)-\d+)$/i)?.[1];
   const explicitId = explicitSku?.toUpperCase();
   const sourceId = explicitId && Object.prototype.hasOwnProperty.call(prices, explicitId) ? explicitId : aliases[name];
   return sourceId && Object.prototype.hasOwnProperty.call(prices, sourceId) ? prices[sourceId] : undefined;
