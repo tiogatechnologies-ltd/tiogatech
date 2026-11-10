@@ -139,14 +139,14 @@ export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
     id: "black-friday-mega-sale",
     is_active: true,
     badge: "BLACK FRIDAY MEGA SALE · UP TO 50% OFF",
-    headline: "Tioga Black Friday Sales — Deals Up to 50% OFF",
+    headline: "Tioga Black Friday Sales — Smart Home & Smart Locks Up to 50% OFF",
     subheadline:
-      "Unlock massive Black Friday markdowns up to 50% OFF across Tier-1 Hybrid Inverters, LiFePO4 Lithium Batteries, Monocrystalline Solar Panels, and Smart Home Automation Systems. Official 5-Year Warranty & Free Installation for all Smart Locks Products.",
+      "Unlock massive Black Friday markdowns up to 50% OFF across Smart Switches, Multi-Touch Control Panels, 3D Face ID Biometric Smart Locks, Motorized Curtains, and Smart Security Systems. Official Warranty & Free Installation for all Smart Locks Products.",
     highlight_text: "Up to 50% OFF Storewide · Free Installation for all Smart Locks Products",
     discount_pct: 50,
     image_url: "/banners/black-friday-sales.webp",
     cta_text: "Shop Smart Home & Locks",
-    cta_link: "/retail?category=Smart%20Door%20Locks#catalog-grid-top",
+    cta_link: "/retail?category=Smart%20Home%20%26%20Locks#catalog-grid-top",
     secondary_cta_text: "Claim 50% Off on WhatsApp",
     secondary_cta_link:
       "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20claim%20your%20Black%20Friday%20Mega%20Sale%20deals%20(up%20to%2050%25%20OFF).",
@@ -155,14 +155,14 @@ export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
     id: "black-friday-solar-offer",
     is_active: true,
     badge: "BLACK FRIDAY OFFER · 50% OFF BUNDLES",
-    headline: "50% OFF Black Friday Offer on Complete Solar & LiFePO4 Stacks",
+    headline: "50% OFF Black Friday Offer on Solar Panels, Inverters & Batteries",
     subheadline:
-      "Power your home or business 24/7 with Deye Hybrid Inverters, Grade-A LiFePO4 Lithium Batteries, Tier-1 Solar Panels, MPPT Charge Controllers, and full DC protection kits at historic Black Friday prices.",
+      "Power your home or business 24/7 with Tier-1 Hybrid & Off-Grid Inverters, Grade-A LiFePO4 Lithium Batteries, Monocrystalline Solar Panels, MPPT Charge Controllers, and full DC protection kits at historic Black Friday prices.",
     highlight_text: "Zero-Flicker UPS · 6,000+ Cycle LiFePO4 · Flexible Payment Plans Available",
     discount_pct: 50,
     image_url: "/banners/black-friday-solar-offer.webp",
-    cta_text: "Explore Solar & Inverter Deals",
-    cta_link: "/retail?category=Inverters#catalog-grid-top",
+    cta_text: "Shop Solar, Inverters & Batteries",
+    cta_link: "/retail?category=Solar%2C%20Inverters%20%26%20Batteries#catalog-grid-top",
     secondary_cta_text: "Spread Payments",
     secondary_cta_link: "/finance/apply",
   },
@@ -170,7 +170,6 @@ export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
 
 export const DEFAULT_HERO_SLIDES: HeroSlideContent[] = [
   ...FEATURED_BLACK_FRIDAY_SLIDES,
-  ...FEATURED_ECOFLOW_SLIDES,
   FEATURED_SRNE_20KW_SLIDE,
   {
     id: "felicity-5kwh-lifepo4-featured",
@@ -242,16 +241,15 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
     // If no configured slides in database, start with the full default list
     const base = configuredSlides.length > 0 ? [...configuredSlides] : [...DEFAULT_HERO_SLIDES];
 
-    // Ensure all 5 EcoFlow promo slides are included in the carousel
+    // Filter out EcoFlow slides from the hero carousel
     const ecoflowIds = new Set(FEATURED_ECOFLOW_SLIDES.map((s) => s.id));
-    const hasEcoflow = base.some((s) => ecoflowIds.has(s.id));
-    if (!hasEcoflow) {
-      base.unshift(...FEATURED_ECOFLOW_SLIDES);
-    }
+    const withoutEcoflow = base.filter(
+      (s) => !ecoflowIds.has(s.id) && !s.id?.startsWith("ecoflow-") && !/ecoflow/i.test(s.headline || "")
+    );
 
     // Ensure the Black Friday flagship banners are always at the very front of the carousel
     const bfIds = new Set(FEATURED_BLACK_FRIDAY_SLIDES.map((s) => s.id));
-    const withoutBf = base.filter((s) => !bfIds.has(s.id));
+    const withoutBf = withoutEcoflow.filter((s) => !bfIds.has(s.id));
     const ordered = [...FEATURED_BLACK_FRIDAY_SLIDES, ...withoutBf];
 
     // Ensure the SRNE 20kW flagship slide is always present

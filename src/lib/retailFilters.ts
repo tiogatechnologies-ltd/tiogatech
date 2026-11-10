@@ -148,6 +148,12 @@ export function categoryMatches(product: RetailProduct, category: string | null)
   if (!category || category === "all") return true;
   const p = product.category.toLowerCase(); const c = category.toLowerCase();
   if (p === c) return true;
+  if (/smart\s*home.*lock|smart\s*home\s*&/i.test(c)) {
+    return /smart|lock|switch|socket|control|panel|sensor|alarm|curtain|motor|shading|blind|light|track|audio|sound|intercom|gateway|network|cctv|camera|security|climate|thermostat|hotel|remote|doorbell/i.test(p) && !/solar\s*panel/i.test(p);
+  }
+  if (/solar.*inverter|inverter.*batter/i.test(c)) {
+    return /solar|inverter|batter|all-in-one|power\s*station|charge\s*controller|mppt|ess|energy/i.test(p);
+  }
   if (/lock/.test(c)) return /lock/.test(p);
   if (/cctv|camera/.test(c)) return /cctv|camera|security/.test(p);
   if (/audio|sound|intercom/.test(c)) return /audio|sound|intercom/.test(p);

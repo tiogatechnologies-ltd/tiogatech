@@ -221,47 +221,47 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
       {/* Dual Official Black Friday Visual Banner Cards (buttons open their respective categories) */}
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5 mt-4 pt-4 border-t border-white/10">
         <Link
-          to="/retail?category=Smart%20Switches%20%26%20Sockets#catalog-grid-top"
-          onClick={(e) => handleCategoryClick(e, "Smart Switches & Sockets")}
+          to="/retail?category=Smart%20Home%20%26%20Locks#catalog-grid-top"
+          onClick={(e) => handleCategoryClick(e, "Smart Home & Locks")}
           className="group relative rounded-xl sm:rounded-2xl overflow-hidden border border-white/15 hover:border-[#00e640]/70 bg-black/60 flex items-center justify-between transition-all duration-300 hover:shadow-[0_10px_30px_-8px_rgba(0,230,64,0.35)]"
         >
           <img
             src="/banners/black-friday-sales.webp"
-            alt="Tioga Technologies Black Friday Mega Sale - Smart Home Automation & Smart Locks"
+            alt="Tioga Technologies Black Friday - Smart Home Automation & Smart Door Locks"
             className="w-full h-36 sm:h-44 object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
             loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end justify-between p-3.5 sm:p-4 gap-3">
             <div>
               <p className="text-xs sm:text-sm font-display font-bold text-white">
-                Smart Home, Solar & Power Backup — Up to 50% OFF
+                Smart Home Automation & Smart Door Locks — Up to 50% OFF
               </p>
             </div>
             <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/15 backdrop-blur-md text-white text-xs font-bold group-hover:bg-[#00e640] group-hover:text-slate-950 transition-colors shrink-0">
-              Shop Deals <ArrowRight size={13} />
+              Shop Smart Home & Locks <ArrowRight size={13} />
             </span>
           </div>
         </Link>
 
         <Link
-          to="/retail?category=Inverters#catalog-grid-top"
-          onClick={(e) => handleCategoryClick(e, "Inverters")}
+          to="/retail?category=Solar%2C%20Inverters%20%26%20Batteries#catalog-grid-top"
+          onClick={(e) => handleCategoryClick(e, "Solar, Inverters & Batteries")}
           className="group relative rounded-xl sm:rounded-2xl overflow-hidden border border-white/15 hover:border-red-500/70 bg-white/95 flex items-center justify-between transition-all duration-300 hover:shadow-[0_10px_30px_-8px_rgba(220,38,38,0.35)]"
         >
           <img
             src="/banners/black-friday-solar-offer.webp"
-            alt="Tioga Black Friday 50% OFF Offer - Deye Hybrid Inverter, LiFePO4 Lithium Battery & Solar Panels"
+            alt="Tioga Black Friday 50% OFF Offer - Solar Panels, Hybrid Inverters & Lithium Batteries"
             className="w-full h-36 sm:h-44 object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
             loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end justify-between p-3.5 sm:p-4 gap-3">
             <div>
               <p className="text-xs sm:text-sm font-display font-bold text-white">
-                Deye Hybrid Inverters, LiFePO4 Batteries & Tier-1 Panels
+                Solar Panels, Hybrid Inverters & Lithium Batteries — Up to 50% OFF
               </p>
             </div>
             <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-bold group-hover:bg-red-500 transition-colors shrink-0">
-              Explore 50% Off <ArrowRight size={13} />
+              Shop Solar & Batteries <ArrowRight size={13} />
             </span>
           </div>
         </Link>

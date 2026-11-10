@@ -11,6 +11,7 @@ import {
 } from "@/components/retail/RetailHeroCarousel";
 import { isBlackFridayProduct, resolveCompareAt, savingsPct } from "@/lib/promoDisplay";
 import { DEFAULT_FLASH_DEAL, getNextFridayMidnight } from "@/components/retail/FlashDealsBar";
+import { categoryMatches } from "@/lib/retailFilters";
 import { PRODUCTS } from "@/data/products";
 
 describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
@@ -92,9 +93,9 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
         expect(slide?.subheadline.toLowerCase()).toContain(spec.toLowerCase());
       }
 
-      // Also ensure slide is included in DEFAULT_HERO_SLIDES
+      // Verify EcoFlow slides are excluded from DEFAULT_HERO_SLIDES for now
       const inDefault = DEFAULT_HERO_SLIDES.find((s) => s.id === exp.id);
-      expect(inDefault).toBeDefined();
+      expect(inDefault).toBeUndefined();
     }
   });
 
@@ -187,5 +188,12 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
     expect(targetDate.getHours()).toBe(0);
     expect(targetDate.getMinutes()).toBe(0);
     expect(targetDate.getSeconds()).toBe(0);
+  });
+
+  it("matches Smart Home & Locks and Solar, Inverters & Batteries group categories accurately", () => {
+    const smartHomeMatches = PRODUCTS.filter((p) => categoryMatches(p as any, "Smart Home & Locks"));
+    const solarEnergyMatches = PRODUCTS.filter((p) => categoryMatches(p as any, "Solar, Inverters & Batteries"));
+    expect(smartHomeMatches.length).toBeGreaterThan(800);
+    expect(solarEnergyMatches.length).toBeGreaterThan(200);
   });
 });
