@@ -12,9 +12,19 @@ import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
 import SiteFooter from "@/components/SiteFooter";
 import { openLeadForm } from "@/components/SiteHeader";
+import { useLandingContent } from "@/hooks/useLandingContent";
 
 const Index = () => {
   const open = (source: string) => openLeadForm(source);
+  const { content: heroContent } = useLandingContent("hero");
+  const { content: problemsContent } = useLandingContent("problems");
+  const { content: solutionContent } = useLandingContent("solution");
+  const { content: statsContent } = useLandingContent("stats");
+  const { content: howItWorksContent } = useLandingContent("how_it_works");
+  const { content: targetUsersContent } = useLandingContent("target_users");
+  const { content: trustContent } = useLandingContent("trust");
+  const { content: faqContent } = useLandingContent("faq");
+  const { content: finalCtaContent } = useLandingContent("final_cta");
 
   const faqs = [
     { q: "How much does a solar system cost?", a: "A basic backup starts from ₦400,000, while full off-grid ranges from ₦1.8M to ₦5M+." },
@@ -46,22 +56,28 @@ const Index = () => {
         jsonLd={faqJsonLd}
       />
       <SiteHeader />
-      <Hero onApply={() => open("hero")} />
-      <ProblemSection />
-      <div id="solutions">
-        <SolutionSection />
-      </div>
-      <StatsSection />
-      <div id="how-it-works">
-        <HowItWorks />
-      </div>
-      <TargetUsers />
+      {heroContent?.is_active !== false && <Hero onApply={() => open("hero")} />}
+      {problemsContent?.is_active !== false && <ProblemSection />}
+      {solutionContent?.is_active !== false && (
+        <div id="solutions">
+          <SolutionSection />
+        </div>
+      )}
+      {statsContent?.is_active !== false && <StatsSection />}
+      {howItWorksContent?.is_active !== false && (
+        <div id="how-it-works">
+          <HowItWorks />
+        </div>
+      )}
+      {targetUsersContent?.is_active !== false && <TargetUsers />}
 
-      <div id="trust">
-        <TrustSection />
-      </div>
-      <FAQSection />
-      <FinalCTA onApply={() => open("final_cta")} />
+      {trustContent?.is_active !== false && (
+        <div id="trust">
+          <TrustSection />
+        </div>
+      )}
+      {faqContent?.is_active !== false && <FAQSection />}
+      {finalCtaContent?.is_active !== false && <FinalCTA onApply={() => open("final_cta")} />}
       <SiteFooter />
     </div>
   );

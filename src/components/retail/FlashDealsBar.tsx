@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Flame, Clock, Wrench, Tag, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 
 export interface FlashDealContent {
   is_active: boolean;
@@ -92,6 +93,7 @@ interface FlashDealsBarProps {
 
 export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
   const { content } = useLandingContent("flash_deal");
+  const { settings: promos } = useSiteSetting("promotions");
 
   // Merge loaded content with default fallback so the bar is always complete and working
   const rawDeal = (content as Partial<FlashDealContent>) || {};
@@ -115,7 +117,7 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
   const format = (n: number) => n.toString().padStart(2, "0");
 
   // If admin explicitly disabled the flash deal, respect that choice
-  if (content && content.is_active === false) {
+  if (promos?.show_flash_deals_bar === false || (content && content.is_active === false)) {
     return null;
   }
 
@@ -219,6 +221,7 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
       </div>
 
       {/* Dual Official Black Friday Visual Banner Cards (buttons open their respective categories) */}
+      {promos?.show_flash_deal_cards !== false && (
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5 mt-4 pt-4 border-t border-white/10">
         <Link
           to="/retail?category=Smart%20Home%20%26%20Locks#catalog-grid-top"
@@ -266,6 +269,7 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
           </div>
         </Link>
       </div>
+      )}
     </aside>
   );
 };

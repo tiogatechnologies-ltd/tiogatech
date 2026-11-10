@@ -413,7 +413,7 @@ export const ProductDetail = () => {
                 <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-3 left-4 text-xs text-muted-foreground bg-background/90 rounded px-2 py-1">{getProductPhotoCaption(product.image_url, product.name)}</span>
                 {/* Overlaid Badges */}
                 <div className="absolute top-4 left-4 flex flex-col items-start gap-2 pointer-events-none max-w-[80%]">
-                  {isBlackFridayProduct(product.category, product.name) && (
+                  {isBlackFridayProduct(product.category, product.name, promos) && (
                     <span
                       data-testid="black-friday-badge"
                       className="inline-flex items-center px-3 py-1 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[11px] font-black uppercase tracking-wider shadow-md"

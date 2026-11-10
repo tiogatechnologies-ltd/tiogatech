@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 import { formatRetailPrice, masterPriceFor } from "@/lib/retailPricing";
 import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
@@ -227,17 +228,35 @@ export function priceHeroSlide(slide: HeroSlideContent): HeroSlideContent {
 
 export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: RetailHeroCarouselProps) => {
   const { content, loading } = useLandingContent("retail_hero");
+  const { settings: promos } = useSiteSetting("promotions");
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  const configuredSlides = useMemo(
-    () => ((content?.slides as HeroSlideContent[]) || []).filter((s) => s.is_active && s.headline),
+  const rawConfiguredSlides = useMemo(
+    () => (Array.isArray(content?.slides) ? (content.slides as HeroSlideContent[]) : []),
     [content]
   );
 
+  const hiddenSlideIds = useMemo(
+    () => new Set(rawConfiguredSlides.filter((s) => s.is_active === false).map((s) => s.id)),
+    [rawConfiguredSlides]
+  );
+
+  const configuredSlides = useMemo(
+    () => rawConfiguredSlides.filter((s) => s.is_active && s.headline),
+    [rawConfiguredSlides]
+  );
+
+  const showBfBadges = promos?.show_black_friday_badges !== false;
+
   const slides = useMemo(() => {
+    // If admin explicitly saved a slides array and hid all of them, return empty
+    if (Array.isArray(content?.slides) && content.slides.length > 0 && configuredSlides.length === 0) {
+      return [];
+    }
+
     // If no configured slides in database, start with the full default list
     const base = configuredSlides.length > 0 ? [...configuredSlides] : [...DEFAULT_HERO_SLIDES];
 
@@ -247,24 +266,27 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
       (s) => !ecoflowIds.has(s.id) && !s.id?.startsWith("ecoflow-") && !/ecoflow/i.test(s.headline || "")
     );
 
-    // Ensure the Black Friday flagship banners are always at the very front of the carousel
+    // Include Black Friday flagship banners when Black Friday badges/promos are active and not explicitly hidden
     const bfIds = new Set(FEATURED_BLACK_FRIDAY_SLIDES.map((s) => s.id));
     const withoutBf = withoutEcoflow.filter((s) => !bfIds.has(s.id));
-    const ordered = [...FEATURED_BLACK_FRIDAY_SLIDES, ...withoutBf];
+    const activeBfSlides = showBfBadges
+      ? FEATURED_BLACK_FRIDAY_SLIDES.filter((s) => !hiddenSlideIds.has(s.id))
+      : [];
+    const ordered = [...activeBfSlides, ...withoutBf];
 
-    // Ensure the SRNE 20kW flagship slide is always present
+    // Ensure the SRNE 20kW flagship slide is present unless explicitly hidden by admin
     const hasSrne20kw = ordered.some(
       (s) =>
         s.id === FEATURED_SRNE_20KW_SLIDE.id ||
         s.headline?.toLowerCase().includes("srne 20kw") ||
         s.headline?.toLowerCase().includes("srne 20 kw")
     );
-    if (!hasSrne20kw) {
+    if (!hasSrne20kw && !hiddenSlideIds.has(FEATURED_SRNE_20KW_SLIDE.id)) {
       ordered.push(FEATURED_SRNE_20KW_SLIDE);
     }
 
-    return ordered.filter((s) => s.is_active && s.headline).map(priceHeroSlide);
-  }, [configuredSlides]);
+    return ordered.filter((s) => s.is_active && s.headline && !hiddenSlideIds.has(s.id)).map(priceHeroSlide);
+  }, [content?.slides, configuredSlides, hiddenSlideIds, showBfBadges]);
 
   const totalSlides = slides.length;
 
@@ -314,7 +336,9 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
     touchEndX.current = null;
   };
 
-  if (slides.length === 0) return null;
+  if (promos?.show_hero_banner === false || (content && content.is_active === false) || slides.length === 0) {
+    return null;
+  }
   const slide = slides[current] || slides[0];
 
   return (
@@ -363,20 +387,24 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
               >
                 {/* Eyebrow & Promotion Label */}
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span
-                    data-testid="hero-black-friday-badge"
-                    className="inline-flex items-center px-3 py-1 rounded-full bg-zinc-950/90 border border-emerald-400/60 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg"
-                  >
-                    <span>BLACK FRIDAY</span>
-                  </span>
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg">
-                    {slide.discount_pct != null && slide.discount_pct > 0
-                      ? `UP TO ${slide.discount_pct}% OFF`
-                      : "UP TO 50% OFF"}
-                  </span>
-                  {slide.badge && !slide.badge.toLowerCase().includes("black friday") && (
+                  {showBfBadges && (
+                    <>
+                      <span
+                        data-testid="hero-black-friday-badge"
+                        className="inline-flex items-center px-3 py-1 rounded-full bg-zinc-950/90 border border-emerald-400/60 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg"
+                      >
+                        <span>BLACK FRIDAY</span>
+                      </span>
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg">
+                        {slide.discount_pct != null && slide.discount_pct > 0
+                          ? `UP TO ${slide.discount_pct}% OFF`
+                          : "UP TO 50% OFF"}
+                      </span>
+                    </>
+                  )}
+                  {slide.badge && (!showBfBadges || !slide.badge.toLowerCase().includes("black friday")) && (
                     <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-amber-400 uppercase">
-                      · {slide.badge}
+                      {showBfBadges ? `· ${slide.badge}` : slide.badge}
                     </span>
                   )}
                 </div>

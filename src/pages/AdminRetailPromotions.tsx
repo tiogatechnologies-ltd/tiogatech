@@ -473,6 +473,12 @@ const AdminRetailPromotions = () => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [flashDeal, setFlashDeal] = useState<FlashDeal>(defaultFlashDeal);
   const [promoSettings, setPromoSettings] = useState<{
+    show_hero_banner?: boolean;
+    show_flash_deals_bar?: boolean;
+    show_flash_deal_cards?: boolean;
+    show_value_props_bar?: boolean;
+    show_category_showcase?: boolean;
+    show_black_friday_badges?: boolean;
     show_compare_at_price: boolean;
     default_markup_pct: number;
     badge_format?: "save_pct" | "save_amount" | "pct_off";
@@ -488,9 +494,15 @@ const AdminRetailPromotions = () => {
     }>;
     randomize_fallback_pct?: boolean;
   }>({
+    show_hero_banner: true,
+    show_flash_deals_bar: true,
+    show_flash_deal_cards: true,
+    show_value_props_bar: true,
+    show_category_showcase: true,
+    show_black_friday_badges: true,
     show_compare_at_price: true,
-    default_markup_pct: 12,
-    badge_format: "save_pct",
+    default_markup_pct: 30,
+    badge_format: "pct_off",
     product_overrides: {},
     brand_overrides: {},
     randomize_fallback_pct: true,
@@ -744,9 +756,15 @@ const AdminRetailPromotions = () => {
       if (promoData?.value) {
         const val = promoData.value as any;
         setPromoSettings({
+          show_hero_banner: val.show_hero_banner !== undefined ? !!val.show_hero_banner : true,
+          show_flash_deals_bar: val.show_flash_deals_bar !== undefined ? !!val.show_flash_deals_bar : true,
+          show_flash_deal_cards: val.show_flash_deal_cards !== undefined ? !!val.show_flash_deal_cards : true,
+          show_value_props_bar: val.show_value_props_bar !== undefined ? !!val.show_value_props_bar : true,
+          show_category_showcase: val.show_category_showcase !== undefined ? !!val.show_category_showcase : true,
+          show_black_friday_badges: val.show_black_friday_badges !== undefined ? !!val.show_black_friday_badges : true,
           show_compare_at_price: val.show_compare_at_price !== undefined ? !!val.show_compare_at_price : true,
-          default_markup_pct: val.default_markup_pct !== undefined ? Number(val.default_markup_pct) : 12,
-          badge_format: val.badge_format || "save_pct",
+          default_markup_pct: val.default_markup_pct !== undefined ? Number(val.default_markup_pct) : 30,
+          badge_format: val.badge_format || "pct_off",
           product_overrides: val.product_overrides || {},
           brand_overrides: val.brand_overrides || {},
           randomize_fallback_pct: val.randomize_fallback_pct !== undefined ? !!val.randomize_fallback_pct : true,
@@ -793,6 +811,23 @@ const AdminRetailPromotions = () => {
     if (error) { toast.error("Failed to save promotional pricing", { description: error.message }); return; }
     toast.success("Promotional pricing and Save % badges updated");
     invalidateSettingsCache();
+  };
+
+  const quickToggleVisibility = async (patch: Partial<typeof promoSettings>) => {
+    const next = { ...promoSettings, ...patch };
+    setPromoSettings(next);
+    setSavingPromo(true);
+    const { error } = await supabase.from("site_settings").upsert(
+      { key: "promotions", value: next, updated_at: new Date().toISOString() },
+      { onConflict: "key" }
+    );
+    setSavingPromo(false);
+    if (error) {
+      toast.error("Failed to update section visibility", { description: error.message });
+      return;
+    }
+    invalidateSettingsCache();
+    toast.success("Storefront section visibility saved");
   };
 
   const updateSlide = (id: string, patch: Partial<HeroSlide>) => {
@@ -916,13 +951,142 @@ const AdminRetailPromotions = () => {
       <div className="max-w-5xl mx-auto space-y-8">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <h1 className="font-display text-2xl font-bold text-foreground">Retail Store Promotions</h1>
+            <h1 className="font-display text-2xl font-bold text-foreground">Retail Store Promotions &amp; Section Visibility</h1>
           </div>
           <p className="text-sm text-muted-foreground mt-1">
-            Manage your retail hero carousel and top promotional countdown bar. Selecting any catalog product or package
-            automatically loads its authentic photo, clean specs, pricing, and purchase links.
+            Show or hide the Hero Banner, Flash Deals countdown bar, promotional cards, Black Friday badges, and category sections at any time, or manage individual hero slides and discounts below.
           </p>
         </div>
+
+        {/* MASTER SECTION VISIBILITY & PROMO SWITCHBOARD */}
+        <section
+          data-testid="admin-section-visibility-panel"
+          className="rounded-2xl border-2 border-primary/30 bg-card p-5 sm:p-6 space-y-4 shadow-sm"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border">
+            <div className="flex items-center gap-3">
+              <SlidersHorizontal size={22} className="text-primary shrink-0" />
+              <div>
+                <h2 className="font-display text-lg font-bold text-foreground leading-tight">
+                  Storefront Section Visibility &amp; Master Promo Controls
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Hide the entire Hero Banner or any retail section with one click when you are not running promotions
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                disabled={savingPromo}
+                onClick={() =>
+                  quickToggleVisibility({
+                    show_hero_banner: false,
+                    show_flash_deals_bar: false,
+                    show_black_friday_badges: false,
+                    show_compare_at_price: false,
+                  })
+                }
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/30 transition-all"
+              >
+                <EyeOff size={13} />
+                <span>Pause All Promotions</span>
+              </button>
+              <button
+                type="button"
+                disabled={savingPromo}
+                onClick={() =>
+                  quickToggleVisibility({
+                    show_hero_banner: true,
+                    show_flash_deals_bar: true,
+                    show_flash_deal_cards: true,
+                    show_black_friday_badges: true,
+                    show_compare_at_price: true,
+                  })
+                }
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-primary text-primary-foreground hover:brightness-110 transition-all shadow-xs"
+              >
+                <Eye size={13} />
+                <span>Enable All Promotions</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[
+              {
+                key: "show_hero_banner" as const,
+                title: "Retail Hero Banner Carousel",
+                desc: "Entire top hero banner carousel on /retail",
+                active: promoSettings.show_hero_banner !== false,
+              },
+              {
+                key: "show_flash_deals_bar" as const,
+                title: "Flash Deals & Countdown Card",
+                desc: "Promotional countdown card below the hero section",
+                active: promoSettings.show_flash_deals_bar !== false,
+              },
+              {
+                key: "show_flash_deal_cards" as const,
+                title: "Dual Promo Banner Cards",
+                desc: "The 2 visual banner cards inside the Flash Deals card",
+                active: promoSettings.show_flash_deal_cards !== false,
+              },
+              {
+                key: "show_black_friday_badges" as const,
+                title: "Black Friday Badges",
+                desc: "BLACK FRIDAY pills on products, hero, categories & packages",
+                active: promoSettings.show_black_friday_badges !== false,
+              },
+              {
+                key: "show_compare_at_price" as const,
+                title: "Storewide % OFF & Slashed Prices",
+                desc: "Strikethrough compare-at prices and % OFF discount tags",
+                active: promoSettings.show_compare_at_price !== false,
+              },
+              {
+                key: "show_value_props_bar" as const,
+                title: "Quick Value Props Bar",
+                desc: "Fast Dispatch, 5-Yr Warranty, Tier-1 Stack & 0-Flicker UPS bar",
+                active: promoSettings.show_value_props_bar !== false,
+              },
+              {
+                key: "show_category_showcase" as const,
+                title: "Shop By Category Grid",
+                desc: "Hardware category showcase cards above the product catalog",
+                active: promoSettings.show_category_showcase !== false,
+              },
+            ].map((item) => (
+              <div
+                key={item.key}
+                className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 transition-all ${
+                  item.active
+                    ? "bg-emerald-500/[0.06] border-emerald-500/35"
+                    : "bg-muted/40 border-border opacity-80"
+                }`}
+              >
+                <div className="min-w-0">
+                  <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
+                  <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">{item.desc}</p>
+                </div>
+                <button
+                  type="button"
+                  disabled={savingPromo}
+                  onClick={() => quickToggleVisibility({ [item.key]: !item.active })}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-all ${
+                    item.active
+                      ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40"
+                      : "bg-muted text-muted-foreground border border-border"
+                  }`}
+                >
+                  {item.active ? <Eye size={12} /> : <EyeOff size={12} />}
+                  <span>{item.active ? "Visible" : "Hidden"}</span>
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* QUICK PRESETS BANNER */}
         <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 space-y-2.5">
@@ -1628,7 +1792,22 @@ const AdminRetailPromotions = () => {
                 <p className="text-xs text-muted-foreground">Slides displayed at the top of /retail</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                disabled={savingPromo}
+                onClick={() =>
+                  quickToggleVisibility({ show_hero_banner: !(promoSettings.show_hero_banner !== false) })
+                }
+                className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-full transition-all ${
+                  promoSettings.show_hero_banner !== false
+                    ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30"
+                    : "bg-muted text-muted-foreground border border-border"
+                }`}
+              >
+                {promoSettings.show_hero_banner !== false ? <Eye size={12} /> : <EyeOff size={12} />}
+                {promoSettings.show_hero_banner !== false ? "Hero Visible on Storefront" : "Entire Hero Banner Hidden"}
+              </button>
               <button
                 onClick={addSlide}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl bg-primary text-primary-foreground hover:brightness-110 transition-all shadow-xs"

@@ -37,6 +37,18 @@ export interface TaxSettings {
 }
 
 export interface PromotionSettings {
+  /** Master switch for the entire top Retail Hero Banner / Carousel on /retail. */
+  show_hero_banner?: boolean;
+  /** Master switch for the Flash Deals / Black Friday Promotional Countdown card below the hero. */
+  show_flash_deals_bar?: boolean;
+  /** Switch for the two promotional banner cards inside the Flash Deals bar. */
+  show_flash_deal_cards?: boolean;
+  /** Master switch for the 4-column Quick Value Props bar on /retail. */
+  show_value_props_bar?: boolean;
+  /** Master switch for the "Shop By Category" cards showcase grid on /retail. */
+  show_category_showcase?: boolean;
+  /** Master switch for all "BLACK FRIDAY" badges across products, categories, hero, and packages. */
+  show_black_friday_badges?: boolean;
   /** Master switch for the struck-through "was" price across the storefront. */
   show_compare_at_price: boolean;
   /**
@@ -139,6 +151,12 @@ export const SETTING_DEFAULTS = {
     store_enabled: true,
   } as FeatureSettings,
   promotions: {
+    show_hero_banner: true,
+    show_flash_deals_bar: true,
+    show_flash_deal_cards: true,
+    show_value_props_bar: true,
+    show_category_showcase: true,
+    show_black_friday_badges: true,
     show_compare_at_price: true,
     default_markup_pct: 30,
     badge_format: "pct_off",

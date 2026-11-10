@@ -37,6 +37,7 @@ export interface BrandPromoOverride {
 
 export interface CompareAtOptions {
   show_compare_at_price: boolean;
+  show_black_friday_badges?: boolean;
   default_markup_pct: number;
   badge_format?: "save_pct" | "save_amount" | "pct_off";
   product_overrides?: Record<string, ProductPromoOverride>;
@@ -67,7 +68,9 @@ const FALLBACK_MAX_PCT = 50;
 export const isBlackFridayProduct = (
   category?: string | null,
   name?: string | null,
+  opts?: { show_black_friday_badges?: boolean } | null,
 ): boolean => {
+  if (opts && opts.show_black_friday_badges === false) return false;
   const c = (category || "").toLowerCase();
   const n = (name || "").toLowerCase();
   if (!c && !n) return true;
@@ -110,6 +113,7 @@ export const resolveCompareAt = (
   productId?: string,
   brand?: string | null,
 ): number | null => {
+  if (opts && opts.show_compare_at_price === false) return null;
   const now = Number(price);
   if (!Number.isFinite(now) || now <= 0) return null;
 

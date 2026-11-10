@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Save, ChevronDown, ChevronRight, Plus, Trash2 } from "lucide-react";
+import { Save, ChevronDown, ChevronRight, Plus, Trash2, Eye, EyeOff } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
 import { invalidateLandingCache } from "@/hooks/useLandingContent";
@@ -12,6 +12,7 @@ interface SectionData {
 }
 
 const sectionLabels: Record<string, string> = {
+  hero: "Hero Banner",
   problems: "Problem Section",
   solution: "Solution Section",
   offers: "What We Offer",
@@ -20,9 +21,12 @@ const sectionLabels: Record<string, string> = {
   faq: "FAQ Section",
   trust: "Why Tioga / Trust",
   target_users: "Who We Serve",
+  final_cta: "Final Call to Action",
 };
 
 const defaultContent: Record<string, any> = {
+  hero: { is_active: true },
+  final_cta: { is_active: true },
   problems: {
     heading: "Sound familiar?",
     subtitle: "Millions of Nigerians deal with these challenges daily.",
@@ -195,19 +199,68 @@ const AdminLandingPage = () => {
     );
   };
 
+  const toggleSectionVisibility = async (key: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const section = sections[key] || { section_key: key, content: defaultContent[key] || {} };
+    const currentlyActive = section.content?.is_active !== false;
+    const nextContent = { ...section.content, is_active: !currentlyActive };
+    updateContent(key, nextContent);
+    setSaving(key);
+    const { error } = await supabase.from("landing_content").upsert(
+      {
+        section_key: key,
+        content: nextContent,
+        updated_at: new Date().toISOString(),
+        ...(section.id ? { id: section.id } : {}),
+      },
+      { onConflict: "section_key" }
+    );
+    setSaving(null);
+    if (error) {
+      toast.error("Failed to update section visibility");
+    } else {
+      toast.success(`${sectionLabels[key]} is now ${!currentlyActive ? "visible" : "hidden"}`);
+      invalidateLandingCache();
+    }
+  };
+
   const renderSection = (key: string) => {
     const content = sections[key]?.content || {};
     const isOpen = expanded === key;
+    const isVisible = content.is_active !== false;
 
     return (
       <div key={key} className="rounded-2xl border border-border bg-card overflow-hidden">
-        <button
+        <div
           onClick={() => toggle(key)}
-          className="w-full flex items-center justify-between px-5 py-4 hover:bg-muted/30 transition-colors"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggle(key);
+            }
+          }}
+          className="w-full flex items-center justify-between px-5 py-4 hover:bg-muted/30 transition-colors cursor-pointer"
         >
           <h3 className="font-display font-bold text-card-foreground text-sm">{sectionLabels[key]}</h3>
-          {isOpen ? <ChevronDown size={16} className="text-muted-foreground" /> : <ChevronRight size={16} className="text-muted-foreground" />}
-        </button>
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              disabled={saving === key}
+              onClick={(e) => toggleSectionVisibility(key, e)}
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
+                isVisible
+                  ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/35"
+                  : "bg-muted text-muted-foreground border-border"
+              }`}
+            >
+              {isVisible ? <Eye size={12} /> : <EyeOff size={12} />}
+              <span>{isVisible ? "Visible" : "Hidden"}</span>
+            </button>
+            {isOpen ? <ChevronDown size={16} className="text-muted-foreground" /> : <ChevronRight size={16} className="text-muted-foreground" />}
+          </div>
+        </div>
 
         {isOpen && (
           <div className="px-5 pb-5 space-y-4 border-t border-border pt-4">

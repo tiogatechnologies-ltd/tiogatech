@@ -97,7 +97,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
   const wasPrice = calcWasPrice(product.numeric_price, compareAt);
   const savedAmount = calcSavedAmount(product.numeric_price, compareAt);
   const promoBadge = resolvePromoBadge(product.id, promos, customBadge);
-  const isBlackFriday = isBlackFridayProduct(product.category, product.name);
+  const isBlackFriday = isBlackFridayProduct(product.category, product.name, promos);
   const monthlyEst = product.numeric_price ? Math.round(product.numeric_price / 3) : null;
 
   const handleAddToCart = (e: React.MouseEvent) => {

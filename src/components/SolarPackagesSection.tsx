@@ -85,9 +85,11 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
 
         {/* Top-left Promo / Status Badge */}
         <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none flex flex-col gap-1">
-          <span className="px-2 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center w-fit">
-            <span>BLACK FRIDAY</span>
-          </span>
+          {promos?.show_black_friday_badges !== false && (
+            <span className="px-2 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center w-fit">
+              <span>BLACK FRIDAY</span>
+            </span>
+          )}
           {pct ? (
             <span className="px-2.5 py-0.5 rounded-full bg-red-600/95 backdrop-blur-md border border-white/25 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
               <TrendingDown size={11} /> {`${pct}% OFF`}

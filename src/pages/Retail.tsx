@@ -40,6 +40,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useWishlist } from "@/hooks/useWishlist";
+import { useSiteSetting, invalidateSettingsCache } from "@/hooks/useSiteSetting";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
+import { Eye, EyeOff, Settings } from "lucide-react";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { resolveStockStatus } from "@/lib/productAvailability";
@@ -184,6 +188,25 @@ export const Retail = () => {
   const [quickViewProduct, setQuickViewProduct] = useState<RetailProduct | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const { count: wishlistCount } = useWishlist();
+  const { settings: promos } = useSiteSetting("promotions");
+  const { isAdmin } = useAuth();
+  const [savingAdminToggle, setSavingAdminToggle] = useState(false);
+
+  const toggleRetailSection = async (patch: Record<string, boolean>) => {
+    setSavingAdminToggle(true);
+    const nextValue = { ...promos, ...patch };
+    const { error } = await supabase.from("site_settings").upsert(
+      { key: "promotions", value: nextValue as any, updated_at: new Date().toISOString() },
+      { onConflict: "key" }
+    );
+    setSavingAdminToggle(false);
+    if (error) {
+      toast.error("Failed to update section visibility", { description: error.message });
+      return;
+    }
+    invalidateSettingsCache();
+    toast.success("Storefront visibility updated");
+  };
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
@@ -344,6 +367,96 @@ export const Retail = () => {
 
       <main className="flex-1 section-padding py-4 sm:py-8 pt-[72px] sm:pt-[84px]">
         <div className="section-container-wide px-3 sm:px-6">
+          {/* Admin Quick Section Visibility Toolbar (only visible to logged-in Admins) */}
+          {isAdmin && (
+            <div
+              data-testid="admin-retail-visibility-bar"
+              className="mb-4 sm:mb-6 p-3.5 sm:p-4 rounded-2xl bg-card border-2 border-primary/35 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3"
+            >
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                  <Settings size={16} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-display font-bold uppercase tracking-wider text-foreground">
+                      Admin Section Controls
+                    </span>
+                    <Link
+                      to="/admin/retail-promotions"
+                      className="text-[11px] font-semibold text-primary hover:underline"
+                    >
+                      Open Full Promo Settings →
+                    </Link>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Click any section below to show or hide it immediately on the live storefront.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                {[
+                  { key: "show_hero_banner", label: "Hero Banner", active: promos?.show_hero_banner !== false },
+                  { key: "show_flash_deals_bar", label: "Flash Deals Card", active: promos?.show_flash_deals_bar !== false },
+                  { key: "show_flash_deal_cards", label: "Dual Promo Cards", active: promos?.show_flash_deal_cards !== false },
+                  { key: "show_black_friday_badges", label: "Black Friday Badges", active: promos?.show_black_friday_badges !== false },
+                  { key: "show_compare_at_price", label: "% OFF Prices", active: promos?.show_compare_at_price !== false },
+                  { key: "show_value_props_bar", label: "Value Props Bar", active: promos?.show_value_props_bar !== false },
+                  { key: "show_category_showcase", label: "Category Grid", active: promos?.show_category_showcase !== false },
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    disabled={savingAdminToggle}
+                    onClick={() => toggleRetailSection({ [item.key]: !item.active })}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold border transition-all ${
+                      item.active
+                        ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
+                        : "bg-muted/60 border-border text-muted-foreground"
+                    }`}
+                  >
+                    {item.active ? <Eye size={12} /> : <EyeOff size={12} />}
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  disabled={savingAdminToggle}
+                  onClick={() =>
+                    toggleRetailSection({
+                      show_hero_banner: false,
+                      show_flash_deals_bar: false,
+                      show_black_friday_badges: false,
+                      show_compare_at_price: false,
+                    })
+                  }
+                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-bold bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/30 transition-all"
+                >
+                  <EyeOff size={12} />
+                  <span>Hide All Promos</span>
+                </button>
+                <button
+                  type="button"
+                  disabled={savingAdminToggle}
+                  onClick={() =>
+                    toggleRetailSection({
+                      show_hero_banner: true,
+                      show_flash_deals_bar: true,
+                      show_flash_deal_cards: true,
+                      show_black_friday_badges: true,
+                      show_compare_at_price: true,
+                    })
+                  }
+                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-bold bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 transition-all"
+                >
+                  <Eye size={12} />
+                  <span>Show All Promos</span>
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Hero Carousel */}
           <RetailHeroCarousel
             productCount={products.length}
@@ -356,6 +469,7 @@ export const Retail = () => {
           />
 
           {/* Quick Value Props Bar */}
+          {promos?.show_value_props_bar !== false && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border/80 shadow-xs mb-6 sm:mb-8">
             <div className="flex items-center gap-3">
               <Truck size={24} className="text-primary shrink-0" />
@@ -389,8 +503,10 @@ export const Retail = () => {
               </div>
             </div>
           </div>
+          )}
 
           {/* Category Cards Grid Showcase */}
+          {promos?.show_category_showcase !== false && (
           <div className="mb-12">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
               <div>
@@ -458,14 +574,16 @@ export const Retail = () => {
                     {/* Left details */}
                     <div className="relative z-10 flex-1 pr-3 min-w-0 flex flex-col justify-between self-stretch">
                       <div>
-                        <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-black text-white border border-white/20 text-[9px] font-extrabold uppercase tracking-widest">
-                            BLACK FRIDAY
-                          </span>
-                          <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-red-600 text-white text-[9px] font-extrabold uppercase tracking-wider">
-                            UP TO 50% OFF
-                          </span>
-                        </div>
+                        {promos?.show_black_friday_badges !== false && (
+                          <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded bg-black text-white border border-white/20 text-[9px] font-extrabold uppercase tracking-widest">
+                              BLACK FRIDAY
+                            </span>
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-red-600 text-white text-[9px] font-extrabold uppercase tracking-wider">
+                              UP TO 50% OFF
+                            </span>
+                          </div>
+                        )}
                         <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
                           {cat.tag}
                         </span>
@@ -514,6 +632,7 @@ export const Retail = () => {
               })}
             </div>
           </div>
+          )}
 
           {/* Controls Bar: Search, Mobile Filters, Sort, Grid/List */}
           <div id="catalog-grid-top" className="scroll-mt-24 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 mb-6">

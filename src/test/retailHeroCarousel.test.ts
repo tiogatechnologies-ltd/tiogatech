@@ -11,6 +11,7 @@ import {
 } from "@/components/retail/RetailHeroCarousel";
 import { isBlackFridayProduct, resolveCompareAt, savingsPct } from "@/lib/promoDisplay";
 import { DEFAULT_FLASH_DEAL, getNextFridayMidnight } from "@/components/retail/FlashDealsBar";
+import { SETTING_DEFAULTS } from "@/hooks/useSiteSetting";
 import { categoryMatches } from "@/lib/retailFilters";
 import { PRODUCTS } from "@/data/products";
 
@@ -195,5 +196,27 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
     const solarEnergyMatches = PRODUCTS.filter((p) => categoryMatches(p as any, "Solar, Inverters & Batteries"));
     expect(smartHomeMatches.length).toBeGreaterThan(800);
     expect(solarEnergyMatches.length).toBeGreaterThan(200);
+  });
+
+  it("allows admins to disable hero banners, sections, Black Friday badges, and promotional compare-at prices", () => {
+    expect(SETTING_DEFAULTS.promotions.show_hero_banner).toBe(true);
+    expect(SETTING_DEFAULTS.promotions.show_flash_deals_bar).toBe(true);
+    expect(SETTING_DEFAULTS.promotions.show_flash_deal_cards).toBe(true);
+    expect(SETTING_DEFAULTS.promotions.show_black_friday_badges).toBe(true);
+    expect(SETTING_DEFAULTS.promotions.show_value_props_bar).toBe(true);
+    expect(SETTING_DEFAULTS.promotions.show_category_showcase).toBe(true);
+
+    // Disabling Black Friday badges hides them globally
+    expect(isBlackFridayProduct("Inverters", "Deye 5kW Hybrid Inverter", { show_black_friday_badges: false })).toBe(false);
+
+    // Disabling compare-at prices hides strikethrough prices and % OFF badges globally
+    const compareAtDisabled = resolveCompareAt(
+      500000,
+      650000,
+      { show_compare_at_price: false, default_markup_pct: 30, randomize_fallback_pct: true },
+      "test-id",
+      "Deye",
+    );
+    expect(compareAtDisabled).toBeNull();
   });
 });
