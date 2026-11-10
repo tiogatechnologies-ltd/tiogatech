@@ -416,9 +416,8 @@ export const ProductDetail = () => {
                   {isBlackFridayProduct(product.category, product.name) && (
                     <span
                       data-testid="black-friday-badge"
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[11px] font-black uppercase tracking-wider shadow-md"
+                      className="inline-flex items-center px-3 py-1 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[11px] font-black uppercase tracking-wider shadow-md"
                     >
-                      <span className="h-2 w-2 rounded-full bg-[#00e640] animate-pulse shrink-0" />
                       <span>BLACK FRIDAY</span>
                     </span>
                   )}

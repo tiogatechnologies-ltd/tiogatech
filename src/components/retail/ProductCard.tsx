@@ -174,9 +174,8 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
           {isBlackFriday && (
             <span
               data-testid="black-friday-badge"
-              className="px-2 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center gap-1.5 w-fit"
+              className="px-2 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center w-fit"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-[#00e640] animate-pulse shrink-0" />
               <span>BLACK FRIDAY</span>
             </span>
           )}

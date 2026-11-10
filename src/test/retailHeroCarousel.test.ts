@@ -10,6 +10,7 @@ import {
   priceHeroSlide,
 } from "@/components/retail/RetailHeroCarousel";
 import { isBlackFridayProduct, resolveCompareAt, savingsPct } from "@/lib/promoDisplay";
+import { DEFAULT_FLASH_DEAL, getNextFridayMidnight } from "@/components/retail/FlashDealsBar";
 import { PRODUCTS } from "@/data/products";
 
 describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
@@ -173,5 +174,18 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
     }
 
     expect(maxPctSeen).toBe(50);
+  });
+
+  it("counts down to 12:00 AM on Friday and advertises Free Installation for all Smart Locks Products", () => {
+    expect(DEFAULT_FLASH_DEAL.perk_label).toBe("Free Installation for all Smart Locks Products");
+    // Tuesday Nov 10, 2026 at 18:23 -> next Friday midnight is Nov 13, 2026 at 00:00:00
+    const sampleNow = new Date(2026, 10, 10, 18, 23, 0, 0);
+    const targetMs = getNextFridayMidnight(sampleNow);
+    const targetDate = new Date(targetMs);
+    expect(targetDate.getDay()).toBe(5); // Friday
+    expect(targetDate.getDate()).toBe(13);
+    expect(targetDate.getHours()).toBe(0);
+    expect(targetDate.getMinutes()).toBe(0);
+    expect(targetDate.getSeconds()).toBe(0);
   });
 });

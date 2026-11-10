@@ -88,8 +88,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
         {/* Top-left Promo / Status Badge */}
         <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none flex flex-col gap-1">
-          <span className="px-2 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center gap-1.5 w-fit">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#00e640] animate-pulse shrink-0" />
+          <span className="px-2 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center w-fit">
             <span>BLACK FRIDAY</span>
           </span>
           {pct ? (

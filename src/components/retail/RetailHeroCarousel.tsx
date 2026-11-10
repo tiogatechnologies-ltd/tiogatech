@@ -141,12 +141,12 @@ export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
     badge: "BLACK FRIDAY MEGA SALE · UP TO 50% OFF",
     headline: "Tioga Black Friday Sales — Deals Up to 50% OFF",
     subheadline:
-      "Unlock massive Black Friday markdowns up to 50% OFF across Tier-1 Hybrid Inverters, LiFePO4 Lithium Batteries, Monocrystalline Solar Panels, and Smart Home Automation Systems. Official 5-Year Warranty & 24h Nationwide Dispatch.",
-    highlight_text: "Up to 50% OFF Storewide · Solar, Inverters, Batteries & Smart Home Automation",
+      "Unlock massive Black Friday markdowns up to 50% OFF across Tier-1 Hybrid Inverters, LiFePO4 Lithium Batteries, Monocrystalline Solar Panels, and Smart Home Automation Systems. Official 5-Year Warranty & Free Installation for all Smart Locks Products.",
+    highlight_text: "Up to 50% OFF Storewide · Free Installation for all Smart Locks Products",
     discount_pct: 50,
     image_url: "/banners/black-friday-sales.webp",
-    cta_text: "Shop Black Friday Deals",
-    cta_link: "/retail#catalog-grid-top",
+    cta_text: "Shop Smart Home & Locks",
+    cta_link: "/retail?category=Smart%20Door%20Locks#catalog-grid-top",
     secondary_cta_text: "Claim 50% Off on WhatsApp",
     secondary_cta_link:
       "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20claim%20your%20Black%20Friday%20Mega%20Sale%20deals%20(up%20to%2050%25%20OFF).",
@@ -162,7 +162,7 @@ export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
     discount_pct: 50,
     image_url: "/banners/black-friday-solar-offer.webp",
     cta_text: "Explore Solar & Inverter Deals",
-    cta_link: "/retail?category=Inverters",
+    cta_link: "/retail?category=Inverters#catalog-grid-top",
     secondary_cta_text: "Spread Payments",
     secondary_cta_link: "/finance/apply",
   },
@@ -207,6 +207,7 @@ export const DEFAULT_HERO_SLIDES: HeroSlideContent[] = [
 interface RetailHeroCarouselProps {
   /** Real, currently-loaded catalog size - used only for the honest fallback slide below. */
   productCount?: number;
+  onSelectCategory?: (category: string) => void;
 }
 
 // Banner prices must use the same quote column as the catalogue. These used
@@ -225,7 +226,7 @@ export function priceHeroSlide(slide: HeroSlideContent): HeroSlideContent {
     cta_link: slide.cta_link.includes("wa.me/") ? `https://wa.me/2348178000023?text=${encodeURIComponent(`Hello Tioga Technologies, I want to order the ${slide.headline}${price === null ? ". Please send a quote" : ` at ${formatRetailPrice(price)}`}.`)}` : slide.cta_link };
 }
 
-export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps) => {
+export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: RetailHeroCarouselProps) => {
   const { content, loading } = useLandingContent("retail_hero");
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -366,9 +367,8 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 <div className="flex items-center gap-2 flex-wrap">
                   <span
                     data-testid="hero-black-friday-badge"
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950/90 border border-emerald-400/60 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg"
+                    className="inline-flex items-center px-3 py-1 rounded-full bg-zinc-950/90 border border-emerald-400/60 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg"
                   >
-                    <span className="h-2 w-2 rounded-full bg-[#00e640] animate-pulse shrink-0" />
                     <span>BLACK FRIDAY</span>
                   </span>
                   <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg">
@@ -440,17 +440,26 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
                     </a>
-                  ) : slide.cta_link?.includes("#catalog-grid-top") ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        document.getElementById("catalog-grid-top")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  ) : slide.cta_link?.includes("category=") || slide.cta_link?.includes("#catalog-grid-top") ? (
+                    <Link
+                      to={slide.cta_link}
+                      onClick={(e) => {
+                        if (onSelectCategory) {
+                          const match = slide.cta_link.match(/[?&]category=([^&#]+)/);
+                          const cat = match ? decodeURIComponent(match[1]) : "all";
+                          e.preventDefault();
+                          onSelectCategory(cat);
+                        } else {
+                          setTimeout(() => {
+                            document.getElementById("catalog-grid-top")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                          }, 50);
+                        }
                       }}
                       className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-[#00e640] to-emerald-500 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 active:scale-95 transition-all cursor-pointer"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
-                    </button>
+                    </Link>
                   ) : (
                     <Link
                       to={slide.cta_link}
@@ -510,8 +519,7 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                       className="w-full h-auto object-cover transition-transform duration-500 group-hover/banner:scale-[1.03]"
                     />
                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-zinc-950/90 backdrop-blur-md border border-white/15">
-                      <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider text-white flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-[#00e640] animate-pulse" />
+                      <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider text-white">
                         Tioga Black Friday Official Deal
                       </span>
                       <span className="px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-black uppercase tracking-wider">

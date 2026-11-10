@@ -345,10 +345,15 @@ export const Retail = () => {
       <main className="flex-1 section-padding py-4 sm:py-8 pt-[72px] sm:pt-[84px]">
         <div className="section-container-wide px-3 sm:px-6">
           {/* Hero Carousel */}
-          <RetailHeroCarousel productCount={products.length} />
+          <RetailHeroCarousel
+            productCount={products.length}
+            onSelectCategory={(cat) => handleCategorySelect(cat, true)}
+          />
 
           {/* Flash Deals Urgency Bar */}
-          <FlashDealsBar />
+          <FlashDealsBar
+            onSelectCategory={(cat) => handleCategorySelect(cat, true)}
+          />
 
           {/* Quick Value Props Bar */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border/80 shadow-xs mb-6 sm:mb-8">
@@ -454,8 +459,7 @@ export const Retail = () => {
                     <div className="relative z-10 flex-1 pr-3 min-w-0 flex flex-col justify-between self-stretch">
                       <div>
                         <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black text-white border border-white/20 text-[9px] font-extrabold uppercase tracking-widest">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#00e640]" />
+                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-black text-white border border-white/20 text-[9px] font-extrabold uppercase tracking-widest">
                             BLACK FRIDAY
                           </span>
                           <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-red-600 text-white text-[9px] font-extrabold uppercase tracking-wider">
