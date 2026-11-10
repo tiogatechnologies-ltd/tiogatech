@@ -178,8 +178,20 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
     expect(maxPctSeen).toBe(50);
   });
 
-  it("counts down to 12:00 AM on Friday and advertises Free Installation for all Smart Locks Products", () => {
+  it("counts down to Friday and advertises Free Installation for all Smart Locks Products without em dashes", () => {
     expect(DEFAULT_FLASH_DEAL.perk_label).toBe("Free Installation for all Smart Locks Products");
+    expect(DEFAULT_FLASH_DEAL.description).toBe(
+      "Massive Black Friday markdowns on all Solar Panels, Hybrid Inverters, LiFePO4 Lithium Batteries & Smart Home Automation."
+    );
+    expect(DEFAULT_FLASH_DEAL.headline).not.toContain("—");
+    expect(DEFAULT_FLASH_DEAL.description).not.toContain("—");
+    expect(DEFAULT_FLASH_DEAL.description).not.toContain("Official 5-Year Warranty");
+
+    for (const s of DEFAULT_HERO_SLIDES) {
+      expect(s.headline).not.toContain("—");
+      expect(s.subheadline).not.toContain("—");
+    }
+
     // Tuesday Nov 10, 2026 at 18:23 -> next Friday midnight is Nov 13, 2026 at 00:00:00
     const sampleNow = new Date(2026, 10, 10, 18, 23, 0, 0);
     const targetMs = getNextFridayMidnight(sampleNow);

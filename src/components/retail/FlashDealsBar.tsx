@@ -16,11 +16,11 @@ export interface FlashDealContent {
 
 export const DEFAULT_FLASH_DEAL: FlashDealContent = {
   is_active: true,
-  headline: "BLACK FRIDAY MEGA SALE — DEALS UP TO 50% OFF",
+  headline: "BLACK FRIDAY MEGA SALE · DEALS UP TO 50% OFF",
   discount_label: "UP TO 50% OFF",
   discount_code: "",
   description:
-    "Massive Black Friday markdowns on all Solar Panels, Hybrid Inverters, LiFePO4 Lithium Batteries & Smart Home Automation. Official 5-Year Warranty & Free Installation for all Smart Locks Products.",
+    "Massive Black Friday markdowns on all Solar Panels, Hybrid Inverters, LiFePO4 Lithium Batteries & Smart Home Automation.",
   perk_label: "Free Installation for all Smart Locks Products",
   ends_at: "",
 };
@@ -101,12 +101,18 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
     !rawDeal.headline ||
     !/black\s*friday/i.test(rawDeal.headline);
 
+  const rawHeadline = (rawDeal.headline || "").replace(/\s*—\s*/g, " · ");
+  const rawDescription = (rawDeal.description || "")
+    .replace(/\s*—\s*/g, " - ")
+    .replace(/\s*Official 5-Year Warranty.*$/i, "")
+    .trim();
+
   const deal: FlashDealContent = {
     ...DEFAULT_FLASH_DEAL,
     ...rawDeal,
-    headline: isLegacyHeadline ? DEFAULT_FLASH_DEAL.headline : rawDeal.headline!,
+    headline: isLegacyHeadline ? DEFAULT_FLASH_DEAL.headline : rawHeadline,
     discount_label: isLegacyHeadline ? DEFAULT_FLASH_DEAL.discount_label : (rawDeal.discount_label || DEFAULT_FLASH_DEAL.discount_label),
-    description: isLegacyHeadline ? DEFAULT_FLASH_DEAL.description : (rawDeal.description || DEFAULT_FLASH_DEAL.description),
+    description: isLegacyHeadline ? DEFAULT_FLASH_DEAL.description : (rawDescription || DEFAULT_FLASH_DEAL.description),
     perk_label: DEFAULT_FLASH_DEAL.perk_label,
   };
 
@@ -132,21 +138,21 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
     <aside
       aria-label="Black Friday Promotional Banner"
       data-testid="black-friday-promo-bar"
-      className="relative rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#070a09] via-[#0b1810] to-[#070a09] border-2 border-[#00e640]/45 p-4 sm:p-6 mb-6 sm:mb-8 shadow-[0_14px_40px_-10px_rgba(0,230,64,0.28)] ring-1 ring-[#00e640]/20 transition-all text-white overflow-hidden"
+      className="relative rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#070a09] via-[#0b1810] to-[#070a09] border-2 border-[#00e640]/45 p-3.5 sm:p-6 mb-6 sm:mb-8 shadow-[0_14px_40px_-10px_rgba(0,230,64,0.28)] ring-1 ring-[#00e640]/20 transition-all text-white overflow-hidden"
     >
       {/* Subtle radial glow */}
       <div className="pointer-events-none absolute -top-24 -left-24 w-72 h-72 rounded-full bg-[#00e640]/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-red-600/15 blur-3xl" />
 
-      <div className="relative z-10 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4">
+      <div className="relative z-10 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-3.5 sm:gap-4">
         {/* Left: Highlight Flame & Black Friday Announcement (no extra Black Friday pill) */}
-        <div className="flex items-start sm:items-center gap-3.5">
-          <div className="p-2.5 rounded-2xl bg-[#00e640] text-slate-950 font-bold shadow-md shadow-[#00e640]/30 shrink-0">
-            <Flame size={22} className="fill-slate-950 text-slate-950" />
+        <div className="flex items-start sm:items-center gap-3">
+          <div className="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-[#00e640] text-slate-950 font-bold shadow-md shadow-[#00e640]/30 shrink-0">
+            <Flame size={20} className="fill-slate-950 text-slate-950 sm:w-[22px] sm:h-[22px]" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs sm:text-sm md:text-base font-display font-extrabold uppercase tracking-wider text-[#00e640]">
+              <span className="text-xs sm:text-sm md:text-base font-display font-extrabold uppercase tracking-wider text-[#00e640] leading-snug">
                 {deal.headline}
               </span>
               {deal.discount_label && (
@@ -156,7 +162,7 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
               )}
             </div>
             {deal.description && (
-              <p className="text-xs text-slate-300 mt-1.5 leading-relaxed max-w-3xl">
+              <p className="text-[11px] sm:text-xs text-slate-300 mt-1 sm:mt-1.5 leading-relaxed max-w-3xl">
                 {deal.discount_code && (
                   <>
                     Apply code{" "}
@@ -171,49 +177,49 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
           </div>
         </div>
 
-        {/* Right Section: Countdown to 12am Friday & Free Smart Locks Installation */}
-        <div className="flex flex-wrap items-center gap-3 sm:gap-5 w-full xl:w-auto justify-between xl:justify-end border-t xl:border-t-0 pt-3 xl:pt-0 border-white/10 shrink-0">
-          {/* Live Countdown Timer to 12:00 AM Friday */}
+        {/* Right Section: Countdown to Friday & Free Smart Locks Installation */}
+        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2.5 sm:gap-5 w-full xl:w-auto justify-between xl:justify-end border-t xl:border-t-0 pt-3 xl:pt-0 border-white/10 shrink-0">
+          {/* Live Countdown Timer to Friday */}
           <div className="flex items-center gap-2 text-xs font-semibold">
             <div className="flex items-center gap-1 text-[#00e640]">
-              <Clock size={15} className="animate-spin-slow" />
-              <span className="font-bold tracking-wide uppercase text-[11px]">Friday 12AM:</span>
+              <Clock size={14} className="animate-spin-slow shrink-0" />
+              <span className="font-bold tracking-wide uppercase text-[11px]">Friday:</span>
             </div>
-            <div className="flex items-center gap-1 font-mono text-sm font-extrabold">
+            <div className="flex items-center gap-1 font-mono text-xs sm:text-sm font-extrabold">
               {timeLeft.d > 0 && (
                 <>
-                  <div className="px-2 py-1 rounded-xl bg-white/10 border border-white/20 text-white shadow-xs">
+                  <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg sm:rounded-xl bg-white/10 border border-white/20 text-white shadow-xs">
                     {format(timeLeft.d)}
                     <span className="text-[9px] text-slate-300 font-sans ml-0.5 font-normal">d</span>
                   </div>
                   <span className="text-[#00e640] font-bold animate-pulse">:</span>
                 </>
               )}
-              <div className="px-2 py-1 rounded-xl bg-white/10 border border-white/20 text-white shadow-xs">
+              <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg sm:rounded-xl bg-white/10 border border-white/20 text-white shadow-xs">
                 {format(timeLeft.h)}
                 <span className="text-[9px] text-slate-300 font-sans ml-0.5 font-normal">h</span>
               </div>
               <span className="text-[#00e640] font-bold animate-pulse">:</span>
-              <div className="px-2 py-1 rounded-xl bg-white/10 border border-white/20 text-white shadow-xs">
+              <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg sm:rounded-xl bg-white/10 border border-white/20 text-white shadow-xs">
                 {format(timeLeft.m)}
                 <span className="text-[9px] text-slate-300 font-sans ml-0.5 font-normal">m</span>
               </div>
               <span className="text-[#00e640] font-bold animate-pulse">:</span>
-              <div className="px-2 py-1 rounded-xl bg-red-600/25 border border-red-500/50 text-red-300 shadow-xs">
+              <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg sm:rounded-xl bg-red-600/25 border border-red-500/50 text-red-300 shadow-xs">
                 {format(timeLeft.s)}
                 <span className="text-[9px] text-red-200 font-sans ml-0.5 font-normal">s</span>
               </div>
             </div>
           </div>
 
-          {/* Free Installation for all Smart Locks Products Badge */}
+          {/* Free Installation for all Smart Locks Products (inline text, not a pill) */}
           {deal.perk_label && (
             <Link
               to="/retail?category=Smart%20Door%20Locks#catalog-grid-top"
               onClick={(e) => handleCategoryClick(e, "Smart Door Locks")}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#00e640] bg-[#00e640]/10 hover:bg-[#00e640]/20 border border-[#00e640]/30 px-3 py-1.5 rounded-xl shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-[#00e640] hover:text-emerald-300 transition-colors"
             >
-              <Wrench size={14} className="shrink-0" />
+              <Wrench size={13} className="shrink-0" />
               <span>{deal.perk_label}</span>
             </Link>
           )}
@@ -222,7 +228,7 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
 
       {/* Dual Official Black Friday Visual Banner Cards (buttons open their respective categories) */}
       {promos?.show_flash_deal_cards !== false && (
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5 mt-4 pt-4 border-t border-white/10">
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-5 mt-3.5 sm:mt-4 pt-3.5 sm:pt-4 border-t border-white/10">
         <Link
           to="/retail?category=Smart%20Home%20%26%20Locks#catalog-grid-top"
           onClick={(e) => handleCategoryClick(e, "Smart Home & Locks")}
@@ -231,16 +237,16 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
           <img
             src="/banners/black-friday-sales.webp"
             alt="Tioga Technologies Black Friday - Smart Home Automation & Smart Door Locks"
-            className="w-full h-36 sm:h-44 object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+            className="w-full h-40 sm:h-44 object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end justify-between p-3.5 sm:p-4 gap-3">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent flex flex-col sm:flex-row items-start sm:items-end justify-end sm:justify-between p-3 sm:p-4 gap-2 sm:gap-3">
             <div>
-              <p className="text-xs sm:text-sm font-display font-bold text-white">
-                Smart Home Automation & Smart Door Locks — Up to 50% OFF
+              <p className="text-xs sm:text-sm font-display font-bold text-white leading-snug">
+                Smart Home Automation & Smart Door Locks · Up to 50% OFF
               </p>
             </div>
-            <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/15 backdrop-blur-md text-white text-xs font-bold group-hover:bg-[#00e640] group-hover:text-slate-950 transition-colors shrink-0">
+            <span className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white/15 backdrop-blur-md text-white text-[11px] sm:text-xs font-bold group-hover:bg-[#00e640] group-hover:text-slate-950 transition-colors shrink-0">
               Shop Smart Home & Locks <ArrowRight size={13} />
             </span>
           </div>
@@ -254,16 +260,16 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
           <img
             src="/banners/black-friday-solar-offer.webp"
             alt="Tioga Black Friday 50% OFF Offer - Solar Panels, Hybrid Inverters & Lithium Batteries"
-            className="w-full h-36 sm:h-44 object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+            className="w-full h-40 sm:h-44 object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end justify-between p-3.5 sm:p-4 gap-3">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col sm:flex-row items-start sm:items-end justify-end sm:justify-between p-3 sm:p-4 gap-2 sm:gap-3">
             <div>
-              <p className="text-xs sm:text-sm font-display font-bold text-white">
-                Solar Panels, Hybrid Inverters & Lithium Batteries — Up to 50% OFF
+              <p className="text-xs sm:text-sm font-display font-bold text-white leading-snug">
+                Solar Panels, Hybrid Inverters & Lithium Batteries · Up to 50% OFF
               </p>
             </div>
-            <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-bold group-hover:bg-red-500 transition-colors shrink-0">
+            <span className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-red-600 text-white text-[11px] sm:text-xs font-bold group-hover:bg-red-500 transition-colors shrink-0">
               Shop Solar & Batteries <ArrowRight size={13} />
             </span>
           </div>

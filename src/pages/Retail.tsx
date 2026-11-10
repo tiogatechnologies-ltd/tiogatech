@@ -191,6 +191,25 @@ export const Retail = () => {
   const { settings: promos } = useSiteSetting("promotions");
   const { isAdmin } = useAuth();
   const [savingAdminToggle, setSavingAdminToggle] = useState(false);
+  const [hideAdminBar, setHideAdminBar] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return localStorage.getItem("tioga_hide_retail_admin_bar") === "1";
+    } catch {
+      return false;
+    }
+  });
+
+  const setAdminBarHidden = (hidden: boolean) => {
+    setHideAdminBar(hidden);
+    try {
+      if (hidden) {
+        localStorage.setItem("tioga_hide_retail_admin_bar", "1");
+      } else {
+        localStorage.removeItem("tioga_hide_retail_admin_bar");
+      }
+    } catch {}
+  };
 
   const toggleRetailSection = async (patch: Record<string, boolean>) => {
     setSavingAdminToggle(true);
@@ -369,92 +388,128 @@ export const Retail = () => {
         <div className="section-container-wide px-3 sm:px-6">
           {/* Admin Quick Section Visibility Toolbar (only visible to logged-in Admins) */}
           {isAdmin && (
-            <div
-              data-testid="admin-retail-visibility-bar"
-              className="mb-4 sm:mb-6 p-3.5 sm:p-4 rounded-2xl bg-card border-2 border-primary/35 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3"
-            >
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-primary/10 text-primary">
-                  <Settings size={16} />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-display font-bold uppercase tracking-wider text-foreground">
-                      Admin Section Controls
-                    </span>
-                    <Link
-                      to="/admin/retail-promotions"
-                      className="text-[11px] font-semibold text-primary hover:underline"
-                    >
-                      Open Full Promo Settings →
-                    </Link>
-                  </div>
-                  <p className="text-[11px] text-muted-foreground">
-                    Click any section below to show or hide it immediately on the live storefront.
-                  </p>
-                </div>
+            hideAdminBar ? (
+              <div className="mb-3 flex justify-end">
+                <button
+                  type="button"
+                  data-testid="admin-retail-show-bar-btn"
+                  onClick={() => setAdminBarHidden(false)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-card border border-border hover:border-primary/40 text-[11px] font-semibold text-muted-foreground hover:text-foreground shadow-xs transition-all"
+                >
+                  <Settings size={13} className="text-primary" />
+                  <span>Show Admin Controls</span>
+                </button>
               </div>
-
-              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                {[
-                  { key: "show_hero_banner", label: "Hero Banner", active: promos?.show_hero_banner !== false },
-                  { key: "show_flash_deals_bar", label: "Flash Deals Card", active: promos?.show_flash_deals_bar !== false },
-                  { key: "show_flash_deal_cards", label: "Dual Promo Cards", active: promos?.show_flash_deal_cards !== false },
-                  { key: "show_black_friday_badges", label: "Black Friday Badges", active: promos?.show_black_friday_badges !== false },
-                  { key: "show_compare_at_price", label: "% OFF Prices", active: promos?.show_compare_at_price !== false },
-                  { key: "show_value_props_bar", label: "Value Props Bar", active: promos?.show_value_props_bar !== false },
-                  { key: "show_category_showcase", label: "Category Grid", active: promos?.show_category_showcase !== false },
-                ].map((item) => (
+            ) : (
+              <div
+                data-testid="admin-retail-visibility-bar"
+                className="mb-4 sm:mb-6 p-3.5 sm:p-4 rounded-2xl bg-card border-2 border-primary/35 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3"
+              >
+                <div className="flex items-start sm:items-center justify-between w-full lg:w-auto gap-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
+                      <Settings size={16} />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs font-display font-bold uppercase tracking-wider text-foreground">
+                          Admin Section Controls
+                        </span>
+                        <Link
+                          to="/admin/retail-promotions"
+                          className="text-[11px] font-semibold text-primary hover:underline"
+                        >
+                          Open Full Promo Settings →
+                        </Link>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">
+                        Click any section below to show or hide it immediately on the live storefront.
+                      </p>
+                    </div>
+                  </div>
                   <button
-                    key={item.key}
+                    type="button"
+                    data-testid="admin-retail-hide-bar-btn"
+                    onClick={() => setAdminBarHidden(true)}
+                    title="Hide Admin Controls on Retail Page"
+                    className="lg:hidden inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-muted hover:bg-muted/80 text-[11px] font-semibold text-muted-foreground hover:text-foreground shrink-0"
+                  >
+                    <X size={13} />
+                    <span>Hide</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                  {[
+                    { key: "show_hero_banner", label: "Hero Banner", active: promos?.show_hero_banner !== false },
+                    { key: "show_flash_deals_bar", label: "Flash Deals Card", active: promos?.show_flash_deals_bar !== false },
+                    { key: "show_flash_deal_cards", label: "Dual Promo Cards", active: promos?.show_flash_deal_cards !== false },
+                    { key: "show_black_friday_badges", label: "Black Friday Badges", active: promos?.show_black_friday_badges !== false },
+                    { key: "show_compare_at_price", label: "% OFF Prices", active: promos?.show_compare_at_price !== false },
+                    { key: "show_value_props_bar", label: "Value Props Bar", active: promos?.show_value_props_bar !== false },
+                    { key: "show_category_showcase", label: "Category Grid", active: promos?.show_category_showcase !== false },
+                  ].map((item) => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      disabled={savingAdminToggle}
+                      onClick={() => toggleRetailSection({ [item.key]: !item.active })}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold border transition-all ${
+                        item.active
+                          ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
+                          : "bg-muted/60 border-border text-muted-foreground"
+                      }`}
+                    >
+                      {item.active ? <Eye size={12} /> : <EyeOff size={12} />}
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                  <button
                     type="button"
                     disabled={savingAdminToggle}
-                    onClick={() => toggleRetailSection({ [item.key]: !item.active })}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold border transition-all ${
-                      item.active
-                        ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
-                        : "bg-muted/60 border-border text-muted-foreground"
-                    }`}
+                    onClick={() =>
+                      toggleRetailSection({
+                        show_hero_banner: false,
+                        show_flash_deals_bar: false,
+                        show_black_friday_badges: false,
+                        show_compare_at_price: false,
+                      })
+                    }
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-bold bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/30 transition-all"
                   >
-                    {item.active ? <Eye size={12} /> : <EyeOff size={12} />}
-                    <span>{item.label}</span>
+                    <EyeOff size={12} />
+                    <span>Hide All Promos</span>
                   </button>
-                ))}
-                <button
-                  type="button"
-                  disabled={savingAdminToggle}
-                  onClick={() =>
-                    toggleRetailSection({
-                      show_hero_banner: false,
-                      show_flash_deals_bar: false,
-                      show_black_friday_badges: false,
-                      show_compare_at_price: false,
-                    })
-                  }
-                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-bold bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/30 transition-all"
-                >
-                  <EyeOff size={12} />
-                  <span>Hide All Promos</span>
-                </button>
-                <button
-                  type="button"
-                  disabled={savingAdminToggle}
-                  onClick={() =>
-                    toggleRetailSection({
-                      show_hero_banner: true,
-                      show_flash_deals_bar: true,
-                      show_flash_deal_cards: true,
-                      show_black_friday_badges: true,
-                      show_compare_at_price: true,
-                    })
-                  }
-                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-bold bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 transition-all"
-                >
-                  <Eye size={12} />
-                  <span>Show All Promos</span>
-                </button>
+                  <button
+                    type="button"
+                    disabled={savingAdminToggle}
+                    onClick={() =>
+                      toggleRetailSection({
+                        show_hero_banner: true,
+                        show_flash_deals_bar: true,
+                        show_flash_deal_cards: true,
+                        show_black_friday_badges: true,
+                        show_compare_at_price: true,
+                      })
+                    }
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-bold bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 transition-all"
+                  >
+                    <Eye size={12} />
+                    <span>Show All Promos</span>
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="admin-retail-hide-bar-desktop-btn"
+                    onClick={() => setAdminBarHidden(true)}
+                    title="Hide Admin Controls on Retail Page"
+                    className="hidden lg:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-[11px] font-semibold text-muted-foreground hover:text-foreground border border-border transition-all"
+                  >
+                    <X size={12} />
+                    <span>Hide Bar</span>
+                  </button>
+                </div>
               </div>
-            </div>
+            )
           )}
 
           {/* Hero Carousel */}
@@ -470,33 +525,33 @@ export const Retail = () => {
 
           {/* Quick Value Props Bar */}
           {promos?.show_value_props_bar !== false && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border/80 shadow-xs mb-6 sm:mb-8">
-            <div className="flex items-center gap-3">
-              <Truck size={24} className="text-primary shrink-0" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border/80 shadow-xs mb-6 sm:mb-8">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <Truck size={20} className="text-primary shrink-0 sm:w-6 sm:h-6" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">Fast Dispatch</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Lagos & Abuja 24h</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Shield size={24} className="text-gold-dark dark:text-gold shrink-0" />
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <Shield size={20} className="text-gold-dark dark:text-gold shrink-0 sm:w-6 sm:h-6" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">5-Yr Warranty</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Replacement guarantee</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Award size={24} className="text-emerald-700 dark:text-emerald-400 shrink-0" />
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <Award size={20} className="text-emerald-700 dark:text-emerald-400 shrink-0 sm:w-6 sm:h-6" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">Tier-1 Stack</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Authorized distributor</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Zap size={24} className="text-blue-600 dark:text-blue-400 shrink-0" />
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <Zap size={20} className="text-blue-600 dark:text-blue-400 shrink-0 sm:w-6 sm:h-6" />
               <div>
                 <h4 className="font-display font-bold text-xs text-foreground leading-tight">0-Flicker UPS</h4>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">Seamless switchover</p>
@@ -507,13 +562,13 @@ export const Retail = () => {
 
           {/* Category Cards Grid Showcase */}
           {promos?.show_category_showcase !== false && (
-          <div className="mb-12">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+          <div className="mb-10 sm:mb-12">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5 sm:mb-6">
               <div>
                 <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-1.5">
                   Hardware Categories
                 </p>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-foreground tracking-tight">
+                <h2 className="text-xl sm:text-3xl lg:text-4xl font-display font-bold text-foreground tracking-tight">
                   Shop By Category
                 </h2>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-xl">
@@ -532,7 +587,7 @@ export const Retail = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-3.5 sm:gap-6">
               {RETAIL_CATEGORY_CARDS.map((cat) => {
                 const isSelected = selectedCategory?.toLowerCase() === cat.key.toLowerCase();
                 return (
@@ -547,7 +602,7 @@ export const Retail = () => {
                         handleCategorySelect(cat.key, true);
                       }
                     }}
-                    className={`group relative flex items-center justify-between p-5 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl cursor-pointer transition-all duration-300 text-left border overflow-hidden ${
+                    className={`group relative flex items-center justify-between p-4 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl cursor-pointer transition-all duration-300 text-left border overflow-hidden ${
                       isSelected
                         ? "bg-primary/[0.08] dark:bg-primary/15 border-primary shadow-lg shadow-primary/10 ring-2 ring-primary/40"
                         : "bg-gradient-to-br from-[#f8f9fb] via-[#f1f3f6] to-[#e8ebef] dark:from-slate-900/90 dark:via-slate-900/75 dark:to-slate-800/80 hover:from-white hover:to-[#e2e5e9] dark:hover:from-slate-800/90 dark:hover:to-slate-800/60 border-slate-200/90 dark:border-slate-800/80 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
@@ -572,7 +627,7 @@ export const Retail = () => {
                     </div>
 
                     {/* Left details */}
-                    <div className="relative z-10 flex-1 pr-3 min-w-0 flex flex-col justify-between self-stretch">
+                    <div className="relative z-10 flex-1 pr-2.5 sm:pr-3 min-w-0 flex flex-col justify-between self-stretch">
                       <div>
                         {promos?.show_black_friday_badges !== false && (
                           <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
@@ -584,20 +639,20 @@ export const Retail = () => {
                             </span>
                           </div>
                         )}
-                        <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                        <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block mb-0.5 sm:mb-1">
                           {cat.tag}
                         </span>
-                        <h3 className="font-display font-bold text-lg sm:text-xl text-foreground leading-tight tracking-tight group-hover:text-primary transition-colors line-clamp-2 mb-1.5">
+                        <h3 className="font-display font-bold text-base sm:text-xl text-foreground leading-tight tracking-tight group-hover:text-primary transition-colors line-clamp-2 mb-1 sm:mb-1.5">
                           {cat.title}
                         </h3>
-                        <p className="text-[11px] sm:text-xs text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
+                        <p className="text-[11px] sm:text-xs text-muted-foreground line-clamp-2 mb-3 sm:mb-4 leading-relaxed">
                           {cat.subtitle}
                         </p>
                       </div>
 
-                      <div className="pt-2">
+                      <div className="pt-1 sm:pt-2">
                         <span
-                          className={`inline-flex items-center gap-2 text-xs sm:text-sm font-semibold px-4 py-2 sm:py-2.5 rounded-xl transition-all shadow-sm ${
+                          className={`inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold px-3.5 sm:px-4 py-1.5 sm:py-2.5 rounded-xl transition-all shadow-sm ${
                             isSelected
                               ? "bg-primary text-primary-foreground shadow-primary/25 ring-2 ring-primary/40"
                               : "bg-[#43a047] hover:bg-[#388e3c] text-white shadow-emerald-600/20 group-hover:scale-105 active:scale-95"
@@ -605,12 +660,12 @@ export const Retail = () => {
                         >
                           {isSelected ? (
                             <>
-                              <Check size={15} className="stroke-[3]" />
+                              <Check size={14} className="stroke-[3]" />
                               <span>Active Filter</span>
                             </>
                           ) : (
                             <>
-                              <ShoppingBag size={15} className="shrink-0" />
+                              <ShoppingBag size={14} className="shrink-0" />
                               <span>Shop Now</span>
                             </>
                           )}
@@ -619,7 +674,7 @@ export const Retail = () => {
                     </div>
 
                     {/* Right hardware floating 3D PNG */}
-                    <div className="relative z-10 w-32 h-32 sm:w-40 sm:h-40 lg:w-44 lg:h-44 shrink-0 flex items-center justify-center pointer-events-none">
+                    <div className="relative z-10 w-24 h-24 sm:w-40 sm:h-40 lg:w-44 lg:h-44 shrink-0 flex items-center justify-center pointer-events-none">
                       <img
                         src={cat.image}
                         alt={cat.title}

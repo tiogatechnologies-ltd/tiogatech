@@ -140,9 +140,9 @@ export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
     id: "black-friday-mega-sale",
     is_active: true,
     badge: "BLACK FRIDAY MEGA SALE · UP TO 50% OFF",
-    headline: "Tioga Black Friday Sales — Smart Home & Smart Locks Up to 50% OFF",
+    headline: "Tioga Black Friday Sales: Smart Home & Smart Locks Up to 50% OFF",
     subheadline:
-      "Unlock massive Black Friday markdowns up to 50% OFF across Smart Switches, Multi-Touch Control Panels, 3D Face ID Biometric Smart Locks, Motorized Curtains, and Smart Security Systems. Official Warranty & Free Installation for all Smart Locks Products.",
+      "Unlock massive Black Friday markdowns up to 50% OFF across Smart Switches, Multi-Touch Control Panels, 3D Face ID Biometric Smart Locks, Motorized Curtains, and Smart Security Systems.",
     highlight_text: "Up to 50% OFF Storewide · Free Installation for all Smart Locks Products",
     discount_pct: 50,
     image_url: "/banners/black-friday-sales.webp",
@@ -213,17 +213,24 @@ interface RetailHeroCarouselProps {
 // Banner prices must use the same quote column as the catalogue. These used
 // to apply an extra 10% discount which is absent from the master sheet.
 export function priceHeroSlide(slide: HeroSlideContent): HeroSlideContent {
+  const cleanSlide: HeroSlideContent = {
+    ...slide,
+    headline: (slide.headline || "").replace(/\s*—\s*/g, " · "),
+    subheadline: (slide.subheadline || "").replace(/\s*—\s*/g, " - "),
+    badge: (slide.badge || "").replace(/\s*—\s*/g, " · "),
+    highlight_text: (slide.highlight_text || "").replace(/\s*—\s*/g, " · "),
+  };
   const sourceIds: Record<string, string> = {
     "ecoflow-river-3-max-plus": "PPS-019", "ecoflow-river-3-max": "PPS-016", "ecoflow-e980": "PPS-020",
     "srne-20kw-commercial": "INV-120",
   };
-  const sku = sourceIds[slide.id];
-  const price = masterPriceFor({ name: slide.headline, sku });
-  if (price === undefined) return slide;
-  const ecoflow = slide.id.startsWith("ecoflow-");
-  return { ...slide, badge: ecoflow ? "EcoFlow Authorized" : slide.badge, discount_pct: null, price_ngn: undefined, promo_price_ngn: price ?? undefined,
+  const sku = sourceIds[cleanSlide.id];
+  const price = masterPriceFor({ name: cleanSlide.headline, sku });
+  if (price === undefined) return cleanSlide;
+  const ecoflow = cleanSlide.id.startsWith("ecoflow-");
+  return { ...cleanSlide, badge: ecoflow ? "EcoFlow Authorized" : cleanSlide.badge, discount_pct: null, price_ngn: undefined, promo_price_ngn: price ?? undefined,
     highlight_text: price === null ? "Contact us for a current quote" : `Price: ${formatRetailPrice(price)}${ecoflow ? " · Official Warranty" : ""}`, cta_text: price === null ? "Request a Quote" : "Order Now",
-    cta_link: slide.cta_link.includes("wa.me/") ? `https://wa.me/2348178000023?text=${encodeURIComponent(`Hello Tioga Technologies, I want to order the ${slide.headline}${price === null ? ". Please send a quote" : ` at ${formatRetailPrice(price)}`}.`)}` : slide.cta_link };
+    cta_link: cleanSlide.cta_link.includes("wa.me/") ? `https://wa.me/2348178000023?text=${encodeURIComponent(`Hello Tioga Technologies, I want to order the ${cleanSlide.headline}${price === null ? ". Please send a quote" : ` at ${formatRetailPrice(price)}`}.`)}` : cleanSlide.cta_link };
 }
 
 export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: RetailHeroCarouselProps) => {
@@ -345,7 +352,7 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
     <div
       role="region"
       aria-label="Featured Promotions Carousel"
-      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#060913] min-h-[440px] sm:min-h-[480px] md:min-h-[520px] flex items-center mb-6 sm:mb-10 group select-none"
+      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#060913] min-h-[380px] sm:min-h-[460px] md:min-h-[520px] flex items-center mb-5 sm:mb-10 group select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -372,10 +379,10 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
       <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/10 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]" />
 
       {/* Slide Content Grid: Left Text Column + Right Floating Product Showcase */}
-      <div className="relative z-10 w-full p-5 sm:p-8 md:p-12 lg:p-14 pb-16 sm:pb-12 md:pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-center">
+      <div className="relative z-10 w-full p-4 sm:p-8 md:p-12 lg:p-14 pb-14 sm:pb-12 md:pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-8 md:gap-10 lg:gap-12 items-center">
           {/* Left Column: Text & CTAs */}
-          <div className="md:col-span-7 space-y-3.5 sm:space-y-4 md:space-y-5 text-white">
+          <div className="md:col-span-7 space-y-3 sm:space-y-4 md:space-y-5 text-white">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`content-${slide.id}`}

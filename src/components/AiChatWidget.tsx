@@ -1,7 +1,8 @@
 import { useSiteSetting } from "@/hooks/useSiteSetting";
+import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { MessageCircle, X, Send, Loader2, ExternalLink, RotateCcw } from "lucide-react";
+import { MessageCircle, X, Send, Loader2, ExternalLink, RotateCcw, PhoneCall } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthGatePrompt from "@/components/AuthGatePrompt";
@@ -19,6 +20,7 @@ const loadInitial = (): Msg[] => {
 
 const AiChatWidget = () => {
   const { settings: features, loaded: featuresLoaded } = useSiteSetting("features");
+  const { contact } = useSiteContact();
   const { user, loading: authLoading } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -29,6 +31,10 @@ const AiChatWidget = () => {
   const endRef = useRef<HTMLDivElement>(null);
   const needsAuth = !authLoading && !user;
   const isDetailPage = /^\/(packages\/(solar|lock|automation)\/|product\/)/.test(location.pathname);
+  const directWhatsappUrl = whatsappLink(
+    contact,
+    "Hello Tioga Technologies, I would like to make an inquiry."
+  );
 
   useEffect(() => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); } catch {} }, [messages]);
   useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 50); }, [open]);
@@ -98,11 +104,39 @@ const AiChatWidget = () => {
                 <p className="text-[10px] opacity-80">Solar, smart home & financing help</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
+              <a
+                href={directWhatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackConversion("whatsapp_click", { surface: "floating_circle_header" })}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] font-bold shadow-xs transition-colors"
+              >
+                <PhoneCall size={12} />
+                <span>WhatsApp</span>
+              </a>
               {messages.length > 0 && <button onClick={reset} title="Reset" className="p-1.5 rounded hover:bg-primary-foreground/10"><RotateCcw size={14} /></button>}
               <button onClick={() => setOpen(false)} aria-label="Close" className="p-1.5 rounded hover:bg-primary-foreground/10"><X size={18} /></button>
             </div>
           </header>
+
+          {/* Direct WhatsApp Line CTA Banner inside the floating circle */}
+          <div className="px-4 py-2.5 bg-emerald-500/10 border-b border-emerald-500/20 flex items-center justify-between gap-2">
+            <span className="text-xs font-medium text-foreground">
+              Prefer speaking directly with an engineer?
+            </span>
+            <a
+              href={directWhatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="floating-circle-whatsapp-btn"
+              onClick={() => trackConversion("whatsapp_click", { surface: "floating_circle_banner" })}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow-sm transition-all shrink-0"
+            >
+              <PhoneCall size={13} />
+              <span>Chat on WhatsApp</span>
+            </a>
+          </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-muted/20">
             {needsAuth && (
