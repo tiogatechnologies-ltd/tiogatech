@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star, Shield, Check, Heart, ArrowRight, X, TrendingDown, Tag, SlidersHorizontal } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, isBlackFridayProduct } from "@/lib/promoDisplay";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
@@ -81,14 +81,20 @@ export const QuickViewModal = ({ product, open, onOpenChange }: QuickViewProps) 
             />
             <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-2 left-0 right-0 text-center text-xs text-muted-foreground">{getProductPhotoCaption(product.image_url, product.name)}</span>
             <div className="absolute top-4 left-4 flex flex-col gap-1.5">
+              {isBlackFridayProduct(product.category, product.name) && (
+                <span className="px-2.5 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[10px] font-black uppercase tracking-wider shadow-md flex items-center gap-1.5 w-fit">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#00e640] animate-pulse shrink-0" />
+                  <span>BLACK FRIDAY</span>
+                </span>
+              )}
               {product.brand && (
-                <span className="px-3 py-1 rounded-full bg-black/60 text-white text-xs font-semibold backdrop-blur-md">
+                <span className="px-3 py-1 rounded-full bg-black/60 text-white text-xs font-semibold backdrop-blur-md w-fit">
                   {product.brand}
                 </span>
               )}
               {pct && (
-                <span className="px-2.5 py-0.5 rounded-full bg-red-500 text-white text-[10px] font-extrabold uppercase tracking-wider shadow flex items-center gap-1">
-                  <TrendingDown size={10} /> Save {pct}%
+                <span className="px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-extrabold uppercase tracking-wider shadow flex items-center gap-1 w-fit">
+                  <TrendingDown size={10} /> {`${pct}% OFF`}
                 </span>
               )}
             </div>

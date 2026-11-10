@@ -19,7 +19,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage, handleProductImageError, isRepresentativeProductImage, getProductPhotoCaption } from "@/lib/productImages";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, resolvePromoBadge } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, resolvePromoBadge, isBlackFridayProduct } from "@/lib/promoDisplay";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
 import { stockStatusLabel } from "@/lib/productAvailability";
@@ -97,6 +97,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
   const wasPrice = calcWasPrice(product.numeric_price, compareAt);
   const savedAmount = calcSavedAmount(product.numeric_price, compareAt);
   const promoBadge = resolvePromoBadge(product.id, promos, customBadge);
+  const isBlackFriday = isBlackFridayProduct(product.category, product.name);
   const monthlyEst = product.numeric_price ? Math.round(product.numeric_price / 3) : null;
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -169,11 +170,20 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
 
         {/* Gradient overlay for bottom legibility */}
         {/* Left Badges (top-left stack) */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[70%]">
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none max-w-[75%]">
+          {isBlackFriday && (
+            <span
+              data-testid="black-friday-badge"
+              className="px-2 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center gap-1.5 w-fit"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-[#00e640] animate-pulse shrink-0" />
+              <span>BLACK FRIDAY</span>
+            </span>
+          )}
           {pct && (
             <span className="px-2 py-0.5 rounded-full bg-red-600 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
               <TrendingDown size={10} className="stroke-[2.5]" />
-              {promos?.badge_format === "pct_off" ? `${pct}% OFF` : `Save ${pct}%`}
+              {promos?.badge_format === "save_pct" ? `Save ${pct}%` : `${pct}% OFF`}
             </span>
           )}
           {promoBadge && (

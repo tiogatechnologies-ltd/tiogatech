@@ -453,6 +453,15 @@ export const Retail = () => {
                     {/* Left details */}
                     <div className="relative z-10 flex-1 pr-3 min-w-0 flex flex-col justify-between self-stretch">
                       <div>
+                        <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black text-white border border-white/20 text-[9px] font-extrabold uppercase tracking-widest">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#00e640]" />
+                            BLACK FRIDAY
+                          </span>
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-red-600 text-white text-[9px] font-extrabold uppercase tracking-wider">
+                            UP TO 50% OFF
+                          </span>
+                        </div>
                         <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
                           {cat.tag}
                         </span>

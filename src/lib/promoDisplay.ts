@@ -56,8 +56,27 @@ const parseMoney = (value: number | string | null | undefined): number => {
   return digits ? Number(digits) : NaN;
 };
 
-const FALLBACK_MIN_PCT = 5;
-const FALLBACK_MAX_PCT = 20;
+const FALLBACK_MIN_PCT = 15;
+const FALLBACK_MAX_PCT = 50;
+
+/**
+ * Determines whether a product belongs to our Black Friday campaign categories:
+ * Solar, Inverter, Battery, or Smart Home Automation (including locks, switches,
+ * control panels, sensors, lighting, curtains, hubs, audio, and security).
+ */
+export const isBlackFridayProduct = (
+  category?: string | null,
+  name?: string | null,
+): boolean => {
+  const c = (category || "").toLowerCase();
+  const n = (name || "").toLowerCase();
+  if (!c && !n) return true;
+  return (
+    /solar|inverter|batter|smart|automation|lock|switch|socket|panel|sensor|alarm|curtain|blind|motor|light|track|hub|gateway|audio|speaker|intercom|cctv|camera|security|charge|mppt|ess|power|breaker|climate|thermostat|hotel|remote|doorbell|appliance|kit|package|accessory|mount|all-in-one|system|energy|kw|kwh|zigbee|wifi|tuya|dali|knx|poe|nvr|dvr|ups|avr|stabilizer|controller|pump|generator|cable|rack|cabinet/i.test(
+      `${c} ${n}`,
+    )
+  );
+};
 
 /**
  * Deterministic pseudo-random integer in [FALLBACK_MIN_PCT, FALLBACK_MAX_PCT]
@@ -106,9 +125,11 @@ export const resolveCompareAt = (
     }
   }
 
-  // 2. Genuine previous price recorded directly on the item
+  // 2. Genuine previous price recorded directly on the item (if at least FALLBACK_MIN_PCT off)
   const real = parseMoney(recorded);
-  if (Number.isFinite(real) && real > now) return Math.round(real);
+  if (Number.isFinite(real) && real > now && ((real - now) / real) * 100 >= FALLBACK_MIN_PCT) {
+    return Math.round(real);
+  }
 
   // 3. Brand-level discount policy
   if (brand && opts?.brand_overrides && opts.brand_overrides[brand]) {

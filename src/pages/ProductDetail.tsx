@@ -43,7 +43,7 @@ import { matchesSlug, productPath } from "@/lib/productSlug";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { mergeProducts } from "@/lib/mergeProducts";
 import { parseRetailPrice } from "@/lib/retailPricing";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
+import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, isBlackFridayProduct } from "@/lib/promoDisplay";
 import { breadcrumbJsonLd, SITE_URL } from "@/lib/seoSchema";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { resolveProductImage, getMultiAngleProductImages, handleProductImageError, isRepresentativeProductImage, getProductPhotoCaption } from "@/lib/productImages";
@@ -413,9 +413,18 @@ export const ProductDetail = () => {
                 <span data-product-photo-note hidden={!isRepresentativeProductImage(product.image_url, product.category, product.name)} className="absolute bottom-3 left-4 text-xs text-muted-foreground bg-background/90 rounded px-2 py-1">{getProductPhotoCaption(product.image_url, product.name)}</span>
                 {/* Overlaid Badges */}
                 <div className="absolute top-4 left-4 flex flex-col items-start gap-2 pointer-events-none max-w-[80%]">
+                  {isBlackFridayProduct(product.category, product.name) && (
+                    <span
+                      data-testid="black-friday-badge"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[11px] font-black uppercase tracking-wider shadow-md"
+                    >
+                      <span className="h-2 w-2 rounded-full bg-[#00e640] animate-pulse shrink-0" />
+                      <span>BLACK FRIDAY</span>
+                    </span>
+                  )}
                   {pct && (
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500 text-white text-[11px] font-extrabold uppercase tracking-wider shadow">
-                      <TrendingDown size={12} /> Save {pct}%
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-600 text-white text-[11px] font-extrabold uppercase tracking-wider shadow">
+                      <TrendingDown size={12} /> {`${pct}% OFF`}
                     </span>
                   )}
                   {product.series && (

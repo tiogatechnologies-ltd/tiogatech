@@ -134,7 +134,42 @@ export const FEATURED_ECOFLOW_SLIDES: HeroSlideContent[] = [
   },
 ];
 
+export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
+  {
+    id: "black-friday-mega-sale",
+    is_active: true,
+    badge: "BLACK FRIDAY MEGA SALE · UP TO 50% OFF",
+    headline: "Tioga Black Friday Sales — Deals Up to 50% OFF",
+    subheadline:
+      "Unlock massive Black Friday markdowns up to 50% OFF across Tier-1 Hybrid Inverters, LiFePO4 Lithium Batteries, Monocrystalline Solar Panels, and Smart Home Automation Systems. Official 5-Year Warranty & 24h Nationwide Dispatch.",
+    highlight_text: "Up to 50% OFF Storewide · Solar, Inverters, Batteries & Smart Home Automation",
+    discount_pct: 50,
+    image_url: "/banners/black-friday-sales.webp",
+    cta_text: "Shop Black Friday Deals",
+    cta_link: "/retail#catalog-grid-top",
+    secondary_cta_text: "Claim 50% Off on WhatsApp",
+    secondary_cta_link:
+      "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20claim%20your%20Black%20Friday%20Mega%20Sale%20deals%20(up%20to%2050%25%20OFF).",
+  },
+  {
+    id: "black-friday-solar-offer",
+    is_active: true,
+    badge: "BLACK FRIDAY OFFER · 50% OFF BUNDLES",
+    headline: "50% OFF Black Friday Offer on Complete Solar & LiFePO4 Stacks",
+    subheadline:
+      "Power your home or business 24/7 with Deye Hybrid Inverters, Grade-A LiFePO4 Lithium Batteries, Tier-1 Solar Panels, MPPT Charge Controllers, and full DC protection kits at historic Black Friday prices.",
+    highlight_text: "Zero-Flicker UPS · 6,000+ Cycle LiFePO4 · Flexible Payment Plans Available",
+    discount_pct: 50,
+    image_url: "/banners/black-friday-solar-offer.webp",
+    cta_text: "Explore Solar & Inverter Deals",
+    cta_link: "/retail?category=Inverters",
+    secondary_cta_text: "Spread Payments",
+    secondary_cta_link: "/finance/apply",
+  },
+];
+
 export const DEFAULT_HERO_SLIDES: HeroSlideContent[] = [
+  ...FEATURED_BLACK_FRIDAY_SLIDES,
   ...FEATURED_ECOFLOW_SLIDES,
   FEATURED_SRNE_20KW_SLIDE,
   {
@@ -213,18 +248,23 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
       base.unshift(...FEATURED_ECOFLOW_SLIDES);
     }
 
+    // Ensure the Black Friday flagship banners are always at the very front of the carousel
+    const bfIds = new Set(FEATURED_BLACK_FRIDAY_SLIDES.map((s) => s.id));
+    const withoutBf = base.filter((s) => !bfIds.has(s.id));
+    const ordered = [...FEATURED_BLACK_FRIDAY_SLIDES, ...withoutBf];
+
     // Ensure the SRNE 20kW flagship slide is always present
-    const hasSrne20kw = base.some(
+    const hasSrne20kw = ordered.some(
       (s) =>
         s.id === FEATURED_SRNE_20KW_SLIDE.id ||
         s.headline?.toLowerCase().includes("srne 20kw") ||
         s.headline?.toLowerCase().includes("srne 20 kw")
     );
     if (!hasSrne20kw) {
-      base.push(FEATURED_SRNE_20KW_SLIDE);
+      ordered.push(FEATURED_SRNE_20KW_SLIDE);
     }
 
-    return base.filter((s) => s.is_active && s.headline).map(priceHeroSlide);
+    return ordered.filter((s) => s.is_active && s.headline).map(priceHeroSlide);
   }, [configuredSlides]);
 
   const totalSlides = slides.length;
@@ -323,20 +363,25 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 className="space-y-3 sm:space-y-4"
               >
                 {/* Eyebrow & Promotion Label */}
-                {(slide.badge || (slide.discount_pct != null && slide.discount_pct > 0)) && (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {slide.badge && (
-                      <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-amber-400 uppercase">
-                        {slide.badge}
-                      </span>
-                    )}
-                    {slide.discount_pct != null && slide.discount_pct > 0 && (
-                      <span className="text-xs sm:text-sm font-bold text-amber-300">
-                        {slide.badge ? "· " : ""}Save {slide.discount_pct}%
-                      </span>
-                    )}
-                  </div>
-                )}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span
+                    data-testid="hero-black-friday-badge"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950/90 border border-emerald-400/60 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-[#00e640] animate-pulse shrink-0" />
+                    <span>BLACK FRIDAY</span>
+                  </span>
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg">
+                    {slide.discount_pct != null && slide.discount_pct > 0
+                      ? `UP TO ${slide.discount_pct}% OFF`
+                      : "UP TO 50% OFF"}
+                  </span>
+                  {slide.badge && !slide.badge.toLowerCase().includes("black friday") && (
+                    <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-amber-400 uppercase">
+                      · {slide.badge}
+                    </span>
+                  )}
+                </div>
 
                 {/* Headline */}
                 <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.18] tracking-tight text-white drop-shadow-md">
@@ -395,6 +440,17 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
                     </a>
+                  ) : slide.cta_link?.includes("#catalog-grid-top") ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        document.getElementById("catalog-grid-top")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-[#00e640] to-emerald-500 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 active:scale-95 transition-all cursor-pointer"
+                    >
+                      <span>{slide.cta_text}</span>
+                      <ArrowRight size={15} />
+                    </button>
                   ) : (
                     <Link
                       to={slide.cta_link}
@@ -429,8 +485,8 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
             </AnimatePresence>
           </div>
 
-          {/* Right Column: Floating Product Showcase */}
-          <div className="md:col-span-5 flex items-center justify-center relative min-h-[200px] sm:min-h-[260px] md:min-h-[320px] lg:min-h-[360px]">
+          {/* Right Column: Floating Product or Black Friday Banner Showcase */}
+          <div className="md:col-span-5 flex items-center justify-center relative min-h-[220px] sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`showcase-${slide.id}`}
@@ -438,36 +494,63 @@ export const RetailHeroCarousel = ({ productCount = 0 }: RetailHeroCarouselProps
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.92, y: -15 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="relative flex items-center justify-center w-full max-w-[320px] sm:max-w-[400px]"
+                className={`relative flex items-center justify-center w-full ${
+                  slide.image_url?.startsWith("/banners/")
+                    ? "max-w-[440px] sm:max-w-[500px]"
+                    : "max-w-[320px] sm:max-w-[400px]"
+                }`}
               >
-                {/* Glowing Circular Halo & Glass Pedestal */}
-                <div className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md shadow-2xl pointer-events-none" />
-                <div className="absolute w-36 h-36 sm:w-52 sm:h-52 rounded-full bg-gradient-to-tr from-amber-500/15 via-primary/20 to-transparent blur-xl pointer-events-none" />
+                {slide.image_url?.startsWith("/banners/") ? (
+                  <div className="relative w-full rounded-2xl overflow-hidden border-2 border-emerald-500/40 shadow-[0_25px_60px_rgba(0,0,0,0.85)] bg-zinc-950 group/banner">
+                    <img
+                      src={slide.image_url}
+                      alt={slide.headline}
+                      loading="eager"
+                      decoding="async"
+                      className="w-full h-auto object-cover transition-transform duration-500 group-hover/banner:scale-[1.03]"
+                    />
+                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-zinc-950/90 backdrop-blur-md border border-white/15">
+                      <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider text-white flex items-center gap-1.5">
+                        <span className="h-2 w-2 rounded-full bg-[#00e640] animate-pulse" />
+                        Tioga Black Friday Official Deal
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-black uppercase tracking-wider">
+                        UP TO 50% OFF
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Glowing Circular Halo & Glass Pedestal */}
+                    <div className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md shadow-2xl pointer-events-none" />
+                    <div className="absolute w-36 h-36 sm:w-52 sm:h-52 rounded-full bg-gradient-to-tr from-amber-500/15 via-primary/20 to-transparent blur-xl pointer-events-none" />
 
-                {/* Floating Product Image Container */}
-                <motion.div
-                  animate={{
-                    y: [0, -8, 0],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="relative z-10 w-full h-[190px] sm:h-[250px] md:h-[280px] lg:h-[320px] flex items-center justify-center p-2"
-                >
-                  <img
-                    src={resolveProductImage(slide.image_url)}
-                    onError={handleProductImageError}
-                    alt={slide.headline}
-                    loading="eager"
-                    decoding="async"
-                    className="max-h-full max-w-full object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.7)] filter transition-transform duration-500 hover:scale-105"
-                  />
-                </motion.div>
+                    {/* Floating Product Image Container */}
+                    <motion.div
+                      animate={{
+                        y: [0, -8, 0],
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="relative z-10 w-full h-[190px] sm:h-[250px] md:h-[280px] lg:h-[320px] flex items-center justify-center p-2"
+                    >
+                      <img
+                        src={resolveProductImage(slide.image_url)}
+                        onError={handleProductImageError}
+                        alt={slide.headline}
+                        loading="eager"
+                        decoding="async"
+                        className="max-h-full max-w-full object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.7)] filter transition-transform duration-500 hover:scale-105"
+                      />
+                    </motion.div>
 
-                {/* Soft ground shadow beneath the floating product */}
-                <div className="absolute -bottom-4 w-40 sm:w-52 h-5 bg-black/60 rounded-full blur-xl pointer-events-none" />
+                    {/* Soft ground shadow beneath the floating product */}
+                    <div className="absolute -bottom-4 w-40 sm:w-52 h-5 bg-black/60 rounded-full blur-xl pointer-events-none" />
+                  </>
+                )}
               </motion.div>
             </AnimatePresence>
           </div>

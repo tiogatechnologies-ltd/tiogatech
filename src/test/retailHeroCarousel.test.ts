@@ -4,10 +4,13 @@ import path from "path";
 import crypto from "crypto";
 import {
   DEFAULT_HERO_SLIDES,
+  FEATURED_BLACK_FRIDAY_SLIDES,
   FEATURED_ECOFLOW_SLIDES,
   FEATURED_SRNE_20KW_SLIDE,
   priceHeroSlide,
 } from "@/components/retail/RetailHeroCarousel";
+import { isBlackFridayProduct, resolveCompareAt, savingsPct } from "@/lib/promoDisplay";
+import { PRODUCTS } from "@/data/products";
 
 describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
   it("uses master quoted prices for the three matched EcoFlow banners and order links", () => {
@@ -123,5 +126,52 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
   it("retains the SRNE 20KW flagship slide in DEFAULT_HERO_SLIDES", () => {
     const srne = DEFAULT_HERO_SLIDES.find((s) => s.id === FEATURED_SRNE_20KW_SLIDE.id);
     expect(srne).toBeDefined();
+  });
+
+  it("leads DEFAULT_HERO_SLIDES with the two official Black Friday 50% OFF banners", () => {
+    expect(FEATURED_BLACK_FRIDAY_SLIDES.length).toBe(2);
+    expect(DEFAULT_HERO_SLIDES[0].id).toBe("black-friday-mega-sale");
+    expect(DEFAULT_HERO_SLIDES[1].id).toBe("black-friday-solar-offer");
+
+    for (const slide of FEATURED_BLACK_FRIDAY_SLIDES) {
+      expect(slide.discount_pct).toBe(50);
+      expect(slide.is_active).toBe(true);
+      expect(slide.image_url).toMatch(/^\/banners\/black-friday-.*\.webp$/);
+      const diskPath = path.resolve("public", slide.image_url.replace(/^\//, ""));
+      expect(fs.existsSync(diskPath), `Banner file ${diskPath} must exist`).toBe(true);
+      const stat = fs.statSync(diskPath);
+      expect(stat.size).toBeGreaterThan(20_000);
+    }
+  });
+
+  it("marks all Solar, Inverter, Battery, and Smart Home automation products as Black Friday eligible with deals up to 50% OFF", () => {
+    expect(PRODUCTS.length).toBeGreaterThanOrEqual(1400);
+    let maxPctSeen = 0;
+
+    for (const p of PRODUCTS) {
+      expect(
+        isBlackFridayProduct(p.category, p.name),
+        `Product ${p.id} (${p.name} / ${p.category}) must be Black Friday eligible`
+      ).toBe(true);
+
+      const price = p.numeric_price || Number(String(p.price || "").replace(/[^\d.]/g, ""));
+      if (price > 0) {
+        const compareAt = resolveCompareAt(
+          price,
+          p.compare_at_price ?? null,
+          { show_compare_at_price: true, default_markup_pct: 30, randomize_fallback_pct: true },
+          p.id,
+          p.brand,
+        );
+        expect(compareAt).not.toBeNull();
+        const pct = savingsPct(price, compareAt);
+        expect(pct).not.toBeNull();
+        expect(pct!).toBeGreaterThanOrEqual(10);
+        expect(pct!).toBeLessThanOrEqual(50);
+        if (pct! > maxPctSeen) maxPctSeen = pct!;
+      }
+    }
+
+    expect(maxPctSeen).toBe(50);
   });
 });

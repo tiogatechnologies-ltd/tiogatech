@@ -140,8 +140,8 @@ export const SETTING_DEFAULTS = {
   } as FeatureSettings,
   promotions: {
     show_compare_at_price: true,
-    default_markup_pct: 12,
-    badge_format: "save_pct",
+    default_markup_pct: 30,
+    badge_format: "pct_off",
     product_overrides: {},
     brand_overrides: {
       Luxpower: { discount_pct: 20 },
