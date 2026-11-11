@@ -29,7 +29,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { RetailHeroCarousel } from "@/components/retail/RetailHeroCarousel";
-import { FlashDealsBar } from "@/components/retail/FlashDealsBar";
+import { FlashDealsBar, useCountdown } from "@/components/retail/FlashDealsBar";
 import { RetailFilterSidebar } from "@/components/retail/RetailFilterSidebar";
 import { ProductCard } from "@/components/retail/ProductCard";
 import { QuickViewModal } from "@/components/retail/QuickViewModal";
@@ -43,7 +43,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useSiteSetting, invalidateSettingsCache } from "@/hooks/useSiteSetting";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { Eye, EyeOff, Settings } from "lucide-react";
+import { Clock, Eye, EyeOff, Settings } from "lucide-react";
 import { PRODUCTS as STATIC_PRODUCTS } from "@/data/products";
 import { inferBrand, normalizeCategory } from "@/lib/productBrand";
 import { resolveStockStatus } from "@/lib/productAvailability";
@@ -190,6 +190,7 @@ export const Retail = () => {
   const { count: wishlistCount } = useWishlist();
   const { settings: promos } = useSiteSetting("promotions");
   const { isAdmin } = useAuth();
+  const bfCountdown = useCountdown();
   const [savingAdminToggle, setSavingAdminToggle] = useState(false);
   const [hideAdminBar, setHideAdminBar] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -550,11 +551,27 @@ export const Retail = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <Zap size={20} className="text-blue-600 dark:text-blue-400 shrink-0 sm:w-6 sm:h-6" />
+            <div className="flex items-center gap-2.5 sm:gap-3" data-testid="value-props-bf-countdown">
+              <Clock size={20} className="text-red-600 dark:text-red-400 shrink-0 sm:w-6 sm:h-6" />
               <div>
-                <h4 className="font-display font-bold text-xs text-foreground leading-tight">0-Flicker UPS</h4>
-                <p className="text-[10px] sm:text-[11px] text-muted-foreground">Seamless switchover</p>
+                <h4 className="font-display font-bold text-xs text-foreground leading-tight">Black Friday Countdown</h4>
+                <div className="flex items-center gap-1 font-mono text-[10px] sm:text-[11px] font-extrabold text-foreground mt-0.5">
+                  <span className="px-1.5 py-0.5 rounded bg-muted border border-border text-foreground">
+                    {String(bfCountdown.d).padStart(2, "0")}d
+                  </span>
+                  <span className="text-muted-foreground">:</span>
+                  <span className="px-1.5 py-0.5 rounded bg-muted border border-border text-foreground">
+                    {String(bfCountdown.h).padStart(2, "0")}h
+                  </span>
+                  <span className="text-muted-foreground">:</span>
+                  <span className="px-1.5 py-0.5 rounded bg-muted border border-border text-foreground">
+                    {String(bfCountdown.m).padStart(2, "0")}m
+                  </span>
+                  <span className="text-muted-foreground">:</span>
+                  <span className="px-1.5 py-0.5 rounded bg-red-600/15 border border-red-500/30 text-red-600 dark:text-red-400">
+                    {String(bfCountdown.s).padStart(2, "0")}s
+                  </span>
+                </div>
               </div>
             </div>
           </div>

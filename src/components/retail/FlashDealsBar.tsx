@@ -48,7 +48,7 @@ export const getNextFridayMidnight = (now = new Date()): number => {
  * Counts down to 12:00 AM on Friday (when the 50% OFF deal drops).
  * If a valid future endsAt is explicitly configured, uses that; otherwise targets 12:00 AM Friday.
  */
-const useCountdown = (endsAt: string | undefined) => {
+export const useCountdown = (endsAt?: string) => {
   const [left, setLeft] = useState<{ d: number; h: number; m: number; s: number }>({
     d: 2,
     h: 5,
