@@ -1,10 +1,9 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { useSiteSetting } from "@/hooks/useSiteSetting";
-import bgTechMesh from "@/assets/bg-tech-mesh.jpg";
 import { formatRetailPrice, masterPriceFor } from "@/lib/retailPricing";
 import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 
@@ -352,45 +351,29 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
     <div
       role="region"
       aria-label="Featured Promotions Carousel"
-      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#060913] min-h-[380px] sm:min-h-[460px] md:min-h-[520px] flex items-center mb-5 sm:mb-10 group select-none"
+      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-white/10 bg-[#0b100d] min-h-[460px] sm:min-h-[520px] md:min-h-[560px] lg:min-h-[600px] flex items-center mb-6 sm:mb-8 group select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Dynamic Atmospheric Multi-Layered Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#060a17] via-[#0a1228] to-[#040711]" />
+      {/* Clean Solid Architectural Background (no blurry AI orbs or tech mesh) */}
+      <div className="absolute inset-0 bg-[#0b100d]" />
 
-      {/* Subtle Tech Grid Texture */}
-      <img
-        src={bgTechMesh}
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none"
-      />
-
-      {/* Dynamic Ambient Lighting Glow Orbs */}
-      <div className="absolute -top-32 -left-24 w-[400px] h-[400px] rounded-full bg-amber-500/15 blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-32 left-1/3 w-[450px] h-[450px] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[350px] sm:w-[480px] h-[350px] sm:h-[480px] rounded-full bg-gradient-to-tr from-amber-500/20 via-primary/20 to-transparent blur-[90px] pointer-events-none" />
-
-      {/* Subtle Glass Rim Reflection */}
-      <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/10 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]" />
-
-      {/* Slide Content Grid: Left Text Column + Right Floating Product Showcase */}
-      <div className="relative z-10 w-full p-4 sm:p-8 md:p-12 lg:p-14 pb-14 sm:pb-12 md:pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-8 md:gap-10 lg:gap-12 items-center">
+      {/* Slide Content Grid: Left Text Column + Right Full-Height Visual Showcase */}
+      <div className="relative z-10 w-full p-5 sm:p-8 md:p-12 lg:p-14 pb-16 sm:pb-14 md:pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-center">
           {/* Left Column: Text & CTAs */}
-          <div className="md:col-span-7 space-y-3 sm:space-y-4 md:space-y-5 text-white">
+          <div className="md:col-span-6 space-y-3.5 sm:space-y-4 md:space-y-5 text-white">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`content-${slide.id}`}
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="space-y-3 sm:space-y-4"
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="space-y-3.5 sm:space-y-4"
               >
                 {/* Eyebrow & Promotion Label */}
                 <div className="flex items-center gap-2 flex-wrap">
@@ -398,11 +381,11 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                     <>
                       <span
                         data-testid="hero-black-friday-badge"
-                        className="inline-flex items-center px-3 py-1 rounded-full bg-zinc-950/90 border border-emerald-400/60 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg"
+                        className="inline-flex items-center px-3 py-1 rounded bg-white text-slate-950 text-[10px] sm:text-xs font-black uppercase tracking-wider"
                       >
                         <span>BLACK FRIDAY</span>
                       </span>
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider">
                         {slide.discount_pct != null && slide.discount_pct > 0
                           ? `UP TO ${slide.discount_pct}% OFF`
                           : "UP TO 50% OFF"}
@@ -410,14 +393,14 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                     </>
                   )}
                   {slide.badge && (!showBfBadges || !slide.badge.toLowerCase().includes("black friday")) && (
-                    <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-amber-400 uppercase">
+                    <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-neutral-300 uppercase">
                       {showBfBadges ? `· ${slide.badge}` : slide.badge}
                     </span>
                   )}
                 </div>
 
                 {/* Headline */}
-                <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.18] tracking-tight text-white drop-shadow-md">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.15] tracking-tight text-white">
                   {slide.headline}
                 </h1>
 
@@ -426,20 +409,17 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                   <div className="flex items-baseline flex-wrap gap-2.5 sm:gap-3.5 pt-0.5">
                     {slide.promo_price_ngn != null ? (
                       <>
-                        <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-amber-400 tracking-tight">
+                        <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#00e640] tracking-tight">
                           ₦{slide.promo_price_ngn.toLocaleString()}
                         </span>
                         {slide.price_ngn != null && (
-                          <span className="text-xs sm:text-sm md:text-base text-gray-400 line-through">
+                          <span className="text-xs sm:text-sm md:text-base text-neutral-400 line-through">
                             ₦{slide.price_ngn.toLocaleString()}
                           </span>
                         )}
-                        <span className="px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                          PROMO PRICE
-                        </span>
                       </>
                     ) : (
-                      <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-amber-400 tracking-tight">
+                      <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#00e640] tracking-tight">
                         ₦{slide.price_ngn!.toLocaleString()}
                       </span>
                     )}
@@ -448,17 +428,16 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
 
                 {/* Subheadline */}
                 {slide.subheadline && (
-                  <p className="text-xs sm:text-sm md:text-base text-gray-300/90 leading-relaxed max-w-xl line-clamp-3 sm:line-clamp-4 md:line-clamp-none">
+                  <p className="text-xs sm:text-sm md:text-base text-neutral-300 leading-relaxed max-w-xl">
                     {slide.subheadline}
                   </p>
                 )}
 
-                {/* Highlight line */}
+                {/* Highlight line (clean typography without icons) */}
                 {slide.highlight_text && (
-                  <div className="flex items-center gap-2 text-emerald-400 text-xs sm:text-sm font-medium">
-                    <ShieldCheck size={16} className="shrink-0 text-white" />
-                    <span>{slide.highlight_text}</span>
-                  </div>
+                  <p className="text-[#00e640] text-xs sm:text-sm font-semibold">
+                    {slide.highlight_text}
+                  </p>
                 )}
 
                 {/* CTAs */}
@@ -468,7 +447,7 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                       href={slide.cta_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#00e640] hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition-all"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
@@ -488,7 +467,7 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                           }, 50);
                         }
                       }}
-                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-[#00e640] to-emerald-500 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 active:scale-95 transition-all cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#00e640] hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm transition-all cursor-pointer"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
@@ -496,7 +475,7 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                   ) : (
                     <Link
                       to={slide.cta_link}
-                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#00e640] hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition-all"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
@@ -509,14 +488,14 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                         href={slide.secondary_cta_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm border border-white/15 transition-all text-center"
                       >
                         <span>{slide.secondary_cta_text}</span>
                       </a>
                     ) : (
                       <Link
                         to={slide.secondary_cta_link}
-                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/15 active:scale-95 transition-all text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm border border-white/15 transition-all text-center"
                       >
                         <span>{slide.secondary_cta_text}</span>
                       </Link>
@@ -527,70 +506,44 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
             </AnimatePresence>
           </div>
 
-          {/* Right Column: Floating Product or Black Friday Banner Showcase */}
-          <div className="md:col-span-5 flex items-center justify-center relative min-h-[220px] sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px]">
+          {/* Right Column: Full-Proportioned Official Graphic or Product Showcase */}
+          <div className="md:col-span-6 flex items-center justify-center relative min-h-[280px] sm:min-h-[360px] md:min-h-[420px] lg:min-h-[460px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`showcase-${slide.id}`}
-                initial={{ opacity: 0, scale: 0.92, y: 15 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.92, y: -15 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className={`relative flex items-center justify-center w-full ${
-                  slide.image_url?.startsWith("/banners/")
-                    ? "max-w-[440px] sm:max-w-[500px]"
-                    : "max-w-[320px] sm:max-w-[400px]"
-                }`}
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className="relative flex items-center justify-center w-full"
               >
                 {slide.image_url?.startsWith("/banners/") ? (
-                  <div className="relative w-full rounded-2xl overflow-hidden border-2 border-emerald-500/40 shadow-[0_25px_60px_rgba(0,0,0,0.85)] bg-zinc-950 group/banner">
+                  <div
+                    className={`relative w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[460px] rounded-2xl overflow-hidden border border-white/15 flex items-center justify-center ${
+                      slide.image_url.includes("solar-offer")
+                        ? "bg-gradient-to-b from-white via-white to-[#2b2d2e]"
+                        : "bg-[#051a08]"
+                    }`}
+                  >
                     <img
                       src={slide.image_url}
                       alt={slide.headline}
                       loading="eager"
                       decoding="async"
-                      className="w-full h-auto object-cover transition-transform duration-500 group-hover/banner:scale-[1.03]"
+                      className="w-full h-full object-contain"
                     />
-                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-zinc-950/90 backdrop-blur-md border border-white/15">
-                      <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider text-white">
-                        Tioga Black Friday Official Deal
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-black uppercase tracking-wider">
-                        UP TO 50% OFF
-                      </span>
-                    </div>
                   </div>
                 ) : (
-                  <>
-                    {/* Glowing Circular Halo & Glass Pedestal */}
-                    <div className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md shadow-2xl pointer-events-none" />
-                    <div className="absolute w-36 h-36 sm:w-52 sm:h-52 rounded-full bg-gradient-to-tr from-amber-500/15 via-primary/20 to-transparent blur-xl pointer-events-none" />
-
-                    {/* Floating Product Image Container */}
-                    <motion.div
-                      animate={{
-                        y: [0, -8, 0],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="relative z-10 w-full h-[190px] sm:h-[250px] md:h-[280px] lg:h-[320px] flex items-center justify-center p-2"
-                    >
-                      <img
-                        src={resolveProductImage(slide.image_url)}
-                        onError={handleProductImageError}
-                        alt={slide.headline}
-                        loading="eager"
-                        decoding="async"
-                        className="max-h-full max-w-full object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.7)] filter transition-transform duration-500 hover:scale-105"
-                      />
-                    </motion.div>
-
-                    {/* Soft ground shadow beneath the floating product */}
-                    <div className="absolute -bottom-4 w-40 sm:w-52 h-5 bg-black/60 rounded-full blur-xl pointer-events-none" />
-                  </>
+                  <div className="relative z-10 w-full h-[260px] sm:h-[340px] md:h-[400px] lg:h-[440px] flex items-center justify-center rounded-2xl bg-white/[0.04] border border-white/10 p-6">
+                    <img
+                      src={resolveProductImage(slide.image_url)}
+                      onError={handleProductImageError}
+                      alt={slide.headline}
+                      loading="eager"
+                      decoding="async"
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
                 )}
               </motion.div>
             </AnimatePresence>
