@@ -15,7 +15,6 @@ import { trackConversion } from "@/lib/tracking";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
-import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
 const fmtPrice = (n: number | null) =>
@@ -31,6 +30,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
   // Strikethrough only appears when a genuine previous price is recorded.
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const compareAt = resolveCompareAt(pkg.total_price, (pkg as any).compare_at_price, promos, pkg.id);
   const pct = savingsPct(pkg.total_price, compareAt);
   const wasPriceVal = calcWasPrice(pkg.total_price, compareAt);
@@ -158,16 +158,11 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
-        {/* Category, Tier & Rating */}
+        {/* Category & Tier */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
           <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
             Package #{pkg.package_number}{pkg.badge ? ` · ${pkg.badge}` : ""}{pkg.tagline ? ` · ${pkg.tagline}` : ""}
           </span>
-          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
-            <Star size={13} fill="currentColor" />
-            <span className="text-foreground font-bold">5.0</span>
-            <span className="text-muted-foreground text-[10px]">({12 + (pkg.package_number * 3) % 15})</span>
-          </div>
         </div>
 
         {/* Product Title */}
@@ -201,11 +196,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
             <div className="min-w-0 flex-1">
               {/* Main Price */}
               <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
-                {pkg.total_price != null ? (
-                  <AnimatedCounter target={pkg.total_price} prefix="₦" />
-                ) : (
-                  "Price on Request"
-                )}
+                {fmtPrice(pkg.total_price)}
               </p>
               {/* Was Price (slashed) */}
               {wasPriceVal && savedAmount && (
@@ -214,22 +205,16 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
                     {fmtPrice(wasPriceVal)}
                   </span>
                   <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
-                    <Tag size={9} /> Save <AnimatedCounter target={savedAmount} prefix="₦" />
+                    <Tag size={9} /> Save {fmtPrice(savedAmount)}
                   </span>
                 </div>
               )}
-              {monthlyEst && (
+              {features?.flexible_payment_enabled !== false && monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                  Or from <strong className="text-primary"><AnimatedCounter target={monthlyEst} prefix="₦" suffix="/mo" /></strong>
+                  Or from <strong className="text-primary">₦{monthlyEst.toLocaleString("en-NG")}/mo</strong>
                 </p>
               )}
             </div>
-
-            {/* Ready to Install badge */}
-            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Ready to Install
-            </span>
           </div>
 
           {/* Action Buttons */}

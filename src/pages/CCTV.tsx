@@ -254,7 +254,7 @@ export const CCTV = () => {
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Complete Installed Package</p>
                     {pkg.price != null ? (
                       <p className="text-2xl font-display font-bold text-foreground">
-                        <AnimatedCounter target={pkg.price} prefix="₦" />
+                        ₦{Math.round(pkg.price).toLocaleString("en-NG")}
                       </p>
                     ) : (
                       <p className="text-sm font-semibold text-primary">Contact for pricing</p>

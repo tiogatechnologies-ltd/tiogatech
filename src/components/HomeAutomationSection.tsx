@@ -25,6 +25,7 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
   const hasPrice = !!(p.price && p.price > 0);
   // Strikethrough only appears when a genuine previous price is recorded.
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const compareAt = resolveCompareAt(p.price, (p as any).compare_at_price, promos, p.id);
   const pct = savingsPct(p.price, compareAt);
   const wasPriceVal = calcWasPrice(p.price, compareAt);
@@ -149,16 +150,11 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
 
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
-        {/* Category, Tier & Rating */}
+        {/* Category & Tier */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
           <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
             {p.badge ? `${p.badge} Tier · ` : ""}{p.tagline || "Smart Living"}
           </span>
-          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
-            <Star size={13} fill="currentColor" />
-            <span className="text-foreground font-bold">5.0</span>
-            <span className="text-muted-foreground text-[10px]">({12 + ((p.name || "").length * 3) % 15})</span>
-          </div>
         </div>
 
         {/* Product Title */}
@@ -206,18 +202,12 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
                   </span>
                 </div>
               )}
-              {monthlyEst && (
+              {features?.flexible_payment_enabled !== false && monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
                   Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
                 </p>
               )}
             </div>
-
-            {/* Ready to Install badge */}
-            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0 mt-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Ready to Install
-            </span>
           </div>
 
           {/* Action Buttons */}

@@ -26,6 +26,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
   const hasPrice = !!(p.price && p.price > 0);
   // Strikethrough only appears when a genuine previous price is recorded.
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const compareAt = resolveCompareAt(p.price, (p as any).compare_at_price, promos, p.id);
   const pct = savingsPct(p.price, compareAt);
   const wasPriceVal = calcWasPrice(p.price, compareAt);
@@ -152,16 +153,11 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
 
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
-        {/* Category, Series & Rating */}
+        {/* Category & Series */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
           <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
             {p.series || "Smart Security"}{p.model ? ` · ${p.model}` : ""}{p.badge ? ` · ${p.badge}` : ""}
           </span>
-          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
-            <Star size={13} fill="currentColor" />
-            <span className="text-foreground font-bold">5.0</span>
-            <span className="text-muted-foreground text-[10px]">({10 + ((p.name || "").length * 2) % 18})</span>
-          </div>
         </div>
 
         {/* Product Title */}
@@ -207,7 +203,7 @@ const LockCard = ({ p, i }: { p: SmartLock; i: number }) => {
                   </span>
                 </div>
               )}
-              {monthlyEst && (
+              {features?.flexible_payment_enabled !== false && monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
                   Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
                 </p>

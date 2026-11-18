@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Wallet } from "lucide-react";
 import FlexiblePaymentDialog from "@/components/FlexiblePaymentDialog";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 
 interface Props {
   itemName?: string;
@@ -14,10 +15,15 @@ interface Props {
 
 /**
  * CTA that opens a mini Easy Flex calculator + eligibility popup with a
- * link to the full Finance page.
+ * link to the full Finance page. Hidden whenever Admin disables flexible_payment_enabled.
  */
 const FlexiblePaymentButton = ({ itemName, itemType, itemId, itemImage, price, className = "", compact = false }: Props) => {
+  const { settings: features } = useSiteSetting("features");
   const [open, setOpen] = useState(false);
+
+  if (features?.flexible_payment_enabled === false) {
+    return null;
+  }
 
   return (
     <>

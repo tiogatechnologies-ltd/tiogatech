@@ -50,7 +50,6 @@ import { resolveProductImage, getMultiAngleProductImages, handleProductImageErro
 import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
-import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { useLandingContent } from "@/hooks/useLandingContent";
 
 interface Product {
@@ -115,6 +114,7 @@ const formatPrice = (price?: string | null): string => {
 export const ProductDetail = () => {
   // Declared here, above the loading / not-found early returns.
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const { contact } = useSiteContact();
   const { slug = "" } = useParams();
   const navigate = useNavigate();
@@ -591,7 +591,7 @@ export const ProductDetail = () => {
                     <div className="flex items-baseline gap-3 flex-wrap">
                       <span className="font-display text-3xl sm:text-4xl font-black text-foreground">
                         {numPrice > 0 ? (
-                          <AnimatedCounter target={numPrice} prefix="₦" />
+                          `₦${numPrice.toLocaleString("en-NG")}`
                         ) : (
                           formatPrice(product.price)
                         )}
@@ -602,13 +602,13 @@ export const ProductDetail = () => {
                             ₦{Math.round(wasPrice).toLocaleString("en-NG")}
                           </span>
                           <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                            <Tag size={11} /> Save <AnimatedCounter target={Math.round(savedAmount)} prefix="₦" /> ({pct}%)
+                            <Tag size={11} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")} ({pct}%)
                           </span>
                         </div>
                       )}
                     </div>
                   </div>
-                  {numPrice > 0 && (
+                  {features?.flexible_payment_enabled !== false && numPrice > 0 && (
                     <div className="w-full sm:w-auto text-left sm:text-right">
                       <span className="text-[11px] text-muted-foreground block">Spread payment with direct debit</span>
                       <span className="text-xs font-bold text-primary">
@@ -974,7 +974,7 @@ export const ProductDetail = () => {
                         <p className="font-display font-black text-base text-foreground">
                           {itemNumPrice > 0 ? `₦${itemNumPrice.toLocaleString("en-NG")}` : item.price || "Price on Request"}
                         </p>
-                        {itemNumPrice > 0 && (
+                        {features?.flexible_payment_enabled !== false && itemNumPrice > 0 && (
                           <p className="text-[11px] text-muted-foreground mt-0.5">
                             Spread: ~₦{Math.round(itemNumPrice / 6).toLocaleString("en-NG")}/mo
                           </p>

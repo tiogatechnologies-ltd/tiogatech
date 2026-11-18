@@ -15,7 +15,6 @@ import bgSmartLockApex from "@/assets/bg-smartlock-apex.jpg";
 import bgSmartLockHotel from "@/assets/bg-smartlock-hotel.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
-import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const fmt = (item: SmartLock) =>
   item.price_label?.trim() ||
@@ -32,6 +31,7 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
   const hasPrice = !!(lock.price && lock.price > 0);
   // Strikethrough only appears when a genuine previous price is recorded.
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const compareAt = resolveCompareAt(lock.price, (lock as any).compare_at_price, promos, lock.id);
   const pct = savingsPct(lock.price, compareAt);
   const wasPriceVal = calcWasPrice(lock.price, compareAt);
@@ -156,16 +156,11 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
 
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
-        {/* Category, Series & Rating */}
+        {/* Category & Series */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
           <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
             {lock.series || "Smart Series"}{lock.model ? ` · ${lock.model}` : ""}{lock.badge ? ` · ${lock.badge}` : ""}
           </span>
-          <div className="flex items-center gap-1 font-medium text-amber-500 shrink-0">
-            <Star size={13} fill="currentColor" />
-            <span className="text-foreground font-bold">5.0</span>
-            <span className="text-muted-foreground text-[10px]">({12 + ((lock.name || "").length * 2) % 16})</span>
-          </div>
         </div>
 
         {/* Product Title */}
@@ -198,11 +193,7 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
             <div className="min-w-0 flex-1">
               {/* Main Price */}
               <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
-                {lock.price ? (
-                  <AnimatedCounter target={lock.price} prefix="₦" />
-                ) : (
-                  fmt(lock)
-                )}
+                {fmt(lock)}
               </p>
               {/* Was Price (slashed) */}
               {wasPriceVal && savedAmount && (
@@ -211,13 +202,13 @@ const LockCard = ({ lock, i }: { lock: SmartLock; i: number }) => {
                     ₦{Math.round(wasPriceVal).toLocaleString("en-NG")}
                   </span>
                   <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
-                    <Tag size={9} /> Save <AnimatedCounter target={Math.round(savedAmount)} prefix="₦" />
+                    <Tag size={9} /> Save ₦{Math.round(savedAmount).toLocaleString("en-NG")}
                   </span>
                 </div>
               )}
-              {monthlyEst && (
+              {features?.flexible_payment_enabled !== false && monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                  Or from <strong className="text-primary"><AnimatedCounter target={monthlyEst} prefix="₦" suffix="/mo" /></strong>
+                  Or from <strong className="text-primary">₦{monthlyEst.toLocaleString("en-NG")}/mo</strong>
                 </p>
               )}
             </div>

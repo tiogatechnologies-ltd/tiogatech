@@ -189,6 +189,7 @@ export const Retail = () => {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const { count: wishlistCount } = useWishlist();
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const { isAdmin } = useAuth();
   const bfCountdown = useCountdown();
   const [savingAdminToggle, setSavingAdminToggle] = useState(false);
@@ -226,6 +227,23 @@ export const Retail = () => {
     }
     invalidateSettingsCache();
     toast.success("Storefront visibility updated");
+  };
+
+  const toggleEasyFlex = async () => {
+    setSavingAdminToggle(true);
+    const nextEnabled = !(features?.flexible_payment_enabled !== false);
+    const nextValue = { ...features, flexible_payment_enabled: nextEnabled };
+    const { error } = await supabase.from("site_settings").upsert(
+      { key: "features", value: nextValue as any, updated_at: new Date().toISOString() },
+      { onConflict: "key" }
+    );
+    setSavingAdminToggle(false);
+    if (error) {
+      toast.error("Failed to update Easy Flex setting", { description: error.message });
+      return;
+    }
+    invalidateSettingsCache();
+    toast.success(nextEnabled ? "Easy Flex payment enabled" : "Easy Flex payment hidden");
   };
 
   // Pagination State
@@ -465,6 +483,20 @@ export const Retail = () => {
                       <span>{item.label}</span>
                     </button>
                   ))}
+                  <button
+                    type="button"
+                    data-testid="admin-toggle-easy-flex"
+                    disabled={savingAdminToggle}
+                    onClick={toggleEasyFlex}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold border transition-all ${
+                      features?.flexible_payment_enabled !== false
+                        ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
+                        : "bg-muted/60 border-border text-muted-foreground"
+                    }`}
+                  >
+                    {features?.flexible_payment_enabled !== false ? <Eye size={12} /> : <EyeOff size={12} />}
+                    <span>Easy Flex</span>
+                  </button>
                   <button
                     type="button"
                     disabled={savingAdminToggle}

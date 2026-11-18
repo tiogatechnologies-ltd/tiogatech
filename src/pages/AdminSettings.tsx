@@ -512,7 +512,7 @@ const AdminSettings = () => {
                       ["ai_chat_enabled", "AI chat assistant"],
                       ["ai_recommender_enabled", "AI product recommender"],
                       ["ai_solar_sizing_enabled", "AI solar sizing"],
-                      ["flexible_payment_enabled", "Flexible payment plan at checkout"],
+                      ["flexible_payment_enabled", "Easy Flex payment & monthly pricing"],
                       ["store_enabled", "Online store & checkout"],
                     ] as const).map(([k, label]) => (
                       <Toggle key={k} label={label} value={!!data.features[k]} onChange={(v) => set("features", { [k]: v })} />

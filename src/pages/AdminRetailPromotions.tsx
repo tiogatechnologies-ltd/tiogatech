@@ -29,7 +29,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { invalidateLandingCache } from "@/hooks/useLandingContent";
-import { invalidateSettingsCache } from "@/hooks/useSiteSetting";
+import { invalidateSettingsCache, useSiteSetting } from "@/hooks/useSiteSetting";
 import { useSolarPackages } from "@/hooks/useSolarPackages";
 import { useSmartLocks } from "@/hooks/useSmartLocks";
 import { useHomeAutomationPackages } from "@/hooks/useHomeAutomationPackages";
@@ -513,6 +513,24 @@ const AdminRetailPromotions = () => {
   const [savingHero, setSavingHero] = useState(false);
   const [savingFlash, setSavingFlash] = useState(false);
   const [savingPromo, setSavingPromo] = useState(false);
+  const { settings: features } = useSiteSetting("features");
+
+  const toggleEasyFlex = async () => {
+    setSavingPromo(true);
+    const nextEnabled = !(features?.flexible_payment_enabled !== false);
+    const nextValue = { ...features, flexible_payment_enabled: nextEnabled };
+    const { error } = await supabase.from("site_settings").upsert(
+      { key: "features", value: nextValue as any, updated_at: new Date().toISOString() },
+      { onConflict: "key" }
+    );
+    setSavingPromo(false);
+    if (error) {
+      toast.error("Failed to update Easy Flex setting", { description: error.message });
+      return;
+    }
+    invalidateSettingsCache();
+    toast.success(nextEnabled ? "Easy Flex payment enabled" : "Easy Flex payment hidden");
+  };
 
   const { packages: solarPackages } = useSolarPackages();
   const { items: smartLocks } = useSmartLocks();
@@ -1085,6 +1103,34 @@ const AdminRetailPromotions = () => {
                 </button>
               </div>
             ))}
+            {/* Easy Flex Payment & Monthly Price Toggle */}
+            <div
+              className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 transition-all ${
+                features?.flexible_payment_enabled !== false
+                  ? "bg-emerald-500/[0.06] border-emerald-500/35"
+                  : "bg-muted/40 border-border opacity-80"
+              }`}
+            >
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-foreground truncate">Easy Flex Payment &amp; /mo Prices</p>
+                <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">
+                  Show or hide Easy Flex payment buttons and per-month prices on product &amp; package cards
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={savingPromo}
+                onClick={toggleEasyFlex}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-all ${
+                  features?.flexible_payment_enabled !== false
+                    ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40"
+                    : "bg-muted text-muted-foreground border border-border"
+                }`}
+              >
+                {features?.flexible_payment_enabled !== false ? <Eye size={12} /> : <EyeOff size={12} />}
+                <span>{features?.flexible_payment_enabled !== false ? "Visible" : "Hidden"}</span>
+              </button>
+            </div>
           </div>
         </section>
 

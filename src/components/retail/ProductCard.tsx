@@ -20,7 +20,6 @@ import { useProductCompare } from "@/hooks/useProductCompare";
 import { productPath } from "@/lib/productSlug";
 import { resolveProductImage, handleProductImageError, isRepresentativeProductImage, getProductPhotoCaption } from "@/lib/productImages";
 import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt, resolvePromoBadge, isBlackFridayProduct } from "@/lib/promoDisplay";
-import { AnimatedCounter } from "@/components/AnimatedCounter";
 import type { RetailProduct } from "@/types/retail";
 import { stockStatusLabel } from "@/lib/productAvailability";
 import { formatRetailPrice } from "@/lib/retailPricing";
@@ -76,6 +75,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isInCompare, toggleCompare } = useProductCompare();
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const [isHovered, setIsHovered] = useState(false);
   const [addedAnimation, setAddedAnimation] = useState(false);
 
@@ -308,11 +308,7 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
             {/* Price Row: Selling Price & Slashed Was Price */}
             <div className="flex items-baseline gap-2 flex-wrap">
               <p className={`${isCompact ? "text-sm sm:text-base" : "text-base sm:text-lg"} font-display font-bold text-foreground leading-tight`}>
-                {product.numeric_price ? (
-                  <AnimatedCounter target={product.numeric_price} prefix="₦" />
-                ) : (
-                  fmt(product.numeric_price, product.price)
-                )}
+                {fmt(product.numeric_price, product.price)}
               </p>
               {wasPrice && (
                 <span className="text-xs text-muted-foreground line-through">
@@ -329,8 +325,8 @@ export const ProductCard = ({ product, onQuickView, customBadge, layout = "grid"
               </div>
             )}
 
-            {/* Monthly payment hint */}
-            {monthlyEst && (
+            {/* Monthly payment hint (hidden when Easy Flex is turned off by Admin) */}
+            {features?.flexible_payment_enabled !== false && monthlyEst && (
               <p className="text-[9.5px] text-muted-foreground truncate">
                 From <strong className="text-primary font-bold">₦{Math.round(monthlyEst).toLocaleString("en-NG")}/mo</strong>
               </p>
