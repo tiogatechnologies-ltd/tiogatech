@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Minus, Plus, Trash2, MessageCircle, Send, Loader2, ShoppingBag, CheckCircle2, Wallet } from "lucide-react";
@@ -6,6 +6,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { trackConversion } from "@/lib/tracking";
+import { syncCartToShopperTrail, markShopperOrdered } from "@/lib/shopperIntelligence";
 import { saveDraft, authHref } from "@/lib/authGate";
 import AuthGatePrompt from "@/components/AuthGatePrompt";
 import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
@@ -30,6 +31,10 @@ const CartDrawer = () => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
+  useEffect(() => {
+    syncCartToShopperTrail(items);
+  }, [items]);
+
   const reset = () => { setStep("cart"); setDone(false); setForm({ full_name: "", phone: "", email: "", location: "" }); };
 
   const buildMessage = () => {
@@ -50,6 +55,51 @@ const CartDrawer = () => {
     }
     const msg = encodeURIComponent(buildMessage());
     trackConversion("cart_checkout_whatsapp", { item_count: count });
+    markShopperOrdered();
+
+    // Notify sales team immediately when a user initiates a WhatsApp order from the Cart Drawer
+    const customerName = form.full_name.trim() || user.user_metadata?.full_name || user.email?.split("@")[0] || "WhatsApp Customer";
+    const customerPhone = form.phone.trim() || user.phone || "WhatsApp Checkout";
+    const customerEmail = form.email.trim() || user.email || "";
+    const customerLocation = form.location.trim() || "WhatsApp Order";
+
+    if (form.full_name.trim().length >= 2 && form.phone.trim().length >= 7 && form.location.trim().length >= 2) {
+      supabase.functions
+        .invoke("submit-order", {
+          body: {
+            full_name: customerName,
+            phone: customerPhone,
+            email: customerEmail || undefined,
+            location: customerLocation,
+            source: "cart_whatsapp_checkout",
+            payment_method: "whatsapp",
+            items: items.map((i) => ({
+              product_name: i.name,
+              product_type: i.type,
+              price_label: i.price,
+              quantity: i.quantity,
+              image_url: i.image,
+            })),
+          },
+        })
+        .catch(() => {});
+    } else {
+      supabase.functions
+        .invoke("notify-new-lead", {
+          body: {
+            source: "cart_whatsapp_order",
+            full_name: customerName,
+            phone: customerPhone,
+            email: customerEmail,
+            location: customerLocation,
+            budget: `${count} item(s) in Cart`,
+            products: items.map((i) => `${i.name} x${i.quantity}${i.price ? ` (${i.price})` : ""}`),
+            summary: `Customer clicked 'Send order on WhatsApp' from Cart Drawer (${count} items).`,
+          },
+        })
+        .catch(() => {});
+    }
+
     window.open(`https://wa.me/${whatsappDigits(contact)}?text=${msg}`, "_blank", "noopener,noreferrer");
     clear();
     setOpen(false);

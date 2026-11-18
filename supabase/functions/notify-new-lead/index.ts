@@ -27,6 +27,13 @@ const SOURCE_LABELS: Record<string, string> = {
   lumi_sizer: "Solar Sizing Saved",
   checkout_flexible: "Flexible Payment Application",
   finance_application: "Finance Application",
+  retail_order_placed: "🛒 New Retail Order Placed",
+  cart_whatsapp_order: "💬 WhatsApp Cart Checkout Initiated",
+  retail_browse_intent: "👀 High-Intent Retail Store Browser",
+  retail_cart_activity: "🛍️ Active Retail Cart (Not Yet Checked Out)",
+  new_account_signup: "👤 New Customer Account Signup",
+  reengagement_feedback: "💡 Customer Re-Engagement ('Why I Left') Response",
+  retail_exit_intent: "🎯 Retail Store Price-List / Deal Lead",
 };
 
 serve(async (req) => {

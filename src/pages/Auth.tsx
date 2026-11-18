@@ -8,6 +8,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { toast } from "sonner";
 import { z } from "zod";
+import { identifyShopper } from "@/lib/shopperIntelligence";
 
 type Tab = "signin" | "signup" | "forgot";
 
@@ -133,6 +134,13 @@ const Auth = () => {
       setError(err);
       return;
     }
+    identifyShopper(
+      {
+        email: parsed.data.email,
+        full_name: parsed.data.full_name,
+      },
+      { is_signup: true }
+    );
     toast.success("Account created! Please check your email to verify.");
     setTab("signin");
   };

@@ -33,6 +33,8 @@ import { FlashDealsBar, useCountdown } from "@/components/retail/FlashDealsBar";
 import { RetailFilterSidebar } from "@/components/retail/RetailFilterSidebar";
 import { ProductCard } from "@/components/retail/ProductCard";
 import { QuickViewModal } from "@/components/retail/QuickViewModal";
+import { RetailReengagementPrompt } from "@/components/retail/RetailReengagementPrompt";
+import { recordRetailBrowse, recordProductViewIntent } from "@/lib/shopperIntelligence";
 import { ColumnGridSwitcher, type GridColumnOption } from "@/components/retail/ColumnGridSwitcher";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -362,6 +364,14 @@ export const Retail = () => {
     return 0;
   }), [productIndex, filters, sortBy]);
   useEffect(() => { setCurrentPage(1); }, [filters, sortBy]);
+
+  // Track retail browse & category/search intent
+  useEffect(() => {
+    recordRetailBrowse({
+      category: filters.category,
+      search: filters.search,
+    });
+  }, [filters.category, filters.search]);
 
   // Paginated View Slice
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage) || 1;
@@ -997,7 +1007,15 @@ export const Retail = () => {
                       <ProductCard
                         key={product.id}
                         product={product}
-                        onQuickView={setQuickViewProduct}
+                        onQuickView={(p) => {
+                          setQuickViewProduct(p);
+                          recordProductViewIntent({
+                            id: p.id,
+                            name: p.name,
+                            category: p.category,
+                            price: p.numeric_price || p.price,
+                          });
+                        }}
                         layout={gridColumns === "list" ? "list" : "grid"}
                         columns={gridColumns}
                       />
@@ -1085,6 +1103,9 @@ export const Retail = () => {
         open={Boolean(quickViewProduct)}
         onOpenChange={(open) => !open && setQuickViewProduct(null)}
       />
+
+      {/* Smart Retail Lead Capture & Re-Engagement Prompt */}
+      <RetailReengagementPrompt />
 
       <SiteFooter />
     </div>

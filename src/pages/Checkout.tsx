@@ -10,6 +10,7 @@ import SEO from "@/components/SEO";
 import { toast } from "sonner";
 import { z } from "zod";
 import { trackConversion } from "@/lib/tracking";
+import { markShopperOrdered, identifyShopper } from "@/lib/shopperIntelligence";
 import DirectDebitConsent from "@/components/DirectDebitConsent";
 import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
 import { calcPlan, formatNGN as formatPlanNGN, DEFAULT_FINANCE_CONFIG, normalizeFinanceConfig, type FinanceConfig } from "@/lib/financeCalc";
@@ -324,12 +325,84 @@ const Checkout = () => {
       ...attributionForOrder(),
     };
 
-    const { error: orderError } = await supabase.from("orders").insert(orderPayload as any);
+    const { data: insertedOrder, error: orderError } = await supabase
+      .from("orders")
+      .insert(orderPayload as any)
+      .select("id, order_number")
+      .maybeSingle();
     if (orderError) {
       setSubmitting(false);
       toast.error("We couldn't create your order. Please try again.");
       console.error("Order creation failed:", orderError);
       return;
+    }
+
+    // Insert individual line items into order_items
+    if (insertedOrder?.id) {
+      supabase
+        .from("order_items")
+        .insert(
+          items.map((i) => ({
+            order_id: insertedOrder.id,
+            product_name: String(i.name || "").slice(0, 300),
+            product_type: i.type || null,
+            price_label: i.price || null,
+            quantity: Math.min(Math.max(i.quantity || 1, 1), 999),
+            image_url: i.image || null,
+          }))
+        )
+        .then(() => {});
+    }
+
+    markShopperOrdered();
+    identifyShopper({
+      user_id: user?.id,
+      email: orderPayload.email || undefined,
+      full_name: orderPayload.full_name,
+      phone: orderPayload.phone,
+      location: orderPayload.location,
+    });
+
+    // Fire instant Admin Order Notification email + Customer Order Confirmation email
+    supabase.functions
+      .invoke("notify-new-lead", {
+        body: {
+          source: "retail_order_placed",
+          full_name: orderPayload.full_name,
+          phone: orderPayload.phone,
+          email: orderPayload.email || "",
+          location: orderPayload.location,
+          budget: `${formNGN(total)} (${payment.toUpperCase()})`,
+          products: items.map((i) => `${i.name} x${i.quantity}${i.price ? ` (${i.price})` : ""}`),
+          notes: `Order #${orderNumber} (Tracking: ${trackingId})\nPayment Method: ${payment.toUpperCase()}\nDelivery: ${orderPayload.shipping_method}\nItems:\n${itemsSummary}`,
+        },
+      })
+      .catch(() => {});
+
+    if (orderPayload.email) {
+      supabase.functions
+        .invoke("send-transactional-email", {
+          body: {
+            templateName: "order-confirmation",
+            recipientEmail: orderPayload.email,
+            idempotencyKey: `order-confirmation-${insertedOrder?.id || orderNumber}`,
+            templateData: {
+              customerName: orderPayload.full_name,
+              orderNumber,
+              status: "pending",
+              items: items.map((i) => ({
+                name: i.name,
+                quantity: i.quantity,
+                priceLabel: i.price,
+              })),
+              itemsSummary,
+              deliveryLocation: orderPayload.location,
+              phone: orderPayload.phone,
+              trackUrl: `https://www.tiogatechnologies.com/track?order=${encodeURIComponent(orderNumber)}`,
+            },
+          },
+        })
+        .catch(() => {});
     }
 
     // Save order in local storage cache for instant offline & client lookup

@@ -14,6 +14,7 @@ import { DEFAULT_FLASH_DEAL, getNextFridayMidnight } from "@/components/retail/F
 import { SETTING_DEFAULTS } from "@/hooks/useSiteSetting";
 import { categoryMatches } from "@/lib/retailFilters";
 import { PRODUCTS } from "@/data/products";
+import { getShopperTrail, markShopperOrdered, REENGAGEMENT_REASONS } from "@/lib/shopperIntelligence";
 
 describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
   it("uses master quoted prices for the three matched EcoFlow banners and order links", () => {
@@ -230,5 +231,23 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
       "Deye",
     );
     expect(compareAtDisabled).toBeNull();
+  });
+
+  it("tracks shopper browse trail, order completion, and re-engagement feedback reasons", () => {
+    localStorage.clear();
+    const initial = getShopperTrail();
+    expect(initial.viewed_products).toEqual([]);
+    expect(initial.has_ordered).toBeUndefined();
+
+    markShopperOrdered();
+    const afterOrder = getShopperTrail();
+    expect(afterOrder.has_ordered).toBe(true);
+
+    expect(Object.keys(REENGAGEMENT_REASONS)).toEqual([
+      "need_sizing_help",
+      "want_easy_flex",
+      "comparing_prices",
+      "checkout_issue",
+    ]);
   });
 });

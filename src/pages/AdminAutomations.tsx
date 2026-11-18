@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, RefreshCw, Zap, Play } from "lucide-react";
 import { toast } from "sonner";
+import { runUnconvertedSignupReengagementSweep } from "@/lib/shopperIntelligence";
 
 type Rule = {
   key: string;
@@ -74,6 +75,34 @@ const DEFAULT_RULES: Rule[] = [
     category: "Sales & Orders",
     enabled: true,
     config: { delay_hours: 0 },
+  },
+  {
+    key: "retail_order_instant_alert",
+    label: "Instant Sales Alert on Every Retail & WhatsApp Order",
+    category: "Sales & Orders",
+    enabled: true,
+    config: { delay_hours: 0 },
+  },
+  {
+    key: "abandoned_cart_recovery",
+    label: "Abandoned Cart Recovery & Engineer Follow-Up Email",
+    category: "Sales & Orders",
+    enabled: true,
+    config: { delay_hours: 2 },
+  },
+  {
+    key: "retail_browse_intent_alert",
+    label: "Alert Sales When Registered or High-Intent Visitors Browse /retail",
+    category: "Lead Management",
+    enabled: true,
+    config: { delay_hours: 0 },
+  },
+  {
+    key: "signup_no_purchase_reengagement",
+    label: "Re-Engage Signups With 0 Orders ('Why Did You Leave?' Email + WhatsApp)",
+    category: "Lead Management",
+    enabled: true,
+    config: { delay_hours: 2 },
   },
   {
     key: "low_stock_threshold_alert",
@@ -166,7 +195,10 @@ const AdminAutomations = () => {
       else if (rule.key === "email_queue_worker") fnName = "process-email-queue";
 
       let resultMsg = "Triggered successfully";
-      if (fnName) {
+      if (rule.key === "signup_no_purchase_reengagement" || rule.key === "abandoned_cart_recovery") {
+        const sweep = await runUnconvertedSignupReengagementSweep();
+        resultMsg = `Scanned ${sweep.scanned} unconverted signup(s), sent ${sweep.sent} re-engagement email(s)`;
+      } else if (fnName) {
         // These jobs require a service-role caller, which the browser never
         // holds — route through admin-run-automation, which checks the
         // caller is an admin and re-invokes the job with the service key.

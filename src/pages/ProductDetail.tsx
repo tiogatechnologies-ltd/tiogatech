@@ -51,6 +51,7 @@ import type { RetailProduct } from "@/types/retail";
 import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { recordProductViewIntent } from "@/lib/shopperIntelligence";
 
 interface Product {
   id: string;
@@ -210,6 +211,12 @@ export const ProductDetail = () => {
       setLoading(false);
 
       if (found) {
+        recordProductViewIntent({
+          id: found.id,
+          name: found.name,
+          category: found.category,
+          price: found.numeric_price || found.price,
+        });
         setRelated(all.filter((p) => p.category === found.category && p.id !== found.id).slice(0, 4));
         const gallery = getMultiAngleProductImages(found.image_url, found.category, found.name);
         setImages(gallery.length > 0 ? gallery : [resolveProductImage(found.image_url, found.category, found.name)]);

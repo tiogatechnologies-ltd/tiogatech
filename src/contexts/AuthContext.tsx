@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import { identifyShopper } from "@/lib/shopperIntelligence";
 
 export type AppRole = "admin" | "staff" | "affiliate" | "customer" | "engineer";
 
@@ -64,7 +65,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
       ]);
       setRoles(rolesRes.data ? rolesRes.data.map((r: any) => r.role as AppRole) : []);
-      if (profileRes.data) setProfile(profileRes.data as Profile);
+      if (profileRes.data) {
+        const prof = profileRes.data as Profile;
+        setProfile(prof);
+        const createdAtMs = (profileRes.data as any).created_at ? new Date((profileRes.data as any).created_at).getTime() : 0;
+        const isFreshSignup = createdAtMs > 0 && Date.now() - createdAtMs < 5 * 60 * 1000;
+        identifyShopper(
+          {
+            user_id: userId,
+            email: prof.email || undefined,
+            full_name: prof.full_name || undefined,
+            phone: prof.phone || undefined,
+          },
+          { is_signup: isFreshSignup }
+        );
+      }
     } catch (err) {
       console.error("Failed to load user data:", err);
       setRoles([]);

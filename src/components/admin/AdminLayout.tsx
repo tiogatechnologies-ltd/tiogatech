@@ -10,7 +10,11 @@ import {
   ScrollText, Calendar, Search, Calculator, Zap, Plus, Minus, Pin, PinOff, ShieldCheck,
   Building2, Wrench, BookOpen, TrendingUp, Award, Camera,
   Star, LifeBuoy, Receipt, ClipboardList, Image as ImageIcon, Bot, UserPlus, Percent,
+  Bell, Eye, Loader2,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { runUnconvertedSignupReengagementSweep } from "@/lib/shopperIntelligence";
 
 
 interface AdminLayoutProps { children: React.ReactNode; }
@@ -602,7 +606,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <h1 className="font-display font-bold text-foreground text-sm sm:text-lg truncate flex-1 min-w-0">
             {allNavItems.find((n) => n.path === location.pathname)?.label ?? "Admin"}
           </h1>
-          <div className="shrink-0">
+          <div className="shrink-0 flex items-center gap-2">
+            <AdminLiveActivityBell />
             <AdminSearch items={visibleGroups.flatMap(g => g.items.map(i => ({ ...i, group: g.label })))} />
           </div>
         </header>
@@ -677,6 +682,255 @@ function AdminSearch({ items }: { items: Array<{ label: string; path: string; gr
         </div>
       )}
     </>
+  );
+}
+
+// ---- Live Retail Order, Browse Intent & Re-Engagement Notification Bell ----
+function AdminLiveActivityBell() {
+  const [open, setOpen] = useState(false);
+  const [unread, setUnread] = useState(0);
+  const [tab, setTab] = useState<"all" | "orders" | "browsers" | "signups">("all");
+  const [events, setEvents] = useState<
+    Array<{
+      id: string;
+      kind: "order" | "browse" | "signup";
+      title: string;
+      subtitle: string;
+      created_at: string;
+      href: string;
+    }>
+  >([]);
+  const [sweeping, setSweeping] = useState(false);
+  const navigate = useNavigate();
+
+  const loadFeed = useCallback(async () => {
+    try {
+      const [{ data: ordRows }, { data: leadRows }, { data: convRows }] = await Promise.all([
+        supabase
+          .from("orders")
+          .select("id, order_number, full_name, total, payment_method, created_at")
+          .order("created_at", { ascending: false })
+          .limit(10),
+        supabase
+          .from("leads")
+          .select("id, full_name, email, phone, source, budget, products, created_at")
+          .order("created_at", { ascending: false })
+          .limit(12),
+        supabase
+          .from("conversions")
+          .select("id, event_type, page_path, metadata, created_at")
+          .in("event_type", ["catalog_view", "product_view", "cart_add", "cart_checkout_whatsapp"])
+          .order("created_at", { ascending: false })
+          .limit(15),
+      ]);
+
+      const merged: typeof events = [];
+
+      for (const o of (ordRows as any[]) || []) {
+        merged.push({
+          id: `ord-${o.id}`,
+          kind: "order",
+          title: `🛒 Order ${o.order_number || ""} — ${o.full_name}`,
+          subtitle: `${o.total ? `₦${Number(o.total).toLocaleString("en-NG")}` : "Order placed"} · ${(o.payment_method || "checkout").toUpperCase()}`,
+          created_at: o.created_at,
+          href: "/admin/orders",
+        });
+      }
+
+      for (const l of (leadRows as any[]) || []) {
+        const isSignupOrReengage =
+          l.source === "account_signup_retail" ||
+          l.source === "reengagement_feedback" ||
+          l.source === "retail_exit_intent";
+        merged.push({
+          id: `lead-${l.id}`,
+          kind: isSignupOrReengage ? "signup" : "browse",
+          title:
+            l.source === "reengagement_feedback"
+              ? `💡 Why Left: ${l.full_name} (${l.budget || "Feedback"})`
+              : l.source === "account_signup_retail"
+                ? `👤 New Retail Signup: ${l.full_name}`
+                : `🎯 Lead: ${l.full_name}`,
+          subtitle: `${Array.isArray(l.products) && l.products.length > 0 ? l.products.slice(0, 2).join(", ") : l.email || l.phone || "Storefront"}`,
+          created_at: l.created_at,
+          href: "/admin/leads",
+        });
+      }
+
+      for (const c of (convRows as any[]) || []) {
+        const meta = (c.metadata || {}) as Record<string, any>;
+        const who = meta.user_name || meta.user_email || "Retail Visitor";
+        if (c.event_type === "product_view") {
+          merged.push({
+            id: `conv-${c.id}`,
+            kind: "browse",
+            title: `👀 ${who} viewed ${meta.product_name || "a product"}`,
+            subtitle: `${meta.category || "Retail"}${meta.price ? ` · ${meta.price}` : ""}`,
+            created_at: c.created_at,
+            href: "/admin/analytics?tab=traffic",
+          });
+        } else if (c.event_type === "catalog_view" && (meta.user_email || meta.category || meta.search)) {
+          merged.push({
+            id: `conv-${c.id}`,
+            kind: "browse",
+            title: `🛍️ ${who} browsing /retail`,
+            subtitle: `${meta.category ? `Category: ${meta.category}` : meta.search ? `Search: "${meta.search}"` : `Visit #${meta.retail_visit_count || 1}`}`,
+            created_at: c.created_at,
+            href: "/admin/analytics?tab=traffic",
+          });
+        }
+      }
+
+      merged.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      setEvents(merged.slice(0, 25));
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    loadFeed();
+    const channel = supabase
+      .channel("admin-live-ecommerce-bell")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "orders" }, (payload) => {
+        const row = payload.new as any;
+        setUnread((n) => n + 1);
+        toast.success(`🛒 New Retail Order: ${row.full_name || row.order_number}`, {
+          description: row.total ? `Total: ₦${Number(row.total).toLocaleString("en-NG")}` : "Click the notification bell to view.",
+        });
+        loadFeed();
+      })
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "leads" }, (payload) => {
+        const row = payload.new as any;
+        setUnread((n) => n + 1);
+        toast.info(`🔔 New Lead / Signup: ${row.full_name}`, {
+          description: row.budget || row.source || "New customer activity on storefront",
+        });
+        loadFeed();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [loadFeed]);
+
+  const filtered = useMemo(() => {
+    if (tab === "orders") return events.filter((e) => e.kind === "order");
+    if (tab === "browsers") return events.filter((e) => e.kind === "browse");
+    if (tab === "signups") return events.filter((e) => e.kind === "signup");
+    return events;
+  }, [events, tab]);
+
+  const handleRunSweep = async () => {
+    setSweeping(true);
+    try {
+      const res = await runUnconvertedSignupReengagementSweep();
+      toast.success(`Re-engagement complete: scanned ${res.scanned} unconverted signup(s), emailed ${res.sent}.`);
+    } catch (e: any) {
+      toast.error(e?.message || "Could not run re-engagement sweep");
+    } finally {
+      setSweeping(false);
+    }
+  };
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        data-testid="admin-live-activity-bell"
+        onClick={() => {
+          setOpen((v) => !v);
+          setUnread(0);
+          if (!open) loadFeed();
+        }}
+        className="relative p-2 rounded-lg border border-border bg-muted/40 hover:bg-muted text-foreground transition-colors"
+        aria-label="Live store notifications"
+        title="Live Orders, Retail Browsers & Unconverted Signups"
+      >
+        <Bell size={16} />
+        {unread > 0 && (
+          <span className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
+            {unread}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div className="fixed inset-x-3 top-14 sm:absolute sm:inset-auto sm:right-0 sm:top-11 sm:w-[400px] z-50 rounded-2xl bg-card border border-border shadow-2xl overflow-hidden">
+          <div className="p-3.5 border-b border-border flex items-center justify-between gap-2 bg-muted/30">
+            <div>
+              <h3 className="font-display font-bold text-xs sm:text-sm text-foreground">
+                Live Storefront &amp; Order Feed
+              </h3>
+              <p className="text-[11px] text-muted-foreground">
+                Real-time orders, retail browsers &amp; unconverted signups
+              </p>
+            </div>
+            <button
+              type="button"
+              disabled={sweeping}
+              onClick={handleRunSweep}
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary text-primary-foreground text-[11px] font-bold hover:brightness-110 transition-all shrink-0"
+              title="Send 'Why did you leave?' re-engagement email to signups with 0 orders"
+            >
+              {sweeping ? <Loader2 size={12} className="animate-spin" /> : <Mail size={12} />}
+              <span>Re-Engage Signups</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-1 px-3 py-2 border-b border-border bg-background text-[11px] font-semibold">
+            {(
+              [
+                ["all", "All"],
+                ["orders", "Orders"],
+                ["browsers", "Retail Browsers"],
+                ["signups", "Signups & Feedback"],
+              ] as const
+            ).map(([k, label]) => (
+              <button
+                key={k}
+                type="button"
+                onClick={() => setTab(k)}
+                className={`px-2.5 py-1 rounded-lg transition-colors ${
+                  tab === k ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <div className="max-h-[340px] overflow-y-auto divide-y divide-border">
+            {filtered.length === 0 ? (
+              <div className="p-6 text-center text-xs text-muted-foreground">
+                No recent activity in this view yet.
+              </div>
+            ) : (
+              filtered.map((ev) => (
+                <button
+                  key={ev.id}
+                  type="button"
+                  onClick={() => {
+                    navigate(ev.href);
+                    setOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2.5 hover:bg-muted/60 transition-colors flex items-start justify-between gap-2"
+                >
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-foreground truncate">{ev.title}</p>
+                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">{ev.subtitle}</p>
+                  </div>
+                  <span className="text-[10px] text-muted-foreground shrink-0">
+                    {new Date(ev.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
