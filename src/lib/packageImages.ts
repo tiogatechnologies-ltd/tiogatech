@@ -40,6 +40,20 @@ export interface StockPackageImage {
 }
 
 export const STOCK_PACKAGE_IMAGES: StockPackageImage[] = [
+  // Official Tioga Lithium Packages (Essential, Complete, Pro — Real Product Composites)
+  { label: "Lithium E1 — Essential 1.5 (SRNE 1.5kW + 2.56kWh + 3×330W)", category: "solar", url: "/products/packages/lithium-e1.webp" },
+  { label: "Lithium E2 — Essential 3 (itel 3kW + 2.5kWh + 2×650W)", category: "solar", url: "/products/packages/lithium-e2.webp" },
+  { label: "Lithium E3 — Essential 3 Plus (itel 3kW + 5kWh + 3×650W)", category: "solar", url: "/products/packages/lithium-e3.webp" },
+  { label: "Lithium C1 — Complete 4 (itel 4kW + 5kWh + 4×650W)", category: "solar", url: "/products/packages/lithium-c1.webp" },
+  { label: "Lithium C2 — Complete 5 (SRNE 5kW + 5.12kWh + 6×650W)", category: "solar", url: "/products/packages/lithium-c2.webp" },
+  { label: "Lithium C3 — Complete 6 (itel 6kW + 10kWh + 6×650W)", category: "solar", url: "/products/packages/lithium-c3.webp" },
+  { label: "Lithium C4 — Complete 8 (itel 8kW + 10kWh + 8×650W)", category: "solar", url: "/products/packages/lithium-c4.webp" },
+  { label: "Lithium P1 — Pro 12 (itel 12kW + 16kWh + 16×650W)", category: "solar", url: "/products/packages/lithium-p1.webp" },
+  { label: "Lithium P2 — Pro 12 SRNE (SRNE 12kW + 14.33kWh + 16×650W)", category: "solar", url: "/products/packages/lithium-p2.webp" },
+  { label: "Lithium P3 — Pro 24 (2×itel 12kW + 2×16kWh + DCB-1 + 32×650W)", category: "solar", url: "/products/packages/lithium-p3.webp" },
+  { label: "Lithium P4 — Pro 12 Three-Phase (itel 12kW 3P + 16kWh + 16×650W)", category: "solar", url: "/products/packages/lithium-p4.webp" },
+  { label: "Lithium P5 — Pro 20 Three-Phase (SRNE 20kW 3P + 2×14.33kWh + DCB-1 + 24×650W)", category: "solar", url: "/products/packages/lithium-p5.webp" },
+
   // Solar Systems (19 unique packages)
   { label: "Package #1 — 3.5kVA Starter Hybrid System", category: "solar", url: "/products/packages/pkg-solar-1.webp" },
   { label: "Package #2 — 5kVA Popular Hybrid System", category: "solar", url: "/products/packages/pkg-solar-2.webp" },

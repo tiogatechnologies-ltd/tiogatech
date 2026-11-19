@@ -76,7 +76,7 @@ export const SolarPackageDetail = () => {
     add({
       refId: pkg.id,
       type: "package",
-      name: `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
+      name: pkg.code ? `Lithium ${pkg.code} (${pkg.name}) - ${pkg.inverter}` : `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
       price: fmtN(pkg.total_price),
       numericPrice: pkg.total_price,
       image: pkg.image,
@@ -84,7 +84,7 @@ export const SolarPackageDetail = () => {
     });
     trackConversion("cart_add", { source: "solar_detail", id: pkg.id });
     setAddedAnim(true);
-    toast.success(`Added Solar Package #${pkg.package_number} to cart`);
+    toast.success(`Added ${pkg.code ? `${pkg.name} (${pkg.code})` : `Solar Package #${pkg.package_number}`} to cart`);
     setTimeout(() => setAddedAnim(false), 2000);
   };
 
@@ -256,12 +256,21 @@ export const SolarPackageDetail = () => {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">
-                    Lumi Solar · {batteryLabel}
+                    {pkg.code && pkg.tier
+                      ? `${pkg.tier} Tier · Code ${pkg.code} · ${pkg.brand} Lithium System`
+                      : `Lumi Solar · ${batteryLabel}`}
                   </p>
                   <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground leading-tight no-clip">
-                    {pkg.inverter}
+                    {pkg.name ? `${pkg.name} (${pkg.brand})` : pkg.inverter}
                   </h2>
-                  {pkg.tagline && <p className="text-sm text-muted-foreground mt-1">{pkg.tagline}</p>}
+                  {pkg.name && (
+                    <p className="text-sm font-medium text-foreground/90 mt-1">{pkg.inverter}</p>
+                  )}
+                  {(pkg.best_for || pkg.tagline) && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {pkg.best_for ? `Best for: ${pkg.best_for}` : pkg.tagline}
+                    </p>
+                  )}
                 </div>
                 <button
                   onClick={handleShare}
@@ -272,33 +281,49 @@ export const SolarPackageDetail = () => {
                 </button>
               </div>
 
-              {/* A hardcoded "4.9 (38 installs) · 3 purchased this week" used to
-                  sit here. Nothing counted those, so it is gone rather than
-                  presented to customers as a real figure. */}
-
               {/* Price block */}
               <div className="p-5 rounded-2xl bg-muted/40 border border-border">
-                <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Bundle Installation Price</p>
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">
+                  {pkg.battery_type === "lithium" ? "Equipment Package Price" : "Bundle Installation Price"}
+                </p>
                 <div className="flex flex-col sm:flex-row sm:items-end gap-1.5 sm:gap-4 mb-2">
                   <span className="text-3xl sm:text-4xl font-display font-bold text-foreground leading-tight">
-                    {pkg.total_price != null ? (
-                      <AnimatedCounter target={pkg.total_price} prefix="₦" />
-                    ) : (
-                      "-"
-                    )}
+                    {pkg.total_price != null ? fmtN(pkg.total_price) : "-"}
                   </span>
-                  <div className="flex flex-wrap sm:flex-col items-baseline sm:items-start gap-2 sm:gap-0 pb-0.5 sm:pb-1">
-                    <span className="text-xs sm:text-sm text-muted-foreground line-through">{fmtN(wasPrice)}</span>
-                    <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                      You save <AnimatedCounter target={savedAmount} prefix="₦" /> ({pct}%)
-                    </span>
-                  </div>
+                  {wasPrice && savedAmount && pct ? (
+                    <div className="flex flex-wrap sm:flex-col items-baseline sm:items-start gap-2 sm:gap-0 pb-0.5 sm:pb-1">
+                      <span className="text-xs sm:text-sm text-muted-foreground line-through">{fmtN(wasPrice)}</span>
+                      <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                        You save {fmtN(savedAmount)} ({pct}%)
+                      </span>
+                    </div>
+                  ) : null}
                 </div>
                 <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
-                  <Tag size={11} className="text-primary" />
-                  Includes all components + professional installation
+                  <Tag size={11} className="text-primary shrink-0" />
+                  {pkg.battery_type === "lithium"
+                    ? "Equipment price (Inverter + LiFePO4 Battery + Sungene Solar Panels). Mounting, cabling, protection & installation are quoted on site survey / BOQ."
+                    : "Includes all components + professional installation"}
                 </p>
               </div>
+
+              {/* 5 Energy Performance Metrics for Official Lithium Packages */}
+              {pkg.largest_load_kw != null && (
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                  {[
+                    { label: "Largest Load at Once", value: `${pkg.largest_load_kw} kW` },
+                    { label: "Solar / Sunny Day", value: `${pkg.solar_per_day_kwh} kWh` },
+                    { label: "Usable Battery", value: `${pkg.usable_battery_kwh} kWh` },
+                    { label: "Typical Daily Use", value: `${pkg.daily_use_kwh} kWh` },
+                    { label: "Night Backup", value: pkg.night_backup_hours || "-" },
+                  ].map((m) => (
+                    <div key={m.label} className="p-2.5 rounded-xl bg-card border border-border text-center">
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">{m.label}</p>
+                      <p className="text-xs sm:text-sm font-display font-bold text-foreground mt-0.5">{m.value}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* The flash deal an admin has actually scheduled, if any. This
                   slot used to hold a permanent "Bundle pricing valid this week
@@ -378,50 +403,126 @@ export const SolarPackageDetail = () => {
         {/* What's Included */}
         <section className="bg-muted/30 section-padding py-12">
           <div className="section-container">
-            <h2 className="text-2xl font-display font-bold text-foreground mb-2 no-clip">What's Included</h2>
-            <p className="text-sm text-muted-foreground mb-8">Everything below is included in the bundle price - no hidden extras.</p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { icon: Cpu, label: "Inverter", value: pkg.inverter, price: pkg.inverter_price },
-                { icon: Sun, label: "Solar Panels", value: pkg.solar_panels, price: pkg.solar_panels_price },
-                { icon: Battery, label: "Battery Bank", value: pkg.battery, price: pkg.battery_price },
-                ...(pkg.charge_controller && pkg.charge_controller !== "NIL"
-                  ? [{ icon: Zap, label: "Charge Controller", value: pkg.charge_controller, price: pkg.charge_controller_price }]
-                  : []),
-                { icon: Wrench, label: "Accessories & Cabling", value: "DC breakers, surge protector, cabling, mounting", price: pkg.accessories_price },
-                { icon: CheckCircle2, label: "Professional Installation", value: "Certified Tioga engineers - 48–72h scheduling", price: pkg.setup_fee },
-              ].map(({ icon: Icon, label, value, price }) => (
-                <div key={label} className="flex gap-3.5 p-4 rounded-2xl bg-card border border-border shadow-sm items-start">
-                  <Icon size={22} className="text-primary shrink-0 mt-0.5" />
-                  <div className="min-w-0">
-                    <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">{label}</p>
-                    <p className="text-sm font-bold text-foreground leading-snug mt-0.5">{value}</p>
-                    {price != null && price > 0 && (
-                      <p className="text-xs text-muted-foreground mt-1">Retail: {fmtN(price)}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h2 className="text-2xl font-display font-bold text-foreground mb-2 no-clip">
+              {pkg.boq_items ? "Equipment Bill of Quantities (BOQ)" : "What's Included"}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-8">
+              {pkg.boq_items
+                ? "Matched inverter, lithium battery bank, and Sungene monocrystalline panels from the Tioga Master Price List."
+                : "Everything below is included in the bundle price - no hidden extras."}
+            </p>
 
-            {/* Bundle savings breakdown */}
-            <div className="mt-8 p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5">
-              <p className="text-sm font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-2 mb-3">
-                <TrendingDown size={16} /> Bundle Savings vs. Buying Separately
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+            {pkg.boq_items && pkg.boq_items.length > 0 ? (
+              <div className="space-y-6">
+                <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+                  <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/50 text-muted-foreground uppercase text-[10px] sm:text-xs tracking-wider">
+                        <th className="py-3.5 px-4 font-bold">Component</th>
+                        <th className="py-3.5 px-4 font-bold">Item & Key Specification</th>
+                        <th className="py-3.5 px-4 font-bold">ID</th>
+                        <th className="py-3.5 px-4 font-bold text-center">Qty</th>
+                        <th className="py-3.5 px-4 font-bold text-right">Unit (₦)</th>
+                        <th className="py-3.5 px-4 font-bold text-right">Line (₦)</th>
+                        <th className="py-3.5 px-4 font-bold text-right">Warranty</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/60">
+                      {pkg.boq_items.map((row) => (
+                        <tr key={row.sku} className="hover:bg-muted/20 transition-colors">
+                          <td className="py-3.5 px-4 font-semibold text-primary whitespace-nowrap">{row.component}</td>
+                          <td className="py-3.5 px-4">
+                            <p className="font-bold text-foreground">{row.item}</p>
+                            <p className="text-xs text-muted-foreground mt-0.5">{row.spec}</p>
+                          </td>
+                          <td className="py-3.5 px-4 font-mono text-xs text-muted-foreground whitespace-nowrap">{row.sku}</td>
+                          <td className="py-3.5 px-4 text-center font-bold text-foreground">{row.qty}</td>
+                          <td className="py-3.5 px-4 text-right font-medium text-muted-foreground whitespace-nowrap">{fmtN(row.unit_price)}</td>
+                          <td className="py-3.5 px-4 text-right font-bold text-foreground whitespace-nowrap">{fmtN(row.line_total)}</td>
+                          <td className="py-3.5 px-4 text-right text-xs font-semibold text-emerald-700 dark:text-emerald-400 whitespace-nowrap">{row.warranty}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr className="border-t-2 border-border bg-muted/30">
+                        <td colSpan={5} className="py-4 px-4 font-display font-bold text-foreground text-right">
+                          Equipment Package Total
+                        </td>
+                        <td className="py-4 px-4 text-right font-display font-extrabold text-base sm:text-lg text-primary whitespace-nowrap">
+                          {fmtN(pkg.total_price)}
+                        </td>
+                        <td className="py-4 px-4"></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+
+                {/* Larger Battery Add-On & Grows Into Cards */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {pkg.addon_battery && (
+                    <div className="p-5 rounded-2xl bg-card border border-primary/25 shadow-sm">
+                      <p className="text-xs font-extrabold uppercase tracking-wider text-primary mb-1.5 flex items-center gap-1.5">
+                        <Battery size={15} /> Larger Battery Add-On
+                      </p>
+                      <p className="text-sm font-semibold text-foreground leading-relaxed">{pkg.addon_battery}</p>
+                    </div>
+                  )}
+                  {pkg.grows_into && (
+                    <div className="p-5 rounded-2xl bg-card border border-border shadow-sm">
+                      <p className="text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1.5 flex items-center gap-1.5">
+                        <Zap size={15} /> Future Expansion (Grows Into)
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{pkg.grows_into}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
-                  { label: "Individual Retail Total", value: fmtN(wasPrice), muted: true },
-                  { label: "Bundle Price", value: fmtN(pkg.total_price), highlight: true },
-                  { label: "You Save", value: `${fmtN(savedAmount)} (${pct}%)`, green: true },
-                ].map(({ label, value, muted, highlight, green }) => (
-                  <div key={label} className={`p-3 rounded-xl text-center ${highlight ? "bg-primary text-primary-foreground" : "bg-card border border-border"}`}>
-                    <p className={`text-[10px] uppercase tracking-wider font-semibold mb-1 ${highlight ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{label}</p>
-                    <p className={`font-display font-bold text-lg ${green ? "text-emerald-700 dark:text-emerald-400" : muted ? "line-through text-muted-foreground text-base" : ""}`}>{value}</p>
+                  { icon: Cpu, label: "Inverter", value: pkg.inverter, price: pkg.inverter_price },
+                  { icon: Sun, label: "Solar Panels", value: pkg.solar_panels, price: pkg.solar_panels_price },
+                  { icon: Battery, label: "Battery Bank", value: pkg.battery, price: pkg.battery_price },
+                  ...(pkg.charge_controller && pkg.charge_controller !== "NIL"
+                    ? [{ icon: Zap, label: "Charge Controller", value: pkg.charge_controller, price: pkg.charge_controller_price }]
+                    : []),
+                  { icon: Wrench, label: "Accessories & Cabling", value: "DC breakers, surge protector, cabling, mounting", price: pkg.accessories_price },
+                  { icon: CheckCircle2, label: "Professional Installation", value: "Certified Tioga engineers - 48–72h scheduling", price: pkg.setup_fee },
+                ].map(({ icon: Icon, label, value, price }) => (
+                  <div key={label} className="flex gap-3.5 p-4 rounded-2xl bg-card border border-border shadow-sm items-start">
+                    <Icon size={22} className="text-primary shrink-0 mt-0.5" />
+                    <div className="min-w-0">
+                      <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">{label}</p>
+                      <p className="text-sm font-bold text-foreground leading-snug mt-0.5">{value}</p>
+                      {price != null && price > 0 && (
+                        <p className="text-xs text-muted-foreground mt-1">Retail: {fmtN(price)}</p>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
+            )}
+
+            {/* Bundle savings breakdown (only when genuine compareAt discount is active) */}
+            {wasPrice && savedAmount && pct ? (
+              <div className="mt-8 p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5">
+                <p className="text-sm font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-2 mb-3">
+                  <TrendingDown size={16} /> Bundle Savings vs. Buying Separately
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                  {[
+                    { label: "Individual Retail Total", value: fmtN(wasPrice), muted: true },
+                    { label: "Bundle Price", value: fmtN(pkg.total_price), highlight: true },
+                    { label: "You Save", value: `${fmtN(savedAmount)} (${pct}%)`, green: true },
+                  ].map(({ label, value, muted, highlight, green }) => (
+                    <div key={label} className={`p-3 rounded-xl text-center ${highlight ? "bg-primary text-primary-foreground" : "bg-card border border-border"}`}>
+                      <p className={`text-[10px] uppercase tracking-wider font-semibold mb-1 ${highlight ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{label}</p>
+                      <p className={`font-display font-bold text-lg ${green ? "text-emerald-700 dark:text-emerald-400" : muted ? "line-through text-muted-foreground text-base" : ""}`}>{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         </section>
 

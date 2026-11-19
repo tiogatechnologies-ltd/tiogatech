@@ -12,12 +12,16 @@ import { toast } from "sonner";
 import { Pencil, Trash2, Plus, Sun } from "lucide-react";
 import { PackageImagePicker } from "@/components/admin/PackageImagePicker";
 import { fetchPackageImagesMap, savePackageImage, getDefaultPackageImage } from "@/lib/packageImages";
-import { invalidateSolarPackagesCache } from "@/hooks/useSolarPackages";
+import { invalidateSolarPackagesCache, OFFICIAL_LITHIUM_PACKAGES } from "@/hooks/useSolarPackages";
 
 type Pkg = {
   id: string;
   package_number: number;
-  battery_type: "lithium" | "tubular";
+  battery_type: "lithium" | "tubular" | "high_voltage";
+  code?: string;
+  name?: string;
+  tier?: string;
+  brand?: string;
   inverter: string;
   inverter_price: number | null;
   solar_panels: string;
@@ -85,11 +89,20 @@ const AdminSolarPackages = () => {
       toast.error("Could not load packages");
     } else {
       const raw = (pkgRes.data as any[]) || [];
-      const merged = raw.map((p) => ({
+      const nonLithium = raw
+        .filter((p) => p.battery_type !== "lithium")
+        .map((p) => ({
+          ...p,
+          image_url: p.image_url || imgMap[p.id] || null,
+        }));
+      const officialLithium = OFFICIAL_LITHIUM_PACKAGES.map((p) => ({
         ...p,
-        image_url: p.image_url || imgMap[p.id] || null,
+        image_url:
+          imgMap[p.id] && imgMap[p.id].startsWith("/products/packages/lithium-")
+            ? imgMap[p.id]
+            : p.image,
       }));
-      setItems(merged as Pkg[]);
+      setItems([...officialLithium, ...nonLithium] as Pkg[]);
     }
     setLoading(false);
   };

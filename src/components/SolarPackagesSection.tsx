@@ -35,13 +35,17 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
   const savedAmount = calcSavedAmount(p.total_price, compareAt);
   const monthlyEst = Math.round(p.total_price / 3);
 
+  const displayTitle = p.name
+    ? `${p.name} · ${p.brand || ""} ${p.inverter.split("(")[0].replace(/^(SRNE|itel)\s+/i, "").trim()}`
+    : p.inverter;
+
   const handleAdd = (e?: React.MouseEvent) => {
     e?.preventDefault?.();
     e?.stopPropagation?.();
     add({
       refId: p.id,
       type: "package",
-      name: `Solar Package #${p.package_number} - ${p.inverter}`,
+      name: p.code ? `Lithium ${p.code} (${p.name}) - ${p.inverter}` : `Solar Package #${p.package_number} - ${p.inverter}`,
       price: fmtPrice(p.total_price),
       numericPrice: p.total_price,
       image: p.image,
@@ -55,7 +59,7 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleWishlist(p.id, `Solar Package #${p.package_number} - ${p.inverter}`);
+    toggleWishlist(p.id, p.code ? `Lithium ${p.code} (${p.name})` : `Solar Package #${p.package_number} - ${p.inverter}`);
   };
 
   return (
@@ -158,32 +162,55 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
       <div className="p-4 sm:p-5 flex flex-col flex-1">
         {/* Category & Tier */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
-          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
-            Package #{p.package_number}{p.badge ? ` · ${p.badge}` : ""}{p.tagline ? ` · ${p.tagline}` : ""}
+          <span className="uppercase tracking-wider font-extrabold text-[10px] text-primary truncate">
+            {p.code && p.tier
+              ? `${p.tier.toUpperCase()} ${p.code} · ${p.brand || "Lithium"}`
+              : `Package #${p.package_number}${p.badge ? ` · ${p.badge}` : ""}`}
           </span>
+          {p.largest_load_kw && (
+            <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] shrink-0">
+              {p.largest_load_kw} kW Load
+            </span>
+          )}
         </div>
 
         {/* Product Title */}
         <Link
           to={`/packages/solar/${p.id}`}
-          className="font-display font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug mb-2"
+          className="font-display font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug mb-1"
         >
-          {p.inverter}
+          {displayTitle}
         </Link>
+
+        {p.best_for && (
+          <p className="text-[11px] text-muted-foreground line-clamp-1 mb-2.5">
+            Best for: <span className="text-foreground/90 font-medium">{p.best_for}</span>
+          </p>
+        )}
 
         {/* Highlights / Specs Chips */}
         <div className="flex flex-wrap gap-1.5 mb-3">
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
-            <Sun size={11} className="text-gold shrink-0" />
-            <span className="truncate">Panels: <strong className="text-foreground">{(p.solar_panels?.split("+") || [])[0]?.trim() || p.solar_panels || "Standard Panels"}</strong></span>
+            <Cpu size={11} className="text-primary shrink-0" />
+            <span className="truncate">Inverter: <strong className="text-foreground">{(p.inverter?.split("(") || [])[0]?.trim()}</strong></span>
           </span>
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
             <Battery size={11} className="text-emerald-500 shrink-0" />
             <span className="truncate">Battery: <strong className="text-foreground">{(p.battery?.split("(") || [])[0]?.trim() || p.battery || "Compatible Battery"}</strong></span>
           </span>
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
+            <Sun size={11} className="text-gold shrink-0" />
+            <span className="truncate">Panels: <strong className="text-foreground">{(p.solar_panels?.split("+") || [])[0]?.trim() || p.solar_panels || "Standard Panels"}</strong></span>
+          </span>
+          {p.solar_per_day_kwh != null && p.night_backup_hours && (
+            <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1 max-w-full">
+              <Zap size={11} className="shrink-0" />
+              <span className="truncate">{p.solar_per_day_kwh} kWh/day · Backup: {p.night_backup_hours}</span>
+            </span>
+          )}
+          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
             <Zap size={11} className="text-primary shrink-0" />
-            <span className="truncate">Powers: <strong className="text-foreground">{p.appliances ? p.appliances.split(",").slice(0, 2).join(", ") : "Essential Appliances"}</strong></span>
+            <span className="truncate">Powers: <strong className="text-foreground">{p.appliances ? p.appliances.split(",").slice(0, 3).join(", ") : "Essential Appliances"}</strong></span>
           </span>
         </div>
 
@@ -207,6 +234,11 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
                   </span>
                 </div>
               )}
+              {p.battery_type === "lithium" && (
+                <p className="text-[10px] text-muted-foreground mt-0.5">
+                  Equipment price · Mounting, cabling & installation priced on survey
+                </p>
+              )}
               {features?.flexible_payment_enabled !== false && monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
                   Or from <strong className="text-primary">₦{monthlyEst.toLocaleString()}/mo</strong>
@@ -214,6 +246,12 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
               )}
             </div>
           </div>
+
+          {p.addon_battery && (
+            <div className="mb-2.5 px-2.5 py-1.5 rounded-lg bg-primary/5 border border-primary/15 text-[10px] text-muted-foreground leading-snug">
+              <strong className="text-foreground">Larger Battery Add-On:</strong> {p.addon_battery.split("(")[0].trim()}
+            </div>
+          )}
 
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-2 mt-2">

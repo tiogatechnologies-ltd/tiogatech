@@ -6,7 +6,7 @@ import { PRODUCTS, expansionCatalogProducts, blueCarbonProducts, dealerProducts 
 import { mergeProducts } from "@/lib/mergeProducts";
 import { resolveProductImage } from "@/lib/productImages";
 import brandPhotoFallbacks from "@/data/retailBrandPhotoFallbacks.json";
-import { getSolarPackageImage } from "@/hooks/useSolarPackages";
+import { getSolarPackageImage, OFFICIAL_LITHIUM_PACKAGES } from "@/hooks/useSolarPackages";
 import { getSmartLockImage } from "@/hooks/useSmartLocks";
 import { getDefaultPackageImage } from "@/lib/packageImages";
 
@@ -64,6 +64,36 @@ describe("Product and package asset availability and pricing", () => {
     }
     // Zero duplicate images across the 19 packages
     expect(images.size).toBe(19);
+  });
+
+  it("all 12 official Lithium solar packages (Essential E1-E3, Complete C1-C4, Pro P1-P5) have unique real-product composite images and exact PDF prices", () => {
+    expect(OFFICIAL_LITHIUM_PACKAGES.length).toBe(12);
+    const expectedCodesAndPrices: Array<[string, number]> = [
+      ["E1", 1064500],
+      ["E2", 1218600],
+      ["E3", 1798200],
+      ["C1", 2030200],
+      ["C2", 2698300],
+      ["C3", 3328000],
+      ["C4", 3839300],
+      ["P1", 5637000],
+      ["P2", 6816300],
+      ["P3", 11422200],
+      ["P4", 7122000],
+      ["P5", 12818600],
+    ];
+    const imgs = new Set<string>();
+    OFFICIAL_LITHIUM_PACKAGES.forEach((pkg, idx) => {
+      const [expCode, expPrice] = expectedCodesAndPrices[idx];
+      expect(pkg.code).toBe(expCode);
+      expect(pkg.total_price).toBe(expPrice);
+      expect(pkg.image.startsWith("/products/packages/lithium-")).toBe(true);
+      expect(fs.existsSync(path.resolve("public" + pkg.image)), `Lithium composite image must exist: ${pkg.image}`).toBe(true);
+      const boqSum = (pkg.boq_items || []).reduce((acc, row) => acc + row.line_total, 0);
+      expect(boqSum).toBe(expPrice);
+      imgs.add(pkg.image);
+    });
+    expect(imgs.size).toBe(12);
   });
 
   it("smart lock models and accessories resolve to assigned local assets", () => {

@@ -37,13 +37,17 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
   const savedAmount = calcSavedAmount(pkg.total_price, compareAt);
   const monthlyEst = Math.round(pkg.total_price / 3);
 
+  const displayTitle = pkg.name
+    ? `${pkg.name} · ${pkg.brand || ""} ${pkg.inverter.split("(")[0].replace(/^(SRNE|itel)\s+/i, "").trim()}`
+    : pkg.inverter;
+
   const handleAdd = (e?: React.MouseEvent) => {
     e?.preventDefault?.();
     e?.stopPropagation?.();
     add({
       refId: pkg.id,
       type: "package",
-      name: `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
+      name: pkg.code ? `Lithium ${pkg.code} (${pkg.name}) - ${pkg.inverter}` : `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
       price: fmtPrice(pkg.total_price),
       numericPrice: pkg.total_price,
       image: pkg.image,
@@ -57,7 +61,7 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleWishlist(pkg.id, `Solar Package #${pkg.package_number} - ${pkg.inverter}`);
+    toggleWishlist(pkg.id, pkg.code ? `Lithium ${pkg.code} (${pkg.name})` : `Solar Package #${pkg.package_number} - ${pkg.inverter}`);
   };
 
   return (
@@ -160,32 +164,55 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
       <div className="p-4 sm:p-5 flex flex-col flex-1">
         {/* Category & Tier */}
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
-          <span className="uppercase tracking-wider font-semibold text-[10px] text-primary truncate">
-            Package #{pkg.package_number}{pkg.badge ? ` · ${pkg.badge}` : ""}{pkg.tagline ? ` · ${pkg.tagline}` : ""}
+          <span className="uppercase tracking-wider font-extrabold text-[10px] text-primary truncate">
+            {pkg.code && pkg.tier
+              ? `${pkg.tier.toUpperCase()} ${pkg.code} · ${pkg.brand || "Lithium"}`
+              : `Package #${pkg.package_number}${pkg.badge ? ` · ${pkg.badge}` : ""}`}
           </span>
+          {pkg.largest_load_kw && (
+            <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] shrink-0">
+              {pkg.largest_load_kw} kW Load
+            </span>
+          )}
         </div>
 
         {/* Product Title */}
         <Link
           to={`/packages/solar/${pkg.id}`}
-          className="font-display font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug mb-2"
+          className="font-display font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug mb-1"
         >
-          {pkg.inverter}
+          {displayTitle}
         </Link>
+
+        {pkg.best_for && (
+          <p className="text-[11px] text-muted-foreground line-clamp-1 mb-2.5">
+            Best for: <span className="text-foreground/90 font-medium">{pkg.best_for}</span>
+          </p>
+        )}
 
         {/* Highlights / Specs Chips */}
         <div className="flex flex-wrap gap-1.5 mb-3">
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
-            <Sun size={11} className="text-gold shrink-0" />
-            <span className="truncate">Panels: <strong className="text-foreground">{(pkg.solar_panels?.split("+") || [])[0]?.trim() || pkg.solar_panels || "Standard Panels"}</strong></span>
+            <Cpu size={11} className="text-primary shrink-0" />
+            <span className="truncate">Inverter: <strong className="text-foreground">{(pkg.inverter?.split("(") || [])[0]?.trim()}</strong></span>
           </span>
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
             <Battery size={11} className="text-emerald-500 shrink-0" />
             <span className="truncate">Battery: <strong className="text-foreground">{(pkg.battery?.split("(") || [])[0]?.trim() || pkg.battery || "Compatible Battery"}</strong></span>
           </span>
           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
+            <Sun size={11} className="text-gold shrink-0" />
+            <span className="truncate">Panels: <strong className="text-foreground">{(pkg.solar_panels?.split("+") || [])[0]?.trim() || pkg.solar_panels || "Standard Panels"}</strong></span>
+          </span>
+          {pkg.solar_per_day_kwh != null && pkg.night_backup_hours && (
+            <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1 max-w-full">
+              <Zap size={11} className="shrink-0" />
+              <span className="truncate">{pkg.solar_per_day_kwh} kWh/day · Backup: {pkg.night_backup_hours}</span>
+            </span>
+          )}
+          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
             <Zap size={11} className="text-primary shrink-0" />
-            <span className="truncate">Powers: <strong className="text-foreground">{pkg.appliances ? pkg.appliances.split(",").slice(0, 2).join(", ") : "Essential Appliances"}</strong></span>
+            <span className="truncate">Powers: <strong className="text-foreground">{pkg.appliances ? pkg.appliances.split(",").slice(0, 3).join(", ") : "Essential Appliances"}</strong></span>
           </span>
         </div>
 
@@ -209,6 +236,11 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
                   </span>
                 </div>
               )}
+              {pkg.battery_type === "lithium" && (
+                <p className="text-[10px] text-muted-foreground mt-0.5">
+                  Equipment price · Mounting, cabling & installation priced on survey
+                </p>
+              )}
               {features?.flexible_payment_enabled !== false && monthlyEst && (
                 <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
                   Or from <strong className="text-primary">₦{monthlyEst.toLocaleString("en-NG")}/mo</strong>
@@ -216,6 +248,12 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
               )}
             </div>
           </div>
+
+          {pkg.addon_battery && (
+            <div className="mb-2.5 px-2.5 py-1.5 rounded-lg bg-primary/5 border border-primary/15 text-[10px] text-muted-foreground leading-snug">
+              <strong className="text-foreground">Larger Battery Add-On:</strong> {pkg.addon_battery.split("(")[0].trim()}
+            </div>
+          )}
 
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-2 mt-2">
@@ -259,12 +297,16 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
 export const SolarPackages = () => {
   const { packages, loading } = useSolarPackages();
   const { content: flashDeal } = useLandingContent("flash_deal");
-  const [filter, setFilter] = useState<"all" | "lithium" | "tubular" | "high_voltage">("all");
+  const [filter, setFilter] = useState<"all" | "lithium" | "tubular" | "high_voltage">("lithium");
+  const [lithiumTier, setLithiumTier] = useState<"all" | "Essential" | "Complete" | "Pro">("all");
 
   const filtered = useMemo(() => {
-    if (filter === "all") return packages;
-    return packages.filter((p) => p.battery_type === filter);
-  }, [packages, filter]);
+    let list = filter === "all" ? packages : packages.filter((p) => p.battery_type === filter);
+    if (filter === "lithium" && lithiumTier !== "all") {
+      list = list.filter((p) => p.tier === lithiumTier);
+    }
+    return list;
+  }, [packages, filter, lithiumTier]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -342,22 +384,57 @@ export const SolarPackages = () => {
             </div>
 
             {/* Filter tabs */}
-            <div className="overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-              <div className="flex items-center gap-2 min-w-max">
-                {(["all", "lithium", "tubular", "high_voltage"] as const).map((k) => (
-                  <button
-                    key={k}
-                    onClick={() => setFilter(k)}
-                    className={`px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
-                      filter === k
-                        ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                        : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {k === "all" ? "All" : k === "lithium" ? "Lithium" : k === "tubular" ? "Tubular / Gel" : "High Voltage"}
-                  </button>
-                ))}
+            <div className="flex flex-col items-start md:items-end gap-2.5">
+              <div className="overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+                <div className="flex items-center gap-2 min-w-max">
+                  {(["lithium", "tubular", "high_voltage", "all"] as const).map((k) => (
+                    <button
+                      key={k}
+                      onClick={() => setFilter(k)}
+                      className={`px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
+                        filter === k
+                          ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                          : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      {k === "lithium"
+                        ? "Lithium (LiFePO4 · 12)"
+                        : k === "tubular"
+                        ? "Tubular / Gel"
+                        : k === "high_voltage"
+                        ? "High Voltage"
+                        : "All Packages"}
+                    </button>
+                  ))}
+                </div>
               </div>
+
+              {filter === "lithium" && (
+                <div className="overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+                  <div className="flex items-center gap-1.5 min-w-max">
+                    {(
+                      [
+                        { key: "all", label: "All Lithium Tiers (12)" },
+                        { key: "Essential", label: "Essential (1.5kW – 3kW)" },
+                        { key: "Complete", label: "Complete (4kW – 8kW)" },
+                        { key: "Pro", label: "Pro (12kW – 24kW & 3-Phase)" },
+                      ] as const
+                    ).map((t) => (
+                      <button
+                        key={t.key}
+                        onClick={() => setLithiumTier(t.key)}
+                        className={`px-3 py-1.5 text-[11px] sm:text-xs font-semibold rounded-full border transition-all shrink-0 ${
+                          lithiumTier === t.key
+                            ? "bg-foreground text-background border-foreground"
+                            : "bg-muted/40 border-border text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

@@ -38,9 +38,9 @@ const CATEGORIES: {
     label: "Solar Inverter Systems",
     shortLabel: "Solar",
     icon: Sun,
-    desc: "19 pre-engineered packages from 1KVA to 40KVA - sized for real Nigerian load profiles with lithium, tubular, and high-voltage options.",
+    desc: "23 pre-engineered packages from 1.5kW to 40kVA - including 12 matched SRNE & itel Lithium systems (Essential, Complete, Pro), tubular, and high-voltage options.",
     image: catSolar,
-    stat: "19",
+    stat: "23",
     statLabel: "Packages",
     sectionId: "solar-packages",
   },
@@ -69,8 +69,8 @@ const CATEGORIES: {
 ];
 
 const TABS: { key: CategoryKey; label: string; icon: any; count: string }[] = [
-  { key: "all", label: "All Packages", icon: Layers, count: "42" },
-  { key: "solar", label: "Solar Systems", icon: Sun, count: "19" },
+  { key: "all", label: "All Packages", icon: Layers, count: "46" },
+  { key: "solar", label: "Solar Systems", icon: Sun, count: "23" },
   { key: "locks", label: "Smart Locks", icon: Lock, count: "20" },
   { key: "automation", label: "Home Automation", icon: HomeIcon, count: "3" },
 ];
