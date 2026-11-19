@@ -921,15 +921,13 @@ export function getSolarPackageImage(p: {
 
 const decorate = (data: any[], imgMap: Record<string, string> = {}): SolarPackage[] => {
   // Replace outdated generic lithium rows with the 12 official Tioga Lithium Packages
-  // (Essential E1-E3, Complete C1-C4, Pro P1-P5) while keeping tubular and high_voltage rows intact.
+  // (Essential E1-E3, Core C1-C4, Pro P1-P5) while keeping tubular and high_voltage rows intact
+  // with their newly generated real-product composite package images (pkg-solar-9..19.webp).
   const nonLithiumRows = data
     .filter((p) => p.battery_type !== "lithium")
     .map((p) => ({
       ...p,
-      image:
-        p.image_url && !p.image_url.startsWith("/products/minisim/")
-          ? p.image_url
-          : imgMap[p.id] || getSolarPackageImage(p),
+      image: getSolarPackageImage(p),
     })) as SolarPackage[];
 
   const officialLithiumRows = OFFICIAL_LITHIUM_PACKAGES.map((pkg) => ({
@@ -943,7 +941,7 @@ const decorate = (data: any[], imgMap: Record<string, string> = {}): SolarPackag
   return [...officialLithiumRows, ...nonLithiumRows];
 };
 
-const CACHE_KEY = "solar_packages_v3_lithium_core_bf2026";
+const CACHE_KEY = "solar_packages_v4_all_composites_bf2026";
 
 /** Called by Admin > Solar Packages after a save so this tab's cache doesn't hide the edit. */
 export function invalidateSolarPackagesCache() {
