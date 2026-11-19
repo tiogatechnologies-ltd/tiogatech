@@ -34,12 +34,15 @@ export type HomeAutomationPackage = {
 import { fetchPackageImagesMap } from "@/lib/packageImages";
 
 const decorate = (rows: any[], imgMap: Record<string, string> = {}): HomeAutomationPackage[] =>
-  rows.map((p) => ({
-    ...p,
-    image: p.image_url || imgMap[p.id] || (IMAGE_BY_TIER[p.tier] ?? bgAscentia),
-  })) as HomeAutomationPackage[];
+  rows.map((p) => {
+    const tierImage = IMAGE_BY_TIER[p.tier] ?? IMAGE_BY_TIER[p.name];
+    return {
+      ...p,
+      image: tierImage || p.image_url || imgMap[p.id] || bgAscentia,
+    };
+  }) as HomeAutomationPackage[];
 
-const CACHE_KEY = "home_automation_packages";
+const CACHE_KEY = "home_automation_packages_v2_composite";
 
 /** Called by Admin > Home Automation after a save so this tab's cache doesn't hide the edit. */
 export function invalidateHomeAutomationPackagesCache() {

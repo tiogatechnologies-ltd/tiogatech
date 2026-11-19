@@ -347,25 +347,6 @@ const SolarPackagesSection = () => {
     <section id="solar-packages" data-no-reveal className="section-padding bg-muted/30 scroll-mt-32">
       <div className="section-container">
 
-        {/* Promo Alert Banner - controlled from Admin > Retail Hero & Flash Deals */}
-        {flashDeal?.is_active && (
-          <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl bg-primary text-primary-foreground">
-            <div className="flex items-center gap-3">
-              <Flame size={20} className="shrink-0" />
-              <div>
-                <p className="text-xs font-extrabold uppercase tracking-wider">{flashDeal.headline}{flashDeal.discount_label ? ` - ${flashDeal.discount_label}` : ""}</p>
-                {flashDeal.description && <p className="text-[11px] text-primary-foreground/80 mt-0.5">{flashDeal.description}</p>}
-              </div>
-            </div>
-            {flashDeal.discount_code && (
-              <div className="flex items-center gap-2 shrink-0">
-                <Tag size={14} />
-                <span className="text-xs font-bold">Code: <span className="font-mono bg-primary-foreground/20 px-2 py-0.5 rounded">{flashDeal.discount_code}</span></span>
-              </div>
-            )}
-          </div>
-        )}
-
         <div className="text-center mb-10">
           <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">
             Solar Inverter Systems

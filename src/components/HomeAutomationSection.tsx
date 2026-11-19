@@ -68,13 +68,13 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
       id={`automation-${p.id}`}
     >
       {/* Top Image Container */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/20">
-        <Link to={`/packages/automation/${p.id}`} className="block w-full h-full">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/15 flex items-center justify-center">
+        <Link to={`/packages/automation/${p.id}`} className="block w-full h-full p-3 sm:p-4 flex items-center justify-center">
           <img
             src={p.image}
             alt={p.name}
             loading="lazy"
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
           />
         </Link>
 

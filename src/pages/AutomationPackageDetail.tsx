@@ -58,6 +58,7 @@ const TIER_FEATURES: Record<string, { icon: typeof Home; label: string }[]> = {
 export const AutomationPackageDetail = () => {
   // Declared here, above the loading/not-found early returns.
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const { contact } = useSiteContact();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -202,21 +203,21 @@ export const AutomationPackageDetail = () => {
 
             {/* Left: Image */}
             <div className="lg:col-span-6 lg:sticky lg:top-28 space-y-4">
-              <div className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)] aspect-[4/3]">
-                <img src={pkg.image} alt={`${pkg.name} Home Automation`} className="w-full h-full object-cover" />
+              <div className="relative rounded-3xl overflow-hidden bg-muted/15 border border-border shadow-[var(--shadow-card)] aspect-[4/3] flex items-center justify-center p-3 sm:p-4">
+                <img src={pkg.image} alt={`${pkg.name} Home Automation`} className="max-w-full max-h-full object-contain drop-shadow-md transition-transform duration-500 hover:scale-105" />
                 {/* Badges on image */}
                 <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
                   {pkg.badge && <span className="text-[10px] font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35)] px-2.5 py-0.5 rounded-full shadow-md w-fit">{pkg.badge}</span>}
-                  {pct && (
+                  {pct ? (
                     <span className="flex items-center gap-1 text-[10px] font-extrabold bg-red-600/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-white shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3)] px-2.5 py-0.5 rounded-full shadow-md w-fit">
                       <TrendingDown size={10} /> Save {pct}%
                     </span>
-                  )}
+                  ) : null}
                 </div>
 
-                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
-                  <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{pkg.tagline}</p>
-                  <h1 className="text-xl sm:text-3xl font-display font-bold text-white leading-tight">{pkg.name}</h1>
+                <div className="absolute bottom-0 inset-x-0 pt-10 pb-3.5 px-4 sm:px-5 bg-gradient-to-t from-black/85 via-black/45 to-transparent pointer-events-none">
+                  <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-0.5 drop-shadow">{pkg.tagline}</p>
+                  <h1 className="text-base sm:text-xl font-display font-bold text-white leading-tight drop-shadow">{pkg.name} Series</h1>
                 </div>
               </div>
 
@@ -247,37 +248,21 @@ export const AutomationPackageDetail = () => {
                 </button>
               </div>
 
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-1">
-                  {[1,2,3,4,5].map((s) => <Star key={s} size={14} className="fill-gold text-gold" />)}
-                  <span className="text-xs text-muted-foreground ml-1">5.0 (12 installs)</span>
-                </div>
-                <span className="text-xs text-muted-foreground">·</span>
-                <div className="flex items-center gap-1 text-xs">
-                  <Users size={12} className="text-emerald-500" />
-                  <span className="text-emerald-700 dark:text-emerald-400 font-semibold">1 booked this week</span>
-                </div>
-              </div>
-
               {/* Price */}
               <div className="p-5 rounded-2xl bg-muted/40 border border-border">
                 <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Package Investment</p>
                 <div className="flex flex-col sm:flex-row sm:items-end gap-1.5 sm:gap-4 mb-2">
                   <span className="text-3xl sm:text-4xl font-display font-bold text-foreground leading-tight">
-                    {pkg.price ? (
-                      <AnimatedCounter target={pkg.price} prefix="From ₦" />
-                    ) : (
-                      fmtAuto(pkg)
-                    )}
+                    {pkg.price ? `From ${fmtN(pkg.price)}` : fmtAuto(pkg)}
                   </span>
-                  {wasPrice && savedAmount && (
+                  {wasPrice && savedAmount && pct ? (
                     <div className="flex flex-wrap sm:flex-col items-baseline sm:items-start gap-2 sm:gap-0 pb-0.5 sm:pb-1">
                       <span className="text-xs sm:text-sm text-muted-foreground line-through">From {fmtN(wasPrice)}</span>
                       <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                        Save <AnimatedCounter target={savedAmount} prefix="₦" /> ({pct}%)
+                        Save {fmtN(savedAmount)} ({pct}%)
                       </span>
                     </div>
-                  )}
+                  ) : null}
                 </div>
                 <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
                   <Tag size={11} className="text-primary" /> Full system: devices, wiring, programming & installation
@@ -408,7 +393,7 @@ export const AutomationPackageDetail = () => {
         </section>
 
         {/* Finance */}
-        {pkg.price && pkg.price > 500_000 && (
+        {features?.flexible_payment_enabled !== false && pkg.price && pkg.price > 500_000 && (
           <section className="section-padding py-10">
             <div className="section-container">
               <div className="max-w-xl mx-auto text-center">
@@ -456,19 +441,26 @@ export const AutomationPackageDetail = () => {
                 <h2 className="text-2xl font-display font-bold text-foreground no-clip">Other Tiers</h2>
                 <Link to="/packages?category=automation" className="text-sm text-primary font-semibold hover:underline flex items-center gap-1">View all <ArrowRight size={14} /></Link>
               </div>
-              <div className="grid sm:grid-cols-3 gap-5">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {related.map((r) => (
-                  <Link key={r.id} to={`/packages/automation/${r.id}`} className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all">
-                    <div className="relative h-36 overflow-hidden">
-                      <img src={r.image} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
-                        <p className="text-[10px] text-white/70 mb-0.5">{r.tier} Tier</p>
-                        <p className="text-sm font-bold text-white">{r.name}</p>
-                      </div>
+                  <Link key={r.id} to={`/packages/automation/${r.id}`} className="group rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] hover:shadow-xl hover:border-primary/40 overflow-hidden flex flex-col transition-all duration-300">
+                    <div className="relative aspect-[4/3] w-full bg-muted/15 flex items-center justify-center overflow-hidden p-3 sm:p-4">
+                      <img src={r.image} alt={r.name} className="max-w-full max-h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500" />
+                      {r.badge && (
+                        <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-primary/95 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
+                          {r.badge}
+                        </span>
+                      )}
                     </div>
-                    <div className="p-4">
-                      <p className="text-sm font-display font-bold text-foreground">{fmtAuto(r)}</p>
-                      <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">View package <ArrowRight size={11} /></p>
+                    <div className="p-4 sm:p-5 flex flex-col flex-1">
+                      <p className="text-[10px] font-extrabold uppercase tracking-wider text-primary mb-1">{r.tier} Tier · {r.tagline}</p>
+                      <h3 className="text-sm sm:text-base font-display font-bold text-foreground group-hover:text-primary transition-colors mb-2">{r.name}</h3>
+                      <div className="mt-auto pt-3 border-t border-border/60 flex items-center justify-between">
+                        <p className="text-base font-display font-bold text-foreground">{fmtAuto(r)}</p>
+                        <span className="inline-flex items-center gap-1 text-xs font-bold text-primary">
+                          View Details <ArrowRight size={11} />
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 ))}

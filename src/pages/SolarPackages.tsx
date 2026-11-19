@@ -366,25 +366,6 @@ export const SolarPackages = () => {
       <main className="flex-1 section-padding py-12">
         <div className="section-container">
 
-          {/* Promo banner - controlled from Admin > Retail Hero & Flash Deals */}
-          {flashDeal?.is_active && (
-            <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl bg-primary text-primary-foreground">
-              <div className="flex items-center gap-3">
-                <Flame size={20} className="shrink-0" />
-                <div>
-                  <p className="text-xs font-extrabold uppercase tracking-wider">{flashDeal.headline}{flashDeal.discount_label ? ` - ${flashDeal.discount_label}` : ""}</p>
-                  {flashDeal.description && <p className="text-[11px] text-primary-foreground/80 mt-0.5">{flashDeal.description}</p>}
-                </div>
-              </div>
-              {flashDeal.discount_code && (
-                <div className="flex items-center gap-2 shrink-0">
-                  <Tag size={14} />
-                  <span className="text-xs font-bold">Code: <span className="font-mono bg-primary-foreground/20 px-2 py-0.5 rounded">{flashDeal.discount_code}</span></span>
-                </div>
-              )}
-            </div>
-          )}
-
           <div className="flex flex-col gap-6 mb-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
