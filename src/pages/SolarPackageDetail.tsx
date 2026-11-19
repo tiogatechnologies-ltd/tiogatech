@@ -221,11 +221,6 @@ export const SolarPackageDetail = () => {
                       <TrendingDown size={10} /> Save {pct}%
                     </span>
                   ) : null}
-                  {pkg.badge && (
-                    <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3)] px-2.5 py-0.5 rounded-full shadow-md w-fit">
-                      {pkg.badge}
-                    </span>
-                  )}
                 </div>
 
                 {/* Bottom of image: clean dark fade overlay instead of heavy blur slab */}
@@ -629,22 +624,12 @@ export const SolarPackageDetail = () => {
                             (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(r);
                           }}
                         />
-                        {r.badge && (
-                          <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-primary/95 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
-                            {r.badge}
-                          </span>
-                        )}
                       </div>
                       <div className="p-4 sm:p-5 flex flex-col flex-1">
                         <div className="flex items-center justify-between gap-2 mb-1">
                           <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary truncate">
                             {r.code && r.tier ? `${r.tier.toUpperCase()} ${r.code} · ${r.brand}` : `Package #${r.package_number}`}
                           </span>
-                          {r.largest_load_kw && (
-                            <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] shrink-0">
-                              {r.largest_load_kw} kW Load
-                            </span>
-                          )}
                         </div>
                         <h3 className="text-sm sm:text-base font-display font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2 mb-1.5">
                           {rTitle}

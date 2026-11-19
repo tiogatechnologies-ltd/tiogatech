@@ -204,31 +204,33 @@ const Packages = () => {
         backgroundImage={bgBundle}
         backgroundAlt="Tioga Technologies curated product bundles"
       >
-        <button
-          onClick={() => openLeadForm("packages_hero")}
-          className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]"
-        >
-          <Sparkles size={15} /> Get AI Recommendation
-        </button>
-        <Link
-          to="/contact"
-          className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
-        >
-          Talk to an Engineer <ArrowRight size={16} />
-        </Link>
+        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+          <button
+            onClick={() => openLeadForm("packages_hero")}
+            className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]"
+          >
+            <Sparkles size={15} /> Get AI Recommendation
+          </button>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
+          >
+            Talk to an Engineer <ArrowRight size={15} />
+          </Link>
+        </div>
       </PageHero>
 
       {/* Clean Value Props Strip */}
       <div className="border-b border-border bg-card">
-        <div className="section-container py-4 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        <div className="section-container py-3 sm:py-4 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
           {TRUST_STATS.map(({ icon: Icon, value, label }) => (
-            <div key={label} className="flex items-center gap-3 min-w-0">
-              <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary grid place-items-center shrink-0">
-                <Icon size={19} />
+            <div key={label} className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-primary/10 text-primary grid place-items-center shrink-0">
+                <Icon size={16} className="sm:w-[19px] sm:h-[19px]" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm sm:text-base font-display font-bold text-foreground leading-tight">{value}</p>
-                <p className="text-[11px] sm:text-xs text-muted-foreground leading-tight mt-0.5 truncate">{label}</p>
+                <p className="text-xs sm:text-base font-display font-bold text-foreground leading-tight truncate">{value}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground leading-tight mt-0.5 truncate">{label}</p>
               </div>
             </div>
           ))}
@@ -237,14 +239,14 @@ const Packages = () => {
 
       {/* Smart Auto-Hiding Sticky Category Filter Bar (hides on scroll down, reappears on scroll up) */}
       <div
-        className={`sticky top-[68px] sm:top-[84px] z-30 bg-background/95 backdrop-blur-xl border-b border-border shadow-sm transition-all duration-300 ${
+        className={`sticky top-[62px] sm:top-[84px] z-30 bg-background/95 backdrop-blur-xl border-b border-border shadow-sm transition-all duration-300 ${
           showFloatingFilter
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0 pointer-events-none"
         }`}
       >
         <div className="section-container">
-          <div className="flex items-center gap-2 py-2.5 sm:py-3 overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 py-2 sm:py-3 overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
             {TABS.map((t) => {
               const Icon = t.icon;
               const isActive = active === t.key;
@@ -253,13 +255,13 @@ const Packages = () => {
                   key={t.key}
                   type="button"
                   onClick={() => handleCategoryClick(t.key)}
-                  className={`inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0 border transition-all ${
+                  className={`inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0 border transition-all ${
                     isActive
                       ? "bg-primary text-primary-foreground border-primary shadow-sm"
                       : "border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`}
                 >
-                  <Icon size={14} className="shrink-0" />
+                  <Icon size={13} className="shrink-0" />
                   <span>{t.label}</span>
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
@@ -271,10 +273,10 @@ const Packages = () => {
                 </button>
               );
             })}
-            <div className="ml-auto shrink-0">
+            <div className="ml-auto shrink-0 pl-1">
               <button
                 onClick={() => openLeadForm("packages_tabs")}
-                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold bg-accent text-accent-foreground hover:brightness-110 transition-all shadow-sm"
+                className="inline-flex items-center gap-1 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold bg-accent text-accent-foreground hover:brightness-110 transition-all shadow-sm"
               >
                 <Sparkles size={12} /> AI Pick
               </button>
@@ -283,19 +285,15 @@ const Packages = () => {
         </div>
       </div>
 
-      {/*Redesigned 3 Categories · 46 Packages Showcase */}
+      {/* Redesigned Package Lines Showcase */}
       <section id="categories" className="section-padding bg-background scroll-mt-24">
         <div className="section-container">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-10">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-extrabold uppercase tracking-widest mb-3">
-                <Layers size={13} />
-                <span>3 Categories · 46 Packages</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
+              <h2 className="text-2xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
                 Explore Engineered Package Lines
               </h2>
-              <p className="mt-2 text-sm sm:text-base text-muted-foreground max-w-2xl">
+              <p className="mt-1.5 sm:mt-2 text-xs sm:text-base text-muted-foreground max-w-2xl">
                 Select a package line below to filter directly to Solar Inverter Systems, Biometric Smart Locks, or Whole-Home Automation Tiers.
               </p>
             </div>
@@ -305,12 +303,12 @@ const Packages = () => {
                 onClick={() => setActive("all")}
                 className="self-start md:self-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border border-border bg-card hover:bg-muted text-foreground transition-all"
               >
-                Show All 46 Packages
+                Show All Packages
               </button>
             )}
           </div>
 
-          <div className="grid gap-5 sm:gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
             {CATEGORIES.map((c) => {
               const Icon = c.icon;
               const isActive = active === c.key;
@@ -319,14 +317,14 @@ const Packages = () => {
                   key={c.key}
                   type="button"
                   onClick={() => handleCategoryClick(c.key)}
-                  className={`group relative text-left rounded-3xl border bg-card overflow-hidden flex flex-col transition-all duration-300 ${
+                  className={`group relative text-left rounded-2xl sm:rounded-3xl border bg-card overflow-hidden flex flex-col transition-all duration-300 ${
                     isActive
                       ? "border-primary shadow-xl ring-2 ring-primary/25"
                       : "border-border shadow-[var(--shadow-card)] hover:shadow-xl hover:border-primary/40"
                   }`}
                 >
                   {/* Real Product Composite Studio Visual */}
-                  <div className="relative aspect-[16/10] w-full bg-gradient-to-b from-slate-50 to-slate-100 dark:from-zinc-900 dark:to-zinc-950 border-b border-border/60 flex items-center justify-center p-4 overflow-hidden">
+                  <div className="relative aspect-[16/9] sm:aspect-[16/10] w-full bg-gradient-to-b from-slate-50 to-slate-100 dark:from-zinc-900 dark:to-zinc-950 border-b border-border/60 flex items-center justify-center p-3 sm:p-4 overflow-hidden">
                     <img
                       src={c.image}
                       alt={c.label}
@@ -335,22 +333,22 @@ const Packages = () => {
                     />
 
                     {/* Top-left Icon + Count Pill */}
-                    <div className="absolute top-3.5 left-3.5 flex items-center gap-2">
+                    <div className="absolute top-3 left-3 sm:top-3.5 sm:left-3.5 flex items-center gap-1.5 sm:gap-2">
                       <span
-                        className={`grid h-9 w-9 place-items-center rounded-xl shadow-sm transition-colors ${
+                        className={`grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-xl shadow-sm transition-colors ${
                           isActive ? "bg-primary text-primary-foreground" : "bg-zinc-900 text-white"
                         }`}
                       >
-                        <Icon size={17} />
+                        <Icon size={16} />
                       </span>
-                      <span className="text-[11px] font-extrabold bg-zinc-900/90 text-white px-3 py-1 rounded-full shadow-sm">
+                      <span className="text-[10px] sm:text-[11px] font-extrabold bg-zinc-900/90 text-white px-2.5 sm:px-3 py-1 rounded-full shadow-sm">
                         {c.stat} {c.statLabel}
                       </span>
                     </div>
 
                     {isActive && (
-                      <div className="absolute top-3.5 right-3.5">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider bg-primary text-primary-foreground px-3 py-1 rounded-full shadow-sm">
+                      <div className="absolute top-3 right-3 sm:top-3.5 sm:right-3.5">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider bg-primary text-primary-foreground px-2.5 sm:px-3 py-1 rounded-full shadow-sm">
                           Active Filter
                         </span>
                       </div>
@@ -358,18 +356,18 @@ const Packages = () => {
                   </div>
 
                   {/* Card Body */}
-                  <div className="p-5 sm:p-6 flex flex-col flex-1">
+                  <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <p className="text-[10px] font-extrabold uppercase tracking-wider text-primary mb-1">
                       {c.eyebrow}
                     </p>
-                    <h3 className="font-display font-bold text-lg sm:text-xl text-foreground group-hover:text-primary transition-colors mb-2">
+                    <h3 className="font-display font-bold text-base sm:text-xl text-foreground group-hover:text-primary transition-colors mb-1.5 sm:mb-2">
                       {c.label}
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3.5 sm:mb-4">
                       {c.desc}
                     </p>
 
-                    <div className="space-y-1.5 mb-5">
+                    <div className="space-y-1.5 mb-4 sm:mb-5">
                       {c.highlights.map((h) => (
                         <div key={h} className="flex items-center gap-2 text-xs text-foreground/85 font-medium">
                           <CheckCircle2 size={13} className="text-primary shrink-0" />
@@ -378,7 +376,7 @@ const Packages = () => {
                       ))}
                     </div>
 
-                    <div className="mt-auto pt-3.5 border-t border-border/60 flex items-center justify-between">
+                    <div className="mt-auto pt-3 border-t border-border/60 flex items-center justify-between">
                       <span
                         className={`text-xs font-bold ${
                           isActive ? "text-primary" : "text-foreground group-hover:text-primary"
@@ -386,7 +384,7 @@ const Packages = () => {
                       >
                         {isActive ? "Showing this category · Tap to show all" : `Browse ${c.stat} ${c.statLabel}`}
                       </span>
-                      <span className="h-8 w-8 rounded-full bg-primary/10 text-primary grid place-items-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <span className="h-8 w-8 rounded-full bg-primary/10 text-primary grid place-items-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
                         <ArrowRight size={14} />
                       </span>
                     </div>

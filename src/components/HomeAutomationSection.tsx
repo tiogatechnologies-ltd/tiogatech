@@ -89,10 +89,6 @@ const PackageCard = ({ p, i }: { p: HomeAutomationPackage; i: number }) => {
             <span className="px-2.5 py-0.5 rounded-full bg-red-600/95 backdrop-blur-md border border-white/25 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
               <TrendingDown size={11} /> {`${pct}% OFF`}
             </span>
-          ) : p.badge ? (
-            <span className="px-2.5 py-0.5 rounded-full bg-primary/95 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
-              {p.badge}
-            </span>
           ) : null}
         </div>
 

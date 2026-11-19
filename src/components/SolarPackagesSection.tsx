@@ -99,10 +99,6 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
             <span className="px-2.5 py-0.5 rounded-full bg-red-600/95 backdrop-blur-md border border-white/25 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
               <TrendingDown size={11} /> {`${pct}% OFF`}
             </span>
-          ) : p.badge ? (
-            <span className="px-2.5 py-0.5 rounded-full bg-primary/95 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
-              {p.badge}
-            </span>
           ) : null}
         </div>
 
@@ -167,11 +163,6 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
               ? `${p.tier.toUpperCase()} ${p.code} · ${p.brand || "Lithium"}`
               : `Package #${p.package_number}${p.badge ? ` · ${p.badge}` : ""}`}
           </span>
-          {p.largest_load_kw && (
-            <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] shrink-0">
-              {p.largest_load_kw} kW Load
-            </span>
-          )}
         </div>
 
         {/* Product Title */}
@@ -359,10 +350,10 @@ const SolarPackagesSection = () => {
           </p>
         </div>
 
-        <div className="mb-6 sm:mb-8 flex flex-col items-center gap-3">
+        <div className="mb-6 sm:mb-8 flex flex-col items-stretch sm:items-center gap-2.5 sm:gap-3">
           {/* Primary Category Filter */}
           <div className="w-full overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-            <div className="flex items-center sm:justify-center gap-2 min-w-max mx-auto">
+            <div className="flex items-center sm:justify-center gap-1.5 sm:gap-2 min-w-max">
               {(
                 [
                   { key: "lithium", label: `Lithium (LiFePO4) (${counts.lithium})` },
@@ -374,7 +365,7 @@ const SolarPackagesSection = () => {
                 <button
                   key={item.key}
                   onClick={() => setTab(item.key)}
-                  className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
+                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
                     tab === item.key
                       ? "bg-primary text-primary-foreground border-primary shadow-sm"
                       : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -389,7 +380,7 @@ const SolarPackagesSection = () => {
           {/* Sub-tier Filter for Lithium (Essential, Core, Pro) */}
           {tab === "lithium" && (
             <div className="w-full overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-              <div className="flex items-center sm:justify-center gap-1.5 sm:gap-2 min-w-max mx-auto">
+              <div className="flex items-center sm:justify-center gap-1.5 sm:gap-2 min-w-max">
                 {(
                   [
                     { key: "all", label: `All Lithium (${counts.lithium})` },
@@ -401,7 +392,7 @@ const SolarPackagesSection = () => {
                   <button
                     key={t.key}
                     onClick={() => setLithiumTier(t.key)}
-                    className={`px-3.5 py-1.5 text-[11px] sm:text-xs font-bold rounded-full border transition-all shrink-0 ${
+                    className={`px-3 sm:px-3.5 py-1.5 text-[11px] sm:text-xs font-bold rounded-full border transition-all shrink-0 ${
                       lithiumTier === t.key
                         ? "bg-foreground text-background border-foreground shadow-sm"
                         : "bg-card/80 border-border text-muted-foreground hover:text-foreground hover:bg-muted"

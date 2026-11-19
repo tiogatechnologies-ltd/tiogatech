@@ -101,10 +101,6 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
             <span className="px-2.5 py-0.5 rounded-full bg-red-600/95 backdrop-blur-md border border-white/25 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
               <TrendingDown size={11} /> {`${pct}% OFF`}
             </span>
-          ) : pkg.badge ? (
-            <span className="px-2.5 py-0.5 rounded-full bg-primary/95 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider shadow-md w-fit">
-              {pkg.badge}
-            </span>
           ) : null}
         </div>
 
@@ -169,11 +165,6 @@ const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
               ? `${pkg.tier.toUpperCase()} ${pkg.code} · ${pkg.brand || "Lithium"}`
               : `Package #${pkg.package_number}${pkg.badge ? ` · ${pkg.badge}` : ""}`}
           </span>
-          {pkg.largest_load_kw && (
-            <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] shrink-0">
-              {pkg.largest_load_kw} kW Load
-            </span>
-          )}
         </div>
 
         {/* Product Title */}
