@@ -222,9 +222,9 @@ const Packages = () => {
       )}
 
       {/* Sticky category tab bar */}
-      <div className="sticky top-[60px] z-30 bg-background/90 backdrop-blur-xl border-b border-border shadow-sm">
+      <div className="sticky top-[68px] sm:top-[84px] z-30 bg-background/95 backdrop-blur-xl border-b border-border shadow-sm">
         <div className="section-container">
-          <div className="flex items-center gap-2 py-2.5 overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex items-center gap-2 py-2.5 sm:py-3 overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
             {TABS.map((t) => {
               const Icon = t.icon;
               const isActive = active === t.key;
@@ -236,10 +236,10 @@ const Packages = () => {
                   className={`inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0 border transition-all ${
                     isActive
                       ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                      : "border-border bg-card/90 text-muted-foreground hover:text-foreground hover:bg-muted"
+                      : "border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`}
                 >
-                  <Icon size={14} />
+                  <Icon size={14} className="shrink-0" />
                   <span>{t.label}</span>
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
@@ -248,19 +248,13 @@ const Packages = () => {
                   >
                     {t.count}
                   </span>
-                  {t.key !== "all" && (
-                    <ChevronDown
-                      size={12}
-                      className={`transition-transform duration-200 ${isActive ? "rotate-180" : ""}`}
-                    />
-                  )}
                 </button>
               );
             })}
-            <div className="ml-auto shrink-0 hidden sm:block">
+            <div className="ml-auto shrink-0">
               <button
                 onClick={() => openLeadForm("packages_tabs")}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-accent text-accent-foreground hover:brightness-110 transition-all"
+                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold bg-accent text-accent-foreground hover:brightness-110 transition-all shadow-sm"
               >
                 AI Pick
               </button>
@@ -274,7 +268,7 @@ const Packages = () => {
         <div className="section-container">
           <div className="text-center mb-10">
             <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-3">
-              3 Categories · 42 Packages
+              3 Categories · 46 Packages
             </p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight no-clip">
               What are you shopping for?

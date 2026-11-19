@@ -66,7 +66,7 @@ describe("Product and package asset availability and pricing", () => {
     expect(images.size).toBe(19);
   });
 
-  it("all 12 official Lithium solar packages (Essential E1-E3, Complete C1-C4, Pro P1-P5) have unique real-product composite images and exact PDF prices", () => {
+  it("all 12 official Lithium solar packages (Essential E1-E3, Core C1-C4, Pro P1-P5) have unique real-product composite images and exact PDF prices", () => {
     expect(OFFICIAL_LITHIUM_PACKAGES.length).toBe(12);
     const expectedCodesAndPrices: Array<[string, number]> = [
       ["E1", 1064500],

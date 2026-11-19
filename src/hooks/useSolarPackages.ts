@@ -20,7 +20,7 @@ export type SolarPackage = {
   battery_type: "lithium" | "tubular" | "high_voltage";
   code?: string;
   name?: string;
-  tier?: "Essential" | "Complete" | "Pro";
+  tier?: "Essential" | "Core" | "Pro";
   brand?: "SRNE" | "itel";
   best_for?: string;
   inverter: string;
@@ -67,7 +67,7 @@ const LITHIUM_CODE_TO_IMAGE: Record<string, string> = {
 
 /**
  * The 12 official Tioga Solar Lithium Packages (Black Friday 2026 Master Catalog)
- * grouped into three clear tiers: Essential (1.5kW–3kW), Complete (4kW–8kW), and Pro (12kW–24kW & 3-Phase).
+ * grouped into three clear tiers: Essential (1.5kW–3kW), Core (4kW–8kW), and Pro (12kW–24kW & 3-Phase).
  * Every package pairs itel or SRNE inverters and LiFePO4 batteries from the same brand with Sungene monocrystalline panels.
  */
 export const OFFICIAL_LITHIUM_PACKAGES: SolarPackage[] = [
@@ -273,8 +273,8 @@ export const OFFICIAL_LITHIUM_PACKAGES: SolarPackage[] = [
     id: "db9963dc-6a18-4526-845f-c98f3fb5c28e",
     package_number: 4,
     code: "C1",
-    name: "Complete 4",
-    tier: "Complete",
+    name: "Core 4",
+    tier: "Core",
     brand: "itel",
     best_for: "2 to 3-bedroom apartment",
     battery_type: "lithium",
@@ -339,8 +339,8 @@ export const OFFICIAL_LITHIUM_PACKAGES: SolarPackage[] = [
     id: "8bc5e8ee-5622-415d-a316-148112cdbf0c",
     package_number: 5,
     code: "C2",
-    name: "Complete 5",
-    tier: "Complete",
+    name: "Core 5",
+    tier: "Core",
     brand: "SRNE",
     best_for: "3-bedroom apartment, shop or small office",
     battery_type: "lithium",
@@ -367,7 +367,7 @@ export const OFFICIAL_LITHIUM_PACKAGES: SolarPackage[] = [
     daily_use_kwh: 9.5,
     night_backup_hours: "~5 hours (at 863W)",
     addon_battery: "+5.12kWh for ₦1,394,900 (1 × SE05B ₦1,238,900 + 1 × DCB-2 ₦156,000; usable rises to 8.2 kWh)",
-    grows_into: "Parallels up to 6 units (30kW). Battery bank grows to 16 units (81.92kWh). The best Complete package for a business that will grow.",
+    grows_into: "Parallels up to 6 units (30kW). Battery bank grows to 16 units (81.92kWh). The best Core package for a business that will grow.",
     boq_items: [
       {
         component: "Inverter",
@@ -405,8 +405,8 @@ export const OFFICIAL_LITHIUM_PACKAGES: SolarPackage[] = [
     id: "8d51c85d-2222-46c9-a21c-7e5c5556e393",
     package_number: 6,
     code: "C3",
-    name: "Complete 6",
-    tier: "Complete",
+    name: "Core 6",
+    tier: "Core",
     brand: "itel",
     best_for: "3-bedroom apartment or flat with a freezer",
     battery_type: "lithium",
@@ -433,7 +433,7 @@ export const OFFICIAL_LITHIUM_PACKAGES: SolarPackage[] = [
     daily_use_kwh: 10.3,
     night_backup_hours: "~8 hours (at 973W)",
     addon_battery: "+10kWh for ₦2,059,000 (1 × itel IPL-51200H ₦1,903,000 + 1 × DCB-2 ₦156,000; usable rises to 16.0 kWh)",
-    grows_into: "Solar can grow to 8kW on the same inverter. Not listed as parallel-capable; for growth beyond 6kW move to Complete 8.",
+    grows_into: "Solar can grow to 8kW on the same inverter. Not listed as parallel-capable; for growth beyond 6kW move to Core 8.",
     boq_items: [
       {
         component: "Inverter",
@@ -471,8 +471,8 @@ export const OFFICIAL_LITHIUM_PACKAGES: SolarPackage[] = [
     id: "be31f24b-45c5-4bf2-9bd0-d9a959710df3",
     package_number: 7,
     code: "C4",
-    name: "Complete 8",
-    tier: "Complete",
+    name: "Core 8",
+    tier: "Core",
     brand: "itel",
     best_for: "3-bedroom apartment with one AC, small office",
     battery_type: "lithium",
@@ -943,7 +943,7 @@ const decorate = (data: any[], imgMap: Record<string, string> = {}): SolarPackag
   return [...officialLithiumRows, ...nonLithiumRows];
 };
 
-const CACHE_KEY = "solar_packages_v2_lithium_bf2026";
+const CACHE_KEY = "solar_packages_v3_lithium_core_bf2026";
 
 /** Called by Admin > Solar Packages after a save so this tab's cache doesn't hide the edit. */
 export function invalidateSolarPackagesCache() {

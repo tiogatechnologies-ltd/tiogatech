@@ -271,8 +271,8 @@ const PACKAGES_TO_RENDER = [
   },
   {
     slug: "lithium-c1",
-    code: "COMPLETE C1",
-    title: "Complete 4",
+    code: "CORE C1",
+    title: "Core 4",
     brand: "itel",
     kwLabel: "4kW 24V Hybrid",
     panelLabel: "4 × 650W Sungene",
@@ -287,8 +287,8 @@ const PACKAGES_TO_RENDER = [
   },
   {
     slug: "lithium-c2",
-    code: "COMPLETE C2",
-    title: "Complete 5",
+    code: "CORE C2",
+    title: "Core 5",
     brand: "SRNE",
     kwLabel: "5kW 48V Hybrid",
     panelLabel: "6 × 650W Sungene",
@@ -303,8 +303,8 @@ const PACKAGES_TO_RENDER = [
   },
   {
     slug: "lithium-c3",
-    code: "COMPLETE C3",
-    title: "Complete 6",
+    code: "CORE C3",
+    title: "Core 6",
     brand: "itel",
     kwLabel: "6kW 48V Hybrid",
     panelLabel: "6 × 650W Sungene",
@@ -319,8 +319,8 @@ const PACKAGES_TO_RENDER = [
   },
   {
     slug: "lithium-c4",
-    code: "COMPLETE C4",
-    title: "Complete 8",
+    code: "CORE C4",
+    title: "Core 8",
     brand: "itel",
     kwLabel: "8kW 48V Hybrid",
     panelLabel: "8 × 650W Sungene",

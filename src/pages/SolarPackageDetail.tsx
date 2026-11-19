@@ -45,6 +45,7 @@ const IDEAL_FOR = [
 export const SolarPackageDetail = () => {
   // Declared here, above the loading/not-found early returns.
   const { settings: promos } = useSiteSetting("promotions");
+  const { settings: features } = useSiteSetting("features");
   const { contact } = useSiteContact();
   const { content: flashDeal } = useLandingContent("flash_deal");
   const { id } = useParams<{ id: string }>();
@@ -62,11 +63,10 @@ export const SolarPackageDetail = () => {
     const found = packages.find((p) => p.id === id) ?? null;
     setPkg(found);
     if (found) {
-      setRelated(
-        packages
-          .filter((p) => p.id !== id && p.battery_type === found.battery_type)
-          .slice(0, 3)
-      );
+      const sameType = packages.filter((p) => p.id !== id && p.battery_type === found.battery_type);
+      const sameTier = found.tier ? sameType.filter((p) => p.tier === found.tier) : [];
+      const otherTiers = found.tier ? sameType.filter((p) => p.tier !== found.tier) : sameType;
+      setRelated([...sameTier, ...otherTiers].slice(0, 3));
       trackConversion("package_view", { package_id: id, type: "solar" });
     }
   }, [packages, id]);
@@ -202,7 +202,7 @@ export const SolarPackageDetail = () => {
 
             {/* Left: Image */}
             <div className="lg:col-span-6 lg:sticky lg:top-28 space-y-4">
-              <div className="relative rounded-3xl overflow-hidden bg-muted/15 border border-border shadow-[var(--shadow-card)] aspect-[4/3] flex items-center justify-center p-6 pb-20">
+              <div className="relative rounded-3xl overflow-hidden bg-muted/15 border border-border shadow-[var(--shadow-card)] aspect-[4/3] flex items-center justify-center p-3 sm:p-4">
                 <img
                   src={pkg.image}
                   alt={`${pkg.inverter} Solar System`}
@@ -214,11 +214,13 @@ export const SolarPackageDetail = () => {
                 {/* Badges on image */}
                 <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 max-w-[60%]">
                   <span className="text-[10px] font-bold bg-gold/90 backdrop-blur-xl backdrop-saturate-150 border border-gold/50 border-t-white/40 text-midnight shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35)] px-2.5 py-0.5 rounded-full shadow-md w-fit">
-                    #{pkg.package_number}
+                    {pkg.code ? `${pkg.tier?.toUpperCase()} ${pkg.code}` : `#${pkg.package_number}`}
                   </span>
-                  <span className="flex items-center gap-1 text-[10px] font-extrabold bg-red-600/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-white shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3)] px-2.5 py-0.5 rounded-full shadow-md w-fit">
-                    <TrendingDown size={10} /> Save {pct}%
-                  </span>
+                  {pct ? (
+                    <span className="flex items-center gap-1 text-[10px] font-extrabold bg-red-600/90 backdrop-blur-xl backdrop-saturate-150 border border-white/25 border-t-white/40 text-white shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3)] px-2.5 py-0.5 rounded-full shadow-md w-fit">
+                      <TrendingDown size={10} /> Save {pct}%
+                    </span>
+                  ) : null}
                   {pkg.badge && (
                     <span className="text-[10px] font-bold bg-primary/90 backdrop-blur-xl backdrop-saturate-150 border border-white/20 border-t-white/40 text-white shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3)] px-2.5 py-0.5 rounded-full shadow-md w-fit">
                       {pkg.badge}
@@ -226,10 +228,14 @@ export const SolarPackageDetail = () => {
                   )}
                 </div>
 
-                {/* Bottom of image: name */}
-                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
-                  <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{batteryLabel} System</p>
-                  <h1 className="text-lg sm:text-2xl font-display font-bold text-white leading-tight">{pkg.inverter}</h1>
+                {/* Bottom of image: clean dark fade overlay instead of heavy blur slab */}
+                <div className="absolute bottom-0 inset-x-0 pt-10 pb-3.5 px-4 sm:px-5 bg-gradient-to-t from-black/85 via-black/45 to-transparent pointer-events-none">
+                  <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-0.5 drop-shadow">
+                    {pkg.code && pkg.tier ? `${pkg.tier} Tier · ${pkg.brand} Lithium` : `${batteryLabel} System`}
+                  </p>
+                  <h1 className="text-sm sm:text-lg font-display font-bold text-white leading-snug line-clamp-1 drop-shadow">
+                    {pkg.name ? `${pkg.name} · ${pkg.inverter.split("(")[0].trim()}` : pkg.inverter}
+                  </h1>
                 </div>
               </div>
 
@@ -545,8 +551,8 @@ export const SolarPackageDetail = () => {
           </div>
         </section>
 
-        {/* Finance Calculator */}
-        {pkg.total_price > 500_000 && (
+        {/* Finance Calculator (only shown when Easy Flex is enabled) */}
+        {features?.flexible_payment_enabled !== false && pkg.total_price > 500_000 && (
           <section className="bg-muted/30 section-padding py-10">
             <div className="section-container">
               <div className="max-w-xl mx-auto text-center">
@@ -595,40 +601,82 @@ export const SolarPackageDetail = () => {
           <section className="bg-muted/30 section-padding py-12">
             <div className="section-container">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-display font-bold text-foreground no-clip">Similar Packages</h2>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1">Compare Configurations</p>
+                  <h2 className="text-2xl font-display font-bold text-foreground no-clip">Similar Packages</h2>
+                </div>
                 <Link to="/packages?category=solar" className="text-sm text-primary font-semibold hover:underline flex items-center gap-1">
                   View all <ArrowRight size={14} />
                 </Link>
               </div>
-              <div className="grid sm:grid-cols-3 gap-5">
-                {related.map((r) => (
-                  <Link
-                    key={r.id}
-                    to={`/packages/solar/${r.id}`}
-                    className="group rounded-2xl border border-border bg-card overflow-hidden hover-lift transition-all"
-                  >
-                    <div className="relative h-40 bg-muted/15 flex items-center justify-center overflow-hidden p-3 pb-16">
-                      <img
-                        src={r.image}
-                        alt={r.inverter}
-                        className="max-w-full max-h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(r);
-                        }}
-                      />
-                      <div className="absolute bottom-0 inset-x-0 p-3 bg-midnight/55 backdrop-blur-xl backdrop-saturate-150 border-t border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25)]">
-                        <p className="text-[10px] text-white/70 mb-0.5">#{r.package_number}</p>
-                        <p className="text-sm font-bold text-white leading-tight line-clamp-2">{r.inverter}</p>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {related.map((r) => {
+                  const rTitle = r.name
+                    ? `${r.name} · ${r.brand || ""} ${r.inverter.split("(")[0].replace(/^(SRNE|itel)\s+/i, "").trim()}`
+                    : r.inverter;
+                  return (
+                    <Link
+                      key={r.id}
+                      to={`/packages/solar/${r.id}`}
+                      className="group rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] hover:shadow-xl hover:border-primary/40 overflow-hidden flex flex-col transition-all duration-300"
+                    >
+                      <div className="relative aspect-[4/3] w-full bg-muted/15 flex items-center justify-center overflow-hidden p-3 sm:p-4">
+                        <img
+                          src={r.image}
+                          alt={rTitle}
+                          className="max-w-full max-h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(r);
+                          }}
+                        />
+                        {r.badge && (
+                          <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-primary/95 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
+                            {r.badge}
+                          </span>
+                        )}
                       </div>
-                    </div>
-                    <div className="p-4">
-                      <p className="text-sm font-display font-bold text-foreground">{fmtN(r.total_price)}</p>
-                      <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                        View package <ArrowRight size={11} />
-                      </p>
-                    </div>
-                  </Link>
-                ))}
+                      <div className="p-4 sm:p-5 flex flex-col flex-1">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary truncate">
+                            {r.code && r.tier ? `${r.tier.toUpperCase()} ${r.code} · ${r.brand}` : `Package #${r.package_number}`}
+                          </span>
+                          {r.largest_load_kw && (
+                            <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] shrink-0">
+                              {r.largest_load_kw} kW Load
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-sm sm:text-base font-display font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2 mb-1.5">
+                          {rTitle}
+                        </h3>
+                        {r.best_for && (
+                          <p className="text-[11px] text-muted-foreground line-clamp-1 mb-2.5">
+                            Best for: <span className="text-foreground/90 font-medium">{r.best_for}</span>
+                          </p>
+                        )}
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium truncate max-w-full">
+                            Battery: <strong className="text-foreground">{(r.battery?.split("(") || [])[0]?.trim()}</strong>
+                          </span>
+                          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium truncate max-w-full">
+                            Panels: <strong className="text-foreground">{(r.solar_panels?.split("(") || [])[0]?.trim()}</strong>
+                          </span>
+                        </div>
+                        <div className="mt-auto pt-3 border-t border-border/60 flex items-center justify-between gap-2">
+                          <div>
+                            <p className="text-base sm:text-lg font-display font-bold text-foreground leading-none">{fmtN(r.total_price)}</p>
+                            {r.battery_type === "lithium" && (
+                              <p className="text-[10px] text-muted-foreground mt-0.5">Equipment price</p>
+                            )}
+                          </div>
+                          <span className="inline-flex items-center gap-1 text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">
+                            View Details <ArrowRight size={12} />
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </section>

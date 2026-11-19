@@ -295,7 +295,8 @@ const PackageCard = ({ p, i }: { p: SolarPackage; i: number }) => {
 const SolarPackagesSection = () => {
   const { packages, loading } = useSolarPackages();
   const { content: flashDeal } = useLandingContent("flash_deal");
-  const [tab, setTab] = useState<"lithium" | "tubular" | "high_voltage">("lithium");
+  const [tab, setTab] = useState<"all" | "lithium" | "tubular" | "high_voltage">("lithium");
+  const [lithiumTier, setLithiumTier] = useState<"all" | "Essential" | "Core" | "Pro">("all");
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
@@ -304,14 +305,31 @@ const SolarPackagesSection = () => {
     const found = packages.find((p) => String(p.package_number) === target || p.id === target || `pkg-${p.package_number}` === target);
     if (found) {
       setTab(found.battery_type);
+      setLithiumTier("all");
       window.setTimeout(() => document.getElementById(`pkg-${found.package_number}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
     }
   }, [packages, searchParams]);
 
-  const filtered = useMemo(
-    () => packages.filter((p) => p.battery_type === tab),
-    [packages, tab]
-  );
+  const counts = useMemo(() => {
+    const lith = packages.filter((p) => p.battery_type === "lithium");
+    return {
+      all: packages.length,
+      lithium: lith.length,
+      tubular: packages.filter((p) => p.battery_type === "tubular").length,
+      high_voltage: packages.filter((p) => p.battery_type === "high_voltage").length,
+      Essential: lith.filter((p) => p.tier === "Essential").length,
+      Core: lith.filter((p) => p.tier === "Core").length,
+      Pro: lith.filter((p) => p.tier === "Pro").length,
+    };
+  }, [packages]);
+
+  const filtered = useMemo(() => {
+    let list = tab === "all" ? packages : packages.filter((p) => p.battery_type === tab);
+    if (tab === "lithium" && lithiumTier !== "all") {
+      list = list.filter((p) => p.tier === lithiumTier);
+    }
+    return list;
+  }, [packages, tab, lithiumTier]);
 
   if (loading) {
     return (
@@ -360,22 +378,60 @@ const SolarPackagesSection = () => {
           </p>
         </div>
 
-        <div className="mb-6 sm:mb-8 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-          <div className="flex items-center gap-2 min-w-max">
-            {(["lithium", "tubular", "high_voltage"] as const).map((k) => (
-              <button
-                key={k}
-                onClick={() => setTab(k)}
-                className={`px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
-                  tab === k
-                    ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                    : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                {k === "lithium" ? "Lithium (LiFePO4)" : k === "tubular" ? "Tubular / Gel" : "High Voltage (40KVA+)"}
-              </button>
-            ))}
+        <div className="mb-6 sm:mb-8 flex flex-col items-center gap-3">
+          {/* Primary Category Filter */}
+          <div className="w-full overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex items-center sm:justify-center gap-2 min-w-max mx-auto">
+              {(
+                [
+                  { key: "lithium", label: `Lithium (LiFePO4) (${counts.lithium})` },
+                  { key: "tubular", label: `Tubular / Gel (${counts.tubular})` },
+                  { key: "high_voltage", label: `High Voltage (40KVA+) (${counts.high_voltage})` },
+                  { key: "all", label: `All Solar (${counts.all})` },
+                ] as const
+              ).map((item) => (
+                <button
+                  key={item.key}
+                  onClick={() => setTab(item.key)}
+                  className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
+                    tab === item.key
+                      ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Sub-tier Filter for Lithium (Essential, Core, Pro) */}
+          {tab === "lithium" && (
+            <div className="w-full overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+              <div className="flex items-center sm:justify-center gap-1.5 sm:gap-2 min-w-max mx-auto">
+                {(
+                  [
+                    { key: "all", label: `All Lithium (${counts.lithium})` },
+                    { key: "Essential", label: `Essential · 1.5–3kW (${counts.Essential})` },
+                    { key: "Core", label: `Core · 4–8kW (${counts.Core})` },
+                    { key: "Pro", label: `Pro · 12–24kW & 3-Phase (${counts.Pro})` },
+                  ] as const
+                ).map((t) => (
+                  <button
+                    key={t.key}
+                    onClick={() => setLithiumTier(t.key)}
+                    className={`px-3.5 py-1.5 text-[11px] sm:text-xs font-bold rounded-full border transition-all shrink-0 ${
+                      lithiumTier === t.key
+                        ? "bg-foreground text-background border-foreground shadow-sm"
+                        : "bg-card/80 border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
 

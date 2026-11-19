@@ -298,7 +298,20 @@ export const SolarPackages = () => {
   const { packages, loading } = useSolarPackages();
   const { content: flashDeal } = useLandingContent("flash_deal");
   const [filter, setFilter] = useState<"all" | "lithium" | "tubular" | "high_voltage">("lithium");
-  const [lithiumTier, setLithiumTier] = useState<"all" | "Essential" | "Complete" | "Pro">("all");
+  const [lithiumTier, setLithiumTier] = useState<"all" | "Essential" | "Core" | "Pro">("all");
+
+  const counts = useMemo(() => {
+    const lith = packages.filter((p) => p.battery_type === "lithium");
+    return {
+      all: packages.length,
+      lithium: lith.length,
+      tubular: packages.filter((p) => p.battery_type === "tubular").length,
+      high_voltage: packages.filter((p) => p.battery_type === "high_voltage").length,
+      Essential: lith.filter((p) => p.tier === "Essential").length,
+      Core: lith.filter((p) => p.tier === "Core").length,
+      Pro: lith.filter((p) => p.tier === "Pro").length,
+    };
+  }, [packages]);
 
   const filtered = useMemo(() => {
     let list = filter === "all" ? packages : packages.filter((p) => p.battery_type === filter);
@@ -372,61 +385,67 @@ export const SolarPackages = () => {
             </div>
           )}
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <div>
-              <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-2">Engineered Packages</p>
-              <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight">
-                Turnkey Solar Configurations
-              </h2>
-              <p className="text-muted-foreground text-sm sm:text-base mt-2 max-w-xl">
-                Every package includes tier-1 hybrid inverter, matched battery bank, high-yield panels, surge protection, DC breakers, and professional installation.
-              </p>
+          <div className="flex flex-col gap-6 mb-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-2">Engineered Packages</p>
+                <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight">
+                  Turnkey Solar Configurations
+                </h2>
+                <p className="text-muted-foreground text-sm sm:text-base mt-2 max-w-xl">
+                  Every package includes a matched hybrid inverter, high-cycle battery bank, and monocrystalline solar panels sized for real Nigerian load profiles.
+                </p>
+              </div>
             </div>
 
-            {/* Filter tabs */}
-            <div className="flex flex-col items-start md:items-end gap-2.5">
-              <div className="overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+            {/* Category & Sub-Tier Filter Bar */}
+            <div className="flex flex-col gap-3 p-3 sm:p-4 rounded-2xl bg-muted/30 border border-border/70">
+              <div className="w-full overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
                 <div className="flex items-center gap-2 min-w-max">
-                  {(["lithium", "tubular", "high_voltage", "all"] as const).map((k) => (
+                  {(
+                    [
+                      { key: "lithium", label: `Lithium (LiFePO4) (${counts.lithium})` },
+                      { key: "tubular", label: `Tubular / Gel (${counts.tubular})` },
+                      { key: "high_voltage", label: `High Voltage (40KVA+) (${counts.high_voltage})` },
+                      { key: "all", label: `All Solar Packages (${counts.all})` },
+                    ] as const
+                  ).map((item) => (
                     <button
-                      key={k}
-                      onClick={() => setFilter(k)}
-                      className={`px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
-                        filter === k
+                      key={item.key}
+                      onClick={() => setFilter(item.key)}
+                      className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
+                        filter === item.key
                           ? "bg-primary text-primary-foreground border-primary shadow-sm"
                           : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
                       }`}
                     >
-                      {k === "lithium"
-                        ? "Lithium (LiFePO4 · 12)"
-                        : k === "tubular"
-                        ? "Tubular / Gel"
-                        : k === "high_voltage"
-                        ? "High Voltage"
-                        : "All Packages"}
+                      {item.label}
                     </button>
                   ))}
                 </div>
               </div>
 
               {filter === "lithium" && (
-                <div className="overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-                  <div className="flex items-center gap-1.5 min-w-max">
+                <div className="w-full overflow-x-auto pb-0.5 scrollbar-none -mx-1 px-1 pt-2 border-t border-border/60">
+                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-max">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mr-1 hidden sm:inline">
+                      Lithium Tier:
+                    </span>
                     {(
                       [
-                        { key: "all", label: "All Lithium Tiers (12)" },
-                        { key: "Essential", label: "Essential (1.5kW – 3kW)" },
-                        { key: "Complete", label: "Complete (4kW – 8kW)" },
-                        { key: "Pro", label: "Pro (12kW – 24kW & 3-Phase)" },
+                        { key: "all", label: `All Lithium (${counts.lithium})` },
+                        { key: "Essential", label: `Essential · 1.5–3kW (${counts.Essential})` },
+                        { key: "Core", label: `Core · 4–8kW (${counts.Core})` },
+                        { key: "Pro", label: `Pro · 12–24kW & 3-Phase (${counts.Pro})` },
                       ] as const
                     ).map((t) => (
                       <button
                         key={t.key}
                         onClick={() => setLithiumTier(t.key)}
-                        className={`px-3 py-1.5 text-[11px] sm:text-xs font-semibold rounded-full border transition-all shrink-0 ${
+                        className={`px-3.5 py-1.5 text-[11px] sm:text-xs font-bold rounded-full border transition-all shrink-0 ${
                           lithiumTier === t.key
-                            ? "bg-foreground text-background border-foreground"
-                            : "bg-muted/40 border-border text-muted-foreground hover:text-foreground"
+                            ? "bg-foreground text-background border-foreground shadow-sm"
+                            : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
                         }`}
                       >
                         {t.label}
