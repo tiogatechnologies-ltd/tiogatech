@@ -84,30 +84,34 @@ export const Catalog = () => {
   const [products, setProducts] = useState<RetailProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [gridColumns, setGridColumns] = useState<GridColumnOption>(3);
+  const [gridColumns, setGridColumns] = useState<GridColumnOption>(2);
   const [showDesktopFilters, setShowDesktopFilters] = useState(true);
 
   const getGridColsClass = (cols: GridColumnOption) => {
     switch (cols) {
-      case 2:
-        return "grid-cols-1 sm:grid-cols-2";
-      case 3:
+      case 1:
         return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
+      case 2:
+        return "grid-cols-2 sm:grid-cols-2";
+      case 3:
+        return "grid-cols-2 sm:grid-cols-2 md:grid-cols-3";
       case 4:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-4";
+        return "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-4";
       case 5:
         return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 3xl:grid-cols-5";
       case "list":
         return "grid-cols-1";
       default:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
+        return "grid-cols-2 sm:grid-cols-2 md:grid-cols-3";
     }
   };
 
   const getGridGapClass = (cols: GridColumnOption) => {
-    if (cols === 5) return "gap-3 sm:gap-3.5";
-    if (cols === 4) return "gap-3.5 sm:gap-4";
-    return "gap-4 sm:gap-6";
+    if (cols === "list") return "gap-2.5 sm:gap-4";
+    if (cols === 5) return "gap-2.5 sm:gap-3.5";
+    if (cols === 4) return "gap-2.5 sm:gap-4";
+    if (cols === 2 || cols === 3) return "gap-2.5 sm:gap-6";
+    return "gap-3.5 sm:gap-6";
   };
   const [sortBy, setSortBy] = useState<SortOption>(hasState ? "ai-rank" : "featured");
   const [quickViewProduct, setQuickViewProduct] = useState<RetailProduct | null>(null);
@@ -815,27 +819,50 @@ export const Catalog = () => {
                 />
               </div>
 
-              {/* Mobile 2-col / List View Toggle */}
-              <div className="flex sm:hidden items-center border border-border rounded-xl bg-muted/30 p-0.5 h-10 col-span-1 justify-center">
+              {/* Mobile Layout Switcher: 2-Column Grid | 1-Column Card | List View */}
+              <div
+                className="flex sm:hidden items-center justify-between border border-border rounded-xl bg-muted/30 p-1 h-10 col-span-2 gap-1"
+                role="group"
+                aria-label="Mobile product view mode"
+              >
                 <button
                   type="button"
                   onClick={() => setGridColumns(2)}
-                  aria-label="Grid View"
-                  className={`p-2 rounded-lg transition-colors ${
-                    gridColumns !== "list" ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                  aria-label="2 Per Row Grid View"
+                  className={`flex-1 h-full px-2.5 rounded-lg text-[11px] font-bold inline-flex items-center justify-center gap-1.5 transition-all ${
+                    gridColumns !== 1 && gridColumns !== "list"
+                      ? "bg-card text-foreground shadow-xs border border-border/60"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  <Grid size={14} />
+                  <Grid size={13} className="shrink-0" />
+                  <span>2 Grid</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGridColumns(1)}
+                  aria-label="1 Per Row Large Card View"
+                  className={`flex-1 h-full px-2.5 rounded-lg text-[11px] font-bold inline-flex items-center justify-center gap-1.5 transition-all ${
+                    gridColumns === 1
+                      ? "bg-card text-foreground shadow-xs border border-border/60"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Package size={13} className="shrink-0" />
+                  <span>1 Card</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setGridColumns("list")}
                   aria-label="List View"
-                  className={`p-2 rounded-lg transition-colors ${
-                    gridColumns === "list" ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                  className={`flex-1 h-full px-2.5 rounded-lg text-[11px] font-bold inline-flex items-center justify-center gap-1.5 transition-all ${
+                    gridColumns === "list"
+                      ? "bg-card text-foreground shadow-xs border border-border/60"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  <List size={14} />
+                  <List size={13} className="shrink-0" />
+                  <span>List</span>
                 </button>
               </div>
             </div>

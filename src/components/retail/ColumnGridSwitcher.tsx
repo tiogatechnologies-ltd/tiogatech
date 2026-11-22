@@ -1,6 +1,6 @@
 import React from "react";
 
-export type GridColumnOption = 2 | 3 | 4 | 5 | "list";
+export type GridColumnOption = 1 | 2 | 3 | 4 | 5 | "list";
 
 interface ColumnGridSwitcherProps {
   value: GridColumnOption;
