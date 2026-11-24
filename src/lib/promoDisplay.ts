@@ -161,6 +161,53 @@ export const resolveCompareAt = (
 };
 
 /**
+ * Resolves a compare-at ("was") price ONLY from real configured sources
+ * (priority 1: product override, priority 2: genuine recorded compare_at_price,
+ * priority 3: explicit brand discount policy). Never invents a randomized or
+ * storewide fallback percentage — used for Black Friday deal row honesty (WS5).
+ */
+export const resolveRealCompareAt = (
+  price: number | null | undefined,
+  recorded: number | string | null | undefined,
+  opts?: CompareAtOptions,
+  productId?: string,
+  brand?: string | null,
+): number | null => {
+  if (opts && opts.show_compare_at_price === false) return null;
+  const now = Number(price);
+  if (!Number.isFinite(now) || now <= 0) return null;
+
+  // 1. Per-product promo override
+  if (productId && opts?.product_overrides && opts.product_overrides[productId]) {
+    const override = opts.product_overrides[productId];
+    if (override.exclude) return null;
+    if (override.compare_at_price && Number(override.compare_at_price) > now) {
+      return Math.round(Number(override.compare_at_price));
+    }
+    if (override.discount_pct && Number(override.discount_pct) > 0) {
+      return Math.round(now / (1 - Number(override.discount_pct) / 100));
+    }
+  }
+
+  // 2. Genuine recorded previous price directly on the item (any positive savings >= 5%)
+  const real = parseMoney(recorded);
+  if (Number.isFinite(real) && real > now && ((real - now) / real) * 100 >= 5) {
+    return Math.round(real);
+  }
+
+  // 3. Explicit brand-level discount policy
+  if (brand && opts?.brand_overrides && opts.brand_overrides[brand]) {
+    const brandOverride = opts.brand_overrides[brand];
+    if (brandOverride.exclude) return null;
+    if (brandOverride.discount_pct && Number(brandOverride.discount_pct) > 0) {
+      return Math.round(now / (1 - Number(brandOverride.discount_pct) / 100));
+    }
+  }
+
+  return null;
+};
+
+/**
  * Resolves any custom promotional badge assigned to this product by the admin
  */
 export const resolvePromoBadge = (

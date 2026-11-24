@@ -50,6 +50,7 @@ const Privacy = () => {
 
         <Section title="2. How We Use Your Information">
           <p>Your information is used to respond to your inquiries, prepare quotes, schedule installations, send service updates, and improve our offerings. We may also use it to send relevant product news where you have given consent.</p>
+          <p>On our online shop, we may display anonymised, aggregated storefront activity (such as trending products and state-level recent order notifications) without ever exposing customer names, contact details, or street addresses.</p>
         </Section>
 
         <Section title="3. Sharing of Information">

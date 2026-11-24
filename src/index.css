@@ -84,10 +84,10 @@ html.lenis, html.lenis body { height: auto; }
     --primary: 152 85% 45%;
     --primary-foreground: 0 0% 100%;
 
-    /* Midnight navy - deep brand surface */
+    /* Midnight navy - deep brand surface (distinctly deeper than --background for dark-mode seam) */
     --secondary: 215 40% 18%;
     --secondary-foreground: 210 40% 98%;
-    --midnight: 215 64% 7%;
+    --midnight: 215 64% 5%;
 
     --muted: 217 28% 18%;
     --muted-foreground: 215 25% 78%;

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import PackageHelpCTA from "@/components/PackageHelpCTA";
 import SEO from "@/components/SEO";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { useCart } from "@/contexts/CartContext";
@@ -435,22 +436,12 @@ export const SmartLockDetail = () => {
         )}
 
         {/* Bottom CTA */}
-        <section className="section-padding py-10">
-          <div className="section-container">
-            <div className="rounded-3xl bg-primary p-8 text-center text-primary-foreground">
-              <h3 className="text-xl font-display font-bold mb-2 no-clip">Not sure which lock suits you?</h3>
-              <p className="text-sm text-primary-foreground/80 mb-5">Talk to our security specialists for a free recommendation based on your door type and security needs.</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button onClick={() => openLeadForm("lock_pdp_bottom")} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all">
-                  Get Recommendation
-                </button>
-                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]">
-                  <Phone size={15} /> Call Us
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <PackageHelpCTA
+          source="lock_pdp_bottom"
+          title="Not sure which lock suits you?"
+          description="Talk to our security specialists for a free recommendation based on your door type and security needs."
+          primaryLabel="Get Recommendation"
+        />
       </main>
 
       {/* Sticky Mobile CTA */}

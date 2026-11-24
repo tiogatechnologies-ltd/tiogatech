@@ -1,5 +1,5 @@
 import { useSiteSetting } from "@/hooks/useSiteSetting";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ChevronRight, ShoppingBag, ShieldCheck, Loader2, Share2,
@@ -9,6 +9,9 @@ import {
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import PackageHelpCTA from "@/components/PackageHelpCTA";
+import PackagePowerBreakdown from "@/components/packages/PackagePowerBreakdown";
+import StickyBuyBar from "@/components/retail/StickyBuyBar";
 import SEO from "@/components/SEO";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { useCart } from "@/contexts/CartContext";
@@ -50,13 +53,18 @@ export const SolarPackageDetail = () => {
   const { content: flashDeal } = useLandingContent("flash_deal");
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { add } = useCart();
+  const { add, items: cartItems } = useCart();
   const { packages, loading } = useSolarPackages();
   const [pkg, setPkg] = useState<SolarPackage | null>(null);
   const [related, setRelated] = useState<SolarPackage[]>([]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [addedAnim, setAddedAnim] = useState(false);
   const [buyingNow, setBuyingNow] = useState(false);
+  const buyBoxRef = useRef<HTMLDivElement>(null);
+
+  const isPackageInCart = Boolean(
+    pkg && cartItems.some((c) => c.refId === pkg.id || c.id === `package:${pkg.id}`),
+  );
 
   useEffect(() => {
     if (!packages.length) return;
@@ -343,7 +351,7 @@ export const SolarPackageDetail = () => {
               )}
 
               {/* CTA buttons */}
-              <div className="flex flex-col gap-3">
+              <div ref={buyBoxRef} className="flex flex-col gap-3">
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={handleAdd}
@@ -527,16 +535,16 @@ export const SolarPackageDetail = () => {
           </div>
         </section>
 
-        {/* Appliances Powered */}
-        <section className="section-padding py-12">
-          <div className="section-container">
-            <h2 className="text-2xl font-display font-bold text-foreground mb-2 no-clip">What This System Powers</h2>
-            <p className="text-sm text-muted-foreground mb-6">{pkg.appliances}</p>
+        {/* WS3c: Rich "What This System Can Power" Breakdown (Appliances, Load Meter, Can it run my...?) */}
+        <PackagePowerBreakdown pkg={pkg} />
 
+        {/* Ideal For */}
+        <section className="section-padding pt-0 pb-12">
+          <div className="section-container">
             <h3 className="text-lg font-display font-semibold text-foreground mb-4 no-clip">Ideal For</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {IDEAL_FOR.map(({ label, icon: Icon, desc }) => (
-                <div key={label} className="p-4 rounded-2xl bg-card border border-border text-center flex flex-col items-center">
+                <div key={label} className="p-4 rounded-xl bg-card border border-border text-center flex flex-col items-center">
                   <Icon size={26} className="text-primary mx-auto mb-2.5 shrink-0" />
                   <p className="text-sm font-bold text-foreground mb-1">{label}</p>
                   <p className="text-xs text-muted-foreground">{desc}</p>
@@ -668,55 +676,27 @@ export const SolarPackageDetail = () => {
         )}
 
         {/* Bottom CTA banner */}
-        <section className="section-padding py-10">
-          <div className="section-container">
-            <div className="rounded-3xl bg-primary p-8 text-center text-primary-foreground">
-              <h3 className="text-xl font-display font-bold mb-2 no-clip">Need help choosing the right package?</h3>
-              <p className="text-sm text-primary-foreground/80 mb-5">Our energy engineers will size the perfect system for your load profile - free of charge.</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button
-                  onClick={() => openLeadForm("solar_pdp_bottom")}
-                  className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all"
-                >
-                  Get AI Recommendation
-                </button>
-                <a
-                  href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
-                >
-                  <Phone size={15} /> Call Us
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <PackageHelpCTA
+          source="solar_pdp_bottom"
+          title="Need help choosing the right package?"
+          description="Our energy engineers will size the perfect system for your load profile - free of charge."
+          primaryLabel="Get AI Recommendation"
+        />
       </main>
 
-      {/* Sticky Mobile CTA */}
-      <div className="fixed bottom-0 inset-x-0 z-40 p-3 bg-background/95 backdrop-blur-xl border-t border-border shadow-2xl lg:hidden">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 min-w-0">
-            <p className="text-xs text-muted-foreground truncate">Package #{pkg.package_number}</p>
-            <p className="font-display font-bold text-foreground text-base leading-none">{fmtN(pkg.total_price)}</p>
-          </div>
-          <button
-            onClick={handleAdd}
-            className={`px-5 py-3 rounded-2xl border-2 text-sm font-bold transition-all shrink-0 ${
-              addedAnim ? "border-emerald-500 bg-emerald-500 text-white" : "border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-            }`}
-          >
-            {addedAnim ? "Added ✓" : "Cart"}
-          </button>
-          <button
-            onClick={handleBuyNow}
-            className="px-6 py-3 rounded-2xl bg-primary text-primary-foreground text-sm font-bold hover:brightness-110 transition-all shrink-0 shadow-lg shadow-primary/30"
-          >
-            Buy Now
-          </button>
-        </div>
-      </div>
-      {/* Spacer for sticky bar on mobile */}
-      <div className="h-20 lg:hidden" />
+      {/* WS7a: Desktop + Mobile Sticky Buy Bar (IntersectionObserver + F1 Floating Layer Manager) */}
+      <StickyBuyBar
+        barId="solar_pdp_sticky_bar"
+        observeTargetRef={buyBoxRef}
+        refId={pkg.id}
+        name={pkg.name ? `${pkg.name} (${pkg.brand})` : `Solar Package #${pkg.package_number} - ${pkg.inverter}`}
+        image={pkg.image || getSolarPackageImage(pkg)}
+        priceLabel={fmtN(pkg.total_price)}
+        numericPrice={pkg.total_price}
+        inCart={isPackageInCart}
+        onAddToCart={handleAdd}
+        onCheckout={handleBuyNow}
+      />
 
       <SiteFooter />
     </div>

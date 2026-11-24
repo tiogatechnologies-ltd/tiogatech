@@ -82,9 +82,12 @@ const AiChatWidget = () => {
         <button
           onClick={() => { setOpen(true); trackConversion("ai_chat_open"); }}
           aria-label="Open AI assistant"
-          className={`fixed right-3.5 sm:right-6 z-40 h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/30 flex items-center justify-center hover:scale-105 transition-all ${
-            isDetailPage ? "bottom-20 sm:bottom-6" : "bottom-5 sm:bottom-6"
-          }`}
+          style={{
+            bottom: isDetailPage
+              ? "calc(1.25rem + var(--bottom-bar-h, 0px))"
+              : "calc(1.25rem + var(--bottom-bar-h, 0px))",
+          }}
+          className="fixed right-3.5 sm:right-6 z-40 h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/30 flex items-center justify-center hover:scale-105 transition-all"
         >
           <MessageCircle size={20} className="sm:w-[22px] sm:h-[22px]" />
           <span className="absolute top-0.5 right-0.5 h-2.5 w-2.5 rounded-full bg-gold ring-2 ring-primary" />

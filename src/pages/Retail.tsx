@@ -29,7 +29,11 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { RetailHeroCarousel } from "@/components/retail/RetailHeroCarousel";
+import { BlackFridayDealsRow } from "@/components/retail/BlackFridayDealsRow";
+import { ShopTrendingRows } from "@/components/retail/ShopTrendingRows";
 import { FlashDealsBar, useCountdown } from "@/components/retail/FlashDealsBar";
+import { resolveCampaignEndsAt } from "@/lib/countdownTicker";
+import { useLandingContent } from "@/hooks/useLandingContent";
 import { RetailFilterSidebar } from "@/components/retail/RetailFilterSidebar";
 import { ProductCard } from "@/components/retail/ProductCard";
 import { QuickViewModal } from "@/components/retail/QuickViewModal";
@@ -196,8 +200,10 @@ export const Retail = () => {
   const { count: wishlistCount } = useWishlist();
   const { settings: promos } = useSiteSetting("promotions");
   const { settings: features } = useSiteSetting("features");
+  const { content: flashDealContent } = useLandingContent("flash_deal");
   const { isAdmin } = useAuth();
-  const bfCountdown = useCountdown();
+  const flashEndsAt = resolveCampaignEndsAt((flashDealContent as any)?.ends_at);
+  const bfCountdown = useCountdown(flashEndsAt);
   const [savingAdminToggle, setSavingAdminToggle] = useState(false);
   const [hideAdminBar, setHideAdminBar] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -565,6 +571,19 @@ export const Retail = () => {
             onSelectCategory={(cat) => handleCategorySelect(cat, true)}
           />
 
+          {/* WS5: Horizontal Black Friday Deal Cards Row (honest compare-at & shared ticker) */}
+          <BlackFridayDealsRow
+            products={products}
+            onSelectProduct={(p) =>
+              recordProductViewIntent({
+                id: p.id,
+                name: p.name,
+                category: p.category,
+                price: p.numeric_price ?? p.price,
+              })
+            }
+          />
+
           {/* Flash Deals Urgency Bar */}
           <FlashDealsBar
             onSelectCategory={(cat) => handleCategorySelect(cat, true)}
@@ -597,31 +616,48 @@ export const Retail = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3" data-testid="value-props-bf-countdown">
-              <Clock size={20} className="text-red-600 dark:text-red-400 shrink-0 sm:w-6 sm:h-6" />
-              <div>
-                <h4 className="font-display font-bold text-xs text-foreground leading-tight">Black Friday Countdown</h4>
-                <div className="flex items-center gap-1 font-mono text-[10px] sm:text-[11px] font-extrabold text-foreground mt-0.5">
-                  <span className="px-1.5 py-0.5 rounded bg-muted border border-border text-foreground">
-                    {String(bfCountdown.d).padStart(2, "0")}d
-                  </span>
-                  <span className="text-muted-foreground">:</span>
-                  <span className="px-1.5 py-0.5 rounded bg-muted border border-border text-foreground">
-                    {String(bfCountdown.h).padStart(2, "0")}h
-                  </span>
-                  <span className="text-muted-foreground">:</span>
-                  <span className="px-1.5 py-0.5 rounded bg-muted border border-border text-foreground">
-                    {String(bfCountdown.m).padStart(2, "0")}m
-                  </span>
-                  <span className="text-muted-foreground">:</span>
-                  <span className="px-1.5 py-0.5 rounded bg-red-600/15 border border-red-500/30 text-red-600 dark:text-red-400">
-                    {String(bfCountdown.s).padStart(2, "0")}s
-                  </span>
+            {bfCountdown.active && promos?.show_black_friday_badges !== false ? (
+              <div className="flex items-center gap-2.5 sm:gap-3" data-testid="value-props-bf-countdown">
+                <Clock size={20} className="text-red-600 dark:text-red-400 shrink-0 sm:w-6 sm:h-6" />
+                <div>
+                  <h4 className="font-display font-bold text-xs text-foreground leading-tight">Black Friday Ends In</h4>
+                  <div
+                    role="timer"
+                    aria-live="off"
+                    className="flex items-center gap-1 font-mono tabular-nums text-[10px] sm:text-[11px] font-extrabold text-foreground mt-0.5"
+                  >
+                    <span className="px-1.5 py-0.5 rounded-md bg-muted border border-border text-foreground">
+                      {String(bfCountdown.d).padStart(2, "0")}d
+                    </span>
+                    <span className="text-muted-foreground">:</span>
+                    <span className="px-1.5 py-0.5 rounded-md bg-muted border border-border text-foreground">
+                      {String(bfCountdown.h).padStart(2, "0")}h
+                    </span>
+                    <span className="text-muted-foreground">:</span>
+                    <span className="px-1.5 py-0.5 rounded-md bg-muted border border-border text-foreground">
+                      {String(bfCountdown.m).padStart(2, "0")}m
+                    </span>
+                    <span className="text-muted-foreground">:</span>
+                    <span className="px-1.5 py-0.5 rounded-md bg-red-600/15 border border-red-500/30 text-red-600 dark:text-red-400">
+                      {String(bfCountdown.s).padStart(2, "0")}s
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                <RotateCcw size={20} className="text-primary shrink-0 sm:w-6 sm:h-6" />
+                <div>
+                  <h4 className="font-display font-bold text-xs text-foreground leading-tight">Engineer Support</h4>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground">Free sizing & after-sales</p>
+                </div>
+              </div>
+            )}
           </div>
           )}
+
+          {/* WS6b: Most Viewed This Week, Just Purchased & Recently Viewed by You */}
+          <ShopTrendingRows products={products} />
 
           {/* Category Cards Grid Showcase */}
           {promos?.show_category_showcase !== false && (

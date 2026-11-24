@@ -479,6 +479,7 @@ const AdminRetailPromotions = () => {
     show_value_props_bar?: boolean;
     show_category_showcase?: boolean;
     show_black_friday_badges?: boolean;
+    show_social_proof?: boolean;
     show_compare_at_price: boolean;
     default_markup_pct: number;
     badge_format?: "save_pct" | "save_amount" | "pct_off";
@@ -500,6 +501,7 @@ const AdminRetailPromotions = () => {
     show_value_props_bar: true,
     show_category_showcase: true,
     show_black_friday_badges: true,
+    show_social_proof: true,
     show_compare_at_price: true,
     default_markup_pct: 30,
     badge_format: "pct_off",
@@ -780,6 +782,7 @@ const AdminRetailPromotions = () => {
           show_value_props_bar: val.show_value_props_bar !== undefined ? !!val.show_value_props_bar : true,
           show_category_showcase: val.show_category_showcase !== undefined ? !!val.show_category_showcase : true,
           show_black_friday_badges: val.show_black_friday_badges !== undefined ? !!val.show_black_friday_badges : true,
+          show_social_proof: val.show_social_proof !== undefined ? !!val.show_social_proof : true,
           show_compare_at_price: val.show_compare_at_price !== undefined ? !!val.show_compare_at_price : true,
           default_markup_pct: val.default_markup_pct !== undefined ? Number(val.default_markup_pct) : 30,
           badge_format: val.badge_format || "pct_off",
@@ -1074,6 +1077,12 @@ const AdminRetailPromotions = () => {
                 title: "Shop By Category Grid",
                 desc: "Hardware category showcase cards above the product catalog",
                 active: promoSettings.show_category_showcase !== false,
+              },
+              {
+                key: "show_social_proof" as const,
+                title: "Recent Order Social Proof Toast",
+                desc: "Anonymised state-level recent purchase alerts on shop pages (requires ≥3 real orders)",
+                active: promoSettings.show_social_proof !== false,
               },
             ].map((item) => (
               <div

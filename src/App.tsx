@@ -30,12 +30,15 @@ import Index from "./pages/Index.tsx";
 
 const CartDrawer = lazy(() => import("@/components/CartDrawer"));
 const ProductCompareTray = lazy(() => import("@/components/retail/ProductCompareTray"));
+const StillDecidingBar = lazy(() => import("@/components/retail/StillDecidingBar"));
+const SocialProofToast = lazy(() => import("@/components/retail/SocialProofToast"));
 const TelegramWidget = lazy(() => import("@/components/TelegramWidget"));
 const EnergyCalculatorDialog = lazy(() => import("@/components/EnergyCalculatorDialog"));
 const WaitlistDialog = lazy(() => import("@/components/WaitlistDialog"));
 const FeatureHighlightPopup = lazy(() => import("@/components/FeatureHighlightPopup"));
 
 const About = lazy(() => import("./pages/About.tsx"));
+const AdsLanding = lazy(() => import("./pages/AdsLanding.tsx"));
 const Catalog = lazy(() => import("./pages/Catalog.tsx"));
 const Retail = lazy(() => import("./pages/Retail.tsx"));
 const Wishlist = lazy(() => import("./pages/Wishlist.tsx"));
@@ -201,6 +204,8 @@ const AnimatedRoutes = () => {
           <Route path="/solar-packages" element={<RouteFade><SolarPackages /></RouteFade>} />
           <Route path="/solar-solutions" element={<RouteFade><SolarPackages /></RouteFade>} />
           <Route path="/lumi" element={<RouteFade><Lumi /></RouteFade>} />
+          <Route path="/get-started" element={<RouteFade><AdsLanding /></RouteFade>} />
+          <Route path="/lp/:campaign" element={<RouteFade><AdsLanding /></RouteFade>} />
           <Route path="/lumivolt" element={<Navigate to="/lumi" replace />} />
           <Route path="/voltai" element={<RouteFade><VoltAi /></RouteFade>} />
           <Route path="/lumivolt-ai" element={<Navigate to="/lumi" replace />} />
@@ -345,6 +350,8 @@ const App = () => (
                 <FeatureHighlightPopup />
                 <CartDrawer />
                 <ProductCompareTray />
+                <StillDecidingBar />
+                <SocialProofToast />
                 <DeferredMount delay={2500}>
                   <TelegramWidget />
                   <AiChatWidget />

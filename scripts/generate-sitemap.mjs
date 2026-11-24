@@ -10,6 +10,7 @@ const STATIC_ENTRIES = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.8" },
   { path: "/solutions", changefreq: "monthly", priority: "0.9" },
+  { path: "/get-started", changefreq: "weekly", priority: "0.9" },
   { path: "/smart-locks", changefreq: "weekly", priority: "0.9" },
   { path: "/home-automation", changefreq: "weekly", priority: "0.9" },
   { path: "/cctv", changefreq: "weekly", priority: "0.9" },

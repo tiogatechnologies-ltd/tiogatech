@@ -6,6 +6,7 @@ import { useLandingContent } from "@/hooks/useLandingContent";
 import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { formatRetailPrice, masterPriceFor } from "@/lib/retailPricing";
 import { resolveProductImage, handleProductImageError } from "@/lib/productImages";
+import { resolveCampaignEndsAt, useSharedCountdown } from "@/lib/countdownTicker";
 
 export interface HeroSlideContent {
   id: string;
@@ -138,30 +139,29 @@ export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
   {
     id: "black-friday-mega-sale",
     is_active: true,
-    badge: "BLACK FRIDAY MEGA SALE · UP TO 50% OFF",
-    headline: "Tioga Black Friday Sales: Smart Home & Smart Locks Up to 50% OFF",
+    badge: "BLACK FRIDAY",
+    headline: "Our biggest sale of the year.",
     subheadline:
-      "Unlock massive Black Friday markdowns up to 50% OFF across Smart Switches, Multi-Touch Control Panels, 3D Face ID Biometric Smart Locks, Motorized Curtains, and Smart Security Systems.",
+      "23rd - 29th November 2026. Deals on smart locks, CCTV, smart home switches, hybrid inverters, lithium batteries and solar packages.",
     highlight_text: "Up to 50% OFF Storewide · Free Installation for all Smart Locks Products",
     discount_pct: 50,
     image_url: "/banners/black-friday-sales.webp",
-    cta_text: "Shop Smart Home & Locks",
+    cta_text: "Shop Black Friday deals",
     cta_link: "/retail?category=Smart%20Home%20%26%20Locks#catalog-grid-top",
-    secondary_cta_text: "Claim 50% Off on WhatsApp",
-    secondary_cta_link:
-      "https://wa.me/2348178000023?text=Hello%20Tioga%20Technologies%2C%20I%20want%20to%20claim%20your%20Black%20Friday%20Mega%20Sale%20deals%20(up%20to%2050%25%20OFF).",
+    secondary_cta_text: "View Solar Packages",
+    secondary_cta_link: "/packages",
   },
   {
     id: "black-friday-solar-offer",
     is_active: true,
-    badge: "BLACK FRIDAY OFFER · 50% OFF BUNDLES",
-    headline: "50% OFF Black Friday Offer on Solar Panels, Inverters & Batteries",
+    badge: "BLACK FRIDAY · SOLAR & STORAGE",
+    headline: "Up to 50% OFF Solar Panels, Inverters & LiFePO4 Batteries",
     subheadline:
-      "Power your home or business 24/7 with Tier-1 Hybrid & Off-Grid Inverters, Grade-A LiFePO4 Lithium Batteries, Monocrystalline Solar Panels, MPPT Charge Controllers, and full DC protection kits at historic Black Friday prices.",
-    highlight_text: "Zero-Flicker UPS · 6,000+ Cycle LiFePO4 · Flexible Payment Plans Available",
+      "23rd - 29th November 2026. Power your home or business 24/7 with Tier-1 SRNE, itel, Deye & Luxpower hybrid inverters and Grade-A lithium storage.",
+    highlight_text: "Zero-Flicker UPS · 6,000+ Cycle LiFePO4 · Nationwide Dispatch",
     discount_pct: 50,
     image_url: "/banners/black-friday-solar-offer.webp",
-    cta_text: "Shop Solar, Inverters & Batteries",
+    cta_text: "Shop Solar & Batteries",
     cta_link: "/retail?category=Solar%2C%20Inverters%20%26%20Batteries#catalog-grid-top",
     secondary_cta_text: "Spread Payments",
     secondary_cta_link: "/finance/apply",
@@ -234,11 +234,17 @@ export function priceHeroSlide(slide: HeroSlideContent): HeroSlideContent {
 
 export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: RetailHeroCarouselProps) => {
   const { content, loading } = useLandingContent("retail_hero");
+  const { content: flashDealContent } = useLandingContent("flash_deal");
   const { settings: promos } = useSiteSetting("promotions");
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
+
+  const rawEndsAt = (flashDealContent as any)?.ends_at;
+  const campaignEndsAt = resolveCampaignEndsAt(rawEndsAt);
+  const heroCountdown = useSharedCountdown(campaignEndsAt);
+  const isFlashDealDisabled = flashDealContent && (flashDealContent as any).is_active === false;
 
   const rawConfiguredSlides = useMemo(
     () => (Array.isArray(content?.slides) ? (content.slides as HeroSlideContent[]) : []),
@@ -351,75 +357,82 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
     <div
       role="region"
       aria-label="Featured Promotions Carousel"
-      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-white/10 bg-[#0b100d] min-h-[460px] sm:min-h-[520px] md:min-h-[560px] lg:min-h-[600px] flex items-center mb-6 sm:mb-8 group select-none"
+      className="relative w-full rounded-2xl overflow-hidden shadow-lg border border-emerald-500/15 bg-[#07110b] min-h-[380px] sm:min-h-[420px] md:min-h-[440px] flex items-center mb-6 sm:mb-7 group select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Clean Solid Architectural Background (no blurry AI orbs or tech mesh) */}
-      <div className="absolute inset-0 bg-[#0b100d]" />
+      {/* Clean Architectural Dark Emerald Backdrop (Intavalto-inspired) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(65% 85% at 72% 55%, rgba(22, 163, 74, 0.22) 0%, rgba(7, 17, 11, 0.92) 60%, #060d08 100%)",
+        }}
+      />
 
-      {/* Slide Content Grid: Left Text Column + Right Full-Height Visual Showcase */}
-      <div className="relative z-10 w-full p-5 sm:p-8 md:p-12 lg:p-14 pb-16 sm:pb-14 md:pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-center">
-          {/* Left Column: Text & CTAs */}
-          <div className="md:col-span-6 space-y-3.5 sm:space-y-4 md:space-y-5 text-white">
+      {/* Slide Content Grid: Left Text + Countdown + CTA | Right Floating Hardware Collage */}
+      <div className="relative z-10 w-full px-5 py-6 sm:px-8 sm:py-8 md:px-11 md:py-9 pb-14 sm:pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
+          {/* Left Column: Tag, Headline, Dates, 4-Box Countdown & CTA */}
+          <div className="md:col-span-6 lg:col-span-5 space-y-3.5 text-white">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`content-${slide.id}`}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="space-y-3.5 sm:space-y-4"
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.28, ease: "easeOut" }}
+                className="space-y-3.5"
               >
-                {/* Eyebrow & Promotion Label */}
+                {/* Eyebrow Squared Label (NO pills) */}
                 <div className="flex items-center gap-2 flex-wrap">
                   {showBfBadges && (
-                    <>
-                      <span
-                        data-testid="hero-black-friday-badge"
-                        className="inline-flex items-center px-3 py-1 rounded bg-white text-slate-950 text-[10px] sm:text-xs font-black uppercase tracking-wider"
-                      >
-                        <span>BLACK FRIDAY</span>
-                      </span>
-                      <span className="inline-flex items-center px-2.5 py-1 rounded bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider">
-                        {slide.discount_pct != null && slide.discount_pct > 0
-                          ? `UP TO ${slide.discount_pct}% OFF`
-                          : "UP TO 50% OFF"}
-                      </span>
-                    </>
+                    <span
+                      data-testid="hero-black-friday-badge"
+                      className="inline-flex items-center px-3 py-1 rounded-md bg-[#16a34a] text-white text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest shadow-xs"
+                    >
+                      BLACK FRIDAY
+                    </span>
                   )}
                   {slide.badge && (!showBfBadges || !slide.badge.toLowerCase().includes("black friday")) && (
-                    <span className="text-[11px] sm:text-xs md:text-sm font-semibold tracking-wider text-neutral-300 uppercase">
+                    <span className="text-[11px] font-semibold tracking-wider text-neutral-300 uppercase">
                       {showBfBadges ? `· ${slide.badge}` : slide.badge}
                     </span>
                   )}
                 </div>
 
-                {/* Headline */}
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.15] tracking-tight text-white">
-                  {slide.headline}
+                {/* Headline with crisp emerald accent on Black Friday flagship */}
+                <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-display font-extrabold leading-[1.12] tracking-tight text-white">
+                  {slide.id === "black-friday-mega-sale" ? (
+                    <>
+                      Our biggest sale{" "}
+                      <span className="text-[#22c55e]">of the year.</span>
+                    </>
+                  ) : (
+                    slide.headline
+                  )}
                 </h1>
 
-                {/* Promotional & Retail Pricing Block */}
+                {/* Promotional & Retail Pricing Block (for product-specific slides) */}
                 {(slide.promo_price_ngn != null || slide.price_ngn != null) && (
                   <div className="flex items-baseline flex-wrap gap-2.5 sm:gap-3.5 pt-0.5">
                     {slide.promo_price_ngn != null ? (
                       <>
-                        <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#00e640] tracking-tight">
+                        <span className="text-2xl sm:text-3xl font-extrabold text-[#22c55e] tracking-tight tabular-nums">
                           ₦{slide.promo_price_ngn.toLocaleString()}
                         </span>
                         {slide.price_ngn != null && (
-                          <span className="text-xs sm:text-sm md:text-base text-neutral-400 line-through">
+                          <span className="text-xs sm:text-sm text-neutral-400 line-through tabular-nums">
                             ₦{slide.price_ngn.toLocaleString()}
                           </span>
                         )}
                       </>
                     ) : (
-                      <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#00e640] tracking-tight">
+                      <span className="text-2xl sm:text-3xl font-extrabold text-[#22c55e] tracking-tight tabular-nums">
                         ₦{slide.price_ngn!.toLocaleString()}
                       </span>
                     )}
@@ -428,26 +441,54 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
 
                 {/* Subheadline */}
                 {slide.subheadline && (
-                  <p className="text-xs sm:text-sm md:text-base text-neutral-300 leading-relaxed max-w-xl">
+                  <p className="text-xs sm:text-sm text-neutral-300/95 leading-relaxed max-w-md">
                     {slide.subheadline}
                   </p>
                 )}
 
-                {/* Highlight line (clean typography without icons) */}
-                {slide.highlight_text && (
-                  <p className="text-[#00e640] text-xs sm:text-sm font-semibold">
-                    {slide.highlight_text}
-                  </p>
+                {/* WS5: Intavalto-style 4-Box Honest Countdown ("DEALS END IN") */}
+                {showBfBadges && heroCountdown.active && !isFlashDealDisabled && (
+                  <div
+                    role="timer"
+                    aria-live="off"
+                    aria-label="Black Friday deals countdown"
+                    data-testid="hero-bf-countdown"
+                    className="pt-1"
+                  >
+                    <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">
+                      Deals end in
+                    </span>
+                    <div className="inline-grid grid-cols-4 gap-2 tabular-nums">
+                      {[
+                        { val: heroCountdown.d, label: "DAYS" },
+                        { val: heroCountdown.h, label: "HRS" },
+                        { val: heroCountdown.m, label: "MINS" },
+                        { val: heroCountdown.s, label: "SECS" },
+                      ].map((unit) => (
+                        <div
+                          key={unit.label}
+                          className="min-w-[54px] sm:min-w-[60px] rounded-md bg-white/[0.08] border border-white/15 px-2.5 py-2 text-center backdrop-blur-sm shadow-inner"
+                        >
+                          <span className="block font-mono text-lg sm:text-xl font-extrabold text-white leading-none">
+                            {String(unit.val).padStart(2, "0")}
+                          </span>
+                          <span className="block text-[8.5px] font-bold uppercase tracking-wider text-neutral-400 mt-1 leading-none">
+                            {unit.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 )}
 
-                {/* CTAs */}
-                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                {/* CTAs (Squared rounded-md buttons matching Intavalto) */}
+                <div className="pt-1.5 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
                   {slide.cta_link?.startsWith("http") ? (
                     <a
                       href={slide.cta_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#00e640] hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition-all"
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 rounded-md bg-[#16a34a] hover:bg-[#15803d] text-white font-bold text-xs sm:text-sm transition-colors shadow-md shadow-emerald-950/50"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
@@ -467,7 +508,7 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                           }, 50);
                         }
                       }}
-                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#00e640] hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm transition-all cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 rounded-md bg-[#16a34a] hover:bg-[#15803d] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-md shadow-emerald-950/50"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
@@ -475,7 +516,7 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                   ) : (
                     <Link
                       to={slide.cta_link}
-                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#00e640] hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition-all"
+                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 rounded-md bg-[#16a34a] hover:bg-[#15803d] text-white font-bold text-xs sm:text-sm transition-colors shadow-md shadow-emerald-950/50"
                     >
                       <span>{slide.cta_text}</span>
                       <ArrowRight size={15} />
@@ -488,14 +529,14 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                         href={slide.secondary_cta_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm border border-white/15 transition-all text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm border border-white/15 transition-colors text-center"
                       >
                         <span>{slide.secondary_cta_text}</span>
                       </a>
                     ) : (
                       <Link
                         to={slide.secondary_cta_link}
-                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm border border-white/15 transition-all text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs sm:text-sm border border-white/15 transition-colors text-center"
                       >
                         <span>{slide.secondary_cta_text}</span>
                       </Link>
@@ -506,42 +547,79 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
             </AnimatePresence>
           </div>
 
-          {/* Right Column: Full-Proportioned Official Graphic or Product Showcase */}
-          <div className="md:col-span-6 flex items-center justify-center relative min-h-[280px] sm:min-h-[360px] md:min-h-[420px] lg:min-h-[460px]">
+          {/* Right Column: Clean Floating Hardware Composition (Intavalto-inspired, no boxy white frame) */}
+          <div className="md:col-span-6 lg:col-span-7 flex items-center justify-center relative min-h-[240px] sm:min-h-[300px] md:min-h-[340px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`showcase-${slide.id}`}
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
+                transition={{ duration: 0.32, ease: "easeOut" }}
                 className="relative flex items-center justify-center w-full"
               >
-                {slide.image_url?.startsWith("/banners/") ? (
-                  <div
-                    className={`relative w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[460px] rounded-2xl overflow-hidden border border-white/15 flex items-center justify-center ${
-                      slide.image_url.includes("solar-offer")
-                        ? "bg-gradient-to-b from-white via-white to-[#2b2d2e]"
-                        : "bg-[#051a08]"
-                    }`}
-                  >
+                {slide.id === "black-friday-mega-sale" ? (
+                  /* Floating Real Tioga Hardware Group (Smart Locks, CCTV, Switches, Solar Inverter & LiFePO4 Battery) */
+                  <div className="relative w-full max-w-[540px] h-[250px] sm:h-[310px] md:h-[340px] flex items-end justify-center">
+                    {/* Back layer: Solar Panels + Hybrid Inverter + LiFePO4 Battery */}
+                    <img
+                      src="/products/categories/cat-solar-panels.png"
+                      alt="Solar Panels"
+                      loading="eager"
+                      className="absolute left-[42%] top-[4%] h-[58%] w-auto object-contain opacity-90 drop-shadow-[0_18px_32px_rgba(0,0,0,0.65)]"
+                    />
+                    <img
+                      src="/products/categories/cat-inverters.png"
+                      alt="Hybrid Solar Inverter"
+                      loading="eager"
+                      className="absolute right-[10%] bottom-[6%] h-[78%] w-auto object-contain z-10 drop-shadow-[0_22px_36px_rgba(0,0,0,0.75)]"
+                    />
+                    <img
+                      src="/products/categories/cat-batteries.png"
+                      alt="LiFePO4 Battery Storage"
+                      loading="eager"
+                      className="absolute right-0 bottom-[4%] h-[52%] w-auto object-contain z-20 drop-shadow-[0_16px_28px_rgba(0,0,0,0.7)]"
+                    />
+                    {/* Mid-left layer: Control Panel + Smart Door Lock */}
+                    <img
+                      src="/products/categories/cat-control-panels.png"
+                      alt="Smart Control Panel"
+                      loading="eager"
+                      className="absolute left-[4%] bottom-[16%] h-[54%] w-auto object-contain z-10 drop-shadow-[0_18px_30px_rgba(0,0,0,0.7)]"
+                    />
+                    <img
+                      src="/products/categories/cat-smart-locks.png"
+                      alt="Biometric Smart Door Lock"
+                      loading="eager"
+                      className="absolute left-[29%] bottom-[8%] h-[74%] w-auto object-contain z-20 drop-shadow-[0_22px_34px_rgba(0,0,0,0.8)]"
+                    />
+                    {/* Front-left highlight: Smart CCTV Camera */}
+                    <img
+                      src="/products/categories/cat-cctv.png"
+                      alt="Smart Security Camera"
+                      loading="eager"
+                      className="absolute left-[14%] bottom-[4%] h-[48%] w-auto object-contain z-30 drop-shadow-[0_16px_26px_rgba(0,0,0,0.85)]"
+                    />
+                  </div>
+                ) : slide.image_url?.startsWith("/banners/") ? (
+                  <div className="relative w-full h-[250px] sm:h-[310px] md:h-[340px] rounded-xl overflow-hidden border border-white/15 bg-black/30 flex items-center justify-center p-3">
                     <img
                       src={slide.image_url}
                       alt={slide.headline}
                       loading="eager"
                       decoding="async"
-                      className="w-full h-full object-contain"
+                      className="max-w-full max-h-full object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.6)]"
                     />
                   </div>
                 ) : (
-                  <div className="relative z-10 w-full h-[260px] sm:h-[340px] md:h-[400px] lg:h-[440px] flex items-center justify-center rounded-2xl bg-white/[0.04] border border-white/10 p-6">
+                  <div className="relative z-10 w-full h-[240px] sm:h-[300px] md:h-[340px] flex items-center justify-center p-4">
                     <img
                       src={resolveProductImage(slide.image_url)}
                       onError={handleProductImageError}
                       alt={slide.headline}
                       loading="eager"
                       decoding="async"
-                      className="max-h-full max-w-full object-contain"
+                      className="max-h-full max-w-full object-contain drop-shadow-[0_22px_36px_rgba(0,0,0,0.75)]"
                     />
                   </div>
                 )}
@@ -551,41 +629,46 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
         </div>
       </div>
 
-      {/* Nav Controls */}
+      {/* Bottom-left Slide Indicators + Bottom-right Prev/Next Controls */}
       {slides.length > 1 && (
-        <div className="absolute bottom-3 right-3 sm:bottom-5 sm:right-6 z-20 flex items-center gap-1.5 sm:gap-2">
-          <button
-            onClick={prevSlide}
-            aria-label="Previous Slide"
-            className="grid place-items-center h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md border border-white/15 active:scale-95 transition-all shadow-md"
-          >
-            <ChevronLeft size={16} />
-          </button>
-          <div className="flex items-center px-1">
+        <>
+          <div className="absolute bottom-3.5 left-5 sm:left-8 md:left-11 z-20 flex items-center gap-1.5">
             {slides.map((s, idx) => (
               <button
                 key={s.id}
                 onClick={() => setCurrent(idx)}
                 aria-label={`Go to slide ${idx + 1} of ${slides.length}`}
                 aria-current={idx === current ? "true" : undefined}
-                className="grid place-items-center h-9 w-5 sm:h-10 sm:w-6 group"
+                className="py-2 flex items-center"
               >
                 <span
-                  className={`block h-1.5 sm:h-2 rounded-full transition-all ${
-                    idx === current ? "w-5 sm:w-6 bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" : "w-1.5 sm:w-2 bg-white/40 group-hover:bg-white/70"
+                  className={`block h-1.5 rounded-sm transition-all ${
+                    idx === current
+                      ? "w-6 bg-[#22c55e]"
+                      : "w-1.5 bg-white/35 hover:bg-white/65"
                   }`}
                 />
               </button>
             ))}
           </div>
-          <button
-            onClick={nextSlide}
-            aria-label="Next Slide"
-            className="grid place-items-center h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md border border-white/15 active:scale-95 transition-all shadow-md"
-          >
-            <ChevronRight size={16} />
-          </button>
-        </div>
+
+          <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-5 z-20 flex items-center gap-1.5">
+            <button
+              onClick={prevSlide}
+              aria-label="Previous Slide"
+              className="grid place-items-center h-8 w-8 rounded-md bg-white/[0.08] hover:bg-white/[0.16] text-white border border-white/15 active:scale-95 transition-all"
+            >
+              <ChevronLeft size={15} />
+            </button>
+            <button
+              onClick={nextSlide}
+              aria-label="Next Slide"
+              className="grid place-items-center h-8 w-8 rounded-md bg-white/[0.08] hover:bg-white/[0.16] text-white border border-white/15 active:scale-95 transition-all"
+            >
+              <ChevronRight size={15} />
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

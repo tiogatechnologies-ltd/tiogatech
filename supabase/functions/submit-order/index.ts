@@ -12,6 +12,7 @@ const corsHeaders = {
 interface OrderItem {
   product_name: string;
   product_type?: string;
+  product_slug?: string | null;
   price_label?: string | null;
   quantity: number;
   image_url?: string | null;
@@ -172,6 +173,7 @@ serve(async (req) => {
       order_id: order.id,
       product_name: i.product_name.slice(0, 300),
       product_type: i.product_type || null,
+      product_slug: i.product_slug ? String(i.product_slug).slice(0, 200) : null,
       price_label: i.price_label || null,
       quantity: Math.min(Math.max(i.quantity || 1, 1), 999),
       image_url: i.image_url || null,

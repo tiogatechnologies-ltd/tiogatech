@@ -1,5 +1,5 @@
 import { useSiteSetting } from "@/hooks/useSiteSetting";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ChevronRight,
@@ -52,6 +52,9 @@ import { toast } from "sonner";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 import { useLandingContent } from "@/hooks/useLandingContent";
 import { recordProductViewIntent } from "@/lib/shopperIntelligence";
+import { recordPendingProduct, updatePendingProductQty } from "@/lib/pendingProducts";
+import StickyBuyBar from "@/components/retail/StickyBuyBar";
+import { RecentlyViewedRow } from "@/components/retail/ShopTrendingRows";
 
 interface Product {
   id: string;
@@ -119,7 +122,8 @@ export const ProductDetail = () => {
   const { contact } = useSiteContact();
   const { slug = "" } = useParams();
   const navigate = useNavigate();
-  const { add: addToCart } = useCart();
+  const { add: addToCart, items: cartItems } = useCart();
+  const buyBoxRef = useRef<HTMLDivElement>(null);
   const { content: flashDeal } = useLandingContent("flash_deal");
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isInCompare, toggleCompare, openCompareModal, count: compareCount } = useProductCompare();
@@ -219,9 +223,29 @@ export const ProductDetail = () => {
         });
         setRelated(all.filter((p) => p.category === found.category && p.id !== found.id).slice(0, 4));
         const gallery = getMultiAngleProductImages(found.image_url, found.category, found.name);
-        setImages(gallery.length > 0 ? gallery : [resolveProductImage(found.image_url, found.category, found.name)]);
+        const primaryImg = gallery.length > 0 ? gallery[0] : resolveProductImage(found.image_url, found.category, found.name);
+        setImages(gallery.length > 0 ? gallery : [primaryImg]);
         setActiveIdx(0);
         trackConversion("product_view", { product_id: found.id, slug });
+
+        // WS7: Record viewed-but-uncarted product so sticky & cross-page reminder bars stay in sync
+        const foundNumPrice = found.numeric_price || parsePriceNaira(found.price);
+        if (foundNumPrice > 0) {
+          recordPendingProduct(
+            {
+              id: `product:${found.id}`,
+              refId: found.id,
+              type: "product",
+              slug: productPath(found),
+              name: found.name,
+              image: primaryImg,
+              priceLabel: `₦${Math.round(foundNumPrice).toLocaleString("en-NG")}`,
+              numericPrice: foundNumPrice,
+              category: found.category,
+            },
+            cartItems.flatMap((c) => [c.id, c.refId]),
+          );
+        }
       }
     };
     load();
@@ -645,14 +669,20 @@ export const ProductDetail = () => {
               </div>
 
               {/* Quantity Selector & Action Buttons */}
-              <div className="space-y-2.5">
+              <div ref={buyBoxRef} className="space-y-2.5">
                 {/* Quantity Control */}
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                   <span className="text-xs font-bold text-foreground">Quantity:</span>
                   <div className="inline-flex shrink-0 items-center rounded-xl border border-border bg-card p-1">
                     <button
                       type="button"
-                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      onClick={() =>
+                        setQuantity((q) => {
+                          const next = Math.max(1, q - 1);
+                          if (product) updatePendingProductQty(product.id, next);
+                          return next;
+                        })
+                      }
                       disabled={quantity <= 1}
                       className="h-8 w-8 grid place-items-center rounded-lg hover:bg-muted text-muted-foreground disabled:opacity-40 transition-colors"
                       aria-label="Decrease quantity"
@@ -664,7 +694,13 @@ export const ProductDetail = () => {
                     </span>
                     <button
                       type="button"
-                      onClick={() => setQuantity((q) => q + 1)}
+                      onClick={() =>
+                        setQuantity((q) => {
+                          const next = q + 1;
+                          if (product) updatePendingProductQty(product.id, next);
+                          return next;
+                        })
+                      }
                       className="h-8 w-8 grid place-items-center rounded-lg hover:bg-muted text-muted-foreground transition-colors"
                       aria-label="Increase quantity"
                     >
@@ -1137,7 +1173,36 @@ export const ProductDetail = () => {
             </div>
           </section>
         )}
+
+        {/* WS6b: Recently Viewed by You */}
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-border">
+          <RecentlyViewedRow
+            products={STATIC_PRODUCTS as unknown as RetailProduct[]}
+            excludeProductId={product.id}
+          />
+        </div>
       </main>
+
+      {/* WS7a: Sticky Buy Bar on scroll past primary buy box */}
+      {product && (
+        <StickyBuyBar
+          barId="retail_pdp_sticky_bar"
+          observeTargetRef={buyBoxRef}
+          refId={product.id}
+          name={product.name}
+          image={images[0] || product.image_url}
+          priceLabel={numPrice > 0 ? `₦${numPrice.toLocaleString("en-NG")}` : formatPrice(product.price)}
+          numericPrice={numPrice}
+          quantity={quantity}
+          onQuantityChange={(nextQty) => {
+            setQuantity(nextQty);
+            updatePendingProductQty(product.id, nextQty);
+          }}
+          inCart={cartItems.some((c) => c.refId === product.id || c.id === `product:${product.id}`)}
+          onAddToCart={handleAddToCart}
+          onCheckout={() => navigate("/checkout")}
+        />
+      )}
 
       {lightbox && images.length > 0 && (
         <ImageLightbox images={images} startIndex={activeIdx} onClose={() => setLightbox(false)} alt={product.name} />

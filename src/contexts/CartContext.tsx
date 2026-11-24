@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { refreshRetailCartItem } from "@/lib/retailPricing";
+import { syncPendingWithCart } from "@/lib/pendingProducts";
 import { toast } from "sonner";
 
 export type CartItemType = "product" | "package";
@@ -49,6 +50,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch {}
+    if (items.length > 0) {
+      syncPendingWithCart(items.flatMap((x) => [x.id, x.refId]));
+    }
   }, [items]);
 
   const add: CartContextValue["add"] = useCallback((item) => {

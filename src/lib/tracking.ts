@@ -21,6 +21,7 @@ export type ConversionEvent =
   | "product_click"
   | "contact_submitted"
   | "cart_add"
+  | "sticky_add"
   | "cart_open"
   | "cart_checkout_whatsapp"
   | "cart_checkout_lead"

@@ -392,7 +392,10 @@ const AdminSolarPackages = () => {
 
               <div>
                 <Label>Appliances Powered</Label>
-                <Textarea rows={2} value={form.appliances} onChange={(e) => setForm({ ...form, appliances: e.target.value })} placeholder="30 Bulbs, 6 Fans, 5 TVs…" />
+                <Textarea rows={2} value={form.appliances} onChange={(e) => setForm({ ...form, appliances: e.target.value })} placeholder="12 LED bulbs, 3 fans, 2 TVs, 2 laptops, 1 fridge, 1 water pump" />
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  Format: comma-separated quantity + appliance (e.g. &ldquo;10 LED bulbs, 3 fans, 1 TV, 1 fridge, 1 × 1.5HP AC&rdquo;). This powers the storefront icon grid and &ldquo;Must power&rdquo; filter automatically.
+                </p>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">

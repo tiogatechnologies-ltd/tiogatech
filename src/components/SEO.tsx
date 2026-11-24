@@ -6,6 +6,8 @@ interface SEOProps {
   title: string;
   description: string;
   path?: string;
+  /** Optional canonical override (e.g. /lp/:campaign points canonical to /get-started). */
+  canonicalPath?: string;
   image?: string;
   type?: "website" | "article";
   jsonLd?: Record<string, any> | Array<Record<string, any>>;
@@ -13,8 +15,9 @@ interface SEOProps {
   noindex?: boolean;
 }
 
-const SEO = ({ title, description, path = "/", image, type = "website", jsonLd, noindex = false }: SEOProps) => {
+const SEO = ({ title, description, path = "/", canonicalPath, image, type = "website", jsonLd, noindex = false }: SEOProps) => {
   const url = `${SITE_URL}${path}`;
+  const canonicalUrl = `${SITE_URL}${canonicalPath ?? path}`;
   const fullTitle = title.includes("Tioga") ? title : `${title} | Tioga Technologies`;
   const ldArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
@@ -22,7 +25,7 @@ const SEO = ({ title, description, path = "/", image, type = "website", jsonLd, 
     <Helmet defer={false}>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href={canonicalUrl} />
       <meta name="robots" content={noindex ? "noindex,follow" : "index,follow"} />
       <meta name="googlebot" content={noindex ? "noindex,follow" : "index,follow"} />
       <meta property="og:title" content={fullTitle} />

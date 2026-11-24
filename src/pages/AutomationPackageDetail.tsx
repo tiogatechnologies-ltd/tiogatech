@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import PackageHelpCTA from "@/components/PackageHelpCTA";
 import SEO from "@/components/SEO";
 import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
 import { useCart } from "@/contexts/CartContext";
@@ -470,22 +471,12 @@ export const AutomationPackageDetail = () => {
         )}
 
         {/* Bottom CTA */}
-        <section className="section-padding py-10">
-          <div className="section-container">
-            <div className="rounded-3xl bg-primary p-8 text-center text-primary-foreground">
-              <h3 className="text-xl font-display font-bold mb-2 no-clip">Want a custom automation plan?</h3>
-              <p className="text-sm text-primary-foreground/80 mb-5">Our home automation designers will create a bespoke system for your floor plan - free consultation.</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button onClick={() => openLeadForm("automation_pdp_bottom")} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:brightness-110 transition-all">
-                  Free Consultation
-                </button>
-                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]">
-                  <Phone size={15} /> Call Us
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <PackageHelpCTA
+          source="automation_pdp_bottom"
+          title="Want a custom automation plan?"
+          description="Our home automation designers will create a bespoke system for your floor plan - free consultation."
+          primaryLabel="Free Consultation"
+        />
       </main>
 
       {/* Sticky Mobile CTA */}

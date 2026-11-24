@@ -1,295 +1,46 @@
-import { useSiteSetting } from "@/hooks/useSiteSetting";
-import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Sun, Battery, Zap, Cpu, Check, ShoppingBag, ArrowRight, Calculator, TrendingDown, Flame, Tag, Star, ShoppingCart, Heart, Eye } from "lucide-react";
+import { useMemo } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { Calculator, Clock, Sparkles } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
-import { useSolarPackages, type SolarPackage, getSolarPackageImage } from "@/hooks/useSolarPackages";
-import { useCart } from "@/contexts/CartContext";
-import { useWishlist } from "@/hooks/useWishlist";
-import FlexiblePaymentButton from "@/components/FlexiblePaymentButton";
-import { trackConversion } from "@/lib/tracking";
+import { useSolarPackages } from "@/hooks/useSolarPackages";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
+import { useLandingContent } from "@/hooks/useLandingContent";
+import { SolarPackageCard } from "@/components/packages/SolarPackageCard";
+import { PackageFilterBar } from "@/components/packages/PackageFilterBar";
+import {
+  EMPTY_PACKAGE_FILTERS,
+  filterPackages,
+  findClosestPackages,
+  readPackageFilters,
+  writePackageFilters,
+  type BatteryTypeFilter,
+  type PackageFilterState,
+  type TierFilter,
+} from "@/lib/packageFilters";
+import { resolveCampaignEndsAt, useSharedCountdown } from "@/lib/countdownTicker";
 import bgResidential from "@/assets/bg-lumivolt-residential.jpg";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seoSchema";
-import { savingsPct, wasPrice as calcWasPrice, savedAmount as calcSavedAmount, resolveCompareAt } from "@/lib/promoDisplay";
-import { useLandingContent } from "@/hooks/useLandingContent";
-
-const fmtPrice = (n: number | null) =>
-  n == null ? "Price on Request" : `₦${Math.round(n).toLocaleString("en-NG")}`;
-
-const PackageCard = ({ pkg, i }: { pkg: SolarPackage; i: number }) => {
-  const { add } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist();
-  const [isHovered, setIsHovered] = useState(false);
-  const [addedAnim, setAddedAnim] = useState(false);
-
-  const isSaved = isInWishlist(pkg.id);
-
-  // Strikethrough only appears when a genuine previous price is recorded.
-  const { settings: promos } = useSiteSetting("promotions");
-  const { settings: features } = useSiteSetting("features");
-  const compareAt = resolveCompareAt(pkg.total_price, (pkg as any).compare_at_price, promos, pkg.id);
-  const pct = savingsPct(pkg.total_price, compareAt);
-  const wasPriceVal = calcWasPrice(pkg.total_price, compareAt);
-  const savedAmount = calcSavedAmount(pkg.total_price, compareAt);
-  const monthlyEst = Math.round(pkg.total_price / 3);
-
-  const displayTitle = pkg.name
-    ? `${pkg.name} · ${pkg.brand || ""} ${pkg.inverter.split("(")[0].replace(/^(SRNE|itel)\s+/i, "").trim()}`
-    : pkg.inverter;
-
-  const handleAdd = (e?: React.MouseEvent) => {
-    e?.preventDefault?.();
-    e?.stopPropagation?.();
-    add({
-      refId: pkg.id,
-      type: "package",
-      name: pkg.code ? `Lithium ${pkg.code} (${pkg.name}) - ${pkg.inverter}` : `Solar Package #${pkg.package_number} - ${pkg.inverter}`,
-      price: fmtPrice(pkg.total_price),
-      numericPrice: pkg.total_price,
-      image: pkg.image,
-      category: "solar",
-    });
-    trackConversion("cart_add", { source: "solar_packages_page", id: pkg.package_number });
-    setAddedAnim(true);
-    setTimeout(() => setAddedAnim(false), 1800);
-  };
-
-  const handleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleWishlist(pkg.id, pkg.code ? `Lithium ${pkg.code} (${pkg.name})` : `Solar Package #${pkg.package_number} - ${pkg.inverter}`);
-  };
-
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.25 }}
-      className="group relative rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] hover:shadow-xl hover:border-primary/40 transition-all duration-300 flex flex-col overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      id={`pkg-${pkg.package_number}`}
-    >
-      {/* Top Image Container */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/15 flex items-center justify-center">
-        <Link to={`/packages/solar/${pkg.id}`} className="block w-full h-full p-3 sm:p-4 flex items-center justify-center">
-          <img
-            src={pkg.image}
-            alt={pkg.inverter}
-            loading="lazy"
-            className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-sm"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src = getSolarPackageImage(pkg);
-            }}
-          />
-        </Link>
-
-        {/* Top-left Promo / Status Badge */}
-        <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none flex flex-col gap-1">
-          {promos?.show_black_friday_badges !== false && (
-            <span className="px-2 py-0.5 rounded-full bg-zinc-950/95 text-white border border-emerald-400/60 text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md flex items-center w-fit">
-              <span>BLACK FRIDAY</span>
-            </span>
-          )}
-          {pct ? (
-            <span className="px-2.5 py-0.5 rounded-full bg-red-600/95 backdrop-blur-md border border-white/25 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md flex items-center gap-1 w-fit">
-              <TrendingDown size={11} /> {`${pct}% OFF`}
-            </span>
-          ) : null}
-        </div>
-
-        {/* Floating Action Buttons (top-right) */}
-        <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
-          <button
-            onClick={handleWishlist}
-            aria-label={isSaved ? "Remove from Wishlist" : "Save to Wishlist"}
-            className={`h-10 w-10 grid place-items-center rounded-full backdrop-blur-md transition-all shadow-md ${
-              isSaved
-                ? "bg-red-500 text-white shadow-red-500/20 scale-110"
-                : "bg-background/80 hover:bg-background text-muted-foreground hover:text-red-500"
-            }`}
-          >
-            <Heart size={15} fill={isSaved ? "currentColor" : "none"} />
-          </button>
-
-          <Link
-            to={`/packages/solar/${pkg.id}`}
-            aria-label="View Details"
-            className="h-10 w-10 grid place-items-center rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground backdrop-blur-md transition-all shadow-md"
-          >
-            <Eye size={15} />
-          </Link>
-        </div>
-
-        {/* Quick Add Overlay on Hover */}
-        <div
-          className={`absolute inset-x-3 bottom-3 z-10 transition-all duration-300 ${
-            isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
-          }`}
-        >
-          <button
-            onClick={handleAdd}
-            className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-2 transition-all ${
-              addedAnim
-                ? "bg-emerald-600 text-white"
-                : "bg-primary text-primary-foreground hover:bg-primary/90"
-            }`}
-          >
-            {addedAnim ? (
-              <>
-                <Check size={14} className="animate-bounce" />
-                <span>Added to Cart!</span>
-              </>
-            ) : (
-              <>
-                <ShoppingCart size={14} />
-                <span>Quick Add to Cart</span>
-              </>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Content Container */}
-      <div className="p-4 sm:p-5 flex flex-col flex-1">
-        {/* Category & Tier */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5 gap-2">
-          <span className="uppercase tracking-wider font-extrabold text-[10px] text-primary truncate">
-            {pkg.code && pkg.tier
-              ? `${pkg.tier.toUpperCase()} ${pkg.code} · ${pkg.brand || "Lithium"}`
-              : `Package #${pkg.package_number}${pkg.badge ? ` · ${pkg.badge}` : ""}`}
-          </span>
-        </div>
-
-        {/* Product Title */}
-        <Link
-          to={`/packages/solar/${pkg.id}`}
-          className="font-display font-bold text-sm sm:text-base text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug mb-1"
-        >
-          {displayTitle}
-        </Link>
-
-        {pkg.best_for && (
-          <p className="text-[11px] text-muted-foreground line-clamp-1 mb-2.5">
-            Best for: <span className="text-foreground/90 font-medium">{pkg.best_for}</span>
-          </p>
-        )}
-
-        {/* Highlights / Specs Chips */}
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
-            <Cpu size={11} className="text-primary shrink-0" />
-            <span className="truncate">Inverter: <strong className="text-foreground">{(pkg.inverter?.split("(") || [])[0]?.trim()}</strong></span>
-          </span>
-          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
-            <Battery size={11} className="text-emerald-500 shrink-0" />
-            <span className="truncate">Battery: <strong className="text-foreground">{(pkg.battery?.split("(") || [])[0]?.trim() || pkg.battery || "Compatible Battery"}</strong></span>
-          </span>
-          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
-            <Sun size={11} className="text-gold shrink-0" />
-            <span className="truncate">Panels: <strong className="text-foreground">{(pkg.solar_panels?.split("+") || [])[0]?.trim() || pkg.solar_panels || "Standard Panels"}</strong></span>
-          </span>
-          {pkg.solar_per_day_kwh != null && pkg.night_backup_hours && (
-            <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1 max-w-full">
-              <Zap size={11} className="shrink-0" />
-              <span className="truncate">{pkg.solar_per_day_kwh} kWh/day · Backup: {pkg.night_backup_hours}</span>
-            </span>
-          )}
-          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] text-muted-foreground font-medium flex items-center gap-1 max-w-full">
-            <Zap size={11} className="text-primary shrink-0" />
-            <span className="truncate">Powers: <strong className="text-foreground">{pkg.appliances ? pkg.appliances.split(",").slice(0, 3).join(", ") : "Essential Appliances"}</strong></span>
-          </span>
-        </div>
-
-
-        {/* Price & Financing */}
-        <div className="mt-auto pt-3 border-t border-border/60">
-          <div className="flex items-start justify-between gap-1.5 mb-1.5 flex-wrap">
-            <div className="min-w-0 flex-1">
-              {/* Main Price */}
-              <p className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">
-                {fmtPrice(pkg.total_price)}
-              </p>
-              {/* Was Price (slashed) */}
-              {wasPriceVal && savedAmount && (
-                <div className="flex flex-wrap items-center gap-1 mt-0.5">
-                  <span className="text-xs text-muted-foreground line-through">
-                    {fmtPrice(wasPriceVal)}
-                  </span>
-                  <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-0.5 whitespace-nowrap">
-                    <Tag size={9} /> Save {fmtPrice(savedAmount)}
-                  </span>
-                </div>
-              )}
-              {pkg.battery_type === "lithium" && (
-                <p className="text-[10px] text-muted-foreground mt-0.5">
-                  Equipment price · Mounting, cabling & installation priced on survey
-                </p>
-              )}
-              {features?.flexible_payment_enabled !== false && monthlyEst && (
-                <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                  Or from <strong className="text-primary">₦{monthlyEst.toLocaleString("en-NG")}/mo</strong>
-                </p>
-              )}
-            </div>
-          </div>
-
-          {pkg.addon_battery && (
-            <div className="mb-2.5 px-2.5 py-1.5 rounded-lg bg-primary/5 border border-primary/15 text-[10px] text-muted-foreground leading-snug">
-              <strong className="text-foreground">Larger Battery Add-On:</strong> {pkg.addon_battery.split("(")[0].trim()}
-            </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            <Link
-              to={`/packages/solar/${pkg.id}`}
-              className="py-2 px-2.5 sm:px-3 rounded-xl font-semibold text-xs border border-border bg-muted/40 hover:bg-muted text-foreground flex items-center justify-center gap-1 transition-all text-center"
-            >
-              <span className="truncate">View Details</span> <ArrowRight size={12} className="shrink-0" />
-            </Link>
-            <button
-              onClick={handleAdd}
-              className={`py-2 px-2.5 sm:px-3 rounded-xl font-bold text-xs shadow flex items-center justify-center gap-1 transition-all ${
-                addedAnim
-                  ? "bg-emerald-600 text-white"
-                  : "bg-primary text-primary-foreground hover:bg-primary/90"
-              }`}
-            >
-              {addedAnim ? (
-                <><Check size={12} className="shrink-0" /> <span className="truncate">Added</span></>
-              ) : (
-                <><ShoppingCart size={12} className="shrink-0" /> <span className="truncate">Add to Cart</span></>
-              )}
-            </button>
-          </div>
-
-          <div className="mt-2">
-            <FlexiblePaymentButton
-              itemName={`Solar Package #${pkg.package_number}`}
-              itemType="package"
-              itemId={pkg.id}
-              itemImage={pkg.image || getSolarPackageImage(pkg)}
-              price={pkg.total_price}
-            />
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
 
 export const SolarPackages = () => {
   const { packages, loading } = useSolarPackages();
+  const { settings: promos } = useSiteSetting("promotions");
   const { content: flashDeal } = useLandingContent("flash_deal");
-  const [filter, setFilter] = useState<"all" | "lithium" | "tubular" | "high_voltage">("lithium");
-  const [lithiumTier, setLithiumTier] = useState<"all" | "Essential" | "Core" | "Pro">("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const endsAt = resolveCampaignEndsAt((flashDeal as any)?.ends_at);
+  const countdown = useSharedCountdown(endsAt);
+
+  const filterState: PackageFilterState = useMemo(
+    () => readPackageFilters(searchParams),
+    [searchParams],
+  );
+
+  const updateFilters = (next: PackageFilterState) => {
+    setSearchParams(writePackageFilters(next, searchParams), { replace: true });
+  };
 
   const counts = useMemo(() => {
     const lith = packages.filter((p) => p.battery_type === "lithium");
@@ -304,25 +55,38 @@ export const SolarPackages = () => {
     };
   }, [packages]);
 
-  const filtered = useMemo(() => {
-    let list = filter === "all" ? packages : packages.filter((p) => p.battery_type === filter);
-    if (filter === "lithium" && lithiumTier !== "all") {
-      list = list.filter((p) => p.tier === lithiumTier);
-    }
-    return list;
-  }, [packages, filter, lithiumTier]);
+  const filtered = useMemo(
+    () => filterPackages(packages, filterState),
+    [packages, filterState],
+  );
+
+  const closestFallback = useMemo(
+    () => (filtered.length === 0 ? findClosestPackages(packages, filterState, 3) : []),
+    [filtered.length, packages, filterState],
+  );
+
+  const activeQuickBattery: "all" | BatteryTypeFilter =
+    filterState.batteryTypes.length === 1 ? filterState.batteryTypes[0] : "all";
+  const activeQuickTier: "all" | TierFilter =
+    filterState.tiers.length === 1 ? filterState.tiers[0] : "all";
+
+  const showBfCountdown =
+    countdown.active &&
+    promos?.show_black_friday_badges !== false &&
+    !(flashDeal && (flashDeal as any).is_active === false);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
         title="Turnkey Solar Power Packages Nigeria - 3kVA, 5kVA, 10kVA Hybrid Systems"
-        description="Browse certified turnkey solar packages featuring Deye hybrid inverters, Felicity LiFePO4 lithium batteries, and Longi Tier-1 panels with 5-year warranty."
+        description="Browse certified turnkey solar packages featuring SRNE, itel & Deye hybrid inverters, LiFePO4 lithium batteries, and Tier-1 panels with 5-year warranty."
         path="/solar-packages"
         jsonLd={[
           breadcrumbJsonLd([{ name: "Solar Packages", path: "/solar-packages" }]),
           serviceJsonLd({
             name: "Tioga Turnkey Solar Power System Installation",
-            description: "Turnkey hybrid inverter and lithium battery installations for Nigerian homes and commercial offices.",
+            description:
+              "Turnkey hybrid inverter and lithium battery installations for Nigerian homes and commercial offices.",
             path: "/solar-packages",
             serviceType: "Solar system installation and integration",
           }),
@@ -340,14 +104,14 @@ export const SolarPackages = () => {
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/energy-calculator"
-            className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 backdrop-blur-xl border border-primary/60 border-t-white/40 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.25)]"
+            className="inline-flex items-center gap-2 rounded-md bg-primary hover:bg-primary/90 px-6 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-md"
           >
             <Calculator size={16} /> Free Load Sizing Calculator
           </Link>
           <button
             type="button"
             onClick={() => openLeadForm("solar_packages_hero")}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 border-t-white/40 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-2xl backdrop-saturate-150 px-6 py-3 text-sm font-medium text-white hover:border-white/40 active:scale-[0.98] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_8px_24px_rgba(0,0,0,0.25)]"
+            className="inline-flex items-center gap-2 rounded-md border border-white/25 bg-white/[0.1] hover:bg-white/[0.18] backdrop-blur-md px-6 py-3 text-sm font-medium text-white transition-all"
           >
             Request Custom Engineering
           </button>
@@ -356,38 +120,66 @@ export const SolarPackages = () => {
 
       <main className="flex-1 section-padding py-12">
         <div className="section-container">
-
-          <div className="flex flex-col gap-6 mb-10">
+          <div className="flex flex-col gap-5 mb-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-2">Engineered Packages</p>
+                <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-[0.2em] mb-2">
+                  Engineered Packages
+                </p>
                 <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground tracking-tight">
                   Turnkey Solar Configurations
                 </h2>
                 <p className="text-muted-foreground text-sm sm:text-base mt-2 max-w-xl">
-                  Every package includes a matched hybrid inverter, high-cycle battery bank, and monocrystalline solar panels sized for real Nigerian load profiles.
+                  Every package shows the exact appliances it can power, inverter load capacity, and overnight battery backup.
                 </p>
               </div>
+
+              {showBfCountdown && (
+                <div
+                  role="timer"
+                  aria-live="off"
+                  className="inline-flex flex-wrap items-center gap-2 px-3.5 py-2 rounded-md border border-primary/25 bg-card text-xs shadow-xs self-start md:self-auto"
+                >
+                  <span className="inline-flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-primary">
+                    <Clock size={13} />
+                    Black Friday ends in:
+                  </span>
+                  <span className="font-mono font-bold text-foreground tabular-nums">
+                    {String(countdown.d).padStart(2, "0")}d : {String(countdown.h).padStart(2, "0")}h :{" "}
+                    {String(countdown.m).padStart(2, "0")}m :{" "}
+                    <span className="text-red-600 dark:text-red-400">
+                      {String(countdown.s).padStart(2, "0")}s
+                    </span>
+                  </span>
+                </div>
+              )}
             </div>
 
-            {/* Category & Sub-Tier Filter Bar */}
-            <div className="flex flex-col gap-3 p-3 sm:p-4 rounded-2xl bg-muted/30 border border-border/70">
-              <div className="w-full overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
-                <div className="flex items-center gap-2 min-w-max">
+            {/* Battery & Tier Quick Tabs (squared rounded-md, NO pills) */}
+            <div className="flex flex-col gap-2.5 p-3 rounded-xl bg-muted/30 border border-border/70">
+              <div className="w-full overflow-x-auto pb-0.5 scrollbar-none">
+                <div className="flex items-center gap-1.5 sm:gap-2 min-w-max">
                   {(
                     [
+                      { key: "all", label: `All Solar Packages (${counts.all})` },
                       { key: "lithium", label: `Lithium (LiFePO4) (${counts.lithium})` },
                       { key: "tubular", label: `Tubular / Gel (${counts.tubular})` },
                       { key: "high_voltage", label: `High Voltage (40KVA+) (${counts.high_voltage})` },
-                      { key: "all", label: `All Solar Packages (${counts.all})` },
                     ] as const
                   ).map((item) => (
                     <button
                       key={item.key}
-                      onClick={() => setFilter(item.key)}
-                      className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold rounded-full border transition-all shrink-0 ${
-                        filter === item.key
-                          ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                      type="button"
+                      onClick={() =>
+                        updateFilters({
+                          ...filterState,
+                          batteryTypes: item.key === "all" ? [] : [item.key],
+                          tiers: item.key === "lithium" ? filterState.tiers : [],
+                        })
+                      }
+                      className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-md border transition-all shrink-0 ${
+                        activeQuickBattery === item.key
+                          ? "bg-primary text-primary-foreground border-primary shadow-xs"
                           : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
                       }`}
                     >
@@ -397,8 +189,8 @@ export const SolarPackages = () => {
                 </div>
               </div>
 
-              {filter === "lithium" && (
-                <div className="w-full overflow-x-auto pb-0.5 scrollbar-none -mx-1 px-1 pt-2 border-t border-border/60">
+              {activeQuickBattery === "lithium" && (
+                <div className="w-full overflow-x-auto pb-0.5 scrollbar-none pt-2 border-t border-border/60">
                   <div className="flex items-center gap-1.5 sm:gap-2 min-w-max">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mr-1 hidden sm:inline">
                       Lithium Tier:
@@ -413,10 +205,17 @@ export const SolarPackages = () => {
                     ).map((t) => (
                       <button
                         key={t.key}
-                        onClick={() => setLithiumTier(t.key)}
-                        className={`px-3.5 py-1.5 text-[11px] sm:text-xs font-bold rounded-full border transition-all shrink-0 ${
-                          lithiumTier === t.key
-                            ? "bg-foreground text-background border-foreground shadow-sm"
+                        type="button"
+                        onClick={() =>
+                          updateFilters({
+                            ...filterState,
+                            batteryTypes: ["lithium"],
+                            tiers: t.key === "all" ? [] : [t.key],
+                          })
+                        }
+                        className={`px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-md border transition-all shrink-0 ${
+                          activeQuickTier === t.key
+                            ? "bg-foreground text-background border-foreground shadow-xs"
                             : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted"
                         }`}
                       >
@@ -429,13 +228,67 @@ export const SolarPackages = () => {
             </div>
           </div>
 
+          <PackageFilterBar
+            allPackages={packages}
+            resultCount={filtered.length}
+            state={filterState}
+            onChange={updateFilters}
+          />
+
           {loading ? (
-            <div className="flex items-center justify-center py-20 text-muted-foreground text-sm">Loading packages…</div>
-          ) : (
+            <div className="flex items-center justify-center py-20 text-muted-foreground text-sm">
+              Loading packages…
+            </div>
+          ) : filtered.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {filtered.map((pkg, i) => (
-                <PackageCard key={pkg.id} pkg={pkg} i={i} />
+              {filtered.map((pkg) => (
+                <SolarPackageCard key={pkg.id} pkg={pkg} trackingSource="solar_packages_page" />
               ))}
+            </div>
+          ) : (
+            <div className="space-y-6">
+              <div className="rounded-xl border border-border bg-card p-6 sm:p-8 text-center">
+                <h3 className="text-lg font-display font-bold text-foreground mb-1.5">
+                  No exact match for that filter combination
+                </h3>
+                <p className="text-sm text-muted-foreground max-w-lg mx-auto mb-4">
+                  Here are the 3 closest solar packages to your criteria, or let our engineers size a custom system for free.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => updateFilters({ ...EMPTY_PACKAGE_FILTERS })}
+                    className="px-4 py-2 rounded-md border border-border bg-background hover:bg-muted text-xs font-semibold text-foreground transition-colors"
+                  >
+                    Clear All Filters
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openLeadForm("solar_packages_no_match_ai")}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-accent text-accent-foreground text-xs font-bold hover:brightness-105 transition-all"
+                  >
+                    <Sparkles size={13} />
+                    <span>Get AI Recommendation</span>
+                  </button>
+                </div>
+              </div>
+
+              {closestFallback.length > 0 && (
+                <div>
+                  <p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-3">
+                    3 Closest Packages
+                  </p>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    {closestFallback.map((pkg) => (
+                      <SolarPackageCard
+                        key={pkg.id}
+                        pkg={pkg}
+                        trackingSource="solar_packages_closest"
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

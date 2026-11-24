@@ -35,6 +35,8 @@ export type Attribution = {
   utm_campaign?: string | null;
   utm_term?: string | null;
   utm_content?: string | null;
+  fbclid?: string | null;
+  gclid?: string | null;
   referrer?: string | null;
   captured_at?: string;
 };
@@ -58,7 +60,9 @@ export function captureAttributionFromUrl() {
     const uc = params.get("utm_campaign");
     const ut = params.get("utm_term");
     const ucn = params.get("utm_content");
-    if (!aff && !alk && !us && !um && !uc) {
+    const fbclid = params.get("fbclid");
+    const gclid = params.get("gclid");
+    if (!aff && !alk && !us && !um && !uc && !fbclid && !gclid) {
       // Nothing in URL - only store referrer if we have none stored yet
       const existing = getAttribution();
       if (!existing && document.referrer && !document.referrer.includes(window.location.host)) {
@@ -77,12 +81,14 @@ export function captureAttributionFromUrl() {
     const next: Attribution = {
       affiliate_code: aff ?? kept?.affiliate_code ?? null,
       affiliate_link_slug: alk ? alk.slice(0, 64) : aff ? null : kept?.affiliate_link_slug ?? null,
-      utm_source: us ? us.slice(0, 120) : null,
-      utm_medium: um ? um.slice(0, 120) : null,
-      utm_campaign: uc ? uc.slice(0, 120) : null,
-      utm_term: ut ? ut.slice(0, 120) : null,
-      utm_content: ucn ? ucn.slice(0, 120) : null,
-      referrer: document.referrer ? document.referrer.slice(0, 500) : null,
+      utm_source: us ? us.slice(0, 120) : kept?.utm_source ?? null,
+      utm_medium: um ? um.slice(0, 120) : kept?.utm_medium ?? null,
+      utm_campaign: uc ? uc.slice(0, 120) : kept?.utm_campaign ?? null,
+      utm_term: ut ? ut.slice(0, 120) : kept?.utm_term ?? null,
+      utm_content: ucn ? ucn.slice(0, 120) : kept?.utm_content ?? null,
+      fbclid: fbclid ? fbclid.slice(0, 200) : kept?.fbclid ?? null,
+      gclid: gclid ? gclid.slice(0, 200) : kept?.gclid ?? null,
+      referrer: document.referrer ? document.referrer.slice(0, 500) : kept?.referrer ?? null,
       captured_at: aff ? new Date().toISOString() : kept?.captured_at ?? new Date().toISOString(),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next));

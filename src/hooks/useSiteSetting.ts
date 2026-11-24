@@ -49,6 +49,10 @@ export interface PromotionSettings {
   show_category_showcase?: boolean;
   /** Master switch for all "BLACK FRIDAY" badges across products, categories, hero, and packages. */
   show_black_friday_badges?: boolean;
+  /** Master switch for the WS6 real-order social proof toast on shop routes. */
+  show_social_proof?: boolean;
+  /** Optional curated list of product IDs to feature in the Black Friday Deals Row. */
+  flash_deal_product_ids?: string[];
   /** Master switch for the struck-through "was" price across the storefront. */
   show_compare_at_price: boolean;
   /**
@@ -157,6 +161,8 @@ export const SETTING_DEFAULTS = {
     show_value_props_bar: true,
     show_category_showcase: true,
     show_black_friday_badges: true,
+    show_social_proof: true,
+    flash_deal_product_ids: [],
     show_compare_at_price: true,
     default_markup_pct: 30,
     badge_format: "pct_off",

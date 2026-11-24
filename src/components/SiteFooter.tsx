@@ -7,33 +7,9 @@ import SocialLinks from "@/components/SocialLinks";
 import { supabase } from "@/integrations/supabase/client";
 import { TELEGRAM_COMMUNITY_URL } from "@/components/TelegramWidget";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
+import { footerLinks } from "@/lib/footerLinks";
 
-const company = [
-  { label: "About", to: "/about" },
-  { label: "Career", to: "/career" },
-  { label: "Blog", to: "/blog" },
-  { label: "Contact", to: "/contact" },
-  { label: "Lumi - Residential", to: "/lumi" },
-  { label: "VoltAi - Smart Automation", to: "/voltai" },
-];
-
-const solutions = [
-  { label: "Engineering Solutions", to: "/solutions" },
-  { label: "Solar Packages", to: "/solar-packages" },
-  { label: "Smart Locks", to: "/smart-locks" },
-  { label: "Home Automation", to: "/home-automation" },
-  { label: "CCTV & Security", to: "/cctv" },
-  { label: "Retail Store", to: "/retail" },
-];
-
-const support = [
-  { label: "Track Your Order", to: "/track" },
-  { label: "How It Works", to: "/#how-it-works" },
-  { label: "FAQs", to: "/#faq" },
-  { label: "Finance", to: "/finance" },
-  { label: "Privacy Policy", to: "/privacy" },
-  { label: "Terms of Service", to: "/terms" },
-];
+const { company, solutions, support } = footerLinks;
 
 const SiteFooter = () => {
   const { contact } = useSiteContact();
@@ -66,8 +42,35 @@ const SiteFooter = () => {
   };
 
   return (
-    <footer className="bg-midnight text-primary-foreground border-t border-white/[0.12] relative">
-      <div className="section-container-wide py-14">
+    <footer className="relative isolate overflow-hidden bg-midnight text-primary-foreground">
+      {/* Top transition seam: 1px gold gradient hairline + subtle top-center emerald glow (clearly visible in Dark Mode) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/45 to-transparent z-20"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-48 -z-10"
+        style={{
+          background:
+            "radial-gradient(60% 100% at 50% 0%, hsla(152, 85%, 45%, 0.11) 0%, transparent 75%)",
+        }}
+      />
+      {/* Lazy-loaded atmospheric solar background texture blended cleanly over midnight dark */}
+      <img
+        src="/footer-bg.webp"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover object-center -z-20 opacity-[0.12] dark:opacity-[0.18] mix-blend-luminosity"
+      />
+      {/* Top-to-bottom dark fade so bottom links & copyright remain >= WCAG AA contrast */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-midnight/70 via-midnight/90 to-midnight"
+      />
+      <div className="section-container-wide py-14 relative z-10">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 2xl:gap-14">
           <div>
             <img src={tiogaLogoLight} alt="Tioga Technologies" className="h-10 w-auto" />
