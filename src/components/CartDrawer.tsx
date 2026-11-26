@@ -13,6 +13,7 @@ import { resolveProductImage, handleProductImageError } from "@/lib/productImage
 import { toast } from "sonner";
 import { z } from "zod";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 
 const leadSchema = z.object({
   full_name: z.string().trim().min(2).max(120),
@@ -23,6 +24,8 @@ const leadSchema = z.object({
 
 const CartDrawer = () => {
   const { contact } = useSiteContact();
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
   const { user } = useAuth();
   const { items, open, setOpen, remove, updateQty, clear, count } = useCart();
   const [step, setStep] = useState<"cart" | "checkout">("cart");
@@ -193,13 +196,15 @@ const CartDrawer = () => {
               ))}
             </div>
             <div className="border-t border-border p-4 space-y-2">
-              <Link
-                to="/finance"
-                onClick={() => setOpen(false)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent/10 text-accent-foreground py-2.5 text-xs font-semibold hover:bg-accent/20"
-              >
-                <Wallet size={13} /> Want flexible payments? Pay over 3, 6 or 12 months
-              </Link>
+              {flexiblePaymentEnabled && (
+                <Link
+                  to="/finance"
+                  onClick={() => setOpen(false)}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent/10 text-accent-foreground py-2.5 text-xs font-semibold hover:bg-accent/20"
+                >
+                  <Wallet size={13} /> Want flexible payments? Pay over 3, 6 or 12 months
+                </Link>
+              )}
               <Link
                 to="/checkout"
                 onClick={() => setOpen(false)}

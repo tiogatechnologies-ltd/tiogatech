@@ -26,7 +26,6 @@ import {
   Search,
   SlidersHorizontal,
   RotateCcw,
-  Sparkles,
 } from "lucide-react";
 import { invalidateLandingCache } from "@/hooks/useLandingContent";
 import { invalidateSettingsCache, useSiteSetting } from "@/hooks/useSiteSetting";
@@ -1631,7 +1630,7 @@ const AdminRetailPromotions = () => {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <h3 className="font-display text-base font-bold text-foreground flex items-center gap-2">
-                    <Sparkles size={16} className="text-primary" />
+                    <Tag size={16} className="text-primary" />
                     Product-Specific Promo Overrides
                   </h3>
                   <p className="text-xs text-muted-foreground">

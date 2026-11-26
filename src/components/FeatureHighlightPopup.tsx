@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 import { X, Calculator, Wallet, ArrowRight } from "lucide-react";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 
 const STORAGE_KEY = "tioga.featureHighlight.dismissedAt";
 const SUPPRESS_MS = 1000 * 60 * 60 * 24 * 3; // 3 days
@@ -25,6 +26,8 @@ const HIDDEN_ROUTES = [
 const FeatureHighlightPopup = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
 
   useEffect(() => {
     if (HIDDEN_ROUTES.some((r) => r.test(pathname))) return;
@@ -83,10 +86,12 @@ const FeatureHighlightPopup = () => {
             New on Tioga
           </div>
           <p className="font-display font-bold text-lg leading-tight">
-            Size your system. Pay your way.
+            {flexiblePaymentEnabled ? "Size your system. Pay your way." : "Size your solar system fast."}
           </p>
           <p className="text-xs text-primary-foreground/85 mt-1">
-            Two new tools to make going solar effortless.
+            {flexiblePaymentEnabled
+              ? "Two new tools to make going solar effortless."
+              : "Calculate the right inverter, battery and panel size in under 60 seconds."}
           </p>
         </div>
 
@@ -106,20 +111,22 @@ const FeatureHighlightPopup = () => {
             <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
           </Link>
 
-          <Link
-            to="/finance"
-            onClick={dismiss}
-            className="group flex items-center gap-3 rounded-2xl border border-border bg-background hover:bg-muted/60 p-3 transition-all"
-          >
-            <Wallet size={22} className="text-accent shrink-0" />
-            <div className="min-w-0 flex-1">
-              <p className="font-semibold text-sm text-foreground leading-tight">Flexible Payment</p>
-              <p className="text-[11px] text-muted-foreground leading-snug">
-                Pay 30% now, spread the rest over 3–24 months.
-              </p>
-            </div>
-            <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
-          </Link>
+          {flexiblePaymentEnabled && (
+            <Link
+              to="/finance"
+              onClick={dismiss}
+              className="group flex items-center gap-3 rounded-2xl border border-border bg-background hover:bg-muted/60 p-3 transition-all"
+            >
+              <Wallet size={22} className="text-accent shrink-0" />
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-sm text-foreground leading-tight">Flexible Payment</p>
+                <p className="text-[11px] text-muted-foreground leading-snug">
+                  Pay 30% now, spread the rest over 3–24 months.
+                </p>
+              </div>
+              <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+            </Link>
+          )}
 
           <button
             onClick={dismiss}

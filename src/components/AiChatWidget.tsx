@@ -155,12 +155,20 @@ const AiChatWidget = () => {
                 <p className="font-semibold text-foreground text-base">Hi, I'm Volt. I can help with:</p>
                 <ul className="space-y-1.5 text-foreground/90 font-medium">
                   <li>• Finding the right solar package</li>
-                  <li>• Flexible Payment monthly estimates</li>
+                  {features?.flexible_payment_enabled !== false && (
+                    <li>• Flexible Payment monthly estimates</li>
+                  )}
                   <li>• Smart locks and security gear</li>
                   <li>• Connecting you with our team</li>
                 </ul>
                 <div className="flex flex-wrap gap-1.5 pt-2">
-                  {["Recommend a solar package", "Calculate a 6-month plan for ₦1.2M", "Show me smart locks"].map((s) => (
+                  {[
+                    "Recommend a solar package",
+                    ...(features?.flexible_payment_enabled !== false
+                      ? ["Calculate a 6-month plan for ₦1.2M"]
+                      : ["Size a solar system for my home"]),
+                    "Show me smart locks",
+                  ].map((s) => (
                     <button key={s} onClick={() => send(s)} className="text-xs px-3 py-1.5 rounded-full border border-border bg-card text-foreground font-semibold hover:bg-primary hover:text-white shadow-xs transition-colors">{s}</button>
                   ))}
                 </div>

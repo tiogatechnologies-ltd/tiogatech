@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Calculator, Clock, Sparkles } from "lucide-react";
+import { ArrowRight, Calculator, Clock } from "lucide-react";
 import SiteHeader, { openLeadForm } from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
@@ -267,8 +267,8 @@ export const SolarPackages = () => {
                     onClick={() => openLeadForm("solar_packages_no_match_ai")}
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-accent text-accent-foreground text-xs font-bold hover:brightness-105 transition-all"
                   >
-                    <Sparkles size={13} />
                     <span>Get AI Recommendation</span>
+                    <ArrowRight size={13} />
                   </button>
                 </div>
               </div>

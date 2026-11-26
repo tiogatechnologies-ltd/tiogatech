@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   Clock,
   Wrench,
-  Sparkles,
   CheckCircle2,
 } from "lucide-react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
@@ -209,7 +208,7 @@ const Packages = () => {
             onClick={() => openLeadForm("packages_hero")}
             className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accent/90 backdrop-blur-xl border border-accent/60 border-t-white/50 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-accent-foreground hover:brightness-110 active:scale-[0.97] transition-all shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4),0_8px_24px_rgba(245,158,11,0.35)]"
           >
-            <Sparkles size={15} /> Get AI Recommendation
+            Get AI Recommendation <ArrowRight size={15} />
           </button>
           <Link
             to="/contact"
@@ -278,7 +277,7 @@ const Packages = () => {
                 onClick={() => openLeadForm("packages_tabs")}
                 className="inline-flex items-center gap-1 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold bg-accent text-accent-foreground hover:brightness-110 transition-all shadow-sm"
               >
-                <Sparkles size={12} /> AI Pick
+                AI Pick <ArrowRight size={12} />
               </button>
             </div>
           </div>

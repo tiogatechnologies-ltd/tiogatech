@@ -7,6 +7,7 @@ import { attributionForLead, getAttribution } from "@/lib/attribution";
 import { trackConversion } from "@/lib/tracking";
 import { isValidNigerianPhone } from "@/lib/customerWhatsapp";
 import { footerLinks } from "@/lib/footerLinks";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import AddressInput from "@/components/lead-form/AddressInput";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
@@ -76,6 +77,11 @@ export const AdsLeadGateModal = ({
   onUnlocked,
 }: AdsLeadGateModalProps) => {
   const reducedMotion = useReducedMotion();
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
+  const visibleServiceOptions = flexiblePaymentEnabled
+    ? SERVICE_OPTIONS
+    : SERVICE_OPTIONS.filter((o) => o.id !== "finance");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -428,7 +434,7 @@ export const AdsLeadGateModal = ({
               What are you interested in? *
             </span>
             <div className="grid grid-cols-2 gap-2">
-              {SERVICE_OPTIONS.map((opt) => {
+              {visibleServiceOptions.map((opt) => {
                 const selected = services.includes(opt.id);
                 return (
                   <button

@@ -1,4 +1,4 @@
-import { Phone, Sparkles } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 import { openLeadForm } from "@/components/SiteHeader";
 import { useSiteContact } from "@/hooks/useSiteContact";
 
@@ -53,8 +53,8 @@ const PackageHelpCTA = ({
                 onClick={() => openLeadForm(source)}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-bold text-accent-foreground hover:brightness-105 active:scale-[0.98] transition-all shadow-sm"
               >
-                <Sparkles size={15} />
                 <span>{primaryLabel}</span>
+                <ArrowRight size={15} />
               </button>
               <a
                 href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`}

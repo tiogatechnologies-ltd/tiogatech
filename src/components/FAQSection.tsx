@@ -1,5 +1,6 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const defaultFaqs = [
@@ -16,7 +17,15 @@ const defaultFaqs = [
 const FAQSection = () => {
   const { ref, isVisible } = useScrollReveal();
   const { content } = useLandingContent("faq");
-  const faqs = content?.items || defaultFaqs;
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
+  const rawFaqs = content?.items || defaultFaqs;
+  const faqs = flexiblePaymentEnabled
+    ? rawFaqs
+    : rawFaqs.filter(
+        (faq: any) =>
+          !/payment plan|flexible payment|installment/i.test(`${faq?.q || ""} ${faq?.a || ""}`)
+      );
 
   return (
     <section id="faq" className="section-padding bg-background scroll-mt-24">

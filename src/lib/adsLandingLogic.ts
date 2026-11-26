@@ -46,7 +46,7 @@ export interface CampaignConfig {
 export const CAMPAIGN_CONFIGS: Record<string, CampaignConfig> = {
   general: {
     slug: "general",
-    eyebrow: "Tioga Technologies · Nationwide Engineering",
+    eyebrow: "",
     headline: "Power, protect and automate",
     headlineAccent: "your home or business.",
     subline:

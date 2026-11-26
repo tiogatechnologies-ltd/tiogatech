@@ -9,11 +9,11 @@ import {
   Shield,
   ShieldCheck,
   ShoppingBag,
-  Sparkles,
   Sun,
   Wrench,
 } from "lucide-react";
 import type { CampaignConfig, HeroServiceKey } from "@/lib/adsLandingLogic";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 
 interface AdsHeroProps {
   campaign: CampaignConfig;
@@ -76,10 +76,10 @@ const SERVICE_TABS: Array<{
 ];
 
 const TRUST_CLAIMS = [
-  { icon: ShieldCheck, text: "Up to 5-yr warranty" },
-  { icon: Wrench, text: "48-72h engineer dispatch" },
-  { icon: MapPin, text: "Nationwide installation" },
-  { icon: CreditCard, text: "Flexible payment" },
+  { key: "warranty", icon: ShieldCheck, text: "Up to 5-yr warranty" },
+  { key: "dispatch", icon: Wrench, text: "48-72h engineer dispatch" },
+  { key: "nationwide", icon: MapPin, text: "Nationwide installation" },
+  { key: "finance", icon: CreditCard, text: "Flexible payment" },
 ];
 
 /**
@@ -95,6 +95,11 @@ export const AdsHero = ({
   onSelectHeroService,
 }: AdsHeroProps) => {
   const reducedMotion = useReducedMotion();
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
+  const visibleTrustClaims = flexiblePaymentEnabled
+    ? TRUST_CLAIMS
+    : TRUST_CLAIMS.filter((c) => c.key !== "finance");
   const [activeService, setActiveService] = useState<HeroServiceKey>(campaign.defaultHeroService);
   const [paused, setPaused] = useState(false);
 
@@ -142,11 +147,6 @@ export const AdsHero = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           {/* Left Column: Campaign Headline, CTAs & Trust Row */}
           <div className="lg:col-span-6 space-y-5">
-            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-gold">
-              <Sparkles size={14} className="shrink-0" />
-              <span>{campaign.eyebrow}</span>
-            </p>
-
             <h1 className="font-display text-3xl sm:text-4xl lg:text-[46px] font-extrabold tracking-tight leading-[1.12] text-white">
               {campaign.headline}{" "}
               <span className="text-emerald-400">{campaign.headlineAccent}</span>
@@ -180,8 +180,12 @@ export const AdsHero = ({
             </div>
 
             {/* Trust Row — icon + text only, zero pill badges */}
-            <div className="pt-3 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {TRUST_CLAIMS.map(({ icon: Icon, text }) => (
+            <div
+              className={`pt-3 border-t border-white/10 grid grid-cols-2 ${
+                visibleTrustClaims.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"
+              } gap-3`}
+            >
+              {visibleTrustClaims.map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-2 text-xs text-white/85">
                   <Icon size={15} className="text-gold shrink-0" />
                   <span className="leading-tight font-medium">{text}</span>

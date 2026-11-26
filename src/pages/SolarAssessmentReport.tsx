@@ -12,12 +12,15 @@ import autoTable from "jspdf-autotable";
 import CustomSolutionDialog from "@/components/CustomSolutionDialog";
 import AiUpgradeDialog from "@/components/AiUpgradeDialog";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 
 const SolarAssessmentReport = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const { contact } = useSiteContact();
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
   const [loading, setLoading] = useState(true);
   const [unlocking, setUnlocking] = useState(false);
   const [paywall, setPaywall] = useState(false);
@@ -192,18 +195,24 @@ const SolarAssessmentReport = () => {
             return (
               <div className="bg-card rounded-2xl border border-primary/30 p-6">
                 <h2 className="font-display font-bold text-lg mb-1">Next steps</h2>
-                <p className="text-sm text-muted-foreground mb-4">Three ways to move forward with this design.</p>
-                <div className="grid sm:grid-cols-3 gap-3">
+                <p className="text-sm text-muted-foreground mb-4">
+                  {flexiblePaymentEnabled
+                    ? "Three ways to move forward with this design."
+                    : "Choose how you'd like to move forward with this design."}
+                </p>
+                <div className={`grid gap-3 ${flexiblePaymentEnabled ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
                   <button onClick={() => setCustomOpen(true)} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors">
                     <FileSignature className="text-primary mb-2" size={20} />
                     <div className="font-display font-bold text-sm">Get formal quote</div>
                     <div className="text-xs text-muted-foreground mt-1">Engineer-reviewed quotation with itemized pricing.</div>
                   </button>
-                  <Link to={`/finance/apply?assessment=${assessment.id}&amount=${matchedAmount}&months=3&item=${encodeURIComponent(`${sizeKva}kVA Tioga Solar System`)}`} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
-                    <Wallet className="text-primary mb-2" size={20} />
-                    <div className="font-display font-bold text-sm">Apply for Flex Pay</div>
-                    <div className="text-xs text-muted-foreground mt-1">30% deposit, then 3, 6, 12 or 24 monthly installments.</div>
-                  </Link>
+                  {flexiblePaymentEnabled && (
+                    <Link to={`/finance/apply?assessment=${assessment.id}&amount=${matchedAmount}&months=3&item=${encodeURIComponent(`${sizeKva}kVA Tioga Solar System`)}`} className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
+                      <Wallet className="text-primary mb-2" size={20} />
+                      <div className="font-display font-bold text-sm">Apply for Flex Pay</div>
+                      <div className="text-xs text-muted-foreground mt-1">30% deposit, then 3, 6, 12 or 24 monthly installments.</div>
+                    </Link>
+                  )}
                   <a href={whatsappLink(contact, waMsg)} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-border bg-background p-4 text-left hover:border-primary transition-colors block">
                     <Wrench className="text-primary mb-2" size={20} />
                     <div className="font-display font-bold text-sm">Schedule installation</div>

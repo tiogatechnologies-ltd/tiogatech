@@ -4,7 +4,6 @@ import SEO from "@/components/SEO";
 import SiteFooter from "@/components/SiteFooter";
 import AdsTopBar from "@/components/landing/AdsTopBar";
 import AdsHero from "@/components/landing/AdsHero";
-import AdsHighlightOffers from "@/components/landing/AdsHighlightOffers";
 import AdsSolutionsBento from "@/components/landing/AdsSolutionsBento";
 import AdsLeadCaptureForm, {
   type AdsLeadExternalPrefill,
@@ -154,13 +153,7 @@ const AdsLanding = () => {
             onBookAudit={() => scrollToForm({ services: ["audit", "solar"] })}
           />
 
-          {/* 2. Five Highlight Offers */}
-          <AdsHighlightOffers
-            onBookAudit={() => scrollToForm({ services: ["audit", "solar"] })}
-            onGetQuote={() => scrollToForm()}
-          />
-
-          {/* 3. Our Solutions (6 service cards from footerLinks.solutions) */}
+          {/* 2. Our Solutions (each service highlighted once cleanly) */}
           <div ref={solutionsSentinelRef}>
             {solutionsNearViewport ? (
               <SolutionsBand
@@ -173,7 +166,7 @@ const AdsLanding = () => {
             )}
           </div>
 
-          {/* 4. 3-Step Lead Capture Form (#get-quote) */}
+          {/* 3. 3-Step Lead Capture Form (#get-quote) */}
           <AdsLeadCaptureForm
             formRef={formRef}
             campaignSlug={campaign.slug}
@@ -182,7 +175,7 @@ const AdsLanding = () => {
             externalPrefill={externalPrefill}
           />
 
-          {/* 5. Compact Explore Tioga Hub (from footerLinks) + Mobile Sticky CTA */}
+          {/* 4. Mobile Sticky CTA Bar */}
           <AdsBottomSections
             heroRef={heroRef}
             formRef={formRef}

@@ -9,7 +9,6 @@ import {
   Scale,
   Plus,
   Search,
-  Sparkles,
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
@@ -366,7 +365,7 @@ const ProductCompareTrayBody = () => {
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 text-xs font-bold text-foreground">
-                  <Sparkles size={15} className="text-primary" />
+                  <Scale size={15} className="text-primary" />
                   <span>
                     Add Hardware Model to Compare ({count}/{MAX_COMPARE})
                   </span>

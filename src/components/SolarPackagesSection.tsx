@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Clock, Loader2, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, Loader2 } from "lucide-react";
 import { useSolarPackages } from "@/hooks/useSolarPackages";
 import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useLandingContent } from "@/hooks/useLandingContent";
@@ -252,8 +252,8 @@ const SolarPackagesSection = () => {
                   onClick={() => openLeadForm("packages_no_match_ai")}
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-accent text-accent-foreground text-xs font-bold hover:brightness-105 transition-all"
                 >
-                  <Sparkles size={13} />
                   <span>Get AI Recommendation</span>
+                  <ArrowRight size={13} />
                 </button>
               </div>
             </div>

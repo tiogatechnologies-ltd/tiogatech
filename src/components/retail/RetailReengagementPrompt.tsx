@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { X, MessageCircle, Sparkles, CheckCircle2, HelpCircle, ArrowRight } from "lucide-react";
+import { X, MessageCircle, CheckCircle2, HelpCircle, ArrowRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSiteContact, whatsappDigits } from "@/hooks/useSiteContact";
 import { supabase } from "@/integrations/supabase/client";
@@ -316,7 +316,7 @@ export const RetailReengagementPrompt = () => {
         <form onSubmit={handleLeadSubmit} className="space-y-2.5">
           <div className="flex items-start gap-2.5 pr-6">
             <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-              <Sparkles size={18} />
+              <MessageCircle size={18} />
             </div>
             <div>
               <h3 className="font-display font-bold text-sm text-foreground leading-snug">

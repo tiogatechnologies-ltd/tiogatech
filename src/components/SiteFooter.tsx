@@ -7,12 +7,18 @@ import SocialLinks from "@/components/SocialLinks";
 import { supabase } from "@/integrations/supabase/client";
 import { TELEGRAM_COMMUNITY_URL } from "@/components/TelegramWidget";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { footerLinks } from "@/lib/footerLinks";
 
 const { company, solutions, support } = footerLinks;
 
 const SiteFooter = () => {
   const { contact } = useSiteContact();
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
+  const visibleSupport = flexiblePaymentEnabled
+    ? support
+    : support.filter((l) => l.to !== "/finance");
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -142,7 +148,7 @@ const SiteFooter = () => {
           <div>
             <p className="text-[11px] uppercase tracking-[0.22em] text-primary-foreground/45 mb-4">Support</p>
             <ul className="space-y-3 text-sm mb-6">
-              {support.map((l) => (
+              {visibleSupport.map((l) => (
                 <li key={l.to}>
                   <Link to={l.to} className="text-primary-foreground/85 hover:text-gold transition-colors">
                     {l.label}

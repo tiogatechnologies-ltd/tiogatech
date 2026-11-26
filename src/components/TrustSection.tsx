@@ -1,6 +1,7 @@
 import { Award, Users, Banknote, Clock } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLandingContent } from "@/hooks/useLandingContent";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import bgTechMesh from "@/assets/bg-polygons.jpg";
 import logoGrowatt from "@/assets/brands/growatt.png";
 import logoHikvision from "@/assets/brands/hikvision.png";
@@ -42,7 +43,14 @@ const icons = [Award, Users, Banknote, Clock];
 const TrustSection = () => {
   const { ref, isVisible } = useScrollReveal();
   const { content } = useLandingContent("trust");
-  const items = content?.items || defaultReasons;
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
+  const rawItems = content?.items || defaultReasons;
+  const items = rawItems.map((r: any) =>
+    !flexiblePaymentEnabled && typeof r?.desc === "string" && /flexible payment/i.test(r.desc)
+      ? { ...r, desc: "No hidden fees. Clear itemized engineering quotes." }
+      : r
+  );
 
   return (
     <section id="trust" className="section-padding bg-muted">

@@ -9,6 +9,7 @@ import MegaMenu from "@/components/MegaMenu";
 import CartButton from "@/components/CartButton";
 import AccountButton from "@/components/AccountButton";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { useTheme } from "next-themes";
 
 // Sub-brands now live inside the Products mega-menu (see MegaMenu.tsx).
@@ -42,6 +43,11 @@ export const openLeadForm = (source = "ai_badge") => {
 
 const SiteHeader = () => {
   const { contact } = useSiteContact();
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
+  const visibleSecondaryLinks = flexiblePaymentEnabled
+    ? secondaryLinks
+    : secondaryLinks.filter((l) => l.to !== "/finance");
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
@@ -206,7 +212,7 @@ const SiteHeader = () => {
             </div>
           </div>
 
-          {[...brandLinks, ...secondaryLinks].map((l) => (
+          {[...brandLinks, ...visibleSecondaryLinks].map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
@@ -302,7 +308,7 @@ const SiteHeader = () => {
               </div>
             )}
 
-            {[...brandLinks, ...secondaryLinks]
+            {[...brandLinks, ...visibleSecondaryLinks]
               .filter((l) => l.to !== "/blog")
               .map((l) => (
                 <NavLink

@@ -18,6 +18,7 @@ import { attributionForLead, getAttribution } from "@/lib/attribution";
 import { trackConversion } from "@/lib/tracking";
 import { isValidNigerianPhone } from "@/lib/customerWhatsapp";
 import { useSiteContact, whatsappLink } from "@/hooks/useSiteContact";
+import { useSiteSetting } from "@/hooks/useSiteSetting";
 import { footerLinks } from "@/lib/footerLinks";
 import AddressInput from "@/components/lead-form/AddressInput";
 import { budgetOptions } from "@/components/lead-form/types";
@@ -144,6 +145,11 @@ export const AdsLeadCaptureForm = ({
 }: AdsLeadCaptureFormProps) => {
   const reducedMotion = useReducedMotion();
   const { contact } = useSiteContact();
+  const { settings: features } = useSiteSetting("features");
+  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
+  const visibleServiceOptions = flexiblePaymentEnabled
+    ? SERVICE_OPTIONS
+    : SERVICE_OPTIONS.filter((o) => o.id !== "finance");
 
   const initial = useRef(loadDraft(defaultServices));
   const [step, setStep] = useState<number>(initial.current.step);
@@ -502,7 +508,7 @@ export const AdsLeadCaptureForm = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {SERVICE_OPTIONS.map((opt) => {
+                      {visibleServiceOptions.map((opt) => {
                         const selected = form.services.includes(opt.id);
                         return (
                           <button
