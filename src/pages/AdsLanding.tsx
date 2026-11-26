@@ -183,7 +183,7 @@ const AdsLanding = () => {
           />
         </main>
 
-        <SiteFooter />
+        <SiteFooter phoneOverride="+234 8178 000 023" />
       </div>
     </div>
   );

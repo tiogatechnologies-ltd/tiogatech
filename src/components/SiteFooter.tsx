@@ -12,8 +12,13 @@ import { footerLinks } from "@/lib/footerLinks";
 
 const { company, solutions, support } = footerLinks;
 
-const SiteFooter = () => {
+interface SiteFooterProps {
+  phoneOverride?: string;
+}
+
+const SiteFooter = ({ phoneOverride }: SiteFooterProps = {}) => {
   const { contact } = useSiteContact();
+  const displayPhone = phoneOverride || contact.phone;
   const { settings: features } = useSiteSetting("features");
   const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
   const visibleSupport = flexiblePaymentEnabled
@@ -98,8 +103,8 @@ const SiteFooter = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Phone size={14} className="text-gold shrink-0" />
-                <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="hover:text-gold transition-colors">
-                  {contact.phone}
+                <a href={`tel:${displayPhone.replace(/[^\d+]/g, "")}`} className="hover:text-gold transition-colors">
+                  {displayPhone}
                 </a>
               </li>
               <li className="flex items-start gap-2">

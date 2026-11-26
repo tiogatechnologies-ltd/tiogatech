@@ -284,6 +284,30 @@ html.lenis, html.lenis body { height: auto; }
     animation: slideRight 0.3s ease-out forwards;
   }
 
+  .animate-tioga-carousel-scroll {
+    animation: tiogaCarouselScroll 26s linear infinite;
+    will-change: transform;
+  }
+
+  .animate-tioga-carousel-scroll:hover {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-tioga-carousel-scroll {
+      animation: none;
+    }
+  }
+
+  @keyframes tiogaCarouselScroll {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
   @keyframes slideUp {
     from {
       opacity: 0;

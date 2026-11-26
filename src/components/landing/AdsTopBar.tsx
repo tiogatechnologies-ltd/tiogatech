@@ -3,7 +3,9 @@ import { Phone, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
-import { useSiteContact } from "@/hooks/useSiteContact";
+
+const GET_STARTED_PHONE_DISPLAY = "+234 8178 000 023";
+const GET_STARTED_PHONE_TEL = "tel:+2348178000023";
 
 interface AdsTopBarProps {
   onScrollToForm: () => void;
@@ -15,9 +17,6 @@ interface AdsTopBarProps {
  * stays focused on requesting a quote or calling directly.
  */
 export const AdsTopBar = ({ onScrollToForm }: AdsTopBarProps) => {
-  const { contact } = useSiteContact();
-  const telHref = `tel:${contact.phone.replace(/[^\d+]/g, "")}`;
-
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/90 backdrop-blur-md">
       <div className="section-container-wide h-16 flex items-center justify-between gap-3">
@@ -45,12 +44,12 @@ export const AdsTopBar = ({ onScrollToForm }: AdsTopBarProps) => {
         <div className="flex items-center gap-2 sm:gap-3">
           <motion.a
             whileTap={{ scale: 0.97 }}
-            href={telHref}
-            aria-label={`Call Tioga Technologies at ${contact.phone}`}
+            href={GET_STARTED_PHONE_TEL}
+            aria-label={`Call Tioga Technologies at ${GET_STARTED_PHONE_DISPLAY}`}
             className="inline-flex items-center justify-center gap-2 h-11 min-w-[44px] px-3 sm:px-3.5 rounded-md border border-border bg-card hover:bg-muted text-foreground text-xs sm:text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <Phone size={16} className="text-primary shrink-0" />
-            <span className="hidden md:inline">{contact.phone}</span>
+            <span className="hidden md:inline">{GET_STARTED_PHONE_DISPLAY}</span>
           </motion.a>
 
           <motion.button

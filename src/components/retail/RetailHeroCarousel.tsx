@@ -168,57 +168,31 @@ export const FEATURED_BLACK_FRIDAY_SLIDES: HeroSlideContent[] = [
   },
 ];
 
-export const FEATURED_SRNE_BF_CAROUSEL_SLIDES: HeroSlideContent[] = [
-  {
-    id: "bf-srne-carousel-1",
-    is_active: true,
-    badge: "BLACK FRIDAY · SRNE 5KW SOLAR",
-    headline: "Your whole house can stay on for 5 hours after NEPA takes light.",
-    subheadline:
-      "Power lights, fans, TVs, laptops, fridge, freezer and water pump seamlessly with the SRNE 5kW Hybrid Inverter and 5.12kWh LiFePO4 battery.",
-    highlight_text: "SRNE Core 5 Solar Package · 5hrs Night Backup · Nationwide Installation",
-    discount_pct: 50,
-    image_url: "/banners/bf-srne-carousel-1.webp",
-    cta_text: "View Core 5 Package",
-    cta_link: "/packages/solar/8bc5e8ee-5622-415d-a316-148112cdbf0c",
-    secondary_cta_text: "Shop Solar Packages",
-    secondary_cta_link: "/packages",
-  },
-  {
-    id: "bf-srne-carousel-2",
-    is_active: true,
-    badge: "BLACK FRIDAY · WHAT IT POWERS",
-    headline: "5kW Inverter, 5.12kWh Battery, 30kW room to grow. Light on. Stress off.",
-    subheadline:
-      "Runs 15 bulbs, 4 fans, 3 TVs, 3 laptops, fridge, freezer and water pump at once, with parallel expansion up to 30kW as your needs grow.",
-    highlight_text: "5kW Load · 5.12kWh Storage · 5hrs Night Backup · Parallels to 30kW",
-    discount_pct: 50,
-    image_url: "/banners/bf-srne-carousel-2.webp",
-    cta_text: "Explore Core 5 Specs",
-    cta_link: "/packages/solar/8bc5e8ee-5622-415d-a316-148112cdbf0c",
-    secondary_cta_text: "View All Packages",
-    secondary_cta_link: "/packages",
-  },
-  {
-    id: "bf-srne-carousel-3",
-    is_active: true,
-    badge: "BLACK FRIDAY · ENDS FRIDAY 27TH NOV",
-    headline: "Make Solar carry the load. Get up to 50% OFF.",
-    subheadline:
-      "Limited-time Black Friday deals on SRNE Hybrid Inverters, LiFePO4 Lithium Batteries, and complete ready-to-install solar systems.",
-    highlight_text: "Black Friday Deals · Up to 50% OFF · Official Warranty",
-    discount_pct: 50,
-    image_url: "/banners/bf-srne-carousel-3.webp",
-    cta_text: "Shop SRNE Deals",
-    cta_link: "/retail?brand=SRNE#catalog-grid-top",
-    secondary_cta_text: "View Solar Packages",
-    secondary_cta_link: "/packages",
-  },
+export const SRNE_BF_CAROUSEL_IMAGES: readonly string[] = [
+  "/banners/bf-srne-carousel-1.webp",
+  "/banners/bf-srne-carousel-2.webp",
+  "/banners/bf-srne-carousel-3.webp",
 ];
+
+export const FEATURED_SRNE_BF_CAROUSEL_SLIDE: HeroSlideContent = {
+  id: "bf-srne-carousel",
+  is_active: true,
+  badge: "BLACK FRIDAY · SRNE 5KW SOLAR",
+  headline: "Your whole house can stay on for 5 hours after NEPA takes light.",
+  subheadline:
+    "5kW SRNE Hybrid Inverter + 5.12kWh LiFePO4 Battery with 30kW room to grow. Runs lights, fans, TVs, laptops, fridge, freezer and water pump seamlessly. Up to 50% OFF through Black Friday.",
+  highlight_text: "5kW Load · 5.12kWh Storage · 5hrs Night Backup · Up to 50% OFF",
+  discount_pct: 50,
+  image_url: "/banners/bf-srne-carousel-1.webp",
+  cta_text: "View Core 5 Package",
+  cta_link: "/packages/solar/8bc5e8ee-5622-415d-a316-148112cdbf0c",
+  secondary_cta_text: "Shop SRNE Deals",
+  secondary_cta_link: "/retail?brand=SRNE#catalog-grid-top",
+};
 
 export const DEFAULT_HERO_SLIDES: HeroSlideContent[] = [
   ...FEATURED_BLACK_FRIDAY_SLIDES,
-  ...FEATURED_SRNE_BF_CAROUSEL_SLIDES,
+  FEATURED_SRNE_BF_CAROUSEL_SLIDE,
   FEATURED_SRNE_20KW_SLIDE,
   {
     id: "felicity-5kwh-lifepo4-featured",
@@ -329,10 +303,12 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
       (s) => !ecoflowIds.has(s.id) && !s.id?.startsWith("ecoflow-") && !/ecoflow/i.test(s.headline || "")
     );
 
-    // Include Black Friday flagship banners + SRNE Black Friday carousel when active and not explicitly hidden
-    const bfSlidesPool = [...FEATURED_BLACK_FRIDAY_SLIDES, ...FEATURED_SRNE_BF_CAROUSEL_SLIDES];
+    // Include Black Friday flagship banners + combined SRNE Black Friday panoramic carousel when active
+    const bfSlidesPool = [...FEATURED_BLACK_FRIDAY_SLIDES, FEATURED_SRNE_BF_CAROUSEL_SLIDE];
     const bfIds = new Set(bfSlidesPool.map((s) => s.id));
-    const withoutBf = withoutEcoflow.filter((s) => !bfIds.has(s.id));
+    const withoutBf = withoutEcoflow.filter(
+      (s) => !bfIds.has(s.id) && !s.id?.startsWith("bf-srne-carousel"),
+    );
     const activeBfSlides = showBfBadges
       ? bfSlidesPool.filter((s) => !hiddenSlideIds.has(s.id))
       : [];
@@ -367,14 +343,16 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
     setCurrent((prev) => (prev - 1 + totalSlides) % totalSlides);
   }, [totalSlides]);
 
-  // Autoplay with pause on hover/touch
+  // Autoplay with pause on hover/touch (give the panoramic scrolling SRNE carousel extra time)
   useEffect(() => {
     if (isPaused || totalSlides <= 1) return;
-    const timer = setInterval(() => {
+    const activeSlideId = slides[current]?.id;
+    const delayMs = activeSlideId === FEATURED_SRNE_BF_CAROUSEL_SLIDE.id ? 14000 : 6000;
+    const timer = setTimeout(() => {
       setCurrent((prev) => (prev + 1) % totalSlides);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [isPaused, totalSlides]);
+    }, delayMs);
+    return () => clearTimeout(timer);
+  }, [isPaused, totalSlides, current, slides]);
 
   // Touch gesture handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -655,14 +633,33 @@ export const RetailHeroCarousel = ({ productCount = 0, onSelectCategory }: Retai
                       className="absolute left-[14%] bottom-[4%] h-[48%] w-auto object-contain z-30 drop-shadow-[0_16px_26px_rgba(0,0,0,0.85)]"
                     />
                   </div>
-                ) : slide.image_url?.startsWith("/banners/bf-srne-carousel-") ? (
-                  <div className="relative w-full h-[290px] sm:h-[340px] md:h-[380px] flex items-center justify-center">
-                    <img
-                      src={slide.image_url}
-                      alt={slide.headline}
-                      loading="eager"
-                      decoding="async"
-                      className="max-w-full max-h-full object-contain rounded-xl border border-white/15 shadow-2xl"
+                ) : slide.id === FEATURED_SRNE_BF_CAROUSEL_SLIDE.id ? (
+                  /* Seamless 3-panel panoramic SRNE Black Friday carousel slowly scrolling inside the image box */
+                  <div
+                    data-testid="srne-bf-panoramic-carousel"
+                    className="relative w-full h-[270px] sm:h-[320px] md:h-[350px] rounded-xl overflow-hidden border border-white/15 bg-[#050806] shadow-2xl"
+                  >
+                    <div className="flex h-full w-max items-stretch animate-tioga-carousel-scroll">
+                      {[...SRNE_BF_CAROUSEL_IMAGES, ...SRNE_BF_CAROUSEL_IMAGES].map((src, idx) => (
+                        <img
+                          key={`${src}-${idx}`}
+                          src={src}
+                          alt={`Tioga SRNE Black Friday 5kW Solar Offer - Panel ${(idx % SRNE_BF_CAROUSEL_IMAGES.length) + 1}`}
+                          loading="eager"
+                          decoding="async"
+                          draggable={false}
+                          className="h-full w-auto max-w-none shrink-0 block select-none object-contain"
+                        />
+                      ))}
+                    </div>
+                    {/* Subtle edge vignettes so panels enter and exit cleanly */}
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#050806]/70 to-transparent"
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#050806]/70 to-transparent"
                     />
                   </div>
                 ) : slide.image_url?.startsWith("/banners/") ? (
