@@ -21,6 +21,8 @@ const HIDDEN_ROUTES = [
   /^\/account/,
   /^\/energy-calculator/,
   /^\/finance$/,
+  /^\/get-started/,
+  /^\/lp\//,
 ];
 
 const FeatureHighlightPopup = () => {

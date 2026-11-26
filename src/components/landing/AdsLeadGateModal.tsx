@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { AlertCircle, ArrowRight, Check, Loader2, Lock, RefreshCw } from "lucide-react";
@@ -20,7 +21,8 @@ import {
 } from "@/lib/adsLandingLogic";
 import { toast } from "sonner";
 
-export const ADS_GATE_STORAGE_KEY = "tioga_ads_lp_unlocked_v1";
+export const ADS_GATE_STORAGE_KEY = "tioga_ads_lp_unlocked_session_v2";
+const LEGACY_ADS_GATE_STORAGE_KEY = "tioga_ads_lp_unlocked_v1";
 const EMAIL_RE = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/;
 const CONTACT_CHANNELS: ContactChannel[] = ["WhatsApp", "Call", "Email"];
 
@@ -39,7 +41,14 @@ export interface UnlockedVisitorProfile {
 export function getUnlockedVisitorProfile(): UnlockedVisitorProfile | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem(ADS_GATE_STORAGE_KEY);
+    // Clean up legacy permanent localStorage unlock key so returning visitors see the lead popup on new visits
+    localStorage.removeItem(LEGACY_ADS_GATE_STORAGE_KEY);
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("gate") === "1" || params.get("reset") === "1") {
+      sessionStorage.removeItem(ADS_GATE_STORAGE_KEY);
+      return null;
+    }
+    const raw = sessionStorage.getItem(ADS_GATE_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<UnlockedVisitorProfile>;
     if (parsed && parsed.unlocked === true && typeof parsed.fullName === "string" && parsed.fullName.trim()) {
@@ -239,18 +248,18 @@ export const AdsLeadGateModal = ({
       };
 
       try {
-        localStorage.setItem(ADS_GATE_STORAGE_KEY, JSON.stringify(profile));
+        sessionStorage.setItem(ADS_GATE_STORAGE_KEY, JSON.stringify(profile));
       } catch {
         // ignore quota errors
       }
 
       const firstName = profile.fullName.split(/\s+/)[0] || "there";
-      toast.success(`Welcome ${firstName}! Your details are saved — explore our packages & configurator below.`);
+      toast.success(`Welcome ${firstName}! Your details are saved. Explore our solutions below.`);
       onUnlocked(profile);
     } catch (err) {
       console.error("Mandatory gate lead submit failed:", err);
       setSubmitError(
-        "We couldn't connect right now — please check your internet connection and tap Continue again.",
+        "We couldn't connect right now. Please check your internet connection and tap Continue again.",
       );
     } finally {
       submittingRef.current = false;
@@ -258,21 +267,25 @@ export const AdsLeadGateModal = ({
     }
   };
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <div
       data-testid="ads-lead-gate-modal"
+      data-lenis-prevent
       role="dialog"
       aria-modal="true"
       aria-labelledby="ads-gate-title"
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-midnight/85 backdrop-blur-md p-3 sm:p-5"
+      className="fixed inset-0 z-[9999] overflow-y-auto overscroll-contain bg-midnight/85 backdrop-blur-md"
     >
-      <motion.div
-        initial={reducedMotion ? false : { opacity: 0, scale: 0.96, y: 12 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-        data-lenis-prevent
-        className="w-full max-w-xl max-h-[94vh] overflow-y-auto rounded-2xl border border-border bg-card text-foreground shadow-2xl"
-      >
+      <div className="min-h-full flex items-center justify-center p-3 sm:p-5">
+        <motion.div
+          initial={reducedMotion ? false : { opacity: 0, scale: 0.96, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
+          data-lenis-prevent
+          className="w-full max-w-xl my-auto rounded-2xl border border-border bg-card text-foreground shadow-2xl overflow-hidden"
+        >
         {/* Top Brand Strip */}
         <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 border-b border-border bg-muted/30">
           <div className="flex items-center justify-between gap-3 mb-3">
@@ -567,7 +580,9 @@ export const AdsLeadGateModal = ({
           </motion.button>
         </form>
       </motion.div>
-    </div>
+      </div>
+    </div>,
+    document.body,
   );
 };
 

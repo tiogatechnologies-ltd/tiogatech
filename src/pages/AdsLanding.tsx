@@ -72,6 +72,10 @@ const AdsLanding = () => {
 
   useEffect(() => {
     captureAttributionFromUrl();
+    const params = new URLSearchParams(location.search);
+    if (params.get("gate") === "1" || params.get("reset") === "1") {
+      setVisitorProfile(getUnlockedVisitorProfile());
+    }
   }, [location.search]);
 
   useEffect(() => {
