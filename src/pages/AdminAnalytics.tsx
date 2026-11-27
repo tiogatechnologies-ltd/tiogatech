@@ -3,11 +3,17 @@ import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from "recharts";
-import { TrendingUp, Users, Target, DollarSign, Filter, ArrowUpRight, ArrowDownRight, Globe, Eye, Download, Activity, AlertTriangle, Gauge, ShoppingCart, Percent, Clock, MousePointerClick, Repeat } from "lucide-react";
+import { TrendingUp, Users, Target, DollarSign, Filter, ArrowUpRight, ArrowDownRight, Globe, Eye, Download, Activity, AlertTriangle, Gauge, ShoppingCart, Percent, Clock, MousePointerClick, Repeat, RefreshCw } from "lucide-react";
+import { fetchAllRows } from "@/lib/fetchAllRows";
+import {
+  RANGE_OPTIONS, bucketSeries, comparisonLabel, describeRange, getAnalyticsRange, inRange, inWindow,
+  isRangeKey, startOfZonedDay, zonedDateString, type AnalyticsRange, type RangeKey,
+} from "@/lib/analyticsRange";
 
 // ---------- Types ----------
+const LEAD_COLUMNS = "id, phone, email, location, products, budget, status, created_at, has_electricity, main_goal, appliances, timeline, source, utm_source, utm_medium, utm_campaign, referrer";
 interface Lead {
-  id: string; full_name: string; phone: string; email: string | null;
+  id: string; phone: string; email: string | null;
   location: string; products: string[]; budget: string | null; status: string;
   created_at: string; has_electricity: string | null; main_goal: string | null;
   appliances: string[] | null; timeline: string | null; source?: string;
@@ -21,7 +27,7 @@ interface PageView {
   utm_source?: string | null; utm_medium?: string | null; utm_campaign?: string | null;
   landing_path?: string | null; is_new_session?: boolean | null;
 }
-interface ProductClick { product_id: string; created_at: string; product_name?: string; }
+interface ProductClick { id: string; product_id: string; created_at: string; product_name?: string; }
 interface ConversionRow { id: string; session_id: string; event_type: string; page_path: string | null; metadata: any; created_at: string; }
 interface OrderRow {
   id: string; order_number: string | null; total: number | null; subtotal: number | null;
@@ -30,13 +36,8 @@ interface OrderRow {
   source: string | null; created_at: string; shipping_address: any;
 }
 interface OrderItemRow { order_id: string; product_name: string; product_type: string | null; price_label: string | null; quantity: number; }
-interface DiscountRedemption { discount_id: string; amount_discounted: number | null; created_at: string; }
 
 const COLORS = ["hsl(var(--primary))", "hsl(var(--accent))", "#6366f1", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
-const periodOptions = [
-  { label: "7 Days", value: 7 }, { label: "30 Days", value: 30 },
-  { label: "90 Days", value: 90 }, { label: "All Time", value: 0 },
-];
 const tooltipStyle = { background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: 12 } as const;
 
 // ---------- Helpers ----------
@@ -56,11 +57,6 @@ function parseBudget(b: string | null): number {
   if (range) return (toNum(range[1]) + toNum(range[2])) / 2;
   const single = toNum(s);
   return single;
-}
-
-function getWeekLabel(date: Date): string {
-  const start = new Date(date); start.setDate(start.getDate() - start.getDay());
-  return `${start.getMonth() + 1}/${start.getDate()}`;
 }
 
 /** Extract Nigerian city / state from free-form location text. */
@@ -108,19 +104,96 @@ function formatNGN(n: number): string {
   return `₦${Math.round(n).toLocaleString()}`;
 }
 
+// ---------- Data loading ----------
+interface AnalyticsData {
+  rangeKey: RangeKey;
+  fetchedAt: Date;
+  leads: Lead[];
+  products: Product[];
+  pageViews: PageView[];
+  productClicks: ProductClick[];
+  conversions: ConversionRow[];
+  orders: OrderRow[];
+  orderItems: OrderItemRow[];
+  /** Tables that hit the row ceiling, so their numbers may be low. */
+  truncated: string[];
+  /** Tables that failed to load. */
+  failed: string[];
+}
+
+// Reopening the page or flipping back to a range within a couple of minutes
+// reuses what was already fetched instead of re-reading every table.
+const CACHE_TTL_MS = 2 * 60_000;
+const analyticsCache = new Map<RangeKey, AnalyticsData>();
+function readCache(key: RangeKey): AnalyticsData | null {
+  const hit = analyticsCache.get(key);
+  if (!hit) return null;
+  if (Date.now() - hit.fetchedAt.getTime() > CACHE_TTL_MS) { analyticsCache.delete(key); return null; }
+  return hit;
+}
+
+// Newest first with an id tiebreak, so pages never overlap or skip rows that share a
+// timestamp, and a capped result keeps the most recent rows.
+const paged = <T,>(table: string, build: () => any) =>
+  fetchAllRows<T>(() => build().order("created_at", { ascending: false }).order("id", { ascending: false }))
+    .then(r => ({ table, ...r }));
+
+async function loadAnalytics(rangeKey: RangeKey): Promise<AnalyticsData> {
+  const fetchedAt = new Date();
+  const range = getAnalyticsRange(rangeKey, fetchedAt);
+  // Only the selected window is read (it used to read at least 180 days for every range).
+  const since = range.start?.toISOString() ?? null;
+  // Leads also need the comparison window and the fixed "last 7 days" chart.
+  const leadsSince = range.prevStart
+    ? new Date(Math.min(range.prevStart.getTime(), startOfZonedDay(fetchedAt, -6).getTime())).toISOString()
+    : null;
+  const from = (q: any, iso: string | null) => (iso ? q.gte("created_at", iso) : q);
+
+  const [leadsR, pvR, clicksR, convR, vitalsR, ordersR, productsRes] = await Promise.all([
+    paged<Lead>("leads", () => from(supabase.from("leads").select(LEAD_COLUMNS), leadsSince)),
+    paged<PageView>("page views", () => from(supabase.from("page_views").select("id, session_id, page_path, device_type, created_at, referrer, country, utm_source, utm_medium, utm_campaign, landing_path, is_new_session"), since)),
+    paged<ProductClick>("product clicks", () => from(supabase.from("product_clicks").select("id, product_id, created_at"), since)),
+    paged<ConversionRow>("events", () => from(supabase.from("conversions").select("id, session_id, event_type, page_path, metadata, created_at").neq("event_type", "vitals"), since)),
+    // Only vitals written by initWebVitals (they carry a rating). Until 27 Nov 2026
+    // usePageTracker also wrote unrated LCP/CLS rows - up to ~240 per session - which
+    // made up most of the table and pushed 30-day reads past the row ceiling.
+    paged<ConversionRow>("vitals", () => from(supabase.from("conversions").select("id, session_id, event_type, page_path, metadata, created_at").eq("event_type", "vitals").not("metadata->>rating", "is", null), since)),
+    paged<OrderRow>("orders", () => from(supabase.from("orders").select("id, order_number, total, subtotal, discount_amount, discount_code, status, payment_status, payment_method, source, created_at, shipping_address"), since)),
+    supabase.from("products").select("id, name, category, series, price, is_active"),
+  ]);
+
+  const truncated: string[] = [];
+  const failed: string[] = [];
+  for (const r of [leadsR, pvR, clicksR, convR, vitalsR, ordersR]) {
+    if (r.error) failed.push(r.table);
+    else if (r.truncated) truncated.push(r.table);
+  }
+  if (productsRes.error) failed.push("products");
+
+  // Line items for the fetched orders, chunked to keep the IN list short.
+  const orderIds = ordersR.rows.map(o => o.id);
+  const chunks: string[][] = [];
+  for (let i = 0; i < orderIds.length; i += 200) chunks.push(orderIds.slice(i, i + 200));
+  const itemResults = await Promise.all(chunks.map(chunk =>
+    supabase.from("order_items").select("order_id, product_name, product_type, price_label, quantity").in("order_id", chunk)
+  ));
+  if (itemResults.some(r => r.error)) failed.push("order items");
+  const orderItems = itemResults.flatMap(r => (r.data as OrderItemRow[]) || []);
+
+  const products = (productsRes.data || []) as Product[];
+  const nameById = new Map(products.map(p => [p.id, p.name]));
+  const productClicks = clicksR.rows.map(c => ({ ...c, product_name: nameById.get(c.product_id) || "Unknown" }));
+
+  return {
+    rangeKey, fetchedAt, products, orderItems, productClicks, truncated, failed,
+    leads: leadsR.rows, pageViews: pvR.rows, conversions: [...convR.rows, ...vitalsR.rows], orders: ordersR.rows,
+  };
+}
+
+const EMPTY: never[] = [];
+
 // ---------- Component ----------
 const AdminAnalytics = () => {
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [pageViews, setPageViews] = useState<PageView[]>([]);
-  const [productClicks, setProductClicks] = useState<ProductClick[]>([]);
-  const [conversions, setConversions] = useState<ConversionRow[]>([]);
-  const [orders, setOrders] = useState<OrderRow[]>([]);
-  const [orderItems, setOrderItems] = useState<OrderItemRow[]>([]);
-  const [redemptions, setRedemptions] = useState<DiscountRedemption[]>([]);
-  const [perfEvents, setPerfEvents] = useState<ConversionRow[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [period, setPeriod] = useState(30);
   const [searchParams, setSearchParams] = useSearchParams();
   type TabKey = "leads" | "revenue" | "traffic" | "funnels" | "products" | "performance";
   const validTabs: TabKey[] = ["leads", "revenue", "traffic", "funnels", "products", "performance"];
@@ -131,124 +204,71 @@ const AdminAnalytics = () => {
     next.set("tab", t);
     setSearchParams(next, { replace: true });
   };
+  const urlRange = searchParams.get("range");
+  const rangeKey: RangeKey = isRangeKey(urlRange) ? urlRange : "30d";
+  const setRangeKey = (k: RangeKey) => {
+    const next = new URLSearchParams(searchParams);
+    next.set("range", k);
+    setSearchParams(next, { replace: true });
+  };
+
+  const [data, setData] = useState<AnalyticsData | null>(() => readCache(rangeKey));
+  const [loading, setLoading] = useState(() => !readCache(rangeKey));
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [reloadTick, setReloadTick] = useState(0);
+  const refresh = () => { analyticsCache.delete(rangeKey); setReloadTick(t => t + 1); };
 
   useEffect(() => {
-    const fetchAll = async () => {
-      const since = new Date();
-      since.setDate(since.getDate() - (period === 0 ? 365 : Math.max(period, 180)));
-      const sinceIso = since.toISOString();
+    let cancelled = false;
+    const cached = readCache(rangeKey);
+    if (cached) { setData(cached); setLoading(false); setLoadError(null); return; }
+    setLoading(true);
+    loadAnalytics(rangeKey)
+      .then(d => {
+        if (cancelled) return;
+        // A total failure (network, or no admin access) keeps whatever was shown before.
+        if (d.failed.length >= 6) { setLoadError("Analytics could not be loaded. Check your connection and admin access, then retry."); return; }
+        analyticsCache.set(rangeKey, d);
+        setData(d);
+        setLoadError(null);
+      })
+      .catch(() => { if (!cancelled) setLoadError("Analytics could not be loaded. Check your connection, then retry."); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [rangeKey, reloadTick]);
 
-      // Generic pager to bypass PostgREST 1000-row default
-      const pageAll = async <T,>(
-        build: (from: number, to: number) => any,
-        pageSize = 1000, maxPages = 20
-      ): Promise<T[]> => {
-        const all: T[] = [];
-        let from = 0;
-        for (let i = 0; i < maxPages; i++) {
-          const { data, error } = await build(from, from + pageSize - 1);
-          if (error || !data || data.length === 0) break;
-          all.push(...(data as T[]));
-          if (data.length < pageSize) break;
-          from += pageSize;
-        }
-        return all;
-      };
-
-      const pvPromise = pageAll<PageView>((from, to) => {
-        let q = supabase
-          .from("page_views")
-          .select("id, session_id, page_path, device_type, created_at, referrer, country, utm_source, utm_medium, utm_campaign, landing_path, is_new_session")
-          .order("created_at", { ascending: false })
-          .range(from, to);
-        if (period !== 0) q = q.gte("created_at", sinceIso);
-        return q;
-      });
-
-      const convPromise = pageAll<ConversionRow>((from, to) => {
-        let q = supabase
-          .from("conversions")
-          .select("id, session_id, event_type, page_path, metadata, created_at")
-          .order("created_at", { ascending: false })
-          .range(from, to);
-        if (period !== 0) q = q.gte("created_at", sinceIso);
-        return q;
-      });
-
-      const ordersPromise = pageAll<OrderRow>((from, to) => {
-        let q = supabase
-          .from("orders")
-          .select("id, order_number, total, subtotal, discount_amount, discount_code, status, payment_status, payment_method, source, created_at, shipping_address")
-          .order("created_at", { ascending: false })
-          .range(from, to);
-        if (period !== 0) q = q.gte("created_at", sinceIso);
-        return q;
-      });
-
-      const [leadsRes, productsRes, pvAll, clicksRes, convAll, ordersAll, redRes] = await Promise.all([
-        supabase.from("leads").select("*").order("created_at", { ascending: true }),
-        supabase.from("products").select("id, name, category, series, price, is_active"),
-        pvPromise,
-        supabase.from("product_clicks").select("product_id, created_at").order("created_at", { ascending: false }).limit(1000),
-        convPromise,
-        ordersPromise,
-        supabase.from("discount_redemptions").select("discount_id, amount_discounted, created_at").order("created_at", { ascending: false }).limit(1000),
-      ]);
-
-      // Fetch order items for the fetched orders (bounded)
-      const orderIds = ordersAll.map(o => o.id);
-      let items: OrderItemRow[] = [];
-      if (orderIds.length > 0) {
-        // chunk to avoid huge IN clauses
-        const chunks: string[][] = [];
-        for (let i = 0; i < orderIds.length; i += 200) chunks.push(orderIds.slice(i, i + 200));
-        const results = await Promise.all(chunks.map(chunk =>
-          supabase.from("order_items").select("order_id, product_name, product_type, price_label, quantity").in("order_id", chunk)
-        ));
-        items = results.flatMap(r => (r.data as OrderItemRow[]) || []);
-      }
-
-      setLeads((leadsRes.data as Lead[]) ?? []);
-      setProducts((productsRes.data as Product[]) ?? []);
-      setPageViews(pvAll.slice().reverse());
-      setConversions(convAll);
-      setPerfEvents(convAll.filter(c => c.event_type === "vitals" || c.event_type === "error"));
-      setOrders(ordersAll);
-      setOrderItems(items);
-      setRedemptions((redRes.data as DiscountRedemption[]) ?? []);
-
-      const prods = (productsRes.data || []) as Product[];
-      const enrichedClicks = ((clicksRes.data || []) as ProductClick[]).map(c => ({
-        ...c,
-        product_name: prods.find(p => p.id === c.product_id)?.name || "Unknown",
-      }));
-      setProductClicks(enrichedClicks);
-      setLoading(false);
-    };
-
-    fetchAll();
-
+  // New leads appear live without re-reading everything.
+  useEffect(() => {
     const channel = supabase
       .channel("analytics-leads")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "leads" }, (payload) => {
-        setLeads(prev => [...prev, payload.new as Lead]);
+        const lead = payload.new as Lead;
+        setData(prev => (prev && !prev.leads.some(l => l.id === lead.id) ? { ...prev, leads: [lead, ...prev.leads] } : prev));
       })
       .subscribe();
     return () => { supabase.removeChannel(channel); };
-  }, [period]);
+  }, []);
 
-  const filterByPeriod = <T extends { created_at: string }>(items: T[]) => {
-    if (period === 0) return items;
-    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - period);
-    return items.filter(i => new Date(i.created_at) >= cutoff);
-  };
+  const leads = data?.leads ?? (EMPTY as Lead[]);
+  const products = data?.products ?? (EMPTY as Product[]);
+  const pageViews = data?.pageViews ?? (EMPTY as PageView[]);
+  const productClicks = data?.productClicks ?? (EMPTY as ProductClick[]);
+  const conversions = data?.conversions ?? (EMPTY as ConversionRow[]);
+  const orders = data?.orders ?? (EMPTY as OrderRow[]);
+  const orderItems = data?.orderItems ?? (EMPTY as OrderItemRow[]);
 
-  const filteredLeads = useMemo(() => filterByPeriod(leads), [leads, period]);
-  const filteredPageViews = useMemo(() => filterByPeriod(pageViews), [pageViews, period]);
-  const filteredClicks = useMemo(() => filterByPeriod(productClicks), [productClicks, period]);
-  const filteredConversions = useMemo(() => filterByPeriod(conversions), [conversions, period]);
-  const filteredOrders = useMemo(() => filterByPeriod(orders), [orders, period]);
-  const filteredRedemptions = useMemo(() => filterByPeriod(redemptions), [redemptions, period]);
+  // The range the shown data was fetched for (the highlighted button can be ahead while loading).
+  const range: AnalyticsRange = useMemo(
+    () => (data ? getAnalyticsRange(data.rangeKey, data.fetchedAt) : getAnalyticsRange(rangeKey)),
+    [data, rangeKey],
+  );
+  const rangeLabel = RANGE_OPTIONS.find(o => o.key === range.key)?.label ?? "";
+
+  const filteredLeads = useMemo(() => leads.filter(l => inRange(l.created_at, range)), [leads, range]);
+  const filteredPageViews = useMemo(() => pageViews.filter(r => inRange(r.created_at, range)), [pageViews, range]);
+  const filteredClicks = useMemo(() => productClicks.filter(r => inRange(r.created_at, range)), [productClicks, range]);
+  const filteredConversions = useMemo(() => conversions.filter(r => inRange(r.created_at, range)), [conversions, range]);
+  const filteredOrders = useMemo(() => orders.filter(r => inRange(r.created_at, range)), [orders, range]);
 
   // ===================== LEAD KPIs (audited) =====================
   const totalLeads = filteredLeads.length;
@@ -266,26 +286,19 @@ const AdminAnalytics = () => {
     return budgets.length > 0 ? Math.round(budgets.reduce((a, b) => a + b, 0) / budgets.length) : 0;
   }, [filteredLeads]);
 
+  // Same length window directly before; for Today that is yesterday up to this time.
   const prevPeriodLeads = useMemo(() => {
-    if (period === 0) return null;
-    const cutoffStart = new Date(); cutoffStart.setDate(cutoffStart.getDate() - period * 2);
-    const cutoffEnd = new Date(); cutoffEnd.setDate(cutoffEnd.getDate() - period);
-    return leads.filter(l => { const d = new Date(l.created_at); return d >= cutoffStart && d < cutoffEnd; }).length;
-  }, [leads, period]);
+    if (!range.prevStart || !range.prevEnd) return null;
+    return leads.filter(l => inWindow(l.created_at, range.prevStart, range.prevEnd)).length;
+  }, [leads, range]);
   const leadGrowth = prevPeriodLeads == null ? null : prevPeriodLeads > 0
     ? Math.round(((totalLeads - prevPeriodLeads) / prevPeriodLeads) * 100)
     : totalLeads > 0 ? 100 : 0;
 
-  const trendData = useMemo(() => {
-    const map: Record<string, number> = {};
-    const useWeekly = period > 30 || period === 0;
-    filteredLeads.forEach(l => {
-      const d = new Date(l.created_at);
-      const key = useWeekly ? getWeekLabel(d) : `${d.getMonth() + 1}/${d.getDate()}`;
-      map[key] = (map[key] || 0) + 1;
-    });
-    return Object.entries(map).map(([date, count]) => ({ date, leads: count }));
-  }, [filteredLeads, period]);
+  const trendData = useMemo(
+    () => bucketSeries(filteredLeads, range, g => ({ leads: g.length })),
+    [filteredLeads, range],
+  );
 
   const statusData = useMemo(() => {
     const map: Record<string, number> = {};
@@ -360,18 +373,20 @@ const AdminAnalytics = () => {
     return Object.entries(map).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 8);
   }, [filteredLeads]);
 
+  // Fixed last-7-Lagos-days view, independent of the selected range.
   const dailyLeadsLast7 = useMemo(() => {
+    const now = range.end;
     const result = [] as { day: string; count: number }[];
     for (let i = 6; i >= 0; i--) {
-      const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0, 0, 0, 0);
-      const next = new Date(d); next.setDate(next.getDate() + 1);
+      const d = startOfZonedDay(now, -i);
+      const next = startOfZonedDay(now, -i + 1);
       result.push({
-        day: d.toLocaleDateString("en", { weekday: "short" }),
-        count: leads.filter(l => { const ld = new Date(l.created_at); return ld >= d && ld < next; }).length,
+        day: d.toLocaleDateString("en-GB", { weekday: "short", timeZone: "Africa/Lagos" }),
+        count: leads.filter(l => inWindow(l.created_at, d, next)).length,
       });
     }
     return result;
-  }, [leads]);
+  }, [leads, range]);
 
   const funnelData = useMemo(() => {
     const total = filteredLeads.length;
@@ -402,10 +417,11 @@ const AdminAnalytics = () => {
   const uniqueSessions = sessionSet.size;
   const pagesPerSession = uniqueSessions > 0 ? (totalPageViews / uniqueSessions).toFixed(1) : "0";
 
+  // As of the last refresh.
   const activeNow = useMemo(() => {
-    const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
-    return new Set(pageViews.filter(pv => new Date(pv.created_at) >= fiveMinAgo).map(pv => pv.session_id)).size;
-  }, [pageViews]);
+    const fiveMinAgo = new Date(range.end.getTime() - 5 * 60 * 1000);
+    return new Set(pageViews.filter(pv => inWindow(pv.created_at, fiveMinAgo, null)).map(pv => pv.session_id)).size;
+  }, [pageViews, range]);
 
   // Bounce rate: sessions with exactly 1 pageview
   const bounceRate = useMemo(() => {
@@ -416,19 +432,28 @@ const AdminAnalytics = () => {
     return Math.round((bounced / uniqueSessions) * 100);
   }, [filteredPageViews, uniqueSessions]);
 
-  // Avg session duration (median of session_end durations)
+  // Median session duration. A session reports a running total each time the tab
+  // is hidden, so take each session's longest report rather than every report.
   const avgSessionSec = useMemo(() => {
-    const durs = filteredConversions
-      .filter(c => c.event_type === "session_end")
-      .map(c => Number(c.metadata?.duration_ms))
-      .filter(n => !Number.isNaN(n) && n > 0)
-      .sort((a, b) => a - b);
+    const longest = new Map<string, number>();
+    filteredConversions.forEach(c => {
+      if (c.event_type !== "session_end") return;
+      const n = Number(c.metadata?.duration_ms);
+      if (Number.isNaN(n) || n <= 0) return;
+      longest.set(c.session_id, Math.max(longest.get(c.session_id) ?? 0, n));
+    });
+    const durs = [...longest.values()].sort((a, b) => a - b);
     if (!durs.length) return 0;
     const mid = Math.floor(durs.length / 2);
     return Math.round(durs[mid] / 1000);
   }, [filteredConversions]);
 
-  const newSessions = useMemo(() => filteredPageViews.filter(pv => pv.is_new_session).length, [filteredPageViews]);
+  // Sessions (not rows) that started in range; a session can carry more than one
+  // is_new_session row (e.g. a duplicated tab copies sessionStorage), which pushed this past 100%.
+  const newSessions = useMemo(
+    () => new Set(filteredPageViews.filter(pv => pv.is_new_session).map(pv => pv.session_id)).size,
+    [filteredPageViews],
+  );
   const returningPct = uniqueSessions > 0 ? Math.round(((uniqueSessions - newSessions) / uniqueSessions) * 100) : 0;
 
   const trafficByPage = useMemo(() => {
@@ -436,6 +461,9 @@ const AdminAnalytics = () => {
     filteredPageViews.forEach(pv => { map[pv.page_path] = (map[pv.page_path] || 0) + 1; });
     return Object.entries(map).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 10);
   }, [filteredPageViews]);
+
+  // trafficByPage is the top 10 only, so it can't be used as the distinct count.
+  const uniquePageCount = useMemo(() => new Set(filteredPageViews.map(pv => pv.page_path)).size, [filteredPageViews]);
 
   const landingPages = useMemo(() => {
     const map: Record<string, number> = {};
@@ -475,7 +503,8 @@ const AdminAnalytics = () => {
   const deviceData = useMemo(() => {
     const map: Record<string, number> = { desktop: 0, mobile: 0, tablet: 0 };
     filteredPageViews.forEach(pv => {
-      const d = pv.device_type || "desktop";
+      // Rows saved before device type was recorded have none; don't pass them off as desktop.
+      const d = pv.device_type || "unknown";
       map[d] = (map[d] || 0) + 1;
     });
     return Object.entries(map).filter(([, v]) => v > 0)
@@ -488,18 +517,10 @@ const AdminAnalytics = () => {
     return Object.entries(map).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 8);
   }, [filteredPageViews]);
 
-  const trafficTrend = useMemo(() => {
-    const map: Record<string, { views: number; sessions: Set<string> }> = {};
-    const useWeekly = period > 30 || period === 0;
-    filteredPageViews.forEach(pv => {
-      const d = new Date(pv.created_at);
-      const key = useWeekly ? getWeekLabel(d) : `${d.getMonth() + 1}/${d.getDate()}`;
-      if (!map[key]) map[key] = { views: 0, sessions: new Set() };
-      map[key].views++;
-      map[key].sessions.add(pv.session_id);
-    });
-    return Object.entries(map).map(([date, { views, sessions }]) => ({ date, views, sessions: sessions.size }));
-  }, [filteredPageViews, period]);
+  const trafficTrend = useMemo(
+    () => bucketSeries(filteredPageViews, range, g => ({ views: g.length, sessions: new Set(g.map(pv => pv.session_id)).size })),
+    [filteredPageViews, range],
+  );
 
   // ===================== REVENUE =====================
   const paidOrders = useMemo(() => filteredOrders.filter(o => (o.payment_status || "").toLowerCase() === "paid"), [filteredOrders]);
@@ -512,16 +533,12 @@ const AdminAnalytics = () => {
   const pendingRevenue = useMemo(() => pendingOrders.reduce((s, o) => s + Number(o.total || 0), 0), [pendingOrders]);
   const aov = paidOrders.length > 0 ? grossRevenue / paidOrders.length : 0;
 
-  const revenueTrend = useMemo(() => {
-    const map: Record<string, number> = {};
-    const useWeekly = period > 30 || period === 0;
-    paidOrders.forEach(o => {
-      const d = new Date(o.created_at);
-      const key = useWeekly ? getWeekLabel(d) : `${d.getMonth() + 1}/${d.getDate()}`;
-      map[key] = (map[key] || 0) + Number(o.total || 0);
-    });
-    return Object.entries(map).map(([date, revenue]) => ({ date, revenue: Math.round(revenue) }));
-  }, [paidOrders, period]);
+  // Orders arrive newest first; bucketSeries returns points oldest first (the old map
+  // kept arrival order, so this chart ran backwards).
+  const revenueTrend = useMemo(
+    () => paidOrders.length === 0 ? [] : bucketSeries(paidOrders, range, g => ({ revenue: Math.round(g.reduce((s, o) => s + Number(o.total || 0), 0)) })),
+    [paidOrders, range],
+  );
 
   const paidOrderIds = useMemo(() => new Set(paidOrders.map(o => o.id)), [paidOrders]);
 
@@ -591,7 +608,8 @@ const AdminAnalytics = () => {
 
   const siteFunnel = useMemo(() => {
     const sessions = uniqueSessions;
-    const productViews = uniqueSessionsForEvent("product_view") + uniqueSessionsForEvent("product_click");
+    // Union, not a sum: a session that both viewed and clicked a product counts once.
+    const productViews = new Set(filteredConversions.filter(c => c.event_type === "product_view" || c.event_type === "product_click").map(c => c.session_id)).size;
     const cartAdds = uniqueSessionsForEvent("cart_add");
     const checkoutViews = uniqueSessionsForEvent("checkout_view");
     const paid = paidOrders.length;
@@ -628,14 +646,14 @@ const AdminAnalytics = () => {
   const leadKpis = [
     { label: "Total Leads", value: totalLeads, icon: Users,
       change: leadGrowth == null ? "" : `${leadGrowth >= 0 ? "+" : ""}${leadGrowth}%`,
-      positive: (leadGrowth ?? 0) >= 0, sub: leadGrowth == null ? "" : "vs previous period" },
+      positive: (leadGrowth ?? 0) >= 0, sub: leadGrowth == null ? "" : `${comparisonLabel(range)} (${prevPeriodLeads})` },
     { label: "Unique Leads", value: uniqueLeadCount, icon: Repeat, change: `${totalLeads - uniqueLeadCount} duplicates`, positive: true, sub: "by phone+email" },
     { label: "Conversion Rate", value: `${conversionRate}%`, icon: Target, change: `${convertedLeads} won · ${closedLostLeads} lost`, positive: true, sub: "of total leads" },
     { label: "Avg Budget", value: avgBudget > 0 ? `₦${avgBudget.toLocaleString()}` : "N/A", icon: DollarSign, change: "", positive: true, sub: "per lead" },
   ];
 
   const trafficKpis = [
-    { label: "Page Views", value: totalPageViews.toLocaleString(), icon: Eye, sub: `${trafficByPage.length} unique pages` },
+    { label: "Page Views", value: totalPageViews.toLocaleString(), icon: Eye, sub: `${uniquePageCount} unique pages` },
     { label: "Sessions", value: uniqueSessions.toLocaleString(), icon: Globe, sub: `${pagesPerSession} pages/session` },
     { label: "New Sessions", value: `${uniqueSessions > 0 ? Math.round((newSessions / uniqueSessions) * 100) : 0}%`, icon: Users, sub: `${returningPct}% returning` },
     { label: "Bounce Rate", value: `${bounceRate}%`, icon: MousePointerClick, sub: "1-page sessions" },
@@ -644,27 +662,19 @@ const AdminAnalytics = () => {
   ];
 
   // ===================== Performance (unchanged core) =====================
-  const filteredPerf = useMemo(() => filterByPeriod(perfEvents), [perfEvents, period]);
-  const vitals = useMemo(() => filteredPerf.filter(e => e.event_type === "vitals"), [filteredPerf]);
-  const errors = useMemo(() => filteredPerf.filter(e => e.event_type === "error"), [filteredPerf]);
+  const vitals = useMemo(() => filteredConversions.filter(e => e.event_type === "vitals"), [filteredConversions]);
+  const errors = useMemo(() => filteredConversions.filter(e => e.event_type === "error"), [filteredConversions]);
 
   const vitalsTrend = useMemo(() => {
-    const map: Record<string, { LCP: number[]; INP: number[]; CLS: number[] }> = {};
-    vitals.forEach(v => {
-      const d = new Date(v.created_at);
-      const key = `${d.getMonth() + 1}/${d.getDate()}`;
-      if (!map[key]) map[key] = { LCP: [], INP: [], CLS: [] };
-      const m = v.metadata?.metric as "LCP" | "INP" | "CLS" | undefined;
-      const val = Number(v.metadata?.value);
-      if (m && map[key][m] && !Number.isNaN(val)) map[key][m].push(val);
-    });
-    return Object.entries(map).map(([date, vals]) => ({
-      date,
-      LCP: vals.LCP.length ? Math.round(vals.LCP.reduce((a, b) => a + b, 0) / vals.LCP.length) : 0,
-      INP: vals.INP.length ? Math.round(vals.INP.reduce((a, b) => a + b, 0) / vals.INP.length) : 0,
-      CLS: vals.CLS.length ? +(vals.CLS.reduce((a, b) => a + b, 0) / vals.CLS.length).toFixed(3) : 0,
+    if (vitals.length === 0) return [];
+    const avgOf = (g: ConversionRow[], m: "LCP" | "INP" | "CLS") => {
+      const vs = g.filter(v => v.metadata?.metric === m).map(v => Number(v.metadata?.value)).filter(n => !Number.isNaN(n));
+      return vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : 0;
+    };
+    return bucketSeries(vitals, range, g => ({
+      LCP: Math.round(avgOf(g, "LCP")), INP: Math.round(avgOf(g, "INP")), CLS: +avgOf(g, "CLS").toFixed(3),
     }));
-  }, [vitals]);
+  }, [vitals, range]);
   const avgVital = (name: "LCP" | "INP" | "CLS") => {
     const vs = vitals.filter(v => v.metadata?.metric === name).map(v => Number(v.metadata?.value)).filter(n => !Number.isNaN(n));
     if (!vs.length) return null; return vs.reduce((a, b) => a + b, 0) / vs.length;
@@ -676,11 +686,10 @@ const AdminAnalytics = () => {
     if (name === "INP") return v <= 200 ? "good" : v <= 500 ? "needs work" : "poor";
     return v <= 0.1 ? "good" : v <= 0.25 ? "needs work" : "poor";
   };
-  const errorTrend = useMemo(() => {
-    const map: Record<string, number> = {};
-    errors.forEach(e => { const d = new Date(e.created_at); const key = `${d.getMonth() + 1}/${d.getDate()}`; map[key] = (map[key] || 0) + 1; });
-    return Object.entries(map).map(([date, count]) => ({ date, errors: count }));
-  }, [errors]);
+  const errorTrend = useMemo(
+    () => errors.length === 0 ? [] : bucketSeries(errors, range, g => ({ errors: g.length })),
+    [errors, range],
+  );
   const topFailingRoutes = useMemo(() => {
     const map: Record<string, number> = {};
     errors.forEach(e => { const p = e.page_path || "unknown"; map[p] = (map[p] || 0) + 1; });
@@ -706,7 +715,8 @@ const AdminAnalytics = () => {
   const exportAnalyticsCSV = () => {
     const rows: string[][] = [
       ["Metric", "Value"],
-      ["Period (days)", String(period === 0 ? "All" : period)],
+      ["Range", rangeLabel],
+      ["Window (Lagos time)", describeRange(range)],
       ["Total Leads", String(totalLeads)],
       ["Unique Leads (phone+email)", String(uniqueLeadCount)],
       ["Conversion Rate", `${conversionRate}%`],
@@ -722,10 +732,10 @@ const AdminAnalytics = () => {
       ["Pending Orders", String(pendingOrders.length)],
       ...revenueByState.map(r => [`Revenue ${r.name}`, String(r.value)]),
     ];
-    const csv = rows.map(r => r.map(c => `"${c}"`).join(",")).join("\n");
+    const csv = rows.map(r => r.map(c => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = `analytics-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+    const a = document.createElement("a"); a.href = url; a.download = `analytics-${range.key}-${zonedDateString(range.end)}.csv`; a.click();
     URL.revokeObjectURL(url);
   };
 
@@ -768,27 +778,55 @@ const AdminAnalytics = () => {
 
   return (
     <AdminLayout>
-      {loading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="animate-pulse text-muted-foreground">Loading analytics...</div>
+      {!data ? (
+        <div className="flex flex-col items-center justify-center gap-3 py-20">
+          {loadError && !loading ? (
+            <>
+              <p className="text-sm text-red-600">{loadError}</p>
+              <button onClick={refresh} className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-all">
+                <RefreshCw size={14} /> Retry
+              </button>
+            </>
+          ) : (
+            <div className="animate-pulse text-muted-foreground">Loading analytics...</div>
+          )}
         </div>
       ) : (
         <div className="space-y-6">
           {/* Top controls */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <Filter size={16} className="text-muted-foreground" />
-              {periodOptions.map(opt => (
-                <button key={opt.value} onClick={() => setPeriod(opt.value)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${period === opt.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
-                  {opt.label}
-                </button>
-              ))}
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Date range">
+                <Filter size={16} className="text-muted-foreground" />
+                {RANGE_OPTIONS.map(opt => (
+                  <button key={opt.key} onClick={() => setRangeKey(opt.key)} aria-pressed={rangeKey === opt.key}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${rangeKey === opt.key ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground" aria-live="polite">
+                {loading ? "Updating..." : describeRange(range)}
+              </p>
             </div>
-            <button onClick={exportAnalyticsCSV} className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-all">
-              <Download size={14} /> Export CSV
-            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={refresh} disabled={loading} title="Reload analytics"
+                className="inline-flex items-center gap-2 rounded-xl border border-border px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-all disabled:opacity-50">
+                <RefreshCw size={14} className={loading ? "animate-spin" : ""} /> Refresh
+              </button>
+              <button onClick={exportAnalyticsCSV} className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-all">
+                <Download size={14} /> Export CSV
+              </button>
+            </div>
           </div>
+
+          {(loadError || data.failed.length > 0 || data.truncated.length > 0) && (
+            <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-xs text-amber-900 space-y-1 dark:bg-amber-950/30 dark:text-amber-200 dark:border-amber-800">
+              {loadError && <p>{loadError} Showing the last loaded data.</p>}
+              {data.failed.length > 0 && <p>Could not fully load {data.failed.join(", ")}; figures from those may be incomplete. Try Refresh or a shorter range.</p>}
+              {data.truncated.length > 0 && <p>Only the most recent 25,000 rows of {data.truncated.join(", ")} were loaded, so totals for this range may be low. Pick a shorter range for exact numbers.</p>}
+            </div>
+          )}
 
           {/* Tab navigation */}
           <div className="flex gap-1 bg-muted rounded-xl p-1 overflow-x-auto">

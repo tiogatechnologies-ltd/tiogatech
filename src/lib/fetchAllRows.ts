@@ -23,13 +23,14 @@ type RangeQuery<T> = {
 export async function fetchAllRows<T>(
   buildQuery: () => RangeQuery<T>,
   { pageSize = PAGE_SIZE, maxPages = MAX_PAGES } = {},
-): Promise<{ rows: T[]; truncated: boolean }> {
+): Promise<{ rows: T[]; truncated: boolean; error?: unknown }> {
   const rows: T[] = [];
 
   for (let page = 0; page < maxPages; page++) {
     const from = page * pageSize;
     const { data, error } = await buildQuery().range(from, from + pageSize - 1);
-    if (error || !data) break;
+    // Rows fetched so far are kept; `error` lets callers say the totals are incomplete.
+    if (error || !data) return { rows, truncated: true, error: error ?? new Error("No data returned") };
     rows.push(...data);
     // A short page means we reached the end.
     if (data.length < pageSize) return { rows, truncated: false };
