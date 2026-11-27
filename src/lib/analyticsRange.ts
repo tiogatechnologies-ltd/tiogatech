@@ -225,6 +225,18 @@ export function comparisonLabel(range: AnalyticsRange): string {
   return range.key === "today" ? "vs yesterday to this time" : "vs previous period";
 }
 
+/**
+ * Nearest-rank percentile (p in 0..100) of the finite values, or null when there are none.
+ * Web vitals are reported at p75 (as Google does) because a plain average is dominated
+ * by a few extreme samples, such as a tab that loaded in the background.
+ */
+export function percentile(values: number[], p: number): number | null {
+  const vs = values.filter(Number.isFinite).sort((a, b) => a - b);
+  if (vs.length === 0) return null;
+  const rank = Math.ceil((Math.min(100, Math.max(0, p)) / 100) * vs.length);
+  return vs[Math.max(0, rank - 1)];
+}
+
 /** Lagos calendar date (YYYY-MM-DD) of an instant, e.g. for export filenames. */
 export function zonedDateString(date: Date, tz = BUSINESS_TZ): string {
   const p = zonedParts(date, tz);

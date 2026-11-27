@@ -7,7 +7,7 @@ import { TrendingUp, Users, Target, DollarSign, Filter, ArrowUpRight, ArrowDownR
 import { fetchAllRows } from "@/lib/fetchAllRows";
 import {
   RANGE_OPTIONS, bucketSeries, comparisonLabel, describeRange, getAnalyticsRange, inRange, inWindow,
-  isRangeKey, startOfZonedDay, zonedDateString, type AnalyticsRange, type RangeKey,
+  isRangeKey, percentile, startOfZonedDay, zonedDateString, type AnalyticsRange, type RangeKey,
 } from "@/lib/analyticsRange";
 
 // ---------- Types ----------
@@ -37,6 +37,8 @@ interface OrderRow {
 }
 interface OrderItemRow { order_id: string; product_name: string; product_type: string | null; price_label: string | null; quantity: number; }
 
+/** Minimum LCP readings before a page is ranked in "Slowest Pages". */
+const MIN_ROUTE_SAMPLES = 5;
 const COLORS = ["hsl(var(--primary))", "hsl(var(--accent))", "#6366f1", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
 const tooltipStyle = { background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: 12 } as const;
 
@@ -665,21 +667,20 @@ const AdminAnalytics = () => {
   const vitals = useMemo(() => filteredConversions.filter(e => e.event_type === "vitals"), [filteredConversions]);
   const errors = useMemo(() => filteredConversions.filter(e => e.event_type === "error"), [filteredConversions]);
 
+  // Vitals are shown at the 75th percentile, Google's standard: averages were dominated by
+  // a few extreme samples (a 30-day "average LCP" of ~34 s).
+  const metricValues = (g: ConversionRow[], m: "LCP" | "INP" | "CLS") =>
+    g.filter(v => v.metadata?.metric === m).map(v => Number(v.metadata?.value));
   const vitalsTrend = useMemo(() => {
     if (vitals.length === 0) return [];
-    const avgOf = (g: ConversionRow[], m: "LCP" | "INP" | "CLS") => {
-      const vs = g.filter(v => v.metadata?.metric === m).map(v => Number(v.metadata?.value)).filter(n => !Number.isNaN(n));
-      return vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : 0;
-    };
+    const p75 = (g: ConversionRow[], m: "LCP" | "INP" | "CLS") => percentile(metricValues(g, m), 75) ?? 0;
     return bucketSeries(vitals, range, g => ({
-      LCP: Math.round(avgOf(g, "LCP")), INP: Math.round(avgOf(g, "INP")), CLS: +avgOf(g, "CLS").toFixed(3),
+      LCP: Math.round(p75(g, "LCP")), INP: Math.round(p75(g, "INP")), CLS: +p75(g, "CLS").toFixed(3),
     }));
   }, [vitals, range]);
-  const avgVital = (name: "LCP" | "INP" | "CLS") => {
-    const vs = vitals.filter(v => v.metadata?.metric === name).map(v => Number(v.metadata?.value)).filter(n => !Number.isNaN(n));
-    if (!vs.length) return null; return vs.reduce((a, b) => a + b, 0) / vs.length;
-  };
-  const avgLCP = avgVital("LCP"), avgINP = avgVital("INP"), avgCLS = avgVital("CLS");
+  const p75LCP = percentile(metricValues(vitals, "LCP"), 75);
+  const p75INP = percentile(metricValues(vitals, "INP"), 75);
+  const p75CLS = percentile(metricValues(vitals, "CLS"), 75);
   const rateVital = (name: "LCP" | "INP" | "CLS", v: number | null) => {
     if (v == null) return "-";
     if (name === "LCP") return v <= 2500 ? "good" : v <= 4000 ? "needs work" : "poor";
@@ -701,13 +702,16 @@ const AdminAnalytics = () => {
       const p = v.page_path || "unknown"; const val = Number(v.metadata?.value);
       if (!Number.isNaN(val)) (map[p] = map[p] || []).push(val);
     });
-    return Object.entries(map).map(([name, arr]) => ({ name, value: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) }))
+    // A page needs a few readings before its p75 means anything; with one or two, a single
+    // background-tab sample (tens of minutes) would top the list.
+    return Object.entries(map).filter(([, arr]) => arr.length >= MIN_ROUTE_SAMPLES)
+      .map(([name, arr]) => ({ name, value: Math.round(percentile(arr, 75) ?? 0) }))
       .sort((a, b) => b.value - a.value).slice(0, 8);
   }, [vitals]);
   const perfKpis = [
-    { label: "Avg LCP", value: avgLCP != null ? `${Math.round(avgLCP)} ms` : "-", icon: Gauge, sub: rateVital("LCP", avgLCP) },
-    { label: "Avg INP", value: avgINP != null ? `${Math.round(avgINP)} ms` : "-", icon: Activity, sub: rateVital("INP", avgINP) },
-    { label: "Avg CLS", value: avgCLS != null ? avgCLS.toFixed(3) : "-", icon: Eye, sub: rateVital("CLS", avgCLS) },
+    { label: "LCP (p75)", value: p75LCP != null ? `${Math.round(p75LCP)} ms` : "-", icon: Gauge, sub: rateVital("LCP", p75LCP) },
+    { label: "INP (p75)", value: p75INP != null ? `${Math.round(p75INP)} ms` : "-", icon: Activity, sub: rateVital("INP", p75INP) },
+    { label: "CLS (p75)", value: p75CLS != null ? p75CLS.toFixed(3) : "-", icon: Eye, sub: rateVital("CLS", p75CLS) },
     { label: "Total Errors", value: errors.length, icon: AlertTriangle, sub: `${topFailingRoutes.length} routes affected` },
   ];
 
@@ -1423,8 +1427,8 @@ const AdminAnalytics = () => {
                           <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                           <Tooltip contentStyle={tooltipStyle} />
                           <Legend wrapperStyle={{ fontSize: 11 }} />
-                          <Line type="monotone" dataKey="LCP" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} name="LCP (ms)" />
-                          <Line type="monotone" dataKey="INP" stroke="#6366f1" strokeWidth={2} dot={false} name="INP (ms)" />
+                          <Line type="monotone" dataKey="LCP" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} name="LCP p75 (ms)" />
+                          <Line type="monotone" dataKey="INP" stroke="#6366f1" strokeWidth={2} dot={false} name="INP p75 (ms)" />
                         </LineChart>
                       </ResponsiveContainer>
                     ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No vitals captured yet</p>}
@@ -1472,7 +1476,7 @@ const AdminAnalytics = () => {
                   </div>
                 </div>
                 <div className="rounded-2xl border border-border bg-card p-5">
-                  <h3 className="font-display font-bold text-card-foreground mb-4">Slowest Pages (LCP)</h3>
+                  <h3 className="font-display font-bold text-card-foreground mb-4">Slowest Pages (LCP p75)</h3>
                   <div className="h-64">
                     {worstLcpRoutes.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
@@ -1484,7 +1488,7 @@ const AdminAnalytics = () => {
                           <Bar dataKey="value" fill="hsl(var(--primary))" radius={[0, 6, 6, 0]} />
                         </BarChart>
                       </ResponsiveContainer>
-                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">No LCP samples yet</p>}
+                    ) : <p className="text-sm text-muted-foreground flex items-center justify-center h-full">Not enough LCP readings yet ({MIN_ROUTE_SAMPLES} per page needed)</p>}
                   </div>
                 </div>
               </div>

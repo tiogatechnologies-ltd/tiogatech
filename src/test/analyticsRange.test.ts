@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  bucketSeries, buildBuckets, describeRange, getAnalyticsRange, inRange, inWindow,
+  bucketSeries, buildBuckets, describeRange, getAnalyticsRange, inRange, inWindow, percentile,
   startOfZonedDay, startOfZonedWeek, zoneOffsetMs, zonedDateString,
 } from "@/lib/analyticsRange";
 
@@ -130,6 +130,23 @@ describe("buckets", () => {
     const s = bucketSeries(rows, getAnalyticsRange("all", NOW), g => ({ n: g.length }));
     expect(s.map(p => p.date)).toEqual(["w/c 9 Nov", "w/c 16 Nov", "w/c 23 Nov"]);
     expect(s.map(p => p.n)).toEqual([1, 0, 1]);
+  });
+});
+
+describe("percentile", () => {
+  it("returns the nearest-rank p75 and ignores a few extreme outliers", () => {
+    const lcp = [1200, 1500, 1800, 2000, 2200, 2400, 2600, 3000, 90_000, 120_000];
+    expect(percentile(lcp, 75)).toBe(3000);
+    // The mean of the same samples would be ~22,670 ms.
+  });
+
+  it("handles small, empty and non-finite inputs", () => {
+    expect(percentile([], 75)).toBeNull();
+    expect(percentile([NaN, Infinity], 75)).toBeNull();
+    expect(percentile([500], 75)).toBe(500);
+    expect(percentile([3, 1, 2, 4], 75)).toBe(3);
+    expect(percentile([1, 2, 3, 4], 100)).toBe(4);
+    expect(percentile([1, 2, 3, 4], 0)).toBe(1);
   });
 });
 
