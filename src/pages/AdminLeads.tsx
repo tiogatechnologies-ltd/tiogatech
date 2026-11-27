@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { startOfZonedDay } from "@/lib/analyticsRange";
 import { Trash2, Eye, X, Download, Search, MessageCircle, Mail, Plus, Clock, UserPlus, Loader2 } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { toast } from "sonner";
@@ -42,19 +44,30 @@ const statusColors: Record<string, string> = {
 };
 
 const statuses = ["new", "contacted", "converted", "closed"];
+
+const YMD_RE = /^\d{4}-\d{2}-\d{2}$/;
+/** Lagos midnight starting the given YYYY-MM-DD, shifted by `addDays`. A bare
+ *  `new Date("2026-11-27")` is UTC midnight, i.e. 01:00 in Lagos, which used to
+ *  drop leads submitted between midnight and 1am from the "From" filter. */
+const lagosDayStart = (ymd: string, addDays = 0) => startOfZonedDay(new Date(`${ymd}T12:00:00Z`), addDays);
 const activityTypes = ["call", "email", "whatsapp", "meeting", "note"];
 
 const AdminLeads = () => {
   const { user } = useAuth();
+  // Analytics links here with ?lead=<id> to open one lead, or ?from=&to=&status= to
+  // show the leads behind a chart. Read once on mount; the filters stay editable.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialParam = (k: string) => searchParams.get(k) ?? "";
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewing, setViewing] = useState<Lead | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [creating, setCreating] = useState(false);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
+  const [statusFilter, setStatusFilter] = useState(() => (statuses.includes(initialParam("status")) ? initialParam("status") : ""));
+  const [dateFrom, setDateFrom] = useState(() => (YMD_RE.test(initialParam("from")) ? initialParam("from") : ""));
+  const [dateTo, setDateTo] = useState(() => (YMD_RE.test(initialParam("to")) ? initialParam("to") : ""));
+  const pendingLeadId = useRef(initialParam("lead"));
   const [sourceFilter, setSourceFilter] = useState("");
   const [activities, setActivities] = useState<Activity[]>([]);
   const [newAction, setNewAction] = useState("note");
@@ -114,6 +127,21 @@ const AdminLeads = () => {
     setViewing(lead);
     fetchActivities(lead.id);
   };
+
+  // Open the lead named in ?lead= once the list has loaded, then drop the
+  // parameter so closing the panel or refreshing doesn't reopen it.
+  useEffect(() => {
+    const id = pendingLeadId.current;
+    if (!id || loading) return;
+    pendingLeadId.current = "";
+    const lead = leads.find(l => l.id === id);
+    if (lead) viewLead(lead);
+    else toast.error("That lead could not be found. It may have been deleted.");
+    const next = new URLSearchParams(searchParams);
+    next.delete("lead");
+    setSearchParams(next, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, leads]);
 
   const addActivity = async () => {
     if (!viewing || !newNote.trim()) return;
@@ -201,8 +229,9 @@ const AdminLeads = () => {
   const filtered = leads
     .filter(l => !statusFilter || l.status === statusFilter)
     .filter(l => !sourceFilter || (l.source ?? "website_form") === sourceFilter)
-    .filter(l => !dateFrom || new Date(l.created_at) >= new Date(dateFrom))
-    .filter(l => !dateTo || new Date(l.created_at) <= new Date(`${dateTo}T23:59:59`))
+    // Dates are Lagos calendar days: From is inclusive from its midnight, To runs to the next midnight.
+    .filter(l => !dateFrom || new Date(l.created_at) >= lagosDayStart(dateFrom))
+    .filter(l => !dateTo || new Date(l.created_at) < lagosDayStart(dateTo, 1))
     .filter(l => !search || l.full_name.toLowerCase().includes(search.toLowerCase()) || l.phone.includes(search) || (l.email?.toLowerCase().includes(search.toLowerCase())));
 
   const counts = statuses.reduce((acc, s) => {

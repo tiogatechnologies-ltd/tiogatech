@@ -1,5 +1,5 @@
 ﻿import { useEffect, useState, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from "recharts";
@@ -11,9 +11,9 @@ import {
 } from "@/lib/analyticsRange";
 
 // ---------- Types ----------
-const LEAD_COLUMNS = "id, phone, email, location, products, budget, status, created_at, has_electricity, main_goal, appliances, timeline, source, utm_source, utm_medium, utm_campaign, referrer";
+const LEAD_COLUMNS = "id, full_name, phone, email, location, products, budget, status, created_at, has_electricity, main_goal, appliances, timeline, source, utm_source, utm_medium, utm_campaign, referrer";
 interface Lead {
-  id: string; phone: string; email: string | null;
+  id: string; full_name: string; phone: string; email: string | null;
   location: string; products: string[]; budget: string | null; status: string;
   created_at: string; has_electricity: string | null; main_goal: string | null;
   appliances: string[] | null; timeline: string | null; source?: string;
@@ -37,6 +37,17 @@ interface OrderRow {
 }
 interface OrderItemRow { order_id: string; product_name: string; product_type: string | null; price_label: string | null; quantity: number; }
 
+/** Rows shown in the Leads tab list; the rest are one click away in the CRM. */
+const LEAD_LIST_LIMIT = 50;
+/** Status shown as coloured text (no badges). */
+const LEAD_STATUS_TEXT: Record<string, string> = {
+  new: "text-blue-600", contacted: "text-amber-600", converted: "text-emerald-600", closed: "text-muted-foreground",
+};
+const leadTimeFormat = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Africa/Lagos", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+});
+/** "27 Nov, 14:05" in Lagos time. */
+const formatLeadTime = (iso: string) => leadTimeFormat.format(new Date(iso));
 /** Minimum LCP readings before a page is ranked in "Slowest Pages". */
 const MIN_ROUTE_SAMPLES = 5;
 const COLORS = ["hsl(var(--primary))", "hsl(var(--accent))", "#6366f1", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
@@ -644,6 +655,18 @@ const AdminAnalytics = () => {
     // eslint-disable-next-line
   }, [filteredConversions, totalLeads, convertedLeads]);
 
+  // ===================== Lead list → CRM =====================
+  const navigate = useNavigate();
+  const recentLeads = useMemo(
+    () => [...filteredLeads].sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)).slice(0, LEAD_LIST_LIMIT),
+    [filteredLeads],
+  );
+  // The CRM's date filter takes Lagos calendar days, matching this range.
+  const crmRangeHref = range.start
+    ? `/admin/leads?from=${zonedDateString(range.start)}&to=${zonedDateString(range.end)}`
+    : "/admin/leads";
+  const leadHref = (id: string) => `/admin/leads?lead=${encodeURIComponent(id)}`;
+
   // ===================== KPI arrays =====================
   const leadKpis = [
     { label: "Total Leads", value: totalLeads, icon: Users,
@@ -864,6 +887,59 @@ const AdminAnalytics = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Lead list for the range: each row opens the lead in the CRM */}
+              <div className="rounded-2xl border border-border bg-card">
+                <div className="flex flex-wrap items-center justify-between gap-2 px-5 pt-5 pb-3">
+                  <div>
+                    <h3 className="font-display font-bold text-card-foreground">Leads in this range</h3>
+                    <p className="text-xs text-muted-foreground">Newest first. Click a lead to open its details, notes and activity in the CRM.</p>
+                  </div>
+                  <Link to={crmRangeHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+                    View all in CRM <ArrowUpRight size={14} />
+                  </Link>
+                </div>
+                {recentLeads.length === 0 ? (
+                  <p className="px-5 pb-5 text-sm text-muted-foreground">No leads in this range yet.</p>
+                ) : (
+                  <div className="overflow-x-auto max-h-96 overflow-y-auto border-t border-border">
+                    <table className="w-full text-sm">
+                      <thead className="sticky top-0 bg-card">
+                        <tr className="text-left text-xs text-muted-foreground border-b border-border">
+                          <th className="px-5 py-2 font-medium">Received</th>
+                          <th className="px-3 py-2 font-medium">Name</th>
+                          <th className="px-3 py-2 font-medium hidden sm:table-cell">Phone</th>
+                          <th className="px-3 py-2 font-medium hidden md:table-cell">Location</th>
+                          <th className="px-3 py-2 font-medium hidden lg:table-cell">Interested in</th>
+                          <th className="px-3 py-2 font-medium hidden md:table-cell">Budget</th>
+                          <th className="px-5 py-2 font-medium">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {recentLeads.map(l => (
+                          <tr key={l.id} onClick={() => navigate(leadHref(l.id))}
+                            className="border-b border-border/50 last:border-0 cursor-pointer hover:bg-muted/40 transition-colors">
+                            <td className="px-5 py-2.5 text-xs text-muted-foreground whitespace-nowrap">{formatLeadTime(l.created_at)}</td>
+                            <td className="px-3 py-2.5 font-medium text-card-foreground">
+                              <Link to={leadHref(l.id)} onClick={e => e.stopPropagation()} className="hover:underline">{l.full_name || "Unnamed"}</Link>
+                            </td>
+                            <td className="px-3 py-2.5 text-muted-foreground whitespace-nowrap hidden sm:table-cell">{l.phone}</td>
+                            <td className="px-3 py-2.5 text-muted-foreground hidden md:table-cell">{l.location}</td>
+                            <td className="px-3 py-2.5 text-muted-foreground hidden lg:table-cell truncate max-w-[16rem]">{(l.products || []).join(", ") || "-"}</td>
+                            <td className="px-3 py-2.5 text-muted-foreground hidden md:table-cell">{l.budget || "-"}</td>
+                            <td className={`px-5 py-2.5 text-xs font-medium capitalize ${LEAD_STATUS_TEXT[l.status] ?? "text-muted-foreground"}`}>{l.status}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {filteredLeads.length > recentLeads.length && (
+                  <p className="px-5 py-3 text-xs text-muted-foreground border-t border-border">
+                    Showing the newest {recentLeads.length} of {filteredLeads.length}. <Link to={crmRangeHref} className="text-primary hover:underline">See them all in the CRM</Link>.
+                  </p>
+                )}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
