@@ -26,6 +26,7 @@ import { toast } from "sonner";
 
 export const ADS_GATE_STORAGE_KEY = "tioga_ads_lp_unlocked_session_v2";
 const LEGACY_ADS_GATE_STORAGE_KEY = "tioga_ads_lp_unlocked_v1";
+const EMAIL_RE = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/;
 const WHATSAPP_NUMBER = "2348178000023";
 const WHATSAPP_DISPLAY = "+234 8178 000 023";
 
@@ -105,6 +106,7 @@ export const AdsLeadGateModal = ({
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [location, setLocation] = useState("");
   const [services, setServices] = useState<AdsServiceId[]>(initialService);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -161,6 +163,9 @@ export const AdsLeadGateModal = ({
     if (!isValidNigerianPhone(phone)) {
       next.phone = "Enter a valid Nigerian phone number (e.g. 0803 123 4567).";
     }
+    if (email.trim() && !EMAIL_RE.test(email.trim())) {
+      next.email = "Enter a valid email address.";
+    }
     if (!location.trim() || location.trim().length < 2) {
       next.location = "Enter your city or state (e.g. Lagos, Abuja, Jos).";
     }
@@ -198,7 +203,7 @@ export const AdsLeadGateModal = ({
           automationScale: "",
           fullName: fullName.trim(),
           phone,
-          email: "",
+          email: email.trim(),
           preferredContact: "WhatsApp",
           consent: true,
           extraNotes: "Submitted via quick entry popup on /get-started",
@@ -240,7 +245,7 @@ export const AdsLeadGateModal = ({
         unlocked: true,
         fullName: fullName.trim(),
         phone: payload.phone,
-        email: "",
+        email: email.trim(),
         location: location.trim(),
         propertyType: "Flat",
         services: selectedServices,
@@ -371,36 +376,35 @@ export const AdsLeadGateModal = ({
               </div>
             </div>
 
-            {/* Field 1: Full Name */}
-            <div>
-              <label htmlFor="gate-fullname" className="block text-xs font-bold text-foreground mb-1">
-                Your Name *
-              </label>
-              <input
-                id="gate-fullname"
-                type="text"
-                autoComplete="name"
-                required
-                value={fullName}
-                onFocus={markFormStarted}
-                onChange={(e) => {
-                  markFormStarted();
-                  setFullName(e.target.value);
-                  setErrors((er) => ({ ...er, fullName: "" }));
-                }}
-                placeholder="e.g. Chidi Okafor"
-                className="w-full h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              {errors.fullName && (
-                <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1 flex items-center gap-1">
-                  <AlertCircle size={12} />
-                  <span>{errors.fullName}</span>
-                </p>
-              )}
-            </div>
-
-            {/* Fields 2 & 3: Phone + City/State side-by-side on sm+ */}
+            {/* Fields 1 & 2: Name + Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="gate-fullname" className="block text-xs font-bold text-foreground mb-1">
+                  Your Name *
+                </label>
+                <input
+                  id="gate-fullname"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  value={fullName}
+                  onFocus={markFormStarted}
+                  onChange={(e) => {
+                    markFormStarted();
+                    setFullName(e.target.value);
+                    setErrors((er) => ({ ...er, fullName: "" }));
+                  }}
+                  placeholder="e.g. Chidi Okafor"
+                  className="w-full h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                {errors.fullName && (
+                  <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1 flex items-center gap-1">
+                    <AlertCircle size={12} />
+                    <span>{errors.fullName}</span>
+                  </p>
+                )}
+              </div>
+
               <div>
                 <label htmlFor="gate-phone" className="block text-xs font-bold text-foreground mb-1">
                   WhatsApp / Phone *
@@ -425,6 +429,36 @@ export const AdsLeadGateModal = ({
                   <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1 flex items-center gap-1">
                     <AlertCircle size={12} />
                     <span>{errors.phone}</span>
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Fields 3 & 4: Email + City/State */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="gate-email" className="block text-xs font-bold text-foreground mb-1">
+                  Email Address
+                </label>
+                <input
+                  id="gate-email"
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  value={email}
+                  onFocus={markFormStarted}
+                  onChange={(e) => {
+                    markFormStarted();
+                    setEmail(e.target.value);
+                    setErrors((er) => ({ ...er, email: "" }));
+                  }}
+                  placeholder="you@example.com"
+                  className="w-full h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                {errors.email && (
+                  <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1 flex items-center gap-1">
+                    <AlertCircle size={12} />
+                    <span>{errors.email}</span>
                   </p>
                 )}
               </div>

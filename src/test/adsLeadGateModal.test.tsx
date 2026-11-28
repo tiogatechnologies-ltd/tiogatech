@@ -44,9 +44,10 @@ describe("AdsLeadGateModal (/get-started quick lead popup)", () => {
     expect(dialog.parentElement).toBe(document.body);
     expect(container.querySelector('[data-testid="ads-lead-gate-modal"]')).toBeNull();
 
-    // Streamlined 3 fields + instant WhatsApp CTA + browse-first escape hatch
+    // Streamlined 4 fields (Name, Phone, Email, City/State) + instant WhatsApp CTA + browse-first escape hatch
     expect(screen.getByLabelText(/Your Name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/WhatsApp \/ Phone/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Email Address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/City \/ State/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Continue & See Prices/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Chat Instantly on WhatsApp/i })).toHaveAttribute(
