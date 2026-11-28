@@ -1,6 +1,6 @@
 import master from "../data/retailMasterPrices.json";
 
-export const normalizePriceName = (value: string) => value.toLowerCase().replace(/[–—]/g, " - ").replace(/\s+/g, " ").trim();
+export const normalizePriceName = (value: string) => value.toLowerCase().replace(/[\u2013\u2014]/g, " - ").replace(/\s+/g, " ").trim();
 const aliases: Record<string, string> = master.aliases;
 const prices: Record<string, number | null> = master.prices;
 

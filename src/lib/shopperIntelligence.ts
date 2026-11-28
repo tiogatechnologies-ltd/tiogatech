@@ -174,7 +174,7 @@ export async function identifyShopper(
           products: viewedNames.length > 0 ? viewedNames.slice(0, 6) : ["Retail Store Account Signup"],
           summary: `New customer signed up on the website.${
             viewedNames.length > 0 ? ` Viewed products: ${viewedNames.slice(0, 5).join(", ")}.` : ""
-          }${cartSummary ? ` Cart items: ${cartSummary}.` : " No purchase completed yet — prime candidate for follow-up."}`,
+          }${cartSummary ? ` Cart items: ${cartSummary}.` : " No purchase completed yet - prime candidate for follow-up."}`,
         },
       });
     } catch {

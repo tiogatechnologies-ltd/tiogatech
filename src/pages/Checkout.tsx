@@ -734,7 +734,7 @@ const OrderSummary = ({ items, subtotal, shippingFee, total, discountCode, setDi
         </div>
         {discount && (
           <p className="text-[11px] font-semibold text-primary">
-            Code {discount.code} applied{discount.description ? ` — ${discount.description}` : ""}.
+            Code {discount.code} applied{discount.description ? ` - ${discount.description}` : ""}.
           </p>
         )}
       </div>

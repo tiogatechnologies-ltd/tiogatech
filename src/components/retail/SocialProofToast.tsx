@@ -36,7 +36,7 @@ function formatRelativeTime(iso: string): string {
 }
 
 /**
- * WS6a — Shop-Only Trending, Recently Viewed & Recently Purchased Floating Widget + Real-Order Toast.
+ * WS6a - Shop-Only Trending, Recently Viewed & Recently Purchased Floating Widget + Real-Order Toast.
  *
  * Strictly scoped to shop routes (`isShopRoute(pathname)`: `/retail*`, `/catalog*`, `/product/*`)
  * and NEVER shown on `/checkout`, `/admin/*`, or marketing pages.

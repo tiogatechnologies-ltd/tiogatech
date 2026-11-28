@@ -237,10 +237,10 @@ interface RetailHeroCarouselProps {
 export function priceHeroSlide(slide: HeroSlideContent): HeroSlideContent {
   const cleanSlide: HeroSlideContent = {
     ...slide,
-    headline: (slide.headline || "").replace(/\s*—\s*/g, " · "),
-    subheadline: (slide.subheadline || "").replace(/\s*—\s*/g, " - "),
-    badge: (slide.badge || "").replace(/\s*—\s*/g, " · "),
-    highlight_text: (slide.highlight_text || "").replace(/\s*—\s*/g, " · "),
+    headline: (slide.headline || "").replace(/\s*\u2014\s*/g, " · "),
+    subheadline: (slide.subheadline || "").replace(/\s*\u2014\s*/g, " - "),
+    badge: (slide.badge || "").replace(/\s*\u2014\s*/g, " · "),
+    highlight_text: (slide.highlight_text || "").replace(/\s*\u2014\s*/g, " · "),
   };
   const sourceIds: Record<string, string> = {
     "ecoflow-river-3-max-plus": "PPS-019", "ecoflow-river-3-max": "PPS-016", "ecoflow-e980": "PPS-020",

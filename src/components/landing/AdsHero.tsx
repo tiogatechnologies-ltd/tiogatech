@@ -133,7 +133,7 @@ export const AdsHero = ({
       aria-label="Hero"
       className="relative isolate overflow-hidden bg-midnight text-white border-b border-white/10"
     >
-      {/* Subtle architectural radial glow — pure CSS, zero external image wait for LCP */}
+      {/* Subtle architectural radial glow - pure CSS, zero external image wait for LCP */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
@@ -179,7 +179,7 @@ export const AdsHero = ({
               </motion.button>
             </div>
 
-            {/* Trust Row — icon + text only, zero pill badges */}
+            {/* Trust Row - icon + text only, zero pill badges */}
             <div
               className={`pt-3 border-t border-white/10 grid grid-cols-2 ${
                 visibleTrustClaims.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"

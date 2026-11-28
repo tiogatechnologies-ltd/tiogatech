@@ -4,11 +4,11 @@
  * free, so normalising on read keeps rendered copy consistent without needing a
  * write migration against every content table.
  */
-const EM_DASH = /—/g;
+const EM_DASH = /\u2014/g;
 
 export function normalizeCopy(value: string): string {
-  // " — " reads as a separator, so collapse the surrounding spaces into one hyphen.
-  return value.replace(/\s*—\s*/g, " - ").replace(EM_DASH, "-");
+  // Collapse em-dash separators into a clean hyphen.
+  return value.replace(/\s*\u2014\s*/g, " - ").replace(EM_DASH, "-");
 }
 
 /** Deep-normalises every string in an API payload, leaving other values as-is. */

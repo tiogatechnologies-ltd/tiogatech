@@ -1,5 +1,5 @@
 /**
- * F2 — Shop Route Guard ("shop site only")
+ * F2 - Shop Route Guard ("shop site only")
  *
  * Returns true only on storefront routes where retail shopping widgets
  * (WS6 social proof / trending and WS7 persistent "still deciding" reminder bar)

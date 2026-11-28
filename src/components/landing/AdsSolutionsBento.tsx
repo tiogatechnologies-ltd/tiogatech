@@ -98,7 +98,7 @@ const SOLUTION_META: Record<
 };
 
 /**
- * Section 3 — "Our Solutions" Bento Grid, generated directly from `footerLinks.solutions`.
+ * Section 3 - "Our Solutions" Bento Grid, generated directly from `footerLinks.solutions`.
  */
 export const AdsSolutionsBento = ({ counts, onQuoteService }: AdsSolutionsBentoProps) => {
   const reducedMotion = useReducedMotion();
@@ -178,7 +178,7 @@ export const AdsSolutionsBento = ({ counts, onQuoteService }: AdsSolutionsBentoP
                       </p>
                     </div>
 
-                    {/* "What you get" list — visible on hover (desktop) or tap (mobile) */}
+                    {/* "What you get" list - visible on hover (desktop) or tap (mobile) */}
                     <ul
                       className={`space-y-1.5 pt-2 border-t border-white/15 transition-all duration-300 ${
                         isExpanded

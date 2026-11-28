@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 /**
- * F1 — Floating Layer Manager
+ * F1 - Floating Layer Manager
  *
  * Tracks active fixed bottom bars (e.g., StickyBuyBar on PDPs or StillDecidingBar
  * across shop routes) and exposes the tallest active bar height via the CSS custom

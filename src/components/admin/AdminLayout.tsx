@@ -730,7 +730,7 @@ function AdminLiveActivityBell() {
         merged.push({
           id: `ord-${o.id}`,
           kind: "order",
-          title: `🛒 Order ${o.order_number || ""} — ${o.full_name}`,
+          title: `🛒 Order ${o.order_number || ""} - ${o.full_name}`,
           subtitle: `${o.total ? `₦${Number(o.total).toLocaleString("en-NG")}` : "Order placed"} · ${(o.payment_method || "checkout").toUpperCase()}`,
           created_at: o.created_at,
           href: "/admin/orders",

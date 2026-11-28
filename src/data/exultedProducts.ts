@@ -88,7 +88,7 @@ export const exultedProducts: Product[] = [
     description: "Genuine Amaron Quanta 200Ah 12V maintenance-free sealed lead-acid (SMF/VRLA) drycell battery in the authentic white carton. Patented heavy-duty lead-calcium-tin grids deliver supreme reliability for clean indoor inverter setups without acid fumes.",
     features: [
       "Factory-sealed valve regulated lead acid (VRLA/AGM) drycell construction",
-      "Zero maintenance required — no topping up or electrolyte checking",
+      "Zero maintenance required - no topping up or electrolyte checking",
       "Patented Radgrid technology for low internal resistance and rapid recharge",
       "Flame-arrestor safety vent and rugged ABS shock-proof container"
     ],
@@ -474,7 +474,7 @@ export const exultedProducts: Product[] = [
     features: [
       "Pure sine wave output safe for LED TVs, decoders, laptops, and fans",
       "Built-in PWM solar charge controller for direct solar panel connectivity",
-      "Compact table top footprint — zero wall drilling required",
+      "Compact table top footprint - zero wall drilling required",
       "Automatic line-to-battery transfer with overload and short-circuit protection"
     ],
     best_for: "1-2 bedroom apartments, students, shops, and POS workstations",
@@ -729,7 +729,7 @@ export const exultedProducts: Product[] = [
     brand: "Exulted Eagles",
     description: "Flagship Exulted 12.5kVA 48V hybrid solar inverter with native parallel communication capability. Multiple units can be paralleled in single-phase or three-phase configurations to achieve up to 75kVA total system capacity.",
     features: [
-      "Native parallel board included — link up to 6 units in single-phase or 3-phase arrays",
+      "Native parallel board included - link up to 6 units in single-phase or 3-phase arrays",
       "12.5kVA high continuous output with heavy copper winding transformer",
       "Advanced MPPT tracking capturing maximum solar power across varying weather",
       "Smart battery algorithm supporting both high-capacity Lead-Acid and LiFePO4 packs"
@@ -916,7 +916,7 @@ export const exultedProducts: Product[] = [
     brand: "Exulted Eagles",
     description: "Exulted 11kVA 48V high-frequency parallel hybrid inverter. Equipped with built-in parallel communication circuitry allowing up to 6 units to synchronize together for high-capacity single-phase (66kVA) or balanced 3-phase industrial power.",
     features: [
-      "Integrated parallel function — scale from 11kVA up to 66kVA effortlessly",
+      "Integrated parallel function - scale from 11kVA up to 66kVA effortlessly",
       "Dual 500V high-voltage MPPT trackers with 150A total solar charging current",
       "Full 3-phase configuration support for commercial industrial facilities",
       "Smart RGB ring lighting indicator and remote cloud management via WiFi module"
@@ -1275,7 +1275,7 @@ export const exultedProducts: Product[] = [
       "80W high-intensity LED light output with wide-angle bat-wing optical lenses",
       "Built-in LiFePO4 battery providing 3+ consecutive rainy day autonomy",
       "Smart microwave radar sensor: dims to 30% on idle, increases to 100% on motion",
-      "Zero wiring or utility electricity bills — easy mounting on poles or perimeter walls"
+      "Zero wiring or utility electricity bills - easy mounting on poles or perimeter walls"
     ],
     best_for: "Estate roads, perimeter security fencing, driveways, and factory compounds",
     bestFor: "Estate roads, perimeter security fencing, driveways, and factory compounds",
@@ -1420,7 +1420,7 @@ export const exultedProducts: Product[] = [
     description: "Autonomous 4G LTE solar-powered outdoor security camera featuring dual optical lenses (fixed ultra-wide angle + motorized 360° PTZ zoom). Operates 100% off-grid with an included solar panel, internal rechargeable battery, PIR human detection, and live phone streaming without WiFi or electricity.",
     features: [
       "Dual-lens setup: one fixed panoramic camera + one motorized 360° Pan-Tilt-Zoom camera",
-      "Direct 4G SIM card slot (MTN, Airtel, Glo) — zero home WiFi or network cables needed",
+      "Direct 4G SIM card slot (MTN, Airtel, Glo) - zero home WiFi or network cables needed",
       "Autonomous solar charging with high-efficiency panel and internal high-capacity battery",
       "Two-way clear audio, color night vision with spotlight LEDs, and instant phone alert push"
     ],

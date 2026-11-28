@@ -12,7 +12,7 @@ export interface PackageHelpCTAProps {
 }
 
 /**
- * WS2 — Lighter, translucent "Need help choosing the right package?" banner.
+ * WS2 - Lighter, translucent "Need help choosing the right package?" banner.
  * Shared across SolarPackageDetail, SmartLockDetail, and AutomationPackageDetail
  * to replace the solid dark-green banner with a refined translucent card that
  * reads cleanly in both light and dark modes (WCAG AA >= 4.5:1 on all buttons).

@@ -107,8 +107,8 @@ describe("database-only items", () => {
   const prices = buildDbPriceMap({
     solar: [{ package_number: 1, inverter: "Hybrid 3.5KVA 24V (Transformer-Based)", total_price: 4828800 }],
     locks: [
-      { name: "Elite Series A — Premier-Lux K209", price: 342000 },
-      { name: "Pro Series — X04", price: 192000 },
+      { name: "Elite Series A \u2014 Premier-Lux K209", price: 342000 },
+      { name: "Pro Series \u2014 X04", price: 192000 },
     ],
     automation: [{ name: "Apex", price: 5880000 }],
     cctv: [{ name: "4-Channel Smart AI CCTV Kit", price: 576000 }],

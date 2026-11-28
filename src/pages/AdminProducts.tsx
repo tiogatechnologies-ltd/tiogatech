@@ -503,7 +503,7 @@ export const AdminProducts = () => {
                     />
                     <p className="mt-1 text-[11px] text-muted-foreground">
                       Shown struck through next to the current price, with the real saving. Only enter a price this product
-                      genuinely sold at — leave blank and no discount is advertised.
+                      genuinely sold at - leave blank and no discount is advertised.
                     </p>
                   </div>
                 )}

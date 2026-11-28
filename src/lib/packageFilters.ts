@@ -180,7 +180,7 @@ export function filterPackages(
       if (!state.capacityBuckets.some((b) => matchesCapacityBucket(kw, b))) return false;
     }
 
-    // 7. Must be able to power (AND across selected heavy loads — status must be "yes")
+    // 7. Must be able to power (AND across selected heavy loads - status must be "yes")
     if (state.mustPower.length > 0) {
       for (const loadKey of state.mustPower) {
         const res = canRun(pkg, loadKey);

@@ -21,7 +21,7 @@ export interface StickyBuyBarProps {
 }
 
 /**
- * WS7a — Sticky Product / Package Buy Bar (Intavalto reference).
+ * WS7a - Sticky Product / Package Buy Bar (Intavalto reference).
  *
  * Uses `IntersectionObserver` on the primary buy box so it slides up smoothly
  * once the visitor scrolls past the buy box and hides when they scroll back up.

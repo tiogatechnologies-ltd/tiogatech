@@ -32,7 +32,7 @@ export const DEFAULT_FLASH_DEAL: FlashDealContent = {
 
 /**
  * @deprecated Legacy helper retained only for backward test compatibility.
- * Live countdowns MUST NOT reset every Friday — they use explicit `ends_at`
+ * Live countdowns MUST NOT reset every Friday - they use explicit `ends_at`
  * timestamps via `useSharedCountdown` and hide cleanly once expired.
  */
 export const getNextFridayMidnight = (now = new Date()): number => {
@@ -73,9 +73,9 @@ export const FlashDealsBar = ({ onSelectCategory }: FlashDealsBarProps) => {
     !rawDeal.headline ||
     !/black\s*friday/i.test(rawDeal.headline);
 
-  const rawHeadline = (rawDeal.headline || "").replace(/\s*—\s*/g, " · ");
+  const rawHeadline = (rawDeal.headline || "").replace(/\s*\u2014\s*/g, " · ");
   const rawDescription = (rawDeal.description || "")
-    .replace(/\s*—\s*/g, " - ")
+    .replace(/\s*\u2014\s*/g, " - ")
     .replace(/\s*Official 5-Year Warranty.*$/i, "")
     .trim();
 

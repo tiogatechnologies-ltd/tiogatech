@@ -184,13 +184,13 @@ describe("Retail Hero Carousel EcoFlow Slides & HD PNG Assets", () => {
     expect(DEFAULT_FLASH_DEAL.description).toBe(
       "Massive Black Friday markdowns on all Solar Panels, Hybrid Inverters, LiFePO4 Lithium Batteries & Smart Home Automation."
     );
-    expect(DEFAULT_FLASH_DEAL.headline).not.toContain("—");
-    expect(DEFAULT_FLASH_DEAL.description).not.toContain("—");
+    expect(DEFAULT_FLASH_DEAL.headline).not.toContain("\u2014");
+    expect(DEFAULT_FLASH_DEAL.description).not.toContain("\u2014");
     expect(DEFAULT_FLASH_DEAL.description).not.toContain("Official 5-Year Warranty");
 
     for (const s of DEFAULT_HERO_SLIDES) {
-      expect(s.headline).not.toContain("—");
-      expect(s.subheadline).not.toContain("—");
+      expect(s.headline).not.toContain("\u2014");
+      expect(s.subheadline).not.toContain("\u2014");
     }
 
     // Tuesday Nov 10, 2026 at 18:23 -> next Friday midnight is Nov 13, 2026 at 00:00:00

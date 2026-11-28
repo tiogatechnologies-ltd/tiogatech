@@ -679,7 +679,7 @@ function GoogleDriveBackupCard() {
         )}
       </Card>
 
-      <Card title="Remove QA test records" desc="Clears ERP documents whose reference number contains TEST — test invoices, work orders, RMAs, journal entries, serials.">
+      <Card title="Remove QA test records" desc="Clears ERP documents whose reference number contains TEST - test invoices, work orders, RMAs, journal entries, serials.">
         <div className="flex flex-wrap items-center justify-between gap-3 p-2 bg-rose-500/5 rounded-2xl border border-rose-500/20">
           <div>
             <p className="text-sm font-bold text-foreground">Find and remove test documents</p>

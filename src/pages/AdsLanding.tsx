@@ -131,7 +131,7 @@ const AdsLanding = () => {
         noindex={isCampaignRoute}
       />
 
-      {/* Mandatory Entry Lead-Capture Popup — must be completed before interacting with the page */}
+      {/* Mandatory Entry Lead-Capture Popup - must be completed before interacting with the page */}
       <AdsLeadGateModal
         open={!visitorProfile}
         campaignSlug={campaign.slug}

@@ -24,7 +24,7 @@ import { resolveRealCompareAt } from "@/lib/promoDisplay";
 import { OFFICIAL_LITHIUM_PACKAGES } from "@/hooks/useSolarPackages";
 
 describe("Shop & Packages UX Plan (WS1–WS7 + Foundations)", () => {
-  describe("F2 — Shop Route Guard (shop site only)", () => {
+  describe("F2 - Shop Route Guard (shop site only)", () => {
     it("matches only retail, catalog, and product routes and excludes checkout/marketing/admin", () => {
       expect(isShopRoute("/retail")).toBe(true);
       expect(isShopRoute("/retail/smart-locks")).toBe(true);
@@ -42,7 +42,7 @@ describe("Shop & Packages UX Plan (WS1–WS7 + Foundations)", () => {
     });
   });
 
-  describe("F3 & WS5 — Honest Countdown Ticker & Real Compare-At", () => {
+  describe("F3 & WS5 - Honest Countdown Ticker & Real Compare-At", () => {
     it("returns active remaining parts before ends_at and expired (no reset!) once passed or blank", () => {
       const duringSale = Date.parse("2026-11-23T20:00:00+01:00");
       const active = getCountdownParts(BLACK_FRIDAY_END_ISO, duringSale);
@@ -84,7 +84,7 @@ describe("Shop & Packages UX Plan (WS1–WS7 + Foundations)", () => {
     });
   });
 
-  describe("WS1 — Footer WebP asset budget", () => {
+  describe("WS1 - Footer WebP asset budget", () => {
     it("exists in public/footer-bg.webp and stays <= 80 KB", () => {
       const p = path.resolve("public", "footer-bg.webp");
       expect(fs.existsSync(p)).toBe(true);
@@ -94,7 +94,7 @@ describe("Shop & Packages UX Plan (WS1–WS7 + Foundations)", () => {
     });
   });
 
-  describe("WS3 — Appliance Parser & Heavy-Load Capability Rules", () => {
+  describe("WS3 - Appliance Parser & Heavy-Load Capability Rules", () => {
     it("parses quantities, multiplier notation, and wattage cleanly", () => {
       const parsed = parseAppliances(
         "12 LED bulbs, 3 fans, 2 TVs, 1 fridge, 2 × 1HP inverter ACs (daytime), 1 borehole pump",
@@ -125,7 +125,7 @@ describe("Shop & Packages UX Plan (WS1–WS7 + Foundations)", () => {
     });
   });
 
-  describe("WS4 — Package Filters, Closest Fallback & URL Round-Trip", () => {
+  describe("WS4 - Package Filters, Closest Fallback & URL Round-Trip", () => {
     it("filters by brand, budget, mustPower, and returns 3 closest on impossible combination", () => {
       const srneOnly = filterPackages(OFFICIAL_LITHIUM_PACKAGES, {
         ...EMPTY_PACKAGE_FILTERS,
@@ -173,7 +173,7 @@ describe("Shop & Packages UX Plan (WS1–WS7 + Foundations)", () => {
     });
   });
 
-  describe("WS7 — Pending Viewed-but-Uncarted Product Store", () => {
+  describe("WS7 - Pending Viewed-but-Uncarted Product Store", () => {
     beforeEach(() => {
       clearPendingProducts();
     });

@@ -11,11 +11,11 @@ import {
 import { trackConversion } from "@/lib/tracking";
 
 /**
- * WS7b — Persistent Cross-Page "Still Deciding?" Reminder Bar.
+ * WS7b - Persistent Cross-Page "Still Deciding?" Reminder Bar.
  *
  * Mounted globally in `App.tsx`, renders ONLY on shop routes (`/retail*`, `/catalog*`)
  * when the visitor has viewed a product without adding it to cart and is NOT currently
- * on a product detail page (where `StickyBuyBar` owns the bottom bar slot — never two
+ * on a product detail page (where `StickyBuyBar` owns the bottom bar slot - never two
  * bottom bars at once).
  *
  * Keeps the last 3 viewed-but-uncarted products synced across back/forward navigation

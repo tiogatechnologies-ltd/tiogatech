@@ -55,7 +55,7 @@ const SORT_LABELS: Record<PackageSortOption, string> = {
 };
 
 /**
- * WS4 — Energystack-inspired Package Filter Toolbar + Slide-over Filter Drawer.
+ * WS4 - Energystack-inspired Package Filter Toolbar + Slide-over Filter Drawer.
  * - Desktop: right-side Sheet panel.
  * - Mobile: bottom Drawer sheet.
  * - Strict house rule: squared `rounded-md` buttons and labels (zero pill badges).

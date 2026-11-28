@@ -1263,13 +1263,13 @@ const AdminRetailPromotions = () => {
                 <option value="">No code (perk only)</option>
                 {liveCodes.map((d) => (
                   <option key={d.id} value={d.code}>
-                    {d.code} — {d.type === "percent" ? `${d.value}% off` : `₦${Number(d.value).toLocaleString("en-NG")} off`}
+                    {d.code} - {d.type === "percent" ? `${d.value}% off` : `₦${Number(d.value).toLocaleString("en-NG")} off`}
                   </option>
                 ))}
               </select>
               {flashDeal.discount_code && !liveCodes.some((d) => d.code === flashDeal.discount_code) && (
                 <p className="mt-1 text-[11px] font-semibold text-destructive">
-                  “{flashDeal.discount_code}” is not an active discount code. Customers who try it will be rejected at checkout —
+                  “{flashDeal.discount_code}” is not an active discount code. Customers who try it will be rejected at checkout -
                   create it in Discounts &amp; Promo Codes or pick another.
                 </p>
               )}

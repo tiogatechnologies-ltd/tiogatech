@@ -23,7 +23,7 @@ interface PackagePowerBreakdownProps {
 }
 
 /**
- * WS3c — "What This System Can Power" detail-page section.
+ * WS3c - "What This System Can Power" detail-page section.
  * Gives Nigerian home & business buyers crystal-clear visibility into:
  * 1. Full appliance grid with quantities & wattage estimates
  * 2. Visual Load Meter bar (typical running watts vs inverter rated capacity)
@@ -74,7 +74,7 @@ export const PackagePowerBreakdown = ({ pkg }: PackagePowerBreakdownProps) => {
               What This System Can Power
             </h2>
             <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-              Sized for Nigerian household & commercial load profiles — see the typical appliances included, load headroom, and heavy-appliance compatibility.
+              Sized for Nigerian household & commercial load profiles - see the typical appliances included, load headroom, and heavy-appliance compatibility.
             </p>
           </div>
           <Link

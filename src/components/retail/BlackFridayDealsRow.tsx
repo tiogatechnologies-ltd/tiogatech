@@ -22,7 +22,7 @@ interface BlackFridayDealsRowProps {
 const fmtNaira = (n: number) => `₦${Math.round(n).toLocaleString("en-NG")}`;
 
 /**
- * WS5 — Horizontal Black Friday Deal Cards Row (Intavalto reference).
+ * WS5 - Horizontal Black Friday Deal Cards Row (Intavalto reference).
  *
  * Strictly obeys honesty rules:
  * - Only renders while the Black Friday campaign countdown is active (`ends_at` in the future).

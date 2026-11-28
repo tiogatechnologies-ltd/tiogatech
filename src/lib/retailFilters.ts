@@ -18,7 +18,7 @@ export type IndexedProduct = { product: RetailProduct; facets: ProductFacets };
 export type FacetOption = { value: string; count: number };
 export type FacetGroup = { key: FacetKey; label: string; options: FacetOption[] };
 export const emptyRetailFilters = (category: string | null = null): RetailFilterState => ({ category, brands: [], specs: {}, minPrice: null, maxPrice: null, inStockOnly: false, search: "" });
-const text = (value: unknown) => String(value ?? "").replace(/,/g, "").replace(/[–—]/g, "-");
+const text = (value: unknown) => String(value ?? "").replace(/,/g, "").replace(/[\u2013\u2014]/g, "-");
 const norm = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, "");
 const brandKey = (brand: string) => norm(brand).replace(/^bread$/, "breadenergy");
 const brandAliases = new Map(Object.entries({ bread: "Bread Energy", breadenergy: "Bread Energy", luxpower: "Luxpower", alpsolar: "AlpSolarr", alpsolarr: "AlpSolarr", solarpro: "SolarPro", suness: "Suness", srne: "SRNE", ecoflow: "EcoFlow", lifesmart: "LifeSmart", hdl: "HDL", hdlautomation: "HDL" }));

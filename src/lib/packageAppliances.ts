@@ -264,7 +264,7 @@ export function parseAppliances(appliancesStr: string | null | undefined): Parse
 }
 
 /**
- * Infers continuous AC output capacity in kW for any solar package —
+ * Infers continuous AC output capacity in kW for any solar package -
  * using explicit `largest_load_kw` on official Lithium packages and parsing
  * kW / kVA ratings from the inverter name on Tubular & High-Voltage packages.
  */

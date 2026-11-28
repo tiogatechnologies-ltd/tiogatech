@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * WS7 — Pending (Viewed-but-Uncarted) Products Store
+ * WS7 - Pending (Viewed-but-Uncarted) Products Store
  *
  * Persists the visitor's last 3 viewed products that have not been added to cart
  * in `localStorage` (`tioga_pending_products_v1`) with a 7-day TTL and cross-tab

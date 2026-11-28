@@ -612,7 +612,7 @@ svg.lucide[class*="fill-primary"] {
   color: #6b7280 !important;
 }
 
-/* 2. On ALL dark backgrounds & dark mode: never use grey — use crisp white (#ffffff) */
+/* 2. On ALL dark backgrounds & dark mode: never use grey - use crisp white (#ffffff) */
 :is(
   .dark,
   footer,

@@ -164,7 +164,7 @@ export const resolveCompareAt = (
  * Resolves a compare-at ("was") price ONLY from real configured sources
  * (priority 1: product override, priority 2: genuine recorded compare_at_price,
  * priority 3: explicit brand discount policy). Never invents a randomized or
- * storewide fallback percentage — used for Black Friday deal row honesty (WS5).
+ * storewide fallback percentage - used for Black Friday deal row honesty (WS5).
  */
 export const resolveRealCompareAt = (
   price: number | null | undefined,

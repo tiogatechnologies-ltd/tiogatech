@@ -134,9 +134,9 @@ Let’s take a city of **100,000 people** (roughly 20,000 to 25,000 households, 
 
 * If each household uses roughly **500 kWh to 1 MWh per month** (6,000 to 12,000 kWh per year), the residential sector alone needs around **12,000 to 25,000 MWh each month**.
 * Adding commercial businesses, street lighting, and light industry brings annual city consumption to roughly **400,000 to 600,000 MWh of electricity each year**.
-* That doesn’t mean the city needs 600 MW all the time — because MW is instantaneous and demand fluctuates throughout the day. In practice, such a city might have a peak power demand of **60 MW to 100 MW** during hot afternoon hours, dropping to **25 MW** late at night.
+* That doesn’t mean the city needs 600 MW all the time - because MW is instantaneous and demand fluctuates throughout the day. In practice, such a city might have a peak power demand of **60 MW to 100 MW** during hot afternoon hours, dropping to **25 MW** late at night.
 
-For perspective, Nigeria’s entire national transmission grid currently operates around **3,500 MW to 5,000 MW (3.5 to 5 GW)** for over 200 million citizens — which is why commercial microgrids, captive solar farms, and industrial solar installations are rapidly bridging the gap.
+For perspective, Nigeria’s entire national transmission grid currently operates around **3,500 MW to 5,000 MW (3.5 to 5 GW)** for over 200 million citizens - which is why commercial microgrids, captive solar farms, and industrial solar installations are rapidly bridging the gap.
 
 ---
 
@@ -166,7 +166,7 @@ The number of solar panels required depends on each panel’s rated capacity and
 * **Using 550-watt Tier-1 panels:** $1,000,000\\text{ W} \\div 550\\text{ W} = \\mathbf{\\approx 1,818\\text{ panels}}$
 * **Using 600-watt bifacial modules:** $1,000,000\\text{ W} \\div 600\\text{ W} = \\mathbf{\\approx 1,666\\text{ panels}}$
 
-The higher the panel wattage, the fewer modules, mounting rails, and DC wiring runs you need — which lowers overall installation and maintenance costs.
+The higher the panel wattage, the fewer modules, mounting rails, and DC wiring runs you need - which lowers overall installation and maintenance costs.
 
 ### 2. How Big is a 1 MW Solar Farm?
 A 1 MW ground-mounted solar farm generally covers **4 to 5 acres** (around **16,000 to 20,000 square meters**). 
@@ -207,7 +207,7 @@ For commercial and industrial projects, battery capacity is tailored to match lo
 ## Fuel-to-Power Comparison: How Much Fuel for 1 MWh?
 
 To truly appreciate the value of clean energy and storage, compare 1 MWh of solar electricity to fossil fuels:
-* **Diesel Generator:** A standard commercial diesel generator consumes roughly **270 to 300 litres of diesel** to produce 1 MWh of electrical energy. In Nigeria, with diesel prices exceeding ₦1,300/litre, **generating 1 MWh of power costs over ₦350,000 to ₦400,000 in fuel alone** — before servicing, filters, and oil changes!
+* **Diesel Generator:** A standard commercial diesel generator consumes roughly **270 to 300 litres of diesel** to produce 1 MWh of electrical energy. In Nigeria, with diesel prices exceeding ₦1,300/litre, **generating 1 MWh of power costs over ₦350,000 to ₦400,000 in fuel alone** - before servicing, filters, and oil changes!
 * **Coal Generation:** It takes approximately **1,100 pounds (around 500 kg) of coal** to generate 1 MWh of electricity in a conventional thermal plant, emitting nearly 1 ton of CO₂.
 
 By generating and storing megawatts with solar and LiFePO4 batteries, commercial facilities can eliminate millions of Naira in monthly diesel bills while achieving 24/7 power independence.
@@ -275,21 +275,21 @@ Whether you need a **5 kW residential solar setup** or a **multi-hundred kilowat
     id: "83a57c38-2967-4b75-9fc7-c0516e7c1996",
     slug: "solar-system-cost-nigeria-2026",
     title: "How Much Does a Solar System Cost in Nigeria? Full 2026 Price Breakdown",
-    excerpt: "A transparent 2026 breakdown of what a solar system actually costs in Nigeria — by home size, battery type, and inverter capacity — with real Naira figures.",
+    excerpt: "A transparent 2026 breakdown of what a solar system actually costs in Nigeria - by home size, battery type, and inverter capacity - with real Naira figures.",
     cover_image_url: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1600&q=80&auto=format&fit=crop",
     author: "Tioga Engineering Team",
     tags: ["solar cost nigeria", "solar pricing", "lithium battery", "solar financing"],
     category: "Solar",
     published: true,
     published_at: "2026-08-09T09:41:09.275703+00:00",
-    seo_title: "Solar System Cost in Nigeria (2026) — Real Naira Prices by Size",
+    seo_title: "Solar System Cost in Nigeria (2026) - Real Naira Prices by Size",
     seo_description: "See real 2026 Naira prices for 1.5kVA to 10kVA solar systems in Nigeria, what drives the cost, and how to finance with Tioga lease-to-own plans.",
     read_minutes: 6,
     created_at: "2026-08-14T09:41:09.275703+00:00",
     updated_at: "2026-08-14T09:41:09.275703+00:00",
     content: `Solar has gone from a luxury upgrade to a survival tool in Nigeria. With grid supply at record lows and diesel above ₦1,200/litre in many states, more homes are asking the same question: **what does a solar system actually cost in 2026?**
 
-This guide gives you transparent, current pricing — no padded markups, no foreign-currency gymnastics.
+This guide gives you transparent, current pricing - no padded markups, no foreign-currency gymnastics.
 
 ![Solar panels installed on a Nigerian rooftop](https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1600&q=80&auto=format&fit=crop)
 
@@ -305,7 +305,7 @@ For a typical Nigerian home in 2026:
 | 7.5kVA / 7.5kW | Duplex with 1–2 inverter ACs | ₦6.5M – ₦9M |
 | 10kVA / 10kW | Large home, office, or shop with ACs | ₦9M – ₦13M |
 
-These are turnkey prices — panels, inverter, batteries, mounting, cabling, breakers, labour and a real warranty. Browse our [pre-configured solar packages](/packages) to see live pricing.
+These are turnkey prices - panels, inverter, batteries, mounting, cabling, breakers, labour and a real warranty. Browse our [pre-configured solar packages](/packages) to see live pricing.
 
 ## What actually drives the price
 
@@ -328,7 +328,7 @@ Monocrystalline panels at 550W+ are the standard in 2026. Two well-oriented pane
 
 ## Can you finance it?
 
-Yes — and you should consider it, because diesel and fuel costs you're avoiding usually exceed your monthly payment.
+Yes - and you should consider it, because diesel and fuel costs you're avoiding usually exceed your monthly payment.
 
 Tioga offers **3, 6, 12 and 24-month lease-to-own plans** on every package. You can [check your finance options here](/finance) or [run a free solar assessment](/assessment) to get a personalised quote in under 2 minutes.
 
@@ -483,7 +483,7 @@ In Nigeria, smart home tech needs to survive power brownouts, high ambient heat,
 ## What actually works reliably in Nigeria
 
 ### 1. Smart Door Locks (Biometric + PIN)
-Modern smart locks don't rely on Wi-Fi or grid power to unlock your door — they run on rechargeable lithium batteries that last 6–8 months and feature mechanical key bypasses and USB emergency power jump-starts. Explore our [Smart Locks Catalog](/packages?category=locks).
+Modern smart locks don't rely on Wi-Fi or grid power to unlock your door - they run on rechargeable lithium batteries that last 6–8 months and feature mechanical key bypasses and USB emergency power jump-starts. Explore our [Smart Locks Catalog](/packages?category=locks).
 
 ### 2. Energy-Aware Scene Lighting
 Smart lighting that communicates with your [Lumi](/lumivolt) solar inverter. When grid power drops and batteries are low, non-essential decorative lights automatically dim or turn off, reserving battery capacity for bedrooms and refrigerators.

@@ -60,7 +60,7 @@ const ProductStripCards = ({ items }: { items: StripCardItem[] }) => (
 );
 
 /**
- * WS6b — Personal "Recently Viewed by You" row (localStorage trail, with Clear button).
+ * WS6b - Personal "Recently Viewed by You" row (localStorage trail, with Clear button).
  * Rendered on `/product/:slug`.
  */
 export const RecentlyViewedRow = ({
@@ -134,7 +134,7 @@ export const RecentlyViewedRow = ({
 type ActivityTab = "trending" | "recent" | "purchased";
 
 /**
- * WS6b — Storefront Trending, Recently Viewed & Recently Purchased Widget on `/retail`.
+ * WS6b - Storefront Trending, Recently Viewed & Recently Purchased Widget on `/retail`.
  *
  * Always visible on the shop storefront as a clean tabbed widget:
  * - "Trending Now": Uses real distinct-session view counts from `get_trending_products` when
@@ -176,7 +176,7 @@ export const ShopTrendingRows = ({ products }: { products: RetailProduct[] }) =>
     if (matched.length > 0) return matched;
 
     // 2. Honest fallback before RPC migration is applied: diversified flagship catalog picks
-    // (labeled honestly as category highlights — NEVER fake view counts!)
+    // (labeled honestly as category highlights - NEVER fake view counts!)
     const priced = products.filter(
       (p) => (p.numeric_price && p.numeric_price > 0) && /srne|luxpower|deye|felicity|itel|smart lock|panel|camera/i.test(`${p.brand || ""} ${p.name} ${p.category}`),
     );

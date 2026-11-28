@@ -200,7 +200,7 @@ const AdminAutomations = () => {
         resultMsg = `Scanned ${sweep.scanned} unconverted signup(s), sent ${sweep.sent} re-engagement email(s)`;
       } else if (fnName) {
         // These jobs require a service-role caller, which the browser never
-        // holds — route through admin-run-automation, which checks the
+        // holds - route through admin-run-automation, which checks the
         // caller is an admin and re-invokes the job with the service key.
         const { data, error } = await supabase.functions.invoke("admin-run-automation", { body: { function: fnName } });
         if (error) throw error;

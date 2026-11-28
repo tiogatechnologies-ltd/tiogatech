@@ -132,7 +132,7 @@ const CONFETTI_PIECES = [
 ];
 
 /**
- * Section 11 — `#get-quote` 3-Step Lead Capture Form.
+ * Section 11 - `#get-quote` 3-Step Lead Capture Form.
  * Reuses Tioga's exact `leads` table schema, `AddressInput`, Nigerian phone validation,
  * UTM attribution, `notify-new-lead`, GA4 `generate_lead`, and localStorage draft resume.
  */
@@ -352,7 +352,7 @@ export const AdsLeadCaptureForm = ({
     } catch (err) {
       console.error("Ads landing lead submit failed:", err);
       setSubmitError(
-        "We couldn't reach our server right now — your details are safely kept below. Please check your connection and tap Submit again.",
+        "We couldn't reach our server right now - your details are safely kept below. Please check your connection and tap Submit again.",
       );
     } finally {
       submittingRef.current = false;
@@ -381,7 +381,7 @@ export const AdsLeadCaptureForm = ({
             Get your tailored quote in 24 hours
           </h2>
           <p className="mt-2 text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-            Three short steps. No spam — a certified Tioga engineer reviews your exact requirements and sends a clear breakdown.
+            Three short steps. No spam - a certified Tioga engineer reviews your exact requirements and sends a clear breakdown.
           </p>
         </div>
 

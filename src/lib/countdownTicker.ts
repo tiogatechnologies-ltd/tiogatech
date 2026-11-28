@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * F3 — Shared Countdown Ticker
+ * F3 - Shared Countdown Ticker
  *
  * Maintains a single page-wide 1-second `setInterval` shared across all active
  * countdown widgets (hero banner, Black Friday deal row cards, package deals),
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
  *
  * Honesty rule (WS5): When `endsAtIso` is missing, invalid, or in the past,
  * `getCountdownParts` returns `{ active: false, expired: true }` and timers
- * disappear — never silently resetting to "next Friday".
+ * disappear - never silently resetting to "next Friday".
  */
 
 /** Official Black Friday 2026 campaign window (23–29 Nov 2026 WAT). */

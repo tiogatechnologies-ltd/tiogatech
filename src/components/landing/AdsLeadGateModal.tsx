@@ -318,7 +318,7 @@ export const AdsLeadGateModal = ({
             Tell us what you need to unlock packages &amp; your free quote
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
-            {campaignHeadline} — fill in your details below so a Tioga engineer can size your system and send pricing within 24 hours.
+            {campaignHeadline} Fill in your details below so a Tioga engineer can size your system and send pricing within 24 hours.
           </p>
         </div>
 
