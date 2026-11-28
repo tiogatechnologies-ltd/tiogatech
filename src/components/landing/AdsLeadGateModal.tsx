@@ -2,20 +2,23 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { AlertCircle, ArrowRight, Check, Loader2, Lock, RefreshCw } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowRight,
+  Check,
+  Loader2,
+  MessageCircle,
+  RefreshCw,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { attributionForLead, getAttribution } from "@/lib/attribution";
 import { trackConversion } from "@/lib/tracking";
 import { isValidNigerianPhone } from "@/lib/customerWhatsapp";
 import { footerLinks } from "@/lib/footerLinks";
-import { useSiteSetting } from "@/hooks/useSiteSetting";
-import AddressInput from "@/components/lead-form/AddressInput";
 import tiogaLogoDark from "@/assets/tioga-logo-dark.png";
 import tiogaLogoLight from "@/assets/tioga-logo-light.png";
 import {
   buildAdsLeadPayload,
-  PROPERTY_OPTIONS,
-  SERVICE_OPTIONS,
   type AdsServiceId,
   type ContactChannel,
 } from "@/lib/adsLandingLogic";
@@ -23,8 +26,15 @@ import { toast } from "sonner";
 
 export const ADS_GATE_STORAGE_KEY = "tioga_ads_lp_unlocked_session_v2";
 const LEGACY_ADS_GATE_STORAGE_KEY = "tioga_ads_lp_unlocked_v1";
-const EMAIL_RE = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/;
-const CONTACT_CHANNELS: ContactChannel[] = ["WhatsApp", "Call", "Email"];
+const WHATSAPP_NUMBER = "2348178000023";
+const WHATSAPP_DISPLAY = "+234 8178 000 023";
+
+const QUICK_SERVICES: Array<{ id: AdsServiceId; label: string }> = [
+  { id: "solar", label: "Solar & Power" },
+  { id: "smart_locks", label: "Smart Locks" },
+  { id: "cctv", label: "CCTV Security" },
+  { id: "automation", label: "Smart Home / Shop" },
+];
 
 export interface UnlockedVisitorProfile {
   unlocked: true;
@@ -67,58 +77,48 @@ interface AdsLeadGateModalProps {
   pathname: string;
   defaultServices: AdsServiceId[];
   onUnlocked: (profile: UnlockedVisitorProfile) => void;
+  onDismiss?: () => void;
 }
 
 /**
- * Mandatory Lead-Capture Gate Modal for `/get-started` and `/lp/:campaign`.
- * Must be completed and submitted before the visitor can interact with the rest of the page:
- * - No dismiss button, no backdrop click-to-close, no Escape-key close.
- * - Captures visitor details directly into `leads`, triggers `notify-new-lead`,
- *   tracks GA4 `generate_lead` + first-party `lead_submitted`, and persists unlock state
- *   in `localStorage` so returning visitors aren't blocked again.
+ * Streamlined 10-Second Mobile-First Lead Popup for `/get-started` and `/lp/:campaign`.
+ * - Portaled directly into `document.body` so RouteFade CSS transforms never displace it.
+ * - Fits cleanly above the fold on mobile phones and laptops with only 3 fast fields
+ *   (Name, WhatsApp/Phone, City/State) + 1-tap service chips + instant WhatsApp option.
+ * - Tracks `lead_form_started`, `whatsapp_click`, and `lead_submitted` for full funnel visibility.
  */
 export const AdsLeadGateModal = ({
   open,
   campaignSlug,
-  campaignHeadline,
   pathname,
   defaultServices,
   onUnlocked,
+  onDismiss,
 }: AdsLeadGateModalProps) => {
   const reducedMotion = useReducedMotion();
-  const { settings: features } = useSiteSetting("features");
-  const flexiblePaymentEnabled = features?.flexible_payment_enabled !== false;
-  const visibleServiceOptions = flexiblePaymentEnabled
-    ? SERVICE_OPTIONS
-    : SERVICE_OPTIONS.filter((o) => o.id !== "finance");
+  const initialService: AdsServiceId[] = (() => {
+    const validQuick = defaultServices.filter((s) =>
+      QUICK_SERVICES.some((q) => q.id === s),
+    );
+    return validQuick.length > 0 ? validQuick : ["solar"];
+  })();
+
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
   const [location, setLocation] = useState("");
-  const [propertyType, setPropertyType] = useState("Flat");
-  const [preferredContact, setPreferredContact] = useState<ContactChannel>("WhatsApp");
-  const [services, setServices] = useState<AdsServiceId[]>(
-    defaultServices.length > 0 ? defaultServices : ["audit"],
-  );
-  const [consent, setConsent] = useState(false);
+  const [services, setServices] = useState<AdsServiceId[]>(initialService);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const submittingRef = useRef(false);
+  const startedTrackedRef = useRef(false);
 
   const privacyRoute =
     footerLinks.support.find((l) => l.to === "/privacy")?.to ?? "/privacy";
   const termsRoute =
     footerLinks.support.find((l) => l.to === "/terms")?.to ?? "/terms";
 
-  // Keep preselected services synced if campaign param changes before unlock
-  useEffect(() => {
-    if (defaultServices.length > 0) {
-      setServices(defaultServices);
-    }
-  }, [defaultServices]);
-
-  // Lock background page scroll while mandatory modal is active
+  // Lock background page scroll while modal is active
   useEffect(() => {
     if (!open || typeof document === "undefined") return;
     const prevOverflow = document.body.style.overflow;
@@ -131,34 +131,38 @@ export const AdsLeadGateModal = ({
     };
   }, [open]);
 
-  if (!open) return null;
+  if (!open || typeof document === "undefined") return null;
+
+  const markFormStarted = () => {
+    if (startedTrackedRef.current) return;
+    startedTrackedRef.current = true;
+    trackConversion("lead_form_started", {
+      source: "ads_landing_gate",
+      campaign: campaignSlug,
+    });
+  };
 
   const toggleService = (id: AdsServiceId) => {
+    markFormStarted();
     setErrors((e) => ({ ...e, services: "" }));
-    setServices((prev) =>
-      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id],
-    );
+    setServices((prev) => {
+      if (prev.includes(id)) {
+        return prev.length > 1 ? prev.filter((s) => s !== id) : prev;
+      }
+      return [...prev, id];
+    });
   };
 
   const validate = (): boolean => {
     const next: Record<string, string> = {};
     if (!fullName.trim() || fullName.trim().length < 2) {
-      next.fullName = "Please enter your full name.";
+      next.fullName = "Please enter your name.";
     }
     if (!isValidNigerianPhone(phone)) {
       next.phone = "Enter a valid Nigerian phone number (e.g. 0803 123 4567).";
     }
-    if (email.trim() && !EMAIL_RE.test(email.trim())) {
-      next.email = "Enter a valid email address or leave it blank.";
-    }
     if (!location.trim() || location.trim().length < 2) {
-      next.location = "Enter your city or state (e.g. Abuja, Lagos, Jos).";
-    }
-    if (services.length === 0) {
-      next.services = "Select at least one service you are interested in.";
-    }
-    if (!consent) {
-      next.consent = "Please accept our Privacy Policy and Terms to continue.";
+      next.location = "Enter your city or state (e.g. Lagos, Abuja, Jos).";
     }
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -175,11 +179,13 @@ export const AdsLeadGateModal = ({
 
     try {
       const fullAttr = { ...getAttribution(), ...attributionForLead() };
+      const selectedServices: AdsServiceId[] =
+        services.length > 0 ? services : ["solar"];
       const payload = buildAdsLeadPayload(
         {
-          services,
-          propertyType,
-          location,
+          services: selectedServices,
+          propertyType: "Not specified",
+          location: location.trim(),
           budget: "Not specified",
           systemType: "",
           usageDuration: "",
@@ -190,12 +196,12 @@ export const AdsLeadGateModal = ({
           automateWhat: [],
           controlPreference: "",
           automationScale: "",
-          fullName,
+          fullName: fullName.trim(),
           phone,
-          email,
-          preferredContact,
-          consent,
-          extraNotes: "Submitted via mandatory entry lead gate",
+          email: "",
+          preferredContact: "WhatsApp",
+          consent: true,
+          extraNotes: "Submitted via quick entry popup on /get-started",
           matchedSummary: [],
         },
         {
@@ -214,7 +220,7 @@ export const AdsLeadGateModal = ({
       trackConversion("lead_submitted", {
         source: "ads_landing_gate",
         campaign: campaignSlug,
-        services,
+        services: selectedServices,
         products: payload.products,
       });
 
@@ -225,25 +231,20 @@ export const AdsLeadGateModal = ({
         gtagFn("event", "generate_lead", {
           event_category: "ads_landing_gate",
           event_label: campaignSlug,
-          services: services.join(","),
+          services: selectedServices.join(","),
           currency: "NGN",
         });
       }
-
-      // Meta Pixel conversion hook (uncomment once Meta Pixel script + ID are configured):
-      // if (typeof window !== "undefined" && typeof (window as any).fbq === "function") {
-      //   (window as any).fbq("track", "Lead", { content_name: `${campaignSlug}_gate` });
-      // }
 
       const profile: UnlockedVisitorProfile = {
         unlocked: true,
         fullName: fullName.trim(),
         phone: payload.phone,
-        email: email.trim(),
+        email: "",
         location: location.trim(),
-        propertyType,
-        services: [...services],
-        preferredContact,
+        propertyType: "Flat",
+        services: selectedServices,
+        preferredContact: "WhatsApp",
         submittedAt: new Date().toISOString(),
       };
 
@@ -254,12 +255,12 @@ export const AdsLeadGateModal = ({
       }
 
       const firstName = profile.fullName.split(/\s+/)[0] || "there";
-      toast.success(`Welcome ${firstName}! Your details are saved. Explore our solutions below.`);
+      toast.success(`Thanks ${firstName}! Our engineer will reach out shortly.`);
       onUnlocked(profile);
     } catch (err) {
-      console.error("Mandatory gate lead submit failed:", err);
+      console.error("Quick lead popup submit failed:", err);
       setSubmitError(
-        "We couldn't connect right now. Please check your internet connection and tap Continue again.",
+        "Could not connect right now. Check your network and tap Continue again, or chat with us on WhatsApp below.",
       );
     } finally {
       submittingRef.current = false;
@@ -267,7 +268,18 @@ export const AdsLeadGateModal = ({
     }
   };
 
-  if (typeof document === "undefined") return null;
+  const selectedServiceLabels = services
+    .map((id) => QUICK_SERVICES.find((q) => q.id === id)?.label || id)
+    .join(", ");
+  const waMessage = [
+    "Hi Tioga Technologies, I saw your ad and would like a free quote & Black Friday prices.",
+    selectedServiceLabels ? `Interested in: ${selectedServiceLabels}` : "",
+    fullName.trim() ? `Name: ${fullName.trim()}` : "",
+    location.trim() ? `Location: ${location.trim()}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+  const waHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`;
 
   return createPortal(
     <div
@@ -278,56 +290,91 @@ export const AdsLeadGateModal = ({
       aria-labelledby="ads-gate-title"
       className="fixed inset-0 z-[9999] overflow-y-auto overscroll-contain bg-midnight/85 backdrop-blur-md"
     >
-      <div className="min-h-full flex items-center justify-center p-3 sm:p-5">
+      <div className="min-h-full flex items-center justify-center p-3 sm:p-4">
         <motion.div
-          initial={reducedMotion ? false : { opacity: 0, scale: 0.96, y: 12 }}
+          initial={reducedMotion ? false : { opacity: 0, scale: 0.96, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 0.22 }}
           data-lenis-prevent
-          className="w-full max-w-xl my-auto rounded-2xl border border-border bg-card text-foreground shadow-2xl overflow-hidden"
+          className="w-full max-w-md my-auto rounded-2xl border border-border bg-card text-foreground shadow-2xl overflow-hidden"
         >
-        {/* Top Brand Strip */}
-        <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 border-b border-border bg-muted/30">
-          <div className="flex items-center justify-between gap-3 mb-3">
-            <div>
-              <img
-                src={tiogaLogoDark}
-                alt="Tioga Technologies"
-                width={118}
-                height={32}
-                className="h-8 w-auto dark:hidden"
-              />
-              <img
-                src={tiogaLogoLight}
-                alt="Tioga Technologies"
-                width={118}
-                height={32}
-                className="h-8 w-auto hidden dark:block"
-              />
+          {/* Compact Top Brand Header */}
+          <div className="px-5 pt-4 pb-3.5 border-b border-border bg-muted/30">
+            <div className="flex items-center justify-between gap-2 mb-2.5">
+              <div>
+                <img
+                  src={tiogaLogoDark}
+                  alt="Tioga Technologies"
+                  width={108}
+                  height={28}
+                  className="h-7 w-auto dark:hidden"
+                />
+                <img
+                  src={tiogaLogoLight}
+                  alt="Tioga Technologies"
+                  width={108}
+                  height={28}
+                  className="h-7 w-auto hidden dark:block"
+                />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+                Free Quote · 10 Secs
+              </span>
             </div>
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground">
-              <Lock size={12} className="text-primary" />
-              <span>Quick step to continue</span>
-            </span>
+
+            <h2
+              id="ads-gate-title"
+              className="font-display text-lg sm:text-xl font-extrabold text-foreground leading-snug"
+            >
+              Get Your Free Quote &amp; Black Friday Prices
+            </h2>
+            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+              Drop your WhatsApp number below and a Tioga engineer will send matching package prices fast.
+            </p>
           </div>
 
-          <h2
-            id="ads-gate-title"
-            className="font-display text-xl sm:text-2xl font-extrabold text-foreground leading-tight"
-          >
-            Tell us what you need to unlock packages &amp; your free quote
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
-            {campaignHeadline} Fill in your details below so a Tioga engineer can size your system and send pricing within 24 hours.
-          </p>
-        </div>
+          {/* Ultra-Short 3-Field Form */}
+          <form onSubmit={handleSubmit} noValidate className="p-5 space-y-3.5">
+            {/* 1-Tap Service Selector */}
+            <div>
+              <span className="block text-xs font-bold text-foreground mb-1.5">
+                What are you interested in?
+              </span>
+              <div className="grid grid-cols-2 gap-1.5">
+                {QUICK_SERVICES.map((opt) => {
+                  const selected = services.includes(opt.id);
+                  return (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => toggleService(opt.id)}
+                      className={`min-h-[40px] px-2.5 py-1.5 rounded-md border text-left text-xs font-semibold flex items-center justify-between gap-1.5 transition-colors ${
+                        selected
+                          ? "border-primary bg-primary/10 text-foreground"
+                          : "border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      }`}
+                    >
+                      <span className="truncate">{opt.label}</span>
+                      <span
+                        className={`h-4 w-4 rounded-sm border shrink-0 grid place-items-center ${
+                          selected
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border bg-card"
+                        }`}
+                      >
+                        {selected && <Check size={10} />}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-        {/* Mandatory Lead Form */}
-        <form onSubmit={handleSubmit} noValidate className="p-5 sm:p-7 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {/* Field 1: Full Name */}
             <div>
               <label htmlFor="gate-fullname" className="block text-xs font-bold text-foreground mb-1">
-                Full Name *
+                Your Name *
               </label>
               <input
                 id="gate-fullname"
@@ -335,7 +382,9 @@ export const AdsLeadGateModal = ({
                 autoComplete="name"
                 required
                 value={fullName}
+                onFocus={markFormStarted}
                 onChange={(e) => {
+                  markFormStarted();
                   setFullName(e.target.value);
                   setErrors((er) => ({ ...er, fullName: "" }));
                 }}
@@ -343,189 +392,129 @@ export const AdsLeadGateModal = ({
                 className="w-full h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {errors.fullName && (
-                <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1">
-                  {errors.fullName}
+                <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1 flex items-center gap-1">
+                  <AlertCircle size={12} />
+                  <span>{errors.fullName}</span>
                 </p>
               )}
             </div>
 
-            <div>
-              <label htmlFor="gate-phone" className="block text-xs font-bold text-foreground mb-1">
-                Phone / WhatsApp Number *
-              </label>
-              <input
-                id="gate-phone"
-                type="tel"
-                autoComplete="tel"
-                required
-                value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                  setErrors((er) => ({ ...er, phone: "" }));
-                }}
-                placeholder="e.g. 0803 123 4567"
-                className="w-full h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              {errors.phone && (
-                <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1">
-                  {errors.phone}
-                </p>
-              )}
-            </div>
-          </div>
+            {/* Fields 2 & 3: Phone + City/State side-by-side on sm+ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="gate-phone" className="block text-xs font-bold text-foreground mb-1">
+                  WhatsApp / Phone *
+                </label>
+                <input
+                  id="gate-phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  required
+                  value={phone}
+                  onFocus={markFormStarted}
+                  onChange={(e) => {
+                    markFormStarted();
+                    setPhone(e.target.value);
+                    setErrors((er) => ({ ...er, phone: "" }));
+                  }}
+                  placeholder="0803 123 4567"
+                  className="w-full h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                {errors.phone && (
+                  <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1 flex items-center gap-1">
+                    <AlertCircle size={12} />
+                    <span>{errors.phone}</span>
+                  </p>
+                )}
+              </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <div>
-              <label htmlFor="gate-email" className="block text-xs font-bold text-foreground mb-1">
-                Email Address <span className="font-normal text-muted-foreground">(optional)</span>
-              </label>
-              <input
-                id="gate-email"
-                type="email"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setErrors((er) => ({ ...er, email: "" }));
-                }}
-                placeholder="you@example.com"
-                className="w-full h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              {errors.email && (
-                <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1">
-                  {errors.email}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <span className="block text-xs font-bold text-foreground mb-1">
-                Preferred Contact
-              </span>
-              <div className="grid grid-cols-3 gap-1.5">
-                {CONTACT_CHANNELS.map((ch) => (
-                  <button
-                    key={ch}
-                    type="button"
-                    aria-pressed={preferredContact === ch}
-                    onClick={() => setPreferredContact(ch)}
-                    className={`h-11 rounded-md border text-xs font-bold transition-colors ${
-                      preferredContact === ch
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-background text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {ch}
-                  </button>
-                ))}
+              <div>
+                <label htmlFor="gate-location" className="block text-xs font-bold text-foreground mb-1">
+                  City / State *
+                </label>
+                <input
+                  id="gate-location"
+                  type="text"
+                  autoComplete="address-level2"
+                  required
+                  value={location}
+                  onFocus={markFormStarted}
+                  onChange={(e) => {
+                    markFormStarted();
+                    setLocation(e.target.value);
+                    setErrors((er) => ({ ...er, location: "" }));
+                  }}
+                  placeholder="e.g. Lagos, Abuja, Jos"
+                  className="w-full h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                {errors.location && (
+                  <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1 flex items-center gap-1">
+                    <AlertCircle size={12} />
+                    <span>{errors.location}</span>
+                  </p>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* City / Installation Location */}
-          <div>
-            <label className="block text-xs font-bold text-foreground mb-1">
-              City / Installation Location *
-            </label>
-            <AddressInput
-              value={location}
-              onChange={(val) => {
-                setLocation(val);
-                setErrors((er) => ({ ...er, location: "" }));
+            {submitError && (
+              <div
+                role="alert"
+                aria-live="polite"
+                className="rounded-md border border-destructive/30 bg-destructive/10 p-2.5 text-xs text-destructive flex items-start gap-2"
+              >
+                <RefreshCw size={14} className="shrink-0 mt-0.5" />
+                <span>{submitError}</span>
+              </div>
+            )}
+
+            {/* Primary Submit CTA */}
+            <motion.button
+              type="submit"
+              disabled={submitting}
+              whileTap={reducedMotion ? undefined : { scale: 0.98 }}
+              className="w-full min-h-[46px] inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-accent text-accent-foreground font-display font-bold text-sm hover:brightness-105 disabled:opacity-60 transition-all shadow-md"
+            >
+              {submitting ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  <span>Sending...</span>
+                </>
+              ) : (
+                <>
+                  <span>Continue &amp; See Prices</span>
+                  <ArrowRight size={16} />
+                </>
+              )}
+            </motion.button>
+
+            {/* Instant 1-Tap WhatsApp Shortcut */}
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                trackConversion("whatsapp_click", {
+                  source: "ads_landing_gate",
+                  campaign: campaignSlug,
+                  services,
+                });
               }}
-            />
-            {errors.location && (
-              <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1">
-                {errors.location}
-              </p>
-            )}
-          </div>
+              className="w-full min-h-[42px] inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-[#25D366]/40 bg-[#25D366]/10 hover:bg-[#25D366]/15 text-foreground font-semibold text-xs transition-colors"
+            >
+              <MessageCircle size={15} className="text-[#25D366] shrink-0" />
+              <span>Or Chat Instantly on WhatsApp ({WHATSAPP_DISPLAY})</span>
+            </a>
 
-          {/* Services Needed */}
-          <div>
-            <span className="block text-xs font-bold text-foreground mb-1.5">
-              What are you interested in? *
-            </span>
-            <div className="grid grid-cols-2 gap-2">
-              {visibleServiceOptions.map((opt) => {
-                const selected = services.includes(opt.id);
-                return (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    aria-pressed={selected}
-                    onClick={() => toggleService(opt.id)}
-                    className={`min-h-[44px] px-3 py-2 rounded-md border text-left text-xs font-semibold flex items-center justify-between gap-2 transition-colors ${
-                      selected
-                        ? "border-primary bg-primary/10 text-foreground"
-                        : "border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                    }`}
-                  >
-                    <span className="truncate">{opt.label}</span>
-                    <span
-                      className={`h-4 w-4 rounded-sm border shrink-0 grid place-items-center ${
-                        selected
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border bg-card"
-                      }`}
-                    >
-                      {selected && <Check size={11} />}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            {errors.services && (
-              <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1.5 flex items-center gap-1">
-                <AlertCircle size={13} />
-                <span>{errors.services}</span>
-              </p>
-            )}
-          </div>
-
-          {/* Property Type */}
-          <div>
-            <span className="block text-xs font-bold text-foreground mb-1.5">
-              Property Type
-            </span>
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
-              {PROPERTY_OPTIONS.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  aria-pressed={propertyType === p.label}
-                  onClick={() => setPropertyType(p.label)}
-                  className={`min-h-[40px] px-2 py-1.5 rounded-md border text-xs font-bold transition-colors ${
-                    propertyType === p.label
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-background text-foreground hover:bg-muted"
-                  }`}
-                >
-                  {p.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Required Consent */}
-          <div>
-            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-muted-foreground leading-relaxed">
-              <input
-                type="checkbox"
-                checked={consent}
-                onChange={(e) => {
-                  setConsent(e.target.checked);
-                  setErrors((er) => ({ ...er, consent: "" }));
-                }}
-                className="mt-0.5 h-4 w-4 rounded border-border accent-primary shrink-0"
-              />
-              <span>
-                I agree to Tioga Technologies contacting me with my quote and accept the{" "}
+            {/* Compact Legal Note + Low-Key Browse Option */}
+            <div className="pt-0.5 text-center space-y-1.5">
+              <p className="text-[11px] text-muted-foreground leading-snug">
+                By continuing, you agree to our{" "}
                 <Link
                   to={privacyRoute}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary font-semibold hover:underline"
+                  className="text-primary hover:underline"
                 >
                   Privacy Policy
                 </Link>{" "}
@@ -534,52 +523,25 @@ export const AdsLeadGateModal = ({
                   to={termsRoute}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary font-semibold hover:underline"
+                  className="text-primary hover:underline"
                 >
-                  Terms of Service
+                  Terms
                 </Link>
-                . *
-              </span>
-            </label>
-            {errors.consent && (
-              <p role="alert" aria-live="polite" className="text-xs font-semibold text-destructive mt-1 flex items-center gap-1">
-                <AlertCircle size={13} />
-                <span>{errors.consent}</span>
+                .
               </p>
-            )}
-          </div>
 
-          {submitError && (
-            <div
-              role="alert"
-              aria-live="polite"
-              className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive flex items-start gap-2"
-            >
-              <RefreshCw size={14} className="shrink-0 mt-0.5" />
-              <span>{submitError}</span>
+              {onDismiss && (
+                <button
+                  type="button"
+                  onClick={onDismiss}
+                  className="text-xs font-medium text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
+                >
+                  Just browsing? View packages first
+                </button>
+              )}
             </div>
-          )}
-
-          <motion.button
-            type="submit"
-            disabled={submitting}
-            whileTap={reducedMotion ? undefined : { scale: 0.98 }}
-            className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md bg-accent text-accent-foreground font-display font-bold text-sm hover:brightness-105 disabled:opacity-60 transition-all shadow-md"
-          >
-            {submitting ? (
-              <>
-                <Loader2 size={16} className="animate-spin" />
-                <span>Saving your details…</span>
-              </>
-            ) : (
-              <>
-                <span>Continue &amp; Get My Free Quote</span>
-                <ArrowRight size={16} />
-              </>
-            )}
-          </motion.button>
-        </form>
-      </motion.div>
+          </form>
+        </motion.div>
       </div>
     </div>,
     document.body,

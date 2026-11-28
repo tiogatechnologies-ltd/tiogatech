@@ -1,19 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import AdsLeadGateModal, {
   ADS_GATE_STORAGE_KEY,
   getUnlockedVisitorProfile,
 } from "@/components/landing/AdsLeadGateModal";
 
-vi.mock("@/hooks/useSiteSetting", () => ({
-  useSiteSetting: () => ({
-    settings: { flexible_payment_enabled: true },
-    loading: false,
-  }),
-}));
-
-describe("AdsLeadGateModal (/get-started mandatory popup)", () => {
+describe("AdsLeadGateModal (/get-started quick lead popup)", () => {
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
@@ -28,7 +21,8 @@ describe("AdsLeadGateModal (/get-started mandatory popup)", () => {
     expect(localStorage.getItem("tioga_ads_lp_unlocked_v1")).toBeNull();
   });
 
-  it("portals directly into document.body (outside RouteFade transforms) and renders form fields immediately", () => {
+  it("portals directly into document.body (outside RouteFade transforms) with 3 quick fields and WhatsApp option", () => {
+    const onDismiss = vi.fn();
     const { container } = render(
       <MemoryRouter initialEntries={["/get-started"]}>
         <div style={{ transform: "translateY(12px)" }}>
@@ -39,6 +33,7 @@ describe("AdsLeadGateModal (/get-started mandatory popup)", () => {
             pathname="/get-started"
             defaultServices={["audit"]}
             onUnlocked={vi.fn()}
+            onDismiss={onDismiss}
           />
         </div>
       </MemoryRouter>,
@@ -46,12 +41,21 @@ describe("AdsLeadGateModal (/get-started mandatory popup)", () => {
 
     const dialog = screen.getByTestId("ads-lead-gate-modal");
     expect(dialog).toBeInTheDocument();
-    // Portaled directly into document.body, NOT trapped inside the transformed ancestor
     expect(dialog.parentElement).toBe(document.body);
     expect(container.querySelector('[data-testid="ads-lead-gate-modal"]')).toBeNull();
-    expect(screen.getByLabelText(/Full Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Phone \/ WhatsApp Number/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Continue & Get My Free Quote/i })).toBeInTheDocument();
+
+    // Streamlined 3 fields + instant WhatsApp CTA + browse-first escape hatch
+    expect(screen.getByLabelText(/Your Name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/WhatsApp \/ Phone/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/City \/ State/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Continue & See Prices/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Chat Instantly on WhatsApp/i })).toHaveAttribute(
+      "href",
+      expect.stringContaining("https://wa.me/2348178000023"),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Just browsing\? View packages first/i }));
+    expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
   it("persists unlock within the same tab session via sessionStorage", () => {
@@ -64,7 +68,7 @@ describe("AdsLeadGateModal (/get-started mandatory popup)", () => {
         email: "",
         location: "Abuja",
         propertyType: "Flat",
-        services: ["audit"],
+        services: ["solar"],
         preferredContact: "WhatsApp",
         submittedAt: new Date().toISOString(),
       }),

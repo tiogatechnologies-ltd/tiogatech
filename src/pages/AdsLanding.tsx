@@ -69,12 +69,15 @@ const AdsLanding = () => {
   const [visitorProfile, setVisitorProfile] = useState<UnlockedVisitorProfile | null>(() =>
     getUnlockedVisitorProfile(),
   );
+  const [gateDismissed, setGateDismissed] = useState(false);
+  const isGateOpen = !visitorProfile && !gateDismissed;
 
   useEffect(() => {
     captureAttributionFromUrl();
     const params = new URLSearchParams(location.search);
     if (params.get("gate") === "1" || params.get("reset") === "1") {
       setVisitorProfile(getUnlockedVisitorProfile());
+      setGateDismissed(false);
     }
   }, [location.search]);
 
@@ -131,20 +134,21 @@ const AdsLanding = () => {
         noindex={isCampaignRoute}
       />
 
-      {/* Mandatory Entry Lead-Capture Popup - must be completed before interacting with the page */}
+      {/* Quick 10-Second Entry Lead Popup */}
       <AdsLeadGateModal
-        open={!visitorProfile}
+        open={isGateOpen}
         campaignSlug={campaign.slug}
         campaignHeadline={`${campaign.headline} ${campaign.headlineAccent}`}
         pathname={location.pathname || "/get-started"}
         defaultServices={campaign.defaultServices}
         onUnlocked={handleGateUnlocked}
+        onDismiss={() => setGateDismissed(true)}
       />
 
       {/* Minimal Top Bar & Short High-Converting Landing Flow */}
       <div
-        aria-hidden={!visitorProfile}
-        className={`flex flex-col flex-1 ${!visitorProfile ? "pointer-events-none select-none" : ""}`}
+        aria-hidden={isGateOpen}
+        className={`flex flex-col flex-1 ${isGateOpen ? "pointer-events-none select-none" : ""}`}
       >
         <AdsTopBar onScrollToForm={() => scrollToForm()} />
 
